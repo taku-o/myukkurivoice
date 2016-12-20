@@ -1,0 +1,23 @@
+
+ul.list-group li.list-group-item {
+  padding-right: 10px;
+}
+ul.list-group li.list-group-item div.btn-group {
+  padding-left: 10px;
+}
+ul.list-group li.list-group-footer {
+  margin-top: 10px;
+  padding-right: 10px;
+}
+
+div.pane form {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+div.btn-group-convert {
+  padding-left: 20px;
+}
+div.btn-group-convert .btn{
+  margin-right: 5px;
+}
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html ng-app="yvoiceApp">
+<head>
+  <meta charset="UTF-8">
+  <title>MYukkuriVoice</title>
+  <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
+  <link rel="stylesheet" href="css/range.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="node_modules/photon/dist/template-app/js/menu.js" charset="utf-8"></script>
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/app.js"></script>
+</head>
+<body>
+<div class="window" ng-controller="MainController as ctrl" ng-init="init()">
+
+<header class="toolbar toolbar-header">
+  <div class="toolbar-actions">
+    <div class="btn-group">
+      <button class="btn btn-large btn-default" ng-click="ctrl.play()">
+        <span class="icon icon-play"></span>play
+      </button>
+      <button class="btn btn-large btn-default" ng-click="ctrl.stop()">
+        <span class="icon icon-stop"></span>stop
+      </button>
+      <button class="btn btn-large btn-default" ng-click="ctrl.record()">
+        <span class="icon icon-record"></span>record
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="window-content">
+<div class="pane-group">
+  <div class="pane-sm sidebar">
+    <ul class="list-group">
+      <li class="list-group-header">
+        <input class="form-control" type="text" ng-model='filter_text.name' placeholder="Search Configuration">
+      </li>
+      <li class="list-group-item" ng-repeat="yvoice_item in yvoice_list | filter:filter_text track by yvoice_item.id" ng-class="{active:yvoice_item.id == yvoice.id}">
+        <div class="media-body" ng-click="ctrl.select($index)">
+          <strong>{{ $index }}:{{ yvoice_item.name }}</strong>
+          <div class="btn-group pull-right">
+            <button class="btn btn-default" ng-click="ctrl.copy($index)">
+              <span class="icon icon-docs"></span>
+            </button>
+            <button class="btn btn-default" ng-click="ctrl.minus($index)">
+              <span class="icon icon-minus-squared"></span>
+            </button>
+            <button class="btn btn-default" ng-click="ctrl.select($index)" ng-if="yvoice_item.id != yvoice.id">
+              <span class="icon icon-pencil"></span>
+            </button>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-footer">
+        <div class="btn-group pull-right">
+          <button class="btn btn-large btn-default pull-right" ng-click="ctrl.plus()">
+            <span class="icon icon-plus-squared"></span>add
+          </button>
+          <button class="btn btn-large btn-default" ng-click="ctrl.save()">
+            <span class="icon icon-install"></span>save
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="pane">
+    <form>
+      <div class="form-group">
+      </div>
+
+      <div class="form-group">
+        <!-- <label>name</label> -->
+        <input type="text" class="form-control" ng-model="yvoice.name" placeholder="name">
+      </div>
+
+      <div class="form-group">
+        <!-- <label>Source</label> -->
+        <textarea class="form-control" rows="5" ng-model="yvoice.source" placeholder="source text"></textarea>
+      </div>
+
+      <div class="form-inline form-group btn-group-convert">
+        <button class="btn btn-large btn-default" ng-click="ctrl.encode()">
+          <span class="icon icon-down-bold"></span>encode
+        </button>
+        <button class="btn btn-large btn-default" ng-click="ctrl.clear()">
+          <span class="icon icon-trash"></span>clear
+        </button>
+      </div>
+
+      <div class="form-group">
+        <!-- <label>Encoded</label> -->
+        <textarea class="form-control" rows="5" ng-model="yvoice.encoded" placeholder="encoded text"></textarea>
+      </div>
+
+      <div class="form-inline form-group">
+        <select class="form-control" ng-model="yvoice.phont">
+          <option ng-repeat="v in phont_list" ng-value="v.id">{{v.name}}</option>
+        </select>
+        <!--
+        <select ng-model="yvoice.effect">
+          <option ng-repeat="v in effect_list" ng-value="v.id">{{v.name}}</option>
+        </select>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="yvoice.intonation">抑揚
+          </label>
+        </div>
+        -->
+      </div>
+
+      <div class="form-inline form-group">
+        <input type="range" min="50" max="300" ng-model="yvoice.speed">
+        <label>speed:{{yvoice.speed}}</label>
+      </div>
+      <!--
+      <div class="form-inline form-group">
+        <input type="range" max="300" ng-model="yvoice.volume">
+        <label>音量:{{yvoice.volume}}</label>
+      </div>
+      -->
+
+    </form>
+  </div>
+</div><!-- page-group -->
+</div><!-- window-content -->
+
+</div><!-- window -->
+</body>
+</html>
+

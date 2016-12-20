@@ -1,0 +1,55 @@
+Arguments: 
+  /Users/jenkins/.nvm/versions/node/v6.9.2/bin/node /Users/jenkins/.yarn/bin/yarn.js publish --tag=latest
+
+PATH: 
+  /Users/jenkins/.yarn/bin:/Users/jenkins/.nvm/versions/node/v6.9.2/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Users/jenkins/bin
+
+Yarn version: 
+  0.17.9
+
+Node version: 
+  6.9.2
+
+Platform: 
+  darwin x64
+
+npm manifest: 
+  {
+    "name": "angular",
+    "version": "1.6.0",
+    "description": "HTML enhanced for web apps",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/angular/angular.js.git"
+    },
+    "keywords": [
+      "angular",
+      "framework",
+      "browser",
+      "client-side"
+    ],
+    "author": "Angular Core Team <angular-core+npm@google.com>",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/angular/angular.js/issues"
+    },
+    "homepage": "http://angularjs.org"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Can't answer a question unless a user TTY
+      at ConsoleReporter.question (/Users/jenkins/.yarn/lib/reporters/console/console-reporter.js:192:29)
+      at /Users/jenkins/.yarn/lib/cli/commands/version.js:40:35
+      at next (native)
+      at step (/Users/jenkins/.yarn/node_modules/babel-runtime/helpers/asyncToGenerator.js:17:30)
+      at /Users/jenkins/.yarn/node_modules/babel-runtime/helpers/asyncToGenerator.js:28:13
