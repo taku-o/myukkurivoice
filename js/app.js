@@ -55,6 +55,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       });
       ipcRenderer.send('showSaveDialog', 'wav');
     };
+    ctrl.tutorial = function() {
+      introJs().start();
+    }
 
     ctrl.select = function(index) {
       $scope.yvoice = $scope.yvoice_list[index];

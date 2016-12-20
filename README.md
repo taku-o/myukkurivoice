@@ -33,6 +33,7 @@ node_modules以下に入っているので、このコマンドは実行しな�
     npm install --save electron-log
     npm install --save ref
     npm install --save ffi
+    npm install --save intro.js
 
 ## アプリデバッグ実行
     electron .
