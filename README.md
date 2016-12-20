@@ -34,6 +34,7 @@ node_modules以下に入っているので、このコマンドは実行しな�
     npm install --save ref
     npm install --save ffi
     npm install --save intro.js
+    npm install --save temp
 
 ## アプリデバッグ実行
     electron .

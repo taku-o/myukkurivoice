@@ -3,6 +3,7 @@ var log = require('electron-log');
 var fs = require('fs');
 var ffi = require('ffi');
 var ref = require('ref');
+var temp = require("temp").track();
 
 const app = require('electron').remote.app;
 const app_path = app.getAppPath();
@@ -176,7 +177,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
     }
   })
   .factory('AudioService', function() {
-    var sourceNode = null;
+    //var sourceNode = null;
+    var audio = null;
 
     function to_array_buffer(buf_wav) {
       var a_buffer = new ArrayBuffer(buf_wav.length);
@@ -190,19 +192,30 @@ angular.module('yvoiceService', ['yvoiceModel'])
     return {
       play: function(buf_wav) {
         if (!buf_wav) { return null; }
-        var a_buffer = to_array_buffer(buf_wav);
+        //var a_buffer = to_array_buffer(buf_wav);
+        //
+        //var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        //audioCtx.decodeAudioData(a_buffer).then(function(decodedData) {
+        //  sourceNode = audioCtx.createBufferSource();
+        //  sourceNode.buffer = decodedData;
+        //  sourceNode.connect(audioCtx.destination);
+        //  sourceNode.start(0);
+        //});
 
-        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        audioCtx.decodeAudioData(a_buffer).then(function(decodedData) {
-          sourceNode = audioCtx.createBufferSource();
-          sourceNode.buffer = decodedData;
-          sourceNode.connect(audioCtx.destination);
-          sourceNode.start(0);
+        temp.open('_myukkurivoice', function(err, info) {
+          if (!err) {
+            fs.writeFileSync(info.path, buf_wav);
+            audio = new Audio(info.path);
+            audio.play();
+          }
         });
+
       },
       stop: function() {
-        if (!sourceNode) { return; }
-        sourceNode.stop();
+        //if (!sourceNode) { return; }
+        //sourceNode.stop();
+        if (!audio) { return; }
+        audio.pause();
       },
       record: function(file_path, buf_wav) {
         if (!file_path) { return; }
