@@ -16,7 +16,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         storage.get('config', function (error, data) {
           if (error) { throw error; }
           if (Object.keys(data).length === 0) {
-            var new_config = YConfig;
+            var new_config = angular.copy(YConfig);
             fn(new_config);
           } else {
             fn(data);
@@ -28,9 +28,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
           if (error) { throw error; }
         });
       },
-      clear: function() {
+      clear: function(fn) {
         storage.remove('config', function(error) {
           if (error) { throw error; }
+          fn();
         });
       }
     }
@@ -53,12 +54,11 @@ angular.module('yvoiceService', ['yvoiceModel'])
         });
       },
       initial_data: function() {
-        var data_list = YVoiceInitialData;
+        var data_list = angular.copy(YVoiceInitialData);
         return data_list;
       },
       create: function() {
-        var new_yvoice = YVoice;
-        cloned = angular.copy(new_yvoice);
+        cloned = angular.copy(YVoice);
         cloned['id'] = uniq_id();
         return cloned;
       },
@@ -72,9 +72,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
           if (error) { throw error; }
         });
       },
-      clear: function() {
+      clear: function(fn) {
         storage.remove('data', function(error) {
           if (error) { throw error; }
+          fn();
         });
       }
     }
@@ -181,6 +182,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var source_length = (new Blob([source_length], {type: "text/plain"})).size;
         var encoded_length = source_length >= 256? source_length * 2 : 256;
         var buf = Buffer.alloc(source_length);
+        // crash ?
         var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encoded_length);
         if (r != 0) {
           log.info('fn_AqKanji2Koe_Convert raise error. error_code:' + error_table_AqKanji2Koe(r));

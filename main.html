@@ -30,7 +30,7 @@
         <span class="icon icon-record"></span>record
       </button>
     </div>
-    <button class="btn btn-large btn-default pull-right" ng-click="ctrl.tutorial()" data-intro="チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください" data-step="11">
+    <button class="btn btn-large btn-default pull-right" id="tutorial" ng-click="ctrl.tutorial()" data-intro="チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください" data-step="11">
       <span class="icon icon-help-circled"></span>tutorial
     </button>
   </div>
@@ -47,10 +47,10 @@
         <div class="media-body" ng-click="ctrl.select($index)">
           <strong>{{ $index }}:{{ yvoice_item.name }}</strong>
           <div class="btn-group pull-right">
-            <button class="btn btn-default" ng-click="ctrl.copy($index)">
+            <button class="btn btn-default" id="copy" ng-click="ctrl.copy($index)">
               <span class="icon icon-docs"></span>
             </button>
-            <button class="btn btn-default" ng-click="ctrl.minus($index)">
+            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-if="yvoice_list.length > 1">
               <span class="icon icon-minus-squared"></span>
             </button>
             <button class="btn btn-default" ng-click="ctrl.select($index)" ng-if="yvoice_item.id != yvoice.id">
@@ -61,10 +61,10 @@
       </li>
       <li class="list-group-footer">
         <div class="btn-group pull-right">
-          <button class="btn btn-large btn-default pull-right" ng-click="ctrl.plus()">
+          <button class="btn btn-large btn-default pull-right" id="plus" ng-click="ctrl.plus()">
             <span class="icon icon-plus-squared"></span>add
           </button>
-          <button class="btn btn-large btn-default" ng-click="ctrl.save()" data-intro="変更した設定はここで保存できます" data-step="8">
+          <button class="btn btn-large btn-default" id="save" ng-click="ctrl.save()" data-intro="変更した設定はここで保存できます" data-step="8">
             <span class="icon icon-install"></span>save
           </button>
         </div>
@@ -88,7 +88,7 @@
         <button class="btn btn-large btn-default" id="encode" ng-click="ctrl.encode()" data-intro="音記号列へ変換します" data-step="2">
           <span class="icon icon-down-bold"></span>encode
         </button>
-        <button class="btn btn-large btn-default" ng-click="ctrl.clear()">
+        <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()">
           <span class="icon icon-trash"></span>clear
         </button>
       </div>

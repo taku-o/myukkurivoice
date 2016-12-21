@@ -75,7 +75,11 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       $scope.yvoice_list.push(new_yvoice);
     };
     ctrl.minus = function(index) {
+      if ($scope.yvoice_list.length < 2) {
+        return;
+      }
       $scope.yvoice_list.splice(index, 1);
+      $scope.yvoice = $scope.yvoice_list[0];
     };
     ctrl.copy = function(index) {
       var original = $scope.yvoice_list[index];
@@ -85,15 +89,22 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
     ctrl.save = function() {
       DataService.save($scope.yvoice_list);
     };
+    ctrl.reset = function() {
+      ConfigService.clear(function() {
+        DataService.clear(function() {
+          load_data();
+        });
+      });
+    };
 
     ctrl.encode = function() {
-      var source = $scope.yvoice['source'];
+      var source = $scope.yvoice.source;
       var encoded = AquesService.encode(source);
-      $scope.yvoice['encoded'] = encoded;
+      $scope.yvoice.encoded = encoded;
     };
     ctrl.clear = function() {
-      $scope.yvoice['source'] = '';
-      $scope.yvoice['encoded'] = '';
+      $scope.yvoice.source = '';
+      $scope.yvoice.encoded = '';
     };
 
     // shortcut
@@ -113,6 +124,42 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           break;
         case 'encode':
           document.getElementById('encode').click();
+          break;
+      }
+    });
+
+    // menu
+    ipcRenderer.on('menu', function (event, action) {
+      switch (action) {
+        case 'clear':
+          document.getElementById('clear').click();
+          $scope.$apply();
+          break;
+        case 'stop':
+          document.getElementById('stop').click();
+          break;
+        case 'plus':
+          document.getElementById('plus').click();
+          $scope.$apply();
+          break;
+        case 'minus':
+          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          ctrl.minus(index);
+          $scope.$apply();
+          break;
+        case 'copy':
+          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          ctrl.copy(index);
+          $scope.$apply();
+          break;
+        case 'save':
+          document.getElementById('save').click();
+          break;
+        case 'reset':
+          ctrl.reset();
+          break;
+        case 'tutorial':
+          document.getElementById('tutorial').click();
           break;
       }
     });

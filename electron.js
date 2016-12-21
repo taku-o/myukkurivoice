@@ -104,17 +104,90 @@ app.on('ready', function() {
       label: 'ボイス',
       submenu: [
         {
+          label:'メッセージ入力欄に移動',
+          accelerator: 'Command+Up',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_source'); }
+          }
+        },
+        {
+          label:'音記号列入力欄に移動',
+          accelerator: 'Command+Down',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_encoded'); }
+          }
+        },
+        { type: 'separator' },
+        {
           label:'音記号列に変換',
-          accelerator: 'Command+Right'
+          accelerator: 'Command+Right',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
+          }
+        },
+        {
+          label:'入力をクリア',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'clear'); }
+          }
         },
         { type: 'separator' },
         {
           label:'再生',
-          accelerator: 'Command+P'
+          accelerator: 'Command+P',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'play'); }
+          }
+        },
+        {
+          label:'再生停止',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'stop'); }
+          }
         },
         {
           label:'記録',
-          accelerator: 'Command+S'
+          accelerator: 'Command+S',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
+          }
+        }
+      ]
+    },
+    {
+      label: '設定',
+      submenu: [
+        {
+          label: '新規作成',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'plus'); }
+          }
+        },
+        {
+          label: '複製',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'copy'); }
+          }
+        },
+        {
+          label: '削除',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'minus'); }
+          }
+        },
+        { type: 'separator' },
+        {
+          label: '保存',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'save'); }
+          }
+        },
+        { type: 'separator' },
+        {
+          label: '設定オールリセット',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'reset'); }
+          }
         }
       ]
     },
@@ -143,9 +216,7 @@ app.on('ready', function() {
           label: 'Zoom',
           role: 'zoom'
         },
-        {
-          type: 'separator'
-        },
+        { type: 'separator' },
         {
           label: 'Bring All to Front',
           role: 'front'
@@ -155,6 +226,19 @@ app.on('ready', function() {
     {
       label: 'ヘルプ',
       submenu: [
+        //{
+        //  label: 'ヘルプ',
+        //  click () {
+        //    if (mainWindow) { mainWindow.webContents.send('menu', 'help'); }
+        //  }
+        //},
+        {
+          label: 'チュートリアル',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'tutorial'); }
+          }
+        },
+        { type: 'separator' },
         {
           label: 'Learn More',
           click () { require('electron').shell.openExternal('https://github.com/taku-o/myukkurivoice') }
