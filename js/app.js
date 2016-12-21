@@ -87,5 +87,26 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       $scope.yvoice['source'] = '';
       $scope.yvoice['encoded'] = '';
     };
+
+    // shortcut
+    ipcRenderer.on('shortcut', function (event, action) {
+      switch (action) {
+        case 'play':
+          document.getElementById('play').click();
+          break;
+        case 'record':
+          document.getElementById('record').click();
+          break;
+        case 'move_to_source':
+          document.getElementById('source').focus();
+          break;
+        case 'move_to_encoded':
+          document.getElementById('encoded').focus();
+          break;
+        case 'encode':
+          document.getElementById('encode').click();
+          break;
+      }
+    });
   }]);
 

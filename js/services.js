@@ -182,14 +182,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
     //var sourceNode = null;
     var audio = null;
 
-    function to_array_buffer(buf_wav) {
-      var a_buffer = new ArrayBuffer(buf_wav.length);
-      var view = new Uint8Array(a_buffer);
-      for (var i = 0; i < buf_wav.length; ++i) {
-        view[i] = buf_wav[i];
-      }
-      return a_buffer;
-    };
+    //function to_array_buffer(buf_wav) {
+    //  var a_buffer = new ArrayBuffer(buf_wav.length);
+    //  var view = new Uint8Array(a_buffer);
+    //  for (var i = 0; i < buf_wav.length; ++i) {
+    //    view[i] = buf_wav[i];
+    //  }
+    //  return a_buffer;
+    //};
 
     return {
       play: function(buf_wav) {

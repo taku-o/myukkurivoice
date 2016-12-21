@@ -1,9 +1,10 @@
 'use strict';
-var electron = require('electron');
-var app = electron.app;
-var BrowserWindow = electron.BrowserWindow;
-var dialog = electron.dialog;
-var ipcMain = electron.ipcMain;
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const dialog = electron.dialog;
+const ipcMain = electron.ipcMain;
+const globalShortcut = electron.globalShortcut;
 
 // global reference
 var mainWindow = null;
@@ -24,22 +25,45 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({
     width: 700,
     height: 600,
-    'min-width': 500,
-    'min-height': 400,
-    'accept-first-mouse': true,
-    'title-bar-style': 'hidden'
+    minWidth: 500,
+    minHeight: 400,
+    webPreferences: {
+      devTools: true
+    }
   });
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/main.html');
-
-  // Open the DevTools.
-  // mainWindow.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
     // dereference global reference
     mainWindow = null;
+    // quit
+    app.quit();
   });
+
+  // shortcut
+  var r = globalShortcut.register('Command+Q', function() {
+	app.quit();
+  });
+  var r = globalShortcut.register('Command+P', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'play'); }
+  });
+  var r = globalShortcut.register('Command+S', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
+  });
+  var r = globalShortcut.register('Command+Up', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_source'); }
+  });
+  var r = globalShortcut.register('Command+Down', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_encoded'); }
+  });
+  var r = globalShortcut.register('Command+Right', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
+  });
+
+  // Open the DevTools.
+  // mainWindow.openDevTools();
 });
 
 // showSaveDialog
