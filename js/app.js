@@ -4,13 +4,14 @@ const util = require('util');
 // angular app
 angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   .controller('MainController',
-    ['$scope', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService', 'IntroService',
-    function($scope, ConfigService, DataService, MasterService, AquesService, AudioService, IntroService) {
+    ['$scope', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService', 'IntroService', 'YInput', 'YInputInitialData',
+    function($scope, ConfigService, DataService, MasterService, AquesService, AudioService, IntroService, YInput, YInputInitialData) {
 
     // init
     var ctrl = this;
     $scope.phont_list = MasterService.get_phont_list();
     $scope.effect_list = MasterService.get_effect_list();
+    $scope.yinput = angular.copy(YInput);
     load_data();
 
     // util
@@ -32,9 +33,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
     // action
     ctrl.play = function() {
-      if (!$scope.yvoice.encoded) { return; }
+      if (!$scope.yinput.encoded) { return; }
       if ($scope.phont_list.length <= $scope.yvoice.phont) { return; }
-      var encoded = $scope.yvoice.encoded;
+      var encoded = $scope.yinput.encoded;
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
       var phont = $scope.phont_list[$scope.yvoice.phont];
@@ -48,9 +49,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       AudioService.stop();
     };
     ctrl.record = function() {
-      if (!$scope.yvoice.encoded) { return; }
+      if (!$scope.yinput.encoded) { return; }
       if ($scope.phont_list.length <= $scope.yvoice.phont) { return; }
-      var encoded = $scope.yvoice.encoded;
+      var encoded = $scope.yinput.encoded;
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
       var phont = $scope.phont_list[$scope.yvoice.phont];
@@ -98,16 +99,17 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           load_data();
         });
       });
+      $scope.yinput = angular.copy(YInputInitialData);
     };
 
     ctrl.encode = function() {
-      var source = $scope.yvoice.source;
+      var source = $scope.yinput.source;
       var encoded = AquesService.encode(source);
-      $scope.yvoice.encoded = encoded;
+      $scope.yinput.encoded = encoded;
     };
     ctrl.clear = function() {
-      $scope.yvoice.source = '';
-      $scope.yvoice.encoded = '';
+      $scope.yinput.source = '';
+      $scope.yinput.encoded = '';
     };
 
     // shortcut
