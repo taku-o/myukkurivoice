@@ -48,6 +48,9 @@ app.on('ready', function() {
   var r = globalShortcut.register('Command+P', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'play'); }
   });
+  var r = globalShortcut.register('Command+W', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'stop'); }
+  });
   var r = globalShortcut.register('Command+S', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
   });
@@ -139,7 +142,7 @@ app.on('ready', function() {
         },
         { type: 'separator' },
         {
-          label:'再生',
+          label:'音声の再生',
           accelerator: 'Command+P',
           click () {
             if (mainWindow) { mainWindow.webContents.send('shortcut', 'play'); }
@@ -147,12 +150,13 @@ app.on('ready', function() {
         },
         {
           label:'再生停止',
+          accelerator: 'Command+W',
           click () {
-            if (mainWindow) { mainWindow.webContents.send('menu', 'stop'); }
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'stop'); }
           }
         },
         {
-          label:'記録',
+          label:'音声の保存',
           accelerator: 'Command+S',
           click () {
             if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
@@ -191,12 +195,14 @@ app.on('ready', function() {
         { type: 'separator' },
         {
           label: '次の設定に切り替え',
+          accelerator: 'Command+Left',
           click () {
             if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_next_config'); }
           }
         },
         {
           label: '前の設定に切り替え',
+          accelerator: 'Command+Shift+Left',
           click () {
             if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_previous_config'); }
           }
@@ -245,12 +251,6 @@ app.on('ready', function() {
     {
       label: 'ヘルプ',
       submenu: [
-        //{
-        //  label: 'ヘルプ',
-        //  click () {
-        //    if (mainWindow) { mainWindow.webContents.send('menu', 'help'); }
-        //  }
-        //},
         {
           label: 'チュートリアル',
           click () {

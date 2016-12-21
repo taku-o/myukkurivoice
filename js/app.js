@@ -132,6 +132,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         case 'play':
           document.getElementById('play').click();
           break;
+        case 'stop':
+          document.getElementById('stop').click();
+          break;
         case 'record':
           document.getElementById('record').click();
           break;
@@ -171,9 +174,6 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         case 'clear':
           document.getElementById('clear').click();
           $scope.$apply();
-          break;
-        case 'stop':
-          document.getElementById('stop').click();
           break;
         case 'plus':
           document.getElementById('plus').click();

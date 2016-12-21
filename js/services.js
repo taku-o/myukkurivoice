@@ -286,6 +286,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
               intro: '音記号列を発声させます'
             },
             {
+              element: '#stop',
+              intro: '音声の再生を停止します'
+            },
+            {
               element: '#record',
               intro: '発声が問題なければ、このボタンで音声データを保存できます'
             },
@@ -295,6 +299,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             },
             {
               element: '#speed',
+              position: 'top',
               intro: '声の早さの調節はここです'
             },
             {
@@ -329,12 +334,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
         intro.setOptions({
           steps: [
             {
-              element: '#play',
-              intro: 'Command + P で音声再生'
-            },
-            {
-              element: '#record',
-              intro: 'Command + S で音声保存'
+              element: '#btn-group-audio',
+              intro: 'Command + P で音声再生<br>Command + W で音声再生の停止<br>Command + S で音声保存'
             },
             {
               element: '#source',
@@ -351,12 +352,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             {
               element: '#sidebar-items',
               position: 'right',
-              intro: 'Command + ← で次(下)の設定に切り替え'
-            },
-            {
-              element: '#sidebar-items',
-              position: 'right',
-              intro: 'Command + Shift + ← で前(上)の設定に切り替え'
+              intro: 'Command + ← で次(下)の設定に切り替え<br>Command + Shift + ← で前(上)の設定に切り替え'
             }
           ]
         });
