@@ -195,6 +195,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         case 'reset':
           ctrl.reset();
           break;
+        case 'shortcut':
+          document.getElementById('shortcut').click();
+          break;
         case 'tutorial':
           document.getElementById('tutorial').click();
           break;

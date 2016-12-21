@@ -252,6 +252,12 @@ app.on('ready', function() {
       label: 'ヘルプ',
       submenu: [
         {
+          label: 'ショートカットキー',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('menu', 'shortcut'); }
+          }
+        },
+        {
           label: 'チュートリアル',
           click () {
             if (mainWindow) { mainWindow.webContents.send('menu', 'tutorial'); }
