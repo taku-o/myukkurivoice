@@ -1,26 +1,34 @@
-var ipcRenderer = require('electron').ipcRenderer
-var util = require('util');
+const ipcRenderer = require('electron').ipcRenderer
+const util = require('util');
 
 // angular app
 angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   .controller('MainController',
-    ['$scope', 'DbService', 'MasterService', 'AquesService', 'AudioService',
-    function($scope, DbService, MasterService, AquesService, AudioService) {
+    ['$scope', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService',
+    function($scope, ConfigService, DataService, MasterService, AquesService, AudioService) {
 
     // init
     var ctrl = this;
     $scope.phont_list = MasterService.get_phont_list();
     $scope.effect_list = MasterService.get_effect_list();
+    load_data();
 
-    DbService.load(function(data_list){
-      if (data_list.length < 1) {
-        var new_yvoice = DbService.create();
-        data_list.push(new_yvoice);
-      }
-      $scope.yvoice_list = data_list;
-      $scope.yvoice = $scope.yvoice_list[0];
-      $scope.$apply();
-    });
+    // util
+    function load_data() {
+      ConfigService.load(function(config) {
+        $scope.yconfig = config;
+        $scope.$apply();
+      });
+
+      DataService.load(function(data_list) {
+        if (data_list.length < 1) {
+          data_list = DataService.initial_data();
+        }
+        $scope.yvoice_list = data_list;
+        $scope.yvoice = $scope.yvoice_list[0];
+        $scope.$apply();
+      });
+    };
 
     // action
     ctrl.play = function() {
@@ -63,7 +71,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       $scope.yvoice = $scope.yvoice_list[index];
     };
     ctrl.plus = function() {
-      var new_yvoice = DbService.create();
+      var new_yvoice = DataService.create();
       $scope.yvoice_list.push(new_yvoice);
     };
     ctrl.minus = function(index) {
@@ -71,11 +79,11 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
     };
     ctrl.copy = function(index) {
       var original = $scope.yvoice_list[index];
-      var new_yvoice = DbService.copy(original);
+      var new_yvoice = DataService.copy(original);
       $scope.yvoice_list.push(new_yvoice);
     };
     ctrl.save = function() {
-      DbService.save($scope.yvoice_list);
+      DataService.save($scope.yvoice_list);
     };
 
     ctrl.encode = function() {

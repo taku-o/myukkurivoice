@@ -1,16 +1,41 @@
-var storage = require('electron-json-storage');
-var log = require('electron-log');
-var fs = require('fs');
-var ffi = require('ffi');
-var ref = require('ref');
-var temp = require("temp").track();
+const storage = require('electron-json-storage');
+const log = require('electron-log');
+const fs = require('fs');
+const ffi = require('ffi');
+const ref = require('ref');
+const temp = require("temp").track();
 
 const app = require('electron').remote.app;
 const app_path = app.getAppPath();
 
 // angular service
 angular.module('yvoiceService', ['yvoiceModel'])
-  .factory('DbService', ['YVoice', function(YVoice) {
+  .factory('ConfigService', ['YConfig', function(YConfig) {
+    return {
+      load: function(fn) {
+        storage.get('config', function (error, data) {
+          if (error) { throw error; }
+          if (Object.keys(data).length === 0) {
+            var new_config = YConfig;
+            fn(new_config);
+          } else {
+            fn(data);
+          }
+        });
+      },
+      save: function(config) {
+        storage.set('config', config, function(error) {
+          if (error) { throw error; }
+        });
+      },
+      clear: function() {
+        storage.remove('config', function(error) {
+          if (error) { throw error; }
+        });
+      }
+    }
+  }])
+  .factory('DataService', ['YVoice', 'YVoiceInitialData', function(YVoice, YVoiceInitialData) {
 
     function uniq_id() {
       return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
@@ -18,7 +43,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
     return {
       load: function(fn) {
-        storage.get('config', function (error, data) {
+        storage.get('data', function (error, data) {
           if (error) { throw error; }
           if (Object.keys(data).length === 0) {
             fn([]);
@@ -27,9 +52,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
           }
         });
       },
+      initial_data: function() {
+        var data_list = YVoiceInitialData;
+        return data_list;
+      },
       create: function() {
-        var nyvoice = YVoice;
-        cloned = angular.copy(nyvoice);
+        var new_yvoice = YVoice;
+        cloned = angular.copy(new_yvoice);
         cloned['id'] = uniq_id();
         return cloned;
       },
@@ -39,7 +68,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
         return cloned;
       },
       save: function(data_list) {
-        storage.set('config', data_list, function(error) {
+        storage.set('data', data_list, function(error) {
+          if (error) { throw error; }
+        });
+      },
+      clear: function() {
+        storage.remove('data', function(error) {
           if (error) { throw error; }
         });
       }
