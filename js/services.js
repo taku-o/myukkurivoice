@@ -311,6 +311,11 @@ angular.module('yvoiceService', ['yvoiceModel'])
               intro: '設定はこのあたりで、増やしたり、減らしたりできます',
             },
             {
+              element: '#sidebar-items',
+              position: 'right',
+              intro: '設定がおかしくなった時はメニューに「設定オールリセット」があります',
+            },
+            {
               element: '#tutorial',
               intro: 'チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください'
             }
