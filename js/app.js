@@ -4,8 +4,8 @@ const util = require('util');
 // angular app
 angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   .controller('MainController',
-    ['$scope', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService',
-    function($scope, ConfigService, DataService, MasterService, AquesService, AudioService) {
+    ['$scope', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService', 'IntroService',
+    function($scope, ConfigService, DataService, MasterService, AquesService, AudioService, IntroService) {
 
     // init
     var ctrl = this;
@@ -64,7 +64,10 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       ipcRenderer.send('showSaveDialog', 'wav');
     };
     ctrl.tutorial = function() {
-      introJs().start();
+      IntroService.tutorial();
+    }
+    ctrl.shortcut = function() {
+      IntroService.shortcut();
     }
 
     ctrl.select = function(index) {

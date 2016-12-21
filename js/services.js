@@ -261,5 +261,92 @@ angular.module('yvoiceService', ['yvoiceModel'])
         fs.writeFileSync(file_path, buf_wav);
       }
     }
+  })
+  .factory('IntroService', function() {
+    return {
+      'tutorial': function() {
+        var intro = introJs();
+        intro.setOption('showProgress', true);
+        intro.setOptions({
+          steps: [
+            {
+              element: '#source',
+              intro: '発声したいメッセージを入力してください'
+            },
+            {
+              element: '#encode',
+              intro: '音記号列へ変換します'
+            },
+            {
+              element: '#encoded',
+              intro: 'すると、メッセージが音記号列に変換した結果が入ります'
+            },
+            {
+              element: '#play',
+              intro: '音記号列を発声させます'
+            },
+            {
+              element: '#record',
+              intro: '発声が問題なければ、このボタンで音声データを保存できます'
+            },
+            {
+              element: '#phont',
+              intro: '声を変えたければここを変更します'
+            },
+            {
+              element: '#speed',
+              intro: '声の早さの調節はここです'
+            },
+            {
+              element: '#save',
+              intro: '変更した設定はここで保存できます'
+            },
+            {
+              element: '#name',
+              intro: '設定には名前をつけられます'
+            },
+            {
+              element: '#sidebar-items',
+              position: 'right',
+              intro: '設定はこのあたりで、増やしたり、減らしたりできます',
+            },
+            {
+              element: '#tutorial',
+              intro: 'チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください'
+            }
+          ]
+        });
+        intro.start();
+      },
+      'shortcut': function() {
+        var intro = introJs();
+        intro.setOption('showProgress', true);
+        intro.setOptions({
+          steps: [
+            {
+              element: '#play',
+              intro: 'Command + P で音声再生'
+            },
+            {
+              element: '#record',
+              intro: 'Command + S で音声保存'
+            },
+            {
+              element: '#source',
+              intro: 'Command + ↑ で入力欄にカーソル移動'
+            },
+            {
+              element: '#encoded',
+              intro: 'Command + ↓ で入力欄にカーソル移動'
+            },
+            {
+              element: '#encode',
+              intro: 'Command + → で音記号列へ変換'
+            }
+          ]
+        });
+        intro.start();
+      }
+    }
   });
 

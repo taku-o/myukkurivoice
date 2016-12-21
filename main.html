@@ -20,26 +20,31 @@
 <header class="toolbar toolbar-header">
   <div class="toolbar-actions">
     <div class="btn-group">
-      <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()" data-intro="音記号列を発声させます" data-step="4">
+      <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()">
         <span class="icon icon-play"></span>play
       </button>
       <button class="btn btn-large btn-default" id="stop" ng-click="ctrl.stop()">
         <span class="icon icon-stop"></span>stop
       </button>
-      <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()" data-intro="発声が問題なければ、このボタンで音声データを保存できます" data-step="5">
+      <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()">
         <span class="icon icon-record"></span>record
       </button>
     </div>
-    <button class="btn btn-large btn-default pull-right" id="tutorial" ng-click="ctrl.tutorial()" data-intro="チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください" data-step="11">
-      <span class="icon icon-help-circled"></span>tutorial
-    </button>
+    <div class="btn-group pull-right">
+      <button class="btn btn-large btn-default" id="shortcut" ng-click="ctrl.shortcut()">
+        <span class="icon icon-help-circled"></span>shortcut
+      </button>
+      <button class="btn btn-large btn-default" id="tutorial" ng-click="ctrl.tutorial()">
+        <span class="icon icon-help-circled"></span>tutorial
+      </button>
+    </div>
   </div>
 </header>
 
 <div class="window-content">
 <div class="pane-group">
   <div class="pane-sm sidebar">
-    <ul class="list-group" data-intro="設定はこのあたりで、増やしたり、減らしたりできます" data-step="10">
+    <ul class="list-group" id="sidebar-items">
       <li class="list-group-header">
         <input class="form-control" type="text" ng-model='filter_text.name' placeholder="Search Configuration">
       </li>
@@ -64,7 +69,7 @@
           <button class="btn btn-large btn-default pull-right" id="plus" ng-click="ctrl.plus()">
             <span class="icon icon-plus-squared"></span>add
           </button>
-          <button class="btn btn-large btn-default" id="save" ng-click="ctrl.save()" data-intro="変更した設定はここで保存できます" data-step="8">
+          <button class="btn btn-large btn-default" id="save" ng-click="ctrl.save()">
             <span class="icon icon-install"></span>save
           </button>
         </div>
@@ -76,16 +81,16 @@
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
-        <input type="text" class="form-control" ng-model="yvoice.name" placeholder="name" data-intro="設定には名前をつけられます" data-step="9">
+        <input type="text" class="form-control" id="name" ng-model="yvoice.name" placeholder="name">
       </div>
 
-      <div class="form-group" data-intro="発声したいメッセージを入力してください" data-step="1">
+      <div class="form-group">
         <!-- <label>Source</label> -->
         <textarea class="form-control" id="source" rows="5" ng-model="yvoice.source" placeholder="source text"></textarea>
       </div>
 
       <div class="form-inline form-group btn-group-convert">
-        <button class="btn btn-large btn-default" id="encode" ng-click="ctrl.encode()" data-intro="音記号列へ変換します" data-step="2">
+        <button class="btn btn-large btn-default" id="encode" ng-click="ctrl.encode()">
           <span class="icon icon-down-bold"></span>encode
         </button>
         <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()">
@@ -93,13 +98,13 @@
         </button>
       </div>
 
-      <div class="form-group" data-intro="すると、メッセージが音記号列に変換した結果が入ります" data-step="3">
+      <div class="form-group">
         <!-- <label>Encoded</label> -->
         <textarea class="form-control" id="encoded" rows="5" ng-model="yvoice.encoded" placeholder="encoded text"></textarea>
       </div>
 
-      <div class="form-inline form-group" data-intro="声を変えたければここを変更します" data-step="6">
-        <select class="form-control" ng-model="yvoice.phont">
+      <div class="form-inline form-group">
+        <select class="form-control" ng-model="yvoice.phont" id="phont">
           <option ng-repeat="v in phont_list" ng-value="v.id">{{v.name}}</option>
         </select>
         <!--
@@ -114,8 +119,8 @@
         -->
       </div>
 
-      <div class="form-inline form-group" data-intro="声の早さの調節はここです" data-step="7">
-        <input type="range" min="50" max="300" ng-model="yvoice.speed">
+      <div class="form-inline form-group">
+        <input type="range" min="50" max="300" id="speed" ng-model="yvoice.speed">
         <label>speed:{{yvoice.speed}}</label>
       </div>
       <!--
