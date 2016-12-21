@@ -127,6 +127,24 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         case 'move_to_encoded':
           document.getElementById('encoded').focus();
           break;
+        case 'swich_next_config':
+          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          if ($scope.yvoice_list.length > index + 1) {
+            $scope.yvoice = $scope.yvoice_list[index + 1];
+          } else {
+            $scope.yvoice = $scope.yvoice_list[0];
+          }
+          $scope.$apply();
+          break;
+        case 'swich_previous_config':
+          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          if (index - 1 >= 0) {
+            $scope.yvoice = $scope.yvoice_list[index - 1];
+          } else {
+            $scope.yvoice = $scope.yvoice_list[$scope.yvoice_list.length - 1];
+          }
+          $scope.$apply();
+          break;
         case 'encode':
           document.getElementById('encode').click();
           break;

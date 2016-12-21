@@ -24,7 +24,7 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 700,
+    width: 800,
     height: 600,
     minWidth: 500,
     minHeight: 400,
@@ -59,6 +59,12 @@ app.on('ready', function() {
   });
   var r = globalShortcut.register('Command+Right', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
+  });
+  var r = globalShortcut.register('Command+Left', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_next_config'); }
+  });
+  var r = globalShortcut.register('Command+Shift+Left', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_previous_config'); }
   });
 
   // menu
@@ -101,7 +107,7 @@ app.on('ready', function() {
       ]
     },
     {
-      label: 'ボイス',
+      label: '音声',
       submenu: [
         {
           label:'メッセージ入力欄に移動',
@@ -180,6 +186,19 @@ app.on('ready', function() {
           label: '保存',
           click () {
             if (mainWindow) { mainWindow.webContents.send('menu', 'save'); }
+          }
+        },
+        { type: 'separator' },
+        {
+          label: '次の設定に切り替え',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_next_config'); }
+          }
+        },
+        {
+          label: '前の設定に切り替え',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_previous_config'); }
           }
         },
         { type: 'separator' },

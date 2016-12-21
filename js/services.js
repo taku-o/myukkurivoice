@@ -338,15 +338,25 @@ angular.module('yvoiceService', ['yvoiceModel'])
             },
             {
               element: '#source',
-              intro: 'Command + ↑ で入力欄にカーソル移動'
+              intro: 'Command + ↑ でメッセージ入力欄にカーソル移動'
             },
             {
               element: '#encoded',
-              intro: 'Command + ↓ で入力欄にカーソル移動'
+              intro: 'Command + ↓ で音記号列入力欄にカーソル移動'
             },
             {
               element: '#encode',
               intro: 'Command + → で音記号列へ変換'
+            },
+            {
+              element: '#sidebar-items',
+              position: 'right',
+              intro: 'Command + ← で次(下)の設定に切り替え'
+            },
+            {
+              element: '#sidebar-items',
+              position: 'right',
+              intro: 'Command + Shift + ← で前(上)の設定に切り替え'
             }
           ]
         });

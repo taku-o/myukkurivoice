@@ -21,21 +21,21 @@
   <div class="toolbar-actions">
     <div class="btn-group">
       <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()">
-        <span class="icon icon-play"></span>play
+        <span class="icon icon-play"></span>voice play
       </button>
       <button class="btn btn-large btn-default" id="stop" ng-click="ctrl.stop()">
-        <span class="icon icon-stop"></span>stop
+        <span class="icon icon-stop"></span>voice stop
       </button>
       <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()">
-        <span class="icon icon-record"></span>record
+        <span class="icon icon-record"></span>record voice
       </button>
     </div>
     <div class="btn-group pull-right">
       <button class="btn btn-large btn-default" id="shortcut" ng-click="ctrl.shortcut()">
-        <span class="icon icon-help-circled"></span>shortcut
+        <span class="icon icon-help-circled"></span>shortcut help
       </button>
       <button class="btn btn-large btn-default" id="tutorial" ng-click="ctrl.tutorial()">
-        <span class="icon icon-help-circled"></span>tutorial
+        <span class="icon icon-help-circled"></span>run tutorial
       </button>
     </div>
   </div>
@@ -58,19 +58,16 @@
             <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-if="yvoice_list.length > 1">
               <span class="icon icon-minus-squared"></span>
             </button>
-            <button class="btn btn-default" ng-click="ctrl.select($index)" ng-if="yvoice_item.id != yvoice.id">
-              <span class="icon icon-pencil"></span>
-            </button>
           </div>
         </div>
       </li>
       <li class="list-group-footer">
         <div class="btn-group pull-right">
           <button class="btn btn-large btn-default pull-right" id="plus" ng-click="ctrl.plus()">
-            <span class="icon icon-plus-squared"></span>add
+            <span class="icon icon-plus-squared"></span>add config
           </button>
           <button class="btn btn-large btn-default" id="save" ng-click="ctrl.save()">
-            <span class="icon icon-install"></span>save
+            <span class="icon icon-install"></span>save config
           </button>
         </div>
       </li>
@@ -91,10 +88,10 @@
 
       <div class="form-inline form-group btn-group-convert">
         <button class="btn btn-large btn-default" id="encode" ng-click="ctrl.encode()">
-          <span class="icon icon-down-bold"></span>encode
+          <span class="icon icon-down-bold"></span>encode input
         </button>
         <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()">
-          <span class="icon icon-trash"></span>clear
+          <span class="icon icon-trash"></span>clear input
         </button>
       </div>
 
