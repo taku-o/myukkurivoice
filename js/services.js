@@ -140,14 +140,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var aqKanji2Koe = fn_AqKanji2Koe_Create(app_path + '/vendor/aqk2k_mac_eva/aq_dic', alloc_int);
         var error_code = alloc_int.deref();
         if (error_code != 0) {
-          log.debug('fn_AqKanji2Koe_Create raise error. error_code:' + error_table_AqKanji2Koe(error_code));
+          log.warn('fn_AqKanji2Koe_Create raise error. error_code:' + error_table_AqKanji2Koe(error_code));
           return '';
         }
 
-        var buf = Buffer.alloc(source.length * 2);
-        var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, source.length * 4);
+        var source_length = (new Blob([source_length], {type: "text/plain"})).size;
+        var encoded_length = source_length >= 256? source_length * 2 : 256;
+        var buf = Buffer.alloc(source_length);
+        var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encoded_length);
         if (r != 0) {
-          log.debug('fn_AqKanji2Koe_Convert raise error. error_code:' + error_table_AqKanji2Koe(r));
+          log.info('fn_AqKanji2Koe_Convert raise error. error_code:' + error_table_AqKanji2Koe(r));
           return '';
         }
         var encoded = ref.readCString(buf, 0);
@@ -163,7 +165,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var r = fn_AquesTalk2_Synthe_Utf8(encoded, speed, alloc_int, phont_data);
         if (r == ref.NULL) {
           var error_code = alloc_int.deref();
-          log.debug('fn_AquesTalk2_Synthe_Utf8 raise error. error_code:' + error_table_AquesTalk2(r));
+          log.info('fn_AquesTalk2_Synthe_Utf8 raise error. error_code:' + error_table_AquesTalk2(r));
           return null;
         }
 
