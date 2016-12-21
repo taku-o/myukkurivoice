@@ -33,9 +33,16 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
     // action
     ctrl.play = function() {
-      if (!$scope.yinput.encoded) { return; }
+      if (!$scope.yinput.source && !$scope.yinput.encoded) { return; }
       if ($scope.phont_list.length <= $scope.yvoice.phont) { return; }
+
       var encoded = $scope.yinput.encoded;
+      if (!encoded) {
+        var source = $source.yinput.source;
+        encoded = AquesService.encode(source);
+        if (!encoded) { return; }
+      }
+
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
       var phont = $scope.phont_list[$scope.yvoice.phont];
@@ -49,9 +56,16 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       AudioService.stop();
     };
     ctrl.record = function() {
-      if (!$scope.yinput.encoded) { return; }
+      if (!$scope.yinput.source && !$scope.yinput.encoded) { return; }
       if ($scope.phont_list.length <= $scope.yvoice.phont) { return; }
+
       var encoded = $scope.yinput.encoded;
+      if (!encoded) {
+        var source = $source.yinput.source;
+        encoded = AquesService.encode(source);
+        if (!encoded) { return; }
+      }
+
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
       var phont = $scope.phont_list[$scope.yvoice.phont];
