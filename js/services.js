@@ -12,11 +12,19 @@ const app_path = app.getAppPath();
 angular.module('yvoiceService', ['yvoiceModel'])
   .factory('MessageService', ['$rootScope', function($rootScope) {
     return {
+      action: function(message) {
+        var log = {
+          created: new Date(),
+          body: message,
+          type: 'action'
+        }
+        $rootScope.$broadcast("message", log);
+      },
       info: function(message) {
         var log = {
           created: new Date(),
           body: message,
-          type: 'message'
+          type: 'info'
         }
         $rootScope.$broadcast("message", log);
       },
@@ -27,14 +35,28 @@ angular.module('yvoiceService', ['yvoiceModel'])
           type: 'error'
         }
         $rootScope.$broadcast("message", log);
+      },
+      syserror: function(message, err=null) {
+        if (err) {
+          message = message + err.message;
+        }
+        var log = {
+          created: new Date(),
+          body: message,
+          type: 'syserror'
+        }
+        $rootScope.$broadcast("message", log);
       }
     }
   }])
-  .factory('ConfigService', ['YConfig', function(YConfig) {
+  .factory('ConfigService', ['YConfig', 'MessageService', function(YConfig, MessageService) {
     return {
       load: function(fn) {
         storage.get('config', function (error, data) {
-          if (error) { throw error; }
+          if (error) {
+            MessageService.syserror('アプリ設定の読込に失敗しました。', error);
+            throw error;
+          }
           if (Object.keys(data).length === 0) {
             var new_config = angular.copy(YConfig);
             fn(new_config);
@@ -45,18 +67,26 @@ angular.module('yvoiceService', ['yvoiceModel'])
       },
       save: function(config) {
         storage.set('config', config, function(error) {
-          if (error) { throw error; }
+          if (error) {
+            MessageService.syserror('アプリ設定の保存に失敗しました。', error);
+            throw error;
+          }
+          MessageService.info('アプリ設定を保存しました。');
         });
       },
       clear: function(fn) {
         storage.remove('config', function(error) {
-          if (error) { throw error; }
+          if (error) {
+            MessageService.syserror('アプリ設定の削除に失敗しました。', error);
+            throw error;
+          }
+          MessageService.info('アプリ設定を削除しました。');
           fn();
         });
       }
     }
   }])
-  .factory('DataService', ['YVoice', 'YVoiceInitialData', function(YVoice, YVoiceInitialData) {
+  .factory('DataService', ['YVoice', 'YVoiceInitialData', 'MessageService', function(YVoice, YVoiceInitialData, MessageService) {
 
     function uniq_id() {
       return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
@@ -65,7 +95,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
     return {
       load: function(fn) {
         storage.get('data', function (error, data) {
-          if (error) { throw error; }
+          if (error) {
+            MessageService.syserror('ボイス設定の読込に失敗しました。', error);
+            throw error;
+          }
           if (Object.keys(data).length === 0) {
             fn([]);
           } else {
@@ -89,12 +122,20 @@ angular.module('yvoiceService', ['yvoiceModel'])
       },
       save: function(data_list) {
         storage.set('data', data_list, function(error) {
-          if (error) { throw error; }
+          if (error) {
+            MessageService.syserror('ボイス設定の保存に失敗しました。', error);
+            throw error;
+          }
+          MessageService.info('ボイス設定を保存しました。');
         });
       },
       clear: function(fn) {
         storage.remove('data', function(error) {
-          if (error) { throw error; }
+          if (error) {
+            MessageService.syserror('ボイス設定の削除に失敗しました。', error);
+            throw error;
+          }
+          MessageService.info('ボイス設定を削除しました。');
           fn();
         });
       }
@@ -102,20 +143,20 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      {'id':1,  'name':'aq_yukkuri', 'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_yukkuri.phont'},
-      {'id':2,  'name':'aq_f1c',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_f1c.phont'},
-      {'id':3,  'name':'aq_f3a',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_f3a.phont'},
-      {'id':4,  'name':'aq_huskey',  'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_huskey.phont'},
-      {'id':5,  'name':'aq_m4b',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_m4b.phont'},
-      {'id':6,  'name':'aq_mf1',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_mf1.phont'},
-      {'id':7,  'name':'aq_rb2',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_rb2.phont'},
-      {'id':8,  'name':'aq_rb3',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_rb3.phont'},
-      {'id':9,  'name':'aq_rm',      'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_rm.phont'},
-      {'id':10, 'name':'aq_robo',    'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_robo.phont'},
-      {'id':11, 'name':'ar_f4',      'path':app_path + '/vendor/aqtk2-mac-eva/phont/ar_f4.phont'},
-      {'id':12, 'name':'ar_m5',      'path':app_path + '/vendor/aqtk2-mac-eva/phont/ar_m5.phont'},
-      {'id':13, 'name':'ar_mf2',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/ar_mf2.phont'},
-      {'id':14, 'name':'ar_rm3',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/ar_rm3.phont'}
+      {'id':'aq_yukkuri', 'name':'aq_yukkuri', 'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_yukkuri.phont'},
+      {'id':'aq_f1c',     'name':'aq_f1c',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_f1c.phont'},
+      {'id':'aq_f3a',     'name':'aq_f3a',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_f3a.phont'},
+      {'id':'aq_huskey',  'name':'aq_huskey',  'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_huskey.phont'},
+      {'id':'aq_m4b',     'name':'aq_m4b',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_m4b.phont'},
+      {'id':'aq_mf1',     'name':'aq_mf1',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_mf1.phont'},
+      {'id':'aq_rb2',     'name':'aq_rb2',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_rb2.phont'},
+      {'id':'aq_rb3',     'name':'aq_rb3',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_rb3.phont'},
+      {'id':'aq_rm',      'name':'aq_rm',      'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_rm.phont'},
+      {'id':'aq_robo',    'name':'aq_robo',    'path':app_path + '/vendor/aqtk2-mac-eva/phont/aq_robo.phont'},
+      {'id':'ar_f4',      'name':'ar_f4',      'path':app_path + '/vendor/aqtk2-mac-eva/phont/ar_f4.phont'},
+      {'id':'ar_m5',      'name':'ar_m5',      'path':app_path + '/vendor/aqtk2-mac-eva/phont/ar_m5.phont'},
+      {'id':'ar_mf2',     'name':'ar_mf2',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/ar_mf2.phont'},
+      {'id':'ar_rm3',     'name':'ar_rm3',     'path':app_path + '/vendor/aqtk2-mac-eva/phont/ar_rm3.phont'}
     ];
     var effect_list = [
       {'id':1, 'name':'none'},
@@ -131,7 +172,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   })
-  .factory('AquesService', function() {
+  .factory('AquesService', ['MessageService', function(MessageService) {
     var ptr_void  = ref.refType(ref.types.void);
     var ptr_int   = ref.refType(ref.types.int);
     var ptr_char = ref.refType(ref.types.char);
@@ -189,12 +230,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
     return {
       encode: function(source) {
-        if (!source) { return ''; }
+        if (!source) {
+          MessageService.syserror('音記号列に変換するメッセージが入力されていません');
+          return '';
+        }
 
         var alloc_int = ref.alloc('int');
         var aqKanji2Koe = fn_AqKanji2Koe_Create(app_path + '/vendor/aqk2k_mac_eva/aq_dic', alloc_int);
         var error_code = alloc_int.deref();
         if (error_code != 0) {
+          MessageService.syserror(error_table_AqKanji2Koe(error_code));
           log.warn('fn_AqKanji2Koe_Create raise error. error_code:' + error_table_AqKanji2Koe(error_code));
           return '';
         }
@@ -205,6 +250,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         // crash ?
         var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encoded_length);
         if (r != 0) {
+          MessageService.syserror(error_table_AqKanji2Koe(r));
           log.info('fn_AqKanji2Koe_Convert raise error. error_code:' + error_table_AqKanji2Koe(r));
           return '';
         }
@@ -214,13 +260,17 @@ angular.module('yvoiceService', ['yvoiceModel'])
         return encoded;
       },
       wave: function(encoded, phont, speed, volume) {
-        if (!encoded) { return null; }
+        if (!encoded) {
+          MessageService.syserror('音記号列が入力されていません');
+          return null;
+        }
         var phont_data = fs.readFileSync(phont.path);
 
         var alloc_int = ref.alloc('int');
         var r = fn_AquesTalk2_Synthe_Utf8(encoded, speed, alloc_int, phont_data);
         if (r == ref.NULL) {
           var error_code = alloc_int.deref();
+          MessageService.syserror(error_table_AquesTalk2(r));
           log.info('fn_AquesTalk2_Synthe_Utf8 raise error. error_code:' + error_table_AquesTalk2(r));
           return null;
         }
@@ -233,8 +283,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
         return buf_wav;
       }
     }
-  })
-  .factory('AudioService', function() {
+  }])
+  .factory('AudioService', ['MessageService', function(MessageService) {
     //var sourceNode = null;
     var audio = null;
 
@@ -249,7 +299,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
     return {
       play: function(buf_wav) {
-        if (!buf_wav) { return null; }
+        if (!buf_wav) {
+          MessageService.syserror('再生する音源が渡されませんでした');
+          return null;
+        }
         //var a_buffer = to_array_buffer(buf_wav);
         //
         //var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -261,11 +314,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
         //});
 
         temp.open('_myukkurivoice', function(err, info) {
-          if (!err) {
-            fs.writeFileSync(info.path, buf_wav);
-            audio = new Audio(info.path);
-            audio.play();
+          if (err) {
+            MessageService.syserror('一時作業ファイルを作れませんでした');
+            return;
           }
+          fs.writeFileSync(info.path, buf_wav);
+          audio = new Audio(info.path);
+          audio.play();
         });
 
       },
@@ -276,12 +331,19 @@ angular.module('yvoiceService', ['yvoiceModel'])
         audio.pause();
       },
       record: function(file_path, buf_wav) {
-        if (!file_path) { return; }
-        if (!buf_wav) { return; }
+        if (!file_path) {
+          MessageService.syserror('保存先が指定されていません');
+          return;
+        }
+        if (!buf_wav) {
+          MessageService.syserror('保存する音源が渡されませんでした');
+          return;
+        }
         fs.writeFileSync(file_path, buf_wav);
+        MessageService.info('音声を保存しました。path:' + file_path);
       }
     }
-  })
+  }])
   .factory('IntroService', function() {
     return {
       'tutorial': function() {

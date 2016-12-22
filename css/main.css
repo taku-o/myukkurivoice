@@ -33,10 +33,15 @@ div.btn-group-convert .btn{
 table.message-list {
   padding-top: 20px;
 }
-table.message-list th.message-list-created {
+table.message-list th.message-item-created {
   width: 130px;
 }
-table.message-list tr.alert-message td {
+table.message-list th.message-item-type {
+  width: 80px;
+}
+table.message-list tr.error td {
   color: red;
 }
-
+table.message-list tr.syserror td {
+  color: red;
+}

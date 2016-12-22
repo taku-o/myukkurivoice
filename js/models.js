@@ -21,21 +21,21 @@ angular.module('yvoiceModel', [])
       {
         'id': 'sample_1',
         'name': 'サンプル設定1',
-        'phont': 1,
+        'phont': 'aq_yukkuri',
         'speed': 100,
         'volume': 100
       },
       {
         'id': 'sample_2',
         'name': 'サンプル設定2',
-        'phont': 2,
+        'phont': 'aq_f1c',
         'speed': 100,
         'volume': 100
       },
       {
         'id': 'sample_3',
         'name': 'サンプル設定3',
-        'phont': 3,
+        'phont': 'aq_f3a',
         'speed': 100,
         'volume': 100
       }

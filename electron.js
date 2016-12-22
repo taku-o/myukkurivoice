@@ -25,7 +25,7 @@ app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 630,
+    height: 670,
     webPreferences: {
       devTools: true
     }

@@ -132,14 +132,16 @@
     <table class="table-striped message-list">
       <thead>
         <tr>
-          <th class="message-list-created">time</th>
-          <th class="message-list-body">message</th>
+          <th class="message-item-created">time</th>
+          <th class="message-item-type">type</th>
+          <th class="message-item-body">message</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{alert-message:message.type == 'error'}">
-          <td class="message-list-created">{{message.created | date: 'yyyy/M/d hh:mm:ss'}}</td>
-          <td class="message-list-body">{{message.body}}</td>
+        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror'}">
+          <td class="message-item-created">{{message.created | date: 'yyyy/M/d hh:mm:ss'}}</td>
+          <td class="message-item-type">{{message.type}}</td>
+          <td class="message-item-body">{{message.body}}</td>
         </tr>
       </tbody>
     </table>
