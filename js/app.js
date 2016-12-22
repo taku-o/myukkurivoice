@@ -13,6 +13,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       while ($scope.message_list.length > 5) {
         $scope.message_list.pop();
       }
+      $scope.$apply();
     });
 
     // shortcut
@@ -129,7 +130,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       var phont = null;
       angular.forEach($scope.phont_list, function(value, key) {
-        if (value.id == $scope.yvoice.phont.id) { phont = value; }
+        if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
@@ -167,7 +168,15 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
         return;
       }
-      if ($scope.phont_list.length <= $scope.yvoice.phont) { return; }
+
+      var phont = null;
+      angular.forEach($scope.phont_list, function(value, key) {
+        if (value.id == $scope.yvoice.phont) { phont = value; }
+      });
+      if (!phont) {
+        MessageService.error('声の種類が未指定です。');
+        return;
+      }
 
       var encoded = $scope.yinput.encoded;
       if (!encoded) {
@@ -181,7 +190,6 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
-      var phont = $scope.phont_list[$scope.yvoice.phont];
 
       ipcRenderer.on('showSaveDialog', function (event, file_path) {
         if (!file_path) {

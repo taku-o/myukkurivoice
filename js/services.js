@@ -340,7 +340,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
           return;
         }
         fs.writeFileSync(file_path, buf_wav);
-        MessageService.info('音声を保存しました。path:' + file_path);
+        MessageService.info('音声を保存しました。path: ' + file_path);
       }
     }
   }])
