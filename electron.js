@@ -24,8 +24,8 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 800,
+    width: 950,
+    height: 880,
     webPreferences: {
       devTools: true
     }

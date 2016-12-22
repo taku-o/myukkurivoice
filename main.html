@@ -127,10 +127,18 @@
       </div>
       -->
 
-      <div class="seq_write_box">
+      <div class="source_write_box" id="source_write_box">
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="yvoice.seq_write">use sequential file saving
+            <input type="checkbox" ng-model="yvoice.source_write">write text file at recording
+          </label>
+        </div>
+      </div>
+
+      <div class="seq_write_box" id="seq_write_box">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="yvoice.seq_write">use numbering file
           </label>
         </div>
         <div class="form-group" ng-if="yvoice.seq_write">

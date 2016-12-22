@@ -14,6 +14,7 @@ angular.module('yvoiceModel', [])
       //'intonation': true,
       'speed': 100,
       'volume': 100,
+      'source_write': false,
       'seq_write': false,
       'seq_write_options':{
         'dir': '',
@@ -29,6 +30,7 @@ angular.module('yvoiceModel', [])
         'phont': 'aq_yukkuri',
         'speed': 100,
         'volume': 100,
+        'source_write': false,
         'seq_write': false,
         'seq_write_options':{
           'dir': '',
@@ -41,6 +43,7 @@ angular.module('yvoiceModel', [])
         'phont': 'aq_f1c',
         'speed': 100,
         'volume': 100,
+        'source_write': false,
         'seq_write': false,
         'seq_write_options':{
           'dir': '',
@@ -53,6 +56,7 @@ angular.module('yvoiceModel', [])
         'phont': 'aq_f3a',
         'speed': 100,
         'volume': 100,
+        'source_write': false,
         'seq_write': false,
         'seq_write_options':{
           'dir': '',

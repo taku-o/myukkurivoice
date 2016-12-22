@@ -433,6 +433,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
               intro: '声の早さの調節はここです'
             },
             {
+              element: '#source_write_box',
+              position: 'top',
+              intro: 'ここのチェックを入れると、音声再生時に元のメッセージも保存するようになります'
+            },
+            {
+              element: '#seq_write_box',
+              position: 'top',
+              intro: 'このチェックを入れると、ファイルに連番をつけて保存するようになります。<br>出力先のディレクトリと、ファイル名の指定が必要です。'
+            },
+            {
               element: '#save',
               intro: '変更した設定はここで保存できます'
             },
