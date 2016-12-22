@@ -3,9 +3,9 @@ const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 const app = electron.app;
 const dialog = electron.dialog;
-const globalShortcut = electron.globalShortcut;
 const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
+const localShortcut = require('electron-localshortcut');
 
 // global reference
 var mainWindow = null;
@@ -40,31 +40,31 @@ app.on('ready', function() {
   });
 
   // shortcut
-  var r = globalShortcut.register('Command+Q', function() {
+  var r = localShortcut.register('Command+Q', function() {
     app.quit();
   });
-  var r = globalShortcut.register('Command+P', function() {
+  var r = localShortcut.register('Command+P', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'play'); }
   });
-  var r = globalShortcut.register('Command+W', function() {
+  var r = localShortcut.register('Command+W', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'stop'); }
   });
-  var r = globalShortcut.register('Command+S', function() {
+  var r = localShortcut.register('Command+S', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
   });
-  var r = globalShortcut.register('Command+Up', function() {
+  var r = localShortcut.register('Command+Up', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_source'); }
   });
-  var r = globalShortcut.register('Command+Down', function() {
+  var r = localShortcut.register('Command+Down', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_encoded'); }
   });
-  var r = globalShortcut.register('Command+Right', function() {
+  var r = localShortcut.register('Command+Right', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
   });
-  var r = globalShortcut.register('Command+Left', function() {
+  var r = localShortcut.register('Command+Left', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_next_config'); }
   });
-  var r = globalShortcut.register('Command+Shift+Left', function() {
+  var r = localShortcut.register('Command+Shift+Left', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_previous_config'); }
   });
 

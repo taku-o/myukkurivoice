@@ -12,6 +12,7 @@
   "dependencies": {
     "angular": "^1.6.0",
     "electron-json-storage": "^2.1.0",
+    "electron-localshortcut": "^1.0.0",
     "electron-log": "^1.2.2",
     "ffi": "^2.2.0",
     "intro.js": "^2.4.0",

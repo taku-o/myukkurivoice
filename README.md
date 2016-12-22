@@ -31,6 +31,7 @@ node_modules以下に入っているので、このコマンドは実行しな�
     npm install --save https://github.com/connors/photon
     npm install --save electron-json-storage
     npm install --save electron-log
+    npm install --save electron-localshortcut
     npm install --save ref
     npm install --save ffi
     npm install --save intro.js
