@@ -10,6 +10,26 @@ const app_path = app.getAppPath();
 
 // angular service
 angular.module('yvoiceService', ['yvoiceModel'])
+  .factory('MessageService', ['$rootScope', function($rootScope) {
+    return {
+      info: function(message) {
+        var log = {
+          created: new Date(),
+          body: message,
+          type: 'message'
+        }
+        $rootScope.$broadcast("message", log);
+      },
+      error: function(message) {
+        var log = {
+          created: new Date(),
+          body: message,
+          type: 'error'
+        }
+        $rootScope.$broadcast("message", log);
+      }
+    }
+  }])
   .factory('ConfigService', ['YConfig', function(YConfig) {
     return {
       load: function(fn) {

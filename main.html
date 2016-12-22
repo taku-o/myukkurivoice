@@ -128,7 +128,23 @@
       -->
 
     </form>
-  </div>
+
+    <table class="table-striped message-list">
+      <thead>
+        <tr>
+          <th class="message-list-created">time</th>
+          <th class="message-list-body">message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{alert-message:message.type == 'error'}">
+          <td class="message-list-created">{{message.created | date: 'yyyy/M/d hh:mm:ss'}}</td>
+          <td class="message-list-body">{{message.body}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div><!-- pane -->
 </div><!-- page-group -->
 </div><!-- window-content -->
 

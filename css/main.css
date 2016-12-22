@@ -30,3 +30,13 @@ div.btn-group-convert .btn{
   margin-right: 5px;
 }
 
+table.message-list {
+  padding-top: 20px;
+}
+table.message-list th.message-list-created {
+  width: 130px;
+}
+table.message-list tr.alert-message td {
+  color: red;
+}
+

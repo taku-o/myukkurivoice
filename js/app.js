@@ -7,11 +7,98 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
     ['$scope', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService', 'IntroService', 'YInput', 'YInputInitialData',
     function($scope, ConfigService, DataService, MasterService, AquesService, AudioService, IntroService, YInput, YInputInitialData) {
 
+    // event listener
+    $scope.$on('message', function(event, log) {
+      $scope.message_list.unshift(log);
+      while ($scope.message_list.length > 3) {
+        $scope.message_list.pop();
+      }
+    });
+
+    // shortcut
+    ipcRenderer.on('shortcut', function (event, action) {
+      switch (action) {
+        case 'play':
+          document.getElementById('play').click();
+          break;
+        case 'stop':
+          document.getElementById('stop').click();
+          break;
+        case 'record':
+          document.getElementById('record').click();
+          break;
+        case 'move_to_source':
+          document.getElementById('source').focus();
+          break;
+        case 'move_to_encoded':
+          document.getElementById('encoded').focus();
+          break;
+        case 'swich_next_config':
+          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          if ($scope.yvoice_list.length > index + 1) {
+            $scope.yvoice = $scope.yvoice_list[index + 1];
+          } else {
+            $scope.yvoice = $scope.yvoice_list[0];
+          }
+          $scope.$apply();
+          break;
+        case 'swich_previous_config':
+          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          if (index - 1 >= 0) {
+            $scope.yvoice = $scope.yvoice_list[index - 1];
+          } else {
+            $scope.yvoice = $scope.yvoice_list[$scope.yvoice_list.length - 1];
+          }
+          $scope.$apply();
+          break;
+        case 'encode':
+          document.getElementById('encode').click();
+          break;
+      }
+    });
+
+    // menu
+    ipcRenderer.on('menu', function (event, action) {
+      switch (action) {
+        case 'clear':
+          document.getElementById('clear').click();
+          $scope.$apply();
+          break;
+        case 'plus':
+          document.getElementById('plus').click();
+          $scope.$apply();
+          break;
+        case 'minus':
+          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          ctrl.minus(index);
+          $scope.$apply();
+          break;
+        case 'copy':
+          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          ctrl.copy(index);
+          $scope.$apply();
+          break;
+        case 'save':
+          document.getElementById('save').click();
+          break;
+        case 'reset':
+          ctrl.reset();
+          break;
+        case 'shortcut':
+          document.getElementById('shortcut').click();
+          break;
+        case 'tutorial':
+          document.getElementById('tutorial').click();
+          break;
+      }
+    });
+
     // init
     var ctrl = this;
     $scope.phont_list = MasterService.get_phont_list();
     $scope.effect_list = MasterService.get_effect_list();
     $scope.yinput = angular.copy(YInput);
+    $scope.message_list = [];
     load_data();
 
     // util
@@ -125,83 +212,5 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       $scope.yinput.source = '';
       $scope.yinput.encoded = '';
     };
-
-    // shortcut
-    ipcRenderer.on('shortcut', function (event, action) {
-      switch (action) {
-        case 'play':
-          document.getElementById('play').click();
-          break;
-        case 'stop':
-          document.getElementById('stop').click();
-          break;
-        case 'record':
-          document.getElementById('record').click();
-          break;
-        case 'move_to_source':
-          document.getElementById('source').focus();
-          break;
-        case 'move_to_encoded':
-          document.getElementById('encoded').focus();
-          break;
-        case 'swich_next_config':
-          var index = $scope.yvoice_list.indexOf($scope.yvoice);
-          if ($scope.yvoice_list.length > index + 1) {
-            $scope.yvoice = $scope.yvoice_list[index + 1];
-          } else {
-            $scope.yvoice = $scope.yvoice_list[0];
-          }
-          $scope.$apply();
-          break;
-        case 'swich_previous_config':
-          var index = $scope.yvoice_list.indexOf($scope.yvoice);
-          if (index - 1 >= 0) {
-            $scope.yvoice = $scope.yvoice_list[index - 1];
-          } else {
-            $scope.yvoice = $scope.yvoice_list[$scope.yvoice_list.length - 1];
-          }
-          $scope.$apply();
-          break;
-        case 'encode':
-          document.getElementById('encode').click();
-          break;
-      }
-    });
-
-    // menu
-    ipcRenderer.on('menu', function (event, action) {
-      switch (action) {
-        case 'clear':
-          document.getElementById('clear').click();
-          $scope.$apply();
-          break;
-        case 'plus':
-          document.getElementById('plus').click();
-          $scope.$apply();
-          break;
-        case 'minus':
-          var index = $scope.yvoice_list.indexOf($scope.yvoice);
-          ctrl.minus(index);
-          $scope.$apply();
-          break;
-        case 'copy':
-          var index = $scope.yvoice_list.indexOf($scope.yvoice);
-          ctrl.copy(index);
-          $scope.$apply();
-          break;
-        case 'save':
-          document.getElementById('save').click();
-          break;
-        case 'reset':
-          ctrl.reset();
-          break;
-        case 'shortcut':
-          document.getElementById('shortcut').click();
-          break;
-        case 'tutorial':
-          document.getElementById('tutorial').click();
-          break;
-      }
-    });
   }]);
 
