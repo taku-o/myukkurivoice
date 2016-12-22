@@ -1,14 +1,17 @@
 const electron_app = require('electron').remote.app;
 const ipcRenderer = require('electron').ipcRenderer
 const util = require('util');
+const path = require('path');
 
 const home_dir = electron_app.getPath('home');
 
 // angular app
 angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   .controller('MainController',
-    ['$scope', '$timeout', 'MessageService', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService', 'IntroService', 'YInput', 'YInputInitialData',
-    function($scope, $timeout, MessageService, ConfigService, DataService, MasterService, AquesService, AudioService, IntroService, YInput, YInputInitialData) {
+    ['$scope', '$timeout', 'MessageService', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService',
+     'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
+    function($scope, $timeout, MessageService, ConfigService, DataService, MasterService, AquesService, AudioService,
+             SeqFNameService, IntroService, YInput, YInputInitialData) {
 
     // event listener
     $scope.$on('message', function(event, log) {
@@ -142,7 +145,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       var encoded = $scope.yinput.encoded;
       if (!encoded) {
-        var source = $source.yinput.source;
+        var source = $scope.yinput.source;
         encoded = AquesService.encode(source);
         if (!encoded) {
           MessageService.error('音記号列に変換できませんでした。');
@@ -183,7 +186,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       var encoded = $scope.yinput.encoded;
       if (!encoded) {
-        var source = $source.yinput.source;
+        var source = $scope.yinput.source;
         encoded = AquesService.encode(source);
         if (!encoded) {
           MessageService.error('音記号列に変換できませんでした。');
@@ -194,19 +197,42 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
 
-      ipcRenderer.on('showSaveDialog', function (event, file_path) {
-        if (!file_path) {
-          MessageService.error('保存先が指定されませんでした。');
-          return;
+      // 連番保存
+      if ($scope.yvoice.seq_write) {
+        var dir = $scope.yvoice.seq_write_options.dir;
+        var prefix = $scope.yvoice.seq_write_options.prefix;
+        if (!dir) {
+          dir = home_dir;
         }
-        var buf_wav = AquesService.wave(encoded, phont, speed, volume);
-        if (!buf_wav) {
-          MessageService.error('音声データを作成できませんでした。');
-          return;
-        }
-        AudioService.record(file_path, buf_wav);
-      });
-      ipcRenderer.send('showSaveDialog', 'wav');
+
+        SeqFNameService.next_number(dir, prefix, function(next_num) {
+          var next_fname = SeqFNameService.next_fname(prefix, next_num);
+          var file_path = path.join(dir, next_fname);
+
+          var buf_wav = AquesService.wave(encoded, phont, speed, volume);
+          if (!buf_wav) {
+            MessageService.error('音声データを作成できませんでした。');
+            return;
+          }
+          AudioService.record(file_path, buf_wav);
+        });
+
+      // 通常保存
+      } else {
+        ipcRenderer.on('showSaveDialog', function (event, file_path) {
+          if (!file_path) {
+            MessageService.error('保存先が指定されませんでした。');
+            return;
+          }
+          var buf_wav = AquesService.wave(encoded, phont, speed, volume);
+          if (!buf_wav) {
+            MessageService.error('音声データを作成できませんでした。');
+            return;
+          }
+          AudioService.record(file_path, buf_wav);
+        });
+        ipcRenderer.send('showSaveDialog', 'wav');
+      }
     };
     ctrl.tutorial = function() {
       MessageService.action('run tutorial.');
