@@ -344,6 +344,52 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
+  .factory('SeqFNameService', ['MessageService', function(MessageService) {
+    var ext = '.wav';
+    var num_pattern = '[0-9]{4}';
+    var limit = 9999;
+
+    return {
+      next_fname: function(prefix, num) {
+        formatted = ("0000"+ num).slice(-4)
+        return prefix + formatted + ext;
+      },
+      next_number: function(dir, prefix, fn) {
+        fs.readdir(dir, function(err, files) {
+            if (err) {
+              MessageService.syserror('ディレクトリを参照できませんでした。', err);
+              throw err;
+            }
+
+            var pattern = new RegExp('^'+ prefix+ '('+ num_pattern+ ')'+ ext+ '$');
+
+            var np_list = [];
+            var list = files.filter(function(file) {
+              if (fs.statSync(file).isFile() && pattern.test(file)) {
+                var matched = pattern.exec(file);
+                np_list.push(Number(matched[1]));
+                return true;
+              }
+              return false;
+            });
+            if (np_list.length < 1) {
+              fn(0);
+              return;
+            }
+
+            var max_num = Math.max.apply(null, np_list);
+            if (max_num >= limit) {
+              MessageService.syserror(limit + 'までファイルが作られているので、これ以上ファイルを作成できません。');
+              fn(null);
+              return;
+            }
+            var next = max_num + 1;
+            fn(next);
+            return;
+        });
+      }
+    }
+  }])
   .factory('IntroService', function() {
     return {
       'tutorial': function() {

@@ -30,6 +30,13 @@ div.btn-group-convert .btn{
   margin-right: 5px;
 }
 
+div.seq_write_box {
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #c0c0c0;
+}
+
 table.message-list {
   padding-top: 20px;
 }

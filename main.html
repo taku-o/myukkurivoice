@@ -127,6 +127,24 @@
       </div>
       -->
 
+      <div class="seq_write_box">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="yvoice.seq_write">use sequential file saving
+          </label>
+        </div>
+        <div class="form-group" ng-if="yvoice.seq_write">
+          <!-- <label>file name prefix</label> -->
+          <input type="text" class="form-control" id="prefix" ng-model="yvoice.seq_write_options.prefix" placeholder="file name prefix">
+        </div>
+        <div class="form-group" ng-if="yvoice.seq_write">
+          <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
+            <span class="icon icon-folder"></span>directory select
+          </button>
+          dir: {{yvoice.seq_write_options.dir}}
+        </div>
+      </div>
+
     </form>
 
     <table class="table-striped message-list">

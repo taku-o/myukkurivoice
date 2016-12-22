@@ -1,11 +1,14 @@
+const electron_app = require('electron').remote.app;
 const ipcRenderer = require('electron').ipcRenderer
 const util = require('util');
+
+const home_dir = electron_app.getPath('home');
 
 // angular app
 angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   .controller('MainController',
-    ['$scope', 'MessageService', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService', 'IntroService', 'YInput', 'YInputInitialData',
-    function($scope, MessageService, ConfigService, DataService, MasterService, AquesService, AudioService, IntroService, YInput, YInputInitialData) {
+    ['$scope', '$timeout', 'MessageService', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService', 'IntroService', 'YInput', 'YInputInitialData',
+    function($scope, $timeout, MessageService, ConfigService, DataService, MasterService, AquesService, AudioService, IntroService, YInput, YInputInitialData) {
 
     // event listener
     $scope.$on('message', function(event, log) {
@@ -13,7 +16,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       while ($scope.message_list.length > 5) {
         $scope.message_list.pop();
       }
-      $scope.$apply();
+      $timeout(function(){ $scope.$apply(); });
     });
 
     // shortcut
@@ -41,7 +44,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           } else {
             $scope.yvoice = $scope.yvoice_list[0];
           }
-          $scope.$apply();
+          $timeout(function(){ $scope.$apply(); });
           break;
         case 'swich_previous_config':
           var index = $scope.yvoice_list.indexOf($scope.yvoice);
@@ -50,7 +53,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           } else {
             $scope.yvoice = $scope.yvoice_list[$scope.yvoice_list.length - 1];
           }
-          $scope.$apply();
+          $timeout(function(){ $scope.$apply(); });
           break;
         case 'encode':
           document.getElementById('encode').click();
@@ -63,21 +66,21 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       switch (action) {
         case 'clear':
           document.getElementById('clear').click();
-          $scope.$apply();
+          $timeout(function(){ $scope.$apply(); });
           break;
         case 'plus':
           document.getElementById('plus').click();
-          $scope.$apply();
+          $timeout(function(){ $scope.$apply(); });
           break;
         case 'minus':
           var index = $scope.yvoice_list.indexOf($scope.yvoice);
           ctrl.minus(index);
-          $scope.$apply();
+          $timeout(function(){ $scope.$apply(); });
           break;
         case 'copy':
           var index = $scope.yvoice_list.indexOf($scope.yvoice);
           ctrl.copy(index);
-          $scope.$apply();
+          $timeout(function(){ $scope.$apply(); });
           break;
         case 'save':
           document.getElementById('save').click();
@@ -106,7 +109,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
     function load_data() {
       ConfigService.load(function(config) {
         $scope.yconfig = config;
-        $scope.$apply();
+        $timeout(function(){ $scope.$apply(); });
       });
 
       DataService.load(function(data_list) {
@@ -116,7 +119,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         }
         $scope.yvoice_list = data_list;
         $scope.yvoice = $scope.yvoice_list[0];
-        $scope.$apply();
+        $timeout(function(){ $scope.$apply(); });
       });
     };
 
@@ -262,6 +265,24 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       MessageService.action('clear input text.');
       $scope.yinput.source = '';
       $scope.yinput.encoded = '';
+    };
+    ctrl.directory = function() {
+      MessageService.action('select directory.');
+      if (!$scope.yvoice.seq_write) {
+        MessageService.error('連番ファイル設定が無効です。');
+        return;
+      }
+
+      ipcRenderer.on('showDirDialog', function (event, dirs) {
+        if (!dirs || dirs.length < 1) {
+          return;
+        }
+        $scope.yvoice.seq_write_options.dir = dirs[0];
+        $timeout(function(){ $scope.$apply(); });
+      });
+      var opt_dir = $scope.yvoice.seq_write_options.dir;
+      if (!opt_dir) { opt_dir = home_dir; }
+      ipcRenderer.send('showDirDialog', opt_dir);
     };
   }]);
 

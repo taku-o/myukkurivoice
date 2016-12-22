@@ -24,8 +24,8 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 670,
+    width: 900,
+    height: 800,
     webPreferences: {
       devTools: true
     }
@@ -286,5 +286,16 @@ ipcMain.on('showSaveDialog', function (event, message) {
   };
   var r = dialog.showSaveDialog(mainWindow, options);
   event.sender.send('showSaveDialog', r);
-})
+});
+
+// showDirDialog
+ipcMain.on('showDirDialog', function (event, defaultPath) {
+  var options = {
+    title: 'select wav save directory',
+    properties: ['openDirectory', 'createDirectory'],
+    defaultPath: defaultPath
+  };
+  var r = dialog.showOpenDialog(mainWindow, options);
+  event.sender.send('showDirDialog', r);
+});
 
