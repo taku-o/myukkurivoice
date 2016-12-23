@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="yvoiceAppHelp">
+<head>
+  <meta charset="UTF-8">
+  <title>MYukkuriVoice Help</title>
+  <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
+  <link rel="stylesheet" href="css/help.css">
+  <script src="node_modules/photon/dist/template-app/js/menu.js" charset="utf-8"></script>
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="js/help.js"></script>
+</head>
+<body>
+<div class="window" ng-controller="HelpController as ctrl">
+<div class="window-content">
+<div class="pane-group">
+
+  <div class="pane-sm sidebar">
+    <nav class="nav-group">
+      <h5 class="nav-group-title">Help</h5>
+      <span class="nav-group-item" ng-class="{active:display == 'about'}" ng-click="display='about'">
+        <span class="icon icon-help-circled"></span>MYukkuriVoiceについて
+      </span>
+      <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
+        <span class="icon icon-help-circled"></span>連絡・バグ報告
+      </span>
+    </nav>
+  </div>
+
+  <!-- about -->
+  <div class="pane" ng-show="display == 'about'">
+    <div class="content">
+      <p>
+        MYukkuriVoiceは、AquesTalkを利用したMac OSX向けの<br>
+        動画制作向け合成音声生成アプリケーションです。<br>
+        macOS Sierra 以降に対応しています。
+      </p>
+
+      <p>
+        本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。<br>
+        本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。<br>
+        ご注意ください。<br>
+        <a href="http://www.a-quest.com/">http://www.a-quest.com/</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- contact -->
+  <div class="pane" ng-show="display == 'contact'">
+    <div class="content">
+      <p>
+        MYukkuriVoiceは、次のURLで開発されています。<br>
+        <a href="https://github.com/taku-o/myukkurivoice">https://github.com/taku-o/myukkurivoice</a>
+      </p>
+    </div>
+  </div>
+
+</div><!-- page-group -->
+</div><!-- window-content -->
+</div><!-- window -->
+</body>
+</html>
+

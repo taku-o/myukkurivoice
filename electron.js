@@ -9,6 +9,7 @@ const localShortcut = require('electron-localshortcut');
 
 // global reference
 var mainWindow = null;
+var helpWindow = null;
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -30,7 +31,6 @@ app.on('ready', function() {
       devTools: true
     }
   });
-  // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/main.html');
 
   // Emitted when the window is closed.
@@ -250,6 +250,11 @@ app.on('ready', function() {
       label: 'ヘルプ',
       submenu: [
         {
+          label: 'ヘルプ',
+          click () { showHelpWindow(); }
+        },
+        { type: 'separator' },
+        {
           label: 'ショートカットキー',
           click () {
             if (mainWindow) { mainWindow.webContents.send('menu', 'shortcut'); }
@@ -298,4 +303,30 @@ ipcMain.on('showDirDialog', function (event, defaultPath) {
   var r = dialog.showOpenDialog(mainWindow, options);
   event.sender.send('showDirDialog', r);
 });
+
+// help window
+function showHelpWindow() {
+  if (helpWindow && !helpWindow.isDestroyed()) {
+    helpWindow.show();
+    return;
+  }
+
+  // create help window
+  helpWindow = new BrowserWindow({
+    parent: mainWindow,
+    modal: false,
+    show: false,
+    width: 700,
+    height: 500,
+    webPreferences: {
+      devTools: true
+    }
+  });
+  helpWindow.loadURL('file://' + __dirname + '/help.html');
+  helpWindow.show();
+
+  helpWindow.on('closed', function() {
+    helpWindow = null;
+  });
+}
 
