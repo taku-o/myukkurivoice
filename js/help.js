@@ -9,5 +9,8 @@ angular.module('yvoiceAppHelp', [])
     $scope.display = 'about';
     $timeout(function(){ $scope.$apply(); });
 
+    ctrl.browser = function(url) {
+      require('electron').shell.openExternal(url);
+    };
   }]);
 

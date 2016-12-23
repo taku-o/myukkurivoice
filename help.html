@@ -21,7 +21,10 @@
         <span class="icon icon-help-circled"></span>MYukkuriVoiceについて
       </span>
       <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
-        <span class="icon icon-help-circled"></span>ショートカット
+        <span class="icon icon-help-circled"></span>ショートカットキー
+      </span>
+      <span class="nav-group-item" ng-class="{active:display == 'trouble'}" ng-click="display='trouble'">
+        <span class="icon icon-help-circled"></span>トラブルシューティング
       </span>
       <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
         <span class="icon icon-help-circled"></span>連絡先
@@ -32,6 +35,7 @@
   <!-- about -->
   <div class="pane" ng-show="display == 'about'">
     <div class="content">
+      <h4>MYukkuriVoiceについて</h4>
       <p>
         MYukkuriVoiceは、AquesTalkを利用したMac OSX向けの<br>
         動画制作向け合成音声生成アプリケーションです。<br>
@@ -42,7 +46,7 @@
         本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。<br>
         本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。<br>
         ご注意ください。<br>
-        <a href="http://www.a-quest.com/">http://www.a-quest.com/</a>
+        <a ng-click="ctrl.browser('http://www.a-quest.com/')">http://www.a-quest.com/</a>
       </p>
     </div>
   </div>
@@ -50,7 +54,7 @@
   <!-- contact -->
   <div class="pane" ng-show="display == 'shortcut'">
     <div class="content">
-
+      <h4>ショートカットキー</h4>
       <table class="table-striped">
         <thead>
           <tr>
@@ -100,12 +104,29 @@
     </div>
   </div>
 
+  <!-- trouble -->
+  <div class="pane" ng-show="display == 'trouble'">
+    <div class="content">
+      <h4>画面が白くなりました</h4>
+      <p>
+        Command + Rでアプリケーションを再読み込みできます。<br>
+        当面はそれで凌いでください。
+      </p>
+
+      <h4>アプリが落ちる</h4>
+      <p>
+        ごめんなさい。
+      </p>
+    </div>
+  </div>
+
   <!-- contact -->
   <div class="pane" ng-show="display == 'contact'">
     <div class="content">
+      <h4>連絡先</h4>
       <p>
         MYukkuriVoiceは、次のURLで開発されています。<br>
-        <a href="https://github.com/taku-o/myukkurivoice">https://github.com/taku-o/myukkurivoice</a>
+        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">https://github.com/taku-o/myukkurivoice</a>
       </p>
     </div>
   </div>

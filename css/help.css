@@ -9,3 +9,8 @@ div.content {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
