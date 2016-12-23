@@ -110,12 +110,12 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
     // util
     function load_data() {
-      ConfigService.load(function(config) {
+      ConfigService.load().then(function(config) {
         $scope.yconfig = config;
         $timeout(function(){ $scope.$apply(); });
       });
 
-      DataService.load(function(data_list) {
+      DataService.load().then(function(data_list) {
         if (data_list.length < 1) {
           MessageService.info('初期データを読み込みます。');
           data_list = DataService.initial_data();
@@ -156,13 +156,13 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
 
-      var buf_wav = AquesService.wave(encoded, phont, speed, volume);
-      if (!buf_wav) {
-        MessageService.error('音声データを作成できませんでした。');
-        return;
-      }
-
-      AudioService.play(buf_wav);
+      AquesService.wave(encoded, phont, speed, volume).then(
+        function(buf_wav) {
+          AudioService.play(buf_wav);
+        }, function(err) {
+          MessageService.error('音声データを作成できませんでした。');
+        }
+      );
     };
     ctrl.stop = function() {
       MessageService.action('stop playing voice.');
@@ -205,16 +205,18 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           dir = home_dir;
         }
 
-        SeqFNameService.next_number(dir, prefix, function(next_num) {
+        SeqFNameService.next_number(dir, prefix).then(function(next_num) {
           var next_fname = SeqFNameService.next_fname(prefix, next_num);
           var file_path = path.join(dir, next_fname);
 
-          var buf_wav = AquesService.wave(encoded, phont, speed, volume);
-          if (!buf_wav) {
-            MessageService.error('音声データを作成できませんでした。');
-            return;
-          }
-          AudioService.record(file_path, buf_wav);
+          AquesService.wave(encoded, phont, speed, volume).then(
+            function(buf_wav) {
+              AudioService.record(file_path, buf_wav);
+            },
+            function(err) {
+              MessageService.error('音声データを作成できませんでした。');
+            }
+          );
         });
 
       // 通常保存
@@ -224,12 +226,15 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
             MessageService.error('保存先が指定されませんでした。');
             return;
           }
-          var buf_wav = AquesService.wave(encoded, phont, speed, volume);
-          if (!buf_wav) {
-            MessageService.error('音声データを作成できませんでした。');
-            return;
-          }
-          AudioService.record(file_path, buf_wav);
+
+          AquesService.wave(encoded, phont, speed, volume).then(
+            function(buf_wav) {
+              AudioService.record(file_path, buf_wav);
+            },
+            function(err) {
+              MessageService.error('音声データを作成できませんでした。');
+            }
+          );
         });
         ipcRenderer.send('showSaveDialog', 'wav');
       }
@@ -273,11 +278,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
     };
     ctrl.reset = function() {
       MessageService.action('reset all config data.');
-      ConfigService.clear(function() {
-        DataService.clear(function() {
-          load_data();
-        });
-      });
+      ConfigService.clear().then(DataService.clear().then(load_data()));
       $scope.yinput = angular.copy(YInputInitialData);
     };
 

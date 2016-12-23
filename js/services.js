@@ -49,21 +49,23 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('ConfigService', ['YConfig', 'MessageService', function(YConfig, MessageService) {
+  .factory('ConfigService', ['$q', 'YConfig', 'MessageService', function($q, YConfig, MessageService) {
     return {
-      load: function(fn) {
+      load: function() {
+        var d = $q.defer();
         storage.get('config', function (error, data) {
           if (error) {
             MessageService.syserror('アプリ設定の読込に失敗しました。', error);
-            throw error;
+            d.reject(error); return;
           }
           if (Object.keys(data).length === 0) {
             var new_config = angular.copy(YConfig);
-            fn(new_config);
+            d.resolve(new_config);
           } else {
-            fn(data);
+            d.resolve(data);
           }
         });
+        return d.promise;
       },
       save: function(config) {
         storage.set('config', config, function(error) {
@@ -74,37 +76,41 @@ angular.module('yvoiceService', ['yvoiceModel'])
           MessageService.info('アプリ設定を保存しました。');
         });
       },
-      clear: function(fn) {
+      clear: function() {
+        var d = $q.defer();
         storage.remove('config', function(error) {
           if (error) {
             MessageService.syserror('アプリ設定の削除に失敗しました。', error);
-            throw error;
+            d.reject(error); return;
           }
           MessageService.info('アプリ設定を削除しました。');
-          fn();
+          d.promise(true);
         });
+        return d.promise;
       }
     }
   }])
-  .factory('DataService', ['YVoice', 'YVoiceInitialData', 'MessageService', function(YVoice, YVoiceInitialData, MessageService) {
+  .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', function($q, YVoice, YVoiceInitialData, MessageService) {
 
     function uniq_id() {
       return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
     }
 
     return {
-      load: function(fn) {
+      load: function() {
+        var d = $q.defer();
         storage.get('data', function (error, data) {
           if (error) {
             MessageService.syserror('ボイス設定の読込に失敗しました。', error);
-            throw error;
+            d.reject(error); return;
           }
           if (Object.keys(data).length === 0) {
-            fn([]);
+            d.resolve([]);
           } else {
-            fn(data);
+            d.resolve(data);
           }
         });
+        return d.promise;
       },
       initial_data: function() {
         var data_list = angular.copy(YVoiceInitialData);
@@ -129,15 +135,17 @@ angular.module('yvoiceService', ['yvoiceModel'])
           MessageService.info('ボイス設定を保存しました。');
         });
       },
-      clear: function(fn) {
+      clear: function() {
+        var d = $q.defer();
         storage.remove('data', function(error) {
           if (error) {
             MessageService.syserror('ボイス設定の削除に失敗しました。', error);
-            throw error;
+            d.reject(error); return;
           }
           MessageService.info('ボイス設定を削除しました。');
-          fn();
+          d.resolve(true);
         });
+        return d.promise;
       }
     }
   }])
@@ -172,7 +180,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   })
-  .factory('AquesService', ['MessageService', function(MessageService) {
+  .factory('AquesService', ['$q', 'MessageService', function($q, MessageService) {
     var ptr_void  = ref.refType(ref.types.void);
     var ptr_int   = ref.refType(ref.types.int);
     var ptr_char = ref.refType(ref.types.char);
@@ -260,27 +268,34 @@ angular.module('yvoiceService', ['yvoiceModel'])
         return encoded;
       },
       wave: function(encoded, phont, speed, volume) {
+        var d = $q.defer();
         if (!encoded) {
           MessageService.syserror('音記号列が入力されていません');
-          return null;
+          d.reject(null); return d.promise;
         }
-        var phont_data = fs.readFileSync(phont.path);
+        fs.readFile(phont.path, function(err, phont_data) {
+          if (err) {
+            MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
+            d.reject(err); return;
+          }
 
-        var alloc_int = ref.alloc('int');
-        var r = fn_AquesTalk2_Synthe_Utf8(encoded, speed, alloc_int, phont_data);
-        if (r == ref.NULL) {
-          var error_code = alloc_int.deref();
-          MessageService.syserror(error_table_AquesTalk2(r));
-          log.info('fn_AquesTalk2_Synthe_Utf8 raise error. error_code:' + error_table_AquesTalk2(r));
-          return null;
-        }
+          var alloc_int = ref.alloc('int');
+          var r = fn_AquesTalk2_Synthe_Utf8(encoded, speed, alloc_int, phont_data);
+          if (r == ref.NULL) {
+            var error_code = alloc_int.deref();
+            MessageService.syserror(error_table_AquesTalk2(r));
+            log.info('fn_AquesTalk2_Synthe_Utf8 raise error. error_code:' + error_table_AquesTalk2(r));
+            d.reject(null); return;
+          }
 
-        var ptr_buf = ref.alloc('pointer');
-        ref.writePointer(ptr_buf, 0, r);
-        var buf_wav = ref.readPointer(ptr_buf, 0, alloc_int.deref());
+          var ptr_buf = ref.alloc('pointer');
+          ref.writePointer(ptr_buf, 0, r);
+          var buf_wav = ref.readPointer(ptr_buf, 0, alloc_int.deref());
 
-        var r = fn_AquesTalk2_FreeWave(r);
-        return buf_wav;
+          var r = fn_AquesTalk2_FreeWave(r);
+          d.resolve(buf_wav);
+        });
+        return d.promise;
       }
     }
   }])
@@ -318,9 +333,15 @@ angular.module('yvoiceService', ['yvoiceModel'])
             MessageService.syserror('一時作業ファイルを作れませんでした');
             return;
           }
-          fs.writeFileSync(info.path, buf_wav);
-          audio = new Audio(info.path);
-          audio.play();
+
+          fs.writeFile(info.path, buf_wav, function(err) {
+            if (err) {
+              MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
+              return;
+            }
+            audio = new Audio(info.path);
+            audio.play();
+          });
         });
 
       },
@@ -330,21 +351,27 @@ angular.module('yvoiceService', ['yvoiceModel'])
         if (!audio) { return; }
         audio.pause();
       },
-      record: function(file_path, buf_wav) {
-        if (!file_path) {
-          MessageService.syserror('保存先が指定されていません');
+      record: function(wav_file_path, buf_wav) {
+        if (!wav_file_path) {
+          MessageService.syserror('音声ファイルの保存先が指定されていません');
           return;
         }
         if (!buf_wav) {
           MessageService.syserror('保存する音源が渡されませんでした');
           return;
         }
-        fs.writeFileSync(file_path, buf_wav);
-        MessageService.info('音声を保存しました。path: ' + file_path);
+
+        fs.writeFile(wav_file_path, buf_wav, function(err) {
+          if (err) {
+            MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
+            return;
+          }
+          MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+        });
       }
     }
   }])
-  .factory('SeqFNameService', ['MessageService', function(MessageService) {
+  .factory('SeqFNameService', ['$q', 'MessageService', function($q, MessageService) {
     var ext = '.wav';
     var num_pattern = '[0-9]{4}';
     var limit = 9999;
@@ -354,11 +381,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
         formatted = ("0000"+ num).slice(-4)
         return prefix + formatted + ext;
       },
-      next_number: function(dir, prefix, fn) {
+      next_number: function(dir, prefix) {
+        var d = $q.defer();
         fs.readdir(dir, function(err, files) {
           if (err) {
             MessageService.syserror('ディレクトリを参照できませんでした。', err);
-            throw err;
+            d.reject(err); return;
           }
 
           var pattern = new RegExp('^'+ prefix+ '('+ num_pattern+ ')'+ ext+ '$');
@@ -371,24 +399,25 @@ angular.module('yvoiceService', ['yvoiceModel'])
                 np_list.push(Number(matched[1]));
               }
             } catch(err) {
-              if (err.code != 'ENOENT') { throw err; }
+              if (err.code != 'ENOENT') {
+                MessageService.syserror('ファイル参照時にエラーが起きました。', err);
+                d.reject(err); return;
+              }
             }
           });
           if (np_list.length < 1) {
-            fn(0);
-            return;
+            d.resolve(0); return;
           }
 
           var max_num = Math.max.apply(null, np_list);
           if (max_num >= limit) {
             MessageService.syserror(limit + 'までファイルが作られているので、これ以上ファイルを作成できません。');
-            fn(null);
-            return;
+            d.reject(null); return;
           }
           var next = max_num + 1;
-          fn(next);
-          return;
+          d.resolve(next);
         });
+        return d.promise;
       }
     }
   }])
