@@ -1,6 +1,6 @@
 # myukkurivoice
 myukkurivoiceは、AquesTalkを利用したMac OSX向けの  
-動画制作向け合成音声生成アプリケーションです。
+動画制作向け合成音声生成アプリケーションです。  
 macOS Sierra 以降に対応。
 
 ## 開発ステータス
@@ -10,58 +10,11 @@ macOS Sierra 以降に対応。
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
 
-# 開発用の情報
-## vendor
-* vendorディレクトリにAquesTalkのライブラリを入れる必要があります。
-* ディレクトリ構成 (評価版)
-
-```
-  vendor
-    +-- aqk2k_mac_eva
-    |     + AqKanji2KoeEva.framework
-    |     + aq_dic
-    |
-    +-- aqtk2-mac-eva
-          + AquesTalk2Eva.framework
-          + phont
-```
-
-## install xcode
-    xcode-select --install
-
-## install node
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
-    nvm ls-remote
-    nvm install v7.2.0
-    nvm use v7.2.0
-
-## install electron command
-    npm -g install electron-prebuilt
-    npm -g install electron-packager
-
-## using library
-node_modules以下に入っているので、このコマンドは実行しなくて良い。  
-
-    npm install --save angular
-    npm install --save https://github.com/connors/photon
-    npm install --save electron-json-storage
-    npm install --save electron-log
-    npm install --save electron-localshortcut
-    npm install --save ref
-    npm install --save ffi
-    npm install --save intro.js
-    npm install --save temp
-
-## アプリデバッグ実行
-    electron .
-
-## その他
-### Module version mismatch. Expected 50, got 51
-もし次のエラーに遭遇したら、次のコマンドを実行する
-
-    npm rebuild --runtime=electron --target=1.4.12 --disturl=https://atom.io/download/atom-shell --abi=51
-
-## packaging
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12
-
+## 主な特徴
+* MacOSX Sierra以降で動作検証。
+* 設定を大量に用意して切り替えて作業する
+* 動画制作向きのショートカットキー定義
+* 音声ファイルを連番付きの名前で保存(使用未使用選択可)
+* 音声ファイル元メッセージ保存機能(使用未使用選択可)
+* チュートリアル
 
