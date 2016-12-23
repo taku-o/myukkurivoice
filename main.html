@@ -55,7 +55,7 @@
             <button class="btn btn-default" id="copy" ng-click="ctrl.copy($index)">
               <span class="icon icon-docs"></span>
             </button>
-            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-if="yvoice_list.length > 1">
+            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="yvoice_list.length > 1">
               <span class="icon icon-minus-squared"></span>
             </button>
           </div>
@@ -74,7 +74,7 @@
     </ul>
   </div>
 
-  <div class="pane" ng-if="display == 'main'">
+  <div class="pane" ng-show="display == 'main'">
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
@@ -152,7 +152,7 @@
     </table>
   </div><!-- main pane -->
 
-  <div class="pane" ng-if="display == 'settings'">
+  <div class="pane" ng-show="display == 'settings'">
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
@@ -173,11 +173,11 @@
             <input type="checkbox" ng-model="yvoice.seq_write">use numbering file
           </label>
         </div>
-        <div class="form-group" ng-if="yvoice.seq_write">
+        <div class="form-group" ng-show="yvoice.seq_write">
           <!-- <label>file name prefix</label> -->
           <input type="text" class="form-control" id="prefix" ng-model="yvoice.seq_write_options.prefix" placeholder="file name prefix">
         </div>
-        <div class="form-group" ng-if="yvoice.seq_write">
+        <div class="form-group" ng-show="yvoice.seq_write">
           <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
             <span class="icon icon-folder"></span>directory select
           </button>

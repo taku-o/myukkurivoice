@@ -128,7 +128,6 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         }
         $scope.yvoice_list = data_list;
         $scope.yvoice = $scope.yvoice_list[0];
-        $scope.display = 'main';
         $timeout(function(){ $scope.$apply(); });
       });
     };
