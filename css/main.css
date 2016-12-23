@@ -36,10 +36,10 @@ div.source_write_box {
   padding-right: 10px;
   border: 1px solid #c0c0c0;
 }
-
 div.seq_write_box {
   height: 150px;
   margin-top: 10px;
+  margin-bottom: 20px;
   padding-left: 10px;
   padding-right: 10px;
   border: 1px solid #c0c0c0;
@@ -60,3 +60,4 @@ table.message-list tr.error td {
 table.message-list tr.syserror td {
   color: red;
 }
+

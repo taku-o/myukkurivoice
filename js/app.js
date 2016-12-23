@@ -50,6 +50,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           } else {
             $scope.yvoice = $scope.yvoice_list[0];
           }
+          $scope.display = 'main';
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'swich_previous_config':
@@ -59,6 +60,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           } else {
             $scope.yvoice = $scope.yvoice_list[$scope.yvoice_list.length - 1];
           }
+          $scope.display = 'main';
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'encode':
@@ -105,6 +107,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
     // init
     var ctrl = this;
+    $scope.display = 'main';
     $scope.phont_list = MasterService.get_phont_list();
     $scope.effect_list = MasterService.get_effect_list();
     $scope.yinput = angular.copy(YInput);
@@ -125,6 +128,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         }
         $scope.yvoice_list = data_list;
         $scope.yvoice = $scope.yvoice_list[0];
+        $scope.display = 'main';
         $timeout(function(){ $scope.$apply(); });
       });
     };
@@ -259,17 +263,31 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       }
     };
     ctrl.tutorial = function() {
-      MessageService.action('run tutorial.');
-      IntroService.tutorial();
+      if ($scope.display == 'main') {
+        MessageService.action('run main tutorial.');
+        IntroService.main_tutorial();
+      } else {
+        MessageService.action('run settings tutorial.');
+        IntroService.settings_tutorial();
+      }
     }
     ctrl.shortcut = function() {
       MessageService.action('show shortcut key help.');
-      IntroService.shortcut();
+      if ($scope.display == 'main') {
+        IntroService.shortcut();
+      } else {
+        $scope.display = 'main';
+        MessageService.info('標準の画面に切り替えます');
+        $timeout(function(){
+          $scope.$apply();
+          IntroService.shortcut();
+        });
+      }
     }
-
     ctrl.select = function(index) {
       MessageService.action('switch voice config.');
       $scope.yvoice = $scope.yvoice_list[index];
+      $scope.display = 'main';
     };
     ctrl.plus = function() {
       MessageService.action('add new voice config.');
@@ -284,6 +302,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       }
       $scope.yvoice_list.splice(index, 1);
       $scope.yvoice = $scope.yvoice_list[0];
+      $scope.display = 'main';
     };
     ctrl.copy = function(index) {
       MessageService.action('copy and create new voice config.');
@@ -299,6 +318,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       MessageService.action('reset all config data.');
       ConfigService.clear().then(DataService.clear().then(load_data()));
       $scope.yinput = angular.copy(YInputInitialData);
+      $scope.display = 'main';
     };
 
     ctrl.encode = function() {
@@ -329,6 +349,15 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       var opt_dir = $scope.yvoice.seq_write_options.dir;
       if (!opt_dir) { opt_dir = home_dir; }
       ipcRenderer.send('showDirDialog', opt_dir);
+    };
+
+    ctrl.switch_settings_view = function() {
+      MessageService.action('switch to settings view.');
+      $scope.display = 'settings';
+    };
+    ctrl.switch_main_view = function() {
+      MessageService.action('switch to main view.');
+      $scope.display = 'main';
     };
   }]);
 

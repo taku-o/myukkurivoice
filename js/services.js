@@ -446,7 +446,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('IntroService', function() {
     return {
-      'tutorial': function() {
+      'main_tutorial': function() {
         var intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({
@@ -485,14 +485,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
               intro: '声の早さの調節はここです'
             },
             {
-              element: '#source_write_box',
+              element: '#switch-settings-view',
               position: 'top',
-              intro: 'ここのチェックを入れると、音声再生時に元のメッセージも保存するようになります'
+              intro: 'このボタンで音声ファイルの保存方法設定画面に移ります'
             },
             {
-              element: '#seq_write_box',
-              position: 'top',
-              intro: 'このチェックを入れると、ファイルに連番をつけて保存するようになります。<br>出力先のディレクトリと、ファイル名を指定できます。'
+              element: '#tutorial',
+              intro: 'チュートリアルは画面ごとに異なりますよ'
             },
             {
               element: '#save',
@@ -515,6 +514,43 @@ angular.module('yvoiceService', ['yvoiceModel'])
             {
               element: '#tutorial',
               intro: 'チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください'
+            }
+          ]
+        });
+        intro.start();
+      },
+      'settings_tutorial': function() {
+        var intro = introJs();
+        intro.setOption('showProgress', true);
+        intro.setOptions({
+          steps: [
+            {
+              element: '#source_write_box',
+              intro: 'ここのチェックを入れると、音声再生時に元のメッセージも保存するようになります'
+            },
+            {
+              element: '#seq_write_box',
+              intro: 'このチェックを入れると、ファイルに連番をつけて保存するようになります。<br>出力先のディレクトリと、ファイル名を指定できます。'
+            },
+            {
+              element: '#switch-main-view',
+              intro: 'このボタンで標準の画面に戻ります'
+            },
+            {
+              element: '#tutorial',
+              intro: 'チュートリアルは画面ごとに異なりますよ'
+            },
+            {
+              element: '#save',
+              intro: '変更した設定はここで保存できます'
+            },
+            {
+              element: '#name',
+              intro: 'この設定は音声の出力設定ごとに共有です'
+            },
+            {
+              element: '#tutorial',
+              intro: 'チュートリアルは以上です'
             }
           ]
         });

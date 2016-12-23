@@ -35,7 +35,7 @@
         <span class="icon icon-help-circled"></span>shortcut help
       </button>
       <button class="btn btn-large btn-default" id="tutorial" ng-click="ctrl.tutorial()">
-        <span class="icon icon-help-circled"></span>run tutorial
+        <span class="icon icon-help-circled"></span>{{display=="main"? "run basic tutorial": "run settigns tutorial"}}
       </button>
     </div>
   </div>
@@ -74,7 +74,7 @@
     </ul>
   </div>
 
-  <div class="pane">
+  <div class="pane" ng-if="display == 'main'">
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
@@ -127,6 +127,38 @@
       </div>
       -->
 
+      <div class="form-group">
+        <button class="btn btn-large btn-default pull-right switch-view" id="switch-settings-view" ng-click="ctrl.switch_settings_view()">
+          <span class="icon icon-shuffle"></span>switch to settings view
+        </button>
+      </div>
+    </form>
+
+    <table class="table-striped message-list">
+      <thead>
+        <tr>
+          <th class="message-item-created">time</th>
+          <th class="message-item-type">type</th>
+          <th class="message-item-body">message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror'}">
+          <td class="message-item-created">{{message.created | date: 'yyyy/M/d hh:mm:ss'}}</td>
+          <td class="message-item-type">{{message.type}}</td>
+          <td class="message-item-body">{{message.body}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div><!-- main pane -->
+
+  <div class="pane" ng-if="display == 'settings'">
+    <form>
+      <div class="form-group">
+        <!-- <label>name</label> -->
+        <input type="text" class="form-control" id="name" ng-model="yvoice.name" placeholder="name">
+      </div>
+
       <div class="source_write_box" id="source_write_box">
         <div class="checkbox">
           <label>
@@ -153,6 +185,11 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <button class="btn btn-large btn-default pull-right switch-view" id="switch-main-view" ng-click="ctrl.switch_main_view()">
+          <span class="icon icon-shuffle"></span>switch to main view
+        </button>
+      </div>
     </form>
 
     <table class="table-striped message-list">
@@ -171,8 +208,8 @@
         </tr>
       </tbody>
     </table>
+  </div><!-- settings pane -->
 
-  </div><!-- pane -->
 </div><!-- page-group -->
 </div><!-- window-content -->
 
