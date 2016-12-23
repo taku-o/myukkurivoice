@@ -53,6 +53,10 @@ node_modules以下に入っているので、このコマンドは実行しな�
     npm rebuild --runtime=electron --target=1.4.12 --disturl=https://atom.io/download/atom-shell --abi=51
 
 ## packaging
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12
+    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=resources/icon_512x512@2x.icns
+
+## icns
+    cd resources
+    iconutil --convert icns --output icon_512x512@2x.icns myukkurivoice.iconset
 
 

@@ -1,5 +1,5 @@
-# myukkurivoice
-myukkurivoiceは、AquesTalkを利用したMac OSX向けの  
+# MYukkuriVoice
+MYukkuriVoiceは、AquesTalkを利用したMac OSX向けの  
 動画制作向け合成音声生成アプリケーションです。  
 macOS Sierra 以降に対応。
 
