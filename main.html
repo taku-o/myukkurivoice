@@ -149,7 +149,7 @@
           <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
             <span class="icon icon-folder"></span>directory select
           </button>
-          dir: {{yvoice.seq_write_options.dir}}
+          dir: {{yvoice.seq_write_options.dir || 'use home directory if not selected'}}
         </div>
       </div>
 

@@ -1,12 +1,13 @@
-const storage = require('electron-json-storage');
-const log = require('electron-log');
-const fs = require('fs');
-const ffi = require('ffi');
-const ref = require('ref');
-const temp = require("temp").track();
+var storage = require('electron-json-storage');
+var log = require('electron-log');
+var fs = require('fs');
+var ffi = require('ffi');
+var ref = require('ref');
+var temp = require('temp').track();
+var path = require('path');
 
-const app = require('electron').remote.app;
-const app_path = app.getAppPath();
+var app = require('electron').remote.app;
+var app_path = app.getAppPath();
 
 // angular service
 angular.module('yvoiceService', ['yvoiceModel'])
@@ -371,6 +372,28 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
+  .factory('AudioSourceService', ['MessageService', function(MessageService) {
+    var wave_ext = '.wav';
+    var source_ext = '.txt';
+
+    return {
+      source_fname: function(wav_file_path) {
+        var dir = path.dirname(wav_file_path);
+        var basename = path.basename(wav_file_path, wave_ext);
+        var filename = basename + source_ext;
+        return path.join(dir, filename);
+      },
+      save: function(file_path, source_text) {
+        fs.writeFile(file_path, source_text, 'utf-8', function(err) {
+          if (err) {
+            MessageService.syserror('メッセージファイルの書き込みに失敗しました', err);
+            return;
+          }
+          MessageService.info('メッセージファイルを保存しました。path: ' + file_path);
+        });
+      }
+    }
+  }])
   .factory('SeqFNameService', ['$q', 'MessageService', function($q, MessageService) {
     var ext = '.wav';
     var num_pattern = '[0-9]{4}';
@@ -469,7 +492,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             {
               element: '#seq_write_box',
               position: 'top',
-              intro: 'このチェックを入れると、ファイルに連番をつけて保存するようになります。<br>出力先のディレクトリと、ファイル名の指定が必要です。'
+              intro: 'このチェックを入れると、ファイルに連番をつけて保存するようになります。<br>出力先のディレクトリと、ファイル名を指定できます。'
             },
             {
               element: '#save',

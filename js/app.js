@@ -1,17 +1,20 @@
-const electron_app = require('electron').remote.app;
-const ipcRenderer = require('electron').ipcRenderer
-const util = require('util');
-const path = require('path');
+var app = require('electron').remote.app;
+var ipcRenderer = require('electron').ipcRenderer
+var util = require('util');
+var path = require('path');
 
-const home_dir = electron_app.getPath('home');
+var home_dir = app.getPath('home');
 
 // angular app
 angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
+  .config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+  }])
   .controller('MainController',
-    ['$scope', '$timeout', 'MessageService', 'ConfigService', 'DataService', 'MasterService', 'AquesService', 'AudioService',
-     'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
-    function($scope, $timeout, MessageService, ConfigService, DataService, MasterService, AquesService, AudioService,
-             SeqFNameService, IntroService, YInput, YInputInitialData) {
+    ['$scope', '$timeout', 'MessageService', 'ConfigService', 'DataService', 'MasterService', 'AquesService',
+     'AudioService', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
+    function($scope, $timeout, MessageService, ConfigService, DataService, MasterService, AquesService,
+             AudioService, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
 
     // event listener
     $scope.$on('message', function(event, log) {
@@ -205,19 +208,27 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           dir = home_dir;
         }
 
-        SeqFNameService.next_number(dir, prefix).then(function(next_num) {
-          var next_fname = SeqFNameService.next_fname(prefix, next_num);
-          var file_path = path.join(dir, next_fname);
+        SeqFNameService.next_number(dir, prefix)
+          .then(function(next_num) {
+            var next_fname = SeqFNameService.next_fname(prefix, next_num);
+            var file_path = path.join(dir, next_fname);
 
-          AquesService.wave(encoded, phont, speed, volume).then(
-            function(buf_wav) {
-              AudioService.record(file_path, buf_wav);
-            },
-            function(err) {
-              MessageService.error('音声データを作成できませんでした。');
-            }
-          );
-        });
+            AquesService.wave(encoded, phont, speed, volume).then(
+              function(buf_wav) {
+                AudioService.record(file_path, buf_wav);
+                return file_path;
+              },
+              function(err) {
+                MessageService.error('音声データを作成できませんでした。');
+                throw err;
+              }
+            )
+            .then(function(file_path) {
+              if (!$scope.yvoice.source_write) { return; }
+              var source_fname = AudioSourceService.source_fname(file_path);
+              AudioSourceService.save(source_fname, $scope.yinput.source);
+            });
+          });
 
       // 通常保存
       } else {
@@ -227,14 +238,22 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
             return;
           }
 
-          AquesService.wave(encoded, phont, speed, volume).then(
-            function(buf_wav) {
-              AudioService.record(file_path, buf_wav);
-            },
-            function(err) {
-              MessageService.error('音声データを作成できませんでした。');
-            }
-          );
+          AquesService.wave(encoded, phont, speed, volume)
+            .then(
+              function(buf_wav) {
+                AudioService.record(file_path, buf_wav);
+                return file_path;
+              },
+              function(err) {
+                MessageService.error('音声データを作成できませんでした。');
+                throw err;
+              }
+            )
+            .then(function(file_path) {
+              if (!$scope.yvoice.source_write) { return; }
+              var source_fname = AudioSourceService.source_fname(file_path);
+              AudioSourceService.save(source_fname, $scope.yinput.source);
+            });
         });
         ipcRenderer.send('showSaveDialog', 'wav');
       }
