@@ -1,16 +1,31 @@
 # myukkurivoice
 myukkurivoiceは、AquesTalkを利用したMac OSX向けの  
 動画制作向け合成音声生成アプリケーションです。
-* メインターゲット: macOS Sierra
+macOS Sierra 以降に対応。
 
-## ステータス
+## 開発ステータス
 * 開発中
-* AquesTalk 評価版使用中
+* AquesTalk評価版使用中
 
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
 
 # 開発用の情報
+## vendor
+* vendorディレクトリにAquesTalkのライブラリを入れる必要があります。
+* ディレクトリ構成 (評価版)
+
+```
+  vendor
+    +-- aqk2k_mac_eva
+    |     + AqKanji2KoeEva.framework
+    |     + aq_dic
+    |
+    +-- aqtk2-mac-eva
+          + AquesTalk2Eva.framework
+          + phont
+```
+
 ## install xcode
     xcode-select --install
 
