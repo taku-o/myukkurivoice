@@ -20,8 +20,11 @@
       <span class="nav-group-item" ng-class="{active:display == 'about'}" ng-click="display='about'">
         <span class="icon icon-help-circled"></span>MYukkuriVoiceについて
       </span>
+      <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
+        <span class="icon icon-help-circled"></span>ショートカット
+      </span>
       <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
-        <span class="icon icon-help-circled"></span>連絡・バグ報告
+        <span class="icon icon-help-circled"></span>連絡先
       </span>
     </nav>
   </div>
@@ -41,6 +44,59 @@
         ご注意ください。<br>
         <a href="http://www.a-quest.com/">http://www.a-quest.com/</a>
       </p>
+    </div>
+  </div>
+
+  <!-- contact -->
+  <div class="pane" ng-show="display == 'shortcut'">
+    <div class="content">
+
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th>ショートカットキー</th>
+            <th>機能</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Command + Q</td>
+            <td>アプリ終了</td>
+          </tr>
+          <tr>
+            <td>Command + P</td>
+            <td>音声再生</td>
+          </tr>
+          <tr>
+            <td>Command + W</td>
+            <td>音声再生停止</td>
+          </tr>
+          <tr>
+            <td>Command + S</td>
+            <td>音声ファイル保存</td>
+          </tr>
+          <tr>
+            <td>Command + ↑</td>
+            <td>メッセージ入力欄に移動する</td>
+          </tr>
+          <tr>
+            <td>Command + ↓</td>
+            <td>音記号列入力欄に移動する</td>
+          </tr>
+          <tr>
+            <td>Command + →</td>
+            <td>メッセージを音記号列に変換します</td>
+          </tr>
+          <tr>
+            <td>Command + ←</td>
+            <td>次の音声設定に移動します</td>
+          </tr>
+          <tr>
+            <td>Command + Shift + ←</td>
+            <td>前の音声設定に移動します</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
