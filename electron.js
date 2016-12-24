@@ -340,7 +340,7 @@ function showHelpWindow() {
     width: 700,
     height: 500,
     webPreferences: {
-      devTools: true
+      devTools: debug
     }
   });
   helpWindow.loadURL('file://' + __dirname + '/help.html');
