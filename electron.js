@@ -7,9 +7,19 @@ const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
 const localShortcut = require('electron-localshortcut');
 
+// debug option
+const debug = true;
+
 // global reference
 var mainWindow = null;
 var helpWindow = null;
+
+// handle uncaughtException
+process.on('uncaughtException', function(err) {
+  console.log('electron:event:uncaughtException');
+  console.error(err);
+  console.error(err.stack);
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -28,15 +38,21 @@ app.on('ready', function() {
     width: 850,
     height: 700,
     webPreferences: {
-      devTools: true
+      devTools: debug
     }
   });
   mainWindow.loadURL('file://' + __dirname + '/main.html');
 
-  // Emitted when the window is closed.
+  // main window event
   mainWindow.on('closed', function() {
     // dereference global reference
     mainWindow = null;
+  });
+  mainWindow.on('unresponsive', function() {
+    console.log('main:event:unresponsive');
+  });
+  mainWindow.webContents.on('crashed', function() {
+    console.log('main:event:crashed');
   });
 
   // shortcut
@@ -218,7 +234,6 @@ app.on('ready', function() {
       label: '表示',
       submenu: [
         { role: 'reload' },
-        { role: 'toggledevtools' },
         { type: 'separator' },
         { role: 'resetzoom' },
         { role: 'zoomin' },
@@ -274,11 +289,14 @@ app.on('ready', function() {
       ]
     }
   ];
+  // 表示メニューにToggle Developer Toolsメニューを追加
+  if (debug) {
+    menu_list[4].submenu.splice(1, 0,
+      { role: 'toggledevtools' }
+    );
+  }
   var menu_template = Menu.buildFromTemplate(menu_list);
   Menu.setApplicationMenu(menu_template);
-
-  // Open the DevTools.
-  // mainWindow.openDevTools();
 });
 
 // showSaveDialog
@@ -327,6 +345,12 @@ function showHelpWindow() {
 
   helpWindow.on('closed', function() {
     helpWindow = null;
+  });
+  helpWindow.on('unresponsive', function() {
+    console.log('help:event:unresponsive');
+  });
+  helpWindow.webContents.on('crashed', function() {
+    console.log('help:event:crashed');
   });
 }
 

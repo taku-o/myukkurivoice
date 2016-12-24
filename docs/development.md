@@ -52,11 +52,14 @@ node_modules以下に入っているので、このコマンドは実行しな�
 
     npm rebuild --runtime=electron --target=1.4.12 --disturl=https://atom.io/download/atom-shell --abi=51
 
-## packaging
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns
-
 ## icns
     cd icns
     iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
 
+## using devtron
+    npm install --save-dev devtron
+    require('devtron').install()
+
+## packaging
+    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite
 

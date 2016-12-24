@@ -1,3 +1,10 @@
+// handle uncaughtException
+process.on('uncaughtException', function(err) {
+  console.log('help:event:uncaughtException');
+  console.error(err);
+  console.error(err.stack);
+});
+
 // help app
 angular.module('yvoiceAppHelp', [])
   .config(['$qProvider', function ($qProvider) {

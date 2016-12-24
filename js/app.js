@@ -5,6 +5,13 @@ var path = require('path');
 
 var home_dir = app.getPath('home');
 
+// handle uncaughtException
+process.on('uncaughtException', function(err) {
+  console.log('main:event:uncaughtException');
+  console.error(err);
+  console.error(err.stack);
+});
+
 // angular app
 angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   .config(['$qProvider', function ($qProvider) {
