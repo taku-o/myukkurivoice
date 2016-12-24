@@ -44,7 +44,7 @@ node_modules以下に入っているので、このコマンドは実行しな�
     npm install --save temp
 
 ## アプリデバッグ実行
-    electron .
+    DEBUG=1 electron .
 
 ## その他
 ### Module version mismatch. Expected 50, got 51

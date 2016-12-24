@@ -8,7 +8,7 @@ const Menu = electron.Menu;
 const localShortcut = require('electron-localshortcut');
 
 // debug option
-const debug = true;
+const debug = process.env.DEBUG;
 
 // global reference
 var mainWindow = null;
