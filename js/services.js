@@ -8,7 +8,7 @@ var path = require('path');
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
-var vendor_path = app_path.replace('app.asar', 'app.asar.unpacked');
+var unpacked_path = app_path.replace('app.asar', 'app.asar.unpacked');
 
 // angular service
 angular.module('yvoiceService', ['yvoiceModel'])
@@ -153,20 +153,20 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      {'id':'aq_yukkuri', 'name':'aq_yukkuri', 'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_yukkuri.phont'},
-      {'id':'aq_f1c',     'name':'aq_f1c',     'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_f1c.phont'},
-      {'id':'aq_f3a',     'name':'aq_f3a',     'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_f3a.phont'},
-      {'id':'aq_huskey',  'name':'aq_huskey',  'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_huskey.phont'},
-      {'id':'aq_m4b',     'name':'aq_m4b',     'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_m4b.phont'},
-      {'id':'aq_mf1',     'name':'aq_mf1',     'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_mf1.phont'},
-      {'id':'aq_rb2',     'name':'aq_rb2',     'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_rb2.phont'},
-      {'id':'aq_rb3',     'name':'aq_rb3',     'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_rb3.phont'},
-      {'id':'aq_rm',      'name':'aq_rm',      'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_rm.phont'},
-      {'id':'aq_robo',    'name':'aq_robo',    'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/aq_robo.phont'},
-      {'id':'ar_f4',      'name':'ar_f4',      'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/ar_f4.phont'},
-      {'id':'ar_m5',      'name':'ar_m5',      'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/ar_m5.phont'},
-      {'id':'ar_mf2',     'name':'ar_mf2',     'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/ar_mf2.phont'},
-      {'id':'ar_rm3',     'name':'ar_rm3',     'path':vendor_path + '/vendor/aqtk2-mac-eva/phont/ar_rm3.phont'}
+      {'id':'aq_yukkuri', 'name':'aq_yukkuri', 'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_yukkuri.phont'},
+      {'id':'aq_f1c',     'name':'aq_f1c',     'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_f1c.phont'},
+      {'id':'aq_f3a',     'name':'aq_f3a',     'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_f3a.phont'},
+      {'id':'aq_huskey',  'name':'aq_huskey',  'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_huskey.phont'},
+      {'id':'aq_m4b',     'name':'aq_m4b',     'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_m4b.phont'},
+      {'id':'aq_mf1',     'name':'aq_mf1',     'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_mf1.phont'},
+      {'id':'aq_rb2',     'name':'aq_rb2',     'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_rb2.phont'},
+      {'id':'aq_rb3',     'name':'aq_rb3',     'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_rb3.phont'},
+      {'id':'aq_rm',      'name':'aq_rm',      'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_rm.phont'},
+      {'id':'aq_robo',    'name':'aq_robo',    'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/aq_robo.phont'},
+      {'id':'ar_f4',      'name':'ar_f4',      'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/ar_f4.phont'},
+      {'id':'ar_m5',      'name':'ar_m5',      'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/ar_m5.phont'},
+      {'id':'ar_mf2',     'name':'ar_mf2',     'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/ar_mf2.phont'},
+      {'id':'ar_rm3',     'name':'ar_rm3',     'path':unpacked_path + '/vendor/aqtk2-mac-eva/phont/ar_rm3.phont'}
     ];
     var effect_list = [
       {'id':1, 'name':'none'},
@@ -191,7 +191,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
     // void AqKanji2Koe_Release (void * hAqKanji2Koe)
     // int AqKanji2Koe_Convert (void * hAqKanji2Koe, const char *kanji, char *koe, int nBufKoe)
-    var framework_path = vendor_path + '/vendor/aqk2k_mac_eva/AqKanji2KoeEva.framework/Versions/A/AqKanji2KoeEva';
+    var framework_path = unpacked_path + '/vendor/aqk2k_mac_eva/AqKanji2KoeEva.framework/Versions/A/AqKanji2KoeEva';
     var ptr_AqKanji2Koe_Create  = ffi.DynamicLibrary(framework_path).get('AqKanji2Koe_Create');
     var ptr_AqKanji2Koe_Release = ffi.DynamicLibrary(framework_path).get('AqKanji2Koe_Release');
     var ptr_AqKanji2Koe_Convert = ffi.DynamicLibrary(framework_path).get('AqKanji2Koe_Convert')
@@ -201,7 +201,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
     // unsigned char * AquesTalk2_Synthe_Utf8(const char *koe, int iSpeed, int * size, void *phontDat)
     // void AquesTalk2_FreeWave (unsigned char *wav)
-    var framework_path = vendor_path + '/vendor/aqtk2-mac-eva/AquesTalk2Eva.framework/Versions/A/AquesTalk2Eva';
+    var framework_path = unpacked_path + '/vendor/aqtk2-mac-eva/AquesTalk2Eva.framework/Versions/A/AquesTalk2Eva';
     var ptr_AquesTalk2_Synthe_Utf8 = ffi.DynamicLibrary(framework_path).get('AquesTalk2_Synthe_Utf8');
     var ptr_AquesTalk2_FreeWave    = ffi.DynamicLibrary(framework_path).get('AquesTalk2_FreeWave');
     var fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, [ 'string', 'int', ptr_int, ptr_void ]);
@@ -246,7 +246,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         }
 
         var alloc_int = ref.alloc('int');
-        var aqKanji2Koe = fn_AqKanji2Koe_Create(vendor_path + '/vendor/aqk2k_mac_eva/aq_dic', alloc_int);
+        var aqKanji2Koe = fn_AqKanji2Koe_Create(unpacked_path + '/vendor/aqk2k_mac_eva/aq_dic', alloc_int);
         var error_code = alloc_int.deref();
         if (error_code != 0) {
           MessageService.syserror(error_table_AqKanji2Koe(error_code));
