@@ -6,6 +6,7 @@ const dialog = electron.dialog;
 const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
 const localShortcut = require('electron-localshortcut');
+const log = require('electron-log');
 
 // debug option
 const debug = process.env.DEBUG;
@@ -16,9 +17,10 @@ var helpWindow = null;
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
-  console.log('electron:event:uncaughtException');
-  console.error(err);
-  console.error(err.stack);
+  log.error('electron:event:uncaughtException');
+  log.error(err);
+  log.error(err.stack);
+  app.quit();
 });
 
 // Quit when all windows are closed.
@@ -49,10 +51,10 @@ app.on('ready', function() {
     mainWindow = null;
   });
   mainWindow.on('unresponsive', function() {
-    console.log('main:event:unresponsive');
+    log.warn('main:event:unresponsive');
   });
   mainWindow.webContents.on('crashed', function() {
-    console.log('main:event:crashed');
+    log.error('main:event:crashed');
   });
 
   // shortcut
@@ -350,10 +352,10 @@ function showHelpWindow() {
     helpWindow = null;
   });
   helpWindow.on('unresponsive', function() {
-    console.log('help:event:unresponsive');
+    log.warn('help:event:unresponsive');
   });
   helpWindow.webContents.on('crashed', function() {
-    console.log('help:event:crashed');
+    log.error('help:event:crashed');
   });
 }
 

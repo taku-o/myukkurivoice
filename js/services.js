@@ -15,39 +15,39 @@ angular.module('yvoiceService', ['yvoiceModel'])
   .factory('MessageService', ['$rootScope', function($rootScope) {
     return {
       action: function(message) {
-        var log = {
+        var post = {
           created: new Date(),
           body: message,
           type: 'action'
         }
-        $rootScope.$broadcast("message", log);
+        $rootScope.$broadcast("message", post);
       },
       info: function(message) {
-        var log = {
+        var post = {
           created: new Date(),
           body: message,
           type: 'info'
         }
-        $rootScope.$broadcast("message", log);
+        $rootScope.$broadcast("message", post);
       },
       error: function(message) {
-        var log = {
+        var post = {
           created: new Date(),
           body: message,
           type: 'error'
         }
-        $rootScope.$broadcast("message", log);
+        $rootScope.$broadcast("message", post);
       },
       syserror: function(message, err=null) {
         if (err) {
           message = message + err.message;
         }
-        var log = {
+        var post = {
           created: new Date(),
           body: message,
           type: 'syserror'
         }
-        $rootScope.$broadcast("message", log);
+        $rootScope.$broadcast("message", post);
       }
     }
   }])

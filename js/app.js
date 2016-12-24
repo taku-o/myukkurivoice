@@ -2,14 +2,15 @@ var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer
 var util = require('util');
 var path = require('path');
+var log = require('electron-log');
 
 var home_dir = app.getPath('home');
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
-  console.log('main:event:uncaughtException');
-  console.error(err);
-  console.error(err.stack);
+  log.error('main:event:uncaughtException');
+  log.error(err);
+  log.error(err.stack);
 });
 
 // angular app
@@ -24,8 +25,8 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
              AudioService, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
 
     // event listener
-    $scope.$on('message', function(event, log) {
-      $scope.message_list.unshift(log);
+    $scope.$on('message', function(event, message) {
+      $scope.message_list.unshift(message);
       while ($scope.message_list.length > 5) {
         $scope.message_list.pop();
       }

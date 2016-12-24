@@ -1,8 +1,10 @@
+var log = require('electron-log');
+
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
-  console.log('help:event:uncaughtException');
-  console.error(err);
-  console.error(err.stack);
+  log.error('help:event:uncaughtException');
+  log.error(err);
+  log.error(err.stack);
 });
 
 // help app
