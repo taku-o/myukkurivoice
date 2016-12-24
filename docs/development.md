@@ -60,6 +60,10 @@ node_modules以下に入っているので、このコマンドは実行しな�
     npm install --save-dev devtron
     require('devtron').install()
 
+## asar
+    npm -g install asar
+    asar e app.asar dest
+
 ## packaging
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite
+    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor
 
