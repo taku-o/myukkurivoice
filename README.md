@@ -21,7 +21,7 @@ http://www.a-quest.com/
 * MacOSX Sierra以降で動作検証。
 * 設定を用意して切り替えて作業するスタイルで利用します。
 
-<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-ss.png" width="400">
+<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme.gif" width="400">
 
 ### ショートカット
 * 動画制作向きのショートカットキーがいくつか定義されています

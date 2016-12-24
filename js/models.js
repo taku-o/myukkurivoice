@@ -9,7 +9,7 @@ angular.module('yvoiceModel', [])
     return {
       'id': null,
       'name': 'aq_yukkuri',
-      'phont': 1,
+      'phont': 'aq_yukkuri',
       //'effect': 2,
       //'intonation': true,
       'speed': 100,
