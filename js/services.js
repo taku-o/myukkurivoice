@@ -302,17 +302,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
     }
   }])
   .factory('AudioService', ['MessageService', function(MessageService) {
-    //var sourceNode = null;
+    // Audio base AudioService
     var audio = null;
-
-    //function to_array_buffer(buf_wav) {
-    //  var a_buffer = new ArrayBuffer(buf_wav.length);
-    //  var view = new Uint8Array(a_buffer);
-    //  for (var i = 0; i < buf_wav.length; ++i) {
-    //    view[i] = buf_wav[i];
-    //  }
-    //  return a_buffer;
-    //};
 
     return {
       play: function(buf_wav) {
@@ -320,15 +311,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
           MessageService.syserror('再生する音源が渡されませんでした');
           return null;
         }
-        //var a_buffer = to_array_buffer(buf_wav);
-        //
-        //var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        //audioCtx.decodeAudioData(a_buffer).then(function(decodedData) {
-        //  sourceNode = audioCtx.createBufferSource();
-        //  sourceNode.buffer = decodedData;
-        //  sourceNode.connect(audioCtx.destination);
-        //  sourceNode.start(0);
-        //});
+        if (audio) { audio.pause(); }
 
         temp.open('_myukkurivoice', function(err, info) {
           if (err) {
@@ -345,11 +328,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
             audio.play();
           });
         });
-
       },
       stop: function() {
-        //if (!sourceNode) { return; }
-        //sourceNode.stop();
         if (!audio) { return; }
         audio.pause();
       },
@@ -363,6 +343,72 @@ angular.module('yvoiceService', ['yvoiceModel'])
           return;
         }
 
+        fs.writeFile(wav_file_path, buf_wav, function(err) {
+          if (err) {
+            MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
+            return;
+          }
+          MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+        });
+      }
+    }
+  }])
+  .factory('AudioService2', ['MessageService', function(MessageService) {
+    // Web Audio API base AudioService
+    // * 音声を加工できるが、安定していない
+    // * 音が割れる時がある
+    var audioCtx = null;
+    var sourceNode = null;
+
+    function to_array_buffer(buf_wav) {
+      var a_buffer = new ArrayBuffer(buf_wav.length);
+      var view = new Uint8Array(a_buffer);
+      for (var i = 0; i < buf_wav.length; ++i) {
+        view[i] = buf_wav[i];
+      }
+      return a_buffer;
+    };
+
+    return {
+      play: function(buf_wav) {
+        if (!buf_wav) {
+          MessageService.syserror('再生する音源が渡されませんでした');
+          return null;
+        }
+        if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
+        if (audioCtx) { audioCtx.close(); audioCtx = null; }
+
+        var a_buffer = to_array_buffer(buf_wav);
+        var audioCtx = new window.AudioContext();
+log.debug('before AudioContext.decodeAudioData');
+        audioCtx.decodeAudioData(a_buffer).then(
+          function(decodedData) {
+            sourceNode = audioCtx.createBufferSource();
+            sourceNode.buffer = decodedData;
+            sourceNode.connect(audioCtx.destination);
+            sourceNode.start(0);
+          },
+          function(err) {
+            MessageService.syserror('音源の再生に失敗しました。', err);
+          }
+        );
+log.debug('after AudioContext.decodeAudioData');
+      },
+      stop: function() {
+        if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
+        if (audioCtx) { audioCtx.close(); audioCtx = null; }
+      },
+      record: function(wav_file_path, buf_wav) {
+        if (!wav_file_path) {
+          MessageService.syserror('音声ファイルの保存先が指定されていません');
+          return;
+        }
+        if (!buf_wav) {
+          MessageService.syserror('保存する音源が渡されませんでした');
+          return;
+        }
+
+        // TODO Web Audio API ベースに変更
         fs.writeFile(wav_file_path, buf_wav, function(err) {
           if (err) {
             MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
