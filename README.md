@@ -3,6 +3,8 @@ MYukkuriVoiceは、AquesTalkを利用したMac OSX向けの
 動画制作向け合成音声生成アプリケーションです。  
 macOS Sierra 以降に対応。
 
+<img src="https://github.com/taku-o/myukkurivoice/blob/master/icns/myukkurivoice.iconset/icon_256x256.png">
+
 本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。  
 本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。ご注意ください。  
 http://www.a-quest.com/

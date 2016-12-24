@@ -322,6 +322,10 @@ ipcMain.on('showDirDialog', function (event, defaultPath) {
   event.sender.send('showDirDialog', r);
 });
 
+// showHelpWindow
+ipcMain.on('showHelpWindow', function (event, message) {
+  showHelpWindow();
+});
 // help window
 function showHelpWindow() {
   if (helpWindow && !helpWindow.isDestroyed()) {
@@ -329,7 +333,6 @@ function showHelpWindow() {
     return;
   }
 
-  // create help window
   helpWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,

@@ -268,6 +268,10 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         ipcRenderer.send('showSaveDialog', 'wav');
       }
     };
+    ctrl.help = function() {
+      MessageService.action('open help window.');
+      ipcRenderer.send('showHelpWindow', 'help');
+    };
     ctrl.tutorial = function() {
       if ($scope.display == 'main') {
         MessageService.action('run main tutorial.');
@@ -276,7 +280,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         MessageService.action('run settings tutorial.');
         IntroService.settings_tutorial();
       }
-    }
+    };
     ctrl.shortcut = function() {
       MessageService.action('show shortcut key help.');
       if ($scope.display == 'main') {
