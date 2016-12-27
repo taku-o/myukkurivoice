@@ -256,7 +256,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         var source_length = (new Blob([source_length], {type: "text/plain"})).size;
         var encoded_length = source_length >= 512? source_length * 4 : 512;
-        var buf = Buffer.alloc(source_length * 4);
+        var buf = Buffer.alloc(source_length >= 512? source_length * 4 : 512);
         // crash ?
         var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encoded_length);
         if (r != 0) {
