@@ -65,5 +65,5 @@ node_modules以下に入っているので、このコマンドは実行しな�
     asar e app.asar dest
 
 ## packaging
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|README.md)" --asar
+    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|README.md)" --asar.unpackDir=vendor
 
