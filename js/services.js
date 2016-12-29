@@ -51,47 +51,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('ConfigService', ['$q', 'YConfig', 'MessageService', function($q, YConfig, MessageService) {
-    return {
-      load: function() {
-        var d = $q.defer();
-        storage.get('config', function (error, data) {
-          if (error) {
-            MessageService.syserror('アプリ設定の読込に失敗しました。', error);
-            d.reject(error); return;
-          }
-          if (Object.keys(data).length === 0) {
-            var new_config = angular.copy(YConfig);
-            d.resolve(new_config);
-          } else {
-            d.resolve(data);
-          }
-        });
-        return d.promise;
-      },
-      save: function(config) {
-        storage.set('config', config, function(error) {
-          if (error) {
-            MessageService.syserror('アプリ設定の保存に失敗しました。', error);
-            throw error;
-          }
-          MessageService.info('アプリ設定を保存しました。');
-        });
-      },
-      clear: function() {
-        var d = $q.defer();
-        storage.remove('config', function(error) {
-          if (error) {
-            MessageService.syserror('アプリ設定の削除に失敗しました。', error);
-            d.reject(error); return;
-          }
-          MessageService.info('アプリ設定を削除しました。');
-          d.promise(true);
-        });
-        return d.promise;
-      }
-    }
-  }])
   .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', function($q, YVoice, YVoiceInitialData, MessageService) {
 
     function uniq_id() {

@@ -1,10 +1,5 @@
 // angular model
 angular.module('yvoiceModel', [])
-  .factory('YConfig', function() {
-    return {
-      'tutorial': false
-    }
-  })
   .factory('YVoice', function() {
     return {
       'id': null,

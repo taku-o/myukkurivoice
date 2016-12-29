@@ -19,9 +19,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('MainController',
-    ['$scope', '$timeout', 'MessageService', 'ConfigService', 'DataService', 'MasterService', 'AquesService',
+    ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
      'AudioService', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
-    function($scope, $timeout, MessageService, ConfigService, DataService, MasterService, AquesService,
+    function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
              AudioService, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
 
     // event listener
@@ -124,11 +124,6 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
     // util
     function load_data() {
-      ConfigService.load().then(function(config) {
-        $scope.yconfig = config;
-        $timeout(function(){ $scope.$apply(); });
-      });
-
       DataService.load().then(function(data_list) {
         if (data_list.length < 1) {
           MessageService.info('初期データを読み込みます。');
@@ -327,7 +322,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
     };
     ctrl.reset = function() {
       MessageService.action('reset all config data.');
-      ConfigService.clear().then(DataService.clear().then(load_data()));
+      DataService.clear().then(load_data());
       $scope.yinput = angular.copy(YInputInitialData);
       $scope.display = 'main';
     };
