@@ -224,7 +224,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         }
 
         var alloc_int = ref.alloc('int');
-        var aqKanji2Koe = fn_AqKanji2Koe_Create(unpacked_path + '/vendor/aqk2k_mac/aq_dic', alloc_int);
+        var aqKanji2Koe = fn_AqKanji2Koe_Create(unpacked_path + '/vendor/aqk2k_mac/aq_dic_large', alloc_int);
         //var aqKanji2Koe = fn_AqKanji2Koe_Create(unpacked_path + '/vendor/aqk2k_mac_eva/aq_dic', alloc_int);
         var error_code = alloc_int.deref();
         if (error_code != 0) {
@@ -253,6 +253,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
           MessageService.syserror('音記号列が入力されていません。');
           d.reject(null); return d.promise;
         }
+        //log.debub(phont.path);
         fs.readFile(phont.path, function(err, phont_data) {
           if (err) {
             MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
