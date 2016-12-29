@@ -11,7 +11,7 @@ http://www.a-quest.com/
 
 ## 開発ステータス
 * AquesTalk正式版に置き換え
-* AquesTalk1に対応開始
+* AquesTalk1が最新のOSで動作しない？(ゆっくり霊夢の声が含まれる)
 
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
