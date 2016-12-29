@@ -283,9 +283,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
               MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
               return;
             }
-            audio = new Audio(info.path);
+            audio = new Audio('');
             audio.autoplay = false;
-            audio.volume
+            audio.src = info.path;
             audio.play();
           });
         });
