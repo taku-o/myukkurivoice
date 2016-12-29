@@ -372,6 +372,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
             // source
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = decodedData;
+            sourceNode.onended = function() {
+              // do nothing
+            };
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = 1;
