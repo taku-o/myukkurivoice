@@ -11,7 +11,7 @@ http://www.a-quest.com/
 
 ## 開発ステータス
 * AquesTalk正式版に置き換え
-* アプリの安定性向上作業中
+* 声の質が悪い気がする
 
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
