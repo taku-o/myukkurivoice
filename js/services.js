@@ -213,6 +213,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
       if (code >= 1000 && code <= 1008) { return 'Phontデータが正しくない'; }
     }
 
+    // will released data
+    var ptr_waves = [];
+
     return {
       encode: function(source) {
         if (!source) {
@@ -233,7 +236,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var source_length = (new Blob([source_length], {type: "text/plain"})).size;
         var encoded_length = source_length >= 512? source_length * 4 : 512;
         var buf = Buffer.alloc(source_length >= 512? source_length * 4 : 512);
-        // crash ?
         var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encoded_length);
         if (r != 0) {
           MessageService.syserror(error_table_AqKanji2Koe(r));
@@ -266,68 +268,88 @@ angular.module('yvoiceService', ['yvoiceModel'])
             d.reject(null); return;
           }
 
-          var ptr_buf = ref.alloc('pointer');
-          ref.writePointer(ptr_buf, 0, r);
-          var buf_wav = ref.readPointer(ptr_buf, 0, alloc_int.deref());
+          var buf_wav = ref.reinterpret(r, alloc_int.deref(), 0);
+          //var s = buf_wav.toString('ascii');
+          //log.debug('--------------------');
+          //log.debug('(wave)=', s[0], s[1], s[2], s[3], s[4]);
 
-          var r = fn_AquesTalk2_FreeWave(r);
+          ptr_waves.push(r);
           d.resolve(buf_wav);
         });
         return d.promise;
+      },
+      free_wave: function() {
+        //log.debug('free_wave');
+        angular.forEach(ptr_waves, function(ptr) {
+          fn_AquesTalk2_FreeWave(ptr);
+        });
+        ptr_waves = [];
       }
     }
   }])
-  .factory('AudioService', ['MessageService', function(MessageService) {
+  .factory('AudioService', ['$q', 'MessageService', function($q, MessageService) {
     // Audio base AudioService
     var audio = null;
 
     return {
       play: function(buf_wav) {
+        //var s = buf_wav.toString('ascii');
+        //log.debug('(pre play)=', s[0], s[1], s[2], s[3], s[4]);
+        var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
-          return null;
+          d.reject(null); return d.promise;
         }
         if (audio) { audio.pause(); }
 
         temp.open('_myukkurivoice', function(err, info) {
           if (err) {
             MessageService.syserror('一時作業ファイルを作れませんでした。');
-            return;
+            d.reject(null); return;
           }
 
+          //var s = buf_wav.toString('ascii');
+          //log.debug('(play)=', s[0], s[1], s[2], s[3], s[4]);
           fs.writeFile(info.path, buf_wav, function(err) {
             if (err) {
               MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-              return;
+              d.reject(err); return;
             }
             audio = new Audio('');
             audio.autoplay = false;
             audio.src = info.path;
             audio.play();
+            d.resolve('ok'); return;
           });
         });
+        return d.promise;
       },
       stop: function() {
         if (!audio) { return; }
         audio.pause();
       },
       record: function(wav_file_path, buf_wav) {
+        //var s = buf_wav.toString('ascii');
+        //log.debug('(pre record)=', s[0], s[1], s[2], s[3], s[4]);
+        var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
-          return;
+          d.reject(null); return d.promise;
         }
         if (!buf_wav) {
           MessageService.syserror('保存する音源が渡されませんでした。');
-          return;
+          d.reject(null); return d.promise;
         }
 
         fs.writeFile(wav_file_path, buf_wav, function(err) {
           if (err) {
             MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
-            return;
+            d.reject(err); return;
           }
           MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+          d.resolve('ok');
         });
+        return d.promise;
       }
     }
   }])
@@ -358,7 +380,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         var a_buffer = to_array_buffer(buf_wav);
         var audioCtx = new window.AudioContext();
-log.debug('before AudioContext.decodeAudioData');
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
             sourceNode = audioCtx.createBufferSource();
@@ -370,7 +391,6 @@ log.debug('before AudioContext.decodeAudioData');
             MessageService.syserror('音源の再生に失敗しました。', err);
           }
         );
-log.debug('after AudioContext.decodeAudioData');
       },
       stop: function() {
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }

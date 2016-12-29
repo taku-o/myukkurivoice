@@ -171,11 +171,16 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       AquesService.wave(encoded, phont, speed, volume).then(
         function(buf_wav) {
-          AudioService.play(buf_wav);
-        }, function(err) {
+          //var s = buf_wav.toString('ascii');
+          //log.debug('(app wave then)=', s[0], s[1], s[2], s[3], s[4]);
+          return AudioService.play(buf_wav);
+        },
+        function(err) {
           MessageService.error('音声データを作成できませんでした。');
         }
-      );
+      ).finally(function() {
+        AquesService.free_wave();
+      });
     };
     ctrl.stop = function() {
       MessageService.action('stop playing voice.');
@@ -225,7 +230,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
             AquesService.wave(encoded, phont, speed, volume).then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav);
+                AudioService.record(file_path, buf_wav).finally(function() {
+                  AquesService.free_wave();
+                });
                 return file_path;
               },
               function(err) {
@@ -251,7 +258,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           AquesService.wave(encoded, phont, speed, volume)
             .then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav);
+                AudioService.record(file_path, buf_wav).finally(function() {
+                  AquesService.free_wave();
+                });
                 return file_path;
               },
               function(err) {
