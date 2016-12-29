@@ -112,16 +112,19 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      {'id':'aq_yukkuri', 'name':'aq_yukkuri', 'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_yukkuri.phont'},
+      {'id':'aq_defo1',   'name':'aq_defo1',   'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
       {'id':'aq_f1c',     'name':'aq_f1c',     'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_f1c.phont'},
       {'id':'aq_f3a',     'name':'aq_f3a',     'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_f3a.phont'},
       {'id':'aq_huskey',  'name':'aq_huskey',  'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_huskey.phont'},
       {'id':'aq_m4b',     'name':'aq_m4b',     'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_m4b.phont'},
       {'id':'aq_mf1',     'name':'aq_mf1',     'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_mf1.phont'},
+      {'id':'aq_momo1',   'name':'aq_momo1',   'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
       {'id':'aq_rb2',     'name':'aq_rb2',     'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_rb2.phont'},
       {'id':'aq_rb3',     'name':'aq_rb3',     'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_rb3.phont'},
       {'id':'aq_rm',      'name':'aq_rm',      'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_rm.phont'},
       {'id':'aq_robo',    'name':'aq_robo',    'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_robo.phont'},
+      {'id':'aq_teto1',   'name':'aq_teto1',   'path':unpacked_path + '/vendor/phont/aq_teto1.phont'},
+      {'id':'aq_yukkuri', 'name':'aq_yukkuri', 'path':unpacked_path + '/vendor/aqtk2-mac/phont/aq_yukkuri.phont'},
       {'id':'ar_f4',      'name':'ar_f4',      'path':unpacked_path + '/vendor/aqtk2-mac/phont/ar_f4.phont'},
       {'id':'ar_m5',      'name':'ar_m5',      'path':unpacked_path + '/vendor/aqtk2-mac/phont/ar_m5.phont'},
       {'id':'ar_mf2',     'name':'ar_mf2',     'path':unpacked_path + '/vendor/aqtk2-mac/phont/ar_mf2.phont'},
