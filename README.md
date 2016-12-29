@@ -10,8 +10,8 @@ macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に
 http://www.a-quest.com/
 
 ## 開発ステータス
-* 開発中
-* AquesTalk評価版使用中
+* AquesTalk正式版に置き換え
+* アプリの安定性向上作業中
 
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
