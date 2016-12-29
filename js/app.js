@@ -1,5 +1,6 @@
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer
+var clipboard = require('electron').clipboard
 var util = require('util');
 var path = require('path');
 var log = require('electron-log');
@@ -44,6 +45,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           break;
         case 'record':
           document.getElementById('record').click();
+          break;
+        case 'from_clipboard':
+          document.getElementById('from_clipboard').click();
           break;
         case 'move_to_source':
           document.getElementById('source').focus();
@@ -283,7 +287,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         IntroService.shortcut();
       } else {
         $scope.display = 'main';
-        MessageService.info('標準の画面に切り替えます');
+        MessageService.info('標準の画面に切り替えます。');
         $timeout(function(){
           $scope.$apply();
           IntroService.shortcut();
@@ -337,6 +341,16 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       MessageService.action('clear input text.');
       $scope.yinput.source = '';
       $scope.yinput.encoded = '';
+    };
+    ctrl.from_clipboard = function() {
+      MessageService.action('paste clipboard text to source.');
+      var text = clipboard.readText();
+      if (text) {
+        $scope.yinput.source = text;
+        $scope.yinput.encoded = '';
+      } else {
+        MessageService.info('クリップボードにデータがありません。');
+      }
     };
     ctrl.directory = function() {
       MessageService.action('select directory.');

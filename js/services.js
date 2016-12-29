@@ -200,7 +200,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     return {
       encode: function(source) {
         if (!source) {
-          MessageService.syserror('音記号列に変換するメッセージが入力されていません');
+          MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
           return '';
         }
 
@@ -231,7 +231,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       wave: function(encoded, phont, speed, volume) {
         var d = $q.defer();
         if (!encoded) {
-          MessageService.syserror('音記号列が入力されていません');
+          MessageService.syserror('音記号列が入力されていません。');
           d.reject(null); return d.promise;
         }
         fs.readFile(phont.path, function(err, phont_data) {
@@ -267,14 +267,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
     return {
       play: function(buf_wav) {
         if (!buf_wav) {
-          MessageService.syserror('再生する音源が渡されませんでした');
+          MessageService.syserror('再生する音源が渡されませんでした。');
           return null;
         }
         if (audio) { audio.pause(); }
 
         temp.open('_myukkurivoice', function(err, info) {
           if (err) {
-            MessageService.syserror('一時作業ファイルを作れませんでした');
+            MessageService.syserror('一時作業ファイルを作れませんでした。');
             return;
           }
 
@@ -284,6 +284,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
               return;
             }
             audio = new Audio(info.path);
+            audio.autoplay = false;
+            audio.volume
             audio.play();
           });
         });
@@ -294,11 +296,11 @@ angular.module('yvoiceService', ['yvoiceModel'])
       },
       record: function(wav_file_path, buf_wav) {
         if (!wav_file_path) {
-          MessageService.syserror('音声ファイルの保存先が指定されていません');
+          MessageService.syserror('音声ファイルの保存先が指定されていません。');
           return;
         }
         if (!buf_wav) {
-          MessageService.syserror('保存する音源が渡されませんでした');
+          MessageService.syserror('保存する音源が渡されませんでした。');
           return;
         }
 
@@ -331,7 +333,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     return {
       play: function(buf_wav) {
         if (!buf_wav) {
-          MessageService.syserror('再生する音源が渡されませんでした');
+          MessageService.syserror('再生する音源が渡されませんでした。');
           return null;
         }
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
@@ -359,11 +361,11 @@ log.debug('after AudioContext.decodeAudioData');
       },
       record: function(wav_file_path, buf_wav) {
         if (!wav_file_path) {
-          MessageService.syserror('音声ファイルの保存先が指定されていません');
+          MessageService.syserror('音声ファイルの保存先が指定されていません。');
           return;
         }
         if (!buf_wav) {
-          MessageService.syserror('保存する音源が渡されませんでした');
+          MessageService.syserror('保存する音源が渡されませんでした。');
           return;
         }
 
@@ -392,7 +394,7 @@ log.debug('after AudioContext.decodeAudioData');
       save: function(file_path, source_text) {
         fs.writeFile(file_path, source_text, 'utf-8', function(err) {
           if (err) {
-            MessageService.syserror('メッセージファイルの書き込みに失敗しました', err);
+            MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
             return;
           }
           MessageService.info('メッセージファイルを保存しました。path: ' + file_path);
@@ -582,6 +584,10 @@ log.debug('after AudioContext.decodeAudioData');
             {
               element: '#encode',
               intro: 'Command + → で音記号列へ変換'
+            },
+            {
+              element: '#from_clipboard',
+              intro: 'Command + D でクリップボードに入っているテキストをメッセージ入力欄にコピーします'
             },
             {
               element: '#sidebar-items',

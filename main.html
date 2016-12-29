@@ -96,8 +96,10 @@
         <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()">
           <span class="icon icon-trash"></span>入力クリア
         </button>
+        <button class="btn btn-large btn-default" id="from_clipboard" ng-click="ctrl.from_clipboard()">
+          <span class="icon icon-clipboard"></span>クリップボードから貼付
+        </button>
       </div>
-
       <div class="form-group">
         <!-- <label>Encoded</label> -->
         <textarea class="form-control" id="encoded" rows="5" ng-model="yinput.encoded" placeholder="音記号列入力欄"></textarea>

@@ -79,6 +79,9 @@ app.on('ready', function() {
   var r = localShortcut.register('Command+Right', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
   });
+  var r = localShortcut.register('Command+D', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'from_clipboard'); }
+  });
   var r = localShortcut.register('Command+Left', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_next_config'); }
   });
@@ -154,6 +157,13 @@ app.on('ready', function() {
           label:'入力をクリア',
           click () {
             if (mainWindow) { mainWindow.webContents.send('menu', 'clear'); }
+          }
+        },
+        {
+          label:'クリップボードからコピー',
+          accelerator: 'Command+D',
+          click () {
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'from_clipboard'); }
           }
         },
         { type: 'separator' },
