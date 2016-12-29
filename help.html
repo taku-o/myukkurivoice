@@ -26,6 +26,9 @@
       <span class="nav-group-item" ng-class="{active:display == 'trouble'}" ng-click="display='trouble'">
         <span class="icon icon-help-circled"></span>トラブルシューティング
       </span>
+      <span class="nav-group-item" ng-class="{active:display == 'uninstall'}" ng-click="display='uninstall'">
+        <span class="icon icon-help-circled"></span>アンインストールするには
+      </span>
       <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
@@ -51,7 +54,7 @@
     </div>
   </div>
 
-  <!-- contact -->
+  <!-- shortcut -->
   <div class="pane" ng-show="display == 'shortcut'">
     <div class="content">
       <h4>ショートカットキー</h4>
@@ -154,6 +157,19 @@
       <h4>アプリが落ちる</h4>
       <p>
         ごめんなさい。
+      </p>
+    </div>
+  </div>
+
+  <!-- uninstall -->
+  <div class="pane" ng-show="display == 'uninstall'">
+    <div class="content">
+      <h4>アンインストールするには</h4>
+      <p>
+        <ul>
+          <li>アプリケーションを削除してください</li>
+          <li>"$HOME/Library/Application Support/myukkurivoice/" を削除してください</li>
+        </ul>
       </p>
     </div>
   </div>
