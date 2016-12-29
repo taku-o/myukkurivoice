@@ -21,24 +21,24 @@
   <div class="toolbar-actions">
     <div class="btn-group" id="btn-group-audio">
       <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()">
-        <span class="icon icon-play"></span>voice play
+        <span class="icon icon-play"></span>再生
       </button>
       <button class="btn btn-large btn-default" id="stop" ng-click="ctrl.stop()">
-        <span class="icon icon-stop"></span>voice stop
+        <span class="icon icon-stop"></span>停止
       </button>
       <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()">
-        <span class="icon icon-record"></span>record voice
+        <span class="icon icon-record"></span>記録
       </button>
     </div>
     <div class="btn-group pull-right">
       <button class="btn btn-large btn-default" id="help" ng-click="ctrl.help()">
-        <span class="icon icon-help-circled"></span>help window
+        <span class="icon icon-help-circled"></span>ヘルプ
       </button>
       <button class="btn btn-large btn-default" id="shortcut" ng-click="ctrl.shortcut()">
-        <span class="icon icon-help-circled"></span>shortcut help
+        <span class="icon icon-help-circled"></span>ショートカットヘルプ
       </button>
       <button class="btn btn-large btn-default" id="tutorial" ng-click="ctrl.tutorial()">
-        <span class="icon icon-help-circled"></span>{{display=="main"? "run basic tutorial": "run settigns tutorial"}}
+        <span class="icon icon-help-circled"></span>{{display=="main"? "チュートリアル(通常)": "チュートリアル(設定)"}}
       </button>
     </div>
   </div>
@@ -49,7 +49,7 @@
   <div class="pane-sm sidebar">
     <ul class="list-group" id="sidebar-items">
       <li class="list-group-header">
-        <input class="form-control" type="text" ng-model='filter_text.name' placeholder="Search Configuration">
+        <input class="form-control" type="text" ng-model='filter_text.name' placeholder="設定一覧絞り込み">
       </li>
       <li class="list-group-item" ng-repeat="yvoice_item in yvoice_list | filter:filter_text track by yvoice_item.id" ng-class="{active:yvoice_item.id == yvoice.id}">
         <div class="media-body" ng-click="ctrl.select($index)">
@@ -67,10 +67,10 @@
       <li class="list-group-footer">
         <div class="btn-group pull-right">
           <button class="btn btn-large btn-default pull-right" id="plus" ng-click="ctrl.plus()">
-            <span class="icon icon-plus-squared"></span>add config
+            <span class="icon icon-plus-squared"></span>設定追加
           </button>
           <button class="btn btn-large btn-default" id="save" ng-click="ctrl.save()">
-            <span class="icon icon-install"></span>save config
+            <span class="icon icon-install"></span>設定保存
           </button>
         </div>
       </li>
@@ -81,26 +81,26 @@
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
-        <input type="text" class="form-control" id="name" ng-model="yvoice.name" placeholder="name">
+        <input type="text" class="form-control" id="name" ng-model="yvoice.name" placeholder="設定名称">
       </div>
 
       <div class="form-group">
         <!-- <label>Source</label> -->
-        <textarea class="form-control" id="source" rows="5" ng-model="yinput.source" placeholder="source text"></textarea>
+        <textarea class="form-control" id="source" rows="5" ng-model="yinput.source" placeholder="メッセージ入力欄"></textarea>
       </div>
 
       <div class="form-inline form-group btn-group-convert">
         <button class="btn btn-large btn-default" id="encode" ng-click="ctrl.encode()">
-          <span class="icon icon-down-bold"></span>encode input
+          <span class="icon icon-down-bold"></span>音記号列に変換
         </button>
         <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()">
-          <span class="icon icon-trash"></span>clear input
+          <span class="icon icon-trash"></span>入力クリア
         </button>
       </div>
 
       <div class="form-group">
         <!-- <label>Encoded</label> -->
-        <textarea class="form-control" id="encoded" rows="5" ng-model="yinput.encoded" placeholder="encoded text"></textarea>
+        <textarea class="form-control" id="encoded" rows="5" ng-model="yinput.encoded" placeholder="音記号列入力欄"></textarea>
       </div>
 
       <div class="form-inline form-group">
@@ -121,7 +121,7 @@
 
       <div class="form-inline form-group">
         <input type="range" min="50" max="300" id="speed" ng-model="yvoice.speed">
-        <label>speed:{{yvoice.speed}}</label>
+        <label>再生速度:{{yvoice.speed}}</label>
       </div>
       <!--
       <div class="form-inline form-group">
@@ -132,7 +132,7 @@
 
       <div class="form-group">
         <button class="btn btn-large btn-default pull-right switch-view" id="switch-settings-view" ng-click="ctrl.switch_settings_view()">
-          <span class="icon icon-shuffle"></span>switch to settings view
+          <span class="icon icon-shuffle"></span>設定画面に切替
         </button>
       </div>
     </form>
@@ -165,7 +165,7 @@
       <div class="source_write_box" id="source_write_box">
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="yvoice.source_write">write text file at recording
+            <input type="checkbox" ng-model="yvoice.source_write">音声記録時にテキストファイルにメッセージを書き出す
           </label>
         </div>
       </div>
@@ -173,24 +173,24 @@
       <div class="seq_write_box" id="seq_write_box">
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="yvoice.seq_write">use numbering file
+            <input type="checkbox" ng-model="yvoice.seq_write">連番ファイル出力機能を使用する
           </label>
         </div>
         <div class="form-group" ng-show="yvoice.seq_write">
           <!-- <label>file name prefix</label> -->
-          <input type="text" class="form-control" id="prefix" ng-model="yvoice.seq_write_options.prefix" placeholder="file name prefix">
+          <input type="text" class="form-control" id="prefix" ng-model="yvoice.seq_write_options.prefix" placeholder="ファイル名のプレフィックス">
         </div>
         <div class="form-group" ng-show="yvoice.seq_write">
           <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
-            <span class="icon icon-folder"></span>directory select
+            <span class="icon icon-folder"></span>出力先ディレクトリ選択
           </button>
-          dir: {{yvoice.seq_write_options.dir || 'use home directory if not selected'}}
+          dir: {{yvoice.seq_write_options.dir || '未選択時はホームディレクトリを使用します'}}
         </div>
       </div>
 
       <div class="form-group">
         <button class="btn btn-large btn-default pull-right switch-view" id="switch-main-view" ng-click="ctrl.switch_main_view()">
-          <span class="icon icon-shuffle"></span>switch to main view
+          <span class="icon icon-shuffle"></span>標準の画面に切替
         </button>
       </div>
     </form>
