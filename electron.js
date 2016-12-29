@@ -35,27 +35,8 @@ app.on('window-all-closed', function() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 850,
-    height: 700,
-    webPreferences: {
-      devTools: debug
-    }
-  });
-  mainWindow.loadURL('file://' + __dirname + '/main.html');
-
-  // main window event
-  mainWindow.on('closed', function() {
-    // dereference global reference
-    mainWindow = null;
-  });
-  mainWindow.on('unresponsive', function() {
-    log.warn('main:event:unresponsive');
-  });
-  mainWindow.webContents.on('crashed', function() {
-    log.error('main:event:crashed');
-  });
+  // open main window.
+  showMainWindow();
 
   // shortcut
   var r = localShortcut.register('Command+Q', function() {
@@ -338,6 +319,36 @@ ipcMain.on('showDirDialog', function (event, defaultPath) {
 ipcMain.on('showHelpWindow', function (event, message) {
   showHelpWindow();
 });
+
+// main window
+function showMainWindow() {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.show();
+    return;
+  }
+
+  mainWindow = new BrowserWindow({
+    width: 850,
+    height: 700,
+    webPreferences: {
+      devTools: debug
+    }
+  });
+  mainWindow.loadURL('file://' + __dirname + '/main.html');
+
+  // main window event
+  mainWindow.on('closed', function() {
+    // dereference global reference
+    mainWindow = null;
+  });
+  mainWindow.on('unresponsive', function() {
+    log.warn('main:event:unresponsive');
+  });
+  mainWindow.webContents.on('crashed', function() {
+    log.error('main:event:crashed');
+  });
+}
+
 // help window
 function showHelpWindow() {
   if (helpWindow && !helpWindow.isDestroyed()) {
