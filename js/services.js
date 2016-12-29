@@ -369,10 +369,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var a_buffer = to_array_buffer(buf_wav);
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
+            // source
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = decodedData;
+            // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = 1;
+            // connect and start
             sourceNode.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             sourceNode.start(0);
