@@ -253,7 +253,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
           MessageService.syserror('音記号列が入力されていません。');
           d.reject(null); return d.promise;
         }
-        //log.debub(phont.path);
+
         fs.readFile(phont.path, function(err, phont_data) {
           if (err) {
             MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
@@ -270,17 +270,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
           }
 
           var buf_wav = ref.reinterpret(r, alloc_int.deref(), 0);
-          //var s = buf_wav.toString('ascii');
-          //log.debug('--------------------');
-          //log.debug('(wave)=', s[0], s[1], s[2], s[3], s[4]);
-
           ptr_waves.push(r);
           d.resolve(buf_wav);
         });
         return d.promise;
       },
       free_wave: function() {
-        //log.debug('free_wave');
         angular.forEach(ptr_waves, function(ptr) {
           fn_AquesTalk2_FreeWave(ptr);
         });
@@ -294,8 +289,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
     return {
       play: function(buf_wav) {
-        //var s = buf_wav.toString('ascii');
-        //log.debug('(pre play)=', s[0], s[1], s[2], s[3], s[4]);
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -309,8 +302,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
             d.reject(null); return;
           }
 
-          //var s = buf_wav.toString('ascii');
-          //log.debug('(play)=', s[0], s[1], s[2], s[3], s[4]);
           fs.writeFile(info.path, buf_wav, function(err) {
             if (err) {
               MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
@@ -330,8 +321,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
         audio.pause();
       },
       record: function(wav_file_path, buf_wav) {
-        //var s = buf_wav.toString('ascii');
-        //log.debug('(pre record)=', s[0], s[1], s[2], s[3], s[4]);
         var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -354,11 +343,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AudioService2', ['MessageService', function(MessageService) {
+  .factory('AudioService2', ['$q', 'MessageService', function($q, MessageService) {
     // Web Audio API base AudioService
-    // * 音声を加工できるが、安定していない
-    // * 音が割れる時がある
-    var audioCtx = null;
+    var audioCtx = new window.AudioContext();
     var sourceNode = null;
 
     function to_array_buffer(buf_wav) {
@@ -372,39 +359,44 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
     return {
       play: function(buf_wav) {
+        var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
-          return null;
+          d.reject(null); return d.promise;
         }
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
-        if (audioCtx) { audioCtx.close(); audioCtx = null; }
 
         var a_buffer = to_array_buffer(buf_wav);
-        var audioCtx = new window.AudioContext();
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = decodedData;
-            sourceNode.connect(audioCtx.destination);
+            var gainNode = audioCtx.createGain();
+            gainNode.gain.value = 1;
+            sourceNode.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
             sourceNode.start(0);
+            d.resolve('ok'); return;
           },
           function(err) {
             MessageService.syserror('音源の再生に失敗しました。', err);
+            d.reject(err); return;
           }
         );
+        return d.promise;
       },
       stop: function() {
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
-        if (audioCtx) { audioCtx.close(); audioCtx = null; }
       },
       record: function(wav_file_path, buf_wav) {
+        var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
-          return;
+          d.reject(null); return d.promise;
         }
         if (!buf_wav) {
           MessageService.syserror('保存する音源が渡されませんでした。');
-          return;
+          d.reject(null); return d.promise;
         }
 
         // TODO Web Audio API ベースに変更
@@ -414,7 +406,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
             return;
           }
           MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+          d.resolve('ok');
         });
+        return d.promise;
       }
     }
   }])

@@ -171,8 +171,6 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       AquesService.wave(encoded, phont, speed, volume).then(
         function(buf_wav) {
-          //var s = buf_wav.toString('ascii');
-          //log.debug('(app wave then)=', s[0], s[1], s[2], s[3], s[4]);
           return AudioService.play(buf_wav);
         },
         function(err) {
