@@ -10,8 +10,9 @@ macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に
 http://www.a-quest.com/
 
 ## 開発ステータス
-* AquesTalk正式版に置き換え
-* AquesTalk1が最新のOSで動作しない？(ゆっくり霊夢の声が含まれる)
+* アプリの公開許可を申請中
+* AquesTalk2の音声の再生に対応
+* AquesTalk1の音声の再生は未対応
 
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
