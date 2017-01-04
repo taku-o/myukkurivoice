@@ -1,6 +1,7 @@
 # 0.1.5 (WIP)
 * phontを3つ追加。
 * AquesTalk 1に対応開始
+* vendorディレクトリの構造を変更
 
 # 0.1.4
 * AquesTalkライブラリを正式版に置き換え
