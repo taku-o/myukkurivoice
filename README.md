@@ -10,7 +10,7 @@ macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に
 http://www.a-quest.com/
 
 ## 開発ステータス
-* アプリの公開許可を申請中
+* アプリ公開
 * AquesTalk2の音声の再生に対応
 * AquesTalk1の音声の再生は未対応
 
