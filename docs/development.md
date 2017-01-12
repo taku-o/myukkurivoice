@@ -29,6 +29,7 @@
 ## install electron command
     npm -g install electron-prebuilt
     npm -g install electron-packager
+    npm -g install electron-osx-sign
 
 ## using library
 node_modules以下に入っているので、このコマンドは実行しなくて良い。  
