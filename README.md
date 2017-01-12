@@ -17,6 +17,10 @@ http://www.a-quest.com/
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
 
+## インストール
+https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukkurivoice-darwin-x64.zip)をダウンロードして解凍後、  
+初回の起動は myukkurivoice.app を右クリックして「開く」を選択してください。
+
 ## 主な特徴
 ### 基本
 * MacOSX Sierra以降で動作検証。
