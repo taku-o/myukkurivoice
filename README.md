@@ -44,3 +44,7 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-tutorial.png" width="400">
 
+## 動画
+[![](http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg)](https://www.youtube.com/watch?v=DUbXHZrW1Ms)
+
+
