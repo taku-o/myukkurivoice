@@ -3,8 +3,8 @@ angular.module('yvoiceModel', [])
   .factory('YVoice', function() {
     return {
       'id': null,
-      'name': 'aq_yukkuri',
-      'phont': 'aq_yukkuri',
+      'name': 'at1_f1',
+      'phont': 'at1_f1',
       //'effect': 2,
       //'intonation': true,
       'speed': 100,
@@ -22,7 +22,7 @@ angular.module('yvoiceModel', [])
       {
         'id': 'sample_1',
         'name': 'サンプル設定1',
-        'phont': 'aq_yukkuri',
+        'phont': 'at1_f1',
         'speed': 100,
         'volume': 100,
         'source_write': false,
@@ -35,7 +35,7 @@ angular.module('yvoiceModel', [])
       {
         'id': 'sample_2',
         'name': 'サンプル設定2',
-        'phont': 'aq_f1c',
+        'phont': 'aq_yukkuri',
         'speed': 100,
         'volume': 100,
         'source_write': false,
@@ -48,7 +48,7 @@ angular.module('yvoiceModel', [])
       {
         'id': 'sample_3',
         'name': 'サンプル設定3',
-        'phont': 'aq_f3a',
+        'phont': 'aq_f1c',
         'speed': 100,
         'volume': 100,
         'source_write': false,
@@ -68,7 +68,7 @@ angular.module('yvoiceModel', [])
   })
   .factory('YInputInitialData', function() {
     return {
-      'source': 'MYukkuriVoiceへようこそ',
-      'encoded': "ヌイウックリボ'イスエ+ヨ'ーコソ。"
+      'source': 'エムユックリボイスへようこそ。ゆっくりしていってね！',
+      'encoded': "エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、"
     }
   });

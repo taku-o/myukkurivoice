@@ -259,16 +259,15 @@ angular.module('yvoiceService', ['yvoiceModel'])
             env: {
               VOICE: phont.id_voice,
               SPEED: speed
-            }
+            },
+            encoding: 'binary'
           };
           exec('echo "'+ escaped +'" | ./vendor/maquestalk1', cmd_options, (err, stdout, stderr) => {
-          //exec('echo "'+ escaped +'" | ./vendor/echo.sh', cmd_options, (err, stdout, stderr) => {
             if (err) {
-              log.info(err);
-              log.info(stderr);
-              //MessageService.syserror(error_table_AquesTalk2(err));
+              // TODO create message from status code
+              MessageService.syserror('音声の生成に失敗しました。', err);
               //log.info('AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(err));
-              //d.reject(null); return;
+              d.reject(null); return;
             }
             buf_wav = new Buffer(stdout, 'binary');
             d.resolve(buf_wav);
@@ -535,6 +534,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
             {
               element: '#play',
               intro: '音記号列を発声させます'
+            },
+            {
+              element: '#source',
+              intro: '音声再生時に音記号列が入力されていない場は、ここに入力したメッセージから音声を作るので<br>音記号列は入力しなくても問題ありません'
             },
             {
               element: '#stop',
