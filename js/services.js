@@ -270,8 +270,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
               //log.info('AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(err));
               //d.reject(null); return;
             }
-            console.log(stdout);
-            d.resolve(stdout);
+            buf_wav = new Buffer(stdout, 'binary');
+            d.resolve(buf_wav);
           });
 
         // version 2
