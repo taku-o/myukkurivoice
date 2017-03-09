@@ -264,13 +264,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
           };
           exec('echo "'+ escaped +'" | ./vendor/maquestalk1', cmd_options, (err, stdout, stderr) => {
             if (err) {
-              // TODO create message from status code
-              MessageService.syserror('音声の生成に失敗しました。', err);
-              //log.info('AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(err));
               d.reject(null); return;
             }
             buf_wav = new Buffer(stdout, 'binary');
             d.resolve(buf_wav);
+          }).on('close', (status_code) => {
+            if (status_code < 0) {
+              var error_code = status_code * -1; // maquestalk1 library result
+              MessageService.syserror(error_table_AquesTalk2(error_code));
+              log.info('AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(error_code));
+            }
           });
 
         // version 2
@@ -283,10 +286,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
             var alloc_int = ref.alloc('int');
             var r = fn_AquesTalk2_Synthe_Utf8(encoded, speed, alloc_int, phont_data);
-            if (r == ref.NULL) {
+            if (ref.isNull(r)) {
               var error_code = alloc_int.deref();
-              MessageService.syserror(error_table_AquesTalk2(r));
-              log.info('fn_AquesTalk2_Synthe_Utf8 raise error. error_code:' + error_table_AquesTalk2(r));
+              MessageService.syserror(error_table_AquesTalk2(error_code));
+              log.info('fn_AquesTalk2_Synthe_Utf8 raise error. error_code:' + error_table_AquesTalk2(error_code));
               d.reject(null); return;
             }
 
