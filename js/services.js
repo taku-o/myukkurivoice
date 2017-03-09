@@ -1,12 +1,11 @@
 var storage = require('electron-json-storage');
-var log = require('electron-log');
-var fs = require('fs');
-var ffi = require('ffi');
-var ref = require('ref');
-var temp = require('temp').track();
-var path = require('path');
-var exec= require('child_process').exec;
-var encoding = require('encoding-japanese');
+var log     = require('electron-log');
+var fs      = require('fs');
+var ffi     = require('ffi');
+var ref     = require('ref');
+var temp    = require('temp').track();
+var path    = require('path');
+var exec    = require('child_process').exec;
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
@@ -253,29 +252,26 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         // version 1
         if (phont.version == 'talk1') {
-          // convert to shift jis string
-          var sjis_encoded = encoding.convert(encoded, {
-            to: 'SJIS',
-            type: 'string'
-          })
+          // escape text
+          var escaped = '"'+ encoded.replace(/(["\s'$`\\])/g,'\\$1')+'"';
 
           var cmd_options = {
-            'env': {
-              'VOICE': phont.id_voice,
-              'SPEED': speed
+            env: {
+              VOICE: phont.id_voice,
+              SPEED: speed
             }
           };
-
-          //exec('echo "sjis_encoded" | ./vendor/maquestalk1', cmd_options, (err, stdout, stderr) => {
-          exec('echo "'+ sjis_encoded +'" | ./vendor/echo.sh', cmd_options, (err, stdout, stderr) => {
+          exec('echo "'+ escaped +'" | ./vendor/maquestalk1', cmd_options, (err, stdout, stderr) => {
+          //exec('echo "'+ escaped +'" | ./vendor/echo.sh', cmd_options, (err, stdout, stderr) => {
             if (err) {
               log.info(err);
-              MessageService.syserror(error_table_AquesTalk2(err));
-              log.info('AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(err));
-              d.reject(null); return;
+              log.info(stderr);
+              //MessageService.syserror(error_table_AquesTalk2(err));
+              //log.info('AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(err));
+              //d.reject(null); return;
             }
-            //d.resolve(stdout);
-            log.info(stdout);
+            console.log(stdout);
+            d.resolve(stdout);
           });
 
         // version 2

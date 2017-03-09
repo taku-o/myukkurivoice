@@ -14,7 +14,6 @@
     "electron-json-storage": "^2.1.0",
     "electron-localshortcut": "^1.0.0",
     "electron-log": "^1.2.2",
-    "encoding-japanese": "^1.0.25",
     "ffi": "^2.2.0",
     "intro.js": "^2.4.0",
     "photon": "git+https://github.com/connors/photon.git",
