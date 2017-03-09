@@ -1,17 +1,16 @@
 # 開発用の情報
 ## vendor
 * vendorディレクトリにAquesTalkのライブラリを入れる必要があります。
-* ディレクトリ構成 (評価版)
+* ディレクトリ構成
 
 ```
   vendor
-    +-- aqk2k_mac_eva
-    |     + AqKanji2KoeEva.framework
-    |     + aq_dic
-    |
-    +-- aqtk2-mac-eva
-          + AquesTalk2Eva.framework
-          + phont
+    +-- AqKanji2Koe.framework AquesTalkフレームワーク
+    +-- AquesTalk2.framework  AquesTalkフレームワーク
+    +-- AquesTalk.framework   AquesTalkフレームワーク
+    +-- phont                 AquesTalk音声設定
+    +-- aq_dic_large          AquesTalk辞書
+    +-- maquestalk1           AquesTalk1フレームワークbridge
 ```
 
     git submodule init
@@ -32,7 +31,7 @@
     npm -g install electron-osx-sign
 
 ## using library
-node_modules以下に入っているので、このコマンドは実行しなくて良い。  
+node_modules以下に入っているので、このコマンドは実行しなくて良い。
 
     npm install --save angular
     npm install --save https://github.com/connors/photon
