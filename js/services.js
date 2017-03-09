@@ -5,6 +5,8 @@ var ffi = require('ffi');
 var ref = require('ref');
 var temp = require('temp').track();
 var path = require('path');
+var exec= require('child_process').exec;
+var encoding = require('encoding-japanese');
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
@@ -112,14 +114,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      //{'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1', 'id_voice':0},
-      //{'id':'at1_f2',     'name':'f2 女声2',           'version':'talk1', 'id_voice':2},
-      //{'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1', 'id_voice':1},
-      //{'id':'at1_m2',     'name':'m2 男声2',           'version':'talk1', 'id_voice':3},
-      //{'id':'at1_r1',     'name':'r1 ロボット1',       'version':'talk1', 'id_voice':4},
-      //{'id':'at1_imd1',   'name':'IMD1',               'version':'talk1', 'id_voice':5},
-      //{'id':'at1_dvd',    'name':'DVD',                'version':'talk1', 'id_voice':6},
-      //{'id':'at1_jgr',    'name':'JGR',                'version':'talk1', 'id_voice':7},
+      {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1', 'id_voice':0},
+      {'id':'at1_f2',     'name':'f2 女声2',           'version':'talk1', 'id_voice':2},
+      {'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1', 'id_voice':1},
+      {'id':'at1_m2',     'name':'m2 男声2',           'version':'talk1', 'id_voice':3},
+      {'id':'at1_r1',     'name':'r1 ロボット1',       'version':'talk1', 'id_voice':4},
+      {'id':'at1_imd1',   'name':'IMD1',               'version':'talk1', 'id_voice':5},
+      {'id':'at1_dvd',    'name':'DVD',                'version':'talk1', 'id_voice':6},
+      {'id':'at1_jgr',    'name':'JGR',                'version':'talk1', 'id_voice':7},
       {'id':'aq_f1c',     'name':'f1c 女声',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
       {'id':'aq_f3a',     'name':'f3a 女声',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_f3a.phont'},
       {'id':'aq_huskey',  'name':'huskey ハスキー',    'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_huskey.phont'},
@@ -177,14 +179,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, [ 'string', 'int', ptr_int, ptr_void ]);
     var fn_AquesTalk2_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk2_FreeWave, 'void', [ ptr_uchar ]);
 
-    // unsigned char * AquesTalk_SyntheMV(int idVoice, const char *koe, int iSpeed, int * size)
-    // void AquesTalk_FreeWave(unsigned char *wav)
-    //var framework_path = unpacked_path + '/vendor/aqtk1-mac-eva/AquesTalkEva.framework/Versions/A/AquesTalkEva';
-    //var ptr_AquesTalk_SyntheMV = ffi.DynamicLibrary(framework_path).get('AquesTalk_SyntheMV');
-    //var ptr_AquesTalk_FreeWave = ffi.DynamicLibrary(framework_path).get('AquesTalk_FreeWave');
-    //var fn_AquesTalk_SyntheMV  = ffi.ForeignFunction(ptr_AquesTalk_SyntheMV, ptr_uchar, [ 'int', 'string', 'int', ptr_int ]);
-    //var fn_AquesTalk_FreeWave  = ffi.ForeignFunction(ptr_AquesTalk_FreeWave, 'void', [ ptr_uchar ]);
-
     function error_table_AqKanji2Koe(code) {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
       if (code == 105)               { return '入力テキストが長すぎる'; }
@@ -218,7 +212,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
     }
 
     // will released data
-    var ptr1_waves = [];
     var ptr2_waves = [];
 
     return {
@@ -260,21 +253,30 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         // version 1
         if (phont.version == 'talk1') {
-          // TODO to convert shift jis
-          var s_encoded = encoded;
+          // convert to shift jis string
+          var sjis_encoded = encoding.convert(encoded, {
+            to: 'SJIS',
+            type: 'string'
+          })
 
-          var alloc_int = ref.alloc('int');
-          var r = fn_AquesTalk_SyntheMV(phont.id_voice, s_encoded, speed, alloc_int, phont_data);
-          if (r == ref.NULL) {
-            var error_code = alloc_int.deref();
-            MessageService.syserror(error_table_AquesTalk2(r));
-            log.info('fn_AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(r));
-            d.reject(null); return;
-          }
+          var cmd_options = {
+            'env': {
+              'VOICE': phont.id_voice,
+              'SPEED': speed
+            }
+          };
 
-          var buf_wav = ref.reinterpret(r, alloc_int.deref(), 0);
-          ptr1_waves.push(r);
-          d.resolve(buf_wav);
+          //exec('echo "sjis_encoded" | ./vendor/maquestalk1', cmd_options, (err, stdout, stderr) => {
+          exec('echo "'+ sjis_encoded +'" | ./vendor/echo.sh', cmd_options, (err, stdout, stderr) => {
+            if (err) {
+              log.info(err);
+              MessageService.syserror(error_table_AquesTalk2(err));
+              log.info('AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(err));
+              d.reject(null); return;
+            }
+            //d.resolve(stdout);
+            log.info(stdout);
+          });
 
         // version 2
         } else if (phont.version == 'talk2') {
@@ -301,10 +303,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
         return d.promise;
       },
       free_wave: function() {
-        angular.forEach(ptr1_waves, function(ptr) {
-          fn_AquesTalk_FreeWave(ptr);
-        });
-        ptr1_waves = [];
         angular.forEach(ptr2_waves, function(ptr) {
           fn_AquesTalk2_FreeWave(ptr);
         });

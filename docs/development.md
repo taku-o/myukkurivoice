@@ -43,6 +43,7 @@ node_modules以下に入っているので、このコマンドは実行しな�
     npm install --save ffi
     npm install --save intro.js
     npm install --save temp
+    npm install --save encoding-japanese
 
 ## アプリデバッグ実行
     DEBUG=1 electron .
