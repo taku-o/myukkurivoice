@@ -529,7 +529,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             },
             {
               element: '#encoded',
-              intro: 'すると、メッセージが音記号列に変換した結果が入ります'
+              intro: 'すると、メッセージが音記号列に変換した結果が入ります<br>細かい発声の調節をする時はここを変更します'
             },
             {
               element: '#play',
