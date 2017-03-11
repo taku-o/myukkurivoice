@@ -256,7 +256,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
             },
             encoding: 'binary'
           };
-          exec('echo "'+ escaped +'" | VOICE='+ phont.id_voice+ ' SPEED='+ speed+ ' ./vendor/maquestalk1', cmd_options, (err, stdout, stderr) => {
+          var waver_cmd = unpacked_path + '/vendor/maquestalk1';
+          exec('echo "'+ escaped +'" | VOICE='+ phont.id_voice+ ' SPEED='+ speed+ ' '+ waver_cmd, cmd_options, (err, stdout, stderr) => {
             if (err) {
               d.reject(null); return;
             }
