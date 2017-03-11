@@ -114,13 +114,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
   .factory('MasterService', function() {
     var phont_list = [
       {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1', 'id_voice':0},
-      {'id':'at1_f2',     'name':'f2 女声2',           'version':'talk1', 'id_voice':2},
       {'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1', 'id_voice':1},
-      {'id':'at1_m2',     'name':'m2 男声2',           'version':'talk1', 'id_voice':3},
-      {'id':'at1_r1',     'name':'r1 ロボット1',       'version':'talk1', 'id_voice':4},
-      {'id':'at1_imd1',   'name':'IMD1',               'version':'talk1', 'id_voice':5},
-      {'id':'at1_dvd',    'name':'DVD',                'version':'talk1', 'id_voice':6},
-      {'id':'at1_jgr',    'name':'JGR',                'version':'talk1', 'id_voice':7},
       {'id':'aq_f1c',     'name':'f1c 女声',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
       {'id':'aq_f3a',     'name':'f3a 女声',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_f3a.phont'},
       {'id':'aq_huskey',  'name':'huskey ハスキー',    'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_huskey.phont'},
@@ -262,8 +256,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             },
             encoding: 'binary'
           };
-          var waver_cmd = unpacked_path + '/vendor/maquestalk1';
-          exec('echo "'+ escaped+ '" | ' + waver_cmd, cmd_options, (err, stdout, stderr) => {
+          exec('echo "'+ escaped +'" | VOICE='+ phont.id_voice+ ' SPEED='+ speed+ ' ./vendor/maquestalk1', cmd_options, (err, stdout, stderr) => {
             if (err) {
               d.reject(null); return;
             }
