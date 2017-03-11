@@ -12,7 +12,7 @@ http://www.a-quest.com/
 ## 開発ステータス
 * アプリ公開
 * AquesTalk2の音声の再生に対応
-* (もうすぐ) AquesTalk1の音声の再生に対応 (仮対応)
+* (対応がんばる) AquesTalk1の音声の再生に対応 (仮対応)
 
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
