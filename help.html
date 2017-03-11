@@ -23,6 +23,9 @@
       <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
+      <span class="nav-group-item" ng-class="{active:display == 'voicecode'}" ng-click="display='voicecode'">
+        <span class="icon icon-help-circled"></span>音声記号列
+      </span>
       <span class="nav-group-item" ng-class="{active:display == 'trouble'}" ng-click="display='trouble'">
         <span class="icon icon-help-circled"></span>トラブルシューティング
       </span>
@@ -111,6 +114,21 @@
     </div>
   </div>
 
+  <!-- voicecode -->
+  <div class="pane" ng-show="display == 'voicecode'">
+    <div class="content">
+      <h4>音声記号列</h4>
+      <p>
+        内部処理的には、音声を再生するAquesTalk用のコード、<br>
+        音声記号列(音記号列)を作り、<br>
+        それをAquesTalkのライブラリで再生しています。<br>
+        <br>
+        音声記号列の詳しい仕様は、<br>
+        <a ng-click="ctrl.browser('http://www.a-quest.com/download/index.html')">http://www.a-quest.com/download/index.html</a><br>
+        の「音声記号列仕様書」をご確認ください。<br>
+    </div>
+  </div>
+
   <!-- trouble -->
   <div class="pane" ng-show="display == 'trouble'">
     <div class="content">
@@ -118,8 +136,8 @@
       <p>
         音声の保存には手を抜いているところがあり、<br>
         よって、加工した音声を再生できるものの、それを保存できないので、<br>
-        今のところ対応していない。<br>
-        いずれ置き換える。
+        今のところ対応していません。<br>
+        いずれ置き換えます。
       </p>
 
       <h4>音声が再生されない時がある</h4>
