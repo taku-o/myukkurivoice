@@ -47,4 +47,6 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 ## 動画
 [![](http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg)](https://www.youtube.com/watch?v=DUbXHZrW1Ms)
 
+[![](http://img.youtube.com/vi/povuqyEl6L4/0.jpg)](https://www.youtube.com/watch?v=povuqyEl6L4)
+
 
