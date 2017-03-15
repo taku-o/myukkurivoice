@@ -439,13 +439,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var a_buffer = to_array_buffer(buf_wav);
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
-            // recorder
-            var WaveRecorder = require('wave-recorder');
-            var recorder = WaveRecorder(audioCtx, {
-              channels: 2,
-              bitDepth: 32
-            });
-            recorder.pipe(fs.createWriteStream(wav_file_path));
+            var recorder;
 
             // source
             sourceNode = audioCtx.createBufferSource();
@@ -457,11 +451,18 @@ angular.module('yvoiceService', ['yvoiceModel'])
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = 1;
+            // recorder
+            var WaveRecorder = require('wave-recorder');
+            recorder = WaveRecorder(audioCtx, {
+              channels: 2,
+              bitDepth: 32
+            });
+            recorder.pipe(fs.createWriteStream(wav_file_path));
 
             // connect and start
             sourceNode.connect(gainNode);
             gainNode.connect(recorder.input);
-           // gainNode.connect(audioCtx.destination);
+            //gainNode.connect(audioCtx.destination);
             sourceNode.start(0);
 
             d.resolve('ok'); return;
