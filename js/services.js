@@ -1,11 +1,12 @@
-var storage = require('electron-json-storage');
-var log     = require('electron-log');
-var fs      = require('fs');
-var ffi     = require('ffi');
-var ref     = require('ref');
-var temp    = require('temp').track();
-var path    = require('path');
-var exec    = require('child_process').exec;
+var storage      = require('electron-json-storage');
+var log          = require('electron-log');
+var fs           = require('fs');
+var ffi          = require('ffi');
+var ref          = require('ref');
+var temp         = require('temp').track();
+var path         = require('path');
+var exec         = require('child_process').exec;
+var WaveRecorder = require('wave-recorder');
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
@@ -398,6 +399,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = 1;
+
             // connect and start
             sourceNode.connect(gainNode);
             gainNode.connect(audioCtx.destination);
@@ -425,17 +427,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
           d.reject(null); return d.promise;
         }
 
-        //// TODO Web Audio API ベースに変更
-        //fs.writeFile(wav_file_path, buf_wav, function(err) {
-        //  if (err) {
-        //    MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
-        //    return;
-        //  }
-        //  MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
-        //  d.resolve('ok');
-        //});
-
-
         var a_buffer = to_array_buffer(buf_wav);
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
@@ -445,16 +436,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = decodedData;
             sourceNode.onended = function() {
-              // do nothing
               recorder.end();
+              MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+              d.resolve('ok');
             };
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = 1;
             // recorder
-            var WaveRecorder = require('wave-recorder');
             recorder = WaveRecorder(audioCtx, {
-              channels: 2,
+              channels: 1,
               bitDepth: 32
             });
             recorder.pipe(fs.createWriteStream(wav_file_path));
@@ -462,18 +453,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
             // connect and start
             sourceNode.connect(gainNode);
             gainNode.connect(recorder.input);
-            //gainNode.connect(audioCtx.destination);
             sourceNode.start(0);
-
-            d.resolve('ok'); return;
           },
           function(err) {
             MessageService.syserror('音源の再生に失敗しました。', err);
             d.reject(err); return;
           }
         );
-
-
         return d.promise;
       }
     }
