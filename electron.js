@@ -329,7 +329,7 @@ function showMainWindow() {
 
   mainWindow = new BrowserWindow({
     width: 850,
-    height: 735,
+    height: 700,
     webPreferences: {
       devTools: debug
     }
