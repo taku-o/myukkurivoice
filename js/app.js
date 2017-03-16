@@ -21,7 +21,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   }])
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
-     'AudioService2', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
+     'AudioService', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
     function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
              AudioService, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
 
