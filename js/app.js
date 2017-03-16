@@ -258,7 +258,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           AquesService.wave(encoded, phont, speed, volume)
             .then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav, volume).finally(function() {
+                AudioService.record(file_path, buf_wav, volume, playback_rate).finally(function() {
                   AquesService.free_wave();
                 });
                 return file_path;

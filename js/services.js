@@ -396,8 +396,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
             sourceNode.onended = function() {
               // do nothing
             };
-            sourceNode.playbackRate.value = playback_rate;
 
+            // playbackRate
+            sourceNode.playbackRate.value = playback_rate;
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = volume;
@@ -432,26 +433,29 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var a_buffer = to_array_buffer(buf_wav);
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
-            var recorder;
 
             // source
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = decodedData;
             sourceNode.onended = function() {
-              recorder.end();
-              MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
-              d.resolve('ok');
+              // onendedのタイミングでは出力が終わっていない
+              setTimeout(function(){
+                recorder.end();
+                MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+                d.resolve('ok');
+              }, 100);
             };
-            sourceNode.playbackRate.value = playback_rate;
 
+            // playbackRate
+            sourceNode.playbackRate.value = playback_rate;
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = volume;
 
             // recorder
-            recorder = WaveRecorder(audioCtx, {
+            var recorder = WaveRecorder(audioCtx, {
               channels: 1,
-              bitDepth: 32
+              bitDepth: 16
             });
             recorder.pipe(fs.createWriteStream(wav_file_path));
 
