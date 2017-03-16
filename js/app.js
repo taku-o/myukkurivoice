@@ -21,7 +21,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   }])
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
-     'AudioService', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
+     'AudioService2', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
     function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
              AudioService, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
 
@@ -249,7 +249,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       // 通常保存
       } else {
-        ipcRenderer.on('showSaveDialog', function (event, file_path) {
+        ipcRenderer.once('showSaveDialog', function (event, file_path) {
           if (!file_path) {
             MessageService.error('保存先が指定されませんでした。');
             return;
@@ -368,7 +368,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         return;
       }
 
-      ipcRenderer.on('showDirDialog', function (event, dirs) {
+      ipcRenderer.once('showDirDialog', function (event, dirs) {
         if (!dirs || dirs.length < 1) {
           return;
         }

@@ -433,11 +433,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var a_buffer = to_array_buffer(buf_wav);
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
-
             // source
-            sourceNode = audioCtx.createBufferSource();
-            sourceNode.buffer = decodedData;
-            sourceNode.onended = function() {
+            var in_sourceNode = audioCtx.createBufferSource();
+            in_sourceNode.buffer = decodedData;
+            in_sourceNode.onended = function() {
               // onendedのタイミングでは出力が終わっていない
               setTimeout(function(){
                 recorder.end();
@@ -447,7 +446,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             };
 
             // playbackRate
-            sourceNode.playbackRate.value = playback_rate;
+            in_sourceNode.playbackRate.value = playback_rate;
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = volume;
@@ -460,9 +459,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
             recorder.pipe(fs.createWriteStream(wav_file_path));
 
             // connect and start
-            sourceNode.connect(gainNode);
+            in_sourceNode.connect(gainNode);
             gainNode.connect(recorder.input);
-            sourceNode.start(0);
+            in_sourceNode.start(0);
           },
           function(err) {
             MessageService.syserror('音源の再生に失敗しました。', err);
