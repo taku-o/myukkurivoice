@@ -1,11 +1,12 @@
-var storage = require('electron-json-storage');
-var log     = require('electron-log');
-var fs      = require('fs');
-var ffi     = require('ffi');
-var ref     = require('ref');
-var temp    = require('temp').track();
-var path    = require('path');
-var exec    = require('child_process').exec;
+var storage      = require('electron-json-storage');
+var log          = require('electron-log');
+var fs           = require('fs');
+var ffi          = require('ffi');
+var ref          = require('ref');
+var temp         = require('temp').track();
+var path         = require('path');
+var exec         = require('child_process').exec;
+var WaveRecorder = require('wave-recorder');
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
@@ -308,7 +309,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var audio = null;
 
     return {
-      play: function(buf_wav) {
+      play: function(buf_wav, volume, playback_rate) {
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -340,7 +341,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         if (!audio) { return; }
         audio.pause();
       },
-      record: function(wav_file_path, buf_wav) {
+      record: function(wav_file_path, buf_wav, volume, playback_rate) {
         var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -378,7 +379,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     };
 
     return {
-      play: function(buf_wav) {
+      play: function(buf_wav, volume, playback_rate) {
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -395,9 +396,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
             sourceNode.onended = function() {
               // do nothing
             };
+            sourceNode.playbackRate.value = playback_rate;
+
             // gain
             var gainNode = audioCtx.createGain();
-            gainNode.gain.value = 1;
+            gainNode.gain.value = volume;
+
             // connect and start
             sourceNode.connect(gainNode);
             gainNode.connect(audioCtx.destination);
@@ -414,7 +418,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       stop: function() {
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
       },
-      record: function(wav_file_path, buf_wav) {
+      record: function(wav_file_path, buf_wav, volume, playback_rate) {
         var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -425,15 +429,42 @@ angular.module('yvoiceService', ['yvoiceModel'])
           d.reject(null); return d.promise;
         }
 
-        // TODO Web Audio API ベースに変更
-        fs.writeFile(wav_file_path, buf_wav, function(err) {
-          if (err) {
-            MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
-            return;
+        var a_buffer = to_array_buffer(buf_wav);
+        audioCtx.decodeAudioData(a_buffer).then(
+          function(decodedData) {
+            var recorder;
+
+            // source
+            sourceNode = audioCtx.createBufferSource();
+            sourceNode.buffer = decodedData;
+            sourceNode.onended = function() {
+              recorder.end();
+              MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+              d.resolve('ok');
+            };
+            sourceNode.playbackRate.value = playback_rate;
+
+            // gain
+            var gainNode = audioCtx.createGain();
+            gainNode.gain.value = volume;
+
+            // recorder
+            recorder = WaveRecorder(audioCtx, {
+              channels: 1,
+              bitDepth: 32
+            });
+            recorder.pipe(fs.createWriteStream(wav_file_path));
+
+            // connect and start
+            sourceNode.connect(gainNode);
+            gainNode.connect(recorder.input);
+            sourceNode.start(0);
+          },
+          function(err) {
+            MessageService.syserror('音源の再生に失敗しました。', err);
+            d.reject(err); return;
           }
-          MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
-          d.resolve('ok');
-        });
+        );
         return d.promise;
       }
     }
