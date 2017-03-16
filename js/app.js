@@ -21,7 +21,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   }])
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
-     'AudioService', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
+     'AudioService2', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
     function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
              AudioService, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
 
@@ -168,10 +168,11 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
+      var playback_rate = $scope.yvoice.playback_rate;
 
       AquesService.wave(encoded, phont, speed, volume).then(
         function(buf_wav) {
-          return AudioService.play(buf_wav);
+          return AudioService.play(buf_wav, volume, playback_rate);
         },
         function(err) {
           MessageService.error('音声データを作成できませんでした。');
@@ -212,6 +213,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
+      var playback_rate = $scope.yvoice.playback_rate;
 
       // 連番保存
       if ($scope.yvoice.seq_write) {
@@ -228,7 +230,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
             AquesService.wave(encoded, phont, speed, volume).then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav).finally(function() {
+                AudioService.record(file_path, buf_wav, volume, playback_rate).finally(function() {
                   AquesService.free_wave();
                 });
                 return file_path;
@@ -256,7 +258,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           AquesService.wave(encoded, phont, speed, volume)
             .then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav).finally(function() {
+                AudioService.record(file_path, buf_wav, volume).finally(function() {
                   AquesService.free_wave();
                 });
                 return file_path;
