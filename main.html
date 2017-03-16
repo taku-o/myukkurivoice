@@ -125,12 +125,14 @@
         <input type="range" min="50" max="300" id="speed" ng-model="yvoice.speed">
         <label>再生速度:{{yvoice.speed}}</label>
       </div>
-      <!--
       <div class="form-inline form-group">
-        <input type="range" max="300" ng-model="yvoice.volume">
+        <input type="range" min="0" max="3" step="0.1" id="volume" ng-model="yvoice.volume">
         <label>音量:{{yvoice.volume}}</label>
       </div>
-      -->
+      <div class="form-inline form-group">
+        <input type="range" min="0" max="3" step="0.1" id="playback_rate" ng-model="yvoice.playback_rate">
+        <label>ピッチ:{{yvoice.playback_rate}}</label>
+      </div>
 
       <div class="form-group">
         <button class="btn btn-large btn-default pull-right switch-view" id="switch-settings-view" ng-click="ctrl.switch_settings_view()">

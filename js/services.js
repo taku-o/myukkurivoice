@@ -309,7 +309,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var audio = null;
 
     return {
-      play: function(buf_wav) {
+      play: function(buf_wav, volume, playback_rate) {
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -341,7 +341,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         if (!audio) { return; }
         audio.pause();
       },
-      record: function(wav_file_path, buf_wav) {
+      record: function(wav_file_path, buf_wav, volume, playback_rate) {
         var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -379,7 +379,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     };
 
     return {
-      play: function(buf_wav) {
+      play: function(buf_wav, volume, playback_rate) {
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -396,9 +396,11 @@ angular.module('yvoiceService', ['yvoiceModel'])
             sourceNode.onended = function() {
               // do nothing
             };
+            sourceNode.playbackRate.value = playback_rate;
+
             // gain
             var gainNode = audioCtx.createGain();
-            gainNode.gain.value = 1;
+            gainNode.gain.value = volume;
 
             // connect and start
             sourceNode.connect(gainNode);
@@ -416,7 +418,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       stop: function() {
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
       },
-      record: function(wav_file_path, buf_wav) {
+      record: function(wav_file_path, buf_wav, volume, playback_rate) {
         var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -440,9 +442,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
               MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
               d.resolve('ok');
             };
+            sourceNode.playbackRate.value = playback_rate;
+
             // gain
             var gainNode = audioCtx.createGain();
-            gainNode.gain.value = 1;
+            gainNode.gain.value = volume;
+
             // recorder
             recorder = WaveRecorder(audioCtx, {
               channels: 1,

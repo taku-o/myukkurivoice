@@ -12,7 +12,9 @@ http://www.a-quest.com/
 ## 開発ステータス
 * アプリ公開
 * AquesTalk2の音声の再生に対応
-* (NEW!!) AquesTalk1の音声の再生に対応 (仮対応)
+* (NEW!! 2017/3/13) AquesTalk1の音声の再生に(仮)対応。いわゆる、ゆっくり霊夢の声が使用可能に。
+* (NEW!! 2017/3/16) 音量、ピッチの制御機能を追加。
+  * <font color="red">データ構造の修正に伴い、メニューから設定オールリセットが必要です。</font>
 
 ## ダウンロード
 * https://github.com/taku-o/myukkurivoice/releases
