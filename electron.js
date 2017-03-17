@@ -11,6 +11,15 @@ const log = require('electron-log');
 // debug option
 const debug = process.env.DEBUG;
 
+// application settings
+var app_cfg = {
+  mainWindow: { width: 850, height: 735 },
+  helpWindow: { width: 700, height: 500 },
+  audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
+  show_msg_pane: true
+};
+global.app_cfg = app_cfg;
+
 // global reference
 var mainWindow = null;
 var helpWindow = null;
@@ -327,9 +336,10 @@ function showMainWindow() {
     return;
   }
 
+  var {width, height} = app_cfg.mainWindow;
   mainWindow = new BrowserWindow({
-    width: 850,
-    height: 735,
+    width: width,
+    height: height,
     webPreferences: {
       devTools: debug
     }
@@ -356,12 +366,13 @@ function showHelpWindow() {
     return;
   }
 
+  var {width, height} = app_cfg.helpWindow;
   helpWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,
     show: false,
-    width: 700,
-    height: 500,
+    width: width,
+    height: height,
     webPreferences: {
       devTools: debug
     }

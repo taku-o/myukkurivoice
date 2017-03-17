@@ -304,7 +304,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AudioService', ['$q', 'MessageService', function($q, MessageService) {
+  .factory('AudioService1', ['$q', 'MessageService', function($q, MessageService) {
     // Audio base AudioService
     var audio = null;
 

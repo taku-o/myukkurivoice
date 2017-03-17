@@ -7,6 +7,11 @@ var log = require('electron-log');
 
 var home_dir = app.getPath('home');
 
+// application settings
+var app_cfg = require('electron').remote.getGlobal('app_cfg');
+var audio_serv_ver = app_cfg.audio_serv_ver;
+var show_msg_pane = app_cfg.show_msg_pane;
+
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
   log.error('main:event:uncaughtException');
@@ -21,9 +26,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   }])
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
-     'AudioService2', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
+     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
     function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
-             AudioService, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
+             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
 
     // event listener
     $scope.$on('message', function(event, message) {
@@ -116,6 +121,11 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           break;
       }
     });
+
+    // application settings
+    var AudioService = audio_serv_ver == 'html5audio'? audioServVer1: audioServVer2;
+    $scope.audio_serv_ver = audio_serv_ver;
+    $scope.show_msg_pane = show_msg_pane;
 
     // init
     var ctrl = this;
