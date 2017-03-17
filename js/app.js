@@ -179,10 +179,12 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
       var playback_rate = $scope.yvoice.playback_rate;
+      var detune = $scope.yvoice.detune;
 
       AquesService.wave(encoded, phont, speed, volume).then(
         function(buf_wav) {
-          return AudioService.play(buf_wav, volume, playback_rate);
+          var options = {volume:volume, playback_rate:playback_rate, detune:detune};
+          return AudioService.play(buf_wav, options);
         },
         function(err) {
           MessageService.error('音声データを作成できませんでした。');
@@ -224,6 +226,7 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
       var playback_rate = $scope.yvoice.playback_rate;
+      var detune = $scope.yvoice.detune;
 
       // 連番保存
       if ($scope.yvoice.seq_write) {
@@ -240,7 +243,8 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
 
             AquesService.wave(encoded, phont, speed, volume).then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav, volume, playback_rate).finally(function() {
+                var options = {volume:volume, playback_rate:playback_rate, detune:detune};
+                AudioService.record(file_path, buf_wav, options).finally(function() {
                   AquesService.free_wave();
                 });
                 return file_path;
@@ -268,7 +272,8 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
           AquesService.wave(encoded, phont, speed, volume)
             .then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav, volume, playback_rate).finally(function() {
+                var options = {volume:volume, playback_rate:playback_rate, detune:detune};
+                AudioService.record(file_path, buf_wav, options).finally(function() {
                   AquesService.free_wave();
                 });
                 return file_path;

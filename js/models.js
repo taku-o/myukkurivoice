@@ -8,8 +8,9 @@ angular.module('yvoiceModel', [])
       //'effect': 2,
       //'intonation': true,
       'speed': 100,
-      'volume': 1.0,
       'playback_rate': 1.0,
+      'detune': 0,
+      'volume': 1.0,
       'source_write': false,
       'seq_write': false,
       'seq_write_options':{
@@ -25,8 +26,9 @@ angular.module('yvoiceModel', [])
         'name': 'サンプル設定1',
         'phont': 'at1_f1',
         'speed': 100,
-        'volume': 1.0,
         'playback_rate': 1.0,
+        'detune': 0,
+        'volume': 1.0,
         'source_write': false,
         'seq_write': false,
         'seq_write_options':{
@@ -39,8 +41,9 @@ angular.module('yvoiceModel', [])
         'name': 'サンプル設定2',
         'phont': 'aq_yukkuri',
         'speed': 100,
-        'volume': 1.0,
         'playback_rate': 1.0,
+        'detune': 0,
+        'volume': 1.0,
         'source_write': false,
         'seq_write': false,
         'seq_write_options':{
@@ -53,8 +56,9 @@ angular.module('yvoiceModel', [])
         'name': 'サンプル設定3',
         'phont': 'aq_f1c',
         'speed': 100,
-        'volume': 1.0,
         'playback_rate': 1.0,
+        'detune': 0,
+        'volume': 1.0,
         'source_write': false,
         'seq_write': false,
         'seq_write_options':{

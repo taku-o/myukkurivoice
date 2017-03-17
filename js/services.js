@@ -309,7 +309,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var audio = null;
 
     return {
-      play: function(buf_wav, volume, playback_rate) {
+      play: function(buf_wav, volume, options) {
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -341,7 +341,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         if (!audio) { return; }
         audio.pause();
       },
-      record: function(wav_file_path, buf_wav, volume, playback_rate) {
+      record: function(wav_file_path, buf_wav, options) {
         var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -379,7 +379,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     };
 
     return {
-      play: function(buf_wav, volume, playback_rate) {
+      play: function(buf_wav, options) {
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -400,10 +400,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
             var node_list = [];
 
             // playbackRate
-            sourceNode.playbackRate.value = playback_rate;
+            sourceNode.playbackRate.value = options.playback_rate;
+            // detune
+            sourceNode.detune.value = options.detune;
             // gain
             var gainNode = audioCtx.createGain();
-            gainNode.gain.value = volume;
+            gainNode.gain.value = options.volume;
             node_list.push(gainNode);
 
             // connect
@@ -427,7 +429,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       stop: function() {
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
       },
-      record: function(wav_file_path, buf_wav, volume, playback_rate) {
+      record: function(wav_file_path, buf_wav, options) {
         var d = $q.defer();
         if (!wav_file_path) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -456,10 +458,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
             var node_list = [];
 
             // playbackRate
-            in_sourceNode.playbackRate.value = playback_rate;
+            in_sourceNode.playbackRate.value = options.playback_rate;
+            // detune
+            sourceNode.detune.value = options.detune;
             // gain
             var gainNode = audioCtx.createGain();
-            gainNode.gain.value = volume;
+            gainNode.gain.value = options.volume;
             node_list.push(gainNode);
 
             // recorder
