@@ -442,7 +442,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
                 recorder.end();
                 MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
                 d.resolve('ok');
-              }, 100);
+              }, 150);
             };
 
             // playbackRate
