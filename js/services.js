@@ -397,15 +397,23 @@ angular.module('yvoiceService', ['yvoiceModel'])
               // do nothing
             };
 
+            var node_list = [];
+
             // playbackRate
             sourceNode.playbackRate.value = playback_rate;
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = volume;
+            node_list.push(gainNode);
 
-            // connect and start
-            sourceNode.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
+            // connect
+            var last_node = sourceNode;
+            angular.forEach(node_list, function(node) {
+              last_node.connect(node); last_node = node;
+            });
+            last_node.connect(audioCtx.destination);
+
+            // and start
             sourceNode.start(0);
             d.resolve('ok'); return;
           },
@@ -445,11 +453,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
               }, 150);
             };
 
+            var node_list = [];
+
             // playbackRate
             in_sourceNode.playbackRate.value = playback_rate;
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = volume;
+            node_list.push(gainNode);
 
             // recorder
             var recorder = WaveRecorder(audioCtx, {
@@ -458,9 +469,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
             });
             recorder.pipe(fs.createWriteStream(wav_file_path));
 
-            // connect and start
-            in_sourceNode.connect(gainNode);
-            gainNode.connect(recorder.input);
+            // connect
+            var last_node = in_sourceNode;
+            angular.forEach(node_list, function(node) {
+              last_node.connect(node); last_node = node;
+            });
+            last_node.connect(recorder.input);
+
+            // and start
             in_sourceNode.start(0);
           },
           function(err) {
