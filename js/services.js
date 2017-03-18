@@ -609,9 +609,19 @@ angular.module('yvoiceService', ['yvoiceModel'])
               intro: '声の早さの調節はここです'
             },
             {
+              element: '#volume',
+              position: 'top',
+              intro: '声の音量の調節はこちらです'
+            },
+            {
               element: '#switch-settings-view',
               position: 'top',
               intro: 'このボタンで音声ファイルの保存方法設定画面に移ります'
+            },
+            {
+              element: '#switch-settings-view',
+              position: 'top',
+              intro: '声の早さ音量以外の、多用しない系統の音声設定も設定画面にあります'
             },
             {
               element: '#tutorial',
@@ -649,6 +659,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
         intro.setOptions({
           steps: [
             {
+              element: '#voice_tuna_box',
+              intro: '音声の質の調整はここで行います'
+            },
+            {
+              element: '#play',
+              intro: '設定画面からでも音声は再生できるので、再生しながら音声を調整してみてください'
+            },
+            {
               element: '#source_write_box',
               intro: 'ここのチェックを入れると、音声再生時に元のメッセージも保存するようになります'
             },
@@ -669,7 +687,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
               intro: '変更した設定はここで保存できます'
             },
             {
-              element: '#name',
+              element: '#save',
               intro: 'この設定は音声の出力設定ごとに共有です'
             },
             {
