@@ -7,6 +7,7 @@ var temp         = require('temp').track();
 var path         = require('path');
 var exec         = require('child_process').exec;
 var WaveRecorder = require('wave-recorder');
+var Tuna         = require('tunajs');
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
@@ -238,7 +239,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         fn_AqKanji2Koe_Release(aqKanji2Koe);
         return encoded;
       },
-      wave: function(encoded, phont, speed, volume) {
+      wave: function(encoded, phont, speed) {
         var d = $q.defer();
         if (!encoded) {
           MessageService.syserror('音記号列が入力されていません。');
@@ -309,7 +310,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var audio = null;
 
     return {
-      play: function(buf_wav, volume, options) {
+      play: function(buf_wav, options) {
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -407,6 +408,24 @@ angular.module('yvoiceService', ['yvoiceModel'])
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = options.volume;
             node_list.push(gainNode);
+            // tuna wave filter
+            var tuna = new Tuna(audioCtx);
+            var waveFilterNode = new tuna.Filter({
+              filterType: options.wavefilter,
+            });
+            node_list.push(waveFilterNode);
+            // tuna echo
+            if (options.echo) {
+              var echoNode = new tuna.Delay({
+                feedback: 0.45,
+                delayTime: 150,
+                wetLevel: 0.25,
+                dryLevel: 1,
+                cutoff: 2000,
+                bypass: 0
+              });
+              node_list.push(echoNode);
+            }
 
             // connect
             var last_node = sourceNode;
@@ -452,7 +471,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
                 recorder.end();
                 MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
                 d.resolve('ok');
-              }, 150);
+              }, options.write_margin_ms);
             };
 
             var node_list = [];
@@ -460,11 +479,29 @@ angular.module('yvoiceService', ['yvoiceModel'])
             // playbackRate
             in_sourceNode.playbackRate.value = options.playback_rate;
             // detune
-            sourceNode.detune.value = options.detune;
+            in_sourceNode.detune.value = options.detune;
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = options.volume;
             node_list.push(gainNode);
+            // tuna wave filter
+            var tuna = new Tuna(audioCtx);
+            var waveFilterNode = new tuna.Filter({
+              filterType: options.wavefilter,
+            });
+            node_list.push(waveFilterNode);
+            // tuna echo
+            if (options.echo) {
+              var echoNode = new tuna.Delay({
+                feedback: 0.45,
+                delayTime: 150,
+                wetLevel: 0.25,
+                dryLevel: 1,
+                cutoff: 2000,
+                bypass: 0
+              });
+              node_list.push(echoNode);
+            }
 
             // recorder
             var recorder = WaveRecorder(audioCtx, {

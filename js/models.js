@@ -10,7 +10,10 @@ angular.module('yvoiceModel', [])
       'speed': 100,
       'playback_rate': 1.0,
       'detune': 0,
+      'echo': false,
+      'wavefilter': 'allpass',
       'volume': 1.0,
+      'write_margin_ms': 150,
       'source_write': false,
       'seq_write': false,
       'seq_write_options':{
@@ -28,7 +31,10 @@ angular.module('yvoiceModel', [])
         'speed': 100,
         'playback_rate': 1.0,
         'detune': 0,
+        'echo': false,
+        'wavefilter': 'allpass',
         'volume': 1.0,
+        'write_margin_ms': 150,
         'source_write': false,
         'seq_write': false,
         'seq_write_options':{
@@ -43,7 +49,10 @@ angular.module('yvoiceModel', [])
         'speed': 100,
         'playback_rate': 1.0,
         'detune': 0,
+        'echo': false,
+        'wavefilter': 'allpass',
         'volume': 1.0,
+        'write_margin_ms': 150,
         'source_write': false,
         'seq_write': false,
         'seq_write_options':{
@@ -58,7 +67,10 @@ angular.module('yvoiceModel', [])
         'speed': 100,
         'playback_rate': 1.0,
         'detune': 0,
+        'echo': false,
+        'wavefilter': 'allpass',
         'volume': 1.0,
+        'write_margin_ms': 150,
         'source_write': false,
         'seq_write': false,
         'seq_write_options':{

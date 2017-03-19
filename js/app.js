@@ -176,15 +176,23 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         }
       }
 
-      var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
-      var playback_rate = $scope.yvoice.playback_rate;
-      var detune = $scope.yvoice.detune;
+      if (! Number($scope.yvoice.write_margin_ms)===parseInt($scope.yvoice.write_margin_ms)) {
+        $scope.yvoice.write_margin_ms = 150;
+      }
+      var write_margin_ms = ($scope.yvoice.echo && $scope.yvoice.write_margin_ms < 1200)? 1200: $scope.yvoice.write_margin_ms;
+      var wave_options = {
+        volume:$scope.yvoice.volume,
+        playback_rate:$scope.yvoice.playback_rate,
+        detune:$scope.yvoice.detune,
+        echo:$scope.yvoice.echo,
+        wavefilter:$scope.yvoice.wavefilter,
+        write_margin_ms:write_margin_ms,
+      };
 
-      AquesService.wave(encoded, phont, speed, volume).then(
+      AquesService.wave(encoded, phont, speed).then(
         function(buf_wav) {
-          var options = {volume:volume, playback_rate:playback_rate, detune:detune};
-          return AudioService.play(buf_wav, options);
+          return AudioService.play(buf_wav, wave_options);
         },
         function(err) {
           MessageService.error('音声データを作成できませんでした。');
@@ -223,10 +231,19 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         }
       }
 
-      var volume = $scope.yvoice.volume;
       var speed = $scope.yvoice.speed;
-      var playback_rate = $scope.yvoice.playback_rate;
-      var detune = $scope.yvoice.detune;
+      if (! Number($scope.yvoice.write_margin_ms)===parseInt($scope.yvoice.write_margin_ms)) {
+        $scope.yvoice.write_margin_ms = 150;
+      }
+      var write_margin_ms = ($scope.yvoice.echo && $scope.yvoice.write_margin_ms < 1200)? 1200: $scope.yvoice.write_margin_ms;
+      var wave_options = {
+        volume:$scope.yvoice.volume,
+        playback_rate:$scope.yvoice.playback_rate,
+        detune:$scope.yvoice.detune,
+        echo:$scope.yvoice.echo,
+        wavefilter:$scope.yvoice.wavefilter,
+        write_margin_ms:write_margin_ms,
+      };
 
       // 連番保存
       if ($scope.yvoice.seq_write) {
@@ -241,10 +258,9 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
             var next_fname = SeqFNameService.next_fname(prefix, next_num);
             var file_path = path.join(dir, next_fname);
 
-            AquesService.wave(encoded, phont, speed, volume).then(
+            AquesService.wave(encoded, phont, speed).then(
               function(buf_wav) {
-                var options = {volume:volume, playback_rate:playback_rate, detune:detune};
-                AudioService.record(file_path, buf_wav, options).finally(function() {
+                AudioService.record(file_path, buf_wav, wave_options).finally(function() {
                   AquesService.free_wave();
                 });
                 return file_path;
@@ -269,11 +285,10 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
             return;
           }
 
-          AquesService.wave(encoded, phont, speed, volume)
+          AquesService.wave(encoded, phont, speed)
             .then(
               function(buf_wav) {
-                var options = {volume:volume, playback_rate:playback_rate, detune:detune};
-                AudioService.record(file_path, buf_wav, options).finally(function() {
+                AudioService.record(file_path, buf_wav, wave_options).finally(function() {
                   AquesService.free_wave();
                 });
                 return file_path;
