@@ -410,10 +410,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
             node_list.push(gainNode);
             // tuna wave filter
             var tuna = new Tuna(audioCtx);
-            var waveFilterNode = new tuna.Filter({
-              filterType: options.wavefilter,
+            var bandfilterNode = new tuna.Filter({
+              filterType: options.bandfilter,
             });
-            node_list.push(waveFilterNode);
+            node_list.push(bandfilterNode);
             // tuna echo
             if (options.echo) {
               var echoNode = new tuna.Delay({
@@ -486,10 +486,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
             node_list.push(gainNode);
             // tuna wave filter
             var tuna = new Tuna(audioCtx);
-            var waveFilterNode = new tuna.Filter({
-              filterType: options.wavefilter,
+            var bandfilterNode = new tuna.Filter({
+              filterType: options.bandfilter,
             });
-            node_list.push(waveFilterNode);
+            node_list.push(bandfilterNode);
             // tuna echo
             if (options.echo) {
               var echoNode = new tuna.Delay({
