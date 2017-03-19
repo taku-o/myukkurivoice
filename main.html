@@ -162,39 +162,6 @@
           detune:{{yvoice.detune}}
         </div>
 
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="yvoice.echo">エコー
-          </label>
-        </div>
-
-        <div class="radio">
-          <label>
-           <input type="radio" ng-model="yvoice.bandfilter" value="allpass">allpass
-          </label>
-          <label>
-           <input type="radio" ng-model="yvoice.bandfilter" value="lowpass">lowpass
-          </label>
-          <label>
-           <input type="radio" ng-model="yvoice.bandfilter" value="highpass">highpass
-          </label>
-          <label>
-           <input type="radio" ng-model="yvoice.bandfilter" value="bandpass">bandpass
-          </label>
-          <label>
-           <input type="radio" ng-model="yvoice.bandfilter" value="lowshelf">lowshelf
-          </label>
-          <label>
-           <input type="radio" ng-model="yvoice.bandfilter" value="highshelf">highshelf
-          </label>
-          <label>
-           <input type="radio" ng-model="yvoice.bandfilter" value="peaking">peaking
-          </label>
-          <label>
-           <input type="radio" ng-model="yvoice.bandfilter" value="notch">notch
-          </label>
-        </div>
-
         <div class="form-inline form-group">
           音声ファイル書込マージン (出力した音声ファイルの最後が欠ける時に増やしてください)
           <input type="text" id="name" ng-model="yvoice.write_margin_ms" placeholder="write_margin_ms">

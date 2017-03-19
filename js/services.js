@@ -7,7 +7,6 @@ var temp         = require('temp').track();
 var path         = require('path');
 var exec         = require('child_process').exec;
 var WaveRecorder = require('wave-recorder');
-var Tuna         = require('tunajs');
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
@@ -408,24 +407,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = options.volume;
             node_list.push(gainNode);
-            // tuna wave filter
-            var tuna = new Tuna(audioCtx);
-            var bandfilterNode = new tuna.Filter({
-              filterType: options.bandfilter,
-            });
-            node_list.push(bandfilterNode);
-            // tuna echo
-            if (options.echo) {
-              var echoNode = new tuna.Delay({
-                feedback: 0.45,
-                delayTime: 150,
-                wetLevel: 0.25,
-                dryLevel: 1,
-                cutoff: 2000,
-                bypass: 0
-              });
-              node_list.push(echoNode);
-            }
 
             // connect
             var last_node = sourceNode;
@@ -484,24 +465,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = options.volume;
             node_list.push(gainNode);
-            // tuna wave filter
-            var tuna = new Tuna(audioCtx);
-            var bandfilterNode = new tuna.Filter({
-              filterType: options.bandfilter,
-            });
-            node_list.push(bandfilterNode);
-            // tuna echo
-            if (options.echo) {
-              var echoNode = new tuna.Delay({
-                feedback: 0.45,
-                delayTime: 150,
-                wetLevel: 0.25,
-                dryLevel: 1,
-                cutoff: 2000,
-                bypass: 0
-              });
-              node_list.push(echoNode);
-            }
 
             // recorder
             var recorder = WaveRecorder(audioCtx, {

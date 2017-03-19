@@ -185,8 +185,6 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         volume:$scope.yvoice.volume,
         playback_rate:$scope.yvoice.playback_rate,
         detune:$scope.yvoice.detune,
-        echo:$scope.yvoice.echo,
-        bandfilter:$scope.yvoice.bandfilter,
         write_margin_ms:write_margin_ms,
       };
 
@@ -240,8 +238,6 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         volume:$scope.yvoice.volume,
         playback_rate:$scope.yvoice.playback_rate,
         detune:$scope.yvoice.detune,
-        echo:$scope.yvoice.echo,
-        bandfilter:$scope.yvoice.bandfilter,
         write_margin_ms:write_margin_ms,
       };
 
