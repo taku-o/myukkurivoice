@@ -119,6 +119,11 @@
         <input type="range" min="0" max="3" step="0.1" id="volume" ng-model="yvoice.volume">
         音量:{{yvoice.volume}}
       </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="yvoice.rhythm_on">抑揚ON
+        </label>
+      </div>
 
       <div class="form-group">
         <button class="btn btn-large btn-default pull-right switch-view" id="switch-settings-view" ng-click="ctrl.switch_settings_view()">

@@ -564,6 +564,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
+  .factory('CodeService', function() {
+    return {
+      disable_rhythm: function(encoded) {
+        return encoded.replace(/['\/]/g, '');
+      }
+    }
+  })
   .factory('IntroService', function() {
     return {
       'main_tutorial': function() {
