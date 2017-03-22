@@ -26,9 +26,11 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
   }])
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
-     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'IntroService', 'YInput', 'YInputInitialData',
+     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'CodeService', 'IntroService',
+     'YInput', 'YInputInitialData',
     function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
-             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, IntroService, YInput, YInputInitialData) {
+             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, CodeService, IntroService,
+             YInput, YInputInitialData) {
 
     // event listener
     $scope.$on('message', function(event, message) {
@@ -176,16 +178,20 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         }
       }
 
+      // disable rhythm if option is on
+      if (! $scope.yvoice.rhythm_on) {
+        encoded = CodeService.disable_rhythm(encoded);
+      }
+
       var speed = $scope.yvoice.speed;
       if (! Number($scope.yvoice.write_margin_ms)===parseInt($scope.yvoice.write_margin_ms)) {
         $scope.yvoice.write_margin_ms = 150;
       }
-      var write_margin_ms = ($scope.yvoice.echo && $scope.yvoice.write_margin_ms < 1200)? 1200: $scope.yvoice.write_margin_ms;
       var wave_options = {
         volume:$scope.yvoice.volume,
         playback_rate:$scope.yvoice.playback_rate,
         detune:$scope.yvoice.detune,
-        write_margin_ms:write_margin_ms,
+        write_margin_ms:$scope.yvoice.write_margin_ms,
       };
 
       AquesService.wave(encoded, phont, speed).then(
@@ -229,16 +235,20 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         }
       }
 
+      // disable rhythm if option is on
+      if (! $scope.yvoice.rhythm_on) {
+        encoded = CodeService.disable_rhythm(encoded);
+      }
+
       var speed = $scope.yvoice.speed;
       if (! Number($scope.yvoice.write_margin_ms)===parseInt($scope.yvoice.write_margin_ms)) {
         $scope.yvoice.write_margin_ms = 150;
       }
-      var write_margin_ms = ($scope.yvoice.echo && $scope.yvoice.write_margin_ms < 1200)? 1200: $scope.yvoice.write_margin_ms;
       var wave_options = {
         volume:$scope.yvoice.volume,
         playback_rate:$scope.yvoice.playback_rate,
         detune:$scope.yvoice.detune,
-        write_margin_ms:write_margin_ms,
+        write_margin_ms:$scope.yvoice.write_margin_ms,
       };
 
       // 連番保存
