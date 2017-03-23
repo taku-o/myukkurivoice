@@ -34,6 +34,7 @@
 node_modules以下に入っているので、このコマンドは実行しなくて良い。
 
     npm install --save angular
+    npm install --save angular-input-highlight
     npm install --save https://github.com/connors/photon
     npm install --save electron-json-storage
     npm install --save electron-log

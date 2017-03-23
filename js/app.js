@@ -138,15 +138,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     $scope.message_list = [];
     load_data();
 
+    // selected text highlight
     $rootScope.format = {
-  'rgba(255,0,0,0.5)' : /\d+/g,
-  '#619FFF'           : /@[a-z0-9]+/g,
-  '#25B520'           : "{{ format['#25B520'] }}"
-};
-
-$rootScope.listMarkers = function($markers) { 
-  $rootScope.markers = $markers;
-};
+      '#619FFF' : /@[a-z0-9]+/g,
+      '#25B520' : "{{ format['#25B520'] }}"
+    };
 
     // util
     function load_data() {
