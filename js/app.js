@@ -20,15 +20,15 @@ process.on('uncaughtException', function(err) {
 });
 
 // angular app
-angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
+angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('MainController',
-    ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
+    ['$rootScope', '$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'CodeService', 'IntroService',
      'YInput', 'YInputInitialData',
-    function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
+    function($rootScope, $scope, $timeout, MessageService, DataService, MasterService, AquesService,
              audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, CodeService, IntroService,
              YInput, YInputInitialData) {
 
@@ -137,6 +137,16 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
     $scope.yinput = angular.copy(YInput);
     $scope.message_list = [];
     load_data();
+
+    $rootScope.format = {
+  'rgba(255,0,0,0.5)' : /\d+/g,
+  '#619FFF'           : /@[a-z0-9]+/g,
+  '#25B520'           : "{{ format['#25B520'] }}"
+};
+
+$rootScope.listMarkers = function($markers) { 
+  $rootScope.markers = $markers;
+};
 
     // util
     function load_data() {
