@@ -25,10 +25,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('MainController',
-    ['$rootScope', '$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
+    ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'CodeService', 'IntroService',
      'YInput', 'YInputInitialData',
-    function($rootScope, $scope, $timeout, MessageService, DataService, MasterService, AquesService,
+    function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
              audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, CodeService, IntroService,
              YInput, YInputInitialData) {
 
@@ -138,12 +138,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     $scope.message_list = [];
     load_data();
 
-    // selected text highlight
-    $rootScope.format = {
-      '#619FFF' : /@[a-z0-9]+/g,
-      '#25B520' : "{{ format['#25B520'] }}"
-    };
-
     // util
     function load_data() {
       DataService.load().then(function(data_list) {
@@ -171,6 +165,28 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       return selected_text;
     };
 
+    // selected text highlight
+    $scope.source_highlight = {
+      '#619FFF' : "{{ source_highlight['#619FFF'] }}"
+    };
+    $scope.encoded_highlight = {
+      '#619FFF' : "{{ encoded_highlight['#619FFF'] }}"
+    };
+    ctrl.blur_on_source = function() {
+      $scope.source_highlight['#619FFF'] = selected_source();
+    };
+    ctrl.blur_on_encoded = function() {
+      $scope.encoded_highlight['#619FFF'] = selected_encoded();
+    };
+    ctrl.focus_on_source = function() {
+      $scope.source_highlight['#619FFF'] = '';
+      $scope.encoded_highlight['#619FFF'] = '';
+    };
+    ctrl.focus_on_encoded = function() {
+      $scope.source_highlight['#619FFF'] = '';
+      $scope.encoded_highlight['#619FFF'] = '';
+    };
+
     // action
     ctrl.play = function() {
       MessageService.action('start to play voice.');
@@ -192,6 +208,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       var _selected_encoded = selected_encoded();
       if (_selected_encoded) {
           encoded = _selected_encoded;
+          $scope.source_highlight['#619FFF'] = '';
       }
       if (!encoded) {
         var source = $scope.yinput.source;
@@ -257,6 +274,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       var _selected_encoded = selected_encoded();
       if (_selected_encoded) {
         encoded = _selected_encoded;
+        $scope.source_highlight['#619FFF'] = '';
       }
       if (!encoded) {
         var source = $scope.yinput.source;
@@ -410,6 +428,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       DataService.clear().then(load_data());
       $scope.yinput = angular.copy(YInputInitialData);
       $scope.display = 'main';
+      $scope.source_highlight['#619FFF'] = '';
+      $scope.encoded_highlight['#619FFF'] = '';
     };
 
     ctrl.encode = function() {
@@ -421,11 +441,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
       var encoded = AquesService.encode(source);
       $scope.yinput.encoded = encoded;
+      $scope.encoded_highlight['#619FFF'] = '';
     };
     ctrl.clear = function() {
       MessageService.action('clear input text.');
       $scope.yinput.source = '';
       $scope.yinput.encoded = '';
+      $scope.source_highlight['#619FFF'] = '';
+      $scope.encoded_highlight['#619FFF'] = '';
     };
     ctrl.from_clipboard = function() {
       MessageService.action('paste clipboard text to source.');
@@ -433,6 +456,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       if (text) {
         $scope.yinput.source = text;
         $scope.yinput.encoded = '';
+        $scope.source_highlight['#619FFF'] = '';
+        $scope.encoded_highlight['#619FFF'] = '';
       } else {
         MessageService.info('クリップボードにデータがありません。');
       }
