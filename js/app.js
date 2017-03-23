@@ -20,7 +20,7 @@ process.on('uncaughtException', function(err) {
 });
 
 // angular app
-angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
+angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
@@ -150,6 +150,54 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
         $timeout(function(){ $scope.$apply(); });
       });
     };
+    function selected_source() {
+      var textarea = document.getElementById('source');
+      var start = textarea.selectionStart;
+      var end = textarea.selectionEnd;
+      var selected_text = textarea.value.substring(start, end);
+      return selected_text;
+    }
+    function selected_encoded() {
+      var textarea = document.getElementById('encoded');
+      var start = textarea.selectionStart;
+      var end = textarea.selectionEnd;
+      var selected_text = textarea.value.substring(start, end);
+      return selected_text;
+    };
+
+    // selected text highlight
+    $scope.source_highlight = {
+      '#619FFF' : "{{ source_highlight['#619FFF'] }}"
+    };
+    $scope.encoded_highlight = {
+      '#619FFF' : "{{ encoded_highlight['#619FFF'] }}"
+    };
+    ctrl.blur_on_source = function() {
+      $scope.source_highlight['#619FFF'] = selected_source();
+    };
+    ctrl.blur_on_encoded = function() {
+      $scope.encoded_highlight['#619FFF'] = selected_encoded();
+    };
+    ctrl.focus_on_source = function() {
+      clearSourceSelection();
+      clearEncodedSelection();
+    };
+    ctrl.focus_on_encoded = function() {
+      clearSourceSelection();
+      clearEncodedSelection();
+    };
+    function clearSourceSelection() {
+      $scope.source_highlight['#619FFF'] = '';
+      var textarea = document.getElementById('source');
+      textarea.selectionStart = 0;
+      textarea.selectionEnd = 0;
+    }
+    function clearEncodedSelection() {
+      $scope.encoded_highlight['#619FFF'] = '';
+      var textarea = document.getElementById('encoded');
+      textarea.selectionStart = 0;
+      textarea.selectionEnd = 0;
+    }
 
     // action
     ctrl.play = function() {
@@ -169,8 +217,17 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       }
 
       var encoded = $scope.yinput.encoded;
+      var _selected_encoded = selected_encoded();
+      if (_selected_encoded) {
+          encoded = _selected_encoded;
+          clearSourceSelection();
+      }
       if (!encoded) {
         var source = $scope.yinput.source;
+        var _selected_source = selected_source();
+        if (_selected_source) {
+          source = _selected_source;
+        }
         encoded = AquesService.encode(source);
         if (!encoded) {
           MessageService.error('音記号列に変換できませんでした。');
@@ -226,8 +283,17 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       }
 
       var encoded = $scope.yinput.encoded;
+      var _selected_encoded = selected_encoded();
+      if (_selected_encoded) {
+        encoded = _selected_encoded;
+        clearSourceSelection();
+      }
       if (!encoded) {
         var source = $scope.yinput.source;
+        var _selected_source = selected_source();
+        if (_selected_source) {
+          source = _selected_source;
+        }
         encoded = AquesService.encode(source);
         if (!encoded) {
           MessageService.error('音記号列に変換できませんでした。');
@@ -374,18 +440,27 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       DataService.clear().then(load_data());
       $scope.yinput = angular.copy(YInputInitialData);
       $scope.display = 'main';
+      clearSourceSelection();
+      clearEncodedSelection();
     };
 
     ctrl.encode = function() {
       MessageService.action('encode source text.');
       var source = $scope.yinput.source;
+      var _selected_source = selected_source();
+      if (_selected_source) {
+        source = _selected_source;
+      }
       var encoded = AquesService.encode(source);
       $scope.yinput.encoded = encoded;
+      clearEncodedSelection();
     };
     ctrl.clear = function() {
       MessageService.action('clear input text.');
       $scope.yinput.source = '';
       $scope.yinput.encoded = '';
+      clearSourceSelection();
+      clearEncodedSelection();
     };
     ctrl.from_clipboard = function() {
       MessageService.action('paste clipboard text to source.');
@@ -393,6 +468,8 @@ angular.module('yvoiceApp', ['yvoiceService', 'yvoiceModel'])
       if (text) {
         $scope.yinput.source = text;
         $scope.yinput.encoded = '';
+        clearSourceSelection();
+        clearEncodedSelection();
       } else {
         MessageService.info('クリップボードにデータがありません。');
       }

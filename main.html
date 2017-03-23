@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/main.css">
   <script src="node_modules/photon/dist/template-app/js/menu.js" charset="utf-8"></script>
   <script src="node_modules/angular/angular.min.js"></script>
+  <script src="node_modules/angular-input-highlight/angular-input-highlight.js"></script>
   <script src="node_modules/intro.js/minified/intro.min.js"></script>
   <script src="js/models.js"></script>
   <script src="js/services.js"></script>
@@ -86,7 +87,7 @@
 
       <div class="form-group">
         <!-- <label>Source</label> -->
-        <textarea class="form-control" id="source" rows="5" ng-model="yinput.source" placeholder="メッセージ入力欄"></textarea>
+        <textarea class="form-control" id="source" rows="5" ng-model="yinput.source" highlight="source_highlight" ng-blur="ctrl.blur_on_source()" ng-focus="ctrl.focus_on_source()" placeholder="メッセージ入力欄"></textarea>
       </div>
 
       <div class="form-inline form-group btn-group-convert">
@@ -102,7 +103,7 @@
       </div>
       <div class="form-group">
         <!-- <label>Encoded</label> -->
-        <textarea class="form-control" id="encoded" rows="5" ng-model="yinput.encoded" placeholder="音記号列入力欄"></textarea>
+        <textarea class="form-control" id="encoded" rows="5" ng-model="yinput.encoded" highlight="encoded_highlight" ng-blur="ctrl.blur_on_encoded()" ng-focus="ctrl.focus_on_encoded()" placeholder="音記号列入力欄"></textarea>
       </div>
 
       <div class="form-inline form-group">
