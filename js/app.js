@@ -179,13 +179,25 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       $scope.encoded_highlight['#619FFF'] = selected_encoded();
     };
     ctrl.focus_on_source = function() {
-      $scope.source_highlight['#619FFF'] = '';
-      $scope.encoded_highlight['#619FFF'] = '';
+      clearSourceSelection();
+      clearEncodedSelection();
     };
     ctrl.focus_on_encoded = function() {
-      $scope.source_highlight['#619FFF'] = '';
-      $scope.encoded_highlight['#619FFF'] = '';
+      clearSourceSelection();
+      clearEncodedSelection();
     };
+    function clearSourceSelection() {
+      $scope.source_highlight['#619FFF'] = '';
+      var textarea = document.getElementById('source');
+      textarea.selectionStart = 0;
+      textarea.selectionEnd = 0;
+    }
+    function clearEncodedSelection() {
+      $scope.encoded_highlight['#619FFF'] = '';
+      var textarea = document.getElementById('encoded');
+      textarea.selectionStart = 0;
+      textarea.selectionEnd = 0;
+    }
 
     // action
     ctrl.play = function() {
@@ -208,7 +220,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       var _selected_encoded = selected_encoded();
       if (_selected_encoded) {
           encoded = _selected_encoded;
-          $scope.source_highlight['#619FFF'] = '';
+          clearSourceSelection();
       }
       if (!encoded) {
         var source = $scope.yinput.source;
@@ -274,7 +286,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       var _selected_encoded = selected_encoded();
       if (_selected_encoded) {
         encoded = _selected_encoded;
-        $scope.source_highlight['#619FFF'] = '';
+        clearSourceSelection();
       }
       if (!encoded) {
         var source = $scope.yinput.source;
@@ -428,8 +440,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       DataService.clear().then(load_data());
       $scope.yinput = angular.copy(YInputInitialData);
       $scope.display = 'main';
-      $scope.source_highlight['#619FFF'] = '';
-      $scope.encoded_highlight['#619FFF'] = '';
+      clearSourceSelection();
+      clearEncodedSelection();
     };
 
     ctrl.encode = function() {
@@ -441,14 +453,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
       var encoded = AquesService.encode(source);
       $scope.yinput.encoded = encoded;
-      $scope.encoded_highlight['#619FFF'] = '';
+      clearEncodedSelection();
     };
     ctrl.clear = function() {
       MessageService.action('clear input text.');
       $scope.yinput.source = '';
       $scope.yinput.encoded = '';
-      $scope.source_highlight['#619FFF'] = '';
-      $scope.encoded_highlight['#619FFF'] = '';
+      clearSourceSelection();
+      clearEncodedSelection();
     };
     ctrl.from_clipboard = function() {
       MessageService.action('paste clipboard text to source.');
@@ -456,8 +468,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       if (text) {
         $scope.yinput.source = text;
         $scope.yinput.encoded = '';
-        $scope.source_highlight['#619FFF'] = '';
-        $scope.encoded_highlight['#619FFF'] = '';
+        clearSourceSelection();
+        clearEncodedSelection();
       } else {
         MessageService.info('クリップボードにデータがありません。');
       }
