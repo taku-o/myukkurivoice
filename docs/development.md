@@ -1,6 +1,7 @@
 # 開発用の情報
 ## vendor
-* vendorディレクトリにAquesTalkのライブラリを入れる必要があります。
+* ライセンスの関係上、公開されているソースコードにAquesTalkのライブラリは含まれていません。
+* レポジトリで公開されているコードを動作させるには、vendorディレクトリにAquesTalkのライブラリを入れる必要があります。
 * ディレクトリ構成
 
 ```
@@ -13,9 +14,37 @@
     +-- maquestalk1           AquesTalk1フレームワークbridge
 ```
 
-    git submodule init
-    git submodule update
+## アプリデバッグ実行
+* デバッグモードでアプリケーションを実行するには、環境変数でDEBUGを設定します。
 
+    DEBUG=1 electron .
+
+## using devtron
+* devtronを使用するには、デバッグモードで次のコマンドを実行します。
+
+    npm install --save-dev devtron
+    require('devtron').install()
+
+## アプリアイコンの作成
+* iconutilで作成します。
+* icns/myukkurivoice.iconset にアイコン画像を入れてコマンド実行してください
+* myukkurivoice.icns がアプリケーションアイコンです。
+
+    cd icns
+    iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
+
+## パッケージング
+* リリース用のアプリケーションを作成するには、次のコマンドを実行します。
+
+    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)" --asar.unpackDir=vendor
+
+## asarの解凍
+* asarでパッケージングされたファイルを解凍するには、asarコマンドを実行します
+
+    npm -g install asar
+    asar e app.asar dest
+
+# 環境設定まわりの情報
 ## install xcode
     xcode-select --install
 
@@ -31,7 +60,7 @@
     npm -g install electron-osx-sign
 
 ## using library
-node_modules以下に入っているので、このコマンドは実行しなくて良い。
+* node_modules以下に入っているので、このコマンドは実行しなくて良い。
 
     npm install --save angular
     npm install --save angular-input-highlight
@@ -46,27 +75,9 @@ node_modules以下に入っているので、このコマンドは実行しな�
     npm install --save wave-recorder
     npm install --save tunajs
 
-## アプリデバッグ実行
-    DEBUG=1 electron .
-
-## その他
-### Module version mismatch. Expected 50, got 51
-もし次のエラーに遭遇したら、次のコマンドを実行する
+## Module version mismatch. Expected 50, got 51
+* もし次のエラーに遭遇したら、次のコマンドを実行する
 
     npm rebuild --runtime=electron --target=1.4.12 --disturl=https://atom.io/download/atom-shell --abi=51
 
-## icns
-    cd icns
-    iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
-
-## using devtron
-    npm install --save-dev devtron
-    require('devtron').install()
-
-## asar
-    npm -g install asar
-    asar e app.asar dest
-
-## packaging
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)" --asar.unpackDir=vendor
 
