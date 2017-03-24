@@ -16,12 +16,9 @@
 
   <div class="pane-sm sidebar">
     <nav class="nav-group">
-      <h5 class="nav-group-title">Help</h5>
+      <h5 class="nav-group-title">ヘルプ</h5>
       <span class="nav-group-item" ng-class="{active:display == 'about'}" ng-click="display='about'">
         <span class="icon icon-help-circled"></span>MYukkuriVoiceについて
-      </span>
-      <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
-        <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
       <span class="nav-group-item" ng-class="{active:display == 'voicecode'}" ng-click="display='voicecode'">
         <span class="icon icon-help-circled"></span>音声記号列
@@ -34,6 +31,14 @@
       </span>
       <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
         <span class="icon icon-help-circled"></span>連絡先
+      </span>
+
+      <h5 class="nav-group-title">各機能詳細</h5>
+      <span class="nav-group-item" ng-class="{active:display == 'funclist'}" ng-click="display='funclist'">
+        <span class="icon icon-help-circled"></span>機能一覧
+      </span>
+      <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
+        <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
     </nav>
   </div>
@@ -54,6 +59,93 @@
         ご注意ください。<br>
         <a ng-click="ctrl.browser('http://www.a-quest.com/')">http://www.a-quest.com/</a>
       </p>
+    </div>
+  </div>
+
+  <!-- voicecode -->
+  <div class="pane" ng-show="display == 'voicecode'">
+    <div class="content">
+      <h4>音声記号列</h4>
+      <p>
+        内部処理的には、音声を再生するAquesTalk用のコード、<br>
+        音声記号列(音記号列)を作り、<br>
+        それをAquesTalkのライブラリで再生しています。<br>
+        <br>
+        音声記号列の詳しい仕様は、<br>
+        <a ng-click="ctrl.browser('http://www.a-quest.com/download/index.html')">http://www.a-quest.com/download/index.html</a><br>
+        の「音声記号列仕様書」をご確認ください。<br>
+    </div>
+  </div>
+
+  <!-- trouble -->
+  <div class="pane" ng-show="display == 'trouble'">
+    <div class="content">
+      <h4>あの機能が無い！</h4>
+      <p>
+        MYukkuriVoiceは開発中です。
+      </p>
+
+      <h4>ヘルプのウィンドウが、アプリのウィンドウに<br>くっついて動く</h4>
+      <p>
+        ヘルプのウィンドウを開いている時、本体のアプリのウィンドウを動かすと、
+        何故かヘルプのウィンドウも移動する。<br>
+        これは、そういうものだと思ってください。<br>
+      </p>
+
+      <h4>Command + Wでアプリのウィンドウが閉じない</h4>
+      <p>
+        Command + Wで音声の再生停止に割り当てています。<br>
+        ショートカットキーが上書きされているのです。<br>
+        代わりに、Command + Qでアプリを終了させてください。
+      </p>
+
+      <h4>設定がこわれました</h4>
+      <p>
+        メニューに「設定オールリセット」があるので、それを選択してください。設定が初期化されます。<br>
+        既存の設定は消えるので、残しておきたい設定はメモしておいてください。
+      </p>
+    </div>
+  </div>
+
+  <!-- uninstall -->
+  <div class="pane" ng-show="display == 'uninstall'">
+    <div class="content">
+      <h4>アンインストールするには</h4>
+      <p>
+        <ul>
+          <li>アプリケーションを削除してください</li>
+          <li>"$HOME/Library/Application Support/myukkurivoice/" を削除してください</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+
+  <!-- contact -->
+  <div class="pane" ng-show="display == 'contact'">
+    <div class="content">
+      <h4>連絡先</h4>
+      <p>
+        MYukkuriVoiceは、次のURLで開発されています。<br>
+        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">https://github.com/taku-o/myukkurivoice</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- funclist -->
+  <div class="pane" ng-show="display == 'funclist'">
+    <div class="content">
+      <h4>機能一覧</h4>
+      <ul>
+        <li>AquesTalk1, AquesTalk2ベースのメッセージ音声再生、音声録音機能</li>
+        <li>音記号列の表示編集、および、変更後音記号列の音声再生機能</li>
+        <li>設定の保存、複製。設定に名前をつけて複数の設定を保存可能。</li>
+        <li>ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能</li>
+        <li>音量、再生速度の調整。音質の調整。</li>
+        <li>再生する音声の抑揚のON・OFF切替</li>
+        <li>テキストエリアで選択したテキスト部分のみを音声再生、音声録音</li>
+        <li>各種ショートカットキー</li>
+        <li>チュートリアル</li>
+      </ul>
     </div>
   </div>
 
@@ -111,95 +203,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-
-  <!-- voicecode -->
-  <div class="pane" ng-show="display == 'voicecode'">
-    <div class="content">
-      <h4>音声記号列</h4>
-      <p>
-        内部処理的には、音声を再生するAquesTalk用のコード、<br>
-        音声記号列(音記号列)を作り、<br>
-        それをAquesTalkのライブラリで再生しています。<br>
-        <br>
-        音声記号列の詳しい仕様は、<br>
-        <a ng-click="ctrl.browser('http://www.a-quest.com/download/index.html')">http://www.a-quest.com/download/index.html</a><br>
-        の「音声記号列仕様書」をご確認ください。<br>
-    </div>
-  </div>
-
-  <!-- trouble -->
-  <div class="pane" ng-show="display == 'trouble'">
-    <div class="content">
-      <h4>抑揚などの、他のアプリにある音声加工系の機能が<br>ない</h4>
-      <p>
-        音声の保存には手を抜いているところがあり、<br>
-        よって、加工した音声を再生できるものの、それを保存できないので、<br>
-        今のところ対応していません。<br>
-        いずれ置き換えます。
-      </p>
-
-      <h4>音声が再生されない時がある</h4>
-      <p>
-        音声の再生機能は手を抜いているところがあり･･･<br>
-        いずれ置き換える。
-      </p>
-
-      <h4>ヘルプのウィンドウが、アプリのウィンドウに<br>くっついて動く</h4>
-      <p>
-        ヘルプのウィンドウを開いている時、本体のアプリのウィンドウを動かすと、
-        何故かヘルプのウィンドウも移動する。<br>
-        これは、そういうものだと思ってください。<br>
-      </p>
-
-      <h4>Command + Wでアプリのウィンドウが閉じない</h4>
-      <p>
-        Command + Wで音声の再生停止に割り当てています。<br>
-        ショートカットキーが上書きされているのです。<br>
-        代わりに、Command + Qでアプリを終了させてください。
-      </p>
-
-      <h4>設定がこわれました</h4>
-      <p>
-        メニューに「設定オールリセット」があるので、それを選択してください。設定が初期化されます。<br>
-        既存の設定は消えるので、残しておきたい設定はメモしておいてください。
-      </p>
-
-      <h4>画面が白くなりました</h4>
-      <p>
-        Command + Rでアプリケーションを再読み込みできます。<br>
-        当面はそれで凌いでください。
-      </p>
-
-      <h4>アプリが落ちる</h4>
-      <p>
-        ごめんなさい。
-      </p>
-    </div>
-  </div>
-
-  <!-- uninstall -->
-  <div class="pane" ng-show="display == 'uninstall'">
-    <div class="content">
-      <h4>アンインストールするには</h4>
-      <p>
-        <ul>
-          <li>アプリケーションを削除してください</li>
-          <li>"$HOME/Library/Application Support/myukkurivoice/" を削除してください</li>
-        </ul>
-      </p>
-    </div>
-  </div>
-
-  <!-- contact -->
-  <div class="pane" ng-show="display == 'contact'">
-    <div class="content">
-      <h4>連絡先</h4>
-      <p>
-        MYukkuriVoiceは、次のURLで開発されています。<br>
-        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">https://github.com/taku-o/myukkurivoice</a>
-      </p>
     </div>
   </div>
 

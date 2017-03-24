@@ -14,6 +14,7 @@ http://www.a-quest.com/
 * AquesTalk2の音声の再生に対応
 * (NEW!! 2017/3/13) AquesTalk1の音声の再生に(仮)対応。いわゆる、ゆっくり霊夢の声が使用可能に。
 * (NEW!! 2017/3/16) 音量の制御機能を追加(仮対応、様子見)。
+* その他、いろいろ機能追加
   * データ構造の修正に伴い、メニューから設定オールリセットが必要です。
 
 ## ダウンロード
@@ -45,6 +46,17 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 * チュートリアルが用意されています
 
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-tutorial.png" width="400">
+
+### 機能一覧
+* AquesTalk1, AquesTalk2ベースのメッセージ音声再生、音声録音機能
+* 音記号列の表示編集、および、変更後音記号列の音声再生機能
+* 設定の保存、複製。設定に名前をつけて複数の設定を保存可能。
+* ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能
+* 音量、再生速度の調整。音質の調整。
+* 再生する音声の抑揚のON・OFF切替
+* テキストエリアで選択したテキスト部分のみを音声再生、音声録音
+* 各種ショートカットキー
+* チュートリアル
 
 ## 動画
 [![](http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg)](https://www.youtube.com/watch?v=DUbXHZrW1Ms)
