@@ -32,9 +32,6 @@
       <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'movie'}" ng-click="display='movie'">
-        <span class="icon icon-help-circled"></span>動画リンク
-      </span>
 
       <h5 class="nav-group-title">各機能詳細</h5>
       <span class="nav-group-item" ng-class="{active:display == 'funclist'}" ng-click="display='funclist'">
@@ -140,19 +137,6 @@
       <p>
         MYukkuriVoiceは、次のURLで開発されています。<br>
         <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">https://github.com/taku-o/myukkurivoice</a>
-      </p>
-    </div>
-  </div>
-
-  <!-- movie -->
-  <div class="pane" ng-show="display == 'movie'">
-    <div class="content">
-      <h4>動画リンク</h4>
-      <p>
-        <a ng-click="ctrl.browser('https://www.youtube.com/watch?v=DUbXHZrW1Ms')"><img width="400" src="http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg"></a>
-      </p>
-      <p>
-        <a ng-click="ctrl.browser('https://www.youtube.com/watch?v=povuqyEl6L4')"><img width="400" src="http://img.youtube.com/vi/povuqyEl6L4/0.jpg"></a>
       </p>
     </div>
   </div>
