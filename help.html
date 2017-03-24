@@ -32,10 +32,16 @@
       <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
+      <span class="nav-group-item" ng-class="{active:display == 'movie'}" ng-click="display='movie'">
+        <span class="icon icon-help-circled"></span>動画リンク
+      </span>
 
       <h5 class="nav-group-title">各機能詳細</h5>
       <span class="nav-group-item" ng-class="{active:display == 'funclist'}" ng-click="display='funclist'">
         <span class="icon icon-help-circled"></span>機能一覧
+      </span>
+      <span class="nav-group-item" ng-class="{active:display == 'tuna'}" ng-click="display='tuna'">
+        <span class="icon icon-help-circled"></span>再生する音声の調整
       </span>
       <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
         <span class="icon icon-help-circled"></span>ショートカットキー
@@ -82,7 +88,7 @@
     <div class="content">
       <h4>あの機能が無い！</h4>
       <p>
-        MYukkuriVoiceは開発中です。
+        MYukkuriVoiceは絶賛開発中です。
       </p>
 
       <h4>ヘルプのウィンドウが、アプリのウィンドウに<br>くっついて動く</h4>
@@ -131,6 +137,19 @@
     </div>
   </div>
 
+  <!-- movie -->
+  <div class="pane" ng-show="display == 'movie'">
+    <div class="content">
+      <h4>動画リンク</h4>
+      <p>
+        <a ng-click="ctrl.browser('https://www.youtube.com/watch?v=DUbXHZrW1Ms')"><img width="400" src="http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg"></a>
+      </p>
+      <p>
+        <a ng-click="ctrl.browser('https://www.youtube.com/watch?v=povuqyEl6L4')"><img width="400" src="http://img.youtube.com/vi/povuqyEl6L4/0.jpg"></a>
+      </p>
+    </div>
+  </div>
+
   <!-- funclist -->
   <div class="pane" ng-show="display == 'funclist'">
     <div class="content">
@@ -140,12 +159,147 @@
         <li>音記号列の表示編集、および、変更後音記号列の音声再生機能</li>
         <li>設定の保存、複製。設定に名前をつけて複数の設定を保存可能。</li>
         <li>ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能</li>
-        <li>音量、再生速度の調整。音質の調整。</li>
-        <li>再生する音声の抑揚のON・OFF切替</li>
+        <li class="link" ng-click="display='tuna'">音量、再生速度の調整。音質の調整。</li>
+        <li class="link" ng-click="display='tuna'">再生する音声の抑揚のON・OFF切替</li>
         <li>テキストエリアで選択したテキスト部分のみを音声再生、音声録音</li>
-        <li>各種ショートカットキー</li>
+        <li class="link" ng-click="display='shortcut'">各種ショートカットキー</li>
         <li>チュートリアル</li>
       </ul>
+    </div>
+  </div>
+
+  <!-- tuna -->
+  <div class="pane" ng-show="display == 'tuna'">
+    <div class="content">
+      <h4>再生する音声の調整</h4>
+      <p>
+        現在、MYukkuriVoiceに用意されている音声の調整関連の機能は以下の通りです。
+        良く使用されそうな機能は前面に、使用頻度の少なそうな機能は設定画面に
+        設定機能が用意されています。
+        <ul>
+          <li>音量</li>
+          <li>再生速度</li>
+          <li>playback rate</li>
+          <li>detune</li>
+          <li>抑揚のON・OFF切替</li>
+        </ul>
+      </p>
+
+      <h5>音量</h5>
+      <table class="table-striped param-table">
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr>
+            <th>説明</th>
+            <td>
+              再生する音声の音量を調整します。<br>
+              MYukkuriVoiceの音量はデフォルトではSofTalkなどに<br>
+              比べて、やや高めになっています。
+            </td>
+          </tr>
+          <tr>
+            <th>デフォルト値</th>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <th>パラメータ</th>
+            <td>0.0 〜 3.0 (0.1刻み)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h5>再生速度</h5>
+      <table class="table-striped param-table">
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr>
+            <th>説明</th>
+            <td>
+              音声の再生速度を変更します。<br>
+              MYukkuriVoiceのデフォルトの再生速度は、<br>
+              動画に使うにはやや遅めです。
+            </td>
+          </tr>
+          <tr>
+            <th>デフォルト値</th>
+            <td>100</td>
+          </tr>
+          <tr>
+            <th>パラメータ</th>
+            <td>50 〜 300</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h5>playback rate</h5>
+      <table class="table-striped param-table">
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr>
+            <th>説明</th>
+            <td>
+              音声の再生速度です。<br>
+              ですが、「再生速度」の項目と違い、<br>
+              パラメータを変化させると声の質が変化します。
+            </td>
+          </tr>
+          <tr>
+            <th>デフォルト値</th>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <th>パラメータ</th>
+            <td>0.0 〜 3.0 (0.1刻み)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h5>detune</h5>
+      <table class="table-striped param-table">
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr>
+            <th>説明</th>
+            <td>
+              音の高さをずらします。<br>
+              このパラメータを変化させると、音の高さが変わるだけ<br>
+              ではなく、音のテンポにも影響があります。
+            </td>
+          </tr>
+          <tr>
+            <th>デフォルト値</th>
+            <td>0</td>
+          </tr>
+          <tr>
+            <th>パラメータ</th>
+            <td>-1200 〜 1200 (50刻み)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h5>抑揚のON・OFF切替</h5>
+      <table class="table-striped param-table">
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr>
+            <th>説明</th>
+            <td>
+              再生する音声記号列からアクセント記号(')と区切記号(/)を<br>
+              取り除き、加工後のメッセージを再生します。<br>
+              結果として、抑揚のチェックをOFFにすると棒読みのような<br>
+              メッセージが再生されます。
+            </td>
+          </tr>
+          <tr>
+            <th>デフォルト値</th>
+            <td>ON</td>
+          </tr>
+          <tr>
+            <th>パラメータ</th>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
