@@ -30,8 +30,15 @@ div.btn-group-convert .btn{
   margin-right: 5px;
 }
 
-div.source_write_box {
+div.voice_tuna_box {
   margin-top: 20px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #c0c0c0;
+}
+div.source_write_box {
+  margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   border: 1px solid #c0c0c0;

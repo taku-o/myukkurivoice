@@ -13,7 +13,7 @@ const debug = process.env.DEBUG;
 
 // application settings
 var app_cfg = {
-  mainWindow: { width: 850, height: 735 },
+  mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
   show_msg_pane: true

@@ -87,7 +87,7 @@
 
       <div class="form-group">
         <!-- <label>Source</label> -->
-        <textarea class="form-control" id="source" rows="5" ng-model="yinput.source" highlight="source_highlight" ng-blur="ctrl.blur_on_source()" ng-focus="ctrl.focus_on_source()" placeholder="メッセージ入力欄"></textarea>
+        <textarea class="form-control" id="source" rows="4" ng-model="yinput.source" highlight="source_highlight" ng-blur="ctrl.blur_on_source()" ng-focus="ctrl.focus_on_source()" placeholder="メッセージ入力欄"></textarea>
       </div>
 
       <div class="form-inline form-group btn-group-convert">
@@ -103,7 +103,7 @@
       </div>
       <div class="form-group">
         <!-- <label>Encoded</label> -->
-        <textarea class="form-control" id="encoded" rows="5" ng-model="yinput.encoded" highlight="encoded_highlight" ng-blur="ctrl.blur_on_encoded()" ng-focus="ctrl.focus_on_encoded()" placeholder="音記号列入力欄"></textarea>
+        <textarea class="form-control" id="encoded" rows="4" ng-model="yinput.encoded" highlight="encoded_highlight" ng-blur="ctrl.blur_on_encoded()" ng-focus="ctrl.focus_on_encoded()" placeholder="音記号列入力欄"></textarea>
       </div>
 
       <div class="form-inline form-group">
@@ -155,7 +155,7 @@
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
-        <input type="text" class="form-control" id="name" ng-model="yvoice.name" placeholder="name">
+        <input type="text" class="form-control" id="name2" ng-model="yvoice.name" placeholder="name">
       </div>
 
       <div class="voice_tuna_box" id="voice_tuna_box">
@@ -169,7 +169,7 @@
         </div>
 
         <div class="form-inline form-group">
-          音声ファイル書込マージン (出力した音声ファイルの最後が欠ける時に増やしてください)
+          <small>音声ファイル書込マージン (出力音声ファイルの最後が欠ける時に増やしてください)</small>
           <input type="text" id="name" ng-model="yvoice.write_margin_ms" placeholder="write_margin_ms">
         </div>
       </div>
@@ -196,7 +196,7 @@
           <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
             <span class="icon icon-folder"></span>出力先ディレクトリ選択
           </button>
-          dir: {{yvoice.seq_write_options.dir || '未選択時はホームディレクトリを使用します'}}
+          <small>dir: {{yvoice.seq_write_options.dir || '未選択時はデスクトップを使用'}}</small>
         </div>
       </div>
 

@@ -14,9 +14,12 @@ a {
   color: blue;
   text-decoration: underline;
 }
-
 li.link {
   color: blue;
   text-decoration: underline;
+}
+
+table.param-table td {
+  border-bottom: 1px solid #ddd;
 }
 

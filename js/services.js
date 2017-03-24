@@ -694,7 +694,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
               intro: '変更した設定はここで保存できます'
             },
             {
-              element: '#save',
+              element: '#name2',
               intro: 'この設定は音声の出力設定ごとに共有です'
             },
             {

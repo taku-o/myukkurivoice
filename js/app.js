@@ -5,7 +5,7 @@ var util = require('util');
 var path = require('path');
 var log = require('electron-log');
 
-var home_dir = app.getPath('home');
+var desktop_dir = app.getPath('desktop');
 
 // application settings
 var app_cfg = require('electron').remote.getGlobal('app_cfg');
@@ -322,7 +322,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
         var dir = $scope.yvoice.seq_write_options.dir;
         var prefix = $scope.yvoice.seq_write_options.prefix;
         if (!dir) {
-          dir = home_dir;
+          dir = desktop_dir;
         }
 
         SeqFNameService.next_number(dir, prefix)
@@ -489,7 +489,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
         $timeout(function(){ $scope.$apply(); });
       });
       var opt_dir = $scope.yvoice.seq_write_options.dir;
-      if (!opt_dir) { opt_dir = home_dir; }
+      if (!opt_dir) { opt_dir = desktop_dir; }
       ipcRenderer.send('showDirDialog', opt_dir);
     };
 
