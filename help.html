@@ -37,8 +37,14 @@
       <span class="nav-group-item" ng-class="{active:display == 'funclist'}" ng-click="display='funclist'">
         <span class="icon icon-help-circled"></span>機能一覧
       </span>
+      <span class="nav-group-item" ng-class="{active:display == 'play'}" ng-click="display='play'">
+        <span class="icon icon-help-circled"></span>音声を再生する
+      </span>
       <span class="nav-group-item" ng-class="{active:display == 'tuna'}" ng-click="display='tuna'">
         <span class="icon icon-help-circled"></span>再生する音声の調整
+      </span>
+      <span class="nav-group-item" ng-class="{active:display == 'writing'}" ng-click="display='writing'">
+        <span class="icon icon-help-circled"></span>ファイル保存の設定
       </span>
       <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
         <span class="icon icon-help-circled"></span>ショートカットキー
@@ -147,15 +153,52 @@
       <h4>機能一覧</h4>
       <ul>
         <li>AquesTalk1, AquesTalk2ベースのメッセージ音声再生、音声録音機能</li>
-        <li>音記号列の表示編集、および、変更後音記号列の音声再生機能</li>
+        <li class="link" ng-click="display='play'">音記号列の表示編集、および、変更後音記号列の音声再生機能</li>
+        <li class="link" ng-click="display='play'">テキストエリアで選択したテキスト部分のみを音声再生、音声録音</li>
         <li>設定の保存、複製。設定に名前をつけて複数の設定を保存可能。</li>
-        <li>ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能</li>
+        <li class="link" ng-click="display='writing'">ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能</li>
+        <li class="link" ng-click="display='writing'">音声保存時に、音声の元となったメッセージもテキストファイルに保存</li>
         <li class="link" ng-click="display='tuna'">音量、再生速度の調整。音質の調整。</li>
         <li class="link" ng-click="display='tuna'">再生する音声の抑揚のON・OFF切替</li>
-        <li>テキストエリアで選択したテキスト部分のみを音声再生、音声録音</li>
         <li class="link" ng-click="display='shortcut'">各種ショートカットキー</li>
         <li>チュートリアル</li>
       </ul>
+    </div>
+  </div>
+
+  <!-- play -->
+  <div class="pane" ng-show="display == 'play'">
+    <div class="content">
+      <h4>音声を再生する</h4>
+
+      <h5>メッセージの再生</h5>
+      <p>
+        メッセージ入力欄に再生したいメッセージを入力。<br>
+        再生ボタンを押すと音声を再生、<br>
+        記録ボタンを押すと音声を保存します。
+      </p>
+
+      <h5>音記号列への変換</h5>
+      <p>
+        音記号列に変換ボタンを押すと<br>
+        メッセージ入力欄に入れられたメッセージを音記号列に変換します。
+      </p>
+
+      <h5>音記号列の再生</h5>
+      <p>
+        音記号列入力欄に音記号列が入力されている状態で、<br>
+        再生ボタンを押すと音記号列入力欄の音声を再生、<br>
+        記録ボタンを押すと音記号列入力欄の音声を保存します。<br>
+        音記号列は編集可能なので、発音が気に入らない場合はここで修正します。
+      </p>
+
+      <h5>メッセージの一部のみの再生記録変換</h5>
+      <p>
+        もし、入力したメッセージ、音記号列全体ではなく、
+        その一部のみを再生、記録、音記号列へ変換したい場合は、<br>
+        希望の範囲のテキストを選択すれば、その選択されたテキストのみを対象に音声再生、記録、音記号列への変換を実施します。<br>
+        音声の一部のみを差し替えたい時などに使用します。
+      </p>
     </div>
   </div>
 
@@ -291,6 +334,32 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- writing -->
+  <div class="pane" ng-show="display == 'writing'">
+    <div class="content">
+      <h4>音声記録時にテキストファイルにメッセージを<br>書き出す</h4>
+      <p>
+        このチェックをオンにしておくと、音声ファイルの録画時に、
+        その音声データの元となったメッセージをテキストファイルに
+        書き込みます。<br>
+        テキストファイルのファイル名は音声ファイル名 + ".txt"になります。<br>
+        作成した音声ファイルがどのメッセージだったか、音声を再生せずに確認できるので便利です。
+      </p>
+
+      <h4>連番ファイル出力機能を使用する</h4>
+      <p>
+        記録ボタンを押した際、作成する音声ファイルのファイル名が聞かれなくなります。
+        代わりに、0001.wav、0002.wav、0003.wavというように、記録するたびに連番のファイルを作成します。<br>
+        多数の音声ファイルを作成する時などで、ファイル名の指定が面倒な際に利用します。
+      </p>
+
+      <h4>ファイル名のプレフィックス、出力先<br>ディレクトリ選択</h4>
+      <p>
+        連番ファイル出力機能を使用する際の、出力ファイルの作成ルールの指定です。
+      </p>
     </div>
   </div>
 
