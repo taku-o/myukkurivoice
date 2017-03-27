@@ -21,7 +21,8 @@ http://www.a-quest.com/
 * https://github.com/taku-o/myukkurivoice/releases
 
 ## インストール
-https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukkurivoice-darwin-x64.zip)をダウンロードして解凍後、  
+https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukkurivoice-darwin-x64.zip)を  
+ダウンロードして解凍後、  
 初回の起動は myukkurivoice.app を右クリックして「開く」を選択してください。
 
 ## 主な特徴
@@ -42,6 +43,10 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-filewriteopt.png" width="400">
 
+### 選択した範囲のみの音声再生・録音
+
+<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400">
+
 ### その他
 * チュートリアルが用意されています
 
@@ -58,6 +63,29 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 * 再生する音声の抑揚のON・OFF切替
 * 各種ショートカットキー
 * チュートリアル
+
+### 声一覧
+| 声                 |            |
+|:-------------------|:-----------|
+| f1 女声1(ゆっくり) | AquesTalk1 |
+| m1 男声1           | AquesTalk1 |
+| f1c 女声           | AquesTalk2 |
+| f3a 女声           | AquesTalk2 |
+| huskey ハスキー    | AquesTalk2 |
+| m4b 男声           | AquesTalk2 |
+| mf1 中性的         | AquesTalk2 |
+| rb2 小さいロボ     | AquesTalk2 |
+| rb3 ロボ           | AquesTalk2 |
+| rm 女声            | AquesTalk2 |
+| robo ロボット      | AquesTalk2 |
+| aq_yukkuri         | AquesTalk2 |
+| f4 女声            | AquesTalk2 |
+| m5 男声            | AquesTalk2 |
+| mf2 機械声         | AquesTalk2 |
+| rm3 女声           | AquesTalk2 |
+| aq_defo1           | AquesTalk2 |
+| aq_momo1           | AquesTalk2 |
+| aq_teto1           | AquesTalk2 |
 
 ## 動画
 [![](http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg)](https://www.youtube.com/watch?v=DUbXHZrW1Ms)
