@@ -25,6 +25,9 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 ダウンロードして解凍後、  
 初回の起動は myukkurivoice.app を右クリックして「開く」を選択してください。
 
+## リリースノート
+* https://github.com/taku-o/myukkurivoice/blob/master/docs/release.md
+
 ## 主な特徴
 ### 基本
 * MacOSX Sierra以降で動作検証。
@@ -42,12 +45,12 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 音声ファイルを連番付きのファイル名で保存したり、  
 音声ファイルの元となったメッセージを保存する機能があります。
 
-<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-filewriteopt.png" width="400">
+<kbd><img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-filewriteopt.png" width="400"></kbd>
 
 ### 選択した範囲のテキストのみの音声再生・録音
 * 選択した範囲のテキストを再生、録音する機能があります。
 
-<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400" border=1>
+<kdb><img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400"></kbd>
 
 ### その他
 * チュートリアル、ヘルプが用意されています
