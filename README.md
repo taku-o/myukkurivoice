@@ -70,29 +70,6 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 * 各種ショートカットキー
 * チュートリアル、ヘルプ
 
-### 用意されている声一覧
-| 声                 |            |
-|:-------------------|:-----------|
-| f1 女声1(ゆっくり) | AquesTalk1 |
-| m1 男声1           | AquesTalk1 |
-| f1c 女声           | AquesTalk2 |
-| f3a 女声           | AquesTalk2 |
-| huskey ハスキー    | AquesTalk2 |
-| m4b 男声           | AquesTalk2 |
-| mf1 中性的         | AquesTalk2 |
-| rb2 小さいロボ     | AquesTalk2 |
-| rb3 ロボ           | AquesTalk2 |
-| rm 女声            | AquesTalk2 |
-| robo ロボット      | AquesTalk2 |
-| aq_yukkuri         | AquesTalk2 |
-| f4 女声            | AquesTalk2 |
-| m5 男声            | AquesTalk2 |
-| mf2 機械声         | AquesTalk2 |
-| rm3 女声           | AquesTalk2 |
-| aq_defo1           | AquesTalk2 |
-| aq_momo1           | AquesTalk2 |
-| aq_teto1           | AquesTalk2 |
-
 ## 動画
 [![](http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg)](https://www.youtube.com/watch?v=DUbXHZrW1Ms)
 
