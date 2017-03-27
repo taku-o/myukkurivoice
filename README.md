@@ -45,12 +45,12 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 音声ファイルを連番付きのファイル名で保存したり、  
 音声ファイルの元となったメッセージを保存する機能があります。
 
-<kbd><img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-filewriteopt.png" width="400"></kbd>
+<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-filewriteopt.png" width="400">
 
 ### 選択した範囲のテキストのみの音声再生・録音
 * 選択した範囲のテキストを再生、録音する機能があります。
 
-<kdb><img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400"></kbd>
+<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400">
 
 ### その他
 * チュートリアル、ヘルプが用意されています
