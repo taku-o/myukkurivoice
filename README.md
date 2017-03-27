@@ -38,17 +38,19 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-shortcut-play.png" width="400">
 
 ### ファイルの出力オプション
-* 音声ファイルを連番付きの名前で保存(使用未使用選択可)
-* 音声ファイル元メッセージ保存機能(使用未使用選択可)
+1ファイルごとにファイル名を指定して保存する方法以外に、  
+音声ファイルを連番付きのファイル名で保存したり、  
+音声ファイルの元となったメッセージを保存する機能があります。
 
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-filewriteopt.png" width="400">
 
-### 選択した範囲のみの音声再生・録音
+### 選択した範囲のテキストのみの音声再生・録音
+* 選択した範囲のテキストを再生、録音する機能があります。
 
-<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400">
+<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400" border=1>
 
 ### その他
-* チュートリアルが用意されています
+* チュートリアル、ヘルプが用意されています
 
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-tutorial.png" width="400">
 
@@ -64,7 +66,7 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 * 各種ショートカットキー
 * チュートリアル
 
-### 声一覧
+### 用意されている声一覧
 | 声                 |            |
 |:-------------------|:-----------|
 | f1 女声1(ゆっくり) | AquesTalk1 |
