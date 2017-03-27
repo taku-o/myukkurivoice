@@ -49,6 +49,7 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 
 ### 選択した範囲のテキストのみの音声再生・録音
 * 選択した範囲のテキストを再生、録音する機能があります。
+* メッセージ入力欄、音記号列入力欄、どちらでも機能します。
 
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400">
 
@@ -67,7 +68,7 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 * 音量、再生速度の調整。音質の調整。
 * 再生する音声の抑揚のON・OFF切替
 * 各種ショートカットキー
-* チュートリアル
+* チュートリアル、ヘルプ
 
 ### 用意されている声一覧
 | 声                 |            |
