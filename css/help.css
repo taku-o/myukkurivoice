@@ -1,4 +1,3 @@
-
 span.nav-group-item span.icon {
   color: blue;
 }
@@ -8,6 +7,13 @@ div.content {
   margin-right: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+h4 {
+  text-decoration: underline;
+}
+div.content > h4:not(:first-child) {
+  margin-top: 30px;
 }
 
 a {

@@ -14,6 +14,11 @@
   <script src="js/models.js"></script>
   <script src="js/services.js"></script>
   <script src="js/app.js"></script>
+  <script type="text/javascript">
+    document.ondragover = document.ondrop = function(e) {
+      e.preventDefault(); return false;
+    };
+  </script>
 </head>
 <body>
 <div class="window" ng-controller="MainController as ctrl">

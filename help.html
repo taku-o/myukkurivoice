@@ -8,6 +8,11 @@
   <script src="node_modules/photon/dist/template-app/js/menu.js" charset="utf-8"></script>
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="js/help.js"></script>
+  <script type="text/javascript">
+    document.ondragover = document.ondrop = function(e) {
+      e.preventDefault(); return false;
+    };
+  </script>
 </head>
 <body>
 <div class="window" ng-controller="HelpController as ctrl">
@@ -44,10 +49,16 @@
         <span class="icon icon-help-circled"></span>再生する音声の調整
       </span>
       <span class="nav-group-item" ng-class="{active:display == 'writing'}" ng-click="display='writing'">
-        <span class="icon icon-help-circled"></span>ファイル保存の設定
+        <span class="icon icon-help-circled"></span>音声ファイル保存の設定
+      </span>
+      <span class="nav-group-item" ng-class="{active:display == 'dataconfig'}" ng-click="display='dataconfig'">
+        <span class="icon icon-help-circled"></span>音声再生設定の編集
       </span>
       <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
         <span class="icon icon-help-circled"></span>ショートカットキー
+      </span>
+      <span class="nav-group-item" ng-class="{active:display == 'help'}" ng-click="display='help'">
+        <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
     </nav>
   </div>
@@ -64,8 +75,7 @@
 
       <p>
         本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。<br>
-        本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。<br>
-        ご注意ください。<br>
+        本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。ご注意ください。<br>
         <a ng-click="ctrl.browser('http://www.a-quest.com/')">http://www.a-quest.com/</a>
       </p>
     </div>
@@ -155,13 +165,13 @@
         <li>AquesTalk1, AquesTalk2ベースのメッセージ音声再生、音声録音機能</li>
         <li class="link" ng-click="display='play'">音記号列の表示編集、および、変更後音記号列の音声再生機能</li>
         <li class="link" ng-click="display='play'">テキストエリアで選択したテキスト部分のみを音声再生、音声録音</li>
-        <li>設定の保存、複製。設定に名前をつけて複数の設定を保存可能。</li>
+        <li class="link" ng-click="display='dataconfig'">設定の保存、複製。設定に名前をつけて複数の設定を保存可能。</li>
         <li class="link" ng-click="display='writing'">ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能</li>
         <li class="link" ng-click="display='writing'">音声保存時に、音声の元となったメッセージもテキストファイルに保存</li>
         <li class="link" ng-click="display='tuna'">音量、再生速度の調整。音質の調整。</li>
         <li class="link" ng-click="display='tuna'">再生する音声の抑揚のON・OFF切替</li>
         <li class="link" ng-click="display='shortcut'">各種ショートカットキー</li>
-        <li>チュートリアル</li>
+        <li class="link" ng-click="display='help'">チュートリアル・ヘルプ</li>
       </ul>
     </div>
   </div>
@@ -169,34 +179,33 @@
   <!-- play -->
   <div class="pane" ng-show="display == 'play'">
     <div class="content">
-      <h4>音声を再生する</h4>
-
-      <h5>メッセージの再生</h5>
+      <h4>メッセージの再生</h4>
       <p>
         メッセージ入力欄に再生したいメッセージを入力。<br>
-        再生ボタンを押すと音声を再生、<br>
-        記録ボタンを押すと音声を保存します。
+        再生ボタン<button class="btn btn-small btn-default"><span class="icon icon-play"></span>再生</button>を押すと音声を再生、<br>
+        記録ボタン<button class="btn btn-small btn-default"><span class="icon icon-record"></span>記録</button>を押すと音声を保存します。
       </p>
 
-      <h5>音記号列への変換</h5>
+      <h4>音記号列への変換</h4>
       <p>
-        音記号列に変換ボタンを押すと<br>
+        音記号列に変換ボタン<button class="btn btn-small btn-default"><span class="icon icon-down-bold"></span>音記号列に変換</button>を押すと<br>
         メッセージ入力欄に入れられたメッセージを音記号列に変換します。
       </p>
 
-      <h5>音記号列の再生</h5>
+      <h4>音記号列の再生</h4>
       <p>
         音記号列入力欄に音記号列が入力されている状態で、<br>
-        再生ボタンを押すと音記号列入力欄の音声を再生、<br>
-        記録ボタンを押すと音記号列入力欄の音声を保存します。<br>
+        再生ボタン<button class="btn btn-small btn-default"><span class="icon icon-play"></span>再生</button>を押すと音記号列入力欄の音声を再生、<br>
+        記録ボタン<button class="btn btn-small btn-default"><span class="icon icon-record"></span>記録</button>を押すと音記号列入力欄の音声を保存します。<br>
         音記号列は編集可能なので、発音が気に入らない場合はここで修正します。
       </p>
 
-      <h5>メッセージの一部のみの再生記録変換</h5>
+      <h4>メッセージの一部のみの再生記録変換</h4>
       <p>
         もし、入力したメッセージ、音記号列全体ではなく、
-        その一部のみを再生、記録、音記号列へ変換したい場合は、<br>
-        希望の範囲のテキストを選択すれば、その選択されたテキストのみを対象に音声再生、記録、音記号列への変換を実施します。<br>
+        その一部のみを再生、記録、音記号列へ変換したい場合は、
+        希望の範囲のテキストを選択すれば、<br>
+        その選択されたテキストのみを対象に音声再生、記録、音記号列への変換を実施できます。<br>
         音声の一部のみを差し替えたい時などに使用します。
       </p>
     </div>
@@ -363,6 +372,76 @@
     </div>
   </div>
 
+  <!-- dataconfig -->
+  <div class="pane" ng-show="display == 'dataconfig'">
+    <div class="content">
+      <h4>設定を編集する</h4>
+      左のメニューのボタンで、音声再生設定を保存・編集できます。<br>
+      各ボタンの機能の説明は以下の通りです
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th>ボタン</th>
+            <th>機能</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <button class="btn btn-small btn-default"><span class="icon icon-install"></span>設定保存</button>
+            </td>
+            <td>
+              現在の設定を保存します。
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button class="btn btn-small btn-default pull-right"><span class="icon icon-plus-squared"></span>設定追加</button>
+            </td>
+            <td>
+              新規の設定データを追加します。<br>
+              設定を増やしたいときに使用します。
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button class="btn btn-default"><span class="icon icon-docs"></span></button>
+            </td>
+            <td>
+              選択している設定を複製して、一番下に追加します。<br>
+              既存の設定から少し変更した設定を作る時に使用します。
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button class="btn btn-default"><span class="icon icon-minus-squared"></span></button>
+            </td>
+            <td>
+              選択している設定を削除します。
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>設定を選択する</h4>
+      使用したい設定を変更したい時は、
+      左のメニューから使用したい設定を選択してください。<br>
+      選択されている設定は、背景がハイライト表示になります。
+
+      <h4>設定を絞り込む</h4>
+      設定メニューの上のテキストフィールドに
+      設定の名前を入力すると、
+      メニューに表示する設定を絞り込めます。
+
+      <h4>設定を初期化する</h4>
+      アプリケーションのデータに関わる部分が更新された時、
+      あるいは設定がおかしくなった時、設定を修復したい時は、<br>
+      「設定」メニューの「設定オールリセット」を選択すると、
+      現在の設定が初期化されます。<br>
+      現在の設定内容は失われてしまうので、気をつけてください。
+    </div>
+  </div>
+
   <!-- shortcut -->
   <div class="pane" ng-show="display == 'shortcut'">
     <div class="content">
@@ -417,6 +496,21 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- help -->
+  <div class="pane" ng-show="display == 'help'">
+    <div class="content">
+      <h4>チュートリアル・ヘルプ</h4>
+      このアプリケーションには、3つのチュートリアルとヘルプが用意されています。
+      それぞれの機能はメインウィンドウにある、次のボタンで起動します。
+      <ul>
+        <li><button class="btn btn-small btn-default"><span class="icon icon-help-circled"></span>ショートカットヘルプ</button></li>
+        <li><button class="btn btn-small btn-default"><span class="icon icon-help-circled"></span>チュートリアル(通常)</button></li>
+        <li><button class="btn btn-small btn-default"><span class="icon icon-help-circled"></span>チュートリアル(設定)</button></li>
+        <li><button class="btn btn-small btn-default"><span class="icon icon-help-circled"></span>ヘルプ</button></li>
+      </ul>
     </div>
   </div>
 
