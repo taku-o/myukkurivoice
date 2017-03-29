@@ -7,22 +7,30 @@ const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
 const localShortcut = require('electron-localshortcut');
 const log = require('electron-log');
-
-// debug option
-const debug = process.env.DEBUG;
+const Config = require('electron-config');
 
 // application settings
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
+  appcfgWindow: { width: 390, height: 350 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
-  show_msg_pane: true
+  show_msg_pane: true,
+  debug: process.env.DEBUG
 };
+var config = new Config();
+['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'debug'].forEach(function(k){
+  if (config.has(k)) { app_cfg[k] = config.get(k); }
+});
 global.app_cfg = app_cfg;
+
+// debug option
+const debug = app_cfg.debug;
 
 // global reference
 var mainWindow = null;
 var helpWindow = null;
+var appcfgWindow = null;
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -85,6 +93,16 @@ app.on('ready', function() {
       label: 'MYukkuriVoice',
       submenu: [
         { role: 'about' },
+        { type: 'separator' },
+        {
+          label: '環境設定',
+          click () { showAppCfgWindow(); }
+        },
+        { type: 'separator' },
+        {
+          label: '環境設定初期化',
+          click () { resetAppConfigOnMain(); }
+        },
         { type: 'separator' },
         {
           role: 'services',
@@ -324,6 +342,56 @@ ipcMain.on('showDirDialog', function (event, defaultPath) {
   event.sender.send('showDirDialog', r);
 });
 
+// updateAppConfig
+function updateAppConfig(options) {
+  config.set('mainWindow',     options.mainWindow);
+  config.set('audio_serv_ver', options.audio_serv_ver);
+  config.set('show_msg_pane',  options.show_msg_pane);
+  config.set('debug',          options.debug);
+}
+ipcMain.on('updateAppConfig', function (event, options) {
+  updateAppConfig(options);
+  var dialog_options = {
+    type: 'info',
+    title: 'application config updated.',
+    message: '環境設定を更新しました。アプリケーションを再起動すると変更が反映されます。',
+    buttons: ['OK'],
+  };
+  var r = dialog.showMessageBox(appcfgWindow, dialog_options);
+  event.sender.send('updateAppConfig', r);
+});
+
+// resetAppConfig
+function resetAppConfig() {
+  config.set('mainWindow',     { width: 800, height: 665 });
+  config.set('audio_serv_ver', 'webaudioapi');
+  config.set('show_msg_pane',  true);
+  config.set('debug',          false);
+}
+ipcMain.on('resetAppConfig', function (event, message) {
+  resetAppConfig();
+  var dialog_options = {
+    type: 'info',
+    title: 'application config initialized.',
+    message: '環境設定を初期化しました。アプリケーションを再起動すると変更が反映されます。',
+    buttons: ['OK'],
+  };
+  var r = dialog.showMessageBox(appcfgWindow, dialog_options);
+  event.sender.send('resetAppConfig', r);
+});
+
+// resetAppConfigOnMain
+function resetAppConfigOnMain() {
+  resetAppConfig();
+  var dialog_options = {
+    type: 'info',
+    title: 'application config initialized.',
+    message: '環境設定を初期化しました。アプリケーションを再起動すると変更が反映されます。',
+    buttons: ['OK'],
+  };
+  var r = dialog.showMessageBox(mainWindow, dialog_options);
+}
+
 // showHelpWindow
 ipcMain.on('showHelpWindow', function (event, message) {
   showHelpWindow();
@@ -388,6 +456,38 @@ function showHelpWindow() {
   });
   helpWindow.webContents.on('crashed', function() {
     log.error('help:event:crashed');
+  });
+}
+
+// application config window
+function showAppCfgWindow() {
+  if (appcfgWindow && !appcfgWindow.isDestroyed()) {
+    appcfgWindow.show();
+    return;
+  }
+
+  var {width, height} = app_cfg.appcfgWindow;
+  appcfgWindow = new BrowserWindow({
+    parent: mainWindow,
+    modal: false,
+    show: false,
+    width: width,
+    height: height,
+    webPreferences: {
+      devTools: debug
+    }
+  });
+  appcfgWindow.loadURL('file://' + __dirname + '/appcfg.html');
+  appcfgWindow.show();
+
+  appcfgWindow.on('closed', function() {
+    appcfgWindow = null;
+  });
+  appcfgWindow.on('unresponsive', function() {
+    log.warn('appcfg:event:unresponsive');
+  });
+  appcfgWindow.webContents.on('crashed', function() {
+    log.error('appcfg:event:crashed');
   });
 }
 

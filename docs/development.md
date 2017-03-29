@@ -66,6 +66,7 @@
     npm install --save angular-input-highlight
     npm install --save https://github.com/connors/photon
     npm install --save electron-json-storage
+    npm install --save electron-config
     npm install --save electron-log
     npm install --save electron-localshortcut
     npm install --save ref

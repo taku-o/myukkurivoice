@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="yvoiceAppCfg">
+<head>
+  <meta charset="UTF-8">
+  <title>MYukkuriVoice Application Config</title>
+  <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
+  <link rel="stylesheet" href="css/appcfg.css">
+  <script src="node_modules/photon/dist/template-app/js/menu.js" charset="utf-8"></script>
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="js/appcfg.js"></script>
+  <script type="text/javascript">
+    document.ondragover = document.ondrop = function(e) {
+      e.preventDefault(); return false;
+    };
+  </script>
+</head>
+<body>
+<div class="window" ng-controller="AppcfgController as ctrl">
+<div class="window-content">
+  <form>
+    <div class="box">
+      ウィンドウサイズ
+      <div class="form-group">
+        width <input type="number" min="200" max="3000" step="1" ng-model="app_cfg.mainWindow.width"  placeholder="width">
+        <span class="splitter">x</span>
+        height <input type="number" min="200" max="3000" step="1" ng-model="app_cfg.mainWindow.height" placeholder="height" size="5">
+      </div>
+    </div>
+  
+    <div class="box">
+      音声再生エンジン
+      <div class="radio">
+        <label>
+          <input type="radio" ng-model="app_cfg.audio_serv_ver" value="html5audio">html5audio
+        <small>音声録音が早い。一部機能に制限がある。</small>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" ng-model="app_cfg.audio_serv_ver" value="webaudioapi">webaudioapi
+          <small>音声録音が遅い。全ての機能を利用できる。</small>
+        </label>
+      </div>
+    </div>
+  
+    <div class="box">
+      <div class="checkbox">
+        <label><input type="checkbox" ng-model="app_cfg.show_msg_pane">メッセージリストを表示する</label>
+      </div>
+      <div class="checkbox">
+        <label><input type="checkbox" ng-model="app_cfg.debug">開発者モードを有効にする</label>
+      </div>
+    </div>
+  </form>
+</div><!-- window-content -->
+
+<footer class="toolbar toolbar-footer">
+  <div class="toolbar-actions">
+    <button class="btn btn-large btn-default" ng-click="ctrl.cancel()">キャンセル・閉じる</button>
+    <button class="btn btn-large btn-default" ng-click="ctrl.save()">更新</button>
+    <button class="btn btn-large btn-default pull-right" ng-click="ctrl.reset()">環境設定リセット</button>
+  </div>
+</footer>
+
+</div><!-- window -->
+</body>
+</html>
+
