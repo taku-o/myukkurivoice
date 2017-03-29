@@ -34,6 +34,9 @@
       <span class="nav-group-item" ng-class="{active:display == 'uninstall'}" ng-click="display='uninstall'">
         <span class="icon icon-help-circled"></span>アンインストールするには
       </span>
+      <span class="nav-group-item" ng-class="{active:display == 'backup'}" ng-click="display='backup'">
+        <span class="icon icon-help-circled"></span>設定をバックアップするには
+      </span>
       <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
@@ -141,6 +144,19 @@
         <ul>
           <li>アプリケーションを削除してください</li>
           <li>"$HOME/Library/Application Support/myukkurivoice/" を削除してください</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+
+  <!-- backup -->
+  <div class="pane" ng-show="display == 'backup'">
+    <div class="content">
+      <h4>設定をバックアップするには</h4>
+      <p>
+        次のファイルをどこかに逃がしてください。
+        <ul>
+          <li>"$HOME/Library/Application Support/myukkurivoice/data.json"</li>
         </ul>
       </p>
     </div>
