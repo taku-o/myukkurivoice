@@ -40,6 +40,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
       $timeout(function(){ $scope.$apply(); });
     });
+    $scope.$on('duration', function(event, duration) {
+      $scope.duration = duration;
+      $timeout(function(){ $scope.$apply(); });
+    });
 
     // shortcut
     ipcRenderer.on('shortcut', function (event, action) {
