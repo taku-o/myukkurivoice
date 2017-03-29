@@ -26,13 +26,13 @@
 <header class="toolbar toolbar-header">
   <div class="toolbar-actions">
     <div class="btn-group" id="btn-group-audio">
-      <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()">
+      <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
         <span class="icon icon-play"></span>再生
       </button>
       <button class="btn btn-large btn-default" id="stop" ng-click="ctrl.stop()">
         <span class="icon icon-stop"></span>停止
       </button>
-      <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()">
+      <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
         <span class="icon icon-record"></span>記録
       </button>
     </div>
@@ -96,10 +96,10 @@
       </div>
 
       <div class="form-inline form-group btn-group-convert">
-        <button class="btn btn-large btn-default" id="encode" ng-click="ctrl.encode()">
+        <button class="btn btn-large btn-default" id="encode" ng-click="ctrl.encode()" ng-disabled="!yinput.source">
           <span class="icon icon-down-bold"></span>音記号列に変換
         </button>
-        <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()">
+        <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
           <span class="icon icon-trash"></span>入力クリア
         </button>
         <button class="btn btn-large btn-default" id="from_clipboard" ng-click="ctrl.from_clipboard()">

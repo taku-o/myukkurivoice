@@ -134,17 +134,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
       {'id':'aq_momo1',   'name':'aq_momo1',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
       {'id':'aq_teto1',   'name':'aq_teto1',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_teto1.phont'}
     ];
-    var effect_list = [
-      {'id':1, 'name':'none'},
-      {'id':2, 'name':'echo'}
-    ];
 
     return {
       get_phont_list: function() {
         return phont_list;
-      },
-      get_effect_list: function() {
-        return effect_list;
       }
     }
   })
@@ -468,8 +461,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
             // recorder
             var recorder = WaveRecorder(audioCtx, {
-              channels: 1,
-              bitDepth: 16
+              channels: 1, // 1 or 2
+              bitDepth: 16 // 16 or 32
             });
             recorder.pipe(fs.createWriteStream(wav_file_path));
 

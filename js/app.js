@@ -133,7 +133,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     var ctrl = this;
     $scope.display = 'main';
     $scope.phont_list = MasterService.get_phont_list();
-    $scope.effect_list = MasterService.get_effect_list();
     $scope.yinput = angular.copy(YInput);
     $scope.message_list = [];
     load_data();
