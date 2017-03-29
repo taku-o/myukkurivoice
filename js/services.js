@@ -53,6 +53,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
+  .factory('AnalyzerService', ['$rootScope', function($rootScope) {
+    return {
+      duration: function(duration) {
+        $rootScope.$broadcast("duration", duration);
+      }
+    }
+  }])
   .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', function($q, YVoice, YVoiceInitialData, MessageService) {
 
     function uniq_id() {
@@ -357,7 +364,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AudioService2', ['$q', 'MessageService', function($q, MessageService) {
+  .factory('AudioService2', ['$q', '$timeout', 'MessageService', 'AnalyzerService',
+    function($q, $timeout, MessageService, AnalyzerService) {
     // Web Audio API base AudioService
     var audioCtx = new window.AudioContext();
     var sourceNode = null;
@@ -383,6 +391,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var a_buffer = to_array_buffer(buf_wav);
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
+            // report duration
+            AnalyzerService.duration(decodedData.duration + (options.write_margin_ms / 1000.0));
+
             // source
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = decodedData;
@@ -436,12 +447,15 @@ angular.module('yvoiceService', ['yvoiceModel'])
         var a_buffer = to_array_buffer(buf_wav);
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
+            // report duration
+            AnalyzerService.duration(decodedData.duration + (options.write_margin_ms / 1000.0));
+
             // source
             var in_sourceNode = audioCtx.createBufferSource();
             in_sourceNode.buffer = decodedData;
             in_sourceNode.onended = function() {
               // onendedのタイミングでは出力が終わっていない
-              setTimeout(function(){
+              $timeout(function() {
                 recorder.end();
                 MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
                 d.resolve('ok');
