@@ -7,22 +7,30 @@ const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
 const localShortcut = require('electron-localshortcut');
 const log = require('electron-log');
-
-// debug option
-const debug = process.env.DEBUG;
+const Config = require('electron-config');
 
 // application settings
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
+  appcfgWindow: { width: 350, height: 320 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
-  show_msg_pane: true
+  show_msg_pane: true,
+  debug: process.env.DEBUG
 };
+var config = new Config();
+['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'debug'].forEach(function(k){
+  if (config.get(k)) { app_cfg[k] = config.get(k); }
+});
 global.app_cfg = app_cfg;
+
+// debug option
+const debug = app_cfg.debug;
 
 // global reference
 var mainWindow = null;
 var helpWindow = null;
+var appcfgWindow = null;
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -85,6 +93,11 @@ app.on('ready', function() {
       label: 'MYukkuriVoice',
       submenu: [
         { role: 'about' },
+        { type: 'separator' },
+        {
+          label: '環境設定',
+          click () { showAppCfgWindow(); }
+        },
         { type: 'separator' },
         {
           role: 'services',
@@ -388,6 +401,38 @@ function showHelpWindow() {
   });
   helpWindow.webContents.on('crashed', function() {
     log.error('help:event:crashed');
+  });
+}
+
+// application config window
+function showAppCfgWindow() {
+  if (appcfgWindow && !appcfgWindow.isDestroyed()) {
+    appcfgWindow.show();
+    return;
+  }
+
+  var {width, height} = app_cfg.appcfgWindow;
+  appcfgWindow = new BrowserWindow({
+    parent: mainWindow,
+    modal: false,
+    show: false,
+    width: width,
+    height: height,
+    webPreferences: {
+      devTools: debug
+    }
+  });
+  appcfgWindow.loadURL('file://' + __dirname + '/appcfg.html');
+  appcfgWindow.show();
+
+  appcfgWindow.on('closed', function() {
+    appcfgWindow = null;
+  });
+  appcfgWindow.on('unresponsive', function() {
+    log.warn('appcfg:event:unresponsive');
+  });
+  appcfgWindow.webContents.on('crashed', function() {
+    log.error('appcfg:event:crashed');
   });
 }
 
