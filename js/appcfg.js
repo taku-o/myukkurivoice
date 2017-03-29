@@ -1,5 +1,5 @@
+var ipcRenderer = require('electron').ipcRenderer
 var log = require('electron-log');
-var Config = require('electron-config');
 
 // application settings
 var app_cfg = angular.copy(require('electron').remote.getGlobal('app_cfg'));
@@ -25,20 +25,20 @@ angular.module('yvoiceAppCfg', [])
     // actions
     ctrl.cancel = function() {
       $scope.app_cfg = angular.copy(require('electron').remote.getGlobal('app_cfg'));
+      var window = require('electron').remote.getCurrentWindow();
+      window.close();
     };
     ctrl.save = function() {
-      var config = Config();
-      config.set('mainWindow',     $scope.app_cfg.mainWindow);
-      config.set('audio_serv_ver', $scope.app_cfg.audio_serv_ver);
-      config.set('show_msg_pane',  $scope.app_cfg.show_msg_pane);
-      config.set('debug',          $scope.app_cfg.debug);
+      var options = {
+        'mainWindow':$scope.app_cfg.mainWindow,
+        'audio_serv_ver':$scope.app_cfg.audio_serv_ver,
+        'show_msg_pane':$scope.app_cfg.show_msg_pane,
+        'debug':$scope.app_cfg.debug
+      };
+      ipcRenderer.send('updateAppConfig', options);
     };
     ctrl.reset = function() {
-      var config = Config();
-      config.set('mainWindow',     { width: 800, height: 665 });
-      config.set('audio_serv_ver', 'webaudioapi');
-      config.set('show_msg_pane',  true);
-      config.set('debug',          false);
+      ipcRenderer.send('resetAppConfig', '');
     };
   }]);
 
