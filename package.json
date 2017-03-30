@@ -1,6 +1,6 @@
 {
   "name": "myukkurivoice",
-  "version": "0.3.11",
+  "version": "0.3.13",
   "description": "",
   "main": "electron.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "dependencies": {
     "angular": "^1.6.0",
     "angular-input-highlight": "^0.1.2",
+    "electron-config": "^0.2.1",
     "electron-json-storage": "^2.1.0",
     "electron-localshortcut": "^1.0.0",
     "electron-log": "^1.2.2",
