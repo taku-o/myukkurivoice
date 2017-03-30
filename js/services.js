@@ -382,6 +382,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
         }
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
 
+        AppUtilService.resampling(buf_wav);
+
         var a_buffer = to_array_buffer(buf_wav);
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
@@ -565,13 +567,36 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AppUtilService', ['$rootScope', function($rootScope) {
+  .factory('AppUtilService', ['$rootScope', '$q', function($rootScope, $q) {
     return {
       disable_rhythm: function(encoded) {
         return encoded.replace(/['\/]/g, '');
       },
       report_duration(duration) {
         $rootScope.$broadcast("duration", duration);
+      },
+      resampling: function(buf_wav) {
+        var d = $q.defer();
+        temp.open('_myukkurivoice_ssrc_f', function(err, in_info) {
+          if (err) { d.reject(null); return; }
+          temp.open('_myukkurivoice_ssrc_t', function(err, out_info) {
+            if (err) { d.reject(null); return; }
+            fs.writeFile(in_info.path, buf_wav, function(err) {
+              if (err) { d.reject(null); return; }
+              var cmd_options = {
+                encoding: 'binary'
+              };
+              var cmd = '/Users/taku.omi/ssrc --rate 44100 '+ in_info.path+ ' '+ out_info.path+ ' | cat '+ out_info.path;
+              exec(cmd, cmd_options, (err, stdout, stderr) => {
+                if (err) { d.reject(null); return; }
+                console.log(out_info.path);
+                re_buf_wav = new Buffer(stdout, 'binary');
+                d.resolve(re_buf_wav);
+              });
+            });
+          });
+        });
+        return d.promise;
       }
     }
   }])
