@@ -49,6 +49,7 @@ angular.module('yvoiceAppCfg', [])
     };
 
     ctrl.install_ssrc = function() {
+      ipcRenderer.send('startToInstall', 'SSRC');
       var d = $q.defer();
       temp.mkdir('_myukkurivoice_install_ssrc', function(err, dirPath) {
         if (err) { d.reject(null); return; }

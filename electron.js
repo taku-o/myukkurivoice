@@ -398,6 +398,18 @@ function resetAppConfigOnMain() {
   var r = dialog.showMessageBox(mainWindow, dialog_options);
 }
 
+// startToInstall
+ipcMain.on('startToInstall', function (event, message) {
+  var dialog_options = {
+    type: 'info',
+    title: 'library installing.',
+    message: message + 'をダウンロードします。',
+    buttons: ['OK'],
+  };
+  var r = dialog.showMessageBox(appcfgWindow, dialog_options);
+  event.sender.send('startToInstall', r);
+});
+
 // finishedToInstall
 ipcMain.on('finishedToInstall', function (event, message) {
   var dialog_options = {
