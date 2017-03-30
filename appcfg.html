@@ -42,6 +42,14 @@
         </label>
       </div>
     </div>
+
+    <div class="box">
+      <small>音声のリサンプリング処理に外部アプリケーションのSSRCを利用します。利用するにはSSRCのダウンロードが必要です。</small>
+      <div class="checkbox">
+        <label><input type="checkbox" ng-model="app_cfg.use_ssrc">SSRCを使用する</label>
+      </div>
+      <button class="btn btn-large btn-default" ng-click="ctrl.install_ssrc()">SSRCをダウンロードする</button>
+    </div>
   
     <div class="box">
       <div class="checkbox">
@@ -51,6 +59,7 @@
         <label><input type="checkbox" ng-model="app_cfg.debug">開発者モードを有効にする</label>
       </div>
     </div>
+
   </form>
 </div><!-- window-content -->
 

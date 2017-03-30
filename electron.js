@@ -13,15 +13,19 @@ const Config = require('electron-config');
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
-  appcfgWindow: { width: 390, height: 350 },
+  appcfgWindow: { width: 390, height: 490 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
+  use_ssrc: false,
   show_msg_pane: true,
   debug: process.env.DEBUG
 };
 var config = new Config();
-['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'debug'].forEach(function(k){
+['mainWindow', 'audio_serv_ver', 'use_ssrc', 'show_msg_pane', 'debug'].forEach(function(k){
   if (config.has(k)) { app_cfg[k] = config.get(k); }
 });
+if (process.env.DEBUG) {
+  app_cfg.debug = process.env.DEBUG;
+}
 global.app_cfg = app_cfg;
 
 // debug option
@@ -391,6 +395,18 @@ function resetAppConfigOnMain() {
   };
   var r = dialog.showMessageBox(mainWindow, dialog_options);
 }
+
+// finishedToInstall
+ipcMain.on('finishedToInstall', function (event, message) {
+  var dialog_options = {
+    type: 'info',
+    title: 'library installed.',
+    message: message + 'をダウンロードしました。',
+    buttons: ['OK'],
+  };
+  var r = dialog.showMessageBox(appcfgWindow, dialog_options);
+  event.sender.send('finishedToInstall', r);
+});
 
 // showHelpWindow
 ipcMain.on('showHelpWindow', function (event, message) {
