@@ -12,6 +12,10 @@ var app = require('electron').remote.app;
 var app_path = app.getAppPath();
 var unpacked_path = app_path.replace('app.asar', 'app.asar.unpacked');
 
+// application settings
+var app_cfg = require('electron').remote.getGlobal('app_cfg');
+var use_ssrc = app_cfg.use_ssrc;
+
 // angular service
 angular.module('yvoiceService', ['yvoiceModel'])
   .factory('MessageService', ['$rootScope', function($rootScope) {
@@ -382,46 +386,49 @@ angular.module('yvoiceService', ['yvoiceModel'])
         }
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
 
-        var a_buffer = to_array_buffer(buf_wav);
-        audioCtx.decodeAudioData(a_buffer).then(
-          function(decodedData) {
-            // report duration
-            AppUtilService.report_duration(decodedData.duration + (options.write_margin_ms / 1000.0));
+        AppUtilService.resampling(buf_wav).then(function(re_buf_wav) {
 
-            // source
-            sourceNode = audioCtx.createBufferSource();
-            sourceNode.buffer = decodedData;
-            sourceNode.onended = function() {
-              // do nothing
-            };
+          var a_buffer = to_array_buffer(re_buf_wav);
+          audioCtx.decodeAudioData(a_buffer).then(
+            function(decodedData) {
+              // report duration
+              AppUtilService.report_duration(decodedData.duration + (options.write_margin_ms / 1000.0));
 
-            var node_list = [];
+              // source
+              sourceNode = audioCtx.createBufferSource();
+              sourceNode.buffer = decodedData;
+              sourceNode.onended = function() {
+                // do nothing
+              };
 
-            // playbackRate
-            sourceNode.playbackRate.value = options.playback_rate;
-            // detune
-            sourceNode.detune.value = options.detune;
-            // gain
-            var gainNode = audioCtx.createGain();
-            gainNode.gain.value = options.volume;
-            node_list.push(gainNode);
+              var node_list = [];
 
-            // connect
-            var last_node = sourceNode;
-            angular.forEach(node_list, function(node) {
-              last_node.connect(node); last_node = node;
-            });
-            last_node.connect(audioCtx.destination);
+              // playbackRate
+              sourceNode.playbackRate.value = options.playback_rate;
+              // detune
+              sourceNode.detune.value = options.detune;
+              // gain
+              var gainNode = audioCtx.createGain();
+              gainNode.gain.value = options.volume;
+              node_list.push(gainNode);
 
-            // and start
-            sourceNode.start(0);
-            d.resolve('ok'); return;
-          },
-          function(err) {
-            MessageService.syserror('音源の再生に失敗しました。', err);
-            d.reject(err); return;
-          }
-        );
+              // connect
+              var last_node = sourceNode;
+              angular.forEach(node_list, function(node) {
+                last_node.connect(node); last_node = node;
+              });
+              last_node.connect(audioCtx.destination);
+
+              // and start
+              sourceNode.start(0);
+              d.resolve('ok'); return;
+            },
+            function(err) {
+              MessageService.syserror('音源の再生に失敗しました。', err);
+              d.reject(err); return;
+            }
+          );
+        });
         return d.promise;
       },
       stop: function() {
@@ -438,57 +445,60 @@ angular.module('yvoiceService', ['yvoiceModel'])
           d.reject(null); return d.promise;
         }
 
-        var a_buffer = to_array_buffer(buf_wav);
-        audioCtx.decodeAudioData(a_buffer).then(
-          function(decodedData) {
-            // report duration
-            AppUtilService.report_duration(decodedData.duration + (options.write_margin_ms / 1000.0));
+        AppUtilService.resampling(buf_wav).then(function(re_buf_wav) {
 
-            // source
-            var in_sourceNode = audioCtx.createBufferSource();
-            in_sourceNode.buffer = decodedData;
-            in_sourceNode.onended = function() {
-              // onendedのタイミングでは出力が終わっていない
-              $timeout(function() {
-                recorder.end();
-                MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
-                d.resolve('ok');
-              }, options.write_margin_ms);
-            };
+          var a_buffer = to_array_buffer(re_buf_wav);
+          audioCtx.decodeAudioData(a_buffer).then(
+            function(decodedData) {
+              // report duration
+              AppUtilService.report_duration(decodedData.duration + (options.write_margin_ms / 1000.0));
 
-            var node_list = [];
+              // source
+              var in_sourceNode = audioCtx.createBufferSource();
+              in_sourceNode.buffer = decodedData;
+              in_sourceNode.onended = function() {
+                // onendedのタイミングでは出力が終わっていない
+                $timeout(function() {
+                  recorder.end();
+                  MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+                  d.resolve('ok');
+                }, options.write_margin_ms);
+              };
 
-            // playbackRate
-            in_sourceNode.playbackRate.value = options.playback_rate;
-            // detune
-            in_sourceNode.detune.value = options.detune;
-            // gain
-            var gainNode = audioCtx.createGain();
-            gainNode.gain.value = options.volume;
-            node_list.push(gainNode);
+              var node_list = [];
 
-            // recorder
-            var recorder = WaveRecorder(audioCtx, {
-              channels: 1, // 1 or 2
-              bitDepth: 16 // 16 or 32
-            });
-            recorder.pipe(fs.createWriteStream(wav_file_path));
+              // playbackRate
+              in_sourceNode.playbackRate.value = options.playback_rate;
+              // detune
+              in_sourceNode.detune.value = options.detune;
+              // gain
+              var gainNode = audioCtx.createGain();
+              gainNode.gain.value = options.volume;
+              node_list.push(gainNode);
 
-            // connect
-            var last_node = in_sourceNode;
-            angular.forEach(node_list, function(node) {
-              last_node.connect(node); last_node = node;
-            });
-            last_node.connect(recorder.input);
+              // recorder
+              var recorder = WaveRecorder(audioCtx, {
+                channels: 1, // 1 or 2
+                bitDepth: 16 // 16 or 32
+              });
+              recorder.pipe(fs.createWriteStream(wav_file_path));
 
-            // and start
-            in_sourceNode.start(0);
-          },
-          function(err) {
-            MessageService.syserror('音源の再生に失敗しました。', err);
-            d.reject(err); return;
-          }
-        );
+              // connect
+              var last_node = in_sourceNode;
+              angular.forEach(node_list, function(node) {
+                last_node.connect(node); last_node = node;
+              });
+              last_node.connect(recorder.input);
+
+              // and start
+              in_sourceNode.start(0);
+            },
+            function(err) {
+              MessageService.syserror('音源の再生に失敗しました。', err);
+              d.reject(err); return;
+            }
+          );
+        });
         return d.promise;
       }
     }
@@ -565,13 +575,44 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AppUtilService', ['$rootScope', function($rootScope) {
+  .factory('AppUtilService', ['$rootScope', '$q', function($rootScope, $q) {
     return {
       disable_rhythm: function(encoded) {
         return encoded.replace(/['\/]/g, '');
       },
       report_duration(duration) {
         $rootScope.$broadcast("duration", duration);
+      },
+      resampling: function(buf_wav) {
+        var d = $q.defer();
+        if (!use_ssrc) { d.resolve(buf_wav); return d.promise; }
+
+        temp.open('_myukkurivoice_ssrc_f', function(err, in_info) {
+          if (err) { d.reject(null); return; }
+
+        temp.open('_myukkurivoice_ssrc_t', function(err, out_info) {
+          if (err) { d.reject(null); return; }
+
+        fs.writeFile(in_info.path, buf_wav, function(err) {
+          if (err) { d.reject(null); return; }
+
+        var cmd_options = {
+          encoding: 'binary'
+        };
+        var ssrc_cmd = unpacked_path + '/vendor/ssrc';
+        var cmd = ssrc_cmd + ' --rate 44100 '+ in_info.path+ ' '+ out_info.path;
+        exec(cmd, cmd_options, (err, stdout, stderr) => {
+          if (err) { d.reject(null); return; }
+
+        fs.readFile(out_info.path, function(err, re_buf_wav) {
+          d.resolve(re_buf_wav);
+
+        }); // fs.readFile
+        }); // exec
+        }); // fs.writeFile
+        }); // ssrc_t
+        }); // ssrc_f
+        return d.promise;
       }
     }
   }])

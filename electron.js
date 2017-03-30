@@ -13,15 +13,19 @@ const Config = require('electron-config');
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
-  appcfgWindow: { width: 390, height: 350 },
+  appcfgWindow: { width: 390, height: 490 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
+  use_ssrc: false,
   show_msg_pane: true,
   debug: process.env.DEBUG
 };
 var config = new Config();
-['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'debug'].forEach(function(k){
+['mainWindow', 'audio_serv_ver', 'use_ssrc', 'show_msg_pane', 'debug'].forEach(function(k){
   if (config.has(k)) { app_cfg[k] = config.get(k); }
 });
+if (process.env.DEBUG) {
+  app_cfg.debug = process.env.DEBUG;
+}
 global.app_cfg = app_cfg;
 
 // debug option
@@ -346,6 +350,7 @@ ipcMain.on('showDirDialog', function (event, defaultPath) {
 function updateAppConfig(options) {
   config.set('mainWindow',     options.mainWindow);
   config.set('audio_serv_ver', options.audio_serv_ver);
+  config.set('use_ssrc',       options.use_ssrc);
   config.set('show_msg_pane',  options.show_msg_pane);
   config.set('debug',          options.debug);
 }
@@ -365,6 +370,7 @@ ipcMain.on('updateAppConfig', function (event, options) {
 function resetAppConfig() {
   config.set('mainWindow',     { width: 800, height: 665 });
   config.set('audio_serv_ver', 'webaudioapi');
+  config.set('use_ssrc',       false);
   config.set('show_msg_pane',  true);
   config.set('debug',          false);
 }
@@ -391,6 +397,30 @@ function resetAppConfigOnMain() {
   };
   var r = dialog.showMessageBox(mainWindow, dialog_options);
 }
+
+// startToInstall
+ipcMain.on('startToInstall', function (event, message) {
+  var dialog_options = {
+    type: 'info',
+    title: 'library installing.',
+    message: message + 'をダウンロードします。',
+    buttons: ['OK'],
+  };
+  var r = dialog.showMessageBox(appcfgWindow, dialog_options);
+  event.sender.send('startToInstall', r);
+});
+
+// finishedToInstall
+ipcMain.on('finishedToInstall', function (event, message) {
+  var dialog_options = {
+    type: 'info',
+    title: 'library installed.',
+    message: message + 'をダウンロードしました。',
+    buttons: ['OK'],
+  };
+  var r = dialog.showMessageBox(appcfgWindow, dialog_options);
+  event.sender.send('finishedToInstall', r);
+});
 
 // showHelpWindow
 ipcMain.on('showHelpWindow', function (event, message) {
