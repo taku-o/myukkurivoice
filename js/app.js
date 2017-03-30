@@ -26,10 +26,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
   }])
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
-     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'CodeService', 'IntroService',
+     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'IntroService',
      'YInput', 'YInputInitialData',
     function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
-             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, CodeService, IntroService,
+             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, IntroService,
              YInput, YInputInitialData) {
 
     // event listener
@@ -240,7 +240,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
       // disable rhythm if option is on
       if (! $scope.yvoice.rhythm_on) {
-        encoded = CodeService.disable_rhythm(encoded);
+        encoded = AppUtilService.disable_rhythm(encoded);
       }
 
       var speed = $scope.yvoice.speed;
@@ -306,7 +306,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
       // disable rhythm if option is on
       if (! $scope.yvoice.rhythm_on) {
-        encoded = CodeService.disable_rhythm(encoded);
+        encoded = AppUtilService.disable_rhythm(encoded);
       }
 
       var speed = $scope.yvoice.speed;

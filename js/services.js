@@ -53,13 +53,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AnalyzerService', ['$rootScope', function($rootScope) {
-    return {
-      duration: function(duration) {
-        $rootScope.$broadcast("duration", duration);
-      }
-    }
-  }])
+
   .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', function($q, YVoice, YVoiceInitialData, MessageService) {
 
     function uniq_id() {
@@ -364,8 +358,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AudioService2', ['$q', '$timeout', 'MessageService', 'AnalyzerService',
-    function($q, $timeout, MessageService, AnalyzerService) {
+  .factory('AudioService2', ['$q', '$timeout', 'MessageService', 'AppUtilService',
+    function($q, $timeout, MessageService, AppUtilService) {
     // Web Audio API base AudioService
     var audioCtx = new window.AudioContext();
     var sourceNode = null;
@@ -392,7 +386,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
             // report duration
-            AnalyzerService.duration(decodedData.duration + (options.write_margin_ms / 1000.0));
+            AppUtilService.report_duration(decodedData.duration + (options.write_margin_ms / 1000.0));
 
             // source
             sourceNode = audioCtx.createBufferSource();
@@ -448,7 +442,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         audioCtx.decodeAudioData(a_buffer).then(
           function(decodedData) {
             // report duration
-            AnalyzerService.duration(decodedData.duration + (options.write_margin_ms / 1000.0));
+            AppUtilService.report_duration(decodedData.duration + (options.write_margin_ms / 1000.0));
 
             // source
             var in_sourceNode = audioCtx.createBufferSource();
@@ -571,13 +565,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('CodeService', function() {
+  .factory('AppUtilService', ['$rootScope', function($rootScope) {
     return {
       disable_rhythm: function(encoded) {
         return encoded.replace(/['\/]/g, '');
+      },
+      report_duration(duration) {
+        $rootScope.$broadcast("duration", duration);
       }
     }
-  })
+  }])
   .factory('IntroService', function() {
     return {
       'main_tutorial': function() {
