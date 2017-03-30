@@ -38,6 +38,7 @@ angular.module('yvoiceAppCfg', [])
       var options = {
         'mainWindow':$scope.app_cfg.mainWindow,
         'audio_serv_ver':$scope.app_cfg.audio_serv_ver,
+        'use_ssrc':$scope.app_cfg.use_ssrc,
         'show_msg_pane':$scope.app_cfg.show_msg_pane,
         'debug':$scope.app_cfg.debug
       };

@@ -585,7 +585,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       },
       resampling: function(buf_wav) {
         var d = $q.defer();
-        if (!use_ssrc) { d.resolve(buf_wav); return; }
+        if (!use_ssrc) { d.resolve(buf_wav); return d.promise; }
 
         temp.open('_myukkurivoice_ssrc_f', function(err, in_info) {
           if (err) { d.reject(null); return; }

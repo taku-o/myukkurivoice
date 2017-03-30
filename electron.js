@@ -350,6 +350,7 @@ ipcMain.on('showDirDialog', function (event, defaultPath) {
 function updateAppConfig(options) {
   config.set('mainWindow',     options.mainWindow);
   config.set('audio_serv_ver', options.audio_serv_ver);
+  config.set('use_ssrc',       options.use_ssrc);
   config.set('show_msg_pane',  options.show_msg_pane);
   config.set('debug',          options.debug);
 }
@@ -369,6 +370,7 @@ ipcMain.on('updateAppConfig', function (event, options) {
 function resetAppConfig() {
   config.set('mainWindow',     { width: 800, height: 665 });
   config.set('audio_serv_ver', 'webaudioapi');
+  config.set('use_ssrc',       false);
   config.set('show_msg_pane',  true);
   config.set('debug',          false);
 }
