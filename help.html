@@ -60,6 +60,9 @@
       <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
+      <span class="nav-group-item" ng-class="{active:display == 'apiserver'}" ng-click="display='apiserver'">
+        <span class="icon icon-help-circled"></span>APIサーバー機能
+      </span>
       <span class="nav-group-item" ng-class="{active:display == 'help'}" ng-click="display='help'">
         <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
@@ -189,6 +192,7 @@
         <li class="link" ng-click="display='tuna'">再生する音声の抑揚のON・OFF切替</li>
         <li>音声の再生時間目安の表示</li>
         <li class="link" ng-click="display='shortcut'">各種ショートカットキー</li>
+        <li class="link" ng-click="display='apiserver'">APIサーバー機能</li>
         <li class="link" ng-click="display='help'">チュートリアル・ヘルプ</li>
       </ul>
     </div>
@@ -514,6 +518,82 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- apiserver -->
+  <div class="pane" ng-show="display == 'apiserver'">
+    <div class="content">
+      <h4>APIサーバー機能とは？</h4>
+      特定のポートに特定のHTTPリクエストを送信することで、
+      MYukkuriVoiceの音声再生機能を実行できます。<br>
+      この機能は、たとえば、ライブ配信コメントビューアーアプリから
+      MYukkuriVoiceの音声を再生する機能を呼び出すため、などの用途のために用意されています。
+
+      <h4>APIサーバー機能を有効にする</h4>
+      <p>
+        環境設定にある「APIサーバー機能を有効にする」のチェックをONにすると、
+        メイン画面にAPIサーバー管理用の
+        <button class="btn btn-small btn-default"><span class="icon icon-signal"></span></button>
+        ボタンが表示されます。
+      </p>
+
+      <h4>APIリクエストの受け入れ開始</h4>
+      <p>
+        メイン画面の
+        <button class="btn btn-small btn-default"><span class="icon icon-signal"></span></button>
+        ボタンを押すと、<br>
+        APIサーバーが有効
+        <button class="btn btn-small btn-default"><span class="icon icon-signal active"></span></button>
+        になります。
+      </p>
+
+      <h4>APIサーバー機能を停止する</h4>
+      <p>
+        APIサーバー機能を停止するには、<br>
+        メイン画面の
+        <button class="btn btn-small btn-default"><span class="icon icon-signal active"></span></button>
+        ボタンを押してください。
+      </p>
+
+      <h4>API仕様</h4>
+      <h5>音声再生API (/api/play)</h5>
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>値</th>
+            <th>備考</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>エンドポイントURL</td>
+            <td>POST http://localhost:8082/api/play</td>
+            <td>ポートは環境設定で指定したポートとなる。デフォルトは8082。</td>
+          </tr>
+          <tr>
+            <td>リクエストボディ</td>
+            <td>
+                {
+                  "source": "エムユックリボイスへようこそ。ゆっくりしていってね！"
+                }
+            </td>
+            <td>JSON形式。日本語はUTF-8。</td>
+          </tr>
+          <tr>
+            <td>音声再生設定</td>
+            <td></td>
+            <td>音声再生の設定は、MYukkuriVoiceの<strong>一番最後</strong>の設定が利用される</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>APIの呼び出しサンプル</h4>
+      <h5>音声再生API (/api/play)</h5>
+      <div class="form-group">
+        <textarea class="form-control" rows="4">curl -H "Content-type: application/json" -X POST -d '{"source":"エムユックリボイスへようこそ。ゆっくりしていってね！"}' http://localhost:8082/api/play</textarea>
+      </div>
     </div>
   </div>
 

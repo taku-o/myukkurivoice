@@ -29,3 +29,7 @@ table.param-table td {
   border-bottom: 1px solid #ddd;
 }
 
+span.icon.active {
+  color: blue;
+}
+
