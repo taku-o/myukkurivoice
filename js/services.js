@@ -242,7 +242,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         // version 1
         if (phont.version == 'talk1') {
           // escape text
-          var escaped = '"'+ encoded.replace(/(["\s'$`\\])/g,'\\$1')+'"';
+          var escaped = '"'+ encoded.replace(/(["'$`\\])/g,'\\$1')+'"';
 
           var cmd_options = {
             env: {
@@ -252,7 +252,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             encoding: 'binary'
           };
           var waver_cmd = unpacked_path + '/vendor/maquestalk1';
-          exec('echo "'+ escaped +'" | VOICE='+ phont.id_voice+ ' SPEED='+ speed+ ' '+ waver_cmd, cmd_options, (err, stdout, stderr) => {
+          exec('echo '+ escaped +' | VOICE='+ phont.id_voice+ ' SPEED='+ speed+ ' '+ waver_cmd, cmd_options, (err, stdout, stderr) => {
             if (err) {
               d.reject(null); return;
             }
