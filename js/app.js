@@ -529,6 +529,15 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
                 response.write('ok\n');
                 response.end();
                 return;
+              case '/api/message':
+                request.on('data', function(data) {
+                  req_source = data;
+                  ctrl.api_play(req_source);
+                });
+                response.writeHead(200, {"Content-Type": "text/plain"});
+                response.write('ok\n');
+                response.end();
+                return;
             }
           }
           // not found

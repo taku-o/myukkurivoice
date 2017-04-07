@@ -557,6 +557,36 @@
       </p>
 
       <h4>API仕様</h4>
+      <h5>音声再生シンプルAPI (/api/message)</h5>
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>値</th>
+            <th>備考</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>エンドポイントURL</td>
+            <td>POST http://localhost:8082/api/message</td>
+            <td>ポートは環境設定で指定したポートとなる。デフォルトは8082。</td>
+          </tr>
+          <tr>
+            <td>リクエストボディ</td>
+            <td>
+              "エムユックリボイスへようこそ。ゆっくりしていってね！"
+            </td>
+            <td>テキスト形式。日本語はUTF-8。</td>
+          </tr>
+          <tr>
+            <td>音声再生設定</td>
+            <td></td>
+            <td>音声再生の設定は、MYukkuriVoiceの<strong>一番最後</strong>の設定が利用される</td>
+          </tr>
+        </tbody>
+      </table>
+
       <h5>音声再生API (/api/play)</h5>
       <table class="table-striped">
         <thead>
@@ -590,6 +620,11 @@
       </table>
 
       <h4>APIの呼び出しサンプル</h4>
+      <h5>音声再生シンプルAPI (/api/message)</h5>
+      <div class="form-group">
+        <textarea class="form-control" rows="3">curl -X POST -d "エムユックリボイスへようこそ。ゆっくりしていってね！" http://localhost:8082/api/message</textarea>
+      </div>
+
       <h5>音声再生API (/api/play)</h5>
       <div class="form-group">
         <textarea class="form-control" rows="4">curl -H "Content-type: application/json" -X POST -d '{"source":"エムユックリボイスへようこそ。ゆっくりしていってね！"}' http://localhost:8082/api/play</textarea>
