@@ -242,7 +242,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
         // version 1
         if (phont.version == 'talk1') {
           // escape text
-          var escaped = '"'+ encoded.replace(/(["'$`\\])/g,'\\$1')+'"';
+          var escaped = encoded.match(/"/)?
+            '"'+ encoded.replace(/(["'$`\\])/g,'\\$1')+'"':
+            '""'+ encoded.replace(/(["'$`\\])/g,'\\$1')+'""';
 
           var cmd_options = {
             env: {
