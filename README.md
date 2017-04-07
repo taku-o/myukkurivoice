@@ -28,6 +28,10 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 ## リリースノート
 * https://github.com/taku-o/myukkurivoice/blob/master/docs/release.md
 
+## Wiki
+* Tipsなど掲載
+* https://github.com/taku-o/myukkurivoice/wiki
+
 ## 主な特徴
 ### 基本
 * MacOSX Sierra以降で動作検証。
