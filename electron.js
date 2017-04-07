@@ -13,13 +13,14 @@ const Config = require('electron-config');
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
-  appcfgWindow: { width: 390, height: 350 },
+  appcfgWindow: { width: 390, height: 450 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
   show_msg_pane: true,
+  apiserver: { enabled: false, port: 8082 },
   debug: process.env.DEBUG
 };
 var config = new Config();
-['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'debug'].forEach(function(k){
+['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'apiserver', 'debug'].forEach(function(k){
   if (config.has(k)) { app_cfg[k] = config.get(k); }
 });
 global.app_cfg = app_cfg;
@@ -347,6 +348,7 @@ function updateAppConfig(options) {
   config.set('mainWindow',     options.mainWindow);
   config.set('audio_serv_ver', options.audio_serv_ver);
   config.set('show_msg_pane',  options.show_msg_pane);
+  config.set('apiserver',      options.apiserver);
   config.set('debug',          options.debug);
 }
 ipcMain.on('updateAppConfig', function (event, options) {
@@ -366,6 +368,7 @@ function resetAppConfig() {
   config.set('mainWindow',     { width: 800, height: 665 });
   config.set('audio_serv_ver', 'webaudioapi');
   config.set('show_msg_pane',  true);
+  config.set('apiserver',      { enabled: false, port: 8082 });
   config.set('debug',          false);
 }
 ipcMain.on('resetAppConfig', function (event, message) {

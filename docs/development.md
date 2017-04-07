@@ -44,6 +44,11 @@
     npm -g install asar
     asar e app.asar dest
 
+## API Server機能
+* 機能を有効後、呼び出すには
+
+    curl -H "Content-type: application/json" -X POST -d '{"source":"test"}' http://localhost:8082/api/play
+
 # 環境設定まわりの情報
 ## install xcode
     xcode-select --install

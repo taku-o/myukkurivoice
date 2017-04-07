@@ -4,13 +4,12 @@ var clipboard = require('electron').clipboard;
 var util = require('util');
 var path = require('path');
 var log = require('electron-log');
+var http = require('http');
 
 var desktop_dir = app.getPath('desktop');
 
 // application settings
 var app_cfg = require('electron').remote.getGlobal('app_cfg');
-var audio_serv_ver = app_cfg.audio_serv_ver;
-var show_msg_pane = app_cfg.show_msg_pane;
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -129,9 +128,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     });
 
     // application settings
-    var AudioService = audio_serv_ver == 'html5audio'? audioServVer1: audioServVer2;
-    $scope.audio_serv_ver = audio_serv_ver;
-    $scope.show_msg_pane = show_msg_pane;
+    var AudioService = app_cfg.audio_serv_ver == 'html5audio'? audioServVer1: audioServVer2;
+    $scope.app_cfg = app_cfg;
 
     // init
     var ctrl = this;
@@ -504,5 +502,92 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       MessageService.action('switch to main view.');
       $scope.display = 'main';
     };
+
+    // api request server
+    $scope.apiserver_launched = false;
+    var apiserver = null;
+    ctrl.launch_apiserver = function() {
+      if ($scope.apiserver_launched) {
+        $scope.apiserver_launched = false;
+        if (apiserver) {
+          apiserver.close();
+          apiserver = null;
+        }
+      } else {
+        $scope.apiserver_launched = true;
+        apiserver = http.createServer(function(request, response) {
+          // request handler
+          if (request.method == 'POST') {
+            switch (request.url) {
+              case '/api/play':
+                request.on('data', function(data) {
+                  req_json = JSON.parse(data);
+                  req_source = 'source' in req_json  ? req_json['source']  : '';
+                  ctrl.api_play(req_source);
+                });
+                response.writeHead(200, {"Content-Type": "text/plain"});
+                response.write('ok\n');
+                response.end();
+                return;
+            }
+          }
+          // not found
+          response.writeHead(404, {"Content-Type": "text/plain"});
+          response.write('404 Not Found\n');
+          response.end();
+        });
+        apiserver.listen(app_cfg.apiserver.port);
+      }
+    };
+    ctrl.api_play = function(req_source) {
+      if (!req_source) {
+        MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
+        return;
+      }
+
+      // get last data config
+      var last_yvoice = $scope.yvoice_list[$scope.yvoice_list.length - 1];
+      var phont = null;
+      angular.forEach($scope.phont_list, function(value, key) {
+        if (value.id == last_yvoice.phont) { phont = value; }
+      });
+      if (!phont) {
+        MessageService.error('声の種類が未指定です。');
+        return;
+      }
+
+      // encoded
+      var encoded = AquesService.encode(req_source);
+      if (!encoded) {
+        MessageService.error('音記号列に変換できませんでした。');
+        return;
+      }
+
+      // disable rhythm if option is on
+      if (! last_yvoice.rhythm_on) {
+        encoded = AppUtilService.disable_rhythm(encoded);
+      }
+
+      var speed = last_yvoice.speed;
+      var wave_options = {
+        volume:last_yvoice.volume,
+        playback_rate:last_yvoice.playback_rate,
+        detune:last_yvoice.detune,
+        write_margin_ms:last_yvoice.write_margin_ms,
+      };
+
+      // play voice
+      AquesService.wave(encoded, phont, speed).then(
+        function(buf_wav) {
+          return AudioService.play(buf_wav, wave_options);
+        },
+        function(err) {
+          MessageService.error('音声データを作成できませんでした。');
+        }
+      ).finally(function() {
+        AquesService.free_wave();
+      });
+    };
   }]);
+
 
