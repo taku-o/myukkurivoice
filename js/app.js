@@ -4,6 +4,7 @@ var clipboard = require('electron').clipboard;
 var util = require('util');
 var path = require('path');
 var log = require('electron-log');
+var http = require('http');
 
 var desktop_dir = app.getPath('desktop');
 
@@ -11,6 +12,8 @@ var desktop_dir = app.getPath('desktop');
 var app_cfg = require('electron').remote.getGlobal('app_cfg');
 var audio_serv_ver = app_cfg.audio_serv_ver;
 var show_msg_pane = app_cfg.show_msg_pane;
+var api_enabled = app_cfg.api_enabled;
+var api_port = app_cfg.api_port;
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -505,4 +508,35 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       $scope.display = 'main';
     };
   }]);
+
+// MYukkuriVoice api request server
+if (api_enabled) {
+  var apiserver = http.createServer(function(request, response) {
+    // request handler
+    if (request.method == 'POST') {
+      request.on('data', function(data) {
+        req_json = JSON.parse(data);
+        switch (request.url) {
+          case '/api/play':
+            return play(request, response, req_json);
+        }
+      });
+    }
+    // not found
+    response.writeHead(404, {"Content-Type": "text/plain"});
+    response.write('404 Not Found');
+    response.end();
+  });
+  // /api/play
+  var play = function(request, response, body_json) {
+    req_voice   = 'voice' in body_json   ? body_json['voice']   : '';
+    req_speed   = 'speed' in body_json   ? body_json['speed']   : '';
+    req_source  = 'source' in body_json  ? body_json['source']  : '';
+    req_encoded = 'encoded' in body_json ? body_json['encoded'] : '';
+
+    response.writeHead(200, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify({ 'foo': 'bar' }));
+  };
+  apiserver.listen(api_port);
+}
 

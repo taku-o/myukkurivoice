@@ -16,10 +16,12 @@ var app_cfg = {
   appcfgWindow: { width: 390, height: 350 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
   show_msg_pane: true,
+  api_enabled: true,
+  api_port: 8082,
   debug: process.env.DEBUG
 };
 var config = new Config();
-['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'debug'].forEach(function(k){
+['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'api_enabled', 'api_port', 'debug'].forEach(function(k){
   if (config.has(k)) { app_cfg[k] = config.get(k); }
 });
 global.app_cfg = app_cfg;
