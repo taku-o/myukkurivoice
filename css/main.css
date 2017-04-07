@@ -8,6 +8,9 @@ div.toolbar-actions {
   padding-left: 10px;
   padding-right: 10px;
 }
+div.toolbar-actions span.icon.active {
+  color: blue;
+}
 
 ul.list-group li.list-group-item {
   padding-right: 10px;
