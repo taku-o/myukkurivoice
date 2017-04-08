@@ -13,10 +13,10 @@ const Config = require('electron-config');
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
-  appcfgWindow: { width: 390, height: 450 },
+  appcfgWindow: { width: 390, height: 490 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
   show_msg_pane: true,
-  apiserver: { enabled: false, port: 8082 },
+  apiserver: { enabled: false, start_at_launch: false, port: 8082 },
   debug: process.env.DEBUG
 };
 var config = new Config();
@@ -368,7 +368,7 @@ function resetAppConfig() {
   config.set('mainWindow',     { width: 800, height: 665 });
   config.set('audio_serv_ver', 'webaudioapi');
   config.set('show_msg_pane',  true);
-  config.set('apiserver',      { enabled: false, port: 8082 });
+  config.set('apiserver',      { enabled: false, start_at_launch: false, port: 8082 });
   config.set('debug',          false);
 }
 ipcMain.on('resetAppConfig', function (event, message) {

@@ -597,6 +597,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
         AquesService.free_wave();
       });
     };
+    // run api server if option is on.
+    if (app_cfg.apiserver.enabled && app_cfg.apiserver.start_at_launch) {
+      ctrl.launch_apiserver();
+    }
   }]);
 
 
