@@ -24,10 +24,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('MainController',
-    ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
+    ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'AquesService',
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'IntroService',
      'YInput', 'YInputInitialData',
-    function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
+    function($scope, $timeout, $q, MessageService, DataService, MasterService, AquesService,
              audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, IntroService,
              YInput, YInputInitialData) {
 
@@ -133,6 +133,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
     // init
     var ctrl = this;
+    var api = {};
     $scope.display = 'main';
     $scope.phont_list = MasterService.get_phont_list();
     $scope.yinput = angular.copy(YInput);
@@ -505,17 +506,23 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
     // api request server
     $scope.apiserver_launched = false;
-    var apiserver = null;
+    api.apiserver = null;
+    api.api_queue = [];
+    api.worker = null;
     ctrl.launch_apiserver = function() {
+      MessageService.action('switch launch apiserver called.');
       if ($scope.apiserver_launched) {
         $scope.apiserver_launched = false;
-        if (apiserver) {
-          apiserver.close();
-          apiserver = null;
+        if (api.apiserver) {
+          api.apiserver.close();
+          api.apiserver = null;
         }
+        api.api_queue = [];
+        api.worker = null;
+        MessageService.info('APIサーバーを停止しました。');
       } else {
         $scope.apiserver_launched = true;
-        apiserver = http.createServer(function(request, response) {
+        api.apiserver = http.createServer(function(request, response) {
           // request handler
           if (request.method == 'POST') {
             switch (request.url) {
@@ -523,7 +530,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
                 request.on('data', function(data) {
                   req_json = JSON.parse(data);
                   req_source = 'source' in req_json  ? req_json['source']  : '';
-                  ctrl.api_play(req_source);
+                  api.add_queue({api:'/api/play', source:req_source});
+                  api.run_job();
+                  MessageService.info('API /api/play : ' + req_source);
                 });
                 response.writeHead(200, {"Content-Type": "text/plain"});
                 response.write('ok\n');
@@ -532,7 +541,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
               case '/api/message':
                 request.on('data', function(data) {
                   req_source = data;
-                  ctrl.api_play(req_source);
+                  api.add_queue({api:'/api/message', source:req_source});
+                  api.run_job();
+                  MessageService.info('API /api/message : ' + req_source);
                 });
                 response.writeHead(200, {"Content-Type": "text/plain"});
                 response.write('ok\n');
@@ -545,13 +556,38 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           response.write('404 Not Found\n');
           response.end();
         });
-        apiserver.listen(app_cfg.apiserver.port);
+        api.apiserver.listen(app_cfg.apiserver.port);
+        api.api_queue = [];
+        api.worker = null;
+        MessageService.info('APIサーバーを起動しました。port:' + app_cfg.apiserver.port);
       }
     };
-    ctrl.api_play = function(req_source) {
+    api.add_queue = function(queue) {
+      api.api_queue.push(queue);
+    };
+    api.pull_queue = function() {
+      return api.api_queue.pop();
+    };
+    api.run_job = function() {
+      if (api.worker) { return; }
+      api.worker = true;
+
+      var job = api.pull_queue();
+      if (!job) { api.worker = null; return; }
+
+      var req_source = job['source'];
+      api.play(req_source).finally(function() {
+        $timeout(function() {
+          api.worker = null;
+          api.run_job();
+        }, 100);
+      });
+    };
+    api.play = function(req_source) {
+      var d = $q.defer();
       if (!req_source) {
         MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
-        return;
+        d.reject(null); return d.promise;
       }
 
       // get last data config
@@ -562,14 +598,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        return;
+        d.reject(null); return d.promise;
       }
 
       // encoded
       var encoded = AquesService.encode(req_source);
       if (!encoded) {
         MessageService.error('音記号列に変換できませんでした。');
-        return;
+        d.reject(null); return d.promise;
       }
 
       // disable rhythm if option is on
@@ -594,8 +630,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           MessageService.error('音声データを作成できませんでした。');
         }
       ).finally(function() {
-        AquesService.free_wave();
+        //AquesService.free_wave();
+        d.resolve('ok');
       });
+      return d.promise;
     };
     // run api server if option is on.
     if (app_cfg.apiserver.enabled && app_cfg.apiserver.start_at_launch) {
