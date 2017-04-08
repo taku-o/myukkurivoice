@@ -133,6 +133,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
     // init
     var ctrl = this;
+    var api = this;
     $scope.display = 'main';
     $scope.phont_list = MasterService.get_phont_list();
     $scope.yinput = angular.copy(YInput);
@@ -507,12 +508,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     $scope.apiserver_launched = false;
     var apiserver = null;
     ctrl.launch_apiserver = function() {
+      MessageService.action('switch launch apiserver called.');
       if ($scope.apiserver_launched) {
         $scope.apiserver_launched = false;
         if (apiserver) {
           apiserver.close();
           apiserver = null;
         }
+        MessageService.info('APIサーバーを停止しました。');
       } else {
         $scope.apiserver_launched = true;
         apiserver = http.createServer(function(request, response) {
@@ -523,7 +526,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
                 request.on('data', function(data) {
                   req_json = JSON.parse(data);
                   req_source = 'source' in req_json  ? req_json['source']  : '';
-                  ctrl.api_play(req_source);
+                  api.api_play(req_source);
+                  MessageService.info('API /api/play : ' + req_source);
                 });
                 response.writeHead(200, {"Content-Type": "text/plain"});
                 response.write('ok\n');
@@ -532,7 +536,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
               case '/api/message':
                 request.on('data', function(data) {
                   req_source = data;
-                  ctrl.api_play(req_source);
+                  api.api_play(req_source);
+                  MessageService.info('API /api/message : ' + req_source);
                 });
                 response.writeHead(200, {"Content-Type": "text/plain"});
                 response.write('ok\n');
@@ -546,9 +551,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           response.end();
         });
         apiserver.listen(app_cfg.apiserver.port);
+        MessageService.info('APIサーバーを起動しました。port:' + app_cfg.apiserver.port);
       }
     };
-    ctrl.api_play = function(req_source) {
+    api.api_play = function(req_source) {
       if (!req_source) {
         MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
         return;
@@ -594,7 +600,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           MessageService.error('音声データを作成できませんでした。');
         }
       ).finally(function() {
-        AquesService.free_wave();
+        //AquesService.free_wave();
       });
     };
     // run api server if option is on.
