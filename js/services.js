@@ -241,10 +241,18 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         // version 1
         if (phont.version == 'talk1') {
-          // escape text
-          var escaped = encoded.match(/"/)?
-            '"'+ encoded.replace(/(["'$`\\])/g,'\\$1')+'"':
-            '""'+ encoded.replace(/(["'$`\\])/g,'\\$1')+'""';
+          // write encoded to tempory file
+          temp.open('_myukkurivoice', function(err, info) {
+            if (err) {
+              MessageService.syserror('一時作業ファイルを作れませんでした。');
+              d.reject(null); return;
+            }
+
+          fs.writeFile(info.path, encoded, function(err) {
+            if (err) {
+              MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
+              d.reject(err); return;
+            }
 
           var cmd_options = {
             env: {
@@ -254,7 +262,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             encoding: 'binary'
           };
           var waver_cmd = unpacked_path + '/vendor/maquestalk1';
-          exec('echo '+ escaped +' | VOICE='+ phont.id_voice+ ' SPEED='+ speed+ ' '+ waver_cmd, cmd_options, (err, stdout, stderr) => {
+          exec('cat '+ info.path +' | VOICE='+ phont.id_voice+ ' SPEED='+ speed+ ' '+ waver_cmd, cmd_options, (err, stdout, stderr) => {
             if (err) {
               log.info('maquestalk1 failed. ' + err);
               d.reject(err); return;
@@ -267,7 +275,9 @@ angular.module('yvoiceService', ['yvoiceModel'])
               MessageService.syserror(error_table_AquesTalk2(error_code));
               log.info('AquesTalk_SyntheMV raise error. error_code:' + error_table_AquesTalk2(error_code));
             }
-          });
+          }); // maquestalk1
+          }); // fs.writeFile
+          }); // temp.open
 
         // version 2
         } else if (phont.version == 'talk2') {
