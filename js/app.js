@@ -133,7 +133,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
     // init
     var ctrl = this;
-    var api = this;
+    var api = {};
     $scope.display = 'main';
     $scope.phont_list = MasterService.get_phont_list();
     $scope.yinput = angular.copy(YInput);
@@ -506,19 +506,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
     // api request server
     $scope.apiserver_launched = false;
-    var apiserver = null;
+    api.apiserver = null;
     ctrl.launch_apiserver = function() {
       MessageService.action('switch launch apiserver called.');
       if ($scope.apiserver_launched) {
         $scope.apiserver_launched = false;
-        if (apiserver) {
-          apiserver.close();
-          apiserver = null;
+        if (api.apiserver) {
+          api.apiserver.close();
+          api.apiserver = null;
         }
         MessageService.info('APIサーバーを停止しました。');
       } else {
         $scope.apiserver_launched = true;
-        apiserver = http.createServer(function(request, response) {
+        api.apiserver = http.createServer(function(request, response) {
           // request handler
           if (request.method == 'POST') {
             switch (request.url) {
@@ -550,7 +550,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           response.write('404 Not Found\n');
           response.end();
         });
-        apiserver.listen(app_cfg.apiserver.port);
+        api.apiserver.listen(app_cfg.apiserver.port);
         MessageService.info('APIサーバーを起動しました。port:' + app_cfg.apiserver.port);
       }
     };
@@ -594,7 +594,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       // play voice
       AquesService.wave(encoded, phont, speed).then(
         function(buf_wav) {
-          return AudioService.play(buf_wav, wave_options);
+          return AudioService.play_parallel(buf_wav, wave_options);
         },
         function(err) {
           MessageService.error('音声データを作成できませんでした。');
