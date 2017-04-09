@@ -154,7 +154,7 @@
       </thead>
       <tbody>
         <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror'}">
-          <td class="message-item-created">{{message.created | date: 'yyyy/M/d hh:mm:ss'}}</td>
+          <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>
         </tr>
@@ -228,7 +228,7 @@
       </thead>
       <tbody>
         <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror'}">
-          <td class="message-item-created">{{message.created | date: 'yyyy/M/d hh:mm:ss'}}</td>
+          <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>
         </tr>
