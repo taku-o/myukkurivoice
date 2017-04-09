@@ -322,33 +322,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
           MessageService.syserror('再生する音源が渡されませんでした。');
           d.reject(null); return d.promise;
         }
-        if (audio) { audio.pause(); }
-
-        temp.open('_myukkurivoice', function(err, info) {
-          if (err) {
-            MessageService.syserror('一時作業ファイルを作れませんでした。');
-            d.reject(null); return;
-          }
-
-          fs.writeFile(info.path, buf_wav, function(err) {
-            if (err) {
-              MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-              d.reject(err); return;
-            }
-            audio = new Audio('');
-            audio.autoplay = false;
-            audio.src = info.path;
-            audio.play();
-            d.resolve('ok'); return;
-          });
-        });
-        return d.promise;
-      },
-      play_parallel: function(buf_wav, options) {
-        var d = $q.defer();
-        if (!buf_wav) {
-          MessageService.syserror('再生する音源が渡されませんでした。');
-          d.reject(null); return d.promise;
+        if (!parallel) {
+          if (audio) { audio.pause(); }
         }
 
         temp.open('_myukkurivoice', function(err, info) {
@@ -362,7 +337,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
               MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
               d.reject(err); return;
             }
-            var in_audio = new Audio('');
+
+            var in_audio = null;
+            if (parallel) {
+              in_audio = new Audio('');
+            } else {
+              audio = new Audio('');
+              in_audio = audio;
+            }
             in_audio.autoplay = false;
             in_audio.src = info.path;
             in_audio.play();
@@ -414,61 +396,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
     };
 
     return {
-      play: function(buf_wav, options) {
+      play: function(buf_wav, options, parallel=false) {
         var d = $q.defer();
         if (!buf_wav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
           d.reject(null); return d.promise;
         }
-        if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
-
-        var a_buffer = to_array_buffer(buf_wav);
-        audioCtx.decodeAudioData(a_buffer).then(
-          function(decodedData) {
-            // report duration
-            AppUtilService.report_duration(decodedData.duration + (options.write_margin_ms / 1000.0));
-
-            // source
-            sourceNode = audioCtx.createBufferSource();
-            sourceNode.buffer = decodedData;
-            sourceNode.onended = function() {
-              // do nothing
-            };
-
-            var node_list = [];
-
-            // playbackRate
-            sourceNode.playbackRate.value = options.playback_rate;
-            // detune
-            sourceNode.detune.value = options.detune;
-            // gain
-            var gainNode = audioCtx.createGain();
-            gainNode.gain.value = options.volume;
-            node_list.push(gainNode);
-
-            // connect
-            var last_node = sourceNode;
-            angular.forEach(node_list, function(node) {
-              last_node.connect(node); last_node = node;
-            });
-            last_node.connect(audioCtx.destination);
-
-            // and start
-            sourceNode.start(0);
-            d.resolve('ok'); return;
-          },
-          function(err) {
-            MessageService.syserror('音源の再生に失敗しました。', err);
-            d.reject(err); return;
-          }
-        );
-        return d.promise;
-      },
-      play_parallel: function(buf_wav, options) {
-        var d = $q.defer();
-        if (!buf_wav) {
-          MessageService.syserror('再生する音源が渡されませんでした。');
-          d.reject(null); return d.promise;
+        if (!parallel) {
+          if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
         }
 
         var a_buffer = to_array_buffer(buf_wav);
@@ -478,7 +413,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
             AppUtilService.report_duration(decodedData.duration + (options.write_margin_ms / 1000.0));
 
             // source
-            var in_sourceNode = audioCtx.createBufferSource();
+            var in_sourceNode = null;
+            if (parallel) {
+              in_sourceNode = audioCtx.createBufferSource();
+            } else {
+              sourceNode = audioCtx.createBufferSource();
+              in_sourceNode = sourceNode;
+            }
             in_sourceNode.buffer = decodedData;
             in_sourceNode.onended = function() {
               // do nothing

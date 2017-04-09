@@ -526,7 +526,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
                 request.on('data', function(data) {
                   req_json = JSON.parse(data);
                   req_source = 'source' in req_json  ? req_json['source']  : '';
-                  api.api_play(req_source);
+                  api.play(req_source);
                   MessageService.info('API /api/play : ' + req_source);
                 });
                 response.writeHead(200, {"Content-Type": "text/plain"});
@@ -536,7 +536,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
               case '/api/message':
                 request.on('data', function(data) {
                   req_source = data;
-                  api.api_play(req_source);
+                  api.play(req_source);
                   MessageService.info('API /api/message : ' + req_source);
                 });
                 response.writeHead(200, {"Content-Type": "text/plain"});
@@ -554,7 +554,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
         MessageService.info('APIサーバーを起動しました。port:' + app_cfg.apiserver.port);
       }
     };
-    api.api_play = function(req_source) {
+    api.play = function(req_source) {
       if (!req_source) {
         MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
         return;
@@ -594,7 +594,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       // play voice
       AquesService.wave(encoded, phont, speed).then(
         function(buf_wav) {
-          return AudioService.play_parallel(buf_wav, wave_options);
+          return AudioService.play(buf_wav, wave_options, parallel=true);
         },
         function(err) {
           MessageService.error('音声データを作成できませんでした。');
