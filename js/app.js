@@ -561,10 +561,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
 
       // get last data config
-      var last_yvoice = $scope.yvoice_list[$scope.yvoice_list.length - 1];
       var phont = null;
       angular.forEach($scope.phont_list, function(value, key) {
-        if (value.id == last_yvoice.phont) { phont = value; }
+        if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
@@ -579,16 +578,16 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
 
       // disable rhythm if option is on
-      if (! last_yvoice.rhythm_on) {
+      if (! $scope.yvoice.rhythm_on) {
         encoded = AppUtilService.disable_rhythm(encoded);
       }
 
-      var speed = last_yvoice.speed;
+      var speed = $scope.yvoice.speed;
       var wave_options = {
-        volume:last_yvoice.volume,
-        playback_rate:last_yvoice.playback_rate,
-        detune:last_yvoice.detune,
-        write_margin_ms:last_yvoice.write_margin_ms,
+        volume:$scope.yvoice.volume,
+        playback_rate:$scope.yvoice.playback_rate,
+        detune:$scope.yvoice.detune,
+        write_margin_ms:$scope.yvoice.write_margin_ms,
       };
 
       // play voice
