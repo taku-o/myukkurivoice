@@ -13,7 +13,7 @@ const Config = require('electron-config');
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
-  appcfgWindow: { width: 390, height: 490 },
+  appcfgWindow: { width: 390, height: 390 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
   show_msg_pane: true,
   apiserver: { enabled: false, start_at_launch: false, port: 8082 },

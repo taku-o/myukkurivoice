@@ -73,7 +73,6 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 * 再生する音声の抑揚のON・OFF切替
 * 音声の再生時間目安の表示
 * 各種ショートカットキー
-* 他アプリ連携用の機能
 * チュートリアル、ヘルプ
 
 ## 動画
