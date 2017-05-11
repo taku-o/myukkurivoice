@@ -34,20 +34,21 @@
     iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
 
 ## パッケージング
-* リリース用のアプリケーションを作成するには、次のコマンドを実行します。
+* リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
 
+    bin/packaging.sh
+    # or
     electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)" --asar.unpackDir=vendor
+
+* リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
+
+    bin/relase.sh
 
 ## asarの解凍
 * asarでパッケージングされたファイルを解凍するには、asarコマンドを実行します
 
     npm -g install asar
     asar e app.asar dest
-
-## API Server機能
-* 機能を有効後、呼び出すには
-
-    curl -H "Content-type: application/json" -X POST -d '{"source":"test"}' http://localhost:8082/api/play
 
 # 環境設定まわりの情報
 ## install xcode
@@ -63,6 +64,9 @@
     npm -g install electron-prebuilt
     npm -g install electron-packager
     npm -g install electron-osx-sign
+
+## install capistrano
+    gem install capistrano
 
 ## using library
 * node_modules以下に入っているので、このコマンドは実行しなくて良い。

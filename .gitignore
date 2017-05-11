@@ -1,2 +1,4 @@
 .DS_Store
 Thumbs.db
+bin/release/log/
+bin/release/myukkurivoice/
