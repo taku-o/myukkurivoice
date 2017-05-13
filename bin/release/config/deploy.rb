@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock "3.7.1"
+lock "3.8.1"
 
 set :application, "myukkurivoice"
 set :package_name, "myukkurivoice-darwin-x64"

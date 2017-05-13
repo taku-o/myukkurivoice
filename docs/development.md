@@ -66,7 +66,8 @@
     npm -g install electron-osx-sign
 
 ## install capistrano
-    gem install capistrano
+    gem install bundler
+    bundle install
 
 ## using library
 * node_modules以下に入っているので、このコマンドは実行しなくて良い。
