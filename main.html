@@ -38,9 +38,6 @@
     </div>
 
     <small>再生時間(秒):{{duration | number:2}}</small>
-    <button class="btn btn-large btn-default" id="apiserver" ng-click="ctrl.launch_apiserver()" ng-show="app_cfg.apiserver.enabled">
-      <span class="icon icon-signal" ng-class="{active:apiserver_launched}"></span>
-    </button>
 
     <div class="btn-group pull-right">
       <button class="btn btn-large btn-default" id="help" ng-click="ctrl.help()">

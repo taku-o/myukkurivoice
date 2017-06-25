@@ -3,7 +3,7 @@ angular.module('yvoiceModel', [])
   .factory('YVoice', function() {
     return {
       'id': null,
-      'name': 'at1_f1',
+      'name': 'f1 女声1(ゆっくり)',
       'phont': 'at1_f1',
       //'effect': 2,
       //'intonation': true,

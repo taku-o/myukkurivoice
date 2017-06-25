@@ -133,7 +133,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
     // init
     var ctrl = this;
-    var api = {};
     $scope.display = 'main';
     $scope.phont_list = MasterService.get_phont_list();
     $scope.yinput = angular.copy(YInput);
@@ -504,108 +503,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       $scope.display = 'main';
     };
 
-    // api request server
-    $scope.apiserver_launched = false;
-    api.apiserver = null;
-    ctrl.launch_apiserver = function() {
-      MessageService.action('switch launch apiserver called.');
-      if ($scope.apiserver_launched) {
-        $scope.apiserver_launched = false;
-        if (api.apiserver) {
-          api.apiserver.close();
-          api.apiserver = null;
-        }
-        MessageService.info('APIサーバーを停止しました。');
-      } else {
-        $scope.apiserver_launched = true;
-        api.apiserver = http.createServer(function(request, response) {
-          // request handler
-          if (request.method == 'POST') {
-            switch (request.url) {
-              case '/api/play':
-                request.on('data', function(data) {
-                  req_json = JSON.parse(data);
-                  req_source = 'source' in req_json  ? req_json['source']  : '';
-                  api.play(req_source);
-                  MessageService.info('API /api/play : ' + req_source);
-                });
-                response.writeHead(200, {"Content-Type": "text/plain"});
-                response.write('ok\n');
-                response.end();
-                return;
-              case '/api/message':
-                request.on('data', function(data) {
-                  req_source = data;
-                  api.play(req_source);
-                  MessageService.info('API /api/message : ' + req_source);
-                });
-                response.writeHead(200, {"Content-Type": "text/plain"});
-                response.write('ok\n');
-                response.end();
-                return;
-            }
-          }
-          // not found
-          response.writeHead(404, {"Content-Type": "text/plain"});
-          response.write('404 Not Found\n');
-          response.end();
-        });
-        api.apiserver.listen(app_cfg.apiserver.port);
-        MessageService.info('APIサーバーを起動しました。port:' + app_cfg.apiserver.port);
-      }
-    };
-    api.play = function(req_source) {
-      if (!req_source) {
-        MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
-        return;
-      }
-
-      // get last data config
-      var phont = null;
-      angular.forEach($scope.phont_list, function(value, key) {
-        if (value.id == $scope.yvoice.phont) { phont = value; }
-      });
-      if (!phont) {
-        MessageService.error('声の種類が未指定です。');
-        return;
-      }
-
-      // encoded
-      var encoded = AquesService.encode(req_source);
-      if (!encoded) {
-        MessageService.error('音記号列に変換できませんでした。');
-        return;
-      }
-
-      // disable rhythm if option is on
-      if (! $scope.yvoice.rhythm_on) {
-        encoded = AppUtilService.disable_rhythm(encoded);
-      }
-
-      var speed = $scope.yvoice.speed;
-      var wave_options = {
-        volume:$scope.yvoice.volume,
-        playback_rate:$scope.yvoice.playback_rate,
-        detune:$scope.yvoice.detune,
-        write_margin_ms:$scope.yvoice.write_margin_ms,
-      };
-
-      // play voice
-      AquesService.wave(encoded, phont, speed).then(
-        function(buf_wav) {
-          return AudioService.play(buf_wav, wave_options, parallel=true);
-        },
-        function(err) {
-          MessageService.error('音声データを作成できませんでした。');
-        }
-      ).finally(function() {
-        //AquesService.free_wave();
-      });
-    };
-    // run api server if option is on.
-    if (app_cfg.apiserver.enabled && app_cfg.apiserver.start_at_launch) {
-      ctrl.launch_apiserver();
-    }
   }]);
 
 

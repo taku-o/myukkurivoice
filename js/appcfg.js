@@ -33,7 +33,6 @@ angular.module('yvoiceAppCfg', [])
         'mainWindow':$scope.app_cfg.mainWindow,
         'audio_serv_ver':$scope.app_cfg.audio_serv_ver,
         'show_msg_pane':$scope.app_cfg.show_msg_pane,
-        'apiserver':$scope.app_cfg.apiserver,
         'debug':$scope.app_cfg.debug
       };
       ipcRenderer.send('updateAppConfig', options);
