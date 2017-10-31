@@ -296,7 +296,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             var buf_wav = ref.reinterpret(r, alloc_int.deref(), 0);
 
             // copy buf_wav to managed buffer
-            var managed_buf = Buffer.allocUnsafe(alloc_int.deref());
+            var managed_buf = Buffer.alloc(alloc_int.deref());
             buf_wav.copy(managed_buf, 0, alloc_int.deref());
 
             fn_AquesTalk2_FreeWave(r);
