@@ -145,7 +145,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
   .factory('AquesService', ['$q', 'MessageService', function($q, MessageService) {
     var ptr_void  = ref.refType(ref.types.void);
     var ptr_int   = ref.refType(ref.types.int);
-    var ptr_char = ref.refType(ref.types.char);
+    var ptr_char  = ref.refType(ref.types.char);
     var ptr_uchar = ref.refType(ref.types.uchar);
 
     // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
@@ -198,9 +198,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
       if (code == 205)                  { return 'ライセンスキーが正しくない。または、設定されていない。'; }
       if (code >= 1000 && code <= 1008) { return 'Phontデータが正しくない'; }
     }
-
-    // will released data
-    var ptr2_waves = [];
 
     return {
       encode: function(source) {
@@ -297,17 +294,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
             }
 
             var buf_wav = ref.reinterpret(r, alloc_int.deref(), 0);
-            ptr2_waves.push(r);
-            d.resolve(buf_wav);
+
+            // copy buf_wav to managed buffer
+            var managed_buf = Buffer.allocUnsafe(alloc_int.deref());
+            buf_wav.copy(managed_buf, 0, alloc_int.deref());
+
+            fn_AquesTalk2_FreeWave(r);
+            d.resolve(managed_buf);
           });
         }
         return d.promise;
-      },
-      free_wave: function() {
-        angular.forEach(ptr2_waves, function(ptr) {
-          fn_AquesTalk2_FreeWave(ptr);
-        });
-        ptr2_waves = [];
       }
     }
   }])
