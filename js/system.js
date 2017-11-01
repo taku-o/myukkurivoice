@@ -6,17 +6,17 @@ var app_cfg = angular.copy(require('electron').remote.getGlobal('app_cfg'));
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
-  log.error('appcfg:event:uncaughtException');
+  log.error('system:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
 });
 
 // application config app
-angular.module('yvoiceAppCfg', [])
+angular.module('yvoiceSystem', [])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  .controller('AppcfgController', ['$scope', '$timeout', function($scope, $timeout) {
+  .controller('SystemController', ['$scope', '$timeout', function($scope, $timeout) {
     // init
     var ctrl = this;
     $timeout(function(){ $scope.$apply(); });
