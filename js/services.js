@@ -115,25 +115,32 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1', 'id_voice':0},
-      {'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1', 'id_voice':1},
-      {'id':'aq_f1c',     'name':'f1c 女声',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
-      {'id':'aq_f3a',     'name':'f3a 女声',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_f3a.phont'},
-      {'id':'aq_huskey',  'name':'huskey ハスキー',    'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_huskey.phont'},
-      {'id':'aq_m4b',     'name':'m4b 男声',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_m4b.phont'},
-      {'id':'aq_mf1',     'name':'mf1 中性的',         'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_mf1.phont'},
-      {'id':'aq_rb2',     'name':'rb2 小さいロボ',     'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_rb2.phont'},
-      {'id':'aq_rb3',     'name':'rb3 ロボ',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_rb3.phont'},
-      {'id':'aq_rm',      'name':'rm 女声',            'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_rm.phont'},
-      {'id':'aq_robo',    'name':'robo ロボット',      'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_robo.phont'},
-      {'id':'aq_yukkuri', 'name':'aq_yukkuri',         'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_yukkuri.phont'},
-      {'id':'ar_f4',      'name':'f4 女声',            'version':'talk2', 'path':unpacked_path + '/vendor/phont/ar_f4.phont'},
-      {'id':'ar_m5',      'name':'m5 男声',            'version':'talk2', 'path':unpacked_path + '/vendor/phont/ar_m5.phont'},
-      {'id':'ar_mf2',     'name':'mf2 機械声',         'version':'talk2', 'path':unpacked_path + '/vendor/phont/ar_mf2.phont'},
-      {'id':'ar_rm3',     'name':'rm3 女声',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/ar_rm3.phont'},
-      {'id':'aq_defo1',   'name':'aq_defo1',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
-      {'id':'aq_momo1',   'name':'aq_momo1',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
-      {'id':'aq_teto1',   'name':'aq_teto1',           'version':'talk2', 'path':unpacked_path + '/vendor/phont/aq_teto1.phont'}
+      //{'id':'aq10_f1',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F1'},
+      //{'id':'aq10_f2',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F2'},
+      //{'id':'aq10_f3',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F3'},
+      //{'id':'aq10_m1',    'name':'(新)男声 M1',        'version':'talk10', 'struct_name':'gVoice_M1'},
+      //{'id':'aq10_m2',    'name':'(新)男声 M1',        'version':'talk10', 'struct_name':'gVoice_M2'},
+      //{'id':'aq10_r1',    'name':'(新)ロボット R1',    'version':'talk10', 'struct_name':'gVoice_R1'},
+      //{'id':'aq10_r2',    'name':'(新)ロボット R1',    'version':'talk10', 'struct_name':'gVoice_R2'},
+      {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1',  'id_voice':0},
+      {'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1',  'id_voice':1},
+      {'id':'aq_f1c',     'name':'f1c 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
+      {'id':'aq_f3a',     'name':'f3a 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f3a.phont'},
+      {'id':'aq_huskey',  'name':'huskey ハスキー',    'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_huskey.phont'},
+      {'id':'aq_m4b',     'name':'m4b 男声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_m4b.phont'},
+      {'id':'aq_mf1',     'name':'mf1 中性的',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_mf1.phont'},
+      {'id':'aq_rb2',     'name':'rb2 小さいロボ',     'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb2.phont'},
+      {'id':'aq_rb3',     'name':'rb3 ロボ',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb3.phont'},
+      {'id':'aq_rm',      'name':'rm 女声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rm.phont'},
+      {'id':'aq_robo',    'name':'robo ロボット',      'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_robo.phont'},
+      {'id':'aq_yukkuri', 'name':'aq_yukkuri',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_yukkuri.phont'},
+      {'id':'ar_f4',      'name':'f4 女声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_f4.phont'},
+      {'id':'ar_m5',      'name':'m5 男声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_m5.phont'},
+      {'id':'ar_mf2',     'name':'mf2 機械声',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_mf2.phont'},
+      {'id':'ar_rm3',     'name':'rm3 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_rm3.phont'},
+      {'id':'aq_defo1',   'name':'aq_defo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
+      {'id':'aq_momo1',   'name':'aq_momo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
+      {'id':'aq_teto1',   'name':'aq_teto1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_teto1.phont'}
     ];
 
     return {
@@ -167,6 +174,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, [ 'string', 'int', ptr_int, ptr_void ]);
     var fn_AquesTalk2_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk2_FreeWave, 'void', [ ptr_uchar ]);
 
+    var framework_path = unpacked_path + '/vendor/AquesTalk10.framework/Versions/A/AquesTalk';
+    // unsigned char * AquesTalk_Synthe_Utf8(const AQTK_VOICE *pParam, const char *koe, int *size)
+    // void AquesTalk_FreeWave(unsigned char *wav)
+    // int AquesTalk_SetDevKey(const char *key)
+    // int AquesTalk_SetUsrKey(const char *key)
+
     function error_table_AqKanji2Koe(code) {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
       if (code == 105)               { return '入力テキストが長すぎる'; }
@@ -197,6 +210,22 @@ angular.module('yvoiceService', ['yvoiceModel'])
       if (code == 204)                  { return '音記号列が長い(内部バッファオーバー1)'; }
       if (code == 205)                  { return 'ライセンスキーが正しくない。または、設定されていない。'; }
       if (code >= 1000 && code <= 1008) { return 'Phontデータが正しくない'; }
+      return '';
+    }
+
+    function error_table_AquesTalk10(code) {
+      if (code == 100) { return 'その他のエラー'; }
+      if (code == 101) { return 'メモリ不足'; }
+      if (code == 103) { return '音声記号列指定エラー(語頭の長音、促音の連続など)'; }
+      if (code == 104) { return '音声記号列に有効な読みがない'; }
+      if (code == 105) { return '音声記号列に未定義の読み記号が指定された'; }
+      if (code == 106) { return '音声記号列のタグの指定が正しくない'; }
+      if (code == 107) { return 'タグの長さが制限を越えている(または[>]がみつからない)'; }
+      if (code == 108) { return 'タグ内の値の指定が正しくない'; }
+      if (code == 120) { return '音声記号列が長すぎる'; }
+      if (code == 121) { return '1つのフレーズ中の読み記号が多すぎる'; }
+      if (code == 122) { return '音声記号列が長い(内部バッファオーバー1)'; }
+      return '';
     }
 
     return {
@@ -298,6 +327,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
             fn_AquesTalk2_FreeWave(r);
             d.resolve(managed_buf);
           });
+
+        // version 10
+        } else if (phont.version == 'talk10') {
+            // TODO
         }
         return d.promise;
       }
