@@ -1,3 +1,20 @@
+
+1.3.5 / 2017-01-27
+==================
+
+* [[`a1b8216fe7`](https://github.com/TooTallNate/ref/commit/a1b8216fe7)] - fix `util.inspect()` overriding on Node v7 (Nathan Rajlich)
+* [[`0e26fcf81e`](https://github.com/TooTallNate/ref/commit/0e26fcf81e)] - **appveyor**: drop node v2 and v3 (Nathan Rajlich)
+* [[`9e9078a4e1`](https://github.com/TooTallNate/ref/commit/9e9078a4e1)] - **travis**: drop node v1 and v2 (Nathan Rajlich)
+* [[`615016ac1a`](https://github.com/TooTallNate/ref/commit/615016ac1a)] - **test**: fix `util.inspect()` test (Nathan Rajlich)
+* [[`e1fe604c05`](https://github.com/TooTallNate/ref/commit/e1fe604c05)] - **test**: fix tests after V8 6.0 GC changes (Michaël Zasso, #85)
+
+1.3.4 / 2017-01-27
+==================
+
+* [[`32637be7e4`](https://github.com/TooTallNate/ref/commit/32637be7e4)] - CI stuffs (Nathan Rajlich)
+* [[`55716fd9e3`](https://github.com/TooTallNate/ref/commit/55716fd9e3)] - always use `defineProperty()` for `name` (Nathan Rajlich)
+* [[`786b73941e`](https://github.com/TooTallNate/ref/commit/786b73941e)] - **refType**: force name to writable before updating it (Joel Martin) (#67)
+
 1.3.3 / 2016-11-03
 ==================
 
