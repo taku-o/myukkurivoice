@@ -259,9 +259,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
         function(err) {
           MessageService.error('音声データを作成できませんでした。');
         }
-      ).finally(function() {
-        AquesService.free_wave();
-      });
+      );
     };
     ctrl.stop = function() {
       MessageService.action('stop playing voice.');
@@ -333,9 +331,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
             AquesService.wave(encoded, phont, speed).then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav, wave_options).finally(function() {
-                  AquesService.free_wave();
-                });
+                AudioService.record(file_path, buf_wav, wave_options);
                 return file_path;
               },
               function(err) {
@@ -361,9 +357,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           AquesService.wave(encoded, phont, speed)
             .then(
               function(buf_wav) {
-                AudioService.record(file_path, buf_wav, wave_options).finally(function() {
-                  AquesService.free_wave();
-                });
+                AudioService.record(file_path, buf_wav, wave_options);
                 return file_path;
               },
               function(err) {

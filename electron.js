@@ -13,7 +13,7 @@ const Config = require('electron-config');
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
-  appcfgWindow: { width: 390, height: 390 },
+  systemWindow: { width: 390, height: 350 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
   show_msg_pane: true,
   debug: process.env.DEBUG
@@ -30,7 +30,7 @@ const debug = app_cfg.debug;
 // global reference
 var mainWindow = null;
 var helpWindow = null;
-var appcfgWindow = null;
+var systemWindow = null;
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -96,7 +96,7 @@ app.on('ready', function() {
         { type: 'separator' },
         {
           label: '環境設定',
-          click () { showAppCfgWindow(); }
+          click () { showSystemWindow(); }
         },
         { type: 'separator' },
         {
@@ -357,7 +357,7 @@ ipcMain.on('updateAppConfig', function (event, options) {
     message: '環境設定を更新しました。アプリケーションを再起動すると変更が反映されます。',
     buttons: ['OK'],
   };
-  var r = dialog.showMessageBox(appcfgWindow, dialog_options);
+  var r = dialog.showMessageBox(systemWindow, dialog_options);
   event.sender.send('updateAppConfig', r);
 });
 
@@ -376,7 +376,7 @@ ipcMain.on('resetAppConfig', function (event, message) {
     message: '環境設定を初期化しました。アプリケーションを再起動すると変更が反映されます。',
     buttons: ['OK'],
   };
-  var r = dialog.showMessageBox(appcfgWindow, dialog_options);
+  var r = dialog.showMessageBox(systemWindow, dialog_options);
   event.sender.send('resetAppConfig', r);
 });
 
@@ -460,14 +460,14 @@ function showHelpWindow() {
 }
 
 // application config window
-function showAppCfgWindow() {
-  if (appcfgWindow && !appcfgWindow.isDestroyed()) {
-    appcfgWindow.show();
+function showSystemWindow() {
+  if (systemWindow && !systemWindow.isDestroyed()) {
+    systemWindow.show();
     return;
   }
 
-  var {width, height} = app_cfg.appcfgWindow;
-  appcfgWindow = new BrowserWindow({
+  var {width, height} = app_cfg.systemWindow;
+  systemWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,
     show: false,
@@ -477,17 +477,17 @@ function showAppCfgWindow() {
       devTools: debug
     }
   });
-  appcfgWindow.loadURL('file://' + __dirname + '/appcfg.html');
-  appcfgWindow.show();
+  systemWindow.loadURL('file://' + __dirname + '/system.html');
+  systemWindow.show();
 
-  appcfgWindow.on('closed', function() {
-    appcfgWindow = null;
+  systemWindow.on('closed', function() {
+    systemWindow = null;
   });
-  appcfgWindow.on('unresponsive', function() {
-    log.warn('appcfg:event:unresponsive');
+  systemWindow.on('unresponsive', function() {
+    log.warn('system:event:unresponsive');
   });
-  appcfgWindow.webContents.on('crashed', function() {
-    log.error('appcfg:event:crashed');
+  systemWindow.webContents.on('crashed', function() {
+    log.error('system:event:crashed');
   });
 }
 

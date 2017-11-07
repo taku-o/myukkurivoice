@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html ng-app="yvoiceAppCfg">
+<html ng-app="yvoiceSystem">
 <head>
   <meta charset="UTF-8">
   <title>MYukkuriVoice Application Config</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
-  <link rel="stylesheet" href="css/appcfg.css">
+  <link rel="stylesheet" href="css/system.css">
   <script src="node_modules/photon/dist/template-app/js/menu.js" charset="utf-8"></script>
   <script src="node_modules/angular/angular.min.js"></script>
-  <script src="js/appcfg.js"></script>
+  <script src="js/system.js"></script>
   <script type="text/javascript">
     document.ondragover = document.ondrop = function(e) {
       e.preventDefault(); return false;
@@ -15,7 +15,7 @@
   </script>
 </head>
 <body>
-<div class="window" ng-controller="AppcfgController as ctrl">
+<div class="window" ng-controller="SystemController as ctrl">
 <div class="window-content">
   <form>
     <div class="box">
@@ -46,9 +46,6 @@
     <div class="box">
       <div class="checkbox">
         <label><input type="checkbox" ng-model="app_cfg.show_msg_pane">メッセージリストを表示する</label>
-      </div>
-      <div class="checkbox">
-        <label><input type="checkbox" ng-model="app_cfg.debug">開発者モードを有効にする</label>
       </div>
     </div>
   </form>
