@@ -38,7 +38,7 @@
 
     bin/packaging.sh
     # or
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --version=1.4.12 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)" --asar.unpackDir=vendor
+    electron-packager . myukkurivoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)" --asar.unpackDir=vendor
 
 * リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
 
@@ -57,13 +57,12 @@
 ## install node
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
     nvm ls-remote
-    nvm install v7.2.0
-    nvm use v7.2.0
+    nvm install v8.2.1
+    nvm use v8.2.1
 
-## install electron command
-    npm -g install electron-prebuilt
+## install electron and command
+    npm install -g electron
     npm -g install electron-packager
-    npm -g install electron-osx-sign
 
 ## install capistrano
     gem install bundler
@@ -87,8 +86,8 @@
     npm install --save tunajs
 
 ## Module version mismatch. Expected 50, got 51
-* もし次のエラーに遭遇したら、次のコマンドを実行する
+* もし、この類のエラーに遭遇したら、次のようなコマンドを実行してrebuildする
 
-    npm rebuild --runtime=electron --target=1.4.12 --disturl=https://atom.io/download/atom-shell --abi=51
+    npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
 
 
