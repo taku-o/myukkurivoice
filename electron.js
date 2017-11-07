@@ -56,34 +56,34 @@ app.on('ready', function() {
   showMainWindow();
 
   // shortcut
-  var r = localShortcut.register('Command+Q', function() {
+  var r = localShortcut.register(mainWindow, 'Command+Q', function() {
     app.quit();
   });
-  var r = localShortcut.register('Command+P', function() {
+  var r = localShortcut.register(mainWindow, 'Command+P', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'play'); }
   });
-  var r = localShortcut.register('Command+W', function() {
+  var r = localShortcut.register(mainWindow, 'Command+W', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'stop'); }
   });
-  var r = localShortcut.register('Command+S', function() {
+  var r = localShortcut.register(mainWindow, 'Command+S', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
   });
-  var r = localShortcut.register('Command+Up', function() {
+  var r = localShortcut.register(mainWindow, 'Command+Up', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_source'); }
   });
-  var r = localShortcut.register('Command+Down', function() {
+  var r = localShortcut.register(mainWindow, 'Command+Down', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_encoded'); }
   });
-  var r = localShortcut.register('Command+Right', function() {
+  var r = localShortcut.register(mainWindow, 'Command+Right', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
   });
-  var r = localShortcut.register('Command+D', function() {
+  var r = localShortcut.register(mainWindow, 'Command+D', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'from_clipboard'); }
   });
-  var r = localShortcut.register('Command+Left', function() {
+  var r = localShortcut.register(mainWindow, 'Command+Left', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_next_config'); }
   });
-  var r = localShortcut.register('Command+Shift+Left', function() {
+  var r = localShortcut.register(mainWindow, 'Command+Shift+Left', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_previous_config'); }
   });
 
