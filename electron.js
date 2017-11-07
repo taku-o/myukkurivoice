@@ -448,6 +448,13 @@ function showHelpWindow() {
   helpWindow.loadURL('file://' + __dirname + '/help.html');
   helpWindow.show();
 
+  var r = localShortcut.register(helpWindow, 'Command+Q', function() {
+    app.quit();
+  });
+  var r = localShortcut.register(helpWindow, 'Command+W', function() {
+    if (helpWindow) { helpWindow.close(); }
+  });
+
   helpWindow.on('closed', function() {
     helpWindow = null;
   });
@@ -479,6 +486,13 @@ function showSystemWindow() {
   });
   systemWindow.loadURL('file://' + __dirname + '/system.html');
   systemWindow.show();
+
+  var r = localShortcut.register(systemWindow, 'Command+Q', function() {
+    app.quit();
+  });
+  var r = localShortcut.register(systemWindow, 'Command+W', function() {
+    if (systemWindow) { systemWindow.close(); }
+  });
 
   systemWindow.on('closed', function() {
     systemWindow = null;

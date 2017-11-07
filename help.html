@@ -117,7 +117,8 @@
 
       <h4>Command + Wでアプリのウィンドウが閉じない</h4>
       <p>
-        Command + Wで音声の再生停止に割り当てています。<br>
+        メインウィンドウでは、<br>
+        Command + Wは音声の再生停止に割り当てています。<br>
         ショートカットキーが上書きされているのです。<br>
         代わりに、Command + Qでアプリを終了させてください。
       </p>
@@ -464,7 +465,7 @@
   <!-- shortcut -->
   <div class="pane" ng-show="display == 'shortcut'">
     <div class="content">
-      <h4>ショートカットキー</h4>
+      <h4>ショートカットキー(メインウィンドウ)</h4>
       <table class="table-striped">
         <thead>
           <tr>
@@ -503,7 +504,7 @@
           </tr>
           <tr>
             <td>Command + D</td>
-            <td>クリップボードのテキストをメッセージ入力欄にコピー</td>
+            <td>クリップボードをメッセージ入力欄にコピー</td>
           </tr>
           <tr>
             <td>Command + ←</td>
@@ -515,6 +516,47 @@
           </tr>
         </tbody>
       </table>
+
+      <h4>ショートカットキー(環境設定)</h4>
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th>ショートカットキー</th>
+            <th>機能</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Command + Q</td>
+            <td>アプリ終了</td>
+          </tr>
+          <tr>
+            <td>Command + W</td>
+            <td>ウィンドウを閉じる</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>ショートカットキー(ヘルプ)</h4>
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th>ショートカットキー</th>
+            <th>機能</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Command + Q</td>
+            <td>アプリ終了</td>
+          </tr>
+          <tr>
+            <td>Command + W</td>
+            <td>ウィンドウを閉じる</td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 
