@@ -55,7 +55,7 @@ task :package do
     execute "cd #{application}; electron-packager . myukkurivoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --ignore=\"(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)\" --asar.unpackDir=vendor"
 
     # packaging
-    execute "cd #{application}; zip -r #{package_name} #{package_name}"
+    execute "cd #{application}; ditto -c -k --sequesterRsrc --keepParent ${package_name} #{package_name}.zip
 
     # TODO release
 
