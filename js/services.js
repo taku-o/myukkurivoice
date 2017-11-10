@@ -7,6 +7,7 @@ var temp         = require('temp').track();
 var path         = require('path');
 var exec         = require('child_process').exec;
 var WaveRecorder = require('wave-recorder');
+var cryptico     = require("cryptico.js");
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
@@ -174,11 +175,21 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, [ 'string', 'int', ptr_int, ptr_void ]);
     var fn_AquesTalk2_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk2_FreeWave, 'void', [ ptr_uchar ]);
 
-    var framework_path = unpacked_path + '/vendor/AquesTalk10.framework/Versions/A/AquesTalk';
     // unsigned char * AquesTalk_Synthe_Utf8(const AQTK_VOICE *pParam, const char *koe, int *size)
     // void AquesTalk_FreeWave(unsigned char *wav)
     // int AquesTalk_SetDevKey(const char *key)
     // int AquesTalk_SetUsrKey(const char *key)
+    var framework_path = unpacked_path + '/vendor/AquesTalk10.framework/Versions/A/AquesTalk';
+    /*
+    var ptr_AquesTalk10_Synthe_Utf8 = ffi.DynamicLibrary(framework_path).get('AquesTalk_Synthe_Utf8');
+    var ptr_AquesTalk10_FreeWave    = ffi.DynamicLibrary(framework_path).get('AquesTalk_FreeWave');
+    var ptr_AquesTalk10_SetDevKey   = ffi.DynamicLibrary(framework_path).get('AquesTalk_SetDevKey');
+    var ptr_AquesTalk10_SetUsrKey   = ffi.DynamicLibrary(framework_path).get('AquesTalk_SetUsrKey');
+    // fn_AquesTalk10_Synthe_Utf8
+    var fn_AquesTalk10_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk10_FreeWave, 'void', [ ptr_uchar ]);
+    var fn_AquesTalk10_SetDevKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetDevKey, 'int', [ 'string' ]);
+    var fn_AquesTalk10_SetUsrKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetUsrKey, 'int', [ 'string' ]);
+    */
 
     function error_table_AqKanji2Koe(code) {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
@@ -620,13 +631,34 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AppUtilService', ['$rootScope', function($rootScope) {
+  .factory('AppUtilService', ['$rootScope', '$q', function($rootScope, $q) {
     return {
       disable_rhythm: function(encoded) {
         return encoded.replace(/['\/]/g, '');
       },
-      report_duration(duration) {
+      report_duration: function(duration) {
         $rootScope.$broadcast("duration", duration);
+      },
+      lisence_key: function(lisence_type) {
+        var d = $q.defer();
+        // get encrypted license key
+        var cmd_options = {};
+        var secret_cmd = unpacked_path + '/vendor/secret';
+        exec(secret_cmd + ' -license='+lisence_type, cmd_options, (err, stdout, stderr) => {
+          if (err) {
+            log.info(lisence_type+ ' license key get failed. ' + err);
+            d.reject(err); return;
+          }
+
+          // decrypted message
+          var passPhrase = "MYukkuriVoice is for Mac Voice Generator";
+          var bits = 1024;
+          var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+          var decryptionResult = cryptico.decrypt(stdout, mattsRSAkey);
+          var decrypted = decryptionResult.plaintext;
+          d.resolve(decrypted);
+        });
+        return d.promise;
       }
     }
   }])
