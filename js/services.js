@@ -117,13 +117,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      {'id':'gVoice_F1',  'name':'(新)女声 F1',        'version':'talk10', 'struct':{bas:0, spd:100, vol:100, pit:100, acc:100, lmd:100, fsc:100}},
-      {'id':'gVoice_F2',  'name':'(新)女声 F1',        'version':'talk10', 'struct':{bas:1, spd:100, vol:100, pit:77,  acc:150, lmd:100, fsc:100}},
-      {'id':'gVoice_F3',  'name':'(新)女声 F1',        'version':'talk10', 'struct':{bas:0, spd:80,  vol:100, pit:100, acc:100, lmd:61,  fsc:148}},
-      {'id':'gVoice_M1',  'name':'(新)男声 M1',        'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:100, lmd:100, fsc:100}},
-      {'id':'gVoice_M2',  'name':'(新)男声 M1',        'version':'talk10', 'struct':{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
-      {'id':'gVoice_R1',  'name':'(新)ロボット R1',    'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
-      {'id':'gVoice_R2',  'name':'(新)ロボット R1',    'version':'talk10', 'struct':{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
       {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1',  'id_voice':0},
       {'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1',  'id_voice':1},
       {'id':'aq_f1c',     'name':'f1c 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
@@ -142,7 +135,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
       {'id':'ar_rm3',     'name':'rm3 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_rm3.phont'},
       {'id':'aq_defo1',   'name':'aq_defo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
       {'id':'aq_momo1',   'name':'aq_momo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
-      {'id':'aq_teto1',   'name':'aq_teto1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_teto1.phont'}
+      {'id':'aq_teto1',   'name':'aq_teto1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_teto1.phont'},
+      {'id':'gVoice_F1',  'name':'new F1 女声',        'version':'talk10', 'struct':{bas:0, spd:100, vol:100, pit:100, acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_F2',  'name':'new F2 女声',        'version':'talk10', 'struct':{bas:1, spd:100, vol:100, pit:77,  acc:150, lmd:100, fsc:100}},
+      {'id':'gVoice_F3',  'name':'new F3 女声',        'version':'talk10', 'struct':{bas:0, spd:80,  vol:100, pit:100, acc:100, lmd:61,  fsc:148}},
+      {'id':'gVoice_M1',  'name':'new M1 男声',        'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_M2',  'name':'new M2 男声',        'version':'talk10', 'struct':{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
+      {'id':'gVoice_R1',  'name':'new R1 ロボット',    'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
+      {'id':'gVoice_R2',  'name':'new R2 ロボット',    'version':'talk10', 'struct':{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
     ];
 
     return {
@@ -363,27 +363,19 @@ angular.module('yvoiceService', ['yvoiceModel'])
             }
 
             // create struct
-            var AQTK_VOICE = StructType({
-                bas: ref.types.int,
-                spd: ref.types.int,
-                vol: ref.types.int,
-                pit: ref.types.int,
-                acc: ref.types.int,
-                lmd: ref.types.int,
-                fsc: ref.types.int,
-            });
-            AQTK_VOICE.bas = phont.struct.bas;
-            AQTK_VOICE.spd = speed;
-            AQTK_VOICE.vol = phont.struct.vol;
-            AQTK_VOICE.pit = phont.struct.pit;
-            AQTK_VOICE.acc = phont.struct.acc;
-            AQTK_VOICE.lmd = phont.struct.lmd;
-            AQTK_VOICE.fsc = phont.struct.fsc;
-            ptr_AQTK_VOICE = AQTK_VOICE.ref();
+            var aqtk_voice_val = new AQTK_VOICE;
+            aqtk_voice_val.bas = phont.struct.bas;
+            aqtk_voice_val.spd = speed;
+            aqtk_voice_val.vol = phont.struct.vol;
+            aqtk_voice_val.pit = phont.struct.pit;
+            aqtk_voice_val.acc = phont.struct.acc;
+            aqtk_voice_val.lmd = phont.struct.lmd;
+            aqtk_voice_val.fsc = phont.struct.fsc;
+            ptr_aqtk_voice_val = aqtk_voice_val.ref();
 
             // create wave buffer
             var alloc_int = ref.alloc('int');
-            var r = fn_AquesTalk10_Synthe_Utf8(ptr_AQTK_VOICE, encoded, alloc_int);
+            var r = fn_AquesTalk10_Synthe_Utf8(ptr_aqtk_voice_val, encoded, alloc_int);
             if (ref.isNull(r)) {
               var error_code = alloc_int.deref();
               MessageService.syserror(error_table_AquesTalk10(error_code));
