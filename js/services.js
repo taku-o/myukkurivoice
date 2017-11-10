@@ -136,13 +136,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
       {'id':'aq_defo1',   'name':'aq_defo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
       {'id':'aq_momo1',   'name':'aq_momo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
       {'id':'aq_teto1',   'name':'aq_teto1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_teto1.phont'},
-      {'id':'gVoice_F1',  'name':'new F1 女声',        'version':'talk10', 'struct':{bas:0, spd:100, vol:100, pit:100, acc:100, lmd:100, fsc:100}},
-      {'id':'gVoice_F2',  'name':'new F2 女声',        'version':'talk10', 'struct':{bas:1, spd:100, vol:100, pit:77,  acc:150, lmd:100, fsc:100}},
-      {'id':'gVoice_F3',  'name':'new F3 女声',        'version':'talk10', 'struct':{bas:0, spd:80,  vol:100, pit:100, acc:100, lmd:61,  fsc:148}},
-      {'id':'gVoice_M1',  'name':'new M1 男声',        'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:100, lmd:100, fsc:100}},
-      {'id':'gVoice_M2',  'name':'new M2 男声',        'version':'talk10', 'struct':{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
-      {'id':'gVoice_R1',  'name':'new R1 ロボット',    'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
-      {'id':'gVoice_R2',  'name':'new R2 ロボット',    'version':'talk10', 'struct':{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
+      {'id':'gVoice_F1',  'name':'aq10 F1 女声1',      'version':'talk10', 'struct':{bas:0, spd:100, vol:100, pit:100, acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_F2',  'name':'aq10 F2 女声2',      'version':'talk10', 'struct':{bas:1, spd:100, vol:100, pit:77,  acc:150, lmd:100, fsc:100}},
+      {'id':'gVoice_F3',  'name':'aq10 F3 女声3',      'version':'talk10', 'struct':{bas:0, spd:80,  vol:100, pit:100, acc:100, lmd:61,  fsc:148}},
+      {'id':'gVoice_M1',  'name':'aq10 M1 男声1',      'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_M2',  'name':'aq10 M2 男声2',      'version':'talk10', 'struct':{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
+      {'id':'gVoice_R1',  'name':'aq10 R1 ロボット1',  'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
+      {'id':'gVoice_R2',  'name':'aq10 R2 ロボット2',  'version':'talk10', 'struct':{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
     ];
 
     return {
