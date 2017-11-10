@@ -357,6 +357,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             var dev_key = fn_AquesTalk10_SetDevKey(lisence_key);
             var usr_key = fn_AquesTalk10_SetUsrKey(lisence_key);
             if (dev_key && usr_key) {
+              // do nothing
             } else {
               MessageService.syserror('AquesTalk10 lisence keyの設定に失敗しました。', err);
               d.reject(null); return;
@@ -383,7 +384,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
               d.reject(null); return;
             }
 
-            // copy to managed buffer
             var buf_wav = ref.reinterpret(r, alloc_int.deref(), 0);
             var managed_buf = Buffer.from(buf_wav); // copy buf_wav to managed buffer
             fn_AquesTalk10_FreeWave(r);
@@ -702,10 +702,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
           }
 
           // decrypted message
-          var passPhrase = "MYukkuriVoice is for Mac Voice Generator";
+          var passPhrase = "Ulwvvr2k4/w47YX9e1Bv9iIbm2rgQUzGhkjxKV4L/Ajm7mTdVFIy9WI3JsYT5jDo1bbhESx3SO5YvjLf";
           var bits = 1024;
           var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
           var decryptionResult = cryptico.decrypt(stdout, mattsRSAkey);
+          if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') {
+            // do nothing
+          } else {
+            log.info(lisence_type+ ' license key decrypted failed. ');
+            d.reject(null); return;
+          }
           var decrypted = decryptionResult.plaintext;
           d.resolve(decrypted);
         });
