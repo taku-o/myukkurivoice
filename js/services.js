@@ -116,13 +116,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      //{'id':'aq10_f1',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F1'},
-      //{'id':'aq10_f2',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F2'},
-      //{'id':'aq10_f3',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F3'},
-      //{'id':'aq10_m1',    'name':'(新)男声 M1',        'version':'talk10', 'struct_name':'gVoice_M1'},
-      //{'id':'aq10_m2',    'name':'(新)男声 M1',        'version':'talk10', 'struct_name':'gVoice_M2'},
-      //{'id':'aq10_r1',    'name':'(新)ロボット R1',    'version':'talk10', 'struct_name':'gVoice_R1'},
-      //{'id':'aq10_r2',    'name':'(新)ロボット R1',    'version':'talk10', 'struct_name':'gVoice_R2'},
+      {'id':'gVoice_F1',  'name':'(新)女声 F1',        'version':'talk10', 'struct':{bas:0, spd:100, vol:100, pit:100, acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_F2',  'name':'(新)女声 F1',        'version':'talk10', 'struct':{bas:1, spd:100, vol:100, pit:77,  acc:150, lmd:100, fsc:100}},
+      {'id':'gVoice_F3',  'name':'(新)女声 F1',        'version':'talk10', 'struct':{bas:0, spd:80,  vol:100, pit:100, acc:100, lmd:61,  fsc:148}},
+      {'id':'gVoice_M1',  'name':'(新)男声 M1',        'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_M2',  'name':'(新)男声 M1',        'version':'talk10', 'struct':{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
+      {'id':'gVoice_R1',  'name':'(新)ロボット R1',    'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
+      {'id':'gVoice_R2',  'name':'(新)ロボット R1',    'version':'talk10', 'struct':{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
       {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1',  'id_voice':0},
       {'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1',  'id_voice':1},
       {'id':'aq_f1c',     'name':'f1c 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
@@ -185,7 +185,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var ptr_AquesTalk10_FreeWave    = ffi.DynamicLibrary(framework_path).get('AquesTalk_FreeWave');
     var ptr_AquesTalk10_SetDevKey   = ffi.DynamicLibrary(framework_path).get('AquesTalk_SetDevKey');
     var ptr_AquesTalk10_SetUsrKey   = ffi.DynamicLibrary(framework_path).get('AquesTalk_SetUsrKey');
-    // fn_AquesTalk10_Synthe_Utf8
+    var fn_AquesTalk10_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk10_Synthe_Utf8, ptr_uchar, [ struct 'string', ptr_int ]);
     var fn_AquesTalk10_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk10_FreeWave, 'void', [ ptr_uchar ]);
     var fn_AquesTalk10_SetDevKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetDevKey, 'int', [ 'string' ]);
     var fn_AquesTalk10_SetUsrKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetUsrKey, 'int', [ 'string' ]);
@@ -341,6 +341,11 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         // version 10
         } else if (phont.version == 'talk10') {
+            // set license key
+            // create struct
+            // sysnce
+            // freewave
+
             // TODO
         }
         return d.promise;
