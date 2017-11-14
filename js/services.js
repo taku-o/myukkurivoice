@@ -117,32 +117,32 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1',  'id_voice':0},
-      {'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1',  'id_voice':1},
-      {'id':'aq_f1c',     'name':'f1c 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
-      {'id':'aq_f3a',     'name':'f3a 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f3a.phont'},
-      {'id':'aq_huskey',  'name':'huskey ハスキー',    'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_huskey.phont'},
-      {'id':'aq_m4b',     'name':'m4b 男声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_m4b.phont'},
-      {'id':'aq_mf1',     'name':'mf1 中性的',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_mf1.phont'},
-      {'id':'aq_rb2',     'name':'rb2 小さいロボ',     'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb2.phont'},
-      {'id':'aq_rb3',     'name':'rb3 ロボ',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb3.phont'},
-      {'id':'aq_rm',      'name':'rm 女声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rm.phont'},
-      {'id':'aq_robo',    'name':'robo ロボット',      'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_robo.phont'},
-      {'id':'aq_yukkuri', 'name':'aq_yukkuri',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_yukkuri.phont'},
-      {'id':'ar_f4',      'name':'f4 女声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_f4.phont'},
-      {'id':'ar_m5',      'name':'m5 男声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_m5.phont'},
-      {'id':'ar_mf2',     'name':'mf2 機械声',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_mf2.phont'},
-      {'id':'ar_rm3',     'name':'rm3 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_rm3.phont'},
-      {'id':'aq_defo1',   'name':'aq_defo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
-      {'id':'aq_momo1',   'name':'aq_momo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
-      {'id':'aq_teto1',   'name':'aq_teto1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_teto1.phont'},
-      {'id':'gVoice_F1',  'name':'aq10 F1 女声1',      'version':'talk10', 'struct':{bas:0, spd:100, vol:100, pit:100, acc:100, lmd:100, fsc:100}},
-      {'id':'gVoice_F2',  'name':'aq10 F2 女声2',      'version':'talk10', 'struct':{bas:1, spd:100, vol:100, pit:77,  acc:150, lmd:100, fsc:100}},
-      {'id':'gVoice_F3',  'name':'aq10 F3 女声3',      'version':'talk10', 'struct':{bas:0, spd:80,  vol:100, pit:100, acc:100, lmd:61,  fsc:148}},
-      {'id':'gVoice_M1',  'name':'aq10 M1 男声1',      'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:100, lmd:100, fsc:100}},
-      {'id':'gVoice_M2',  'name':'aq10 M2 男声2',      'version':'talk10', 'struct':{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
-      {'id':'gVoice_R1',  'name':'aq10 R1 ロボット1',  'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
-      {'id':'gVoice_R2',  'name':'aq10 R2 ロボット2',  'version':'talk10', 'struct':{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
+      {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)',        'version':'talk1',  'id_voice':0},
+      {'id':'at1_m1',     'name':'m1 男声1',                  'version':'talk1',  'id_voice':1},
+      {'id':'aq_f1c',     'name':'f1c 女声',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
+      {'id':'aq_f3a',     'name':'f3a 女声',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f3a.phont'},
+      {'id':'aq_huskey',  'name':'huskey ハスキー',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_huskey.phont'},
+      {'id':'aq_m4b',     'name':'m4b 男声',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_m4b.phont'},
+      {'id':'aq_mf1',     'name':'mf1 中性的',                'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_mf1.phont'},
+      {'id':'aq_rb2',     'name':'rb2 小さいロボ',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb2.phont'},
+      {'id':'aq_rb3',     'name':'rb3 ロボ',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb3.phont'},
+      {'id':'aq_rm',      'name':'rm 女声',                   'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rm.phont'},
+      {'id':'aq_robo',    'name':'robo ロボット',             'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_robo.phont'},
+      {'id':'aq_yukkuri', 'name':'aq_yukkuri',                'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_yukkuri.phont'},
+      {'id':'ar_f4',      'name':'f4 女声',                   'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_f4.phont'},
+      {'id':'ar_m5',      'name':'m5 男声',                   'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_m5.phont'},
+      {'id':'ar_mf2',     'name':'mf2 機械声',                'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_mf2.phont'},
+      {'id':'ar_rm3',     'name':'rm3 女声',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_rm3.phont'},
+      {'id':'aq_defo1',   'name':'aq_defo1',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
+      {'id':'aq_momo1',   'name':'aq_momo1',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
+      {'id':'aq_teto1',   'name':'aq_teto1',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_teto1.phont'},
+      {'id':'gVoice_F1',  'name':'aq10-F1 女声1(新ゆっくり)', 'version':'talk10', 'struct':{bas:0, spd:100, vol:100, pit:100, acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_F2',  'name':'aq10-F2 女声2',             'version':'talk10', 'struct':{bas:1, spd:100, vol:100, pit:77,  acc:150, lmd:100, fsc:100}},
+      {'id':'gVoice_F3',  'name':'aq10-F3 女声3',             'version':'talk10', 'struct':{bas:0, spd:80,  vol:100, pit:100, acc:100, lmd:61,  fsc:148}},
+      {'id':'gVoice_M1',  'name':'aq10-M1 男声1',             'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_M2',  'name':'aq10-M2 男声2',             'version':'talk10', 'struct':{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
+      {'id':'gVoice_R1',  'name':'aq10-R1 ロボット1',         'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
+      {'id':'gVoice_R2',  'name':'aq10-R2 ロボット2',         'version':'talk10', 'struct':{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
     ];
 
     return {
@@ -352,14 +352,19 @@ angular.module('yvoiceService', ['yvoiceModel'])
         // version 10
         } else if (phont.version == 'talk10') {
           // set license key
-          AppUtilService.lisence_key('aquestalk10').then(
+          AppUtilService.lisence_key('aquestalk10-devkey').then(
           function(lisence_key) {
             var dev_key = fn_AquesTalk10_SetDevKey(lisence_key);
+            if (dev_key != 0) {
+              MessageService.syserror('AquesTalk10 dev lisence keyの設定に失敗しました。');
+              d.reject(null); return;
+            }
+
+          AppUtilService.lisence_key('aquestalk10-usekey').then(
+          function(lisence_key) {
             var usr_key = fn_AquesTalk10_SetUsrKey(lisence_key);
-            if (dev_key && usr_key) {
-              // do nothing
-            } else {
-              MessageService.syserror('AquesTalk10 lisence keyの設定に失敗しました。', err);
+            if (usr_key != 0) {
+              MessageService.syserror('AquesTalk10 use lisence keyの設定に失敗しました。');
               d.reject(null); return;
             }
 
@@ -390,7 +395,12 @@ angular.module('yvoiceService', ['yvoiceModel'])
             d.resolve(managed_buf);
           },
           function(err) {
-            MessageService.syserror('AquesTalk10 lisence keyの読み込みに失敗しました。', err);
+            MessageService.syserror('AquesTalk10 use lisence keyの読み込みに失敗しました。', err);
+            d.reject(err);
+          });
+          },
+          function(err) {
+            MessageService.syserror('AquesTalk10 dev lisence keyの読み込みに失敗しました。', err);
             d.reject(err);
           });
         }
