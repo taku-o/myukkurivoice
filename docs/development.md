@@ -79,6 +79,7 @@
     npm install --save electron-log
     npm install --save electron-localshortcut
     npm install --save ref
+    npm install --save ref-struct
     npm install --save ffi
     npm install --save intro.js
     npm install --save temp

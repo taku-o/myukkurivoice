@@ -3,10 +3,12 @@ var log          = require('electron-log');
 var fs           = require('fs');
 var ffi          = require('ffi');
 var ref          = require('ref');
+var StructType   = require('ref-struct');
 var temp         = require('temp').track();
 var path         = require('path');
 var exec         = require('child_process').exec;
 var WaveRecorder = require('wave-recorder');
+var cryptico     = require("cryptico.js");
 
 var app = require('electron').remote.app;
 var app_path = app.getAppPath();
@@ -115,32 +117,32 @@ angular.module('yvoiceService', ['yvoiceModel'])
   }])
   .factory('MasterService', function() {
     var phont_list = [
-      //{'id':'aq10_f1',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F1'},
-      //{'id':'aq10_f2',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F2'},
-      //{'id':'aq10_f3',    'name':'(新)女声 F1',        'version':'talk10', 'struct_name':'gVoice_F3'},
-      //{'id':'aq10_m1',    'name':'(新)男声 M1',        'version':'talk10', 'struct_name':'gVoice_M1'},
-      //{'id':'aq10_m2',    'name':'(新)男声 M1',        'version':'talk10', 'struct_name':'gVoice_M2'},
-      //{'id':'aq10_r1',    'name':'(新)ロボット R1',    'version':'talk10', 'struct_name':'gVoice_R1'},
-      //{'id':'aq10_r2',    'name':'(新)ロボット R1',    'version':'talk10', 'struct_name':'gVoice_R2'},
-      {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)', 'version':'talk1',  'id_voice':0},
-      {'id':'at1_m1',     'name':'m1 男声1',           'version':'talk1',  'id_voice':1},
-      {'id':'aq_f1c',     'name':'f1c 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
-      {'id':'aq_f3a',     'name':'f3a 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f3a.phont'},
-      {'id':'aq_huskey',  'name':'huskey ハスキー',    'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_huskey.phont'},
-      {'id':'aq_m4b',     'name':'m4b 男声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_m4b.phont'},
-      {'id':'aq_mf1',     'name':'mf1 中性的',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_mf1.phont'},
-      {'id':'aq_rb2',     'name':'rb2 小さいロボ',     'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb2.phont'},
-      {'id':'aq_rb3',     'name':'rb3 ロボ',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb3.phont'},
-      {'id':'aq_rm',      'name':'rm 女声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rm.phont'},
-      {'id':'aq_robo',    'name':'robo ロボット',      'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_robo.phont'},
-      {'id':'aq_yukkuri', 'name':'aq_yukkuri',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_yukkuri.phont'},
-      {'id':'ar_f4',      'name':'f4 女声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_f4.phont'},
-      {'id':'ar_m5',      'name':'m5 男声',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_m5.phont'},
-      {'id':'ar_mf2',     'name':'mf2 機械声',         'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_mf2.phont'},
-      {'id':'ar_rm3',     'name':'rm3 女声',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_rm3.phont'},
-      {'id':'aq_defo1',   'name':'aq_defo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
-      {'id':'aq_momo1',   'name':'aq_momo1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
-      {'id':'aq_teto1',   'name':'aq_teto1',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_teto1.phont'}
+      {'id':'at1_f1',     'name':'f1 女声1(ゆっくり)',        'version':'talk1',  'id_voice':0},
+      {'id':'at1_m1',     'name':'m1 男声1',                  'version':'talk1',  'id_voice':1},
+      {'id':'aq_f1c',     'name':'f1c 女声',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f1c.phont'},
+      {'id':'aq_f3a',     'name':'f3a 女声',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_f3a.phont'},
+      {'id':'aq_huskey',  'name':'huskey ハスキー',           'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_huskey.phont'},
+      {'id':'aq_m4b',     'name':'m4b 男声',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_m4b.phont'},
+      {'id':'aq_mf1',     'name':'mf1 中性的',                'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_mf1.phont'},
+      {'id':'aq_rb2',     'name':'rb2 小さいロボ',            'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb2.phont'},
+      {'id':'aq_rb3',     'name':'rb3 ロボ',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rb3.phont'},
+      {'id':'aq_rm',      'name':'rm 女声',                   'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_rm.phont'},
+      {'id':'aq_robo',    'name':'robo ロボット',             'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_robo.phont'},
+      {'id':'aq_yukkuri', 'name':'aq_yukkuri',                'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_yukkuri.phont'},
+      {'id':'ar_f4',      'name':'f4 女声',                   'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_f4.phont'},
+      {'id':'ar_m5',      'name':'m5 男声',                   'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_m5.phont'},
+      {'id':'ar_mf2',     'name':'mf2 機械声',                'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_mf2.phont'},
+      {'id':'ar_rm3',     'name':'rm3 女声',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/ar_rm3.phont'},
+      {'id':'aq_defo1',   'name':'aq_defo1',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_defo1.phont'},
+      {'id':'aq_momo1',   'name':'aq_momo1',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_momo1.phont'},
+      {'id':'aq_teto1',   'name':'aq_teto1',                  'version':'talk2',  'path':unpacked_path + '/vendor/phont/aq_teto1.phont'},
+      {'id':'gVoice_F1',  'name':'aq10-F1 女声1(新ゆっくり)', 'version':'talk10', 'struct':{bas:0, spd:100, vol:100, pit:100, acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_F2',  'name':'aq10-F2 女声2',             'version':'talk10', 'struct':{bas:1, spd:100, vol:100, pit:77,  acc:150, lmd:100, fsc:100}},
+      {'id':'gVoice_F3',  'name':'aq10-F3 女声3',             'version':'talk10', 'struct':{bas:0, spd:80,  vol:100, pit:100, acc:100, lmd:61,  fsc:148}},
+      {'id':'gVoice_M1',  'name':'aq10-M1 男声1',             'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:100, lmd:100, fsc:100}},
+      {'id':'gVoice_M2',  'name':'aq10-M2 男声2',             'version':'talk10', 'struct':{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
+      {'id':'gVoice_R1',  'name':'aq10-R1 ロボット1',         'version':'talk10', 'struct':{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
+      {'id':'gVoice_R2',  'name':'aq10-R2 ロボット2',         'version':'talk10', 'struct':{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
     ];
 
     return {
@@ -149,11 +151,22 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   })
-  .factory('AquesService', ['$q', 'MessageService', function($q, MessageService) {
+  .factory('AquesService', ['$q', 'MessageService', 'AppUtilService', function($q, MessageService, AppUtilService) {
     var ptr_void  = ref.refType(ref.types.void);
     var ptr_int   = ref.refType(ref.types.int);
     var ptr_char  = ref.refType(ref.types.char);
     var ptr_uchar = ref.refType(ref.types.uchar);
+
+    var AQTK_VOICE = StructType({
+      bas: ref.types.int,
+      spd: ref.types.int,
+      vol: ref.types.int,
+      pit: ref.types.int,
+      acc: ref.types.int,
+      lmd: ref.types.int,
+      fsc: ref.types.int
+    })
+    var ptr_AQTK_VOICE = ref.refType(AQTK_VOICE);
 
     // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
     // void AqKanji2Koe_Release (void * hAqKanji2Koe)
@@ -174,11 +187,19 @@ angular.module('yvoiceService', ['yvoiceModel'])
     var fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, [ 'string', 'int', ptr_int, ptr_void ]);
     var fn_AquesTalk2_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk2_FreeWave, 'void', [ ptr_uchar ]);
 
-    var framework_path = unpacked_path + '/vendor/AquesTalk10.framework/Versions/A/AquesTalk';
     // unsigned char * AquesTalk_Synthe_Utf8(const AQTK_VOICE *pParam, const char *koe, int *size)
     // void AquesTalk_FreeWave(unsigned char *wav)
     // int AquesTalk_SetDevKey(const char *key)
     // int AquesTalk_SetUsrKey(const char *key)
+    var framework_path = unpacked_path + '/vendor/AquesTalk10.framework/Versions/A/AquesTalk';
+    var ptr_AquesTalk10_Synthe_Utf8 = ffi.DynamicLibrary(framework_path).get('AquesTalk_Synthe_Utf8');
+    var ptr_AquesTalk10_FreeWave    = ffi.DynamicLibrary(framework_path).get('AquesTalk_FreeWave');
+    var ptr_AquesTalk10_SetDevKey   = ffi.DynamicLibrary(framework_path).get('AquesTalk_SetDevKey');
+    var ptr_AquesTalk10_SetUsrKey   = ffi.DynamicLibrary(framework_path).get('AquesTalk_SetUsrKey');
+    var fn_AquesTalk10_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk10_Synthe_Utf8, ptr_uchar, [ ptr_AQTK_VOICE, 'string', ptr_int ]);
+    var fn_AquesTalk10_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk10_FreeWave, 'void', [ ptr_uchar ]);
+    var fn_AquesTalk10_SetDevKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetDevKey, 'int', [ 'string' ]);
+    var fn_AquesTalk10_SetUsrKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetUsrKey, 'int', [ 'string' ]);
 
     function error_table_AqKanji2Koe(code) {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
@@ -330,7 +351,58 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         // version 10
         } else if (phont.version == 'talk10') {
-            // TODO
+          // set license key
+          AppUtilService.lisence_key('aquestalk10-devkey').then(
+          function(lisence_key) {
+            var dev_key = fn_AquesTalk10_SetDevKey(lisence_key);
+            if (dev_key != 0) {
+              MessageService.syserror('AquesTalk10 dev lisence keyの設定に失敗しました。');
+              d.reject(null); return;
+            }
+
+          AppUtilService.lisence_key('aquestalk10-usekey').then(
+          function(lisence_key) {
+            var usr_key = fn_AquesTalk10_SetUsrKey(lisence_key);
+            if (usr_key != 0) {
+              MessageService.syserror('AquesTalk10 use lisence keyの設定に失敗しました。');
+              d.reject(null); return;
+            }
+
+            // create struct
+            var aqtk_voice_val = new AQTK_VOICE;
+            aqtk_voice_val.bas = phont.struct.bas;
+            aqtk_voice_val.spd = speed;
+            aqtk_voice_val.vol = phont.struct.vol;
+            aqtk_voice_val.pit = phont.struct.pit;
+            aqtk_voice_val.acc = phont.struct.acc;
+            aqtk_voice_val.lmd = phont.struct.lmd;
+            aqtk_voice_val.fsc = phont.struct.fsc;
+            ptr_aqtk_voice_val = aqtk_voice_val.ref();
+
+            // create wave buffer
+            var alloc_int = ref.alloc('int');
+            var r = fn_AquesTalk10_Synthe_Utf8(ptr_aqtk_voice_val, encoded, alloc_int);
+            if (ref.isNull(r)) {
+              var error_code = alloc_int.deref();
+              MessageService.syserror(error_table_AquesTalk10(error_code));
+              log.info('fn_AquesTalk10_Synthe_Utf8 raise error. error_code:' + error_table_AquesTalk10(error_code));
+              d.reject(null); return;
+            }
+
+            var buf_wav = ref.reinterpret(r, alloc_int.deref(), 0);
+            var managed_buf = Buffer.from(buf_wav); // copy buf_wav to managed buffer
+            fn_AquesTalk10_FreeWave(r);
+            d.resolve(managed_buf);
+          },
+          function(err) {
+            MessageService.syserror('AquesTalk10 use lisence keyの読み込みに失敗しました。', err);
+            d.reject(err);
+          });
+          },
+          function(err) {
+            MessageService.syserror('AquesTalk10 dev lisence keyの読み込みに失敗しました。', err);
+            d.reject(err);
+          });
         }
         return d.promise;
       }
@@ -620,13 +692,40 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AppUtilService', ['$rootScope', function($rootScope) {
+  .factory('AppUtilService', ['$rootScope', '$q', function($rootScope, $q) {
     return {
       disable_rhythm: function(encoded) {
         return encoded.replace(/['\/]/g, '');
       },
-      report_duration(duration) {
+      report_duration: function(duration) {
         $rootScope.$broadcast("duration", duration);
+      },
+      lisence_key: function(lisence_type) {
+        var d = $q.defer();
+        // get encrypted license key
+        var cmd_options = {};
+        var secret_cmd = unpacked_path + '/vendor/secret';
+        exec(secret_cmd + ' -license='+lisence_type, cmd_options, (err, stdout, stderr) => {
+          if (err) {
+            log.info(lisence_type+ ' license key get failed. ' + err);
+            d.reject(err); return;
+          }
+
+          // decrypted message
+          var passPhrase = "Ulwvvr2k4/w47YX9e1Bv9iIbm2rgQUzGhkjxKV4L/Ajm7mTdVFIy9WI3JsYT5jDo1bbhESx3SO5YvjLf";
+          var bits = 1024;
+          var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+          var decryptionResult = cryptico.decrypt(stdout, mattsRSAkey);
+          if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') {
+            // do nothing
+          } else {
+            log.info(lisence_type+ ' license key decrypted failed. ');
+            d.reject(null); return;
+          }
+          var decrypted = decryptionResult.plaintext;
+          d.resolve(decrypted);
+        });
+        return d.promise;
       }
     }
   }])
