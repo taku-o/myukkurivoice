@@ -25,31 +25,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
   }])
   // wav-draggable
   .directive('wavDraggable', function($parse) {
-    return {
-      link: function(scope, element, attr) {
-
-    scope.$watch(attr.wavPath, function(value) {
-        console.log('----------');
-        console.log(scope.message);
-        console.log(value);
-    });
-
-
-        var el = element[0];
-        var wav_file_path = el.getAttribute("data-wav-path");
-
-        console.log(scope);
-        console.log(scope.message);
-        console.log(scope.message.wav_file_path);
-        var rr = $parse('message.wav_file_path')(scope);
-        console.log(rr);
-        if (false) {
+    return function(scope, element, attr) {
+      scope.$watch('message', function(value) {
+        var message = value;
+        if (!message.wav_file_path) {
           return;
         }
 
+        var wav_file_path = message.wav_file_path;
+
+        var el = element[0];
         var local_wav_file_path = 'file://'+ wav_file_path;
         var wav_file_name = path.basename(wav_file_path);
-        var file_details = "application/octet-stream:"+wav_file_name+":"+local_wav_file_path;
+        var file_details = "audio/x-wav:"+wav_file_name+":"+local_wav_file_path;
 
         el.draggable = true;
         el.addEventListener(
@@ -62,8 +50,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           },
           false
         );
-      }
+      });
     }
+
   })
   // controller
   .controller('MainController',
