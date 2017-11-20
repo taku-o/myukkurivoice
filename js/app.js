@@ -25,6 +25,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
   }])
   // wav-draggable
   .directive('wavDraggable', function($parse) {
+    var dragimg = document.createElement("img");
+    dragimg.src = 'img/ic_music_video_black_24dp_1x.png';
+
     return function(scope, element, attr) {
       scope.$watch('message', function(value) {
         var message = value;
@@ -45,6 +48,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           function(e) {
             e.dataTransfer.effectAllowed = 'copy';
             e.dataTransfer.setData('DownloadURL', file_details);
+            e.dataTransfer.setDragImage(dragimg, -10, 25);
             this.classList.add('drag');
             return false;
           },
