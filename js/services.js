@@ -26,6 +26,15 @@ angular.module('yvoiceService', ['yvoiceModel'])
         }
         $rootScope.$broadcast("message", post);
       },
+      record: function(message, wav_file_path) {
+        var post = {
+          created: new Date(),
+          body: message,
+          wav_file_path: wav_file_path,
+          type: 'record'
+        }
+        $rootScope.$broadcast("message", post);
+      },
       info: function(message) {
         var post = {
           created: new Date(),
@@ -470,7 +479,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
             d.reject(err); return;
           }
-          MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+          MessageService.record('音声ファイルを保存しました。path: ' + wav_file_path, wav_file_path);
           d.resolve('ok');
         });
         return d.promise;
@@ -578,7 +587,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
               // onendedのタイミングでは出力が終わっていない
               $timeout(function() {
                 recorder.end();
-                MessageService.info('音声ファイルを保存しました。path: ' + wav_file_path);
+                MessageService.record('音声ファイルを保存しました。path: ' + wav_file_path, wav_file_path);
                 d.resolve('ok');
               }, options.write_margin_ms);
             };
