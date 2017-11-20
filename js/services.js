@@ -693,6 +693,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
     }
   }])
   .factory('AppUtilService', ['$rootScope', '$q', function($rootScope, $q) {
+    var lisence_key_cache = {};
     return {
       disable_rhythm: function(encoded) {
         return encoded.replace(/['\/]/g, '');
@@ -702,6 +703,13 @@ angular.module('yvoiceService', ['yvoiceModel'])
       },
       lisence_key: function(lisence_type) {
         var d = $q.defer();
+
+        // get key from cache if exists
+        if (lisence_key_cache[lisence_type]) {
+          d.resolve(lisence_key_cache[lisence_type]);
+          return d.promise;
+        }
+
         // get encrypted license key
         var cmd_options = {};
         var secret_cmd = unpacked_path + '/vendor/secret';
@@ -723,6 +731,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             d.reject(null); return;
           }
           var decrypted = decryptionResult.plaintext;
+          lisence_key_cache[lisence_type] = decrypted;
           d.resolve(decrypted);
         });
         return d.promise;
