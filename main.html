@@ -73,7 +73,7 @@
           </div>
         </div>
       </li>
-      <li class="list-group-footer">
+      <li class="list-group-item">
         <div class="btn-group pull-right">
           <button class="btn btn-large btn-default pull-right" id="plus" ng-click="ctrl.plus()">
             <span class="icon icon-plus-squared"></span>設定追加
@@ -82,6 +82,11 @@
             <span class="icon icon-install"></span>設定保存
           </button>
         </div>
+      </li>
+      <li class="list-group-footer">
+        <button class="btn btn-large btn-primary pull-right" wav-draggable ng-disabled="!last_wav_file">
+          <span class="icon icon-download"></span>{{last_wav_file.wav_file_name||"生成wavファイルリンク"}}
+        </button>
       </li>
     </ul>
   </div>
@@ -150,7 +155,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable data-wav-path="{{message.wav_file_path}}">
+        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable>
           <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>
@@ -224,7 +229,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable data-wav-path="{{message.wav_file_path}}">
+        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable>
           <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>

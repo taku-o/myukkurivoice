@@ -27,13 +27,16 @@ angular.module('yvoiceService', ['yvoiceModel'])
         $rootScope.$broadcast("message", post);
       },
       record: function(message, wav_file_path) {
+        var wav_file_name = path.basename(wav_file_path);
         var post = {
           created: new Date(),
           body: message,
           wav_file_path: wav_file_path,
+          wav_file_name: wav_file_name,
           type: 'record'
-        }
+        };
         $rootScope.$broadcast("message", post);
+        $rootScope.$broadcast("wav_generated", post);
       },
       info: function(message) {
         var post = {

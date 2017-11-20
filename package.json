@@ -1,6 +1,6 @@
 {
   "name": "myukkurivoice",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "",
   "main": "electron.js",
   "scripts": {

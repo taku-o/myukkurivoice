@@ -25,36 +25,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
   }])
   // wav-draggable
   .directive('wavDraggable', function($parse) {
-    var dragimg = document.createElement("img");
-    dragimg.src = 'img/ic_music_video_black_24dp_1x.png';
-
     return function(scope, element, attr) {
-      scope.$watch('message', function(value) {
+
+      var fnc_draglistener = function(value) {
         var message = value;
-        if (!message.wav_file_path) {
+        if (!message || !message.wav_file_path) {
           return;
         }
-
         var wav_file_path = message.wav_file_path;
 
         var el = element[0];
-        var local_wav_file_path = 'file://'+ wav_file_path;
-        var wav_file_name = path.basename(wav_file_path);
-        var file_details = "audio/x-wav:"+wav_file_name+":"+local_wav_file_path;
-
         el.draggable = true;
         el.addEventListener(
           'dragstart',
           function(e) {
-            e.dataTransfer.effectAllowed = 'copy';
-            e.dataTransfer.setData('DownloadURL', file_details);
-            e.dataTransfer.setDragImage(dragimg, -10, 25);
-            this.classList.add('drag');
+            e.preventDefault();
+            ipcRenderer.send('ondragstartwav', wav_file_path)
             return false;
           },
           false
         );
-      });
+      };
+      scope.$watch('last_wav_file', fnc_draglistener);
+      scope.$watch('message', fnc_draglistener);
     }
 
   })
@@ -73,6 +66,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       while ($scope.message_list.length > 5) {
         $scope.message_list.pop();
       }
+      $timeout(function(){ $scope.$apply(); });
+    });
+    $scope.$on('wav_generated', function(event, wav_file_info) {
+      $scope.last_wav_file = wav_file_info;
       $timeout(function(){ $scope.$apply(); });
     });
     $scope.$on('duration', function(event, duration) {
@@ -173,6 +170,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     $scope.phont_list = MasterService.get_phont_list();
     $scope.yinput = angular.copy(YInput);
     $scope.message_list = [];
+    $scope.last_wav_file = null;
     load_data();
 
     // util

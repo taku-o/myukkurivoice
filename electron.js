@@ -505,3 +505,10 @@ function showSystemWindow() {
   });
 }
 
+// drag out wav file
+ipcMain.on('ondragstartwav', function (event, filePath) {
+  event.sender.startDrag({
+    file: filePath,
+    icon: 'img/ic_music_video_black_24dp_1x.png'
+  })
+});
