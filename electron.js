@@ -7,6 +7,7 @@ const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
 const localShortcut = require('electron-localshortcut');
 const log = require('electron-log');
+const path = require('path');
 const Config = require('electron-config');
 
 // application settings
@@ -507,8 +508,9 @@ function showSystemWindow() {
 
 // drag out wav file
 ipcMain.on('ondragstartwav', function (event, filePath) {
+  var imgPath = path.join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
   event.sender.startDrag({
     file: filePath,
-    icon: 'img/ic_music_video_black_24dp_1x.png'
+    icon: imgPath
   })
 });
