@@ -73,4 +73,7 @@ table.message-list tr.error td {
 table.message-list tr.syserror td {
   color: red;
 }
+table.message-list tr.record td {
+  background-color: lightskyblue;
+}
 

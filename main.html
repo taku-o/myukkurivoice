@@ -150,7 +150,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror'}" wav-draggable data-wav-path="{{message.wav_file_path}}">
+        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable data-wav-path="{{message.wav_file_path}}">
           <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>
@@ -224,7 +224,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror'}" wav-draggable data-wav-path="{{message.wav_file_path}}">
+        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable data-wav-path="{{message.wav_file_path}}">
           <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>
