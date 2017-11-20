@@ -23,6 +23,49 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  // wav-draggable
+  .directive('wavDraggable', function($parse) {
+    return {
+      link: function(scope, element, attr) {
+
+    scope.$watch(attr.wavPath, function(value) {
+        console.log('----------');
+        console.log(scope.message);
+        console.log(value);
+    });
+
+
+        var el = element[0];
+        var wav_file_path = el.getAttribute("data-wav-path");
+
+        console.log(scope);
+        console.log(scope.message);
+        console.log(scope.message.wav_file_path);
+        var rr = $parse('message.wav_file_path')(scope);
+        console.log(rr);
+        if (false) {
+          return;
+        }
+
+        var local_wav_file_path = 'file://'+ wav_file_path;
+        var wav_file_name = path.basename(wav_file_path);
+        var file_details = "application/octet-stream:"+wav_file_name+":"+local_wav_file_path;
+
+        el.draggable = true;
+        el.addEventListener(
+          'dragstart',
+          function(e) {
+            e.dataTransfer.effectAllowed = 'copy';
+            e.dataTransfer.setData('DownloadURL', file_details);
+            this.classList.add('drag');
+            return false;
+          },
+          false
+        );
+      }
+    }
+  })
+  // controller
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'IntroService',
@@ -498,5 +541,4 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     };
 
   }]);
-
 
