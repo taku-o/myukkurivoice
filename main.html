@@ -38,6 +38,9 @@
     </div>
 
     <small>再生時間(秒):{{duration | number:2}}</small>
+    <button class="btn btn-large btn-default" id="always-on-top-btn" ng-click="ctrl.switch_always_on_top()" title="前面表示固定のON/OFF切替">
+      <span class="icon icon-lock" ng-class="{active:always_on_top}"></span>
+    </button>
 
     <div class="btn-group pull-right">
       <button class="btn btn-large btn-default" id="help" ng-click="ctrl.help()">
@@ -84,8 +87,8 @@
         </div>
       </li>
       <li class="list-group-footer">
-        <button class="btn btn-large btn-primary pull-right" wav-draggable ng-disabled="!last_wav_file">
-          <span class="icon icon-download"></span>{{last_wav_file.wav_file_name||"生成wavファイルリンク"}}
+        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!last_wav_file">
+          <span class="icon icon-download"></span>{{last_wav_file.wav_file_name||"drag and drop to movie editor"}}
         </button>
       </li>
     </ul>

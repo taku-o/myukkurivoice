@@ -171,6 +171,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     $scope.yinput = angular.copy(YInput);
     $scope.message_list = [];
     $scope.last_wav_file = null;
+    $scope.always_on_top = false;
     load_data();
 
     // util
@@ -530,6 +531,15 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       MessageService.action('switch to main view.');
       $scope.display = 'main';
     };
+
+    ctrl.switch_always_on_top = function() {
+      MessageService.action('switch always_on_top option.');
+      ipcRenderer.send('switchAlwaysOnTop', 'mainWindow');
+    };
+    ipcRenderer.on('switchAlwaysOnTop', function (event, newflg) {
+      $scope.always_on_top = newflg;
+      $timeout(function(){ $scope.$apply(); });
+    });
 
   }]);
 

@@ -786,6 +786,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
               intro: '発声が問題なければ、このボタンで音声データを保存できます'
             },
             {
+              element: '#wav-draggable-btn',
+              intro: '保存した音声データは、ここからドラッグアンドドロップで動画編集ソフトに直接渡すこともできます'
+            },
+            {
               element: '#phont',
               intro: '声を変えたければここを変更します'
             },
@@ -808,6 +812,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
               element: '#switch-settings-view',
               position: 'top',
               intro: '声の早さ音量以外の、多用しない系統の音声設定も設定画面にあります'
+            },
+            {
+              element: '#always-on-top-btn',
+              intro: 'このボタンを押すと、ウインドウを常に最前面で表示するようになります'
             },
             {
               element: '#tutorial',

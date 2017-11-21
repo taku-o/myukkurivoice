@@ -267,6 +267,10 @@ app.on('ready', function() {
       label: 'ウインドウ',
       submenu: [
         {
+          label: '前面表示固定切替',
+          click () { switchAlwaysOnTop(); }
+        },
+        {
           label: 'Minimize',
           accelerator: 'CmdOrCtrl+M',
           role: 'minimize'
@@ -392,6 +396,18 @@ function resetAppConfigOnMain() {
   };
   var r = dialog.showMessageBox(mainWindow, dialog_options);
 }
+
+// switchAlwaysOnTop
+function switchAlwaysOnTop() {
+  var newflg = !mainWindow.isAlwaysOnTop();
+  mainWindow.setAlwaysOnTop(newflg);
+  mainWindow.webContents.send('switchAlwaysOnTop', newflg);
+}
+ipcMain.on('switchAlwaysOnTop', function (event, message) {
+  var newflg = !mainWindow.isAlwaysOnTop();
+  mainWindow.setAlwaysOnTop(newflg);
+  event.sender.send('switchAlwaysOnTop', newflg);
+});
 
 // showHelpWindow
 ipcMain.on('showHelpWindow', function (event, message) {
