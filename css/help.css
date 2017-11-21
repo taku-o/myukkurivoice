@@ -2,6 +2,10 @@ span.nav-group-item span.icon {
   color: blue;
 }
 
+td.warn {
+  color: red;
+}
+
 div.content {
   margin-left: 20px;
   margin-right: 20px;
