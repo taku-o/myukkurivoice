@@ -91,4 +91,7 @@
 
     npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
 
+## animation gif for README
+    brew install ffmpeg
+    ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
 
