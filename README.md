@@ -53,9 +53,8 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukku
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-select-encoded.png" width="400">
 
 ### 保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ
-* 最後に保存した音声ファイルのリンクがアプリに表示されます。
+* 最後に保存した音声ファイルのリンクが、アプリの左下に表示されます。
 * ドラッグアンドドロップで動画編集ソフトに渡せます。
-* 画面を最前面に固定すると、作業効率がより上がります。
 
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-dnd.gif" width="400">
 
