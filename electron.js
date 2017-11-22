@@ -103,9 +103,8 @@ app.on('ready', function() {
               package_json_dir: __dirname,
               open_devtools: false,
             });
-            var r = localShortcut.register(w, 'Command+W', function() {
-              w.close();
-            });
+            var r = localShortcut.register(w, 'Command+Q', function() { app.quit(); });
+            var r = localShortcut.register(w, 'Command+W', function() { w.close(); });
           }
         },
         { type: 'separator' },
@@ -448,7 +447,7 @@ ipcMain.on('showHelpWindow', function (event, message) {
 // main window
 function showMainWindow() {
   if (mainWindow && !mainWindow.isDestroyed()) {
-    mainWindow.show();
+    mainWindow.show(); mainWindow.focus();
     return;
   }
 
@@ -456,6 +455,7 @@ function showMainWindow() {
   mainWindow = new BrowserWindow({
     width: width,
     height: height,
+    show: false, // show at did-finish-load event
     webPreferences: {
       devTools: debug
     }
@@ -463,6 +463,9 @@ function showMainWindow() {
   mainWindow.loadURL('file://' + __dirname + '/main.html');
 
   // main window event
+  mainWindow.webContents.on('did-finish-load', function() {
+    mainWindow.show(); mainWindow.focus();
+  });
   mainWindow.on('closed', function() {
     // dereference global reference
     mainWindow = null;
@@ -478,7 +481,7 @@ function showMainWindow() {
 // help window
 function showHelpWindow() {
   if (helpWindow && !helpWindow.isDestroyed()) {
-    helpWindow.show();
+    helpWindow.show(); helpWindow.focus();
     return;
   }
 
@@ -486,7 +489,7 @@ function showHelpWindow() {
   helpWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,
-    show: false,
+    show: false, // show at did-finish-load event
     width: width,
     height: height,
     webPreferences: {
@@ -494,7 +497,6 @@ function showHelpWindow() {
     }
   });
   helpWindow.loadURL('file://' + __dirname + '/help.html');
-  helpWindow.show();
 
   var r = localShortcut.register(helpWindow, 'Command+Q', function() {
     app.quit();
@@ -503,6 +505,9 @@ function showHelpWindow() {
     if (helpWindow) { helpWindow.close(); }
   });
 
+  helpWindow.webContents.on('did-finish-load', function() {
+    helpWindow.show(); helpWindow.focus();
+  });
   helpWindow.on('closed', function() {
     helpWindow = null;
   });
@@ -517,7 +522,7 @@ function showHelpWindow() {
 // application config window
 function showSystemWindow() {
   if (systemWindow && !systemWindow.isDestroyed()) {
-    systemWindow.show();
+    systemWindow.show(); systemWindow.focus();
     return;
   }
 
@@ -525,7 +530,7 @@ function showSystemWindow() {
   systemWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,
-    show: false,
+    show: false, // show at did-finish-load event
     width: width,
     height: height,
     webPreferences: {
@@ -533,7 +538,6 @@ function showSystemWindow() {
     }
   });
   systemWindow.loadURL('file://' + __dirname + '/system.html');
-  systemWindow.show();
 
   var r = localShortcut.register(systemWindow, 'Command+Q', function() {
     app.quit();
@@ -542,6 +546,9 @@ function showSystemWindow() {
     if (systemWindow) { systemWindow.close(); }
   });
 
+  systemWindow.webContents.on('did-finish-load', function() {
+    systemWindow.show(); systemWindow.focus();
+  });
   systemWindow.on('closed', function() {
     systemWindow = null;
   });
@@ -561,8 +568,3 @@ ipcMain.on('ondragstartwav', function (event, filePath) {
     icon: imgPath
   })
 });
-
-// window size
-// engine
-// display message list
-

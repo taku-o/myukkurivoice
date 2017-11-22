@@ -25,7 +25,7 @@ angular.module('yvoiceModel', [])
     return [
       {
         'id': 'sample_1',
-        'name': 'サンプル設定1',
+        'name': 'f1 女声1(ゆっくり)',
         'phont': 'at1_f1',
         'speed': 100,
         'playback_rate': 1.0,
@@ -42,7 +42,7 @@ angular.module('yvoiceModel', [])
       },
       {
         'id': 'sample_2',
-        'name': 'サンプル設定2',
+        'name': 'aq_yukkuri(サンプル設定2)',
         'phont': 'aq_yukkuri',
         'speed': 100,
         'playback_rate': 1.0,
@@ -59,8 +59,25 @@ angular.module('yvoiceModel', [])
       },
       {
         'id': 'sample_3',
-        'name': 'サンプル設定3',
+        'name': 'f1c 女声(サンプル設定3)',
         'phont': 'aq_f1c',
+        'speed': 100,
+        'playback_rate': 1.0,
+        'detune': 0,
+        'volume': 1.0,
+        'rhythm_on': true,
+        'write_margin_ms': 150,
+        'source_write': false,
+        'seq_write': false,
+        'seq_write_options':{
+          'dir': '',
+          'prefix': ''
+        }
+      },
+      {
+        'id': 'sample_4',
+        'name': 'aq10-F1 女声1(新ゆっくり)',
+        'phont': 'gVoice_F1',
         'speed': 100,
         'playback_rate': 1.0,
         'detune': 0,
