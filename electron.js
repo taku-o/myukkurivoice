@@ -270,6 +270,7 @@ app.on('ready', function() {
           label: '前面表示固定切替',
           click () { switchAlwaysOnTop(); }
         },
+        { type: 'separator' },
         {
           label: 'Minimize',
           accelerator: 'CmdOrCtrl+M',
