@@ -15,13 +15,14 @@ const Config = require('electron-config');
 var app_cfg = {
   mainWindow: { width: 800, height: 665 },
   helpWindow: { width: 700, height: 500 },
-  systemWindow: { width: 390, height: 350 },
+  systemWindow: { width: 390, height: 400 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
   show_msg_pane: true,
+  accept_first_mouse: false,
   debug: process.env.DEBUG
 };
 var config = new Config();
-['mainWindow', 'audio_serv_ver', 'show_msg_pane'].forEach(function(k){
+['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'accept_first_mouse'].forEach(function(k){
   if (config.has(k)) { app_cfg[k] = config.get(k); }
 });
 global.app_cfg = app_cfg;
@@ -364,12 +365,13 @@ ipcMain.on('showDirDialog', function (event, defaultPath) {
 
 // updateAppConfig
 function updateAppConfig(options) {
-  config.set('mainWindow',     options.mainWindow);
-  config.set('audio_serv_ver', options.audio_serv_ver);
-  config.set('show_msg_pane',  options.show_msg_pane);
-  config.set('debug',          options.debug);
+  config.set('mainWindow',         options.mainWindow);
+  config.set('audio_serv_ver',     options.audio_serv_ver);
+  config.set('show_msg_pane',      options.show_msg_pane);
+  config.set('accept_first_mouse', options.accept_first_mouse);
+  config.set('debug',              options.debug);
 
-  ['mainWindow', 'audio_serv_ver', 'show_msg_pane'].forEach(function(k){
+  ['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'accept_first_mouse'].forEach(function(k){
     if (config.has(k)) { app_cfg[k] = config.get(k); }
   });
   global.app_cfg = app_cfg;
@@ -386,16 +388,18 @@ ipcMain.on('updateAppConfig', function (event, options) {
   event.sender.send('updateAppConfig', r);
   mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
   mainWindow.webContents.reload();
+  if (systemWindow) { systemWindow.webContents.reload(); }
 });
 
 // resetAppConfig
 function resetAppConfig() {
-  config.set('mainWindow',     { width: 800, height: 665 });
-  config.set('audio_serv_ver', 'webaudioapi');
-  config.set('show_msg_pane',  true);
-  config.set('debug',          false);
+  config.set('mainWindow',         { width: 800, height: 665 });
+  config.set('audio_serv_ver',     'webaudioapi');
+  config.set('show_msg_pane',      true);
+  config.set('accept_first_mouse', false);
+  config.set('debug',              false);
 
-  ['mainWindow', 'audio_serv_ver', 'show_msg_pane'].forEach(function(k){
+  ['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'accept_first_mouse'].forEach(function(k){
     if (config.has(k)) { app_cfg[k] = config.get(k); }
   });
   global.app_cfg = app_cfg;
@@ -412,6 +416,7 @@ ipcMain.on('resetAppConfig', function (event, message) {
   event.sender.send('resetAppConfig', r);
   mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
   mainWindow.webContents.reload();
+  if (systemWindow) { systemWindow.webContents.reload(); }
 });
 
 // resetAppConfigOnMain
@@ -426,6 +431,7 @@ function resetAppConfigOnMain() {
   var r = dialog.showMessageBox(mainWindow, dialog_options);
   mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
   mainWindow.webContents.reload();
+  if (systemWindow) { systemWindow.webContents.reload(); }
 }
 
 // switchAlwaysOnTop
@@ -453,9 +459,11 @@ function showMainWindow() {
   }
 
   var {width, height} = app_cfg.mainWindow;
+  var accept_first_mouse = app_cfg.accept_first_mouse;
   mainWindow = new BrowserWindow({
     width: width,
     height: height,
+    acceptFirstMouse: accept_first_mouse,
     show: false, // show at did-finish-load event
     webPreferences: {
       devTools: debug
@@ -487,12 +495,14 @@ function showHelpWindow() {
   }
 
   var {width, height} = app_cfg.helpWindow;
+  var accept_first_mouse = app_cfg.accept_first_mouse;
   helpWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,
-    show: false, // show at did-finish-load event
     width: width,
     height: height,
+    acceptFirstMouse: accept_first_mouse,
+    show: false, // show at did-finish-load event
     webPreferences: {
       devTools: debug
     }
@@ -528,12 +538,14 @@ function showSystemWindow() {
   }
 
   var {width, height} = app_cfg.systemWindow;
+  var accept_first_mouse = app_cfg.accept_first_mouse;
   systemWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,
-    show: false, // show at did-finish-load event
     width: width,
     height: height,
+    acceptFirstMouse: accept_first_mouse,
+    show: false, // show at did-finish-load event
     webPreferences: {
       devTools: debug
     }

@@ -32,7 +32,8 @@ angular.module('yvoiceSystem', [])
       var options = {
         'mainWindow':$scope.app_cfg.mainWindow,
         'audio_serv_ver':$scope.app_cfg.audio_serv_ver,
-        'show_msg_pane':$scope.app_cfg.show_msg_pane
+        'show_msg_pane':$scope.app_cfg.show_msg_pane,
+        'accept_first_mouse':$scope.app_cfg.accept_first_mouse
       };
       ipcRenderer.send('updateAppConfig', options);
     };

@@ -32,7 +32,7 @@
       <div class="radio">
         <label>
           <input type="radio" ng-model="app_cfg.audio_serv_ver" value="html5audio">html5audio
-        <small>音声録音が早い。一部機能に制限がある。</small>
+          <small>音声録音が早い。一部機能に制限がある。</small>
         </label>
       </div>
       <div class="radio">
@@ -48,6 +48,15 @@
         <label><input type="checkbox" ng-model="app_cfg.show_msg_pane">メッセージリストを表示する</label>
       </div>
     </div>
+    <div class="box">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="app_cfg.accept_first_mouse">
+          <small>ウィンドウがアクティブでない時、最初のクリックを拾う<br>(アプリを再起動しないと変更されません)</small>
+        </label>
+      </div>
+    </div>
+
   </form>
 </div><!-- window-content -->
 
