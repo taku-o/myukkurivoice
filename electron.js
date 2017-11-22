@@ -8,6 +8,7 @@ const Menu = electron.Menu;
 const localShortcut = require('electron-localshortcut');
 const log = require('electron-log');
 const path = require('path');
+const openAboutWindow = require('about-window').default;
 const Config = require('electron-config');
 
 // application settings
@@ -93,7 +94,20 @@ app.on('ready', function() {
     {
       label: 'MYukkuriVoice',
       submenu: [
-        { role: 'about' },
+        {
+          label: 'About MYukkuriVoice',
+          click () {
+            var w = openAboutWindow({
+              icon_path: path.join(__dirname, 'img/icon_128x128.png'),
+              css_path: path.join(__dirname, 'css/about.css'),
+              package_json_dir: __dirname,
+              open_devtools: false,
+            });
+            var r = localShortcut.register(w, 'Command+W', function() {
+              w.close();
+            });
+          }
+        },
         { type: 'separator' },
         {
           label: '環境設定',

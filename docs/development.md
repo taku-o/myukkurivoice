@@ -85,6 +85,7 @@
     npm install --save temp
     npm install --save wave-recorder
     npm install --save tunajs
+    npm install --save about-window
 
 ## Module version mismatch. Expected 50, got 51
 * もし、この類のエラーに遭遇したら、次のようなコマンドを実行してrebuildする

@@ -1,5 +1,6 @@
 # 0.5.7 (in test)
 * メニューの微修正。
+* About MYukkuriVoiceパネルを置き換え。
 
 # 0.5.6 (in test)
 * ヘルプの更新。

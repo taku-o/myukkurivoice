@@ -1,15 +1,21 @@
 {
-  "name": "myukkurivoice",
+  "name": "MYukkuriVoice",
   "version": "0.5.7",
-  "description": "",
+  "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "homepage": "https://github.com/taku-o/myukkurivoice",
+  "bugs": {
+    "url": "https://github.com/taku-o/myukkurivoice/issues",
+    "email": "mail@nanasi.jp"
+  },
+  "author": "taku-o <mail@nanasi.jp> (http://nanasi.jp/)",
+  "license": "MIT",
   "dependencies": {
+    "about-window": "^1.8.0",
     "angular": "^1.6.6",
     "angular-input-highlight": "^0.1.2",
     "cryptico.js": "^1.2.0",
