@@ -103,6 +103,7 @@ app.on('ready', function() {
               package_json_dir: __dirname,
               open_devtools: false,
             });
+            if (mainWindow) { w.setParentWindow(mainWindow); }
             var r = localShortcut.register(w, 'Command+Q', function() { app.quit(); });
             var r = localShortcut.register(w, 'Command+W', function() { w.close(); });
           }
