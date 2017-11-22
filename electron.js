@@ -368,17 +368,24 @@ function updateAppConfig(options) {
   config.set('audio_serv_ver', options.audio_serv_ver);
   config.set('show_msg_pane',  options.show_msg_pane);
   config.set('debug',          options.debug);
+
+  ['mainWindow', 'audio_serv_ver', 'show_msg_pane'].forEach(function(k){
+    if (config.has(k)) { app_cfg[k] = config.get(k); }
+  });
+  global.app_cfg = app_cfg;
 }
 ipcMain.on('updateAppConfig', function (event, options) {
   updateAppConfig(options);
   var dialog_options = {
     type: 'info',
     title: 'application config updated.',
-    message: '環境設定を更新しました。アプリケーションを再起動すると変更が反映されます。',
+    message: '環境設定を更新しました。アプリケーションを更新します。',
     buttons: ['OK'],
   };
   var r = dialog.showMessageBox(systemWindow, dialog_options);
   event.sender.send('updateAppConfig', r);
+  mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
+  mainWindow.webContents.reload();
 });
 
 // resetAppConfig
@@ -387,17 +394,24 @@ function resetAppConfig() {
   config.set('audio_serv_ver', 'webaudioapi');
   config.set('show_msg_pane',  true);
   config.set('debug',          false);
+
+  ['mainWindow', 'audio_serv_ver', 'show_msg_pane'].forEach(function(k){
+    if (config.has(k)) { app_cfg[k] = config.get(k); }
+  });
+  global.app_cfg = app_cfg;
 }
 ipcMain.on('resetAppConfig', function (event, message) {
   resetAppConfig();
   var dialog_options = {
     type: 'info',
     title: 'application config initialized.',
-    message: '環境設定を初期化しました。アプリケーションを再起動すると変更が反映されます。',
+    message: '環境設定を初期化しました。アプリケーションを更新します。',
     buttons: ['OK'],
   };
   var r = dialog.showMessageBox(systemWindow, dialog_options);
   event.sender.send('resetAppConfig', r);
+  mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
+  mainWindow.webContents.reload();
 });
 
 // resetAppConfigOnMain
@@ -406,10 +420,12 @@ function resetAppConfigOnMain() {
   var dialog_options = {
     type: 'info',
     title: 'application config initialized.',
-    message: '環境設定を初期化しました。アプリケーションを再起動すると変更が反映されます。',
+    message: '環境設定を初期化しました。アプリケーションを更新します。',
     buttons: ['OK'],
   };
   var r = dialog.showMessageBox(mainWindow, dialog_options);
+  mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
+  mainWindow.webContents.reload();
 }
 
 // switchAlwaysOnTop
@@ -545,3 +561,8 @@ ipcMain.on('ondragstartwav', function (event, filePath) {
     icon: imgPath
   })
 });
+
+// window size
+// engine
+// display message list
+
