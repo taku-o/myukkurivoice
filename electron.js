@@ -13,7 +13,7 @@ const Config = require('electron-config');
 
 // application settings
 var app_cfg = {
-  mainWindow: { width: 800, height: 665 },
+  mainWindow: { width: 800, height: 665, x:null, y:null },
   helpWindow: { width: 700, height: 500 },
   systemWindow: { width: 390, height: 400 },
   audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
@@ -215,7 +215,7 @@ app.on('ready', function() {
       ]
     },
     {
-      label: '設定',
+      label: 'ボイス設定',
       submenu: [
         {
           label: '新規作成',
@@ -259,7 +259,7 @@ app.on('ready', function() {
         },
         { type: 'separator' },
         {
-          label: '設定オールリセット',
+          label: '音声設定オールリセット',
           click () {
             if (mainWindow) { mainWindow.webContents.send('menu', 'reset'); }
           }
@@ -299,7 +299,12 @@ app.on('ready', function() {
         {
           label: 'Bring All to Front',
           role: 'front'
-        }
+        },
+        { type: 'separator' },
+        {
+          label: 'ウインドウ位置リセット',
+          click () { resetWindowPosition(); }
+        },
       ]
     },
     {
@@ -365,6 +370,9 @@ ipcMain.on('showDirDialog', function (event, defaultPath) {
 
 // updateAppConfig
 function updateAppConfig(options) {
+  var {x,y} = mainWindow.getBounds();
+  options.mainWindow.x = x;
+  options.mainWindow.y = y;
   config.set('mainWindow',         options.mainWindow);
   config.set('audio_serv_ver',     options.audio_serv_ver);
   config.set('show_msg_pane',      options.show_msg_pane);
@@ -393,7 +401,7 @@ ipcMain.on('updateAppConfig', function (event, options) {
 
 // resetAppConfig
 function resetAppConfig() {
-  config.set('mainWindow',         { width: 800, height: 665 });
+  config.set('mainWindow',         { width: 800, height: 665, x:null, y:null });
   config.set('audio_serv_ver',     'webaudioapi');
   config.set('show_msg_pane',      true);
   config.set('accept_first_mouse', false);
@@ -434,6 +442,11 @@ function resetAppConfigOnMain() {
   if (systemWindow) { systemWindow.webContents.reload(); }
 }
 
+// resetWindowPosition
+function resetWindowPosition() {
+  mainWindow.center();
+}
+
 // switchAlwaysOnTop
 function switchAlwaysOnTop() {
   var newflg = !mainWindow.isAlwaysOnTop();
@@ -446,11 +459,6 @@ ipcMain.on('switchAlwaysOnTop', function (event, message) {
   event.sender.send('switchAlwaysOnTop', newflg);
 });
 
-// showHelpWindow
-ipcMain.on('showHelpWindow', function (event, message) {
-  showHelpWindow();
-});
-
 // main window
 function showMainWindow() {
   if (mainWindow && !mainWindow.isDestroyed()) {
@@ -458,11 +466,13 @@ function showMainWindow() {
     return;
   }
 
-  var {width, height} = app_cfg.mainWindow;
+  var {width, height, x, y} = app_cfg.mainWindow;
   var accept_first_mouse = app_cfg.accept_first_mouse;
   mainWindow = new BrowserWindow({
     width: width,
     height: height,
+    x: x,
+    y: y,
     acceptFirstMouse: accept_first_mouse,
     show: false, // show at did-finish-load event
     webPreferences: {
@@ -474,6 +484,10 @@ function showMainWindow() {
   // main window event
   mainWindow.webContents.on('did-finish-load', function() {
     mainWindow.show(); mainWindow.focus();
+  });
+  mainWindow.on('close', function() {
+    var bounds = mainWindow.getBounds();
+    config.set('mainWindow', bounds);
   });
   mainWindow.on('closed', function() {
     // dereference global reference
@@ -529,6 +543,10 @@ function showHelpWindow() {
     log.error('help:event:crashed');
   });
 }
+// showHelpWindow
+ipcMain.on('showHelpWindow', function (event, message) {
+  showHelpWindow();
+});
 
 // application config window
 function showSystemWindow() {
