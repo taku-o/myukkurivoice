@@ -259,7 +259,7 @@ app.on('ready', function() {
         },
         { type: 'separator' },
         {
-          label: '音声設定オールリセット',
+          label: 'ボイス設定オールリセット',
           click () {
             if (mainWindow) { mainWindow.webContents.send('menu', 'reset'); }
           }
