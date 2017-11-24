@@ -23,9 +23,9 @@ http://www.a-quest.com/
 * https://github.com/taku-o/myukkurivoice/releases
 
 ## インストール
-https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(myukkurivoice-darwin-x64.zip)を  
+https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(MYukkuriVoice-darwin-x64.zip)を  
 ダウンロードして解凍後、  
-初回の起動は myukkurivoice.app を右クリックして「開く」を選択してください。
+初回の起動は MYukkuriVoice.app を右クリックして「開く」を選択してください。
 
 ## リリースノート
 * https://github.com/taku-o/myukkurivoice/blob/master/docs/release.md
