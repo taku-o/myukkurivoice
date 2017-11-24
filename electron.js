@@ -12,23 +12,23 @@ const openAboutWindow = require('about-window').default;
 const Config = require('electron-config');
 
 // application settings
-var app_cfg = {
+var appCfg = {
   mainWindow: { width: 800, height: 665, x:null, y:null },
   helpWindow: { width: 700, height: 500 },
   systemWindow: { width: 390, height: 400 },
-  audio_serv_ver: 'webaudioapi', // html5audio or webaudioapi
-  show_msg_pane: true,
-  accept_first_mouse: false,
+  audioServVer: 'webaudioapi', // html5audio or webaudioapi
+  showMsgPane: true,
+  acceptFirstMouse: false,
   debug: process.env.DEBUG
 };
 var config = new Config();
-['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'accept_first_mouse'].forEach(function(k){
-  if (config.has(k)) { app_cfg[k] = config.get(k); }
+['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse'].forEach(function(k){
+  if (config.has(k)) { appCfg[k] = config.get(k); }
 });
-global.app_cfg = app_cfg;
+global.appCfg = appCfg;
 
 // debug option
-const debug = app_cfg.debug;
+const debug = appCfg.debug;
 
 // global reference
 var mainWindow = null;
@@ -72,26 +72,26 @@ app.on('ready', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
   });
   var r = localShortcut.register(mainWindow, 'Command+Up', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_source'); }
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'moveToSource'); }
   });
   var r = localShortcut.register(mainWindow, 'Command+Down', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_encoded'); }
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'moveToEncoded'); }
   });
   var r = localShortcut.register(mainWindow, 'Command+Right', function() {
     if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
   });
   var r = localShortcut.register(mainWindow, 'Command+D', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'from_clipboard'); }
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'fromClipboard'); }
   });
   var r = localShortcut.register(mainWindow, 'Command+Left', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_next_config'); }
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swichNextConfig'); }
   });
   var r = localShortcut.register(mainWindow, 'Command+Shift+Left', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_previous_config'); }
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swichPreviousConfig'); }
   });
 
   // menu
-  var menu_list = [
+  var menuList = [
     {
       label: 'MYukkuriVoice',
       submenu: [
@@ -159,14 +159,14 @@ app.on('ready', function() {
           label:'メッセージ入力欄に移動',
           accelerator: 'Command+Up',
           click () {
-            if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_source'); }
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'moveToSource'); }
           }
         },
         {
           label:'音記号列入力欄に移動',
           accelerator: 'Command+Down',
           click () {
-            if (mainWindow) { mainWindow.webContents.send('shortcut', 'move_to_encoded'); }
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'moveToEncoded'); }
           }
         },
         { type: 'separator' },
@@ -187,7 +187,7 @@ app.on('ready', function() {
           label:'クリップボードからコピー',
           accelerator: 'Command+D',
           click () {
-            if (mainWindow) { mainWindow.webContents.send('shortcut', 'from_clipboard'); }
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'fromClipboard'); }
           }
         },
         { type: 'separator' },
@@ -247,14 +247,14 @@ app.on('ready', function() {
           label: '次の設定に切り替え',
           accelerator: 'Command+Left',
           click () {
-            if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_next_config'); }
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'swichNextConfig'); }
           }
         },
         {
           label: '前の設定に切り替え',
           accelerator: 'Command+Shift+Left',
           click () {
-            if (mainWindow) { mainWindow.webContents.send('shortcut', 'swich_previous_config'); }
+            if (mainWindow) { mainWindow.webContents.send('shortcut', 'swichPreviousConfig'); }
           }
         },
         { type: 'separator' },
@@ -337,12 +337,12 @@ app.on('ready', function() {
   ];
   // 表示メニューにToggle Developer Toolsメニューを追加
   if (debug) {
-    menu_list[4].submenu.splice(1, 0,
+    menuList[4].submenu.splice(1, 0,
       { role: 'toggledevtools' }
     );
   }
-  var menu_template = Menu.buildFromTemplate(menu_list);
-  Menu.setApplicationMenu(menu_template);
+  var menuTemplate = Menu.buildFromTemplate(menuList);
+  Menu.setApplicationMenu(menuTemplate);
 });
 
 // showSaveDialog
@@ -373,56 +373,56 @@ function updateAppConfig(options) {
   var {x,y} = mainWindow.getBounds();
   options.mainWindow.x = x;
   options.mainWindow.y = y;
-  config.set('mainWindow',         options.mainWindow);
-  config.set('audio_serv_ver',     options.audio_serv_ver);
-  config.set('show_msg_pane',      options.show_msg_pane);
-  config.set('accept_first_mouse', options.accept_first_mouse);
-  config.set('debug',              options.debug);
+  config.set('mainWindow',       options.mainWindow);
+  config.set('audioServVer',     options.audioServVer);
+  config.set('showMsgPane',      options.showMsgPane);
+  config.set('acceptFirstMouse', options.acceptFirstMouse);
+  config.set('debug',            options.debug);
 
-  ['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'accept_first_mouse'].forEach(function(k){
-    if (config.has(k)) { app_cfg[k] = config.get(k); }
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse'].forEach(function(k){
+    if (config.has(k)) { appCfg[k] = config.get(k); }
   });
-  global.app_cfg = app_cfg;
+  global.appCfg = appCfg;
 }
 ipcMain.on('updateAppConfig', function (event, options) {
   updateAppConfig(options);
-  var dialog_options = {
+  var dialogOptions = {
     type: 'info',
     title: 'application config updated.',
     message: '環境設定を更新しました。アプリケーションを更新します。',
     buttons: ['OK'],
   };
-  var r = dialog.showMessageBox(systemWindow, dialog_options);
+  var r = dialog.showMessageBox(systemWindow, dialogOptions);
   event.sender.send('updateAppConfig', r);
-  mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
+  mainWindow.setSize(appCfg.mainWindow.width, appCfg.mainWindow.height);
   mainWindow.webContents.reload();
   if (systemWindow) { systemWindow.webContents.reload(); }
 });
 
 // resetAppConfig
 function resetAppConfig() {
-  config.set('mainWindow',         { width: 800, height: 665, x:null, y:null });
-  config.set('audio_serv_ver',     'webaudioapi');
-  config.set('show_msg_pane',      true);
-  config.set('accept_first_mouse', false);
-  config.set('debug',              false);
+  config.set('mainWindow',       { width: 800, height: 665, x:null, y:null });
+  config.set('audioServVer',     'webaudioapi');
+  config.set('showMsgPane',      true);
+  config.set('acceptFirstMouse', false);
+  config.set('debug',            false);
 
-  ['mainWindow', 'audio_serv_ver', 'show_msg_pane', 'accept_first_mouse'].forEach(function(k){
-    if (config.has(k)) { app_cfg[k] = config.get(k); }
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse'].forEach(function(k){
+    if (config.has(k)) { appCfg[k] = config.get(k); }
   });
-  global.app_cfg = app_cfg;
+  global.appCfg = appCfg;
 }
 ipcMain.on('resetAppConfig', function (event, message) {
   resetAppConfig();
-  var dialog_options = {
+  var dialogOptions = {
     type: 'info',
     title: 'application config initialized.',
     message: '環境設定を初期化しました。アプリケーションを更新します。',
     buttons: ['OK'],
   };
-  var r = dialog.showMessageBox(systemWindow, dialog_options);
+  var r = dialog.showMessageBox(systemWindow, dialogOptions);
   event.sender.send('resetAppConfig', r);
-  mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
+  mainWindow.setSize(appCfg.mainWindow.width, appCfg.mainWindow.height);
   mainWindow.webContents.reload();
   if (systemWindow) { systemWindow.webContents.reload(); }
 });
@@ -430,14 +430,14 @@ ipcMain.on('resetAppConfig', function (event, message) {
 // resetAppConfigOnMain
 function resetAppConfigOnMain() {
   resetAppConfig();
-  var dialog_options = {
+  var dialogOptions = {
     type: 'info',
     title: 'application config initialized.',
     message: '環境設定を初期化しました。アプリケーションを更新します。',
     buttons: ['OK'],
   };
-  var r = dialog.showMessageBox(mainWindow, dialog_options);
-  mainWindow.setSize(app_cfg.mainWindow.width, app_cfg.mainWindow.height);
+  var r = dialog.showMessageBox(mainWindow, dialogOptions);
+  mainWindow.setSize(appCfg.mainWindow.width, appCfg.mainWindow.height);
   mainWindow.webContents.reload();
   if (systemWindow) { systemWindow.webContents.reload(); }
 }
@@ -466,14 +466,14 @@ function showMainWindow() {
     return;
   }
 
-  var {width, height, x, y} = app_cfg.mainWindow;
-  var accept_first_mouse = app_cfg.accept_first_mouse;
+  var {width, height, x, y} = appCfg.mainWindow;
+  var acceptFirstMouse = appCfg.acceptFirstMouse;
   mainWindow = new BrowserWindow({
     width: width,
     height: height,
     x: x,
     y: y,
-    acceptFirstMouse: accept_first_mouse,
+    acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
       devTools: debug
@@ -508,14 +508,14 @@ function showHelpWindow() {
     return;
   }
 
-  var {width, height} = app_cfg.helpWindow;
-  var accept_first_mouse = app_cfg.accept_first_mouse;
+  var {width, height} = appCfg.helpWindow;
+  var acceptFirstMouse = appCfg.acceptFirstMouse;
   helpWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,
     width: width,
     height: height,
-    acceptFirstMouse: accept_first_mouse,
+    acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
       devTools: debug
@@ -555,14 +555,14 @@ function showSystemWindow() {
     return;
   }
 
-  var {width, height} = app_cfg.systemWindow;
-  var accept_first_mouse = app_cfg.accept_first_mouse;
+  var {width, height} = appCfg.systemWindow;
+  var acceptFirstMouse = appCfg.acceptFirstMouse;
   systemWindow = new BrowserWindow({
     parent: mainWindow,
     modal: false,
     width: width,
     height: height,
-    acceptFirstMouse: accept_first_mouse,
+    acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
       devTools: debug

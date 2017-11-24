@@ -21,9 +21,9 @@
     <div class="box">
       ウィンドウサイズ
       <div class="form-group">
-        width <input type="number" min="200" max="3000" step="1" ng-model="app_cfg.mainWindow.width"  placeholder="width">
+        width <input type="number" min="200" max="3000" step="1" ng-model="appCfg.mainWindow.width"  placeholder="width">
         <span class="splitter">x</span>
-        height <input type="number" min="200" max="3000" step="1" ng-model="app_cfg.mainWindow.height" placeholder="height" size="5">
+        height <input type="number" min="200" max="3000" step="1" ng-model="appCfg.mainWindow.height" placeholder="height" size="5">
       </div>
     </div>
 
@@ -31,13 +31,13 @@
       音声再生エンジン
       <div class="radio">
         <label>
-          <input type="radio" ng-model="app_cfg.audio_serv_ver" value="html5audio">html5audio
+          <input type="radio" ng-model="appCfg.audioServVer" value="html5audio">html5audio
           <small>音声録音が早い。一部機能に制限がある。</small>
         </label>
       </div>
       <div class="radio">
         <label>
-          <input type="radio" ng-model="app_cfg.audio_serv_ver" value="webaudioapi">webaudioapi
+          <input type="radio" ng-model="appCfg.audioServVer" value="webaudioapi">webaudioapi
           <small>音声録音が遅い。全ての機能を利用できる。</small>
         </label>
       </div>
@@ -45,13 +45,13 @@
 
     <div class="box">
       <div class="checkbox">
-        <label><input type="checkbox" ng-model="app_cfg.show_msg_pane">メッセージリストを表示する</label>
+        <label><input type="checkbox" ng-model="appCfg.showMsgPane">メッセージリストを表示する</label>
       </div>
     </div>
     <div class="box">
       <div class="checkbox">
         <label>
-          <input type="checkbox" ng-model="app_cfg.accept_first_mouse">
+          <input type="checkbox" ng-model="appCfg.acceptFirstMouse">
           <small>ウィンドウがアクティブでない時、最初のクリックを拾う<br>(アプリを再起動しないと変更されません)</small>
         </label>
       </div>

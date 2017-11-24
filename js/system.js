@@ -2,7 +2,7 @@ var ipcRenderer = require('electron').ipcRenderer
 var log = require('electron-log');
 
 // application settings
-var app_cfg = angular.copy(require('electron').remote.getGlobal('app_cfg'));
+var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -20,20 +20,20 @@ angular.module('yvoiceSystem', [])
     // init
     var ctrl = this;
     $timeout(function(){ $scope.$apply(); });
-    $scope.app_cfg = app_cfg;
+    $scope.appCfg = appCfg;
 
     // actions
     ctrl.cancel = function() {
-      $scope.app_cfg = angular.copy(require('electron').remote.getGlobal('app_cfg'));
+      $scope.appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
       var window = require('electron').remote.getCurrentWindow();
       window.close();
     };
     ctrl.save = function() {
       var options = {
-        'mainWindow':$scope.app_cfg.mainWindow,
-        'audio_serv_ver':$scope.app_cfg.audio_serv_ver,
-        'show_msg_pane':$scope.app_cfg.show_msg_pane,
-        'accept_first_mouse':$scope.app_cfg.accept_first_mouse
+        'mainWindow':$scope.appCfg.mainWindow,
+        'audioServVer':$scope.appCfg.audioServVer,
+        'showMsgPane':$scope.appCfg.showMsgPane,
+        'acceptFirstMouse':$scope.appCfg.acceptFirstMouse
       };
       ipcRenderer.send('updateAppConfig', options);
     };
