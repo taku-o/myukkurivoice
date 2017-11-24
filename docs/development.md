@@ -38,9 +38,11 @@
 ## パッケージング
 * リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
 
+    npm install -g electron-packager
     bin/packaging.sh
     # or
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)" --asar.unpackDir=vendor
+    npm install -g electron-packager
+    electron-packager . myukkurivoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|test|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)" --asar.unpackDir=vendor
 
 * リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
 
@@ -64,7 +66,6 @@
 
 ## install electron and command
     npm install -g electron
-    npm -g install electron-packager
 
 ## install capistrano
     gem install bundler
@@ -94,7 +95,16 @@
 
     npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
 
-## animation gif for README
+## create animation gif for README
     brew install ffmpeg
     ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
+
+## Unit Test
+* 単体テストを実行するには、次のコマンドを実行します。
+* テストコードはtestディレクトリ以下にあります。
+* spectronのmiddleバージョンはelectronのバージョンと合わせる。
+
+    npm install -g spectron@3.7.2
+    npm install -g mocha
+    bin/test.sh
 
