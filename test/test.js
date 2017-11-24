@@ -81,6 +81,13 @@ describe('application launch', function() {
       })
   });
 
+  it('mainWindow phont selection', function() {
+    return this.app.client
+      .elements('#phont option').then(function(response) {
+        assert.equal(response.value.length, 26);
+      })
+  });
+
   it('mainWindow voice config', function() {
     var voiceConfigLength = 999;
     return this.app.client
