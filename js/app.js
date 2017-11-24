@@ -466,8 +466,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       DataService.save($scope.yvoiceList);
     };
     ctrl.reset = function() {
-      MessageService.action('reset all config data.');
-      DataService.clear().then(loadData());
+      MessageService.action('reset all voice config data.');
+      // voice data clear
+      DataService.clear();
+      // set initial data
+      $scope.yvoiceList = DataService.initialData();
+      $scope.yvoice = $scope.yvoiceList[0];
       $scope.yinput = angular.copy(YInputInitialData);
       $scope.display = 'main';
       clearSourceSelection();
@@ -538,6 +542,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     };
     ipcRenderer.on('switchAlwaysOnTop', function (event, newflg) {
       $scope.alwaysOnTop = newflg;
+      MessageService.info('update alwaysOnTop option '+(newflg?'ON':'OFF'));
       $timeout(function(){ $scope.$apply(); });
     });
 
