@@ -1,9 +1,9 @@
-span.nav-group-item span.icon {
-  color: blue;
+.warn {
+  color: red;
 }
 
-td.warn {
-  color: red;
+span.nav-group-item span.icon {
+  color: blue;
 }
 
 div.content {

@@ -1,4 +1,7 @@
+var app = require('electron').remote.app;
 var log = require('electron-log');
+
+var homeDir = app.getPath('home');
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -20,6 +23,10 @@ angular.module('yvoiceAppHelp', [])
 
     ctrl.browser = function(url) {
       require('electron').shell.openExternal(url);
+    };
+    ctrl.showItemInFolder = function(path) {
+      var expanded = path.replace('\$HOME', homeDir);
+      require('electron').shell.showItemInFolder(expanded);
     };
   }]);
 
