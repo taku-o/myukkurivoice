@@ -22,14 +22,21 @@ describe('application launch', function() {
       .getWindowCount().then(function(count) {
         assert.equal(count, 1);
       })
-      //.isVisible('#main_pane').then(function(isVisible) {
-      //  assert.ok(isVisible);
-      //})
-      //.isVisible('#settings_pane').then(function(isVisible) {
-      //  assert.ok(! isVisible);
-      //})
+      .isVisible('#main_pane').then(function(isVisible) {
+        assert.ok(isVisible);
+      })
+      .isVisible('#settings_pane').then(function(isVisible) {
+        assert.ok(! isVisible);
+      })
       .getTitle().then(function(title) {
         assert.equal(title, 'MYukkuriVoice');
+      })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
       })
   });
 
@@ -65,6 +72,13 @@ describe('application launch', function() {
       .isEnabled('#play').then(function(isEnabled) {
         assert.ok(isEnabled);
       })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
   });
 
   it('mainWindow voice config', function() {
@@ -90,6 +104,13 @@ describe('application launch', function() {
       .elements('.voice-config-item').then(function(response) {
         assert.equal(response.value.length, voiceConfigLength + 1);
       })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
   });
 
   it('mainWindow play', function() {
@@ -101,6 +122,13 @@ describe('application launch', function() {
         assert.ok(duration != '');
       })
       .click('#stop')
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
   });
 
   it('mainWindow alwaysOnTop', function() {
@@ -126,6 +154,13 @@ describe('application launch', function() {
           assert.ok(! isAlwaysOnTop);
         })
       })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
   });
 
   it('mainWindow help', function() {
@@ -133,6 +168,13 @@ describe('application launch', function() {
       .click('#help')
       .getWindowCount().then(function(count) {
         assert.equal(count, 2);
+      })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
       })
   });
 
@@ -145,6 +187,13 @@ describe('application launch', function() {
       .isVisible('.introjs-tooltip').then(function(isVisible) {
         assert.ok(isVisible);
       })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
   });
 
   it('mainWindow tutorial', function() {
@@ -156,17 +205,31 @@ describe('application launch', function() {
       .isVisible('.introjs-tooltip').then(function(isVisible) {
         assert.ok(isVisible);
       })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
   });
 
   it('mainWindow switchSettingsView', function() {
     return this.app.client
       .click('#switch-settings-view')
-      //.isVisible('#main_pane').then(function(isVisible) {
-      //  assert.ok(! isVisible);
-      //})
-      //.isVisible('#settings_pane').then(function(isVisible) {
-      //  assert.ok(isVisible);
-      //})
+      .isVisible('#main_pane').then(function(isVisible) {
+        assert.ok(! isVisible);
+      })
+      .isVisible('#settings_pane').then(function(isVisible) {
+        assert.ok(isVisible);
+      })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
   });
 
 });
