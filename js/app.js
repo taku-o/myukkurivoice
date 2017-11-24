@@ -90,7 +90,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           document.getElementById('record').click();
           break;
         case 'fromClipboard':
-          document.getElementById('fromClipboard').click();
+          document.getElementById('from_clipboard').click();
           break;
         case 'moveToSource':
           document.getElementById('source').focus();
