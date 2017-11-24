@@ -38,8 +38,8 @@
     </div>
 
     <small>再生時間(秒):{{duration | number:2}}</small>
-    <button class="btn btn-large btn-default" id="always-on-top-btn" ng-click="ctrl.switch_always_on_top()" title="前面表示固定のON/OFF切替">
-      <span class="icon icon-lock" ng-class="{active:always_on_top}"></span>
+    <button class="btn btn-large btn-default" id="always-on-top-btn" ng-click="ctrl.switchAlwaysOnTop()" title="前面表示固定のON/OFF切替">
+      <span class="icon icon-lock" ng-class="{active:alwaysOnTop}"></span>
     </button>
 
     <div class="btn-group pull-right">
@@ -61,16 +61,16 @@
   <div class="pane-sm sidebar">
     <ul class="list-group" id="sidebar-items">
       <li class="list-group-header">
-        <input class="form-control" type="text" ng-model='filter_text.name' placeholder="設定一覧絞り込み">
+        <input class="form-control" type="text" ng-model='filterText.name' placeholder="設定一覧絞り込み">
       </li>
-      <li class="list-group-item" ng-repeat="yvoice_item in yvoice_list | filter:filter_text track by yvoice_item.id" ng-class="{active:yvoice_item.id == yvoice.id}">
+      <li class="list-group-item" ng-repeat="yvoiceItem in yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == yvoice.id}">
         <div class="media-body" ng-click="ctrl.select($index)">
-          <strong>{{ $index }}:{{ yvoice_item.name }}</strong>
+          <strong>{{ $index }}:{{ yvoiceItem.name }}</strong>
           <div class="btn-group pull-right">
             <button class="btn btn-default" id="copy" ng-click="ctrl.copy($index)">
               <span class="icon icon-plus-circled"></span>
             </button>
-            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="yvoice_list.length > 1">
+            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="yvoiceList.length > 1">
               <span class="icon icon-minus-circled"></span>
             </button>
           </div>
@@ -87,8 +87,8 @@
         </div>
       </li>
       <li class="list-group-footer">
-        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!last_wav_file">
-          <span class="icon icon-download"></span>{{last_wav_file.wav_file_name||"drag and drop to movie editor"}}
+        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!lastWavFile">
+          <span class="icon icon-download"></span>{{lastWavFile.wavFileName||"drag and drop to movie editor"}}
         </button>
       </li>
     </ul>
@@ -103,7 +103,7 @@
 
       <div class="form-group">
         <!-- <label>Source</label> -->
-        <textarea class="form-control" id="source" rows="4" ng-model="yinput.source" highlight="source_highlight" ng-blur="ctrl.blur_on_source()" ng-focus="ctrl.focus_on_source()" placeholder="メッセージ入力欄"></textarea>
+        <textarea class="form-control" id="source" rows="4" ng-model="yinput.source" highlight="sourceHighlight" ng-blur="ctrl.blurOnSource()" ng-focus="ctrl.focusOnSource()" placeholder="メッセージ入力欄"></textarea>
       </div>
 
       <div class="form-inline form-group btn-group-convert">
@@ -113,18 +113,18 @@
         <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
           <span class="icon icon-trash"></span>入力クリア
         </button>
-        <button class="btn btn-large btn-default" id="from_clipboard" ng-click="ctrl.from_clipboard()">
+        <button class="btn btn-large btn-default" id="from_clipboard" ng-click="ctrl.fromClipboard()">
           <span class="icon icon-clipboard"></span>クリップボードから貼付
         </button>
       </div>
       <div class="form-group">
         <!-- <label>Encoded</label> -->
-        <textarea class="form-control" id="encoded" rows="4" ng-model="yinput.encoded" highlight="encoded_highlight" ng-blur="ctrl.blur_on_encoded()" ng-focus="ctrl.focus_on_encoded()" placeholder="音記号列入力欄"></textarea>
+        <textarea class="form-control" id="encoded" rows="4" ng-model="yinput.encoded" highlight="encodedHighlight" ng-blur="ctrl.blurOnEncoded()" ng-focus="ctrl.focusOnEncoded()" placeholder="音記号列入力欄"></textarea>
       </div>
 
       <div class="form-inline form-group">
         <select class="form-control" ng-model="yvoice.phont" id="phont">
-          <option ng-repeat="v in phont_list" ng-value="v.id">{{v.name}}</option>
+          <option ng-repeat="v in phontList" ng-value="v.id">{{v.name}}</option>
         </select>
       </div>
 
@@ -132,24 +132,24 @@
         <input type="range" min="50" max="300" id="speed" ng-model="yvoice.speed">
         再生速度:{{yvoice.speed}}
       </div>
-      <div class="form-inline form-group" ng-show="app_cfg.audio_serv_ver == 'webaudioapi'">
+      <div class="form-inline form-group" ng-show="appCfg.audioServVer == 'webaudioapi'">
         <input type="range" min="0" max="3" step="0.1" id="volume" ng-model="yvoice.volume">
         音量:{{yvoice.volume}}
       </div>
       <div class="checkbox">
         <label>
-          <input type="checkbox" ng-model="yvoice.rhythm_on">抑揚ON
+          <input type="checkbox" ng-model="yvoice.rhythmOn">抑揚ON
         </label>
       </div>
 
       <div class="form-group">
-        <button class="btn btn-large btn-default pull-right switch-view" id="switch-settings-view" ng-click="ctrl.switch_settings_view()">
+        <button class="btn btn-large btn-default pull-right switch-view" id="switch-settings-view" ng-click="ctrl.switchSettingsView()">
           <span class="icon icon-shuffle"></span>設定画面に切替
         </button>
       </div>
     </form>
 
-    <table class="table-striped message-list" ng-show="app_cfg.show_msg_pane">
+    <table class="table-striped message-list" ng-show="appCfg.showMsgPane">
       <thead>
         <tr>
           <th class="message-item-created">time</th>
@@ -158,7 +158,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable>
+        <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable>
           <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>
@@ -174,10 +174,10 @@
         <input type="text" class="form-control" id="name2" ng-model="yvoice.name" placeholder="name">
       </div>
 
-      <div class="voice_tuna_box" id="voice_tuna_box" ng-show="app_cfg.audio_serv_ver == 'webaudioapi'">
+      <div class="voice_tuna_box" id="voice_tuna_box" ng-show="appCfg.audioServVer == 'webaudioapi'">
         <div class="form-inline form-group">
-          <input type="range" min="0" max="3" step="0.1" id="playback_rate" ng-model="yvoice.playback_rate">
-          playback rate:{{yvoice.playback_rate}}
+          <input type="range" min="0" max="3" step="0.1" id="playback_rate" ng-model="yvoice.playbackRate">
+          playback rate:{{yvoice.playbackRate}}
         </div>
         <div class="form-inline form-group">
           <input type="range" min="-1200" max="1200" step="50" id="detune" ng-model="yvoice.detune">
@@ -186,14 +186,14 @@
 
         <div class="form-inline form-group">
           <small>音声ファイル書込マージン (出力音声ファイルの最後が欠ける時に増やしてください)</small>
-          <input type="number" min="0" max="10000" step="1" id="write_margin_ms" ng-model="yvoice.write_margin_ms" placeholder="write_margin_ms">
+          <input type="number" min="0" max="10000" step="1" id="write_margin_ms" ng-model="yvoice.writeMarginMs" placeholder="writeMarginMs">
         </div>
       </div>
 
       <div class="source_write_box" id="source_write_box">
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="yvoice.source_write">音声記録時にテキストファイルにメッセージを書き出す
+            <input type="checkbox" ng-model="yvoice.sourceWrite">音声記録時にテキストファイルにメッセージを書き出す
           </label>
         </div>
       </div>
@@ -201,29 +201,29 @@
       <div class="seq_write_box" id="seq_write_box">
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="yvoice.seq_write">連番ファイル出力機能を使用する
+            <input type="checkbox" ng-model="yvoice.seqWrite">連番ファイル出力機能を使用する
           </label>
         </div>
-        <div class="form-group" ng-show="yvoice.seq_write">
+        <div class="form-group" ng-show="yvoice.seqWrite">
           <!-- <label>file name prefix</label> -->
-          <input type="text" class="form-control" id="prefix" ng-model="yvoice.seq_write_options.prefix" placeholder="ファイル名のプレフィックス">
+          <input type="text" class="form-control" id="prefix" ng-model="yvoice.seqWriteOptions.prefix" placeholder="ファイル名のプレフィックス">
         </div>
-        <div class="form-group" ng-show="yvoice.seq_write">
+        <div class="form-group" ng-show="yvoice.seqWrite">
           <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
             <span class="icon icon-folder"></span>出力先ディレクトリ選択
           </button>
-          <small>dir: {{yvoice.seq_write_options.dir || '未選択時はデスクトップを使用'}}</small>
+          <small>dir: {{yvoice.seqWriteOptions.dir || '未選択時はデスクトップを使用'}}</small>
         </div>
       </div>
 
       <div class="form-group">
-        <button class="btn btn-large btn-default pull-right switch-view" id="switch-main-view" ng-click="ctrl.switch_main_view()">
+        <button class="btn btn-large btn-default pull-right switch-view" id="switch-main-view" ng-click="ctrl.switchMainView()">
           <span class="icon icon-shuffle"></span>標準の画面に切替
         </button>
       </div>
     </form>
 
-    <table class="table-striped message-list" ng-show="app_cfg.show_msg_pane">
+    <table class="table-striped message-list" ng-show="appCfg.showMsgPane">
       <thead>
         <tr>
           <th class="message-item-created">time</th>
@@ -232,7 +232,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in message_list track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable>
+        <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable>
           <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>

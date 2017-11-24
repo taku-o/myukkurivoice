@@ -1,8 +1,8 @@
 # config valid only for current version of Capistrano
 lock "3.8.1"
 
-set :application, "myukkurivoice"
-set :package_name, "myukkurivoice-darwin-x64"
+set :application, "MYukkuriVoice"
+set :package_name, "MYukkuriVoice-darwin-x64"
 set :repo_url, "git@github.com:taku-o/myukkurivoice.git"
 
 # Default branch is :master
@@ -52,7 +52,7 @@ task :package do
     execute "cd #{application}; git submodule update --init"
 
     # build
-    execute "cd #{application}; electron-packager . myukkurivoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --ignore=\"(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)\" --asar.unpackDir=vendor"
+    execute "cd #{application}; electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --ignore=\"(\.gitignore|\.gitmodules|docs|icns|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)\" --asar.unpackDir=vendor"
 
     # packaging
     execute "cd #{application}; ditto -c -k --sequesterRsrc --keepParent #{package_name} #{package_name}.zip"

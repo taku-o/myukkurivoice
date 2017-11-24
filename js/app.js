@@ -6,10 +6,10 @@ var path = require('path');
 var log = require('electron-log');
 var http = require('http');
 
-var desktop_dir = app.getPath('desktop');
+var desktopDir = app.getPath('desktop');
 
 // application settings
-var app_cfg = require('electron').remote.getGlobal('app_cfg');
+var appCfg = require('electron').remote.getGlobal('appCfg');
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -27,12 +27,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
   .directive('wavDraggable', function($parse) {
     return function(scope, element, attr) {
 
-      var fnc_draglistener = function(value) {
+      var fncDraglistener = function(value) {
         var message = value;
-        if (!message || !message.wav_file_path) {
+        if (!message || !message.wavFilePath) {
           return;
         }
-        var wav_file_path = message.wav_file_path;
+        var wavFilePath = message.wavFilePath;
 
         var el = element[0];
         el.draggable = true;
@@ -40,14 +40,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           'dragstart',
           function(e) {
             e.preventDefault();
-            ipcRenderer.send('ondragstartwav', wav_file_path)
+            ipcRenderer.send('ondragstartwav', wavFilePath)
             return false;
           },
           false
         );
       };
-      scope.$watch('last_wav_file', fnc_draglistener);
-      scope.$watch('message', fnc_draglistener);
+      scope.$watch('lastWavFile', fncDraglistener);
+      scope.$watch('message', fncDraglistener);
     }
 
   })
@@ -62,14 +62,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
 
     // event listener
     $scope.$on('message', function(event, message) {
-      $scope.message_list.unshift(message);
-      while ($scope.message_list.length > 5) {
-        $scope.message_list.pop();
+      $scope.messageList.unshift(message);
+      while ($scope.messageList.length > 5) {
+        $scope.messageList.pop();
       }
       $timeout(function(){ $scope.$apply(); });
     });
-    $scope.$on('wav_generated', function(event, wav_file_info) {
-      $scope.last_wav_file = wav_file_info;
+    $scope.$on('wavGenerated', function(event, wavFileInfo) {
+      $scope.lastWavFile = wavFileInfo;
       $timeout(function(){ $scope.$apply(); });
     });
     $scope.$on('duration', function(event, duration) {
@@ -89,31 +89,31 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
         case 'record':
           document.getElementById('record').click();
           break;
-        case 'from_clipboard':
-          document.getElementById('from_clipboard').click();
+        case 'fromClipboard':
+          document.getElementById('fromClipboard').click();
           break;
-        case 'move_to_source':
+        case 'moveToSource':
           document.getElementById('source').focus();
           break;
-        case 'move_to_encoded':
+        case 'moveToEncoded':
           document.getElementById('encoded').focus();
           break;
-        case 'swich_next_config':
-          var index = $scope.yvoice_list.indexOf($scope.yvoice);
-          if ($scope.yvoice_list.length > index + 1) {
-            $scope.yvoice = $scope.yvoice_list[index + 1];
+        case 'swichNextConfig':
+          var index = $scope.yvoiceList.indexOf($scope.yvoice);
+          if ($scope.yvoiceList.length > index + 1) {
+            $scope.yvoice = $scope.yvoiceList[index + 1];
           } else {
-            $scope.yvoice = $scope.yvoice_list[0];
+            $scope.yvoice = $scope.yvoiceList[0];
           }
           $scope.display = 'main';
           $timeout(function(){ $scope.$apply(); });
           break;
-        case 'swich_previous_config':
-          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+        case 'swichPreviousConfig':
+          var index = $scope.yvoiceList.indexOf($scope.yvoice);
           if (index - 1 >= 0) {
-            $scope.yvoice = $scope.yvoice_list[index - 1];
+            $scope.yvoice = $scope.yvoiceList[index - 1];
           } else {
-            $scope.yvoice = $scope.yvoice_list[$scope.yvoice_list.length - 1];
+            $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
           }
           $scope.display = 'main';
           $timeout(function(){ $scope.$apply(); });
@@ -136,12 +136,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'minus':
-          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          var index = $scope.yvoiceList.indexOf($scope.yvoice);
           ctrl.minus(index);
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'copy':
-          var index = $scope.yvoice_list.indexOf($scope.yvoice);
+          var index = $scope.yvoiceList.indexOf($scope.yvoice);
           ctrl.copy(index);
           $timeout(function(){ $scope.$apply(); });
           break;
@@ -161,75 +161,75 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     });
 
     // application settings
-    var AudioService = app_cfg.audio_serv_ver == 'html5audio'? audioServVer1: audioServVer2;
-    $scope.app_cfg = app_cfg;
+    var AudioService = appCfg.audioServVer == 'html5audio'? audioServVer1: audioServVer2;
+    $scope.appCfg = appCfg;
 
     // init
     var ctrl = this;
     $scope.display = 'main';
-    $scope.phont_list = MasterService.get_phont_list();
+    $scope.phontList = MasterService.getPhontList();
     $scope.yinput = angular.copy(YInput);
-    $scope.message_list = [];
-    $scope.last_wav_file = null;
-    $scope.always_on_top = false;
-    load_data();
+    $scope.messageList = [];
+    $scope.lastWavFile = null;
+    $scope.alwaysOnTop = false;
+    loadData();
 
     // util
-    function load_data() {
-      DataService.load().then(function(data_list) {
-        if (data_list.length < 1) {
+    function loadData() {
+      DataService.load().then(function(dataList) {
+        if (dataList.length < 1) {
           MessageService.info('初期データを読み込みます。');
-          data_list = DataService.initial_data();
+          dataList = DataService.initialData();
         }
-        $scope.yvoice_list = data_list;
-        $scope.yvoice = $scope.yvoice_list[0];
+        $scope.yvoiceList = dataList;
+        $scope.yvoice = $scope.yvoiceList[0];
         $timeout(function(){ $scope.$apply(); });
       });
     };
-    function selected_source() {
+    function selectedSource() {
       var textarea = document.getElementById('source');
       var start = textarea.selectionStart;
       var end = textarea.selectionEnd;
-      var selected_text = textarea.value.substring(start, end);
-      return selected_text;
+      var selectedText = textarea.value.substring(start, end);
+      return selectedText;
     }
-    function selected_encoded() {
+    function selectedEncoded() {
       var textarea = document.getElementById('encoded');
       var start = textarea.selectionStart;
       var end = textarea.selectionEnd;
-      var selected_text = textarea.value.substring(start, end);
-      return selected_text;
+      var selectedText = textarea.value.substring(start, end);
+      return selectedText;
     };
 
     // selected text highlight
-    $scope.source_highlight = {
-      '#619FFF' : "{{ source_highlight['#619FFF'] }}"
+    $scope.sourceHighlight = {
+      '#619FFF' : "{{ sourceHighlight['#619FFF'] }}"
     };
-    $scope.encoded_highlight = {
-      '#619FFF' : "{{ encoded_highlight['#619FFF'] }}"
+    $scope.encodedHighlight = {
+      '#619FFF' : "{{ encodedHighlight['#619FFF'] }}"
     };
-    ctrl.blur_on_source = function() {
-      $scope.source_highlight['#619FFF'] = selected_source();
+    ctrl.blurOnSource = function() {
+      $scope.sourceHighlight['#619FFF'] = selectedSource();
     };
-    ctrl.blur_on_encoded = function() {
-      $scope.encoded_highlight['#619FFF'] = selected_encoded();
+    ctrl.blurOnEncoded = function() {
+      $scope.encodedHighlight['#619FFF'] = selectedEncoded();
     };
-    ctrl.focus_on_source = function() {
+    ctrl.focusOnSource = function() {
       clearSourceSelection();
       clearEncodedSelection();
     };
-    ctrl.focus_on_encoded = function() {
+    ctrl.focusOnEncoded = function() {
       clearSourceSelection();
       clearEncodedSelection();
     };
     function clearSourceSelection() {
-      $scope.source_highlight['#619FFF'] = '';
+      $scope.sourceHighlight['#619FFF'] = '';
       var textarea = document.getElementById('source');
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
     }
     function clearEncodedSelection() {
-      $scope.encoded_highlight['#619FFF'] = '';
+      $scope.encodedHighlight['#619FFF'] = '';
       var textarea = document.getElementById('encoded');
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
@@ -244,7 +244,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
 
       var phont = null;
-      angular.forEach($scope.phont_list, function(value, key) {
+      angular.forEach($scope.phontList, function(value, key) {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) {
@@ -253,16 +253,16 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
 
       var encoded = $scope.yinput.encoded;
-      var _selected_encoded = selected_encoded();
-      if (_selected_encoded) {
-          encoded = _selected_encoded;
-          clearSourceSelection();
+      var _selectedEncoded = selectedEncoded();
+      if (_selectedEncoded) {
+        encoded = _selectedEncoded;
+        clearSourceSelection();
       }
       if (!encoded) {
         var source = $scope.yinput.source;
-        var _selected_source = selected_source();
-        if (_selected_source) {
-          source = _selected_source;
+        var _selectedSource = selectedSource();
+        if (_selectedSource) {
+          source = _selectedSource;
         }
         encoded = AquesService.encode(source);
         if (!encoded) {
@@ -272,24 +272,24 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
 
       // disable rhythm if option is on
-      if (! $scope.yvoice.rhythm_on) {
-        encoded = AppUtilService.disable_rhythm(encoded);
+      if (! $scope.yvoice.rhythmOn) {
+        encoded = AppUtilService.disableRhythm(encoded);
       }
 
       var speed = $scope.yvoice.speed;
-      if (! Number($scope.yvoice.write_margin_ms)===parseInt($scope.yvoice.write_margin_ms)) {
-        $scope.yvoice.write_margin_ms = 150;
+      if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
+        $scope.yvoice.writeMarginMs = 150;
       }
-      var wave_options = {
+      var waveOptions = {
         volume:$scope.yvoice.volume,
-        playback_rate:$scope.yvoice.playback_rate,
+        playbackRate:$scope.yvoice.playbackRate,
         detune:$scope.yvoice.detune,
-        write_margin_ms:$scope.yvoice.write_margin_ms,
+        writeMarginMs:$scope.yvoice.writeMarginMs,
       };
 
       AquesService.wave(encoded, phont, speed).then(
-        function(buf_wav) {
-          return AudioService.play(buf_wav, wave_options);
+        function(bufWav) {
+          return AudioService.play(bufWav, waveOptions);
         },
         function(err) {
           MessageService.error('音声データを作成できませんでした。');
@@ -308,7 +308,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
 
       var phont = null;
-      angular.forEach($scope.phont_list, function(value, key) {
+      angular.forEach($scope.phontList, function(value, key) {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) {
@@ -317,16 +317,16 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
 
       var encoded = $scope.yinput.encoded;
-      var _selected_encoded = selected_encoded();
-      if (_selected_encoded) {
-        encoded = _selected_encoded;
+      var _selectedEncoded = selectedEncoded();
+      if (_selectedEncoded) {
+        encoded = _selectedEncoded;
         clearSourceSelection();
       }
       if (!encoded) {
         var source = $scope.yinput.source;
-        var _selected_source = selected_source();
-        if (_selected_source) {
-          source = _selected_source;
+        var _selectedSource = selectedSource();
+        if (_selectedSource) {
+          source = _selectedSource;
         }
         encoded = AquesService.encode(source);
         if (!encoded) {
@@ -336,74 +336,74 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       }
 
       // disable rhythm if option is on
-      if (! $scope.yvoice.rhythm_on) {
-        encoded = AppUtilService.disable_rhythm(encoded);
+      if (! $scope.yvoice.rhythmOn) {
+        encoded = AppUtilService.disableRhythm(encoded);
       }
 
       var speed = $scope.yvoice.speed;
-      if (! Number($scope.yvoice.write_margin_ms)===parseInt($scope.yvoice.write_margin_ms)) {
-        $scope.yvoice.write_margin_ms = 150;
+      if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
+        $scope.yvoice.writeMarginMs = 150;
       }
-      var wave_options = {
+      var waveOptions = {
         volume:$scope.yvoice.volume,
-        playback_rate:$scope.yvoice.playback_rate,
+        playbackRate:$scope.yvoice.playbackRate,
         detune:$scope.yvoice.detune,
-        write_margin_ms:$scope.yvoice.write_margin_ms,
+        writeMarginMs:$scope.yvoice.writeMarginMs,
       };
 
       // 連番保存
-      if ($scope.yvoice.seq_write) {
-        var dir = $scope.yvoice.seq_write_options.dir;
-        var prefix = $scope.yvoice.seq_write_options.prefix;
+      if ($scope.yvoice.seqWrite) {
+        var dir = $scope.yvoice.seqWriteOptions.dir;
+        var prefix = $scope.yvoice.seqWriteOptions.prefix;
         if (!dir) {
-          dir = desktop_dir;
+          dir = desktopDir;
         }
 
-        SeqFNameService.next_number(dir, prefix)
-          .then(function(next_num) {
-            var next_fname = SeqFNameService.next_fname(prefix, next_num);
-            var file_path = path.join(dir, next_fname);
+        SeqFNameService.nextNumber(dir, prefix)
+          .then(function(nextNum) {
+            var nextFname = SeqFNameService.nextFname(prefix, nextNum);
+            var filePath = path.join(dir, nextFname);
 
             AquesService.wave(encoded, phont, speed).then(
-              function(buf_wav) {
-                AudioService.record(file_path, buf_wav, wave_options);
-                return file_path;
+              function(bufWav) {
+                AudioService.record(filePath, bufWav, waveOptions);
+                return filePath;
               },
               function(err) {
                 MessageService.error('音声データを作成できませんでした。');
                 throw err;
               }
             )
-            .then(function(file_path) {
-              if (!$scope.yvoice.source_write) { return; }
-              var source_fname = AudioSourceService.source_fname(file_path);
-              AudioSourceService.save(source_fname, $scope.yinput.source);
+            .then(function(filePath) {
+              if (!$scope.yvoice.sourceWrite) { return; }
+              var sourceFname = AudioSourceService.sourceFname(filePath);
+              AudioSourceService.save(sourceFname, $scope.yinput.source);
             });
           });
 
       // 通常保存
       } else {
-        ipcRenderer.once('showSaveDialog', function (event, file_path) {
-          if (!file_path) {
+        ipcRenderer.once('showSaveDialog', function (event, filePath) {
+          if (!filePath) {
             MessageService.error('保存先が指定されませんでした。');
             return;
           }
 
           AquesService.wave(encoded, phont, speed)
             .then(
-              function(buf_wav) {
-                AudioService.record(file_path, buf_wav, wave_options);
-                return file_path;
+              function(bufWav) {
+                AudioService.record(filePath, bufWav, waveOptions);
+                return filePath;
               },
               function(err) {
                 MessageService.error('音声データを作成できませんでした。');
                 throw err;
               }
             )
-            .then(function(file_path) {
-              if (!$scope.yvoice.source_write) { return; }
-              var source_fname = AudioSourceService.source_fname(file_path);
-              AudioSourceService.save(source_fname, $scope.yinput.source);
+            .then(function(filePath) {
+              if (!$scope.yvoice.sourceWrite) { return; }
+              var sourceFname = AudioSourceService.sourceFname(filePath);
+              AudioSourceService.save(sourceFname, $scope.yinput.source);
             });
         });
         ipcRenderer.send('showSaveDialog', 'wav');
@@ -416,10 +416,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     ctrl.tutorial = function() {
       if ($scope.display == 'main') {
         MessageService.action('run main tutorial.');
-        IntroService.main_tutorial();
+        IntroService.mainTutorial();
       } else {
         MessageService.action('run settings tutorial.');
-        IntroService.settings_tutorial();
+        IntroService.settingsTutorial();
       }
     };
     ctrl.shortcut = function() {
@@ -437,37 +437,37 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     }
     ctrl.select = function(index) {
       MessageService.action('switch voice config.');
-      $scope.yvoice = $scope.yvoice_list[index];
+      $scope.yvoice = $scope.yvoiceList[index];
       $scope.display = 'main';
     };
     ctrl.plus = function() {
       MessageService.action('add new voice config.');
-      var new_yvoice = DataService.create();
-      $scope.yvoice_list.push(new_yvoice);
+      var newYvoice = DataService.create();
+      $scope.yvoiceList.push(newYvoice);
     };
     ctrl.minus = function(index) {
       MessageService.action('delete voice config.');
-      if ($scope.yvoice_list.length < 2) {
+      if ($scope.yvoiceList.length < 2) {
         MessageService.error('ボイス設定は1件以上必要です。');
         return;
       }
-      $scope.yvoice_list.splice(index, 1);
-      $scope.yvoice = $scope.yvoice_list[0];
+      $scope.yvoiceList.splice(index, 1);
+      $scope.yvoice = $scope.yvoiceList[0];
       $scope.display = 'main';
     };
     ctrl.copy = function(index) {
       MessageService.action('copy and create new voice config.');
-      var original = $scope.yvoice_list[index];
-      var new_yvoice = DataService.copy(original);
-      $scope.yvoice_list.push(new_yvoice);
+      var original = $scope.yvoiceList[index];
+      var newYvoice = DataService.copy(original);
+      $scope.yvoiceList.push(newYvoice);
     };
     ctrl.save = function() {
       MessageService.action('save voice config.');
-      DataService.save($scope.yvoice_list);
+      DataService.save($scope.yvoiceList);
     };
     ctrl.reset = function() {
       MessageService.action('reset all config data.');
-      DataService.clear().then(load_data());
+      DataService.clear().then(loadData());
       $scope.yinput = angular.copy(YInputInitialData);
       $scope.display = 'main';
       clearSourceSelection();
@@ -477,9 +477,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     ctrl.encode = function() {
       MessageService.action('encode source text.');
       var source = $scope.yinput.source;
-      var _selected_source = selected_source();
-      if (_selected_source) {
-        source = _selected_source;
+      var _selectedSource = selectedSource();
+      if (_selectedSource) {
+        source = _selectedSource;
       }
       var encoded = AquesService.encode(source);
       $scope.yinput.encoded = encoded;
@@ -492,7 +492,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       clearSourceSelection();
       clearEncodedSelection();
     };
-    ctrl.from_clipboard = function() {
+    ctrl.fromClipboard = function() {
       MessageService.action('paste clipboard text to source.');
       var text = clipboard.readText();
       if (text) {
@@ -506,7 +506,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
     };
     ctrl.directory = function() {
       MessageService.action('select directory.');
-      if (!$scope.yvoice.seq_write) {
+      if (!$scope.yvoice.seqWrite) {
         MessageService.error('連番ファイル設定が無効です。');
         return;
       }
@@ -515,29 +515,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
         if (!dirs || dirs.length < 1) {
           return;
         }
-        $scope.yvoice.seq_write_options.dir = dirs[0];
+        $scope.yvoice.seqWriteOptions.dir = dirs[0];
         $timeout(function(){ $scope.$apply(); });
       });
-      var opt_dir = $scope.yvoice.seq_write_options.dir;
-      if (!opt_dir) { opt_dir = desktop_dir; }
-      ipcRenderer.send('showDirDialog', opt_dir);
+      var optDir = $scope.yvoice.seqWriteOptions.dir;
+      if (!optDir) { optDir = desktopDir; }
+      ipcRenderer.send('showDirDialog', optDir);
     };
 
-    ctrl.switch_settings_view = function() {
+    ctrl.switchSettingsView = function() {
       MessageService.action('switch to settings view.');
       $scope.display = 'settings';
     };
-    ctrl.switch_main_view = function() {
+    ctrl.switchMainView = function() {
       MessageService.action('switch to main view.');
       $scope.display = 'main';
     };
 
-    ctrl.switch_always_on_top = function() {
-      MessageService.action('switch always_on_top option.');
+    ctrl.switchAlwaysOnTop = function() {
+      MessageService.action('switch alwaysOnTop option.');
       ipcRenderer.send('switchAlwaysOnTop', 'mainWindow');
     };
     ipcRenderer.on('switchAlwaysOnTop', function (event, newflg) {
-      $scope.always_on_top = newflg;
+      $scope.alwaysOnTop = newflg;
       $timeout(function(){ $scope.$apply(); });
     });
 
