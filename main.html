@@ -37,7 +37,7 @@
       </button>
     </div>
 
-    <small>再生時間(秒):{{duration | number:2}}</small>
+    <small id="duration">再生時間(秒):{{duration | number:2}}</small>
     <button class="btn btn-large btn-default" id="always-on-top-btn" ng-click="ctrl.switchAlwaysOnTop()" title="前面表示固定のON/OFF切替">
       <span class="icon icon-lock" ng-class="{active:alwaysOnTop}"></span>
     </button>
@@ -61,9 +61,9 @@
   <div class="pane-sm sidebar">
     <ul class="list-group" id="sidebar-items">
       <li class="list-group-header">
-        <input class="form-control" type="text" ng-model='filterText.name' placeholder="設定一覧絞り込み">
+        <input class="form-control" id="filter-text" type="text" ng-model='filterText.name' placeholder="設定一覧絞り込み">
       </li>
-      <li class="list-group-item" ng-repeat="yvoiceItem in yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == yvoice.id}">
+      <li class="list-group-item voice-config-item" ng-repeat="yvoiceItem in yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == yvoice.id}">
         <div class="media-body" ng-click="ctrl.select($index)">
           <strong>{{ $index }}:{{ yvoiceItem.name }}</strong>
           <div class="btn-group pull-right">
@@ -94,7 +94,7 @@
     </ul>
   </div>
 
-  <div class="pane" ng-show="display == 'main'">
+  <div class="pane" id="main_pane" ng-show="display == 'main'">
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
@@ -167,7 +167,7 @@
     </table>
   </div><!-- main pane -->
 
-  <div class="pane" ng-show="display == 'settings'">
+  <div class="pane" id="settings_pane" ng-show="display == 'settings'">
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
