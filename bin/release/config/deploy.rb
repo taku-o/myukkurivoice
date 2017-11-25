@@ -57,6 +57,9 @@ task :package do
     # packaging
     execute "cd #{application}; ditto -c -k --sequesterRsrc --keepParent #{package_name} #{package_name}.zip"
 
+    # open with finder
+    execute "open #{application}/#{package_name}"
+
     # TODO release
 
   end
