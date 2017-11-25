@@ -22,58 +22,58 @@
   <div class="pane-sm sidebar">
     <nav class="nav-group">
       <h5 class="nav-group-title">ヘルプ</h5>
-      <span class="nav-group-item" ng-class="{active:display == 'about'}" ng-click="display='about'">
+      <span class="nav-group-item help-item" id="menu-about" ng-class="{active:display == 'about'}" ng-click="display='about'">
         <span class="icon icon-help-circled"></span>MYukkuriVoiceについて
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'voicecode'}" ng-click="display='voicecode'">
+      <span class="nav-group-item help-item" id="menu-voicecode" ng-class="{active:display == 'voicecode'}" ng-click="display='voicecode'">
         <span class="icon icon-help-circled"></span>音声記号列
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'trouble'}" ng-click="display='trouble'">
+      <span class="nav-group-item help-item" id="menu-trouble" ng-class="{active:display == 'trouble'}" ng-click="display='trouble'">
         <span class="icon icon-help-circled"></span>トラブルシューティング
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'update'}" ng-click="display='update'">
+      <span class="nav-group-item help-item" id="menu-update" ng-class="{active:display == 'update'}" ng-click="display='update'">
         <span class="icon icon-help-circled"></span>アプリを更新するには
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'uninstall'}" ng-click="display='uninstall'">
+      <span class="nav-group-item help-item" id="menu-uninstall" ng-class="{active:display == 'uninstall'}" ng-click="display='uninstall'">
         <span class="icon icon-help-circled"></span>アンインストールするには
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'backup'}" ng-click="display='backup'">
+      <span class="nav-group-item help-item" id="menu-backup" ng-class="{active:display == 'backup'}" ng-click="display='backup'">
         <span class="icon icon-help-circled"></span>設定をバックアップするには
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'license'}" ng-click="display='license'">
+      <span class="nav-group-item help-item" id="menu-license" ng-class="{active:display == 'license'}" ng-click="display='license'">
         <span class="icon icon-help-circled"></span>AquesTalkのライセンスについて
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
+      <span class="nav-group-item help-item" id="menu-contact" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
 
       <h5 class="nav-group-title">各機能詳細</h5>
-      <span class="nav-group-item" ng-class="{active:display == 'funclist'}" ng-click="display='funclist'">
+      <span class="nav-group-item functions-item" id="menu-funclist" ng-class="{active:display == 'funclist'}" ng-click="display='funclist'">
         <span class="icon icon-help-circled"></span>機能一覧
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'play'}" ng-click="display='play'">
+      <span class="nav-group-item functions-item" id="menu-play" ng-class="{active:display == 'play'}" ng-click="display='play'">
         <span class="icon icon-help-circled"></span>音声を再生する
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'tuna'}" ng-click="display='tuna'">
+      <span class="nav-group-item functions-item" id="menu-tuna" ng-class="{active:display == 'tuna'}" ng-click="display='tuna'">
         <span class="icon icon-help-circled"></span>再生する音声の調整
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'writing'}" ng-click="display='writing'">
+      <span class="nav-group-item functions-item" id="menu-writing" ng-class="{active:display == 'writing'}" ng-click="display='writing'">
         <span class="icon icon-help-circled"></span>音声ファイル保存の設定
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'dataconfig'}" ng-click="display='dataconfig'">
+      <span class="nav-group-item functions-item" id="menu-dataconfig" ng-class="{active:display == 'dataconfig'}" ng-click="display='dataconfig'">
         <span class="icon icon-help-circled"></span>音声再生設定の編集
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
+      <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
-      <span class="nav-group-item" ng-class="{active:display == 'help'}" ng-click="display='help'">
+      <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:display == 'help'}" ng-click="display='help'">
         <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
     </nav>
   </div>
 
   <!-- about -->
-  <div class="pane" ng-show="display == 'about'">
+  <div class="pane" id="about_pane" ng-show="display == 'about'">
     <div class="content">
       <h4>MYukkuriVoiceについて</h4>
       <p>
@@ -91,7 +91,7 @@
   </div>
 
   <!-- voicecode -->
-  <div class="pane" ng-show="display == 'voicecode'">
+  <div class="pane" id="voicecode_pane" ng-show="display == 'voicecode'">
     <div class="content">
       <h4>音声記号列</h4>
       <p>
@@ -106,7 +106,7 @@
   </div>
 
   <!-- trouble -->
-  <div class="pane" ng-show="display == 'trouble'">
+  <div class="pane" id="trouble_pane" ng-show="display == 'trouble'">
     <div class="content">
       <h4>あの機能が無い！</h4>
       <p>
@@ -184,7 +184,7 @@
   </div>
 
   <!-- update -->
-  <div class="pane" ng-show="display == 'update'">
+  <div class="pane" id="update_pane" ng-show="display == 'update'">
     <div class="content">
       <h4>アプリを更新するには</h4>
       <p>
@@ -199,7 +199,7 @@
   </div>
 
   <!-- uninstall -->
-  <div class="pane" ng-show="display == 'uninstall'">
+  <div class="pane" id="uninstall_pane" ng-show="display == 'uninstall'">
     <div class="content">
       <h4>アンインストールするには</h4>
       <p>
@@ -212,7 +212,7 @@
   </div>
 
   <!-- backup -->
-  <div class="pane" ng-show="display == 'backup'">
+  <div class="pane" id="backup_pane" ng-show="display == 'backup'">
     <div class="content">
       <h4>設定をバックアップするには</h4>
       <p>
@@ -226,7 +226,7 @@
   </div>
 
   <!-- license -->
-  <div class="pane" ng-show="display == 'license'">
+  <div class="pane" id="license_pane" ng-show="display == 'license'">
     <div class="content">
       <h3>AquesTalkのライセンスについて</h3>
       <h4>使用ライセンスが必要かどうか</h4>
@@ -312,7 +312,7 @@
   </div>
 
   <!-- contact -->
-  <div class="pane" ng-show="display == 'contact'">
+  <div class="pane" id="contact_pane" ng-show="display == 'contact'">
     <div class="content">
       <h4>連絡先</h4>
       <p>
@@ -327,7 +327,7 @@
   </div>
 
   <!-- funclist -->
-  <div class="pane" ng-show="display == 'funclist'">
+  <div class="pane" id="funclist_pane" ng-show="display == 'funclist'">
     <div class="content">
       <h4>機能一覧</h4>
       <ul>
@@ -350,7 +350,7 @@
   </div>
 
   <!-- play -->
-  <div class="pane" ng-show="display == 'play'">
+  <div class="pane" id="play_pane" ng-show="display == 'play'">
     <div class="content">
       <h4>メッセージの再生</h4>
       <p>
@@ -385,7 +385,7 @@
   </div>
 
   <!-- tuna -->
-  <div class="pane" ng-show="display == 'tuna'">
+  <div class="pane" id="tuna_pane" ng-show="display == 'tuna'">
     <div class="content">
       <h4>再生する音声の調整</h4>
       <p>
@@ -520,7 +520,7 @@
   </div>
 
   <!-- writing -->
-  <div class="pane" ng-show="display == 'writing'">
+  <div class="pane" id="writing_pane" ng-show="display == 'writing'">
     <div class="content">
       <h4>音声記録時にテキストファイルにメッセージを<br>書き出す</h4>
       <p>
@@ -546,7 +546,7 @@
   </div>
 
   <!-- dataconfig -->
-  <div class="pane" ng-show="display == 'dataconfig'">
+  <div class="pane" id="dataconfig_pane" ng-show="display == 'dataconfig'">
     <div class="content">
       <h4>設定を編集する</h4>
       左のメニューのボタンで、音声再生設定を保存・編集できます。<br>
@@ -616,7 +616,7 @@
   </div>
 
   <!-- shortcut -->
-  <div class="pane" ng-show="display == 'shortcut'">
+  <div class="pane" id="shortcut_pane" ng-show="display == 'shortcut'">
     <div class="content">
       <h4>ショートカットキー(メインウィンドウ)</h4>
       <table class="table-striped">
@@ -714,7 +714,7 @@
   </div>
 
   <!-- help -->
-  <div class="pane" ng-show="display == 'help'">
+  <div class="pane" id="help_pane" ng-show="display == 'help'">
     <div class="content">
       <h4>チュートリアル・ヘルプ</h4>
       このアプリケーションには、3つのチュートリアルとヘルプが用意されています。

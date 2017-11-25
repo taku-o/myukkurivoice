@@ -1,13 +1,13 @@
 var Application = require('spectron').Application;
 var assert = require('assert');
 
-describe('application launch', function() {
+describe('mainWindow', function() {
   this.timeout(10000);
 
   beforeEach(function() {
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice'
-    })
+    });
     return this.app.start();
   });
 
@@ -17,7 +17,7 @@ describe('application launch', function() {
     }
   });
 
-  it('open main window at startup', function() {
+  it('open mainWindow at startup', function() {
     return this.app.client
       .getWindowCount().then(function(count) {
         assert.equal(count, 1);
@@ -176,7 +176,12 @@ describe('application launch', function() {
       .getWindowCount().then(function(count) {
         assert.equal(count, 2);
       })
+      .windowByIndex(1)
+      .getTitle().then(function(title) {
+        assert.equal(title, 'MYukkuriVoice Help');
+      })
       // error check
+      .windowByIndex(0)
       .isExisting('tr.message-item.error').then(function(error) {
         assert.ok(! error)
       })
