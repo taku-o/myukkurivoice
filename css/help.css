@@ -5,6 +5,9 @@
 span.nav-group-item span.icon {
   color: blue;
 }
+span.nav-group-item.active {
+  background: #dddddd;
+}
 
 div.content {
   margin-left: 20px;
@@ -31,9 +34,5 @@ li.link {
 
 table.param-table td {
   border-bottom: 1px solid #ddd;
-}
-
-span.icon.active {
-  color: blue;
 }
 
