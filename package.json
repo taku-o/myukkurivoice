@@ -4,7 +4,10 @@
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
   "scripts": {
-    "test": "sh bin/test_rebuild.sh"
+    "packaging": "sh bin/packaging.sh",
+    "release": "sh bin/release.sh",
+    "test": "sh bin/test.sh",
+    "test_rebuild": "sh bin/test_rebuild.sh"
   },
   "keywords": [],
   "homepage": "https://github.com/taku-o/myukkurivoice",

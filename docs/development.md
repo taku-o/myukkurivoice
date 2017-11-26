@@ -16,37 +16,33 @@
     +-- secret                AquesTalk10ライセンスキー取得コード
 ```
 
-## アプリデバッグ実行
+## デバッグ実行
 * デバッグモードでアプリケーションを実行するには、環境変数でDEBUGを設定します。
 
     DEBUG=1 electron .
+
+## パッケージング
+* リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
+
+    npm packaging
+
+* リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
+
+    npm release
+
+## Unit Test
+* 単体テストを実行するには、次のコマンドを実行します。
+* テストコードはtestディレクトリ以下にあります。
+* spectronのmiddleバージョンはelectronのバージョンと合わせる。
+
+    npm test
+    npm test_full
 
 ## using devtron
 * devtronを使用するには、デバッグモードで次のコマンドを実行します。
 
     npm install --save-dev devtron
     require('devtron').install()
-
-## アプリアイコンの作成
-* iconutilで作成します。
-* icns/myukkurivoice.iconset にアイコン画像を入れてコマンド実行してください
-* myukkurivoice.icns がアプリケーションアイコンです。
-
-    cd icns
-    iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
-
-## パッケージング
-* リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
-
-    npm install -g electron-packager
-    bin/packaging.sh
-    # or
-    npm install -g electron-packager
-    electron-packager . myukkurivoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --ignore="(\.gitignore|\.gitmodules|docs|icns|test|README.md|vendor/aqk2k_mac|vendor/aqtk1-mac|vendor/aqtk2-mac)" --asar.unpackDir=vendor
-
-* リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
-
-    bin/relase.sh
 
 ## asarの解凍
 * asarでパッケージングされたファイルを解凍するには、asarコマンドを実行します
@@ -67,12 +63,20 @@
 ## install electron and command
     npm install -g electron
 
+## install package command
+    npm install -g electron-packager
+
 ## install capistrano
     gem install bundler
     bundle install
 
+## install test library
+    npm install -g spectron@3.7.2
+    npm install -g mocha
+
 ## using library
-* node_modules以下に入っているので、このコマンドは実行しなくて良い。
+* native関連のバイナリ管理がキツいので、node_modules以下にそのまま入れる。
+* このコマンドは実行しなくて良い。
 
     npm install --save angular
     npm install --save angular-input-highlight
@@ -90,21 +94,22 @@
     npm install --save tunajs
     npm install --save about-window
 
-## Module version mismatch. Expected 50, got 51
+### Module version mismatch. Expected 50, got 51
 * もし、この類のエラーに遭遇したら、次のようなコマンドを実行してrebuildする
 
     npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
 
-## create animation gif for README
+# その他
+## アプリアイコンの作成
+* iconutilで作成します。
+* icns/myukkurivoice.iconset にアイコン画像を入れてコマンド実行してください
+* myukkurivoice.icns がアプリケーションアイコンです。
+
+    cd icns
+    iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
+
+## README用のアニメーションGIFの作成
     brew install ffmpeg
     ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
 
-## Unit Test
-* 単体テストを実行するには、次のコマンドを実行します。
-* テストコードはtestディレクトリ以下にあります。
-* spectronのmiddleバージョンはelectronのバージョンと合わせる。
-
-    npm install -g spectron@3.7.2
-    npm install -g mocha
-    bin/test.sh
 
