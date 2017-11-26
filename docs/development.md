@@ -24,19 +24,19 @@
 ## パッケージング
 * リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
 
-    npm packaging
+    sh bin/packaging.sh
 
 * リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
 
-    npm release
+    sh bin/release.sh
 
 ## Unit Test
 * 単体テストを実行するには、次のコマンドを実行します。
 * テストコードはtestディレクトリ以下にあります。
 * spectronのmiddleバージョンはelectronのバージョンと合わせる。
 
-    npm test
-    npm test_full
+    sh bin/test_rebuild.sh
+    sh bin/test.sh
 
 ## using devtron
 * devtronを使用するには、デバッグモードで次のコマンドを実行します。
