@@ -22,3 +22,7 @@ span.splitter {
   margin-right: 10px;
 }
 
+input.caution {
+  background: #ffeeee;
+}
+

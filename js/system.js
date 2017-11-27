@@ -1,5 +1,6 @@
 var ipcRenderer = require('electron').ipcRenderer
 var log = require('electron-log');
+var cryptico = require("cryptico.js");
 
 // application settings
 var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
@@ -12,15 +13,18 @@ process.on('uncaughtException', function(err) {
 });
 
 // application config app
-angular.module('yvoiceSystem', [])
+angular.module('yvoiceSystem', ['yvoiceLicenseService'])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  .controller('SystemController', ['$scope', '$timeout', function($scope, $timeout) {
+  .controller('SystemController', ['$scope', '$timeout', 'LicenseService',
+      function($scope, $timeout, LicenseService) {
+
     // init
     var ctrl = this;
     $timeout(function(){ $scope.$apply(); });
     $scope.appCfg = appCfg;
+    $scope.aq10UseKey = LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted);
 
     // actions
     ctrl.cancel = function() {
@@ -29,11 +33,14 @@ angular.module('yvoiceSystem', [])
       window.close();
     };
     ctrl.save = function() {
+      var aq10UseKeyEncrypted = LicenseService.encrypt($scope.appCfg.passPhrase, $scope.aq10UseKey);
       var options = {
         'mainWindow':$scope.appCfg.mainWindow,
         'audioServVer':$scope.appCfg.audioServVer,
         'showMsgPane':$scope.appCfg.showMsgPane,
-        'acceptFirstMouse':$scope.appCfg.acceptFirstMouse
+        'acceptFirstMouse':$scope.appCfg.acceptFirstMouse,
+        'passPhrase':$scope.appCfg.passPhrase,
+        'aq10UseKeyEncrypted':aq10UseKeyEncrypted
       };
       ipcRenderer.send('updateAppConfig', options);
     };

@@ -8,14 +8,13 @@ var temp         = require('temp').track();
 var path         = require('path');
 var exec         = require('child_process').exec;
 var WaveRecorder = require('wave-recorder');
-var cryptico     = require("cryptico.js");
 
 var app = require('electron').remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 
 // angular service
-angular.module('yvoiceService', ['yvoiceModel'])
+angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
   .factory('MessageService', ['$rootScope', function($rootScope) {
     return {
       action: function(message) {
@@ -163,7 +162,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   })
-  .factory('AquesService', ['$q', 'MessageService', 'AppUtilService', function($q, MessageService, AppUtilService) {
+  .factory('AquesService', ['$q', 'MessageService', 'LicenseService', function($q, MessageService, LicenseService) {
     var ptr_void  = ref.refType(ref.types.void);
     var ptr_int   = ref.refType(ref.types.int);
     var ptr_char  = ref.refType(ref.types.char);
@@ -261,6 +260,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       return '';
     }
 
+    var _isAquesTalk10LicesekeySet = false;
     return {
       encode: function(source) {
         if (!source) {
@@ -291,7 +291,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         fn_AqKanji2Koe_Release(aqKanji2Koe);
         return encoded;
       },
-      wave: function(encoded, phont, speed) {
+      wave: function(encoded, phont, speed, options) {
         var d = $q.defer();
         if (!encoded) {
           MessageService.syserror('音記号列が入力されていません。');
@@ -363,21 +363,35 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         // version 10
         } else if (phont.version == 'talk10') {
-          // set license key
-          AppUtilService.lisenceKey('aquestalk10-devkey').then(
+          // get and set aquesTalk10 developer key
+          LicenseService.consumerKey('aquesTalk10DevKey').then(
           function(lisenceKey) {
-            var devKey = fn_AquesTalk10_SetDevKey(lisenceKey);
-            if (devKey != 0) {
-              MessageService.syserror('AquesTalk10 dev lisence keyの設定に失敗しました。');
-              d.reject(null); return;
-            }
+            // set license key if is not set.
+            if (! _isAquesTalk10LicesekeySet) {
+              var devKey = fn_AquesTalk10_SetDevKey(lisenceKey);
+              if (devKey != 0) {
+                MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');
+                d.reject(null); return;
+              }
 
-          AppUtilService.lisenceKey('aquestalk10-usekey').then(
-          function(lisenceKey) {
-            var usrKey = fn_AquesTalk10_SetUsrKey(lisenceKey);
-            if (usrKey != 0) {
-              MessageService.syserror('AquesTalk10 use lisence keyの設定に失敗しました。');
-              d.reject(null); return;
+              // get and set aquesTalk10 use key
+              var passPhrase = options.passPhrase;
+              var encryptedUseKey = options.aq10UseKeyEncrypted;
+              var aquesTalk10UseKey = LicenseService.decrypt(passPhrase, encryptedUseKey);
+              if (encryptedUseKey && !aquesTalk10UseKey) {
+                MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください');
+                d.reject(null); return;
+              }
+
+              if (encryptedUseKey) {
+                var usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
+                if (usrKey != 0) {
+                  MessageService.error('AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。' + aquesTalk10UseKey);
+                  d.reject(null); return;
+                }
+                MessageService.info('AquesTalk10使用ライセンスキーを設定しました。');
+              }
+              _isAquesTalk10LicesekeySet = true;
             }
 
             // create struct
@@ -407,12 +421,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
             d.resolve(managedBuf);
           },
           function(err) {
-            MessageService.syserror('AquesTalk10 use lisence keyの読み込みに失敗しました。', err);
-            d.reject(err);
-          });
-          },
-          function(err) {
-            MessageService.syserror('AquesTalk10 dev lisence keyの読み込みに失敗しました。', err);
+            MessageService.syserror('AquesTalk10開発ライセンスキーの読み込みに失敗しました。', err);
             d.reject(err);
           });
         }
@@ -704,8 +713,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AppUtilService', ['$rootScope', '$q', function($rootScope, $q) {
-    var lisenceKeyCache = {};
+  .factory('AppUtilService', ['$rootScope', function($rootScope) {
     return {
       disableRhythm: function(encoded) {
         return encoded.replace(/['\/]/g, '');
@@ -713,219 +721,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
       reportDuration: function(duration) {
         $rootScope.$broadcast("duration", duration);
       },
-      lisenceKey: function(lisenceType) {
-        var d = $q.defer();
-
-        // get key from cache if exists
-        if (lisenceKeyCache[lisenceType]) {
-          d.resolve(lisenceKeyCache[lisenceType]);
-          return d.promise;
-        }
-
-        // get encrypted license key
-        var cmdOptions = {};
-        var secretCmd = unpackedPath + '/vendor/secret';
-        exec(secretCmd + ' -license='+lisenceType, cmdOptions, (err, stdout, stderr) => {
-          if (err) {
-            log.info(lisenceType+ ' license key get failed. ' + err);
-            d.reject(err); return;
-          }
-
-          // decrypted message
-          var passPhrase = "Ulwvvr2k4/w47YX9e1Bv9iIbm2rgQUzGhkjxKV4L/Ajm7mTdVFIy9WI3JsYT5jDo1bbhESx3SO5YvjLf";
-          var bits = 1024;
-          var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
-          var decryptionResult = cryptico.decrypt(stdout, mattsRSAkey);
-          if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') {
-            // do nothing
-          } else {
-            log.info(lisenceType+ ' license key decrypted failed. ');
-            d.reject(null); return;
-          }
-          var decrypted = decryptionResult.plaintext;
-          lisenceKeyCache[lisenceType] = decrypted;
-          d.resolve(decrypted);
-        });
-        return d.promise;
-      }
     }
-  }])
-  .factory('IntroService', function() {
-    return {
-      'mainTutorial': function() {
-        var intro = introJs();
-        intro.setOption('showProgress', true);
-        intro.setOptions({
-          steps: [
-            {
-              element: '#source',
-              intro: '発声したいメッセージを入力してください'
-            },
-            {
-              element: '#encode',
-              intro: '音記号列へ変換します'
-            },
-            {
-              element: '#encoded',
-              intro: 'すると、メッセージが音記号列に変換した結果が入ります<br>細かい発声の調節をする時はここを変更します'
-            },
-            {
-              element: '#play',
-              intro: '音記号列を発声させます'
-            },
-            {
-              element: '#source',
-              intro: '音声再生時に音記号列が入力されていない場は、ここに入力したメッセージから音声を作るので<br>音記号列は入力しなくても問題ありません'
-            },
-            {
-              element: '#stop',
-              intro: '音声の再生を停止します'
-            },
-            {
-              element: '#record',
-              intro: '発声が問題なければ、このボタンで音声データを保存できます'
-            },
-            {
-              element: '#wav-draggable-btn',
-              intro: '保存した音声データは、ここからドラッグアンドドロップで動画編集ソフトに直接渡すこともできます'
-            },
-            {
-              element: '#phont',
-              intro: '声を変えたければここを変更します'
-            },
-            {
-              element: '#speed',
-              position: 'top',
-              intro: '声の早さの調節はここです'
-            },
-            {
-              element: '#volume',
-              position: 'top',
-              intro: '声の音量の調節はこちらです'
-            },
-            {
-              element: '#switch-settings-view',
-              position: 'top',
-              intro: 'このボタンで音声ファイルの保存方法設定画面に移ります'
-            },
-            {
-              element: '#switch-settings-view',
-              position: 'top',
-              intro: '声の早さ音量以外の、多用しない系統の音声設定も設定画面にあります'
-            },
-            {
-              element: '#always-on-top-btn',
-              intro: 'このボタンを押すと、ウインドウを常に最前面で表示するようになります'
-            },
-            {
-              element: '#tutorial',
-              intro: 'チュートリアルは画面ごとに異なりますよ'
-            },
-            {
-              element: '#save',
-              intro: '変更した設定はここで保存できます'
-            },
-            {
-              element: '#name',
-              intro: '設定には名前をつけられます'
-            },
-            {
-              element: '#sidebar-items',
-              position: 'right',
-              intro: '設定はこのあたりで、増やしたり、減らしたりできます',
-            },
-            {
-              element: '#sidebar-items',
-              position: 'right',
-              intro: '設定がおかしくなった時はメニューに「設定オールリセット」があります',
-            },
-            {
-              element: '#tutorial',
-              intro: 'チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください'
-            }
-          ]
-        });
-        intro.start();
-      },
-      'settingsTutorial': function() {
-        var intro = introJs();
-        intro.setOption('showProgress', true);
-        intro.setOptions({
-          steps: [
-            {
-              element: '#voice_tuna_box',
-              intro: '音声の質の調整はここで行います'
-            },
-            {
-              element: '#play',
-              intro: '設定画面からでも音声は再生できるので、再生しながら音声を調整してみてください'
-            },
-            {
-              element: '#source_write_box',
-              intro: 'ここのチェックを入れると、音声再生時に元のメッセージも保存するようになります'
-            },
-            {
-              element: '#seq_write_box',
-              intro: 'このチェックを入れると、ファイルに連番をつけて保存するようになります。<br>出力先のディレクトリと、ファイル名を指定できます。'
-            },
-            {
-              element: '#switch-main-view',
-              intro: 'このボタンで標準の画面に戻ります'
-            },
-            {
-              element: '#tutorial',
-              intro: 'チュートリアルは画面ごとに異なりますよ'
-            },
-            {
-              element: '#save',
-              intro: '変更した設定はここで保存できます'
-            },
-            {
-              element: '#name2',
-              intro: 'この設定は音声の出力設定ごとに共有です'
-            },
-            {
-              element: '#tutorial',
-              intro: 'チュートリアルは以上です'
-            }
-          ]
-        });
-        intro.start();
-      },
-      'shortcut': function() {
-        var intro = introJs();
-        intro.setOption('showProgress', true);
-        intro.setOptions({
-          steps: [
-            {
-              element: '#btn-group-audio',
-              intro: 'Command + P で音声再生<br>Command + W で音声再生の停止<br>Command + S で音声保存'
-            },
-            {
-              element: '#source',
-              intro: 'Command + ↑ でメッセージ入力欄にカーソル移動'
-            },
-            {
-              element: '#encoded',
-              intro: 'Command + ↓ で音記号列入力欄にカーソル移動'
-            },
-            {
-              element: '#encode',
-              intro: 'Command + → で音記号列へ変換'
-            },
-            {
-              element: '#from_clipboard',
-              intro: 'Command + D でクリップボードに入っているテキストをメッセージ入力欄にコピーします'
-            },
-            {
-              element: '#sidebar-items',
-              position: 'right',
-              intro: 'Command + ← で次(下)の設定に切り替え<br>Command + Shift + ← で前(上)の設定に切り替え'
-            }
-          ]
-        });
-        intro.start();
-      }
-    }
-  });
+  }]);
 
