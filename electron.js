@@ -597,6 +597,10 @@ function showSystemWindow() {
     log.error('system:event:crashed');
   });
 }
+// showSystemWindow
+ipcMain.on('showSystemWindow', function (event, message) {
+  showSystemWindow();
+});
 
 // drag out wav file
 ipcMain.on('ondragstartwav', function (event, filePath) {

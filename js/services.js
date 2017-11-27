@@ -378,21 +378,19 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
               var passPhrase = options.passPhrase;
               var encryptedUseKey = options.aq10UseKeyEncrypted;
               var aquesTalk10UseKey = LicenseService.decrypt(passPhrase, encryptedUseKey);
-              if (!encryptedUseKey) {
-                MessageService.error('AquesTalk10の機能を利用するには環境設定で使用ライセンスキーを設定する必要があります。');
-                d.reject(null); return;
-              }
-              if (!aquesTalk10UseKey) {
-                MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを入れ直してください');
+              if (encryptedUseKey && !aquesTalk10UseKey) {
+                MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください');
                 d.reject(null); return;
               }
 
-              var usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
-              if (usrKey != 0) {
-                MessageService.error('AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。' + aquesTalk10UseKey);
-                d.reject(null); return;
+              if (encryptedUseKey) {
+                var usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
+                if (usrKey != 0) {
+                  MessageService.error('AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。' + aquesTalk10UseKey);
+                  d.reject(null); return;
+                }
+                MessageService.info('AquesTalk10使用ライセンスキーを設定しました。');
               }
-
               _isAquesTalk10LicesekeySet = true;
             }
 
