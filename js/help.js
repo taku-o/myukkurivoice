@@ -1,4 +1,5 @@
 var app = require('electron').remote.app;
+var ipcRenderer = require('electron').ipcRenderer;
 var log = require('electron-log');
 
 var homeDir = app.getPath('home');
@@ -27,6 +28,9 @@ angular.module('yvoiceAppHelp', [])
     ctrl.showItemInFolder = function(path) {
       var expanded = path.replace('\$HOME', homeDir);
       require('electron').shell.showItemInFolder(expanded);
+    };
+    ctrl.showSystemWindow = function() {
+      ipcRenderer.send('showSystemWindow', 'system');
     };
   }]);
 
