@@ -11,7 +11,7 @@ angular.module('yvoiceLicenseService', [])
     var consumerKeyCache = {};
 
     // encrypt decrypt
-    var encrypt = function(passPhrase, encryptedKey) {
+    var encrypt = function(passPhrase, plainKey) {
         var bits = 1024;
         var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
         var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
