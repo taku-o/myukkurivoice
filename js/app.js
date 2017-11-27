@@ -19,7 +19,7 @@ process.on('uncaughtException', function(err) {
 });
 
 // angular app
-angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
+angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroService', 'yvoiceModel'])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])

@@ -35,5 +35,24 @@ describe('settingsView', function() {
       })
   });
 
+  it('settingsView tutorial', function() {
+    return this.app.client
+      .click('#switch-settings-view')
+      .isVisible('.introjs-tooltip').then(function(isVisible) {
+        assert.ok(! isVisible);
+      })
+      .click('#tutorial')
+      .isVisible('.introjs-tooltip').then(function(isVisible) {
+        assert.ok(isVisible);
+      })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
+  });
+
 });
 

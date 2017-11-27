@@ -31,7 +31,8 @@ describe('helpWindow', function() {
   it('helpWindow menu list', function() {
     return this.client
       .elements('.nav-group-item.help-item').then(function(response) {
-        assert.equal(response.value.length, 8);
+        //assert.equal(response.value.length, 8);
+        assert.equal(response.value.length, 7);
       })
       .elements('.nav-group-item.functions-item').then(function(response) {
         assert.equal(response.value.length, 7);
@@ -58,9 +59,9 @@ describe('helpWindow', function() {
       .isVisible('#backup_pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#license_pane').then(function(isVisible) {
-        assert.ok(! isVisible);
-      })
+      //.isVisible('#license_pane').then(function(isVisible) {
+      //  assert.ok(! isVisible);
+      //})
       .isVisible('#contact_pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
@@ -109,10 +110,10 @@ describe('helpWindow', function() {
       .isVisible('#backup_pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
-      .click('#menu-license')
-      .isVisible('#license_pane').then(function(isVisible) {
-        assert.ok(isVisible);
-      })
+      //.click('#menu-license')
+      //.isVisible('#license_pane').then(function(isVisible) {
+      //  assert.ok(isVisible);
+      //})
       .click('#menu-contact')
       .isVisible('#contact_pane').then(function(isVisible) {
         assert.ok(isVisible);

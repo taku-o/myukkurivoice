@@ -13,36 +13,18 @@ process.on('uncaughtException', function(err) {
 });
 
 // application config app
-angular.module('yvoiceSystem', [])
+angular.module('yvoiceSystem', ['yvoiceLicenseService'])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  .controller('SystemController', ['$scope', '$timeout', function($scope, $timeout) {
-    // encrypt / decrypt
-    this.encrypt = function(passPhrase, plainKey) {
-      var bits = 1024;
-      var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
-      var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
-      var encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
-      return encryptionResult.cipher;
-    };
-    this.decrypt = function(passPhrase, encryptedKey) {
-      var bits = 1024;
-      var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
-      var decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
-      if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') {
-        // ok
-      } else {
-        return '';
-      }
-      return decryptionResult.plaintext;
-    };
+  .controller('SystemController', ['$scope', '$timeout', 'LicenseService',
+      function($scope, $timeout, LicenseService) {
 
     // init
     var ctrl = this;
     $timeout(function(){ $scope.$apply(); });
     $scope.appCfg = appCfg;
-    $scope.aq10UseKey = this.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted);
+    $scope.aq10UseKey = LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted);
 
     // actions
     ctrl.cancel = function() {
@@ -51,7 +33,7 @@ angular.module('yvoiceSystem', [])
       window.close();
     };
     ctrl.save = function() {
-      var aq10UseKeyEncrypted = this.decrypt($scope.appCfg.passPhrase, $scope.aq10UseKey);
+      var aq10UseKeyEncrypted = LicenseService.encrypt($scope.appCfg.passPhrase, $scope.aq10UseKey);
       var options = {
         'mainWindow':$scope.appCfg.mainWindow,
         'audioServVer':$scope.appCfg.audioServVer,
