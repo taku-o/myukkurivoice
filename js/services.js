@@ -260,6 +260,7 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
       return '';
     }
 
+    var _isAquesTalk10LicesekeySet = false;
     return {
       encode: function(source) {
         if (!source) {
@@ -365,29 +366,34 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
           // get and set aquesTalk10 developer key
           LicenseService.consumerKey('aquesTalk10DevKey').then(
           function(lisenceKey) {
-            var devKey = fn_AquesTalk10_SetDevKey(lisenceKey);
-            if (devKey != 0) {
-              MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');
-              d.reject(null); return;
-            }
+            // set license key if is not set.
+            if (! _isAquesTalk10LicesekeySet) {
+              var devKey = fn_AquesTalk10_SetDevKey(lisenceKey);
+              if (devKey != 0) {
+                MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');
+                d.reject(null); return;
+              }
 
-            // get and set aquesTalk10 use key
-            var passPhrase = options.passPhrase;
-            var encryptedUseKey = options.aq10UseKeyEncrypted;
-            var aquesTalk10UseKey = LicenseService.decrypt(passPhrase, encryptedUseKey);
-            if (!encryptedUseKey) {
-              MessageService.error('AquesTalk10の機能を利用するには環境設定で使用ライセンスキーを設定する必要があります。');
-              d.reject(null); return;
-            }
-            if (!aquesTalk10UseKey) {
-              MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを入れ直してください');
-              d.reject(null); return;
-            }
+              // get and set aquesTalk10 use key
+              var passPhrase = options.passPhrase;
+              var encryptedUseKey = options.aq10UseKeyEncrypted;
+              var aquesTalk10UseKey = LicenseService.decrypt(passPhrase, encryptedUseKey);
+              if (!encryptedUseKey) {
+                MessageService.error('AquesTalk10の機能を利用するには環境設定で使用ライセンスキーを設定する必要があります。');
+                d.reject(null); return;
+              }
+              if (!aquesTalk10UseKey) {
+                MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを入れ直してください');
+                d.reject(null); return;
+              }
 
-            var usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
-            if (usrKey != 0) {
-              MessageService.error('AquesTalk10使用ライセンスキーが正しくありません。' + aquesTalk10UseKey);
-              d.reject(null); return;
+              var usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
+              if (usrKey != 0) {
+                MessageService.error('AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。' + aquesTalk10UseKey);
+                d.reject(null); return;
+              }
+
+              _isAquesTalk10LicesekeySet = true;
             }
 
             // create struct
