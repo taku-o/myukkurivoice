@@ -160,7 +160,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable>
+        <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}">
           <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>
@@ -234,7 +234,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}" wav-draggable>
+        <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}">
           <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
           <td class="message-item-type">{{message.type}}</td>
           <td class="message-item-body">{{message.body}}</td>

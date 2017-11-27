@@ -27,7 +27,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
   .directive('wavDraggable', function($parse) {
     return function(scope, element, attr) {
 
-      var fncDraglistener = function(value) {
+      var f;
+      scope.$watch('lastWavFile', function(value) {
         var message = value;
         if (!message || !message.wavFilePath) {
           return;
@@ -36,20 +37,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
 
         var el = element[0];
         el.draggable = true;
-        el.addEventListener(
-          'dragstart',
-          function(e) {
-            e.preventDefault();
-            ipcRenderer.send('ondragstartwav', wavFilePath)
-            return false;
-          },
-          false
-        );
-      };
-      scope.$watch('lastWavFile', fncDraglistener);
-      scope.$watch('message', fncDraglistener);
-    }
 
+        // replace event listener
+        if (f) {
+          el.removeEventListener('dragstart', f, false);
+        }
+        f = function(e) {
+          e.preventDefault();
+          ipcRenderer.send('ondragstartwav', wavFilePath)
+          return false;
+        };
+        el.addEventListener('dragstart', f, false);
+      });
+    }
   })
   // controller
   .controller('MainController',
