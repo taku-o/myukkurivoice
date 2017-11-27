@@ -21,6 +21,7 @@ angular.module('yvoiceSystem', [])
     var ctrl = this;
     $timeout(function(){ $scope.$apply(); });
     $scope.appCfg = appCfg;
+    $scope.aq10UseKey = appCfg;
 
     // actions
     ctrl.cancel = function() {
