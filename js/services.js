@@ -704,8 +704,77 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   }])
-  .factory('AppUtilService', ['$rootScope', '$q', function($rootScope, $q) {
-    var lisenceKeyCache = {};
+  .factory('LicenseService', ['$q', function($q) {
+    var consumerKeyCache = {};
+    return {
+      encrypt: function(passPhrase, plainKey) {
+        var bits = 1024;
+        var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+        var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
+
+        var encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
+        return encryptionResult.cipher;
+      },
+      decrypt: function(passPhrase, encryptedKey) {
+        var bits = 1024;
+        var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+
+        var decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
+        if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') {
+          // ok
+        } else {
+          return '';
+        }
+        return decryptionResult.plaintext
+      },
+      consumerKey: function(lisenceType) {
+        var d = $q.defer();
+
+        // get key from cache if exists
+        if (consumerKey[lisenceType]) {
+          d.resolve(consumerKey[lisenceType]);
+          return d.promise;
+        }
+
+        // get encrypted consumer key
+        var cmdOptions = {};
+        var secretCmd = unpackedPath + '/vendor/secret';
+        // passPhrase
+        exec(secretCmd + ' -key=passPhrase', cmdOptions, (err, stdout, stderr) => {
+          if (err) {
+            log.info(lisenceType+ ' consumer key get failed. ' + err);
+            d.reject(err); return;
+          }
+          var devPassPhrase = stdout;
+        // lisenceKey
+        exec(secretCmd + ' -key='+lisenceType, cmdOptions, (err, stdout, stderr) => {
+          if (err) {
+            log.info(lisenceType+ ' consumer key get failed. ' + err);
+            d.reject(err); return;
+          }
+          var encryptedKey = stdout;
+
+        // decrypted message
+        var bits = 1024;
+        var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+        var decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
+        if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') {
+          // do nothing
+        } else {
+          log.info(lisenceType+ ' consumer key decrypted failed. ');
+          d.reject(null); return;
+        }
+        var decrypted = decryptionResult.plaintext;
+        consumerKeyCache[lisenceType] = decrypted;
+        d.resolve(decrypted);
+
+        });
+        });
+        return d.promise;
+      }
+    }
+  })
+  .factory('AppUtilService', ['$rootScope', function($rootScope) {
     return {
       disableRhythm: function(encoded) {
         return encoded.replace(/['\/]/g, '');
@@ -713,41 +782,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
       reportDuration: function(duration) {
         $rootScope.$broadcast("duration", duration);
       },
-      lisenceKey: function(lisenceType) {
-        var d = $q.defer();
-
-        // get key from cache if exists
-        if (lisenceKeyCache[lisenceType]) {
-          d.resolve(lisenceKeyCache[lisenceType]);
-          return d.promise;
-        }
-
-        // get encrypted license key
-        var cmdOptions = {};
-        var secretCmd = unpackedPath + '/vendor/secret';
-        exec(secretCmd + ' -license='+lisenceType, cmdOptions, (err, stdout, stderr) => {
-          if (err) {
-            log.info(lisenceType+ ' license key get failed. ' + err);
-            d.reject(err); return;
-          }
-
-          // decrypted message
-          var passPhrase = "Ulwvvr2k4/w47YX9e1Bv9iIbm2rgQUzGhkjxKV4L/Ajm7mTdVFIy9WI3JsYT5jDo1bbhESx3SO5YvjLf";
-          var bits = 1024;
-          var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
-          var decryptionResult = cryptico.decrypt(stdout, mattsRSAkey);
-          if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') {
-            // do nothing
-          } else {
-            log.info(lisenceType+ ' license key decrypted failed. ');
-            d.reject(null); return;
-          }
-          var decrypted = decryptionResult.plaintext;
-          lisenceKeyCache[lisenceType] = decrypted;
-          d.resolve(decrypted);
-        });
-        return d.promise;
-      }
     }
   }])
   .factory('IntroService', function() {

@@ -8,6 +8,7 @@ const Menu = electron.Menu;
 const localShortcut = require('electron-localshortcut');
 const log = require('electron-log');
 const path = require('path');
+const crypto = require('crypto');
 const openAboutWindow = require('about-window').default;
 const Config = require('electron-config');
 
@@ -19,10 +20,12 @@ var appCfg = {
   audioServVer: 'webaudioapi', // html5audio or webaudioapi
   showMsgPane: true,
   acceptFirstMouse: false,
+  passPhrase: crypto.randomBytes(16).toString('hex'),
+  aq10UseKeyEncrypted: '',
   debug: process.env.DEBUG
 };
 var config = new Config();
-['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse'].forEach(function(k){
+['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
   if (config.has(k)) { appCfg[k] = config.get(k); }
 });
 global.appCfg = appCfg;
@@ -373,13 +376,15 @@ function updateAppConfig(options) {
   var {x,y} = mainWindow.getBounds();
   options.mainWindow.x = x;
   options.mainWindow.y = y;
-  config.set('mainWindow',       options.mainWindow);
-  config.set('audioServVer',     options.audioServVer);
-  config.set('showMsgPane',      options.showMsgPane);
-  config.set('acceptFirstMouse', options.acceptFirstMouse);
-  config.set('debug',            options.debug);
+  config.set('mainWindow',          options.mainWindow);
+  config.set('audioServVer',        options.audioServVer);
+  config.set('showMsgPane',         options.showMsgPane);
+  config.set('acceptFirstMouse',    options.acceptFirstMouse);
+  config.set('passPhrase',          options.passPhrase);
+  config.set('aq10UseKeyEncrypted', options.aq10UseKeyEncrypted);
+  config.set('debug',               options.debug);
 
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse'].forEach(function(k){
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
     if (config.has(k)) { appCfg[k] = config.get(k); }
   });
   global.appCfg = appCfg;
@@ -401,13 +406,15 @@ ipcMain.on('updateAppConfig', function (event, options) {
 
 // resetAppConfig
 function resetAppConfig() {
-  config.set('mainWindow',       { width: 800, height: 665, x:null, y:null });
-  config.set('audioServVer',     'webaudioapi');
-  config.set('showMsgPane',      true);
-  config.set('acceptFirstMouse', false);
-  config.set('debug',            false);
+  config.set('mainWindow',          { width: 800, height: 665, x:null, y:null });
+  config.set('audioServVer',        'webaudioapi');
+  config.set('showMsgPane',         true);
+  config.set('acceptFirstMouse',    false);
+  config.set('passPhrase',          crypto.randomBytes(16).toString('hex'));
+  config.set('aq10UseKeyEncrypted', '');
+  config.set('debug',               false);
 
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse'].forEach(function(k){
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
     if (config.has(k)) { appCfg[k] = config.get(k); }
   });
   global.appCfg = appCfg;
