@@ -280,6 +280,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
         $scope.yvoice.writeMarginMs = 150;
       }
+      var keyOptions = {
+        passPhrase:appCfg.passPhrase,
+        aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
+      };
       var waveOptions = {
         volume:$scope.yvoice.volume,
         playbackRate:$scope.yvoice.playbackRate,
@@ -287,7 +291,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
         writeMarginMs:$scope.yvoice.writeMarginMs,
       };
 
-      AquesService.wave(encoded, phont, speed).then(
+      AquesService.wave(encoded, phont, speed, keyOptions).then(
         function(bufWav) {
           return AudioService.play(bufWav, waveOptions);
         },
@@ -344,6 +348,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
       if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
         $scope.yvoice.writeMarginMs = 150;
       }
+      var keyOptions = {
+        passPhrase:appCfg.passPhrase,
+        aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
+      };
       var waveOptions = {
         volume:$scope.yvoice.volume,
         playbackRate:$scope.yvoice.playbackRate,
@@ -364,7 +372,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
             var nextFname = SeqFNameService.nextFname(prefix, nextNum);
             var filePath = path.join(dir, nextFname);
 
-            AquesService.wave(encoded, phont, speed).then(
+            AquesService.wave(encoded, phont, speed, keyOptions).then(
               function(bufWav) {
                 AudioService.record(filePath, bufWav, waveOptions);
                 return filePath;
@@ -389,7 +397,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceModel'])
             return;
           }
 
-          AquesService.wave(encoded, phont, speed)
+          AquesService.wave(encoded, phont, speed, keyOptions)
             .then(
               function(bufWav) {
                 AudioService.record(filePath, bufWav, waveOptions);

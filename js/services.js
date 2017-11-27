@@ -163,7 +163,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
       }
     }
   })
-  .factory('AquesService', ['$q', 'MessageService', 'AppUtilService', function($q, MessageService, AppUtilService) {
+  .factory('AquesService', ['$q', 'MessageService', 'LicenseService', function($q, MessageService, LicenseService) {
     var ptr_void  = ref.refType(ref.types.void);
     var ptr_int   = ref.refType(ref.types.int);
     var ptr_char  = ref.refType(ref.types.char);
@@ -291,7 +291,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         fn_AqKanji2Koe_Release(aqKanji2Koe);
         return encoded;
       },
-      wave: function(encoded, phont, speed) {
+      wave: function(encoded, phont, speed, options) {
         var d = $q.defer();
         if (!encoded) {
           MessageService.syserror('音記号列が入力されていません。');
@@ -363,8 +363,8 @@ angular.module('yvoiceService', ['yvoiceModel'])
 
         // version 10
         } else if (phont.version == 'talk10') {
-          // set license key
-          AppUtilService.lisenceKey('aquestalk10-devkey').then(
+          // get aquesTalk10 developer key
+          LicenseService.consumerKey('aquesTalk10DevKey').then(
           function(lisenceKey) {
             var devKey = fn_AquesTalk10_SetDevKey(lisenceKey);
             if (devKey != 0) {
@@ -372,8 +372,10 @@ angular.module('yvoiceService', ['yvoiceModel'])
               d.reject(null); return;
             }
 
-          AppUtilService.lisenceKey('aquestalk10-usekey').then(
-          function(lisenceKey) {
+            var passPhrase = options.passPhrase;
+            var encryptedUseKey = options.aq10UseKeyEncrypted;
+            var aquesTalk10UseKey = LicenseService.decrypt(passPhrase, encryptedUseKey);
+
             var usrKey = fn_AquesTalk10_SetUsrKey(lisenceKey);
             if (usrKey != 0) {
               MessageService.syserror('AquesTalk10 use lisence keyの設定に失敗しました。');
@@ -405,11 +407,6 @@ angular.module('yvoiceService', ['yvoiceModel'])
             var managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
             fn_AquesTalk10_FreeWave(r);
             d.resolve(managedBuf);
-          },
-          function(err) {
-            MessageService.syserror('AquesTalk10 use lisence keyの読み込みに失敗しました。', err);
-            d.reject(err);
-          });
           },
           function(err) {
             MessageService.syserror('AquesTalk10 dev lisence keyの読み込みに失敗しました。', err);
@@ -725,14 +722,14 @@ angular.module('yvoiceService', ['yvoiceModel'])
         } else {
           return '';
         }
-        return decryptionResult.plaintext
+        return decryptionResult.plaintext;
       },
       consumerKey: function(lisenceType) {
         var d = $q.defer();
 
         // get key from cache if exists
-        if (consumerKey[lisenceType]) {
-          d.resolve(consumerKey[lisenceType]);
+        if (consumerKeyCache[lisenceType]) {
+          d.resolve(consumerKeyCache[lisenceType]);
           return d.promise;
         }
 
@@ -754,9 +751,11 @@ angular.module('yvoiceService', ['yvoiceModel'])
           }
           var encryptedKey = stdout;
 
+        // TODO replace
+
         // decrypted message
         var bits = 1024;
-        var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+        var mattsRSAkey = cryptico.generateRSAKey(devPassPhrase, bits);
         var decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
         if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') {
           // do nothing
@@ -773,7 +772,7 @@ angular.module('yvoiceService', ['yvoiceModel'])
         return d.promise;
       }
     }
-  })
+  }])
   .factory('AppUtilService', ['$rootScope', function($rootScope) {
     return {
       disableRhythm: function(encoded) {
