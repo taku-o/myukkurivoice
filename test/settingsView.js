@@ -35,7 +35,7 @@ describe('settingsView', function() {
       })
   });
 
-  it('settingsView tutorial', function() {
+  it('settingsView tutorial intro', function() {
     return this.app.client
       .click('#switch-settings-view')
       .isVisible('.introjs-tooltip').then(function(isVisible) {

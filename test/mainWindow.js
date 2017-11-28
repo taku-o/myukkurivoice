@@ -190,7 +190,7 @@ describe('mainWindow', function() {
       })
   });
 
-  it('mainWindow shortcut', function() {
+  it('mainWindow shortcut intro', function() {
     return this.app.client
       .isVisible('.introjs-tooltip').then(function(isVisible) {
         assert.ok(! isVisible);
@@ -208,7 +208,7 @@ describe('mainWindow', function() {
       })
   });
 
-  it('mainWindow tutorial', function() {
+  it('mainWindow tutorial intro', function() {
     return this.app.client
       .isVisible('.introjs-tooltip').then(function(isVisible) {
         assert.ok(! isVisible);
@@ -235,6 +235,66 @@ describe('mainWindow', function() {
       .isVisible('#settings_pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
+      // error check
+      .isExisting('tr.message-item.error').then(function(error) {
+        assert.ok(! error)
+      })
+      .isExisting('tr.message-item.syserror').then(function(error) {
+        assert.ok(! error)
+      })
+  });
+
+  it('mainWindow shortcut key', function() {
+    var app = this.app;
+    return this.app.client
+      // Command+P
+      .setValue('#encoded', "テ'_スト")
+      .keys('Command').keys('p').keys('\uE000')
+      .waitForText('#duration', 2000)
+      .getValue('#duration').then(function(duration) {
+        assert.ok(duration != '');
+      })
+      // Command+W
+      .keys('Command').keys('w').keys('\uE000')
+      // Command+Up
+      .keys('Command').keys('ArrowUp').keys('\uE000')
+      .hasFocus('#source').then(function(hasFocus) {
+        assert.ok(hasFocus);
+      })
+      // Command+Down
+      .keys('Command').keys('ArrowDown').keys('\uE000')
+      .hasFocus('#encoded').then(function(hasFocus) {
+        assert.ok(hasFocus);
+      })
+      // Command+Right
+      .clearElement('#source')
+      .clearElement('#encode')
+      .setValue('#source', 'hogehoge')
+      .keys('Command').keys('ArrowRight').keys('\uE000')
+      .getValue('#encoded').then(function(encoded) {
+        assert.equal(encoded, "ホゲホ'ッジ");
+      })
+      // Command+D
+      .call(function()) {
+        return app.electron.clipboard.writeText('pasta')
+      })
+      .keys('Command').keys('d').keys('\uE000')
+      .getValue('#source').then(function(source) {
+        assert.equal(source, 'pasta');
+      })
+      .getValue('#encoded').then(function(encoded) {
+        assert.equal(encoded, '');
+      })
+      // Command+Left
+      .keys('Command').keys('ArrowLeft').keys('\uE000')
+      .keys('Command').keys('ArrowLeft').keys('\uE000')
+      .keys('Command').keys('ArrowLeft').keys('\uE000')
+      .keys('Command').keys('ArrowLeft').keys('\uE000')
+      // Command+Shift+Left
+      .keys('Command').keys('Shift').keys('ArrowLeft').keys('\uE000')
+      .keys('Command').keys('Shift').keys('ArrowLeft').keys('\uE000')
+      .keys('Command').keys('Shift').keys('ArrowLeft').keys('\uE000')
+      .keys('Command').keys('Shift').keys('ArrowLeft').keys('\uE000')
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
         assert.ok(! error)
