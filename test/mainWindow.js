@@ -22,10 +22,10 @@ describe('mainWindow', function() {
       .getWindowCount().then(function(count) {
         assert.equal(count, 1);
       })
-      .isVisible('#main_pane').then(function(isVisible) {
+      .isVisible('#main-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
-      .isVisible('#settings_pane').then(function(isVisible) {
+      .isVisible('#settings-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
       .getTitle().then(function(title) {
@@ -229,10 +229,10 @@ describe('mainWindow', function() {
   it('mainWindow switchSettingsView', function() {
     return this.app.client
       .click('#switch-settings-view')
-      .isVisible('#main_pane').then(function(isVisible) {
+      .isVisible('#main-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#settings_pane').then(function(isVisible) {
+      .isVisible('#settings-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       // error check
