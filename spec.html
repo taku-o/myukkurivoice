@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="yvoiceSpec">
+<head>
+  <meta charset="UTF-8">
+  <title>MYukkuriVoice Test</title>
+  <script src="node_modules/angular/angular.min.js"></script>
+  <!--
+  <script src="js/models.js"></script>
+  -->
+  <script src="js/services.license.js"></script>
+  <!--
+  <script src="js/services.js"></script>
+  -->
+  <script src="js/spec.js"></script>
+  <script type="text/javascript">
+    document.ondragover = document.ondrop = function(e) {
+      e.preventDefault(); return false;
+    };
+  </script>
+</head>
+<body>
+<div class="window" ng-controller="SpecController as ctrl">
+<div class="window-content">
+  <form>
+    <textarea class="form-control" id="stext" rows="4" ng-model="source"></textarea>
+  </form>
+</div><!-- window-content -->
+</div><!-- window -->
+</body>
+</html>
+

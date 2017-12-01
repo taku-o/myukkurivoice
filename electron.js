@@ -22,16 +22,14 @@ var appCfg = {
   acceptFirstMouse: false,
   passPhrase: crypto.randomBytes(16).toString('hex'),
   aq10UseKeyEncrypted: '',
-  debug: process.env.DEBUG
+  debug: process.env.DEBUG,
+  isTest: process.env.NODE_ENV == 'test'
 };
 var config = new Config();
 ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
   if (config.has(k)) { appCfg[k] = config.get(k); }
 });
 global.appCfg = appCfg;
-
-// debug option
-const debug = appCfg.debug;
 
 // global reference
 var mainWindow = null;
@@ -339,7 +337,7 @@ app.on('ready', function() {
     }
   ];
   // 表示メニューにToggle Developer Toolsメニューを追加
-  if (debug) {
+  if (appCfg.debug) {
     menuList[4].submenu.splice(1, 0,
       { role: 'toggledevtools' }
     );
@@ -382,7 +380,6 @@ function updateAppConfig(options) {
   config.set('acceptFirstMouse',    options.acceptFirstMouse);
   config.set('passPhrase',          options.passPhrase);
   config.set('aq10UseKeyEncrypted', options.aq10UseKeyEncrypted);
-  config.set('debug',               options.debug);
 
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
     if (config.has(k)) { appCfg[k] = config.get(k); }
@@ -412,7 +409,6 @@ function resetAppConfig() {
   config.set('acceptFirstMouse',    false);
   config.set('passPhrase',          crypto.randomBytes(16).toString('hex'));
   config.set('aq10UseKeyEncrypted', '');
-  config.set('debug',               false);
 
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
     if (config.has(k)) { appCfg[k] = config.get(k); }
@@ -483,7 +479,7 @@ function showMainWindow() {
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
-      devTools: debug
+      devTools: appCfg.debug
     }
   });
   mainWindow.loadURL('file://' + __dirname + '/main.html');
@@ -525,7 +521,7 @@ function showHelpWindow() {
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
-      devTools: debug
+      devTools: appCfg.debug
     }
   });
   helpWindow.loadURL('file://' + __dirname + '/help.html');
@@ -572,7 +568,7 @@ function showSystemWindow() {
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
-      devTools: debug
+      devTools: appCfg.debug
     }
   });
   systemWindow.loadURL('file://' + __dirname + '/system.html');
@@ -600,6 +596,25 @@ function showSystemWindow() {
 // showSystemWindow
 ipcMain.on('showSystemWindow', function (event, message) {
   showSystemWindow();
+});
+
+// application spec window
+function showSpecWindow() {
+  var specWindow = new BrowserWindow({
+    parent: mainWindow,
+    modal: false,
+    width: 800,
+    height: 800,
+    show: true,
+    webPreferences: {
+      devTools: appCfg.debug
+    }
+  });
+  specWindow.loadURL('file://' + __dirname + '/spec.html');
+}
+// showSpecWindow
+ipcMain.on('showSpecWindow', function (event, message) {
+  showSpecWindow();
 });
 
 // drag out wav file

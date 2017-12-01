@@ -6,10 +6,9 @@ var path = require('path');
 var log = require('electron-log');
 var http = require('http');
 
-var desktopDir = app.getPath('desktop');
-
 // application settings
 var appCfg = require('electron').remote.getGlobal('appCfg');
+var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -172,6 +171,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
     $scope.messageList = [];
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
+    $scope.isTest = appCfg.isTest;
     loadData();
 
     // util
@@ -417,6 +417,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
         ipcRenderer.send('showSaveDialog', 'wav');
       }
     };
+    ctrl.showSystemWindow = function() {
+      if (!appCfg.isTest) { return; }
+      ipcRenderer.send('showSystemWindow', 'system');
+    };
+    ctrl.showSpecWindow = function() {
+      if (!appCfg.isTest) { return; }
+      ipcRenderer.send('showSpecWindow', 'spec');
+    };
     ctrl.help = function() {
       MessageService.action('open help window.');
       ipcRenderer.send('showHelpWindow', 'help');
@@ -442,7 +450,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
           IntroService.shortcut();
         });
       }
-    }
+    };
     ctrl.select = function(index) {
       MessageService.action('switch voice config.');
       $scope.yvoice = $scope.yvoiceList[index];
