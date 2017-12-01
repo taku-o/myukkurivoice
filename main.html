@@ -93,6 +93,15 @@
           <span class="icon icon-download"></span>{{lastWavFile.wavFileName||"drag and drop to movie editor"}}
         </button>
       </li>
+      <!-- for test -->
+      <li class="list-group-footer" ng-if="isTest">
+        <button class="btn btn-warning" id="show-system-window" ng-click="ctrl.showSystemWindow()">
+          <span class="icon icon-rocket"></span>system window
+        </button>
+        <button class="btn btn-warning" id="show-spec-window" ng-click="ctrl.showSpecWindow()">
+          <span class="icon icon-rocket"></span>spec window
+        </button>
+      </li>
     </ul>
   </div>
 
