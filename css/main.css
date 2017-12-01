@@ -36,20 +36,20 @@ div.btn-group-convert .btn{
   margin-right: 5px;
 }
 
-div.voice_tuna_box {
+div.voice-tuna-box {
   margin-top: 20px;
   padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   border: 1px solid #c0c0c0;
 }
-div.source_write_box {
+div.source-write-box {
   margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   border: 1px solid #c0c0c0;
 }
-div.seq_write_box {
+div.seq-write-box {
   height: 150px;
   margin-top: 10px;
   margin-bottom: 20px;

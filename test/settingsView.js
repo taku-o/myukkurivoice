@@ -17,12 +17,12 @@ describe('settingsView', function() {
     }
   });
 
-  it('settingsView seq_write_box option', function() {
+  it('settingsView seq-write-box option', function() {
     var client = this.app.client;
     return this.app.client
       .click('#switch-settings-view')
-      .isSelected('#seq_write_box .checkbox input').then(function(isSelected) {
-        client.isVisible('#seq_write_box .form-group').then(function(isVisible) {
+      .isSelected('#seq-write-box .checkbox input').then(function(isSelected) {
+        client.isVisible('#seq-write-box .form-group').then(function(isVisible) {
           assert.equal(isVisible, isSelected);
         })
       })

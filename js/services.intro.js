@@ -104,7 +104,7 @@ angular.module('yvoiceIntroService', [])
         intro.setOptions({
           steps: [
             {
-              element: '#voice_tuna_box',
+              element: '#voice-tuna-box',
               intro: '音声の質の調整はここで行います'
             },
             {
@@ -112,11 +112,11 @@ angular.module('yvoiceIntroService', [])
               intro: '設定画面からでも音声は再生できるので、再生しながら音声を調整してみてください'
             },
             {
-              element: '#source_write_box',
+              element: '#source-write-box',
               intro: 'ここのチェックを入れると、音声再生時に元のメッセージも保存するようになります'
             },
             {
-              element: '#seq_write_box',
+              element: '#seq-write-box',
               intro: 'このチェックを入れると、ファイルに連番をつけて保存するようになります。<br>出力先のディレクトリと、ファイル名を指定できます。'
             },
             {
@@ -165,7 +165,7 @@ angular.module('yvoiceIntroService', [])
               intro: 'Command + → で音記号列へ変換'
             },
             {
-              element: '#from_clipboard',
+              element: '#from-clipboard',
               intro: 'Command + D でクリップボードに入っているテキストをメッセージ入力欄にコピーします'
             },
             {

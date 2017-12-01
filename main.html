@@ -96,7 +96,7 @@
     </ul>
   </div>
 
-  <div class="pane" id="main_pane" ng-show="display == 'main'">
+  <div class="pane" id="main-pane" ng-show="display == 'main'">
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
@@ -115,7 +115,7 @@
         <button class="btn btn-large btn-default" id="clear" ng-click="ctrl.clear()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
           <span class="icon icon-trash"></span>入力クリア
         </button>
-        <button class="btn btn-large btn-default" id="from_clipboard" ng-click="ctrl.fromClipboard()">
+        <button class="btn btn-large btn-default" id="from-clipboard" ng-click="ctrl.fromClipboard()">
           <span class="icon icon-clipboard"></span>クリップボードから貼付
         </button>
       </div>
@@ -169,16 +169,16 @@
     </table>
   </div><!-- main pane -->
 
-  <div class="pane" id="settings_pane" ng-show="display == 'settings'">
+  <div class="pane" id="settings-pane" ng-show="display == 'settings'">
     <form>
       <div class="form-group">
         <!-- <label>name</label> -->
         <input type="text" class="form-control" id="name2" ng-model="yvoice.name" placeholder="name">
       </div>
 
-      <div class="voice_tuna_box" id="voice_tuna_box" ng-show="appCfg.audioServVer == 'webaudioapi'">
+      <div class="voice-tuna-box" id="voice-tuna-box" ng-show="appCfg.audioServVer == 'webaudioapi'">
         <div class="form-inline form-group">
-          <input type="range" min="0" max="3" step="0.1" id="playback_rate" ng-model="yvoice.playbackRate">
+          <input type="range" min="0" max="3" step="0.1" id="playback-rate" ng-model="yvoice.playbackRate">
           playback rate:{{yvoice.playbackRate}}
         </div>
         <div class="form-inline form-group">
@@ -188,11 +188,11 @@
 
         <div class="form-inline form-group">
           <small>音声ファイル書込マージン (出力音声ファイルの最後が欠ける時に増やしてください)</small>
-          <input type="number" min="0" max="10000" step="1" id="write_margin_ms" ng-model="yvoice.writeMarginMs" placeholder="writeMarginMs">
+          <input type="number" min="0" max="10000" step="1" id="write-margin-ms" ng-model="yvoice.writeMarginMs" placeholder="writeMarginMs">
         </div>
       </div>
 
-      <div class="source_write_box" id="source_write_box">
+      <div class="source-write-box" id="source-write-box">
         <div class="checkbox">
           <label>
             <input type="checkbox" ng-model="yvoice.sourceWrite">音声記録時にテキストファイルにメッセージを書き出す
@@ -200,7 +200,7 @@
         </div>
       </div>
 
-      <div class="seq_write_box" id="seq_write_box">
+      <div class="seq-write-box" id="seq-write-box">
         <div class="checkbox">
           <label>
             <input type="checkbox" ng-model="yvoice.seqWrite">連番ファイル出力機能を使用する

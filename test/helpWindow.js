@@ -40,113 +40,113 @@ describe('helpWindow', function() {
 
   it('helpWindow menu click', function() {
     return this.client
-      .isVisible('#about_pane').then(function(isVisible) {
+      .isVisible('#about-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
-      .isVisible('#voicecode_pane').then(function(isVisible) {
+      .isVisible('#voicecode-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#trouble_pane').then(function(isVisible) {
+      .isVisible('#trouble-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#update_pane').then(function(isVisible) {
+      .isVisible('#update-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#uninstall_pane').then(function(isVisible) {
+      .isVisible('#uninstall-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#backup_pane').then(function(isVisible) {
+      .isVisible('#backup-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#license_pane').then(function(isVisible) {
+      .isVisible('#license-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#contact_pane').then(function(isVisible) {
+      .isVisible('#contact-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#funclist_pane').then(function(isVisible) {
+      .isVisible('#funclist-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#play_pane').then(function(isVisible) {
+      .isVisible('#play-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#tuna_pane').then(function(isVisible) {
+      .isVisible('#tuna-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#writing_pane').then(function(isVisible) {
+      .isVisible('#writing-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#dataconfig_pane').then(function(isVisible) {
+      .isVisible('#dataconfig-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#shortcut_pane').then(function(isVisible) {
+      .isVisible('#shortcut-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
-      .isVisible('#help_pane').then(function(isVisible) {
+      .isVisible('#help-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
       .click('#menu-about')
-      .isVisible('#about_pane').then(function(isVisible) {
+      .isVisible('#about-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-voicecode')
-      .isVisible('#voicecode_pane').then(function(isVisible) {
+      .isVisible('#voicecode-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-trouble')
-      .isVisible('#trouble_pane').then(function(isVisible) {
+      .isVisible('#trouble-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-update')
-      .isVisible('#update_pane').then(function(isVisible) {
+      .isVisible('#update-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-uninstall')
-      .isVisible('#uninstall_pane').then(function(isVisible) {
+      .isVisible('#uninstall-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-backup')
-      .isVisible('#backup_pane').then(function(isVisible) {
+      .isVisible('#backup-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-license')
-      .isVisible('#license_pane').then(function(isVisible) {
+      .isVisible('#license-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-contact')
-      .isVisible('#contact_pane').then(function(isVisible) {
+      .isVisible('#contact-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-funclist')
-      .isVisible('#funclist_pane').then(function(isVisible) {
+      .isVisible('#funclist-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-play')
-      .isVisible('#play_pane').then(function(isVisible) {
+      .isVisible('#play-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-tuna')
-      .isVisible('#tuna_pane').then(function(isVisible) {
+      .isVisible('#tuna-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-writing')
-      .isVisible('#writing_pane').then(function(isVisible) {
+      .isVisible('#writing-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-dataconfig')
-      .isVisible('#dataconfig_pane').then(function(isVisible) {
+      .isVisible('#dataconfig-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-shortcut')
-      .isVisible('#shortcut_pane').then(function(isVisible) {
+      .isVisible('#shortcut-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       .click('#menu-help')
-      .isVisible('#help_pane').then(function(isVisible) {
+      .isVisible('#help-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
       // finally
-      .isVisible('#about_pane').then(function(isVisible) {
+      .isVisible('#about-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
   });
