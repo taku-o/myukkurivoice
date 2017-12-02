@@ -4,13 +4,9 @@
   <meta charset="UTF-8">
   <title>MYukkuriVoice Test</title>
   <script src="node_modules/angular/angular.min.js"></script>
-  <!--
   <script src="js/models.js"></script>
-  -->
   <script src="js/services.license.js"></script>
-  <!--
   <script src="js/services.js"></script>
-  -->
   <script src="js/spec.js"></script>
   <script type="text/javascript">
     document.ondragover = document.ondrop = function(e) {
@@ -22,7 +18,31 @@
 <div class="window" ng-controller="SpecController as ctrl">
 <div class="window-content">
   <form>
-    <textarea class="form-control" id="stext" rows="4" ng-model="source"></textarea>
+    <div>LicenseService
+      <input id="pass-phrase" type="text" ng-model="passPhrase">
+      <input id="plain-key" type="text" ng-model="plainKey">
+      <input id="encrypted-key" type="text" ng-model="encryptedKey">
+      <button id="encrypt" ng-click="ctrl.encrypt()">
+      <button id="decrypt" ng-click="ctrl.decrypt()">
+
+      <input id="license-type" type="text" ng-model="lisenceType">
+      <input id="consumer-key-result" type="text" ng-model="consumerKeyResult">
+      <button id="consumer-key" ng-click="ctrl.consumerKey()">
+    </div>
+
+    <div>AppUtilService
+      <input id="rhythm-text" type="text" ng-model="rhythmText">
+      <button id="disable-rhythm" ng-click="ctrl.disableRhythm()">
+      <input id="disable-rhythm-result" type="text" ng-model="disableRhythmResult">
+    </div>
+
+    <div>SeqFNameService
+      <input id="prefix" type="text" ng-model="prefix">
+      <input id="num" type="text" ng-model="num">
+      <button id="next-fname" ng-click="ctrl.nextFname()">
+      <input id="next-fname-result" type="text" ng-model="nextFnameResult">
+    </div>
+
   </form>
 </div><!-- window-content -->
 </div><!-- window -->
