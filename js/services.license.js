@@ -41,12 +41,12 @@ angular.module('yvoiceLicenseService', [])
       decrypt: function(passPhrase, encryptedKey) {
         return decrypt(passPhrase, encryptedKey);
       },
-      consumerKey: function(lisenceType) {
+      consumerKey: function(licenseType) {
         var d = $q.defer();
 
         // get key from cache if exists
-        if (consumerKeyCache[lisenceType]) {
-          d.resolve(consumerKeyCache[lisenceType]);
+        if (consumerKeyCache[licenseType]) {
+          d.resolve(consumerKeyCache[licenseType]);
           return d.promise;
         }
 
@@ -59,8 +59,8 @@ angular.module('yvoiceLicenseService', [])
             d.reject(err); return;
           }
           var devPassPhrase = stdout;
-        // lisenceKey
-        exec(secretCmd + ' -key='+lisenceType, cmdOptions, (err, stdout, stderr) => {
+        // licenseKey
+        exec(secretCmd + ' -key='+licenseType, cmdOptions, (err, stdout, stderr) => {
           if (err) {
             d.reject(err); return;
           }

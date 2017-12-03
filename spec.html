@@ -25,15 +25,73 @@
       <button id="encrypt" ng-click="ctrl.encrypt()">
       <button id="decrypt" ng-click="ctrl.decrypt()">
 
-      <input id="license-type" type="text" ng-model="lisenceType">
-      <input id="consumer-key-result" type="text" ng-model="consumerKeyResult">
+      <input id="license-type" type="text" ng-model="licenseType">
       <button id="consumer-key" ng-click="ctrl.consumerKey()">
+      <input id="consumer-key-result" type="text" ng-model="consumerKeyResult">
+      <input id="consumer-key-done" type="text" ng-model="consumerKeyDone">
+      <input id="consumer-key-err" type="text" ng-model="consumerKeyErr">
     </div>
 
-    <div>AppUtilService
-      <input id="rhythm-text" type="text" ng-model="rhythmText">
-      <button id="disable-rhythm" ng-click="ctrl.disableRhythm()">
-      <input id="disable-rhythm-result" type="text" ng-model="disableRhythmResult">
+    <div>DataService
+      <button id="load" ng-click="ctrl.load()">
+      <input id="load-result" type="text" ng-model="loadResult">
+      <input id="load-err" type="text" ng-model="loadErr">
+
+      <button id="initial-data" ng-click="ctrl.initialData()">
+      <input id="initial-data-result" type="text" ng-model="initialDataResult">
+
+      <button id="create" ng-click="ctrl.create()">
+      <input id="create-result" type="text" ng-model="createResult">
+
+      <button id="copy" ng-click="ctrl.copy()">
+      <input id="copy-result" type="text" ng-model="copyResult">
+    </div>
+
+    <div>MasterService
+      <button id="get-phont-list" ng-click="ctrl.getPhontList()">
+      <input id="get-phont-list-result" type="text" ng-model="getPhontListResult">
+    </div>
+
+    <div>AquesService
+      <input id="source" type="text" ng-model="source">
+      <button id="encode" ng-click="ctrl.encode()">
+      <input id="encode-result" type="text" ng-model="encodeResult">
+
+      <input id="encoded" type="text" ng-model="encoded">
+      <button id="wave-ver1" ng-click="ctrl.waveVer1()">
+      <button id="wave-ver2" ng-click="ctrl.waveVer2()">
+      <button id="wave-ver10" ng-click="ctrl.waveVer10()">
+      <input id="wave-result" type="text" ng-model="waveResult">
+      <input id="wave-err" type="text" ng-model="waveErr">
+    </div>
+
+    <div>AudioService1
+      <button id="play-1" ng-click="ctrl.play1()">
+      <input id="play-result-1" type="text" ng-model="playResult1">
+
+      <input id="wav-file-path-1" type="text" ng-model="wavFilePath1">
+      <button id="record-1" ng-click="ctrl.record1()">
+      <input id="record-result-1" type="text" ng-model="recordResult1">
+    </div>
+
+    <div>AudioService2
+      <button id="play-2" ng-click="ctrl.play2()">
+      <input id="play-result-2" type="text" ng-model="playResult2">
+
+      <input id="wav-file-path-2" type="text" ng-model="wavFilePath2">
+      <button id="record-2" ng-click="ctrl.record2()">
+      <input id="record-result-2" type="text" ng-model="recordResult2">
+    </div>
+
+    <div>AudioSourceService
+      <input id="wav-file-path" type="text" ng-model="wavFilePath">
+      <button id="source-fname" ng-click="ctrl.sourceFname()">
+      <input id="source-fname-result" type="text" ng-model="sourceFnameResult">
+
+      <input id="file-path" type="text" ng-model="filePath">
+      <input id="source-text" type="text" ng-model="sourceText">
+      <button id="save" ng-click="ctrl.save()">
+      <input id="save-result" type="text" ng-model="saveResult">
     </div>
 
     <div>SeqFNameService
@@ -41,6 +99,12 @@
       <input id="num" type="text" ng-model="num">
       <button id="next-fname" ng-click="ctrl.nextFname()">
       <input id="next-fname-result" type="text" ng-model="nextFnameResult">
+    </div>
+
+    <div>AppUtilService
+      <input id="rhythm-text" type="text" ng-model="rhythmText">
+      <button id="disable-rhythm" ng-click="ctrl.disableRhythm()">
+      <input id="disable-rhythm-result" type="text" ng-model="disableRhythmResult">
     </div>
 
   </form>

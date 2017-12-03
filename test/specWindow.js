@@ -36,6 +36,7 @@ describe('specWindow', function() {
       .setValue('#plain-key', 'this is a plain key')
       .click('#encrypt')
       .getValue('#encrypted-key').then(function(value) {
+        assert.ok(value)
         console.log('tested encrypted key is :'+ value);
       })
       // decrypt
@@ -46,18 +47,173 @@ describe('specWindow', function() {
       })
       // consumerKey aquesTalk10DevKey
       .setValue('#license-type', 'aquesTalk10DevKey')
+      .setValue('#consumer-key-result', '')
+      .setValue('#consumer-key-err', '')
       .click('#consumer-key')
-      .waitForValue('#consumer-key-result', 2000)
+      .waitForValue('#consumer-key-result', 5000)
       .getValue('#consumer-key-result').then(function(value) {
         assert.ok(value)
       })
+      .getValue('#consumer-key-err').then(function(value) {
+        assert.ok(! value)
+      })
       // consumerKey unknown key
-      .setValue('#consumer-key-result', 'initial value')
       .setValue('#license-type', 'unknown')
+      .setValue('#consumer-key-result', 'initial value')
+      .setValue('#consumer-key-err', '')
       .click('#consumer-key')
-      .waitForValue('#consumer-key-result', 2000)
+      .waitForValue('#consumer-key-done', 5000)
       .getValue('#consumer-key-result').then(function(value) {
         assert.ok(! value)
+      })
+      .getValue('#consumer-key-err').then(function(value) {
+        assert.ok(! value)
+      })
+  });
+
+  it('specWindow DataService', function() {
+    return this.client
+      // load
+      .click('#load')
+      .waitForValue('#load-result', 2000)
+      .getValue('#load-result').then(function(value) {
+        assert.ok(value)
+      })
+      .getValue('#load-err').then(function(value) {
+        assert.ok(! value)
+      })
+      // initialData
+      .click('#initial-data')
+      .getValue('#initial-data-result').then(function(value) {
+        assert.ok(value)
+        var parsed = JSON.parse(value);
+        assert.equal(parsed.length, 4);
+      })
+      // create
+      .click('#create')
+      .getValue('#create-result').then(function(value) {
+        assert.ok(value)
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.id);
+      })
+      // copy
+      .click('#copy')
+      .getValue('#copy-result').then(function(value) {
+        assert.ok(value)
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.id);
+      })
+  });
+
+  // AquesService
+  it('specWindow AquesService', function() {
+    return this.client
+      // encode
+      .setValue('#source', 'test')
+      .click('#encode')
+      .getValue('#encode-result').then(function(value) {
+        assert.equal(value, "テ'_スト");
+      })
+      // encode empty string
+      .setValue('#source', '')
+      .setValue('#encode-result', '')
+      .click('#encode')
+      .getValue('#encode-result').then(function(value) {
+        assert.ok(!value);
+      })
+      // wave talk1
+      .setValue('#encoded', "テ'_スト")
+      .setValue('#wave-result', '')
+      .setValue('#wave-err', '')
+      .click('#wave-ver1')
+      .waitForValue('#wave-result', 5000)
+      .getValue('#wave-result').then(function(value) {
+        assert.equal(value, 'ok');
+      })
+      .getValue('#wave-err').then(function(value) {
+        assert.ok(! value)
+      })
+      // wave talk1 empty
+      .setValue('#encoded', '')
+      .setValue('#wave-result', '')
+      .setValue('#wave-err', '')
+      .click('#wave-ver1')
+      .getValue('#wave-result').then(function(value) {
+        assert.ok(!value);
+      })
+      .getValue('#wave-err').then(function(value) {
+        assert.ok(! value)
+      })
+      // wave talk2
+      .setValue('#encoded', "テ'_スト")
+      .setValue('#wave-result', '')
+      .setValue('#wave-err', '')
+      .click('#wave-ver2')
+      .waitForValue('#wave-result', 5000)
+      .getValue('#wave-result').then(function(value) {
+        assert.equal(value, 'ok');
+      })
+      .getValue('#wave-err').then(function(value) {
+        assert.ok(! value)
+      })
+      // wave talk2 empty
+      .setValue('#encoded', '')
+      .setValue('#wave-result', '')
+      .setValue('#wave-err', '')
+      .click('#wave-ver2')
+      .getValue('#wave-result').then(function(value) {
+        assert.ok(!value);
+      })
+      .getValue('#wave-err').then(function(value) {
+        assert.ok(! value)
+      })
+      // wave talk10
+      .setValue('#encoded', "テ'_スト")
+      .setValue('#wave-result', '')
+      .setValue('#wave-err', '')
+      .click('#wave-ver10')
+      .waitForValue('#wave-result', 5000)
+      .getValue('#wave-result').then(function(value) {
+        assert.equal(value, 'ok');
+      })
+      .getValue('#wave-err').then(function(value) {
+        assert.ok(! value)
+      })
+      // wave talk10 empty
+      .setValue('#encoded', '')
+      .setValue('#wave-result', '')
+      .setValue('#wave-err', '')
+      .click('#wave-ver10')
+      .getValue('#wave-result').then(function(value) {
+        assert.ok(!value);
+      })
+      .getValue('#wave-err').then(function(value) {
+        assert.ok(! value)
+      })
+  });
+
+  // AudioService1
+  // AudioService2
+  // AudioSourceService
+
+  it('specWindow MasterService', function() {
+    return this.client
+      // getPhontList
+      .click('#get-phont-list')
+      .getValue('#get-phont-list-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.equal(parsed.length, 26);
+      })
+  });
+
+  it('specWindow SeqFNameService', function() {
+    return this.client
+      // nextFname
+      .setValue('#prefix', 'foo')
+      .setValue('#num', '200')
+      .click('#next-fname')
+      .getValue('#next-fname-result').then(function(value) {
+        assert.equal(value, 'foo0200.wav')
       })
   });
 
@@ -79,18 +235,7 @@ describe('specWindow', function() {
       .setValue('#rhythm-text', '')
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then(function(value) {
-        assert.equal(value, '')
-      })
-  });
-
-  it('specWindow SeqFNameService', function() {
-    return this.client
-      // nextFname
-      .setValue('#prefix', 'foo')
-      .setValue('#num', '200')
-      .click('#next-fname')
-      .getValue('#next-fname-result').then(function(value) {
-        assert.equal(value, 'foo0200.wav')
+        assert.ok(!value)
       })
   });
 

@@ -260,7 +260,7 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
       return '';
     }
 
-    var _isAquesTalk10LicesekeySet = false;
+    var _isAquesTalk10LicensekeySet = false;
     return {
       encode: function(source) {
         if (!source) {
@@ -365,10 +365,10 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
         } else if (phont.version == 'talk10') {
           // get and set aquesTalk10 developer key
           LicenseService.consumerKey('aquesTalk10DevKey').then(
-          function(lisenceKey) {
+          function(licenseKey) {
             // set license key if is not set.
-            if (! _isAquesTalk10LicesekeySet) {
-              var devKey = fn_AquesTalk10_SetDevKey(lisenceKey);
+            if (! _isAquesTalk10LicensekeySet) {
+              var devKey = fn_AquesTalk10_SetDevKey(licenseKey);
               if (devKey != 0) {
                 MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');
                 d.reject(null); return;
@@ -391,7 +391,7 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
                 }
                 MessageService.info('AquesTalk10使用ライセンスキーを設定しました。');
               }
-              _isAquesTalk10LicesekeySet = true;
+              _isAquesTalk10LicensekeySet = true;
             }
 
             // create struct
