@@ -1,3 +1,4 @@
+var ipcRenderer = require('electron').ipcRenderer;
 
 // application spec app
 angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
@@ -6,12 +7,12 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
   }])
   .controller('SpecController', ['$scope',
       'LicenseService',
-      'DataService', 'MasterService',
+      'MessageService', 'DataService', 'MasterService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
       function($scope,
       LicenseService,
-      DataService, MasterService,
+      MessageService, DataService, MasterService,
       AquesService, AudioService1, AudioService2, AudioSourceService,
       AppUtilService, SeqFNameService) {
 
@@ -36,6 +37,48 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         function(err) {
           $scope.consumerKeyErr = err;
         });
+    };
+
+    // MessageService
+    ctrl.action = function() {
+      ipcRenderer.once('message', function (event, post) {
+        $scope.messageResult = JSON.stringify(post);
+        $timeout(function(){ $scope.$apply(); });
+      });
+      MessageService.action($scope.message);
+    };
+    ctrl.record = function() {
+      ipcRenderer.once('message', function (event, post) {
+        $scope.recordMessageResult = JSON.stringify(post);
+        $timeout(function(){ $scope.$apply(); });
+      });
+      ipcRenderer.once('wavGenerated', function (event, post) {
+        $scope.recordWavGeneratedResult = JSON.stringify(post);
+        $timeout(function(){ $scope.$apply(); });
+      });
+      MessageService.record($scope.message, $scope.messWavFilePath);
+    };
+    ctrl.info = function() {
+      ipcRenderer.once('message', function (event, post) {
+        $scope.messageResult = JSON.stringify(post);
+        $timeout(function(){ $scope.$apply(); });
+      });
+      MessageService.info($scope.message);
+    };
+    ctrl.error = function() {
+      ipcRenderer.once('message', function (event, post) {
+        $scope.messageResult = JSON.stringify(post);
+        $timeout(function(){ $scope.$apply(); });
+      });
+      MessageService.info($scope.message);
+    };
+    ctrl.syserror = function() {
+      ipcRenderer.once('message', function (event, post) {
+        $scope.messageResult = JSON.stringify(post);
+        $timeout(function(){ $scope.$apply(); });
+      });
+      var errObj = JSON.pause($scope.messageErr);
+      MessageService.info($scope.message, errObj);
     };
 
     // DataService
@@ -129,15 +172,31 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
     };
 
     // AudioService1
-    ctrl.play1 = function() {
+    ctrl.play1AqVer1 = function() {
     };
-    ctrl.record1 = function() {
+    ctrl.play1AqVer2 = function() {
+    };
+    ctrl.play1AqVer10 = function() {
+    };
+    ctrl.record1AqVer1 = function() {
+    };
+    ctrl.record1AqVer2 = function() {
+    };
+    ctrl.record1AqVer10 = function() {
     };
 
     // AudioService2
-    ctrl.play2 = function() {
+    ctrl.play2AqVer1 = function() {
     };
-    ctrl.record2 = function() {
+    ctrl.play2AqVer2 = function() {
+    };
+    ctrl.play2AqVer10 = function() {
+    };
+    ctrl.record2AqVer1 = function() {
+    };
+    ctrl.record2AqVer2 = function() {
+    };
+    ctrl.record2AqVer10 = function() {
     };
 
     // AudioSourceService

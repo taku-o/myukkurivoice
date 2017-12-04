@@ -71,6 +71,89 @@ describe('specWindow', function() {
       })
   });
 
+  it('specWindow MessageService', function() {
+    return this.client
+      // action
+      .setValue('#message', 'post action message.')
+      .setValue('#message-result', '')
+      .click('#action')
+      .waitForValue('#message-result', 2000)
+      .getValue('#message-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.created);
+        assert.equal(parsed.body, 'post action message.');
+        assert.equal(parsed.type, 'action');
+      })
+      // record
+      .setValue('#message', 'post record message.')
+      .setValue('#mess-wav-file-path', '/tmp/hogehoge.wav')
+      .setValue('#message-result', '')
+      .click('#record')
+      .waitForValue('#record-result', 2000)
+      .getValue('#record-message-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.created);
+        assert.equal(parsed.body, 'post record message.');
+        assert.equal(parsed.wavFilePath, '/tmp/hogehoge.wav');
+        assert.equal(parsed.wavFileName, 'hogehoge.wav');
+        assert.equal(parsed.type, 'record');
+      })
+      .getValue('#record-wavGenerated-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.created);
+        assert.equal(parsed.body, 'post record message.');
+        assert.equal(parsed.wavFilePath, '/tmp/hogehoge.wav');
+        assert.equal(parsed.wavFileName, 'hogehoge.wav');
+        assert.equal(parsed.type, 'record');
+      })
+      // info
+      .setValue('#message', 'post info message.')
+      .setValue('#message-result', '')
+      .click('#info')
+      .waitForValue('#message-result', 2000)
+      .getValue('#message-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.created);
+        assert.equal(parsed.body, 'post info message.');
+        assert.equal(parsed.type, 'info');
+      })
+      // error
+      .setValue('#message', 'post error message.')
+      .setValue('#message-result', '')
+      .click('#error')
+      .waitForValue('#message-result', 2000)
+      .getValue('#message-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.created);
+        assert.equal(parsed.body, 'post error message.');
+        assert.equal(parsed.type, 'error');
+      })
+      // syserror
+      .setValue('#message', 'post syserror message.')
+      .setValue('#message-err', "{ message:'error cause.' }")
+      .setValue('#message-result', '')
+      .click('#syserror')
+      .waitForValue('#message-result', 2000)
+      .getValue('#message-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.created);
+        assert.equal(parsed.body, 'post syserror message.error cause.');
+        assert.equal(parsed.type, 'syserror');
+      })
+      // syserror with no error
+      .setValue('#message', 'post syserror message.')
+      .setValue('#message-err', '')
+      .setValue('#message-result', '')
+      .click('#syserror')
+      .waitForValue('#message-result', 2000)
+      .getValue('#message-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.ok(parsed.created);
+        assert.equal(parsed.body, 'post syserror message.');
+        assert.equal(parsed.type, 'syserror');
+      })
+  });
+
   it('specWindow DataService', function() {
     return this.client
       // load
@@ -193,8 +276,129 @@ describe('specWindow', function() {
   });
 
   // AudioService1
+  it('specWindow AudioService1', function() {
+    return this.client
+      // play aquestalk1
+      .setValue('#play-result-1', '')
+      .click('#play1-aqver1')
+      .waitForValue('#play-result-1', 5000)
+      .getValue('#play-result-1').then(function(value) {
+        assert.ok(value)
+      })
+      // play aquestalk2
+      .setValue('#play-result-1', '')
+      .click('#play1-aqver2')
+      .waitForValue('#play-result-1', 5000)
+      .getValue('#play-result-1').then(function(value) {
+        assert.ok(value)
+      })
+      // play aquestalk10
+      .setValue('#play-result-1', '')
+      .click('#play1-aqver10')
+      .waitForValue('#play-result-1', 5000)
+      .getValue('#play-result-1').then(function(value) {
+        assert.ok(value)
+      })
+      // record aquestalk1
+      .setValue('#wav-file-path-1', '/tmp/hogehoge.wav')
+      .setValue('#record-result-1', '')
+      .click('#record1-aqver1')
+      .waitForValue('#record-result-1', 5000)
+      .getValue('#record-result-1').then(function(value) {
+        assert.ok(value)
+      })
+      // record aquestalk2
+      .setValue('#wav-file-path-1', '/tmp/hogehoge.wav')
+      .setValue('#record-result-1', '')
+      .click('#record1-aqver2')
+      .waitForValue('#record-result-1', 5000)
+      .getValue('#record-result-1').then(function(value) {
+        assert.ok(value)
+      })
+      // record aquestalk10
+      .setValue('#wav-file-path-1', '/tmp/hogehoge.wav')
+      .setValue('#record-result-1', '')
+      .click('#record1-aqver10')
+      .waitForValue('#record-result-1', 5000)
+      .getValue('#record-result-1').then(function(value) {
+        assert.ok(value)
+      })
+      // TODO tmp file
+      // TODO file exists
+  });
+
   // AudioService2
+  it('specWindow AudioService2', function() {
+    return this.client
+      // play aquestalk1
+      .setValue('#play-result-2', '')
+      .click('#play2-aqver1')
+      .waitForValue('#play-result-2', 5000)
+      .getValue('#play-result-2').then(function(value) {
+        assert.ok(value)
+      })
+      // play aquestalk2
+      .setValue('#play-result-2', '')
+      .click('#play2-aqver2')
+      .waitForValue('#play-result-2', 5000)
+      .getValue('#play-result-2').then(function(value) {
+        assert.ok(value)
+      })
+      // play aquestalk10
+      .setValue('#play-result-2', '')
+      .click('#play2-aqver10')
+      .waitForValue('#play-result-2', 5000)
+      .getValue('#play-result-2').then(function(value) {
+        assert.ok(value)
+      })
+      // record aquestalk1
+      .setValue('#wav-file-path-2', '/tmp/hogehoge.wav')
+      .setValue('#record-result-2', '')
+      .click('#record2-aqver1')
+      .waitForValue('#record-result-2', 5000)
+      .getValue('#record-result-2').then(function(value) {
+        assert.ok(value)
+      })
+      // record aquestalk2
+      .setValue('#wav-file-path-2', '/tmp/hogehoge.wav')
+      .setValue('#record-result-2', '')
+      .click('#record2-aqver2')
+      .waitForValue('#record-result-2', 5000)
+      .getValue('#record-result-2').then(function(value) {
+        assert.ok(value)
+      })
+      // record aquestalk10
+      .setValue('#wav-file-path-2', '/tmp/hogehoge.wav')
+      .setValue('#record-result-2', '')
+      .click('#record2-aqver10')
+      .waitForValue('#record-result-2', 5000)
+      .getValue('#record-result-2').then(function(value) {
+        assert.ok(value)
+      })
+      // TODO tmp file
+      // TODO file exists
+  });
+
   // AudioSourceService
+  it('specWindow AudioService1', function() {
+    return this.client
+      // sourceFname
+      .setValue('#wav-file-path', '/tmp/hogehoge.wav')
+      .click('#source-fname')
+      .getValue('#source-fname-result').then(function(value) {
+        assert.equal(value, '/tmp/hogehoge.txt')
+      })
+      // save
+      .setValue('#file-path', '/tmp/hogehoge.txt')
+      .setValue('#source-text', 'hogehoge')
+      .click('#save')
+      .getValue('#save-result').then(function(value) {
+        assert.ok(value)
+      })
+      // TODO tmp file
+      // TODO file exists
+      // TODO file content
+  });
 
   it('specWindow MasterService', function() {
     return this.client

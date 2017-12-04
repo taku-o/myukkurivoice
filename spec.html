@@ -32,6 +32,22 @@
       <input id="consumer-key-err" type="text" ng-model="consumerKeyErr">
     </div>
 
+    <div>MessageService
+      <input id="message" type="text" ng-model="message">
+      <input id="mess-wav-file-path" type="text" ng-model="messWavFilePath">
+      <input id="message-err" type="text" ng-model="messageErr">
+
+      <button id="action" ng-click="ctrl.action()">
+      <button id="record" ng-click="ctrl.record()">
+      <button id="info" ng-click="ctrl.info()">
+      <button id="error" ng-click="ctrl.error()">
+      <button id="syserror" ng-click="ctrl.syserror()">
+
+      <input id="message-result" type="text" ng-model="messageResult">
+      <input id="record-message-result" type="text" ng-model="recordMessageResult">
+      <input id="record-wavGenerated-result" type="text" ng-model="recordWavGeneratedResult">
+    </div>
+
     <div>DataService
       <button id="load" ng-click="ctrl.load()">
       <input id="load-result" type="text" ng-model="loadResult">
@@ -66,20 +82,28 @@
     </div>
 
     <div>AudioService1
-      <button id="play-1" ng-click="ctrl.play1()">
+      <button id="play1-aqver1" ng-click="ctrl.play1AqVer1()">
+      <button id="play1-aqver2" ng-click="ctrl.play1AqVer2()">
+      <button id="play1-aqver10" ng-click="ctrl.play1AqVer10()">
       <input id="play-result-1" type="text" ng-model="playResult1">
 
       <input id="wav-file-path-1" type="text" ng-model="wavFilePath1">
-      <button id="record-1" ng-click="ctrl.record1()">
+      <button id="record1-aqver1" ng-click="ctrl.record1AqVer1()">
+      <button id="record1-aqver2" ng-click="ctrl.record1AqVer2()">
+      <button id="record1-aqver10" ng-click="ctrl.record1AqVer10()">
       <input id="record-result-1" type="text" ng-model="recordResult1">
     </div>
 
     <div>AudioService2
-      <button id="play-2" ng-click="ctrl.play2()">
+      <button id="play2-aqver1" ng-click="ctrl.play2AqVer1()">
+      <button id="play2-aqver2" ng-click="ctrl.play2AqVer2()">
+      <button id="play2-aqver10" ng-click="ctrl.play2AqVer10()">
       <input id="play-result-2" type="text" ng-model="playResult2">
 
       <input id="wav-file-path-2" type="text" ng-model="wavFilePath2">
-      <button id="record-2" ng-click="ctrl.record2()">
+      <button id="record2-aqver1" ng-click="ctrl.record2AqVer1()">
+      <button id="record2-aqver2" ng-click="ctrl.record2AqVer2()">
+      <button id="record2-aqver10" ng-click="ctrl.record2AqVer10()">
       <input id="record-result-2" type="text" ng-model="recordResult2">
     </div>
 
