@@ -283,45 +283,45 @@ describe('specWindow', function() {
       .click('#play1-aqver1')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // play aquestalk2
       .setValue('#play-result-1', '')
       .click('#play1-aqver2')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // play aquestalk10
       .setValue('#play-result-1', '')
       .click('#play1-aqver10')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // record aquestalk1
-      .setValue('#wav-file-path-1', '/tmp/hogehoge.wav')
+      .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-1', '')
       .click('#record1-aqver1')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // record aquestalk2
-      .setValue('#wav-file-path-1', '/tmp/hogehoge.wav')
+      .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-1', '')
       .click('#record1-aqver2')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // record aquestalk10
-      .setValue('#wav-file-path-1', '/tmp/hogehoge.wav')
+      .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-1', '')
       .click('#record1-aqver10')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // TODO tmp file
       // TODO file exists
@@ -335,61 +335,61 @@ describe('specWindow', function() {
       .click('#play2-aqver1')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // play aquestalk2
       .setValue('#play-result-2', '')
       .click('#play2-aqver2')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // play aquestalk10
       .setValue('#play-result-2', '')
       .click('#play2-aqver10')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // record aquestalk1
-      .setValue('#wav-file-path-2', '/tmp/hogehoge.wav')
+      .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-2', '')
       .click('#record2-aqver1')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // record aquestalk2
-      .setValue('#wav-file-path-2', '/tmp/hogehoge.wav')
+      .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-2', '')
       .click('#record2-aqver2')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // record aquestalk10
-      .setValue('#wav-file-path-2', '/tmp/hogehoge.wav')
+      .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-2', '')
       .click('#record2-aqver10')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then(function(value) {
-        assert.ok(value)
+        assert.equal(value, 'ok')
       })
       // TODO tmp file
       // TODO file exists
   });
 
   // AudioSourceService
-  it('specWindow AudioService1', function() {
+  it('specWindow AudioSourceService', function() {
     return this.client
       // sourceFname
-      .setValue('#wav-file-path', '/tmp/hogehoge.wav')
+      .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
       .click('#source-fname')
       .getValue('#source-fname-result').then(function(value) {
-        assert.equal(value, '/tmp/hogehoge.txt')
+        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt')
       })
       // save
-      .setValue('#file-path', '/tmp/hogehoge.txt')
+      .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
       .setValue('#source-text', 'hogehoge')
       .click('#save')
       .getValue('#save-result').then(function(value) {
