@@ -129,21 +129,325 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
     };
 
     // AudioService1
-    ctrl.play1 = function() {
+    ctrl.play1AqVer1 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk1') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var options = {};
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, options).then(function(bufWav) {
+        // play
+        AudioService1.play(bufWav, options).then(function(value) {
+          $scope.playResult1 = 'ok';
+        },
+        function(err) {
+          $scope.playResult1 = err.message;
+        })
+      },
+      function(err) {
+        $scope.playResult1 = err.message;
+      });
     };
-    ctrl.record1 = function() {
+    ctrl.play1AqVer2 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk2') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var options = {};
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, options).then(function(bufWav) {
+        // play
+        AudioService1.play(bufWav, options).then(function(value) {
+          $scope.playResult1 = 'ok';
+        },
+        function(err) {
+          $scope.playResult1 = err.message;
+        })
+      },
+      function(err) {
+        $scope.playResult1 = err.message;
+      });
+    };
+    ctrl.play1AqVer10 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk10') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var options = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, options).then(function(bufWav) {
+        // play
+        AudioService1.play(bufWav, options).then(function(value) {
+          $scope.playResult1 = 'ok';
+        },
+        function(err) {
+          $scope.playResult1 = err.message;
+        })
+      },
+      function(err) {
+        $scope.playResult1 = err.message;
+      });
+    };
+
+    ctrl.record1AqVer1 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk1') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var options = {};
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, options).then(function(bufWav) {
+        // play
+        AudioService1.record($scope.wavFilePath1, bufWav, options).then(function(value) {
+          $scope.recordResult1 = 'ok';
+        },
+        function(err) {
+          $scope.recordResult1 = err.message;
+        })
+      },
+      function(err) {
+        $scope.recordResult1 = err.message;
+      });
+    };
+    ctrl.record1AqVer2 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk2') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var options = {};
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, options).then(function(bufWav) {
+        // play
+        AudioService1.record($scope.wavFilePath1, bufWav, options).then(function(value) {
+          $scope.recordResult1 = 'ok';
+        },
+        function(err) {
+          $scope.recordResult1 = err.message;
+        })
+      },
+      function(err) {
+        $scope.recordResult1 = err.message;
+      });
+    };
+    ctrl.record1AqVer10 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk10') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var options = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, options).then(function(bufWav) {
+        // play
+        AudioService1.record($scope.wavFilePath1, bufWav, options).then(function(value) {
+          $scope.recordResult1 = 'ok';
+        },
+        function(err) {
+          $scope.recordResult1 = err.message;
+        })
+      },
+      function(err) {
+        $scope.recordResult1 = err.message;
+      });
     };
 
     // AudioService2
-    ctrl.play2 = function() {
+    ctrl.play2AqVer1 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk1') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var wavOptions = {};
+      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then(function(bufWav) {
+        // play
+        AudioService2.play(bufWav, playOptions).then(function(value) {
+          $scope.playResult2 = 'ok';
+        },
+        function(err) {
+          $scope.playResult2 = err.message;
+        })
+      },
+      function(err) {
+        $scope.playResult2 = err.message;
+      });
     };
-    ctrl.record2 = function() {
+    ctrl.play2AqVer2 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk2') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var wavOptions = {};
+      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then(function(bufWav) {
+        // play
+        AudioService2.play(bufWav, playOptions).then(function(value) {
+          $scope.playResult2 = 'ok';
+        },
+        function(err) {
+          $scope.playResult2 = err.message;
+        })
+      },
+      function(err) {
+        $scope.playResult2 = err.message;
+      });
+    };
+    ctrl.play2AqVer10 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk10') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var wavOptions = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
+      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then(function(bufWav) {
+        // play
+        AudioService2.play(bufWav, playOptions).then(function(value) {
+          $scope.playResult2 = 'ok';
+        },
+        function(err) {
+          $scope.playResult2 = err.message;
+        })
+      },
+      function(err) {
+        $scope.playResult2 = err.message;
+      });
+    };
+
+    ctrl.record2AqVer1 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk1') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var wavOptions = {};
+      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then(function(bufWav) {
+        // play
+        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(function(value) {
+          $scope.recordResult2 = 'ok';
+        },
+        function(err) {
+          $scope.recordResult2 = err.message;
+        })
+      },
+      function(err) {
+        $scope.recordResult2 = err.message;
+      });
+    };
+    ctrl.record2AqVer2 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk2') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var wavOptions = {};
+      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then(function(bufWav) {
+        // play
+        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(function(value) {
+          $scope.recordResult2 = 'ok';
+        },
+        function(err) {
+          $scope.recordResult2 = err.message;
+        })
+      },
+      function(err) {
+        $scope.recordResult2 = err.message;
+      });
+    };
+    ctrl.record2AqVer10 = function() {
+      // phont
+      var list = MasterService.getPhontList();
+      var phont;
+      for (var i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk10') {
+          phont = list[i]; break;
+        }
+      }
+      var speed = 100;
+      var wavOptions = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
+      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then(function(bufWav) {
+        // play
+        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(function(value) {
+          $scope.recordResult2 = 'ok';
+        },
+        function(err) {
+          $scope.recordResult2 = err.message;
+        })
+      },
+      function(err) {
+        $scope.recordResult2 = err.message;
+      });
     };
 
     // AudioSourceService
     ctrl.sourceFname = function() {
+      var r = AudioSourceService.sourceFname($scope.wavFilePath)
+      $scope.sourceFnameResult = r;
     };
     ctrl.save = function() {
+      AudioSourceService.sourceFname($scope.filePath, $scope.sourceText);
+      $scope.saveResult = 'ok';
     };
 
     // SeqFNameService

@@ -5,9 +5,9 @@ rm -rf MYukkuriVoice-darwin-x64/
 electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/README.md" \
-    --ignore="^/\.git" \
-    --ignore="^/\.gitignore" \
-    --ignore="^/\.gitmodules" \
+    --ignore="^/.git" \
+    --ignore="^/.gitignore" \
+    --ignore="^/.gitmodules" \
     --ignore="^/bin" \
     --ignore="^/docs" \
     --ignore="^/icns" \
@@ -17,7 +17,16 @@ electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion
     --ignore="^/vendor/aqtk1-mac" \
     --ignore="^/vendor/aqtk10-mac" \
     --ignore="^/vendor/aqtk2-mac" \
-    --ignore="\.DS_Store" \
+    --ignore=".DS_Store" \
+    --ignore=".babelrc" \
+    --ignore=".editorconfig" \
+    --ignore=".eslintrc" \
+    --ignore=".eslintrc.json" \
+    --ignore=".jshintrc" \
+    --ignore=".npmignore" \
+    --ignore=".npmignore" \
+    --ignore=".stylelintrc.json" \
+    --ignore=".travis.yml" \
     --ignore="^/node_modules/about-window/LICENSE.txt" \
     --ignore="^/node_modules/about-window/README.md" \
     --ignore="^/node_modules/angular-input-highlight/README.md" \
@@ -33,6 +42,7 @@ electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion
     --ignore="^/node_modules/balanced-match/README.md" \
     --ignore="^/node_modules/bindings/README.md" \
     --ignore="^/node_modules/brace-expansion/README.md" \
+    --ignore="^/node_modules/concat-map/LICENSE" \
     --ignore="^/node_modules/concat-map/README.markdown" \
     --ignore="^/node_modules/concat-map/example" \
     --ignore="^/node_modules/concat-map/test" \
@@ -104,12 +114,14 @@ electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion
     --ignore="^/node_modules/minimist/readme.markdown" \
     --ignore="^/node_modules/minimist/test" \
     --ignore="^/node_modules/mkdirp/LICENSE" \
+    --ignore="^/node_modules/mkdirp/bin/usage.txt" \
     --ignore="^/node_modules/mkdirp/examples" \
     --ignore="^/node_modules/mkdirp/readme.markdown" \
     --ignore="^/node_modules/mkdirp/test" \
     --ignore="^/node_modules/ms/LICENSE.md" \
     --ignore="^/node_modules/ms/README.md" \
     --ignore="^/node_modules/nan/CHANGELOG.md" \
+    --ignore="^/node_modules/nan/LICENSE.md" \
     --ignore="^/node_modules/nan/README.md" \
     --ignore="^/node_modules/nan/doc" \
     --ignore="^/node_modules/nan/nan.h" \
@@ -170,7 +182,12 @@ electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion
     --ignore="^/node_modules/stream-parser/History.md" \
     --ignore="^/node_modules/stream-parser/LICENSE" \
     --ignore="^/node_modules/stream-parser/README.md" \
-    --ignore="^/node_modules/stream-parser/node_modules/debug" \
+    --ignore="^/node_modules/stream-parser/node_modules/debug/.npmignore" \
+    --ignore="^/node_modules/stream-parser/node_modules/debug/History.md" \
+    --ignore="^/node_modules/stream-parser/node_modules/debug/Makefile" \
+    --ignore="^/node_modules/stream-parser/node_modules/debug/Readme.md" \
+    --ignore="^/node_modules/stream-parser/node_modules/ms/license.md" \
+    --ignore="^/node_modules/stream-parser/node_modules/ms/README.md" \
     --ignore="^/node_modules/stream-parser/test" \
     --ignore="^/node_modules/string_decoder/LICENSE" \
     --ignore="^/node_modules/string_decoder/README.md" \

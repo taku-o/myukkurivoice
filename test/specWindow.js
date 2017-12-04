@@ -71,6 +71,8 @@ describe('specWindow', function() {
       })
   });
 
+  // MessageService
+
   it('specWindow DataService', function() {
     return this.client
       // load
@@ -193,8 +195,141 @@ describe('specWindow', function() {
   });
 
   // AudioService1
+  it('specWindow AudioService1', function() {
+    return this.client
+      // play aquestalk1
+      .setValue('#play1-encoded', "テ'_スト")
+      .setValue('#play-result-1', '')
+      .click('#play1-aqver1')
+      .waitForValue('#play-result-1', 5000)
+      .getValue('#play-result-1').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // play aquestalk2
+      .setValue('#play1-encoded', "テ'_スト")
+      .setValue('#play-result-1', '')
+      .click('#play1-aqver2')
+      .waitForValue('#play-result-1', 5000)
+      .getValue('#play-result-1').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // play aquestalk10
+      .setValue('#play1-encoded', "テ'_スト")
+      .setValue('#play-result-1', '')
+      .click('#play1-aqver10')
+      .waitForValue('#play-result-1', 5000)
+      .getValue('#play-result-1').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // record aquestalk1
+      .setValue('#play1-encoded', "テ'_スト")
+      .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
+      .setValue('#record-result-1', '')
+      .click('#record1-aqver1')
+      .waitForValue('#record-result-1', 5000)
+      .getValue('#record-result-1').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // record aquestalk2
+      .setValue('#play1-encoded', "テ'_スト")
+      .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
+      .setValue('#record-result-1', '')
+      .click('#record1-aqver2')
+      .waitForValue('#record-result-1', 5000)
+      .getValue('#record-result-1').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // record aquestalk10
+      .setValue('#play1-encoded', "テ'_スト")
+      .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
+      .setValue('#record-result-1', '')
+      .click('#record1-aqver10')
+      .waitForValue('#record-result-1', 5000)
+      .getValue('#record-result-1').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // TODO tmp file
+      // TODO file exists
+  });
+
   // AudioService2
+  it('specWindow AudioService2', function() {
+    return this.client
+      // play aquestalk1
+      .setValue('#play2-encoded', "テ'_スト")
+      .setValue('#play-result-2', '')
+      .click('#play2-aqver1')
+      .waitForValue('#play-result-2', 5000)
+      .getValue('#play-result-2').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // play aquestalk2
+      .setValue('#play2-encoded', "テ'_スト")
+      .setValue('#play-result-2', '')
+      .click('#play2-aqver2')
+      .waitForValue('#play-result-2', 5000)
+      .getValue('#play-result-2').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // play aquestalk10
+      .setValue('#play2-encoded', "テ'_スト")
+      .setValue('#play-result-2', '')
+      .click('#play2-aqver10')
+      .waitForValue('#play-result-2', 5000)
+      .getValue('#play-result-2').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // record aquestalk1
+      .setValue('#play2-encoded', "テ'_スト")
+      .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
+      .setValue('#record-result-2', '')
+      .click('#record2-aqver1')
+      .waitForValue('#record-result-2', 5000)
+      .getValue('#record-result-2').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // record aquestalk2
+      .setValue('#play2-encoded', "テ'_スト")
+      .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
+      .setValue('#record-result-2', '')
+      .click('#record2-aqver2')
+      .waitForValue('#record-result-2', 5000)
+      .getValue('#record-result-2').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // record aquestalk10
+      .setValue('#play2-encoded', "テ'_スト")
+      .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
+      .setValue('#record-result-2', '')
+      .click('#record2-aqver10')
+      .waitForValue('#record-result-2', 5000)
+      .getValue('#record-result-2').then(function(value) {
+        assert.equal(value, 'ok')
+      })
+      // TODO tmp file
+      // TODO file exists
+  });
+
   // AudioSourceService
+  it('specWindow AudioSourceService', function() {
+    return this.client
+      // sourceFname
+      .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
+      .click('#source-fname')
+      .getValue('#source-fname-result').then(function(value) {
+        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt')
+      })
+      // save
+      .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
+      .setValue('#source-text', 'hogehoge')
+      .click('#save')
+      .getValue('#save-result').then(function(value) {
+        assert.ok(value)
+      })
+      // TODO tmp file
+      // TODO file exists
+      // TODO file content
+  });
 
   it('specWindow MasterService', function() {
     return this.client
