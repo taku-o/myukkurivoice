@@ -71,88 +71,7 @@ describe('specWindow', function() {
       })
   });
 
-  it('specWindow MessageService', function() {
-    return this.client
-      // action
-      .setValue('#message', 'post action message.')
-      .setValue('#message-result', '')
-      .click('#action')
-      .waitForValue('#message-result', 2000)
-      .getValue('#message-result').then(function(value) {
-        var parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal(parsed.body, 'post action message.');
-        assert.equal(parsed.type, 'action');
-      })
-      // record
-      .setValue('#message', 'post record message.')
-      .setValue('#mess-wav-file-path', '/tmp/hogehoge.wav')
-      .setValue('#message-result', '')
-      .click('#record')
-      .waitForValue('#record-result', 2000)
-      .getValue('#record-message-result').then(function(value) {
-        var parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal(parsed.body, 'post record message.');
-        assert.equal(parsed.wavFilePath, '/tmp/hogehoge.wav');
-        assert.equal(parsed.wavFileName, 'hogehoge.wav');
-        assert.equal(parsed.type, 'record');
-      })
-      .getValue('#record-wavGenerated-result').then(function(value) {
-        var parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal(parsed.body, 'post record message.');
-        assert.equal(parsed.wavFilePath, '/tmp/hogehoge.wav');
-        assert.equal(parsed.wavFileName, 'hogehoge.wav');
-        assert.equal(parsed.type, 'record');
-      })
-      // info
-      .setValue('#message', 'post info message.')
-      .setValue('#message-result', '')
-      .click('#info')
-      .waitForValue('#message-result', 2000)
-      .getValue('#message-result').then(function(value) {
-        var parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal(parsed.body, 'post info message.');
-        assert.equal(parsed.type, 'info');
-      })
-      // error
-      .setValue('#message', 'post error message.')
-      .setValue('#message-result', '')
-      .click('#error')
-      .waitForValue('#message-result', 2000)
-      .getValue('#message-result').then(function(value) {
-        var parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal(parsed.body, 'post error message.');
-        assert.equal(parsed.type, 'error');
-      })
-      // syserror
-      .setValue('#message', 'post syserror message.')
-      .setValue('#message-err', "{ message:'error cause.' }")
-      .setValue('#message-result', '')
-      .click('#syserror')
-      .waitForValue('#message-result', 2000)
-      .getValue('#message-result').then(function(value) {
-        var parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal(parsed.body, 'post syserror message.error cause.');
-        assert.equal(parsed.type, 'syserror');
-      })
-      // syserror with no error
-      .setValue('#message', 'post syserror message.')
-      .setValue('#message-err', '')
-      .setValue('#message-result', '')
-      .click('#syserror')
-      .waitForValue('#message-result', 2000)
-      .getValue('#message-result').then(function(value) {
-        var parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal(parsed.body, 'post syserror message.');
-        assert.equal(parsed.type, 'syserror');
-      })
-  });
+  // MessageService
 
   it('specWindow DataService', function() {
     return this.client
@@ -279,6 +198,7 @@ describe('specWindow', function() {
   it('specWindow AudioService1', function() {
     return this.client
       // play aquestalk1
+      .setValue('#play1-encoded', "テ'_スト")
       .setValue('#play-result-1', '')
       .click('#play1-aqver1')
       .waitForValue('#play-result-1', 5000)
@@ -286,6 +206,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // play aquestalk2
+      .setValue('#play1-encoded', "テ'_スト")
       .setValue('#play-result-1', '')
       .click('#play1-aqver2')
       .waitForValue('#play-result-1', 5000)
@@ -293,6 +214,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // play aquestalk10
+      .setValue('#play1-encoded', "テ'_スト")
       .setValue('#play-result-1', '')
       .click('#play1-aqver10')
       .waitForValue('#play-result-1', 5000)
@@ -300,6 +222,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // record aquestalk1
+      .setValue('#play1-encoded', "テ'_スト")
       .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-1', '')
       .click('#record1-aqver1')
@@ -308,6 +231,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // record aquestalk2
+      .setValue('#play1-encoded', "テ'_スト")
       .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-1', '')
       .click('#record1-aqver2')
@@ -316,6 +240,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // record aquestalk10
+      .setValue('#play1-encoded', "テ'_スト")
       .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-1', '')
       .click('#record1-aqver10')
@@ -331,6 +256,7 @@ describe('specWindow', function() {
   it('specWindow AudioService2', function() {
     return this.client
       // play aquestalk1
+      .setValue('#play2-encoded', "テ'_スト")
       .setValue('#play-result-2', '')
       .click('#play2-aqver1')
       .waitForValue('#play-result-2', 5000)
@@ -338,6 +264,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // play aquestalk2
+      .setValue('#play2-encoded', "テ'_スト")
       .setValue('#play-result-2', '')
       .click('#play2-aqver2')
       .waitForValue('#play-result-2', 5000)
@@ -345,6 +272,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // play aquestalk10
+      .setValue('#play2-encoded', "テ'_スト")
       .setValue('#play-result-2', '')
       .click('#play2-aqver10')
       .waitForValue('#play-result-2', 5000)
@@ -352,6 +280,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // record aquestalk1
+      .setValue('#play2-encoded', "テ'_スト")
       .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-2', '')
       .click('#record2-aqver1')
@@ -360,6 +289,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // record aquestalk2
+      .setValue('#play2-encoded', "テ'_スト")
       .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-2', '')
       .click('#record2-aqver2')
@@ -368,6 +298,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok')
       })
       // record aquestalk10
+      .setValue('#play2-encoded', "テ'_スト")
       .setValue('#wav-file-path-2', '/tmp/_myukkurivoice_hogehoge.wav')
       .setValue('#record-result-2', '')
       .click('#record2-aqver10')

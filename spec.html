@@ -32,21 +32,7 @@
       <input id="consumer-key-err" type="text" ng-model="consumerKeyErr">
     </div>
 
-    <div>MessageService
-      <input id="message" type="text" ng-model="message">
-      <input id="mess-wav-file-path" type="text" ng-model="messWavFilePath">
-      <input id="message-err" type="text" ng-model="messageErr">
-
-      <button id="action" ng-click="ctrl.action()">
-      <button id="record" ng-click="ctrl.record()">
-      <button id="info" ng-click="ctrl.info()">
-      <button id="error" ng-click="ctrl.error()">
-      <button id="syserror" ng-click="ctrl.syserror()">
-
-      <input id="message-result" type="text" ng-model="messageResult">
-      <input id="record-message-result" type="text" ng-model="recordMessageResult">
-      <input id="record-wavGenerated-result" type="text" ng-model="recordWavGeneratedResult">
-    </div>
+    // MessageService
 
     <div>DataService
       <button id="load" ng-click="ctrl.load()">
@@ -82,6 +68,8 @@
     </div>
 
     <div>AudioService1
+      <input id="play1-encoded" type="text" ng-model="play1Encoded">
+
       <button id="play1-aqver1" ng-click="ctrl.play1AqVer1()">
       <button id="play1-aqver2" ng-click="ctrl.play1AqVer2()">
       <button id="play1-aqver10" ng-click="ctrl.play1AqVer10()">
@@ -95,6 +83,8 @@
     </div>
 
     <div>AudioService2
+      <input id="play2-encoded" type="text" ng-model="play2Encoded">
+
       <button id="play2-aqver1" ng-click="ctrl.play2AqVer1()">
       <button id="play2-aqver2" ng-click="ctrl.play2AqVer2()">
       <button id="play2-aqver10" ng-click="ctrl.play2AqVer10()">
