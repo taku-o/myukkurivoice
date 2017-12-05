@@ -532,6 +532,12 @@ function showHelpWindow() {
   var r = localShortcut.register(helpWindow, 'Command+W', function() {
     if (helpWindow) { helpWindow.close(); }
   });
+  var r = localShortcut.register(helpWindow, 'Up', function() {
+    if (helpWindow) { helpWindow.webContents.send('shortcut', 'moveToPreviousHelp'); }
+  });
+  var r = localShortcut.register(helpWindow, 'Down', function() {
+    if (helpWindow) { helpWindow.webContents.send('shortcut', 'moveToNextHelp'); }
+  });
 
   helpWindow.webContents.on('did-finish-load', function() {
     helpWindow.show(); helpWindow.focus();
