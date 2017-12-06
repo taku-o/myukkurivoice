@@ -344,6 +344,20 @@ app.on('ready', function() {
   }
   var menuTemplate = Menu.buildFromTemplate(menuList);
   Menu.setApplicationMenu(menuTemplate);
+
+  // dock menu
+  var dockMenuList = [
+    {
+      label: '環境設定',
+      click () { showSystemWindow(); }
+    },
+    {
+      label: 'ヘルプ',
+      click () { showHelpWindow(); }
+    }
+  ];
+  var dockMenu = Menu.buildFromTemplate(dockMenuList);
+  app.dock.setMenu(dockMenu)
 });
 
 // showSaveDialog
