@@ -67,8 +67,8 @@ task :package do
       ' --ignore="^/vendor/aqtk1-mac" ' +
       ' --ignore="^/vendor/aqtk10-mac" ' +
       ' --ignore="^/vendor/aqtk2-mac" ' +
-      ' --ignore="^/js/spec.js" ' +
-      ' --ignore="^/spec.html" ' +
+      ' --ignore="^/js/apps.spec.js" ' + # is test code
+      ' --ignore="^/spec.html" ' +       # is test code
       ' --ignore=".DS_Store" ' +
       ' --ignore=".babelrc" ' +
       ' --ignore=".editorconfig" ' +
