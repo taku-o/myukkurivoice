@@ -59,38 +59,6 @@ app.on('ready', function() {
   // open main window.
   showMainWindow();
 
-  // shortcut
-  var r = localShortcut.register(mainWindow, 'Command+Q', function() {
-    app.quit();
-  });
-  var r = localShortcut.register(mainWindow, 'Command+P', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'play'); }
-  });
-  var r = localShortcut.register(mainWindow, 'Command+W', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'stop'); }
-  });
-  var r = localShortcut.register(mainWindow, 'Command+S', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
-  });
-  var r = localShortcut.register(mainWindow, 'Command+Up', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'moveToSource'); }
-  });
-  var r = localShortcut.register(mainWindow, 'Command+Down', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'moveToEncoded'); }
-  });
-  var r = localShortcut.register(mainWindow, 'Command+Right', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
-  });
-  var r = localShortcut.register(mainWindow, 'Command+D', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'fromClipboard'); }
-  });
-  var r = localShortcut.register(mainWindow, 'Command+Left', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swichNextConfig'); }
-  });
-  var r = localShortcut.register(mainWindow, 'Command+Shift+Left', function() {
-    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swichPreviousConfig'); }
-  });
-
   // menu
   var menuList = [
     {
@@ -98,17 +66,7 @@ app.on('ready', function() {
       submenu: [
         {
           label: 'About MYukkuriVoice',
-          click () {
-            var w = openAboutWindow({
-              icon_path: path.join(__dirname, 'img/icon_128x128.png'),
-              css_path: path.join(__dirname, 'css/about.css'),
-              package_json_dir: __dirname,
-              open_devtools: false,
-            });
-            if (mainWindow) { w.setParentWindow(mainWindow); }
-            var r = localShortcut.register(w, 'Command+Q', function() { app.quit(); });
-            var r = localShortcut.register(w, 'Command+W', function() { w.close(); });
-          }
+          click () { showAboutWindow(); }
         },
         { type: 'separator' },
         {
@@ -348,12 +306,20 @@ app.on('ready', function() {
   // dock menu
   var dockMenuList = [
     {
+      label: 'About MYukkuriVoice',
+      click () { showAboutWindow(); }
+    },
+    {
       label: '環境設定',
       click () { showSystemWindow(); }
     },
     {
       label: 'ヘルプ',
       click () { showHelpWindow(); }
+    },
+    {
+      label: 'ウインドウ位置リセット',
+      click () { resetWindowPosition(); }
     }
   ];
   var dockMenu = Menu.buildFromTemplate(dockMenuList);
@@ -498,6 +464,38 @@ function showMainWindow() {
   });
   mainWindow.loadURL('file://' + __dirname + '/main.html');
 
+  // shortcut
+  var r = localShortcut.register(mainWindow, 'Command+Q', function() {
+    app.quit();
+  });
+  var r = localShortcut.register(mainWindow, 'Command+P', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'play'); }
+  });
+  var r = localShortcut.register(mainWindow, 'Command+W', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'stop'); }
+  });
+  var r = localShortcut.register(mainWindow, 'Command+S', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'record'); }
+  });
+  var r = localShortcut.register(mainWindow, 'Command+Up', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'moveToSource'); }
+  });
+  var r = localShortcut.register(mainWindow, 'Command+Down', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'moveToEncoded'); }
+  });
+  var r = localShortcut.register(mainWindow, 'Command+Right', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'encode'); }
+  });
+  var r = localShortcut.register(mainWindow, 'Command+D', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'fromClipboard'); }
+  });
+  var r = localShortcut.register(mainWindow, 'Command+Left', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swichNextConfig'); }
+  });
+  var r = localShortcut.register(mainWindow, 'Command+Shift+Left', function() {
+    if (mainWindow) { mainWindow.webContents.send('shortcut', 'swichPreviousConfig'); }
+  });
+
   // main window event
   mainWindow.webContents.on('did-finish-load', function() {
     mainWindow.show(); mainWindow.focus();
@@ -540,6 +538,7 @@ function showHelpWindow() {
   });
   helpWindow.loadURL('file://' + __dirname + '/help.html');
 
+  // shortcut
   var r = localShortcut.register(helpWindow, 'Command+Q', function() {
     app.quit();
   });
@@ -553,6 +552,7 @@ function showHelpWindow() {
     if (helpWindow) { helpWindow.webContents.send('shortcut', 'moveToNextHelp'); }
   });
 
+  // event
   helpWindow.webContents.on('did-finish-load', function() {
     helpWindow.show(); helpWindow.focus();
   });
@@ -593,6 +593,7 @@ function showSystemWindow() {
   });
   systemWindow.loadURL('file://' + __dirname + '/system.html');
 
+  // shortcut
   var r = localShortcut.register(systemWindow, 'Command+Q', function() {
     app.quit();
   });
@@ -600,6 +601,7 @@ function showSystemWindow() {
     if (systemWindow) { systemWindow.close(); }
   });
 
+  // event
   systemWindow.webContents.on('did-finish-load', function() {
     systemWindow.show(); systemWindow.focus();
   });
@@ -617,6 +619,19 @@ function showSystemWindow() {
 ipcMain.on('showSystemWindow', function (event, message) {
   showSystemWindow();
 });
+
+// about application window
+function showAboutWindow() {
+  var w = openAboutWindow({
+    icon_path: path.join(__dirname, 'img/icon_128x128.png'),
+    css_path: path.join(__dirname, 'css/about.css'),
+    package_json_dir: __dirname,
+    open_devtools: false,
+  });
+  if (mainWindow) { w.setParentWindow(mainWindow); }
+  var r = localShortcut.register(w, 'Command+Q', function() { app.quit(); });
+  var r = localShortcut.register(w, 'Command+W', function() { w.close(); });
+};
 
 // application spec window
 function showSpecWindow() {
