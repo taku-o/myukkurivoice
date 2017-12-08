@@ -32,6 +32,7 @@ angular.module('yvoiceAppHelp', [])
       'tuna',
       'writing',
       'dataconfig',
+      'dragout',
       'shortcut',
       'help'
     ];

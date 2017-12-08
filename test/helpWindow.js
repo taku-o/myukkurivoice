@@ -35,7 +35,7 @@ describe('helpWindow', function() {
         assert.equal(response.value.length, 8);
       })
       .elements('.nav-group-item.functions-item').then(function(response) {
-        assert.equal(response.value.length, 7);
+        assert.equal(response.value.length, 8);
       })
   });
 
@@ -78,6 +78,9 @@ describe('helpWindow', function() {
         assert.ok(! isVisible);
       })
       .isVisible('#dataconfig-pane').then(function(isVisible) {
+        assert.ok(! isVisible);
+      })
+      .isVisible('#dragout-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
       .isVisible('#shortcut-pane').then(function(isVisible) {
@@ -138,6 +141,10 @@ describe('helpWindow', function() {
       .isVisible('#dataconfig-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
+      .click('#menu-dragout')
+      .isVisible('#dragout-pane').then(function(isVisible) {
+        assert.ok(isVisible);
+      })
       .click('#menu-shortcut')
       .isVisible('#shortcut-pane').then(function(isVisible) {
         assert.ok(isVisible);
@@ -153,6 +160,4 @@ describe('helpWindow', function() {
   });
 
 });
-
-
 

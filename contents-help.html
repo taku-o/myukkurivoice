@@ -63,6 +63,9 @@
       <span class="nav-group-item functions-item" id="menu-dataconfig" ng-class="{active:display == 'dataconfig'}" ng-click="display='dataconfig'">
         <span class="icon icon-help-circled"></span>音声再生設定の編集
       </span>
+      <span class="nav-group-item functions-item" id="menu-dragout" ng-class="{active:display == 'dragout'}" ng-click="display='dragout'">
+        <span class="icon icon-help-circled"></span>録音ファイルのドラッグアンドドロップ
+      </span>
       <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
@@ -117,7 +120,7 @@
 
       <h4>ゆっくり霊夢(f1)の声が濁っている？</h4>
       <p>
-        調査中。対応不能かもしれません。
+        長らく調査中。対応不能かも。
       </p>
       <h4>ゆっくり魔理沙(f2)の声が無い？</h4>
       <p>
@@ -254,11 +257,11 @@
             <td class="warn">必要</td>
           </tr>
           <tr>
-            <th>動画に使用する(広告なし)</th>
+            <th>動画に使用する(広告収入なし)</th>
             <td>不要</td>
           </tr>
           <tr>
-            <th>動画に使用する(広告あり)</th>
+            <th>動画に使用する(広告収入あり)</th>
             <td class="warn">必要</td>
           </tr>
         </tbody>
@@ -359,8 +362,8 @@
         <li class="link" ng-click="display='tuna'">音量、再生速度の調整。音質の調整。</li>
         <li class="link" ng-click="display='tuna'">再生する音声の抑揚のON・OFF切替</li>
         <li>音声の再生時間目安の表示</li>
-        <li>アプリから動画編集ソフトに、音声ファイルを直接ドラッグアンドドロップできる機能</li>
-        <li>ウィンドウの前面表示固定、切替機能</li>
+        <li class="link" ng-click="display='dragout'">アプリから動画編集ソフトに、音声ファイルを直接ドラッグアンドドロップできる機能</li>
+        <li class="link" ng-click="display='dragout'">ウィンドウの前面表示固定、切替機能</li>
         <li>アプリを閉じた時のウィンドウの位置を記憶する</li>
         <li class="link" ng-click="display='shortcut'">各種ショートカットキー</li>
         <li class="link" ng-click="display='help'">チュートリアル・ヘルプ</li>
@@ -631,6 +634,35 @@
       「ボイス設定」メニューの「ボイス設定オールリセット」を選択すると、
       現在の設定が初期化されます。<br>
       現在の設定内容は失われてしまうので、気をつけてください。
+    </div>
+  </div>
+
+  <!-- dragout -->
+  <div class="pane" id="dragout-pane" ng-show="display == 'dragout'">
+    <div class="content">
+      <h4>アプリから動画編集ソフトに音声ファイルを<br>直接ドラッグアンドドロップする</h4>
+      <p>
+        MYukkuriVoiceで音声を録音すると、
+        <button class="btn btn-large btn-primary">
+          <span class="icon icon-download"></span>drag and drop to movie editor
+        </button>に<br>
+        録音ファイルのリンクが張られます。<br>
+        このボタンをドラッグアンドドロップすれば、
+        Finderを経由しなくても、
+        動画編集ソフト、あるいは他のソフトに動画ファイルを直接渡せます。
+      </p>
+
+      <h4>ウィンドウを最前面に固定する</h4>
+      <p>
+        メイン画面上にある、このボタン
+        <button class="btn btn-large btn-default" title="前面表示固定のON/OFF切替">
+          <span class="icon icon-lock"></span>
+        </button>
+        を押下すると、画面が常に最前面に表示されるようになります。<br>
+        もう一回押すと、元に戻ります。<br>
+        複数のアプリケーションを開いて、作業する時などに便利です。<br>
+        <small>※トラブル回避の都合上、アプリを再起動すると最前面の設定はリセットされます</small>
+      </p>
     </div>
   </div>
 
