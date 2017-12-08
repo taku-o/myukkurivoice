@@ -148,6 +148,7 @@ function resetAppConfigOnMain() {
   myApp.mainWindow.webContents.reload();
   if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
 }
+MYukkuriVoice.prototype.resetAppConfigOnMain = resetAppConfigOnMain;
 
 // resetWindowPosition
 function resetWindowPosition() {
