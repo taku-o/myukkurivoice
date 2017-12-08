@@ -34,10 +34,14 @@ var MYukkuriVoice = function() {
   this.helpWindow = null;
   this.systemWindow = null;
 };
-var myApp = new MYukkuriVoice();
+MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
 MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
+MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
+MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
+MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
+var myApp = new MYukkuriVoice();
 
 // application settings
 var appCfg = {
@@ -64,22 +68,22 @@ global.appCfg = appCfg;
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   // open main window.
-  Pane.showMainWindow(myApp);
+  myApp.showMainWindow();
 
   // init menu
-  Menu.initAppMenu(myApp);
-  Menu.initDockMenu(myApp);
+  myApp.initAppMenu();
+  myApp.initDockMenu();
 });
 
 // show window event
 ipcMain.on('showHelpWindow', function (event, message) {
-  Pane.showHelpWindow(myApp);
+  myApp.showHelpWindow();
 });
 ipcMain.on('showSystemWindow', function (event, message) {
-  Pane.showSystemWindow(myApp);
+  myApp.showSystemWindow();
 });
 ipcMain.on('showSpecWindow', function (event, message) {
-  Pane.showSpecWindow(myApp);
+  myApp.showSpecWindow();
 });
 
 // showSaveDialog

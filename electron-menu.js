@@ -4,19 +4,20 @@ const app = electron.app;
 const Menu = electron.Menu;
 
 // application menu
-function initAppMenu(myApp) {
+function initAppMenu() {
+  var myApp = this;
   var menuList = [
     {
       label: 'MYukkuriVoice',
       submenu: [
         {
           label: 'About MYukkuriVoice',
-          click () { myApp.showAboutWindow(myApp); }
+          click () { myApp.showAboutWindow(); }
         },
         { type: 'separator' },
         {
           label: '環境設定',
-          click () { myApp.showSystemWindow(myApp); }
+          click () { myApp.showSystemWindow(); }
         },
         { type: 'separator' },
         {
@@ -216,7 +217,7 @@ function initAppMenu(myApp) {
       submenu: [
         {
           label: 'ヘルプ',
-          click () { myApp.showHelpWindow(myApp); }
+          click () { myApp.showHelpWindow(); }
         },
         { type: 'separator' },
         {
@@ -250,19 +251,20 @@ function initAppMenu(myApp) {
 }
 
 // dock menu
-function initDockMenu(myApp) {
+function initDockMenu() {
+  var myApp = this;
   var dockMenuList = [
     {
       label: 'About MYukkuriVoice',
-      click () { myApp.showAboutWindow(myApp); }
+      click () { myApp.showAboutWindow(); }
     },
     {
       label: '環境設定',
-      click () { myApp.showSystemWindow(myApp); }
+      click () { myApp.showSystemWindow(); }
     },
     {
       label: 'ヘルプ',
-      click () { myApp.showHelpWindow(myApp); }
+      click () { myApp.showHelpWindow(); }
     },
     {
       label: 'ウインドウ位置リセット',
