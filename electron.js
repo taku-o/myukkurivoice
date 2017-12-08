@@ -5,11 +5,35 @@ const dialog = electron.dialog;
 const ipcMain = electron.ipcMain;
 const log = require('electron-log');
 const path = require('path');
-const crypto = require('crypto');
-const Config = require('electron-config');
 
 const Menu = require('./electron-menu');
 const Pane = require('./electron-window');
+const AppConfig = require('./electron-appcfg');
+
+// MYukkuriVoice application
+var MYukkuriVoice = function() {
+  this.appCfg = null;
+  this.config = null;
+
+  // window reference
+  this.mainWindow = null;
+  this.helpWindow = null;
+  this.systemWindow = null;
+};
+var myApp = new MYukkuriVoice();
+MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
+MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
+MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
+MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
+MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
+MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
+MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
+MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
+MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
+MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
+
+// load application settings
+myApp.loadAppConfig();
 
 // handle uncaughtException
 process.on('uncaughtException', function(err) {
@@ -23,46 +47,6 @@ process.on('uncaughtException', function(err) {
 app.on('window-all-closed', function() {
   app.quit();
 });
-
-// MYukkuriVoice application
-var MYukkuriVoice = function() {
-  this.appCfg = null;
-  this.config = null;
-
-  // window reference
-  this.mainWindow = null;
-  this.helpWindow = null;
-  this.systemWindow = null;
-};
-MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
-MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
-MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
-MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
-MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
-MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
-MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
-var myApp = new MYukkuriVoice();
-
-// application settings
-var appCfg = {
-  mainWindow: { width: 800, height: 665, x:null, y:null },
-  helpWindow: { width: 700, height: 550 },
-  systemWindow: { width: 390, height: 530 },
-  audioServVer: 'webaudioapi', // html5audio or webaudioapi
-  showMsgPane: true,
-  acceptFirstMouse: false,
-  passPhrase: crypto.randomBytes(16).toString('hex'),
-  aq10UseKeyEncrypted: '',
-  debug: process.env.DEBUG,
-  isTest: process.env.NODE_ENV == 'test'
-};
-var config = new Config();
-['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
-  if (config.has(k)) { appCfg[k] = config.get(k); }
-});
-myApp.config = config;
-myApp.appCfg = appCfg;
-global.appCfg = appCfg;
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -119,24 +103,8 @@ ipcMain.on('ondragstartwav', function (event, filePath) {
 });
 
 // updateAppConfig
-function updateAppConfig(options) {
-  var {x,y} = myApp.mainWindow.getBounds();
-  options.mainWindow.x = x;
-  options.mainWindow.y = y;
-  config.set('mainWindow',          options.mainWindow);
-  config.set('audioServVer',        options.audioServVer);
-  config.set('showMsgPane',         options.showMsgPane);
-  config.set('acceptFirstMouse',    options.acceptFirstMouse);
-  config.set('passPhrase',          options.passPhrase);
-  config.set('aq10UseKeyEncrypted', options.aq10UseKeyEncrypted);
-
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
-    if (config.has(k)) { appCfg[k] = config.get(k); }
-  });
-  global.appCfg = appCfg;
-}
 ipcMain.on('updateAppConfig', function (event, options) {
-  updateAppConfig(options);
+  myApp.updateAppConfig(options);
   var dialogOptions = {
     type: 'info',
     title: 'application config updated.',
@@ -145,27 +113,14 @@ ipcMain.on('updateAppConfig', function (event, options) {
   };
   var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   event.sender.send('updateAppConfig', r);
-  myApp.mainWindow.setSize(appCfg.mainWindow.width, appCfg.mainWindow.height);
+  myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
   myApp.mainWindow.webContents.reload();
   if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
 });
 
 // resetAppConfig
-function resetAppConfig() {
-  config.set('mainWindow',          { width: 800, height: 665, x:null, y:null });
-  config.set('audioServVer',        'webaudioapi');
-  config.set('showMsgPane',         true);
-  config.set('acceptFirstMouse',    false);
-  config.set('passPhrase',          crypto.randomBytes(16).toString('hex'));
-  config.set('aq10UseKeyEncrypted', '');
-
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
-    if (config.has(k)) { appCfg[k] = config.get(k); }
-  });
-  global.appCfg = appCfg;
-}
 ipcMain.on('resetAppConfig', function (event, message) {
-  resetAppConfig();
+  myApp.resetAppConfig();
   var dialogOptions = {
     type: 'info',
     title: 'application config initialized.',
@@ -174,14 +129,14 @@ ipcMain.on('resetAppConfig', function (event, message) {
   };
   var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   event.sender.send('resetAppConfig', r);
-  myApp.mainWindow.setSize(appCfg.mainWindow.width, appCfg.mainWindow.height);
+  myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
   myApp.mainWindow.webContents.reload();
   if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
 });
 
 // resetAppConfigOnMain
 function resetAppConfigOnMain() {
-  resetAppConfig();
+  myApp.resetAppConfig();
   var dialogOptions = {
     type: 'info',
     title: 'application config initialized.',
@@ -189,11 +144,10 @@ function resetAppConfigOnMain() {
     buttons: ['OK'],
   };
   var r = dialog.showMessageBox(myApp.mainWindow, dialogOptions);
-  myApp.mainWindow.setSize(appCfg.mainWindow.width, appCfg.mainWindow.height);
+  myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
   myApp.mainWindow.webContents.reload();
   if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
 }
-MYukkuriVoice.prototype.resetAppConfig = resetAppConfig;
 
 // resetWindowPosition
 function resetWindowPosition() {

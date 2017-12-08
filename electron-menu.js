@@ -277,6 +277,6 @@ function initDockMenu() {
 
 // exports
 module.exports = {
-  initAppMenu: initAppMenu,
-  initDockMenu: initDockMenu
+  initAppMenu,
+  initDockMenu
 };

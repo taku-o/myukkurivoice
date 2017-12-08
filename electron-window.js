@@ -209,9 +209,9 @@ function showSpecWindow() {
 
 // exports
 module.exports = {
-  showMainWindow: showMainWindow,
-  showHelpWindow: showHelpWindow,
-  showSystemWindow: showSystemWindow,
-  showAboutWindow: showAboutWindow,
-  showSpecWindow: showSpecWindow
+  showMainWindow,
+  showHelpWindow,
+  showSystemWindow,
+  showAboutWindow,
+  showSpecWindow
 };
