@@ -27,7 +27,7 @@ function showMainWindow(myApp) {
       devTools: myApp.appCfg.debug
     }
   });
-  myApp.mainWindow.loadURL('file://' + __dirname + '/main.html');
+  myApp.mainWindow.loadURL('file://' + __dirname + '/contents-main.html');
 
   // shortcut
   var r = localShortcut.register(myApp.mainWindow, 'Command+Q', function() {
@@ -100,7 +100,7 @@ function showHelpWindow(myApp) {
       devTools: myApp.appCfg.debug
     }
   });
-  myApp.helpWindow.loadURL('file://' + __dirname + '/help.html');
+  myApp.helpWindow.loadURL('file://' + __dirname + '/contents-help.html');
 
   // shortcut
   var r = localShortcut.register(myApp.helpWindow, 'Command+Q', function() {
@@ -151,7 +151,7 @@ function showSystemWindow(myApp) {
       devTools: myApp.appCfg.debug
     }
   });
-  myApp.systemWindow.loadURL('file://' + __dirname + '/system.html');
+  myApp.systemWindow.loadURL('file://' + __dirname + '/contents-system.html');
 
   // shortcut
   var r = localShortcut.register(myApp.systemWindow, 'Command+Q', function() {
@@ -201,7 +201,7 @@ function showSpecWindow(myApp) {
       devTools: myApp.appCfg.debug
     }
   });
-  specWindow.loadURL('file://' + __dirname + '/spec.html');
+  specWindow.loadURL('file://' + __dirname + '/contents-spec.html');
 }
 
 // exports
