@@ -245,7 +245,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
 
       var phont = null;
       angular.forEach($scope.phontList, function(value, key) {
-        if (value.id == $scope.yvoice.phont) { phont = value; break; }
+        if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
@@ -313,7 +313,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
 
       var phont = null;
       angular.forEach($scope.phontList, function(value, key) {
-        if (value.id == $scope.yvoice.phont) { phont = value; break; }
+        if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
