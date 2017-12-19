@@ -167,6 +167,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
     var ctrl = this;
     $scope.display = 'main';
     $scope.phontList = MasterService.getPhontList();
+    $scope.aq10BasList = [{name:'F1E', value:0}, {name:'F2E', value:2}, {name:'M1E', value:2}];
     $scope.yinput = angular.copy(YInput);
     $scope.messageList = [];
     $scope.lastWavFile = null;
@@ -234,6 +235,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
     }
+
+    // list box selection changed
+    ctrl.onChangePhont = function() {
+      var phont = null;
+      angular.forEach($scope.phontList, function(value, key) {
+        if (value.id == $scope.yvoice.phont) { phont = value; }
+      });
+      if (!phont) { return; }
+      $scope.yvoice.version = phont.version;
+      if (phont.version == 'talk10') {
+        $scope.yvoice.bas = phont.struct.bas;
+        $scope.yvoice.pit = phont.struct.pit;
+        $scope.yvoice.acc = phont.struct.acc;
+        $scope.yvoice.lmd = phont.struct.lmd;
+        $scope.yvoice.fsc = phont.struct.fsc;
+      } else {
+        delete $scope.yvoice.bas;
+        delete $scope.yvoice.pit;
+        delete $scope.yvoice.acc;
+        delete $scope.yvoice.lmd;
+        delete $scope.yvoice.fsc;
+      }
+    };
 
     // action
     ctrl.play = function() {
