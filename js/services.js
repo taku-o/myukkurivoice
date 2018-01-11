@@ -371,7 +371,7 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
             aqtkVoiceVal.bas = options.bas? options.bas: phont.struct.bas;
             aqtkVoiceVal.spd = speed;
             aqtkVoiceVal.vol = phont.struct.vol;
-            aqtkVoiceVal.pit = options.pit? options.pit: phont.struct.bas;
+            aqtkVoiceVal.pit = options.pit? options.pit: phont.struct.pit;
             aqtkVoiceVal.acc = options.acc? options.acc: phont.struct.acc;
             aqtkVoiceVal.lmd = options.lmd? options.lmd: phont.struct.lmd;
             aqtkVoiceVal.fsc = options.fsc? options.fsc: phont.struct.fsc;
@@ -518,7 +518,9 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
             var nodeList = [];
 
             // playbackRate
+              alert(options.playbackRate);
             if (options.playbackRate && options.playbackRate != 1.0) {
+              alert('aa');
               inSourceNode.playbackRate.value = options.playbackRate;
             }
             // detune
