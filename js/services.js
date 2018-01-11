@@ -518,9 +518,7 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
             var nodeList = [];
 
             // playbackRate
-              alert(options.playbackRate);
             if (options.playbackRate && options.playbackRate != 1.0) {
-              alert('aa');
               inSourceNode.playbackRate.value = options.playbackRate;
             }
             // detune
