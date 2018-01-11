@@ -167,7 +167,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
     var ctrl = this;
     $scope.display = 'main';
     $scope.phontList = MasterService.getPhontList();
-    $scope.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:2}, {name:'M1E', id:2}];
+    $scope.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
     $scope.yinput = angular.copy(YInput);
     $scope.messageList = [];
     $scope.lastWavFile = null;
