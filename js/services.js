@@ -368,13 +368,13 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
 
             // create struct
             var aqtkVoiceVal = new AQTK_VOICE;
-            aqtkVoiceVal.bas = options.bas;
+            aqtkVoiceVal.bas = options.bas? options.bas: phont.struct.bas;
             aqtkVoiceVal.spd = speed;
             aqtkVoiceVal.vol = phont.struct.vol;
-            aqtkVoiceVal.pit = options.pit;
-            aqtkVoiceVal.acc = options.acc;
-            aqtkVoiceVal.lmd = options.lmd;
-            aqtkVoiceVal.fsc = options.fsc;
+            aqtkVoiceVal.pit = options.pit? options.pit: phont.struct.bas;
+            aqtkVoiceVal.acc = options.acc? options.acc: phont.struct.acc;
+            aqtkVoiceVal.lmd = options.lmd? options.lmd: phont.struct.lmd;
+            aqtkVoiceVal.fsc = options.fsc? options.fsc: phont.struct.fsc;
             ptr_aqtkVoiceVal = aqtkVoiceVal.ref();
 
             // create wave buffer
@@ -518,11 +518,11 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
             var nodeList = [];
 
             // playbackRate
-            if (options.playbackRate != 1.0) {
+            if (options.playbackRate && options.playbackRate != 1.0) {
               inSourceNode.playbackRate.value = options.playbackRate;
             }
             // detune
-            if (options.detune != 0) {
+            if (options.detune && options.detune != 0) {
               inSourceNode.detune.value = options.detune;
             }
             // gain
@@ -583,11 +583,11 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
             var nodeList = [];
 
             // playbackRate
-            if (options.playbackRate != 1.0) {
+            if (options.playbackRate && options.playbackRate != 1.0) {
               inSourceNode.playbackRate.value = options.playbackRate;
             }
             // detune
-            if (options.detune != 0) {
+            if (options.detune && options.detune != 0) {
               inSourceNode.detune.value = options.detune;
             }
             // gain
