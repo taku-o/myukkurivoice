@@ -368,13 +368,13 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
 
             // create struct
             var aqtkVoiceVal = new AQTK_VOICE;
-            aqtkVoiceVal.bas = phont.struct.bas;
+            aqtkVoiceVal.bas = options.bas;
             aqtkVoiceVal.spd = speed;
             aqtkVoiceVal.vol = phont.struct.vol;
-            aqtkVoiceVal.pit = phont.struct.pit;
-            aqtkVoiceVal.acc = phont.struct.acc;
-            aqtkVoiceVal.lmd = phont.struct.lmd;
-            aqtkVoiceVal.fsc = phont.struct.fsc;
+            aqtkVoiceVal.pit = options.pit;
+            aqtkVoiceVal.acc = options.acc;
+            aqtkVoiceVal.lmd = options.lmd;
+            aqtkVoiceVal.fsc = options.fsc;
             ptr_aqtkVoiceVal = aqtkVoiceVal.ref();
 
             // create wave buffer
@@ -518,9 +518,13 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
             var nodeList = [];
 
             // playbackRate
-            inSourceNode.playbackRate.value = options.playbackRate;
+            if (options.playbackRate != 1.0) {
+              inSourceNode.playbackRate.value = options.playbackRate;
+            }
             // detune
-            inSourceNode.detune.value = options.detune;
+            if (options.detune != 0) {
+              inSourceNode.detune.value = options.detune;
+            }
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = options.volume;
@@ -579,9 +583,13 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
             var nodeList = [];
 
             // playbackRate
-            inSourceNode.playbackRate.value = options.playbackRate;
+            if (options.playbackRate != 1.0) {
+              inSourceNode.playbackRate.value = options.playbackRate;
+            }
             // detune
-            inSourceNode.detune.value = options.detune;
+            if (options.detune != 0) {
+              inSourceNode.detune.value = options.detune;
+            }
             // gain
             var gainNode = audioCtx.createGain();
             gainNode.gain.value = options.volume;

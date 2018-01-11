@@ -43,6 +43,18 @@ div.voice-tuna-box {
   padding-right: 10px;
   border: 1px solid #c0c0c0;
 }
+div.voice-tuna-box-talk10 {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 1px;
+  padding-right: 1px;
+  border: 1px solid #c0c0c0;
+}
+div.voice-tuna-box-talk10 small.label-tuna {
+  padding-left: 3px;
+}
 div.source-write-box {
   margin-top: 10px;
   padding-left: 10px;
