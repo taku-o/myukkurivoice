@@ -17,6 +17,7 @@ http://www.a-quest.com/
 * (NEW!! 2017/11/15) AquesTalk10の音声の再生に対応。
 * (NEW!! 2017/11/21) 録音した音声ファイルを動画編集ソフトに直接ドラッグアンドドロップできるように。
 * (NEW!! 2017/11/28) 個人で非営利用途以外で使う人向けに、AquesTalk10の使用ライセンスキーを環境設定で設定できるようになりました。
+* (NEW!! 2018/01/12) AquesTalk10の音声設定調節機能を追加しました。AquesTalk10ベースの声を選んだ時のみ、アクセント、音程などの音声の調節を行えます。
 * 内部構造を大きく変更したので、
   * アプリをバージョンアップする前は、大事な設定はメモを取っておいてください。
   * 動作がおかしい場合はメニューから設定の初期化を実施するか、過去のバージョンを利用してください。
@@ -67,6 +68,10 @@ https://github.com/taku-o/myukkurivoice/releases から圧縮ファイル(MYukku
 * チュートリアル、ヘルプが用意されています
 
 <img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-tutorial.png" width="400">
+
+* AquesTalk10から導入された音声の調節機能にも対応しています。(AquesTalk10ベースの音声のみ)
+
+<img src="https://github.com/taku-o/myukkurivoice/blob/master/docs/images/readme-editaq10voice.png" width="400">
 
 ### 機能一覧
 * AquesTalk1, AquesTalk2, AquesTalk10ベースのメッセージ音声再生、音声録音機能

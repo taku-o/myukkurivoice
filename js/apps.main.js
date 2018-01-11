@@ -167,6 +167,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
     var ctrl = this;
     $scope.display = 'main';
     $scope.phontList = MasterService.getPhontList();
+    $scope.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
     $scope.yinput = angular.copy(YInput);
     $scope.messageList = [];
     $scope.lastWavFile = null;
@@ -235,6 +236,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       textarea.selectionEnd = 0;
     }
 
+    // list box selection changed
+    ctrl.onChangePhont = function() {
+      var phont = null;
+      angular.forEach($scope.phontList, function(value, key) {
+        if (value.id == $scope.yvoice.phont) { phont = value; }
+      });
+      if (!phont) { return; }
+      $scope.yvoice.version = phont.version;
+      if (phont.version == 'talk10') {
+        $scope.yvoice.bas = phont.struct.bas;
+        $scope.yvoice.pit = phont.struct.pit;
+        $scope.yvoice.acc = phont.struct.acc;
+        $scope.yvoice.lmd = phont.struct.lmd;
+        $scope.yvoice.fsc = phont.struct.fsc;
+      } else {
+        delete $scope.yvoice.bas;
+        delete $scope.yvoice.pit;
+        delete $scope.yvoice.acc;
+        delete $scope.yvoice.lmd;
+        delete $scope.yvoice.fsc;
+      }
+    };
+
     // action
     ctrl.play = function() {
       MessageService.action('start to play voice.');
@@ -280,20 +304,28 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
         $scope.yvoice.writeMarginMs = 150;
       }
-      var keyOptions = {
+
+      var waveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
       };
-      var waveOptions = {
+      if (phont.version == 'talk10') {
+        waveOptions.bas = $scope.yvoice.bas;
+        waveOptions.pit = $scope.yvoice.pit;
+        waveOptions.acc = $scope.yvoice.acc;
+        waveOptions.lmd = $scope.yvoice.lmd;
+        waveOptions.fsc = $scope.yvoice.fsc;
+      }
+      var playOptions = {
         volume:$scope.yvoice.volume,
         playbackRate:$scope.yvoice.playbackRate,
         detune:$scope.yvoice.detune,
         writeMarginMs:$scope.yvoice.writeMarginMs,
       };
 
-      AquesService.wave(encoded, phont, speed, keyOptions).then(
+      AquesService.wave(encoded, phont, speed, waveOptions).then(
         function(bufWav) {
-          return AudioService.play(bufWav, waveOptions);
+          return AudioService.play(bufWav, playOptions);
         },
         function(err) {
           MessageService.error('音声データを作成できませんでした。');
@@ -348,11 +380,18 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
         $scope.yvoice.writeMarginMs = 150;
       }
-      var keyOptions = {
+      var waveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
       };
-      var waveOptions = {
+      if (phont.version == 'talk10') {
+        waveOptions.bas = $scope.yvoice.bas;
+        waveOptions.pit = $scope.yvoice.pit;
+        waveOptions.acc = $scope.yvoice.acc;
+        waveOptions.lmd = $scope.yvoice.lmd;
+        waveOptions.fsc = $scope.yvoice.fsc;
+      }
+      var playOptions = {
         volume:$scope.yvoice.volume,
         playbackRate:$scope.yvoice.playbackRate,
         detune:$scope.yvoice.detune,
@@ -372,9 +411,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
             var nextFname = SeqFNameService.nextFname(prefix, nextNum);
             var filePath = path.join(dir, nextFname);
 
-            AquesService.wave(encoded, phont, speed, keyOptions).then(
+            AquesService.wave(encoded, phont, speed, waveOptions).then(
               function(bufWav) {
-                AudioService.record(filePath, bufWav, waveOptions);
+                AudioService.record(filePath, bufWav, playOptions);
                 return filePath;
               },
               function(err) {
@@ -397,10 +436,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
             return;
           }
 
-          AquesService.wave(encoded, phont, speed, keyOptions)
+          AquesService.wave(encoded, phont, speed, waveOptions)
             .then(
               function(bufWav) {
-                AudioService.record(filePath, bufWav, waveOptions);
+                AudioService.record(filePath, bufWav, playOptions);
                 return filePath;
               },
               function(err) {

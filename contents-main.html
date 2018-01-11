@@ -134,7 +134,7 @@
       </div>
 
       <div class="form-inline form-group">
-        <select class="form-control" ng-model="yvoice.phont" id="phont">
+        <select class="form-control" ng-model="yvoice.phont" id="phont" ng-change="ctrl.onChangePhont()">
           <option ng-repeat="v in phontList" ng-value="v.id">{{v.name}}</option>
         </select>
       </div>
@@ -187,12 +187,20 @@
 
       <div class="voice-tuna-box" id="voice-tuna-box" ng-show="appCfg.audioServVer == 'webaudioapi'">
         <div class="form-inline form-group">
-          <input type="range" min="0" max="3" step="0.1" id="playback-rate" ng-model="yvoice.playbackRate">
-          playback rate:{{yvoice.playbackRate}}
+          <small>playback rate:</small><input type="number" min="0" max="3" step="0.1" id="playback-rate" ng-model="yvoice.playbackRate">
+          <small>detune:</small><input type="number" min="-1200" max="1200" step="50" id="detune" ng-model="yvoice.detune">
         </div>
-        <div class="form-inline form-group">
-          <input type="range" min="-1200" max="1200" step="50" id="detune" ng-model="yvoice.detune">
-          detune:{{yvoice.detune}}
+
+        <div class="form-inline form-group voice-tuna-box-talk10" ng-show="yvoice.version == 'talk10'">
+          <div><small class="label-tuna">AquesTalk10 音声カスタマイズ</small></div>
+          <small class="label-tuna">ﾍﾞｰｽ:</small>
+          <select ng-model="yvoice.bas" id="voice-qa10-bas">
+            <option ng-repeat="option in aq10BasList" ng-value="option.id">{{option.name}}</option>
+          </select>
+          <small class="label-tuna">高さ:</small><input type="number" min="20" max="200" step="1" id="voice-aq10-pit" ng-model="yvoice.pit">
+          <small class="label-tuna">ｱｸｾﾝﾄ:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-acc" ng-model="yvoice.acc">
+          <small class="label-tuna">音程:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-lmd" ng-model="yvoice.lmd">
+          <small class="label-tuna">音程2:</small><input type="number" min="50" max="200" step="1" id="voice-aq10-fsc" ng-model="yvoice.fsc">
         </div>
 
         <div class="form-inline form-group">
