@@ -292,7 +292,7 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
             },
             encoding: 'binary'
           };
-          var waverCmd = unpackedPath + '/vendor/maquestalk1';
+          var waverCmd = unpackedPath.replace(' ', '\\ ') + '/vendor/maquestalk1';
           exec('cat '+ info.path +' | VOICE='+ phont.idVoice+ ' SPEED='+ speed+ ' '+ waverCmd, cmdOptions, (err, stdout, stderr) => {
             if (err) {
               log.info('maquestalk1 failed. ' + err);
