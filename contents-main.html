@@ -160,22 +160,7 @@
       </div>
     </form>
 
-    <table class="table-striped message-list" ng-show="appCfg.showMsgPane">
-      <thead>
-        <tr>
-          <th class="message-item-created">time</th>
-          <th class="message-item-type">type</th>
-          <th class="message-item-body">message</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}">
-          <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
-          <td class="message-item-type">{{message.type}}</td>
-          <td class="message-item-body">{{message.body}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div ng-include="'contents-main-messages.html'" ng-show="appCfg.showMsgPane"></div>
   </div><!-- main pane -->
 
   <div class="pane" id="settings-pane" ng-show="display == 'settings'">
@@ -242,22 +227,7 @@
       </div>
     </form>
 
-    <table class="table-striped message-list" ng-show="appCfg.showMsgPane">
-      <thead>
-        <tr>
-          <th class="message-item-created">time</th>
-          <th class="message-item-type">type</th>
-          <th class="message-item-body">message</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}">
-          <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
-          <td class="message-item-type">{{message.type}}</td>
-          <td class="message-item-body">{{message.body}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div ng-include="'contents-main-messages.html'" ng-show="appCfg.showMsgPane"></div>
   </div><!-- settings pane -->
 
 </div><!-- page-group -->
