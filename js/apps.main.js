@@ -22,6 +22,15 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  // static-include
+  .directive('staticInclude', function() {
+    return {
+      restrict: 'AE',
+      templateUrl: function(element, attrs) {
+        return attrs.templatePath;
+      }
+    };
+  })
   // wav-draggable
   .directive('wavDraggable', function($parse) {
     return function(scope, element, attr) {
