@@ -24,7 +24,9 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
     var ctrl = this;
     $timeout(function(){ $scope.$apply(); });
     $scope.appCfg = appCfg;
-    $scope.aq10UseKey = LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted);
+    $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted?
+      LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted):
+      '';
 
     // actions
     ctrl.cancel = function() {
@@ -33,7 +35,9 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
       window.close();
     };
     ctrl.save = function() {
-      var aq10UseKeyEncrypted = LicenseService.encrypt($scope.appCfg.passPhrase, $scope.aq10UseKey);
+      var aq10UseKeyEncrypted = $scope.aq10UseKey?
+        LicenseService.encrypt($scope.appCfg.passPhrase, $scope.aq10UseKey):
+        '';
       var options = {
         'mainWindow':$scope.appCfg.mainWindow,
         'audioServVer':$scope.appCfg.audioServVer,
