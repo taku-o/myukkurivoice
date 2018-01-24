@@ -349,7 +349,9 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
               // get and set aquesTalk10 use key
               var passPhrase = options.passPhrase;
               var encryptedUseKey = options.aq10UseKeyEncrypted;
-              var aquesTalk10UseKey = LicenseService.decrypt(passPhrase, encryptedUseKey);
+              var aquesTalk10UseKey = encryptedUseKey?
+                LicenseService.decrypt(passPhrase, encryptedUseKey):
+                '';
               if (encryptedUseKey && !aquesTalk10UseKey) {
                 MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください');
                 d.reject(null); return;
