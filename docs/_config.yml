@@ -1,1 +1,6 @@
-theme: jekyll-theme-caymantitile: MYukkuriVoicesite_titile: MYukkuriVoiceshow_downloads: truelatest_release_url: https://github.com/taku-o/myukkurivoice/releases/latestplugins:  - jekyll-seo-tag
+theme: jekyll-theme-cayman
+title: MYukkuriVoice
+show_downloads: true
+latest_release_url: https://github.com/taku-o/myukkurivoice/releases/latest
+plugins:
+  - jekyll-seo-tag
