@@ -31,47 +31,47 @@ macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に
 初回の起動は MYukkuriVoice.app を右クリックして「開く」を選択してください。
 
 ## リリースノート
-* [https://taku-o.github.io/myukkurivoice/release](https://taku-o.github.io/myukkurivoice/release)
+* [https://github.com/taku-o/myukkurivoice/blob/master/docs/release.md](https://github.com/taku-o/myukkurivoice/blob/master/docs/release.md)
 
 ## 主な特徴
 ### 基本
 * MacOSX Sierra以降で動作検証。
 * 設定を用意して切り替えて作業するスタイルで利用します。
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme.gif" width="400" border="1">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme.gif" width="400">
 
 ### ショートカット
 * 動画制作向きのショートカットキーがいくつか定義されています
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-shortcut-play.png" width="400" border="1">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-shortcut-play.png" width="400">
 
 ### ファイルの出力オプション
 1ファイルごとにファイル名を指定して保存する方法以外に、  
 音声ファイルを連番付きのファイル名で保存したり、  
 音声ファイルの元となったメッセージを保存する機能があります。
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-filewriteopt.png" width="400" border="1">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-filewriteopt.png" width="400">
 
 ### 選択した範囲のテキストのみの音声再生・録音
 * 選択した範囲のテキストを再生、録音する機能があります。
 * メッセージ入力欄、音記号列入力欄、どちらでも機能します。
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-select-encoded.png" width="400" border="1">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-select-encoded.png" width="400">
 
 ### 保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ
 * 最後に保存した音声ファイルのリンクが、アプリの左下に表示されます。
 * ドラッグアンドドロップで動画編集ソフトに渡せます。
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif" width="400" border="1">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif" width="400">
 
 ### その他
 * チュートリアル、ヘルプが用意されています
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-tutorial.png" width="400" border="1">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-tutorial.png" width="400">
 
 * AquesTalk10から導入された音声の調節機能にも対応しています。(AquesTalk10ベースの音声のみ)
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-editaq10voice.png" width="400" border="1">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-editaq10voice.png" width="400">
 
 ### 機能一覧
 * AquesTalk1, AquesTalk2, AquesTalk10ベースのメッセージ音声再生、音声録音機能
