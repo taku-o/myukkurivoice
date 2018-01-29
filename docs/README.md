@@ -67,7 +67,7 @@ macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に
 ### その他
 * チュートリアル、ヘルプが用意されています
 
-<img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-tutorial.png" width="400">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-tutorial.png" width="400">
 
 * AquesTalk10から導入された音声の調節機能にも対応しています。(AquesTalk10ベースの音声のみ)
 
