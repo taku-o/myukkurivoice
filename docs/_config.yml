@@ -3,8 +3,5 @@ locale: ja-JP
 title: MYukkuriVoice
 show_downloads: true
 latest_release_url: https://github.com/taku-o/myukkurivoice/releases/latest
-exclude:
-  - release.md
-  - development.md
 plugins:
   - jekyll-seo-tag
