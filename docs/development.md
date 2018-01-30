@@ -19,85 +19,101 @@
 ## デバッグ実行
 * デバッグモードでアプリケーションを実行するには、環境変数でDEBUGを設定します。
 
-    DEBUG=1 electron .
+```
+  DEBUG=1 electron .
+```
 
 ## パッケージング
 * リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
 
-    sh bin/packaging.sh
+```
+  sh bin/packaging.sh
+```
 
 * リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
 
-    sh bin/release.sh
+```
+  sh bin/release.sh
+```
 
 ## Unit Test
 * 単体テストを実行するには、次のコマンドを実行します。
 * テストコードはtestディレクトリ以下にあります。
 * spectronのmiddleバージョンはelectronのバージョンと合わせる。
 
-    sh bin/test_rebuild.sh
-    sh bin/test.sh
+```
+  sh bin/test_rebuild.sh
+  sh bin/test.sh
+```
 
 ## using devtron
 * devtronを使用するには、デバッグモードで次のコマンドを実行します。
 
-    npm install --save-dev devtron
-    require('devtron').install()
+```
+  npm install --save-dev devtron
+  require('devtron').install()
+```
 
 ## asarの解凍
 * asarでパッケージングされたファイルを解凍するには、asarコマンドを実行します
 
-    npm -g install asar
-    asar e app.asar dest
+```
+  npm -g install asar
+  asar e app.asar dest
+```
 
 # 環境設定まわりの情報
 ## install xcode
-    xcode-select --install
+  xcode-select --install
 
 ## install node
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
-    nvm ls-remote
-    nvm install v8.2.1
-    nvm use v8.2.1
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
+  nvm ls-remote
+  nvm install v8.2.1
+  nvm use v8.2.1
 
 ## install electron and command
-    npm install -g electron
+  npm install -g electron
 
 ## install package command
-    npm install -g electron-packager
+  npm install -g electron-packager
 
 ## install capistrano
-    gem install bundler
-    bundle install
+  gem install bundler
+  bundle install
 
 ## install test library
-    npm install -g spectron@3.7.2
-    npm install -g mocha
+  npm install -g spectron@3.7.2
+  npm install -g mocha
 
 ## using library
 * native関連のバイナリ管理がキツいので、node_modules以下にそのまま入れる。
 * このコマンドは実行しなくて良い。
 
-    npm install --save angular
-    npm install --save angular-input-highlight
-    npm install --save https://github.com/connors/photon
-    npm install --save electron-json-storage
-    npm install --save electron-config
-    npm install --save electron-log
-    npm install --save electron-localshortcut
-    npm install --save ref
-    npm install --save ref-struct
-    npm install --save ffi
-    npm install --save intro.js
-    npm install --save temp
-    npm install --save wave-recorder
-    npm install --save tunajs
-    npm install --save about-window
+```
+  npm install --save angular
+  npm install --save angular-input-highlight
+  npm install --save https://github.com/connors/photon
+  npm install --save electron-json-storage
+  npm install --save electron-config
+  npm install --save electron-log
+  npm install --save electron-localshortcut
+  npm install --save ref
+  npm install --save ref-struct
+  npm install --save ffi
+  npm install --save intro.js
+  npm install --save temp
+  npm install --save wave-recorder
+  npm install --save tunajs
+  npm install --save about-window
+```
 
 ### Module version mismatch. Expected 50, got 51
 * もし、この類のエラーに遭遇したら、次のようなコマンドを実行してrebuildする
 
-    npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
+```
+  npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
+```
 
 # その他
 ## アプリアイコンの作成
@@ -105,11 +121,13 @@
 * icns/myukkurivoice.iconset にアイコン画像を入れてコマンド実行してください
 * myukkurivoice.icns がアプリケーションアイコンです。
 
-    cd icns
-    iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
+```
+  cd icns
+  iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
+```
 
 ## README用のアニメーションGIFの作成
-    brew install ffmpeg
-    ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
+  brew install ffmpeg
+  ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
 
 
