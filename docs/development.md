@@ -64,27 +64,27 @@
 
 # 環境設定まわりの情報
 ## install xcode
-  xcode-select --install
+    xcode-select --install
 
 ## install node
-  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
-  nvm ls-remote
-  nvm install v8.2.1
-  nvm use v8.2.1
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
+    nvm ls-remote
+    nvm install v8.2.1
+    nvm use v8.2.1
 
 ## install electron and command
-  npm install -g electron
+    npm install -g electron
 
 ## install package command
-  npm install -g electron-packager
+    npm install -g electron-packager
 
 ## install capistrano
-  gem install bundler
-  bundle install
+    gem install bundler
+    bundle install
 
 ## install test library
-  npm install -g spectron@3.7.2
-  npm install -g mocha
+    npm install -g spectron@3.7.2
+    npm install -g mocha
 
 ## using library
 * native関連のバイナリ管理がキツいので、node_modules以下にそのまま入れる。
@@ -127,7 +127,7 @@
 ```
 
 ## README用のアニメーションGIFの作成
-  brew install ffmpeg
-  ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
+    brew install ffmpeg
+    ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
 
 
