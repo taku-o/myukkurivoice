@@ -30,7 +30,7 @@
         <pre>
         {{ item.body }}
         </pre>
-        <a href="{{ item.assets[0].browser_download_url }}">download {{ item.assets[0].tag_name }}</a>
+        <a href="{{ item.assets[0].browser_download_url }}">download {{ item.tag_name }}</a>
         published at: {{ item.published_at }} <br>
       {% endfor %}
 
