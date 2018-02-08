@@ -31,7 +31,7 @@ macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に
 初回の起動は MYukkuriVoice.app を右クリックして「開く」を選択してください。
 
 ## リリースノート
-* [https://taku-o.github.io/myukkurivoice/releases](https://taku-o.github.io/myukkurivoice/releases)
+* [https://github.com/taku-o/myukkurivoice/blob/master/docs/releases.md](https://github.com/taku-o/myukkurivoice/blob/master/docs/releases.md)
 
 ## 主な特徴
 ### 基本
