@@ -27,7 +27,9 @@
       -->
       {% for item in site.github.releases %}
         <h3>version: {{ item.name }}</h3>
-        {{ item.body }} <br>
+        <pre>
+        {{ item.body }}
+        </pre>
         <a href="{{ item.assets[0].browser_download_url }}">download {{ item.assets[0].tag_name }}</a>
         published at: {{ item.published_at }} <br>
       {% endfor %}
