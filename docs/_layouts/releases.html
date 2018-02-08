@@ -27,11 +27,10 @@
       -->
       {% for item in site.github.releases %}
         <h3>version: {{ item.name }}</h3>
-        <pre>
-        {{ item.body }}
-        </pre>
+        {{ item.body | markdownify }}
         <a href="{{ item.assets[0].browser_download_url }}">download {{ item.tag_name }}</a>
         published at: {{ item.published_at }} <br>
+        {{ item }}
       {% endfor %}
 
       <footer class="site-footer">
