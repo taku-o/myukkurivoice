@@ -30,6 +30,6 @@
     "ref-struct": "^1.1.0",
     "temp": "^0.8.3",
     "tunajs": "^1.0.0",
-    "wave-recorder": "^2.3.0"
+    "wave-recorder": "git+https://github.com/taku-o/wave-recorder.git#v2.3.1"
   }
 }

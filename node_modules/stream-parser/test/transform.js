@@ -18,6 +18,12 @@ describe('Transform stream', function () {
     assert.equal('function', typeof t._bytes);
   });
 
+  it('should have the `_skipBytes()` function', function () {
+    var t = new Transform();
+    Parser(t);
+    assert.equal('function', typeof t._skipBytes);
+  });
+
   it('should have the `_passthrough()` function', function () {
     var t = new Transform();
     Parser(t);
