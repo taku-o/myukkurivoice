@@ -275,7 +275,8 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
           // write encoded to tempory file
           temp.open('_myukkurivoice', function(err, info) {
             if (err) {
-              MessageService.syserror('一時作業ファイルを作れませんでした。');
+              MessageService.syserror('一時作業ファイルを作れませんでした。', err);
+              console.log(err);
               d.reject(null); return;
             }
 
@@ -420,7 +421,8 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
 
         temp.open('_myukkurivoice', function(err, info) {
           if (err) {
-            MessageService.syserror('一時作業ファイルを作れませんでした。');
+            MessageService.syserror('一時作業ファイルを作れませんでした。', err);
+            console.log(err);
             d.reject(null); return;
           }
 
