@@ -273,7 +273,8 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
         // version 1
         if (phont.version == 'talk1') {
           // write encoded to tempory file
-          temp.open('_myukkurivoice', function(err, info) {
+          var fsprefix = '_myubow' + Date.now().toString(36);
+          temp.open(fsprefix, function(err, info) {
             if (err) {
               MessageService.syserror('一時作業ファイルを作れませんでした。', err);
               console.log(err);
@@ -419,7 +420,8 @@ angular.module('yvoiceService', ['yvoiceLicenseService', 'yvoiceModel'])
           if (audio) { audio.pause(); }
         }
 
-        temp.open('_myukkurivoice', function(err, info) {
+        var fsprefix = '_myubop' + Date.now().toString(36);
+        temp.open(fsprefix, function(err, info) {
           if (err) {
             MessageService.syserror('一時作業ファイルを作れませんでした。', err);
             console.log(err);
