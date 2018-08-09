@@ -10,7 +10,7 @@ angular.module('yvoiceIntroService', [])
           steps: [
             {
               element: '#source',
-              intro: '発声したいメッセージを入力してください'
+              intro: '発声したいメッセージを入力してください<br>※テキストファイルをドラッグアンドドロップしても入力できます'
             },
             {
               element: '#encode',
@@ -18,7 +18,7 @@ angular.module('yvoiceIntroService', [])
             },
             {
               element: '#encoded',
-              intro: 'すると、メッセージが音記号列に変換した結果が入ります<br>細かい発声の調節をする時はここを変更します'
+              intro: 'すると、メッセージが音記号列に変換した結果が入ります<br>細かい発声の調節をする時はここを変更します<br>※テキストファイルをドラッグアンドドロップしても入力できます'
             },
             {
               element: '#play',
