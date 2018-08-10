@@ -16,7 +16,7 @@ angular.module('yvoiceAppHelp', [])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  .controller('HelpController', ['$scope', '$timeout', function($scope, $timeout) {
+  .controller('HelpController', ['$scope', '$timeout', '$location', function($scope, $timeout, $location) {
 
     var menuList = [
       'about',
@@ -39,8 +39,18 @@ angular.module('yvoiceAppHelp', [])
 
     // init
     var ctrl = this;
-    $scope.display = 'about';
-    $timeout(function(){ $scope.$apply(); });
+    $scope.$location = $location;
+
+    // event url hash changed
+    $scope.$on('$locationChangeSuccess', function(event) {
+      var hash = $location.hash();
+      if (menuList.includes(hash)) {
+        $scope.display = hash;
+      } else {
+        $scope.display = 'about';
+      }
+      $timeout(function(){ $scope.$apply(); });
+    });
 
     //// shortcut
     //ipcRenderer.on('shortcut', function (event, action) {
@@ -59,22 +69,22 @@ angular.module('yvoiceAppHelp', [])
       var index = menuList.indexOf($scope.display);
       var moved = index - 1;
       if (index < 0) {
-        $scope.display = menuList[0];
+        $location.hash(menuList[0]);
       } else if (moved < 0) {
-        $scope.display = menuList[menuList.length - 1];
+        $location.hash(menuList[menuList.length - 1]);
       } else {
-        $scope.display = menuList[moved];
+        $location.hash(menuList[moved]);
       }
     };
     function moveToNextHelp() {
       var index = menuList.indexOf($scope.display);
       var moved = index + 1;
       if (index < 0) {
-        $scope.display = menuList[0];
+        $location.hash(menuList[0]);
       } else if (moved >= menuList.length) {
-        $scope.display = menuList[0];
+        $location.hash(menuList[0]);
       } else {
-        $scope.display = menuList[moved];
+        $location.hash(menuList[moved]);
       }
     };
 
