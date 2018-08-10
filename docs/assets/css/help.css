@@ -1,0 +1,38 @@
+.warn {
+  color: red;
+}
+
+span.nav-group-item span.icon {
+  color: blue;
+}
+span.nav-group-item.active {
+  background: #dddddd;
+}
+
+div.content {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+h4 {
+  text-decoration: underline;
+}
+div.content > h4:not(:first-child) {
+  margin-top: 30px;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+li.link {
+  color: blue;
+  text-decoration: underline;
+}
+
+table.param-table td {
+  border-bottom: 1px solid #ddd;
+}
+
