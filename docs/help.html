@@ -16,54 +16,54 @@
   <div class="pane-sm sidebar">
     <nav class="nav-group">
       <h5 class="nav-group-title">ヘルプ</h5>
-      <span class="nav-group-item help-item" id="menu-about" ng-class="{active:display == 'about'}" ng-click="display='about'">
+      <span class="nav-group-item help-item" id="menu-about" ng-class="{active:display == 'about'}" ng-click="$location.hash('about')">
         <span class="icon icon-help-circled"></span>MYukkuriVoiceについて
       </span>
-      <span class="nav-group-item help-item" id="menu-voicecode" ng-class="{active:display == 'voicecode'}" ng-click="display='voicecode'">
+      <span class="nav-group-item help-item" id="menu-voicecode" ng-class="{active:display == 'voicecode'}" ng-click="$location.hash('voicecode')">
         <span class="icon icon-help-circled"></span>音声記号列
       </span>
-      <span class="nav-group-item help-item" id="menu-trouble" ng-class="{active:display == 'trouble'}" ng-click="display='trouble'">
+      <span class="nav-group-item help-item" id="menu-trouble" ng-class="{active:display == 'trouble'}" ng-click="$location.hash('trouble')">
         <span class="icon icon-help-circled"></span>トラブルシューティング
       </span>
-      <span class="nav-group-item help-item" id="menu-update" ng-class="{active:display == 'update'}" ng-click="display='update'">
+      <span class="nav-group-item help-item" id="menu-update" ng-class="{active:display == 'update'}" ng-click="$location.hash('update')">
         <span class="icon icon-help-circled"></span>アプリを更新するには
       </span>
-      <span class="nav-group-item help-item" id="menu-uninstall" ng-class="{active:display == 'uninstall'}" ng-click="display='uninstall'">
+      <span class="nav-group-item help-item" id="menu-uninstall" ng-class="{active:display == 'uninstall'}" ng-click="$location.hash('uninstall')">
         <span class="icon icon-help-circled"></span>アンインストールするには
       </span>
-      <span class="nav-group-item help-item" id="menu-backup" ng-class="{active:display == 'backup'}" ng-click="display='backup'">
+      <span class="nav-group-item help-item" id="menu-backup" ng-class="{active:display == 'backup'}" ng-click="$location.hash('backup')">
         <span class="icon icon-help-circled"></span>設定をバックアップするには
       </span>
-      <span class="nav-group-item help-item" id="menu-license" ng-class="{active:display == 'license'}" ng-click="display='license'">
+      <span class="nav-group-item help-item" id="menu-license" ng-class="{active:display == 'license'}" ng-click="$location.hash('license')">
         <span class="icon icon-help-circled"></span>AquesTalkのライセンスについて
       </span>
-      <span class="nav-group-item help-item" id="menu-contact" ng-class="{active:display == 'contact'}" ng-click="display='contact'">
+      <span class="nav-group-item help-item" id="menu-contact" ng-class="{active:display == 'contact'}" ng-click="$location.hash('contact')">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
 
       <h5 class="nav-group-title">各機能詳細</h5>
-      <span class="nav-group-item functions-item" id="menu-funclist" ng-class="{active:display == 'funclist'}" ng-click="display='funclist'">
+      <span class="nav-group-item functions-item" id="menu-funclist" ng-class="{active:display == 'funclist'}" ng-click="$location.hash('funclist')">
         <span class="icon icon-help-circled"></span>機能一覧
       </span>
-      <span class="nav-group-item functions-item" id="menu-play" ng-class="{active:display == 'play'}" ng-click="display='play'">
+      <span class="nav-group-item functions-item" id="menu-play" ng-class="{active:display == 'play'}" ng-click="$location.hash('play')">
         <span class="icon icon-help-circled"></span>音声を再生する
       </span>
-      <span class="nav-group-item functions-item" id="menu-tuna" ng-class="{active:display == 'tuna'}" ng-click="display='tuna'">
+      <span class="nav-group-item functions-item" id="menu-tuna" ng-class="{active:display == 'tuna'}" ng-click="$location.hash('tuna')">
         <span class="icon icon-help-circled"></span>再生する音声の調整
       </span>
-      <span class="nav-group-item functions-item" id="menu-writing" ng-class="{active:display == 'writing'}" ng-click="display='writing'">
+      <span class="nav-group-item functions-item" id="menu-writing" ng-class="{active:display == 'writing'}" ng-click="$location.hash('writing')">
         <span class="icon icon-help-circled"></span>音声ファイル保存の設定
       </span>
-      <span class="nav-group-item functions-item" id="menu-dataconfig" ng-class="{active:display == 'dataconfig'}" ng-click="display='dataconfig'">
+      <span class="nav-group-item functions-item" id="menu-dataconfig" ng-class="{active:display == 'dataconfig'}" ng-click="$location.hash('dataconfig')">
         <span class="icon icon-help-circled"></span>音声再生設定の編集
       </span>
-      <span class="nav-group-item functions-item" id="menu-dragout" ng-class="{active:display == 'dragout'}" ng-click="display='dragout'">
+      <span class="nav-group-item functions-item" id="menu-dragout" ng-class="{active:display == 'dragout'}" ng-click="$location.hash('dragout')">
         <span class="icon icon-help-circled"></span>録音ファイルのドラッグアンドドロップ
       </span>
-      <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="display='shortcut'">
+      <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="$location.hash('shortcut')">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
-      <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:display == 'help'}" ng-click="display='help'">
+      <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:display == 'help'}" ng-click="$location.hash('help')">
         <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
     </nav>
@@ -167,7 +167,7 @@
         AquesTalkの使用ライセンスが必要です。<br>
         <a ng-click="ctrl.browser('https://store.a-quest.com/')">アクエストオンラインストア</a>で
         使用ライセンスを購入する必要があります。<br>
-        <a ng-click="display='license'">→ ライセンスのまとめ</a>
+        <a ng-click="$location.hash('license')">→ ライセンスのまとめ</a>
       </p>
 
       <h4>MYukkuriVoiceが動かない。なんだか挙動がおかしい。</h4>
@@ -348,20 +348,20 @@
       <h4>機能一覧</h4>
       <ul>
         <li>AquesTalk1, AquesTalk2, AquesTalk10ベースのメッセージ音声再生、音声録音機能</li>
-        <li class="link" ng-click="display='play'">音記号列の表示編集、および、変更後音記号列の音声再生機能</li>
-        <li class="link" ng-click="display='play'">テキストエリアで選択したテキスト部分のみを音声再生、音声録音</li>
-        <li class="link" ng-click="display='dataconfig'">設定の保存、複製。設定に名前をつけて複数の設定を保存可能。</li>
-        <li class="link" ng-click="display='writing'">ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能</li>
-        <li class="link" ng-click="display='writing'">音声保存時に、音声の元となったメッセージもテキストファイルに保存</li>
-        <li class="link" ng-click="display='tuna'">音量、再生速度の調整。音質の調整。</li>
-        <li class="link" ng-click="display='tuna'">再生する音声の抑揚のON・OFF切替</li>
+        <li class="link" ng-click="$location.hash('play')">音記号列の表示編集、および、変更後音記号列の音声再生機能</li>
+        <li class="link" ng-click="$location.hash('play')">テキストエリアで選択したテキスト部分のみを音声再生、音声録音</li>
+        <li class="link" ng-click="$location.hash('dataconfig')">設定の保存、複製。設定に名前をつけて複数の設定を保存可能。</li>
+        <li class="link" ng-click="$location.hash('writing')">ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能</li>
+        <li class="link" ng-click="$location.hash('writing')">音声保存時に、音声の元となったメッセージもテキストファイルに保存</li>
+        <li class="link" ng-click="$location.hash('tuna')">音量、再生速度の調整。音質の調整。</li>
+        <li class="link" ng-click="$location.hash('tuna')">再生する音声の抑揚のON・OFF切替</li>
         <li>音声の再生時間目安の表示</li>
-        <li class="link" ng-click="display='dragout'">アプリから動画編集ソフトに、音声ファイルを直接ドラッグアンドドロップできる機能</li>
-        <li class="link" ng-click="display='dragout'">ウィンドウの前面表示固定、切替機能</li>
+        <li class="link" ng-click="$location.hash('dragout')">アプリから動画編集ソフトに、音声ファイルを直接ドラッグアンドドロップできる機能</li>
+        <li class="link" ng-click="$location.hash('dragout')">ウィンドウの前面表示固定、切替機能</li>
         <li>アプリを閉じた時のウィンドウの位置を記憶する</li>
         <li>テキストファイルをドラッグアンドドロップしての、メッセージ入力欄、および音記号列入力欄の入力サポート</li>
-        <li class="link" ng-click="display='shortcut'">各種ショートカットキー</li>
-        <li class="link" ng-click="display='help'">チュートリアル・ヘルプ</li>
+        <li class="link" ng-click="$location.hash('shortcut')">各種ショートカットキー</li>
+        <li class="link" ng-click="$location.hash('help')">チュートリアル・ヘルプ</li>
       </ul>
     </div>
   </div>
