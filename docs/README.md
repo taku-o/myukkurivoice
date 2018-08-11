@@ -32,7 +32,7 @@ macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に
 
 ## アプリケーションヘルプ
 * [https://taku-o.github.io/myukkurivoice/help](https://taku-o.github.io/myukkurivoice/help)
-* アプリ内で表示しているヘルプと同じものです。
+    * アプリ内で表示しているヘルプと同じものです。
 
 ## リリースノート
 * [https://taku-o.github.io/myukkurivoice/releases](https://taku-o.github.io/myukkurivoice/releases)
