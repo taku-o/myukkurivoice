@@ -59,6 +59,28 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       });
     }
   })
+  // txt-droppable
+  .directive('txtDroppable', function($parse) {
+
+    return function(scope, element, attr) {
+      var el = element[0];
+
+      el.addEventListener('drop', function(e) {
+        e.preventDefault();
+
+        // read dropped file and set.
+        var reader = new FileReader();
+        reader.onload = function(loadedFile) {
+          // yinput.source or yinput.encoded
+          scope.yinput[el.id] = loadedFile.target.result;
+          scope.$apply();
+        };
+        var file = e.dataTransfer.files[0];
+        reader.readAsText(file);
+        return false;
+      });
+    }
+  })
   // controller
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
