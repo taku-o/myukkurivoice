@@ -209,7 +209,7 @@
       <p>
         <ul>
           <li>アプリケーションを削除してください</li>
-          <li><a ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/</a>を削除してください</li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/</a>を削除してください</li>
         </ul>
       </p>
     </div>
@@ -222,8 +222,8 @@
       <p>
         次のファイルをどこかに逃がしてください。
         <ul>
-          <li><a ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/data.json</a></li>
-          <li><a ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/config.json</a></li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/data.json</a></li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/config.json</a></li>
         </ul>
       </p>
     </div>
@@ -324,7 +324,7 @@
         <a ng-click="ctrl.browser('https://store.a-quest.com/categories/618932')">アクエストオンラインストア</a>
         で購入します。OSの種類はMacです。<br>
         購入した使用ライセンスキーが届いたら、
-        その使用キーを<a ng-click="ctrl.showSystemWindow()">環境設定画面で設定</a>してください。<br>
+        その使用キーを<a class="show-system-window" ng-click="ctrl.showSystemWindow()">環境設定画面で設定</a>してください。<br>
         うまく設定できると、音声再生時、メッセージパネルに「AquesTalk10使用ライセンスキーを設定しました。」と
         表示されます。<br>
         <br>

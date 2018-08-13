@@ -36,3 +36,7 @@ table.param-table td {
   border-bottom: 1px solid #ddd;
 }
 
+a.show-item-in-folder, a.show-system-window {
+  text-decoration: none;
+  color: #000000;
+}
