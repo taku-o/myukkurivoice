@@ -24,6 +24,7 @@ macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に
 
 ## ダウンロード
 * [https://github.com/taku-o/myukkurivoice/releases](https://github.com/taku-o/myukkurivoice/releases)
+  * [https://taku-o.github.io/myukkurivoice/help#!#trouble](※Chromeで「一般的にダウンロードされておらず、危険を及ぼす可能性があります」と表示される)。そのままダウンロードを進めてください。
 
 ## インストール
 [https://github.com/taku-o/myukkurivoice/releases](https://github.com/taku-o/myukkurivoice/releases) から圧縮ファイル(MYukkuriVoice-darwin-x64.zip)を  
