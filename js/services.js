@@ -603,6 +603,14 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     var limit = 9999;
 
     return {
+      splitFname: function(filePath) {
+        var dir = path.dirname(filePath);
+        var basename = path.basename(filePath, ext);
+        return {
+          dir: dir,
+          basename: basename
+        };
+      },
       nextFname: function(prefix, num) {
         formatted = ("0000"+ num).slice(-4)
         return prefix + formatted + ext;
