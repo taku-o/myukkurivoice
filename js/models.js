@@ -146,4 +146,10 @@ angular.module('yvoiceModel', [])
       'source': 'エムユックリボイスへようこそ。ゆっくりしていってね！',
       'encoded': "エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、"
     }
+  })
+  .factory('YCommandInput', function() {
+    return {
+      'name': '',
+      'text': '',
+    }
   });

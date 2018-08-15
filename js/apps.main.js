@@ -18,7 +18,7 @@ process.on('uncaughtException', function(err) {
 });
 
 // angular app
-angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroService', 'yvoiceModel'])
+angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandService', 'yvoiceIntroService', 'yvoiceModel'])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
@@ -84,10 +84,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
   // controller
   .controller('MainController',
     ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
-     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'IntroService',
+     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
     function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
-             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, IntroService,
+             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, CommandService, IntroService,
              YInput, YInputInitialData) {
 
     // event listener
@@ -571,9 +571,23 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       if (_selectedSource) {
         source = _selectedSource;
       }
-      var encoded = AquesService.encode(source);
-      $scope.yinput.encoded = encoded;
-      clearEncodedSelection();
+
+      // command
+      if (CommandService.containsCommand(source, $scope.yvoiceList)) {
+        var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+        var encodedList = [];
+        angular.forEach(parsedList, function(cinput) {
+          cinput.text = AquesService.encode(cinput.text);
+          encodedList.push(cinput);
+        });
+        $scope.yinput.encoded = CommandService.toString(encodedList);
+        clearEncodedSelection();
+      // not command
+      } else {
+        var encoded = AquesService.encode(source);
+        $scope.yinput.encoded = encoded;
+        clearEncodedSelection();
+      }
     };
     ctrl.clear = function() {
       MessageService.action('clear input text.');
