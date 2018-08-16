@@ -468,6 +468,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             }
             inSourceNode.buffer = decodedData;
             inSourceNode.onended = function() {
+console.log('onload 1');
               // onendedのタイミングでは出力が終わっていない
               $timeout(function() {
                 d.resolve('ok');

@@ -348,8 +348,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandS
         var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
 
         function playEach(cinput) {
+          var d = $q.defer();
           var encoded = cinput.text;
           var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+
+          // phont
+          var phont = null;
+          angular.forEach($scope.phontList, function(value, key) {
+            if (value.id == yvoice.phont) { phont = value; }
+          });
+          if (!phont) {
+            MessageService.error('声の種類が未指定です。');
+            e.reject(null); return;
+          }
 
           // disable rhythm if option is on
           if (! yvoice.rhythmOn) {
@@ -381,18 +392,22 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandS
 
           AquesService.wave(encoded, phont, speed, waveOptions).then(
             function(bufWav) {
-                console.log('play en ' + encoded);
-              return AudioService.play(bufWav, playOptions);
+              console.log('play en ' + encoded);
+              AudioService.play(bufWav, playOptions).then(
+                function() { d.resolve('ok'); },
+                function (err) { d.reject(err); }
+              );
             },
             function(err) {
               MessageService.error('音声データを作成できませんでした。');
             }
           );
+          return d.promise;
         }
 
         parsedList.reduce(function(p, cinput) {
           if(p.then === undefined) {
-            p.resolve(); 
+            p.resolve();
             p = p.promise;
           }
           return p.then(function() {
@@ -503,8 +518,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandS
           var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
 
           function recordEach(cinput) {
+            var d = $q.defer();
             var encoded = cinput.text;
             var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+
+            // phont
+            var phont = null;
+            angular.forEach($scope.phontList, function(value, key) {
+              if (value.id == yvoice.phont) { phont = value; }
+            });
+            if (!phont) {
+              MessageService.error('声の種類が未指定です。');
+              e.reject(null); return;
+            }
 
             // disable rhythm if option is on
             if (! yvoice.rhythmOn) {
@@ -547,10 +573,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandS
                 AquesService.wave(encoded, phont, speed, waveOptions).then(
                   function(bufWav) {
                     AudioService.record(filePath, bufWav, playOptions);
+                    d.resolve(filePath);
                     return filePath;
                   },
                   function(err) {
                     MessageService.error('音声データを作成できませんでした。');
+                    d.reject(err);
                     throw err;
                   }
                 )
@@ -560,15 +588,16 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandS
                   AudioSourceService.save(sourceFname, $scope.yinput.source);
                 });
               });
+            return d.promise;
           }
 
           parsedList.reduce(function(p, cinput) {
             if(p.then === undefined) {
-              p.resolve(); 
+              p.resolve();
               p = p.promise;
             }
             return p.then(function() {
-                return recordEach(cinput);
+              return recordEach(cinput);
             });
           }, $q.defer());
 
@@ -583,8 +612,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandS
             var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
 
             function recordEach(cinput) {
+              var d = $q.defer();
               var encoded = cinput.text;
               var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+
+              // phont
+              var phont = null;
+              angular.forEach($scope.phontList, function(value, key) {
+                if (value.id == yvoice.phont) { phont = value; }
+              });
+              if (!phont) {
+                MessageService.error('声の種類が未指定です。');
+                e.reject(null); return;
+              }
 
               // disable rhythm if option is on
               if (! yvoice.rhythmOn) {
@@ -625,10 +665,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandS
                   AquesService.wave(encoded, phont, speed, waveOptions).then(
                     function(bufWav) {
                       AudioService.record(filePath, bufWav, playOptions);
+                      d.resolve(filePath);
                       return filePath;
                     },
                     function(err) {
                       MessageService.error('音声データを作成できませんでした。');
+                      d.reject(err);
                       throw err;
                     }
                   )
@@ -638,15 +680,16 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceCommandS
                     AudioSourceService.save(sourceFname, $scope.yinput.source);
                   });
                 });
+              return d.promise;
             }
 
             parsedList.reduce(function(p, cinput) {
               if(p.then === undefined) {
-                p.resolve(); 
+                p.resolve();
                 p = p.promise;
               }
               return p.then(function() {
-                  return recordEach(cinput);
+                return recordEach(cinput);
               });
             }, $q.defer());
           });
