@@ -33,6 +33,7 @@ angular.module('yvoiceAppHelp', [])
       'writing',
       'dataconfig',
       'dragout',
+      'multivoice',
       'shortcut',
       'help'
     ];
