@@ -391,8 +391,10 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             }
             inAudio.autoplay = false;
             inAudio.src = info.path;
+            inAudio.onended = function() {
+              d.resolve('ok');
+            };
             inAudio.play();
-            d.resolve('ok'); return;
           });
         });
         return d.promise;
@@ -466,7 +468,10 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             }
             inSourceNode.buffer = decodedData;
             inSourceNode.onended = function() {
-              // do nothing
+              // onendedのタイミングでは出力が終わっていない
+              $timeout(function() {
+                d.resolve('ok');
+              }, options.writeMarginMs);
             };
 
             var nodeList = [];
@@ -493,7 +498,6 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
 
             // and start
             inSourceNode.start(0);
-            d.resolve('ok'); return;
           },
           function(err) {
             MessageService.syserror('音源の再生に失敗しました。', err);
