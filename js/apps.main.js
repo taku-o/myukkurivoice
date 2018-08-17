@@ -432,7 +432,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           }
           var splitted = SeqFNameService.splitFname(filePath);
           var dir = splitted.dir;
-          var prefix = splitted.filename;
+          var prefix = splitted.basename;
 
           // record
           var containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
