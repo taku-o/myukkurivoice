@@ -55,7 +55,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         });
         return parsed;
       },
-      detectVoiceConfig(commandInput, yvoiceList) {
+      detectVoiceConfig: function(commandInput, yvoiceList) {
         for (var i=0; i<yvoiceList.length; i++) {
           if (yvoiceList[i].name == commandInput.name) {
             return yvoiceList[i];
@@ -63,7 +63,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         }
         return null;
       },
-      toString(commandInputList) {
+      toString: function(commandInputList) {
         var result = '';
         angular.forEach(commandInputList, function(cinput) {
           result += cinput.name+ '＞'+ cinput.text+ "\n";
