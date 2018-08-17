@@ -225,7 +225,6 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           temp.open(fsprefix, function(err, info) {
             if (err) {
               MessageService.syserror('一時作業ファイルを作れませんでした。', err);
-              console.log(err);
               d.reject(null); return;
             }
 
@@ -372,7 +371,6 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         temp.open(fsprefix, function(err, info) {
           if (err) {
             MessageService.syserror('一時作業ファイルを作れませんでした。', err);
-            console.log(err);
             d.reject(null); return;
           }
 
@@ -468,7 +466,6 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             }
             inSourceNode.buffer = decodedData;
             inSourceNode.onended = function() {
-console.log('onload 1');
               // onendedのタイミングでは出力が終わっていない
               $timeout(function() {
                 d.resolve('ok');
@@ -580,7 +577,7 @@ console.log('onload 1');
       }
     }
   }])
-  .factory('AudioSourceService', ['MessageService', function(MessageService) {
+  .factory('AudioSourceService', ['$q', 'MessageService', function($q, MessageService) {
     var waveExt = '.wav';
     var sourceExt = '.txt';
 
@@ -592,13 +589,15 @@ console.log('onload 1');
         return path.join(dir, filename);
       },
       save: function(filePath, sourceText) {
+        var d = $q.defer();
         fs.writeFile(filePath, sourceText, 'utf-8', function(err) {
           if (err) {
             MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
-            return;
+            d.reject(err); return;
           }
           MessageService.info('メッセージファイルを保存しました。path: ' + filePath);
         });
+        return d.promise;
       }
     }
   }])
