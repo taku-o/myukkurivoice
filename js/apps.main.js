@@ -239,15 +239,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         return;
       }
 
-      var phont = null;
-      angular.forEach($scope.phontList, function(value, key) {
-        if (value.id == $scope.yvoice.phont) { phont = value; }
-      });
-      if (!phont) {
-        MessageService.error('声の種類が未指定です。');
-        return;
-      }
-
+      // text converting
       var encoded = $scope.yinput.encoded;
       var _selectedEncoded = selectedEncoded();
       if (_selectedEncoded) {
@@ -260,7 +252,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         if (_selectedSource) {
           source = _selectedSource;
         }
-
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
           var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
@@ -284,117 +275,74 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         }
       }
 
-      // play, command
-      if (CommandService.containsCommand(encoded, $scope.yvoiceList)) {
-        var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-
-        function playEach(cinput) {
-          var d = $q.defer();
-          var encoded = cinput.text;
-          var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
-
-          // phont
-          var phont = null;
-          angular.forEach($scope.phontList, function(value, key) {
-            if (value.id == yvoice.phont) { phont = value; }
-          });
-          if (!phont) {
-            MessageService.error('声の種類が未指定です。');
-            e.reject(null); return;
-          }
-
-          // disable rhythm if option is on
-          if (! yvoice.rhythmOn) {
-            encoded = AppUtilService.disableRhythm(encoded);
-          }
-
-          var speed = yvoice.speed;
-          if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
-            yvoice.writeMarginMs = 150;
-          }
-
-          var waveOptions = {
-            passPhrase:appCfg.passPhrase,
-            aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
-          };
-          if (phont.version == 'talk10') {
-            waveOptions.bas = yvoice.bas;
-            waveOptions.pit = yvoice.pit;
-            waveOptions.acc = yvoice.acc;
-            waveOptions.lmd = yvoice.lmd;
-            waveOptions.fsc = yvoice.fsc;
-          }
-          var playOptions = {
-            volume:yvoice.volume,
-            playbackRate:yvoice.playbackRate,
-            detune:yvoice.detune,
-            writeMarginMs:yvoice.writeMarginMs,
-          };
-
-          AquesService.wave(encoded, phont, speed, waveOptions).then(
-            function(bufWav) {
-              console.log('play en ' + encoded);
-              AudioService.play(bufWav, playOptions).then(
-                function() { d.resolve('ok'); },
-                function (err) { d.reject(err); }
-              );
-            },
-            function(err) {
-              MessageService.error('音声データを作成できませんでした。');
-            }
-          );
-          return d.promise;
+      // play
+      var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+      parsedList.reduce(function(p, cinput) {
+        if(p.then === undefined) {
+          p.resolve();
+          p = p.promise;
         }
+        return p.then(function() {
+          return playEach(cinput);
+        });
+      }, $q.defer());
+    };
+    function playEach(cinput) {
+      var d = $q.defer();
+      var encoded = cinput.text;
+      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
-        parsedList.reduce(function(p, cinput) {
-          if(p.then === undefined) {
-            p.resolve();
-            p = p.promise;
-          }
-          return p.then(function() {
-              return playEach(cinput);
-          });
-        }, $q.defer());
-
-      // play, not command
-      } else {
-        // disable rhythm if option is on
-        if (! $scope.yvoice.rhythmOn) {
-          encoded = AppUtilService.disableRhythm(encoded);
-        }
-
-        var speed = $scope.yvoice.speed;
-        if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
-          $scope.yvoice.writeMarginMs = 150;
-        }
-
-        var waveOptions = {
-          passPhrase:appCfg.passPhrase,
-          aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
-        };
-        if (phont.version == 'talk10') {
-          waveOptions.bas = $scope.yvoice.bas;
-          waveOptions.pit = $scope.yvoice.pit;
-          waveOptions.acc = $scope.yvoice.acc;
-          waveOptions.lmd = $scope.yvoice.lmd;
-          waveOptions.fsc = $scope.yvoice.fsc;
-        }
-        var playOptions = {
-          volume:$scope.yvoice.volume,
-          playbackRate:$scope.yvoice.playbackRate,
-          detune:$scope.yvoice.detune,
-          writeMarginMs:$scope.yvoice.writeMarginMs,
-        };
-
-        AquesService.wave(encoded, phont, speed, waveOptions).then(
-          function(bufWav) {
-            return AudioService.play(bufWav, playOptions);
-          },
-          function(err) {
-            MessageService.error('音声データを作成できませんでした。');
-          }
-        );
+      // phont
+      var phont = null;
+      angular.forEach($scope.phontList, function(value, key) {
+        if (value.id == yvoice.phont) { phont = value; }
+      });
+      if (!phont) {
+        MessageService.error('声の種類が未指定です。');
+        e.reject(null); return;
       }
+
+      // disable rhythm if option is on
+      if (! yvoice.rhythmOn) {
+        encoded = AppUtilService.disableRhythm(encoded);
+      }
+
+      var speed = yvoice.speed;
+      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+        yvoice.writeMarginMs = 150;
+      }
+
+      var waveOptions = {
+        passPhrase:appCfg.passPhrase,
+        aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
+      };
+      if (phont.version == 'talk10') {
+        waveOptions.bas = yvoice.bas;
+        waveOptions.pit = yvoice.pit;
+        waveOptions.acc = yvoice.acc;
+        waveOptions.lmd = yvoice.lmd;
+        waveOptions.fsc = yvoice.fsc;
+      }
+      var playOptions = {
+        volume:yvoice.volume,
+        playbackRate:yvoice.playbackRate,
+        detune:yvoice.detune,
+        writeMarginMs:yvoice.writeMarginMs,
+      };
+
+      AquesService.wave(encoded, phont, speed, waveOptions).then(
+        function(bufWav) {
+          console.log('play en ' + encoded);
+          AudioService.play(bufWav, playOptions).then(
+            function() { d.resolve('ok'); },
+            function (err) { d.reject(err); }
+          );
+        },
+        function(err) {
+          MessageService.error('音声データを作成できませんでした。');
+        }
+      );
+      return d.promise;
     };
     ctrl.stop = function() {
       MessageService.action('stop playing voice.');
@@ -416,6 +364,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         return;
       }
 
+      // text converting
       var encoded = $scope.yinput.encoded;
       var _selectedEncoded = selectedEncoded();
       if (_selectedEncoded) {
@@ -428,7 +377,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         if (_selectedSource) {
           source = _selectedSource;
         }
-
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
           var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
@@ -452,282 +400,188 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         }
       }
 
-      // record, command
-      if (CommandService.containsCommand(encoded, $scope.yvoiceList)) {
-        // record, command, 連番保存
-        if ($scope.yvoice.seqWrite) {
-          var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+      // 連番保存
+      if ($scope.yvoice.seqWrite) {
+        var dir = $scope.yvoice.seqWriteOptions.dir;
+        var prefix = $scope.yvoice.seqWriteOptions.prefix;
+        if (!dir) {
+          dir = desktopDir;
+        }
 
-          function recordEach(cinput) {
-            var d = $q.defer();
-            var encoded = cinput.text;
-            var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
-
-            // phont
-            var phont = null;
-            angular.forEach($scope.phontList, function(value, key) {
-              if (value.id == yvoice.phont) { phont = value; }
-            });
-            if (!phont) {
-              MessageService.error('声の種類が未指定です。');
-              e.reject(null); return;
-            }
-
-            // disable rhythm if option is on
-            if (! yvoice.rhythmOn) {
-              encoded = AppUtilService.disableRhythm(encoded);
-            }
-
-            var speed = yvoice.speed;
-            if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
-              yvoice.writeMarginMs = 150;
-            }
-            var waveOptions = {
-              passPhrase:appCfg.passPhrase,
-              aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
-            };
-            if (phont.version == 'talk10') {
-              waveOptions.bas = yvoice.bas;
-              waveOptions.pit = yvoice.pit;
-              waveOptions.acc = yvoice.acc;
-              waveOptions.lmd = yvoice.lmd;
-              waveOptions.fsc = yvoice.fsc;
-            }
-            var playOptions = {
-              volume:yvoice.volume,
-              playbackRate:yvoice.playbackRate,
-              detune:yvoice.detune,
-              writeMarginMs:yvoice.writeMarginMs,
-            };
-
-            var dir = $scope.yvoice.seqWriteOptions.dir;
-            var prefix = $scope.yvoice.seqWriteOptions.prefix;
-            if (!dir) {
-              dir = desktopDir;
-            }
-
-            SeqFNameService.nextNumber(dir, prefix)
-              .then(function(nextNum) {
-                var nextFname = SeqFNameService.nextFname(prefix, nextNum);
-                var filePath = path.join(dir, nextFname);
-
-                AquesService.wave(encoded, phont, speed, waveOptions).then(
-                  function(bufWav) {
-                    AudioService.record(filePath, bufWav, playOptions).then(
-                      function() { d.resolve(filePath); },
-                      function(err) { d.reject(err); }
-                    );
-                    return filePath;
-                  },
-                  function(err) {
-                    MessageService.error('音声データを作成できませんでした。');
-                    d.reject(err);
-                    throw err;
-                  }
-                )
-                .then(function(filePath) {
-                  if (!$scope.yvoice.sourceWrite) { return; }
-                  var sourceFname = AudioSourceService.sourceFname(filePath);
-                  AudioSourceService.save(sourceFname, $scope.yinput.source);
-                });
-              });
-            return d.promise;
+        // record
+        var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+        parsedList.reduce(function(p, cinput) {
+          if(p.then === undefined) {
+            p.resolve();
+            p = p.promise;
           }
+          return p.then(function() {
+            return recordEach(cinput, dir, fnameprefix);
+          });
+        }, $q.defer());
 
+      // 通常保存
+      } else {
+        ipcRenderer.once('showSaveDialog', function (event, filePath) {
+          if (!filePath) {
+            MessageService.error('保存先が指定されませんでした。');
+            return;
+          }
+          var splitted = SeqFNameService.splitFname(filePath);
+          var dir = splitted.dir;
+          var prefix = splitted.filename;
+
+          // record
+          var containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
+          var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
           parsedList.reduce(function(p, cinput) {
             if(p.then === undefined) {
               p.resolve();
               p = p.promise;
             }
             return p.then(function() {
-              return recordEach(cinput);
+              if (containsCommand) {
+                return recordEach(cinput, dir, fnameprefix);
+              } else {
+                return recordSolo(cinput, filePath);
+              }
             });
           }, $q.defer());
-
-        // record, command, 通常保存
-        } else {
-          ipcRenderer.once('showSaveDialog', function (event, filePath) {
-            if (!filePath) {
-              MessageService.error('保存先が指定されませんでした。');
-              return;
-            }
-
-            var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-
-            function recordEach(cinput) {
-              var d = $q.defer();
-              var encoded = cinput.text;
-              var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
-
-              // phont
-              var phont = null;
-              angular.forEach($scope.phontList, function(value, key) {
-                if (value.id == yvoice.phont) { phont = value; }
-              });
-              if (!phont) {
-                MessageService.error('声の種類が未指定です。');
-                e.reject(null); return;
-              }
-
-              // disable rhythm if option is on
-              if (! yvoice.rhythmOn) {
-                encoded = AppUtilService.disableRhythm(encoded);
-              }
-
-              var speed = yvoice.speed;
-              if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
-                yvoice.writeMarginMs = 150;
-              }
-              var waveOptions = {
-                passPhrase:appCfg.passPhrase,
-                aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
-              };
-              if (phont.version == 'talk10') {
-                waveOptions.bas = yvoice.bas;
-                waveOptions.pit = yvoice.pit;
-                waveOptions.acc = yvoice.acc;
-                waveOptions.lmd = yvoice.lmd;
-                waveOptions.fsc = yvoice.fsc;
-              }
-              var playOptions = {
-                volume:yvoice.volume,
-                playbackRate:yvoice.playbackRate,
-                detune:yvoice.detune,
-                writeMarginMs:yvoice.writeMarginMs,
-              };
-
-              var splitted = SeqFNameService.splitFname(filePath);
-              var dir = splitted.dir;
-              var prefix = splitted.filename;
-
-              SeqFNameService.nextNumber(dir, prefix)
-                .then(function(nextNum) {
-                  var nextFname = SeqFNameService.nextFname(prefix, nextNum);
-                  var filePath = path.join(dir, nextFname);
-
-                  AquesService.wave(encoded, phont, speed, waveOptions).then(
-                    function(bufWav) {
-                      AudioService.record(filePath, bufWav, playOptions).then(
-                        function() { d.resolve(filePath); },
-                        function(err) { d.reject(err); }
-                      );
-                      return filePath;
-                    },
-                    function(err) {
-                      MessageService.error('音声データを作成できませんでした。');
-                      d.reject(err);
-                      throw err;
-                    }
-                  )
-                  .then(function(filePath) {
-                    if (!$scope.yvoice.sourceWrite) { return; }
-                    var sourceFname = AudioSourceService.sourceFname(filePath);
-                    AudioSourceService.save(sourceFname, $scope.yinput.source);
-                  });
-                });
-              return d.promise;
-            }
-
-            parsedList.reduce(function(p, cinput) {
-              if(p.then === undefined) {
-                p.resolve();
-                p = p.promise;
-              }
-              return p.then(function() {
-                return recordEach(cinput);
-              });
-            }, $q.defer());
-          });
-          ipcRenderer.send('showSaveDialog', 'wav');
-        }
-
-      // record, not command
-      } else {
-        // disable rhythm if option is on
-        if (! $scope.yvoice.rhythmOn) {
-          encoded = AppUtilService.disableRhythm(encoded);
-        }
-
-        var speed = $scope.yvoice.speed;
-        if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
-          $scope.yvoice.writeMarginMs = 150;
-        }
-        var waveOptions = {
-          passPhrase:appCfg.passPhrase,
-          aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
-        };
-        if (phont.version == 'talk10') {
-          waveOptions.bas = $scope.yvoice.bas;
-          waveOptions.pit = $scope.yvoice.pit;
-          waveOptions.acc = $scope.yvoice.acc;
-          waveOptions.lmd = $scope.yvoice.lmd;
-          waveOptions.fsc = $scope.yvoice.fsc;
-        }
-        var playOptions = {
-          volume:$scope.yvoice.volume,
-          playbackRate:$scope.yvoice.playbackRate,
-          detune:$scope.yvoice.detune,
-          writeMarginMs:$scope.yvoice.writeMarginMs,
-        };
-
-        // 連番保存
-        if ($scope.yvoice.seqWrite) {
-          var dir = $scope.yvoice.seqWriteOptions.dir;
-          var prefix = $scope.yvoice.seqWriteOptions.prefix;
-          if (!dir) {
-            dir = desktopDir;
-          }
-
-          SeqFNameService.nextNumber(dir, prefix)
-            .then(function(nextNum) {
-              var nextFname = SeqFNameService.nextFname(prefix, nextNum);
-              var filePath = path.join(dir, nextFname);
-
-              AquesService.wave(encoded, phont, speed, waveOptions).then(
-                function(bufWav) {
-                  AudioService.record(filePath, bufWav, playOptions);
-                  return filePath;
-                },
-                function(err) {
-                  MessageService.error('音声データを作成できませんでした。');
-                  throw err;
-                }
-              )
-              .then(function(filePath) {
-                if (!$scope.yvoice.sourceWrite) { return; }
-                var sourceFname = AudioSourceService.sourceFname(filePath);
-                AudioSourceService.save(sourceFname, $scope.yinput.source);
-              });
-            });
-
-        // 通常保存
-        } else {
-          ipcRenderer.once('showSaveDialog', function (event, filePath) {
-            if (!filePath) {
-              MessageService.error('保存先が指定されませんでした。');
-              return;
-            }
-
-            AquesService.wave(encoded, phont, speed, waveOptions)
-              .then(
-                function(bufWav) {
-                  AudioService.record(filePath, bufWav, playOptions);
-                  return filePath;
-                },
-                function(err) {
-                  MessageService.error('音声データを作成できませんでした。');
-                  throw err;
-                }
-              )
-              .then(function(filePath) {
-                if (!$scope.yvoice.sourceWrite) { return; }
-                var sourceFname = AudioSourceService.sourceFname(filePath);
-                AudioSourceService.save(sourceFname, $scope.yinput.source);
-              });
-          });
-          ipcRenderer.send('showSaveDialog', 'wav');
-        }
+        });
+        ipcRenderer.send('showSaveDialog', 'wav');
       }
+    };
+    function recordSolo(cinput, filePath) {
+      var d = $q.defer();
+      var encoded = cinput.text;
+      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+
+      // phont
+      var phont = null;
+      angular.forEach($scope.phontList, function(value, key) {
+        if (value.id == yvoice.phont) { phont = value; }
+      });
+      if (!phont) {
+        MessageService.error('声の種類が未指定です。');
+        e.reject(null); return;
+      }
+
+      // disable rhythm if option is on
+      if (! yvoice.rhythmOn) {
+        encoded = AppUtilService.disableRhythm(encoded);
+      }
+
+      var speed = yvoice.speed;
+      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+        yvoice.writeMarginMs = 150;
+      }
+      var waveOptions = {
+        passPhrase:appCfg.passPhrase,
+        aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
+      };
+      if (phont.version == 'talk10') {
+        waveOptions.bas = yvoice.bas;
+        waveOptions.pit = yvoice.pit;
+        waveOptions.acc = yvoice.acc;
+        waveOptions.lmd = yvoice.lmd;
+        waveOptions.fsc = yvoice.fsc;
+      }
+      var playOptions = {
+        volume:yvoice.volume,
+        playbackRate:yvoice.playbackRate,
+        detune:yvoice.detune,
+        writeMarginMs:yvoice.writeMarginMs,
+      };
+
+      AquesService.wave(encoded, phont, speed, waveOptions).then(
+        function(bufWav) {
+          AudioService.record(filePath, bufWav, playOptions).then(
+            function() { d.resolve(filePath); },
+            function(err) { d.reject(err); }
+          );
+          return filePath;
+        },
+        function(err) {
+          MessageService.error('音声データを作成できませんでした。');
+          d.reject(err);
+          throw err;
+        }
+      )
+      .then(function(filePath) {
+        if (!$scope.yvoice.sourceWrite) { return; }
+        var sourceFname = AudioSourceService.sourceFname(filePath);
+        AudioSourceService.save(sourceFname, $scope.yinput.source);
+      });
+      return d.promise;
+    };
+    function recordEach(cinput, dir, fnameprefix) {
+      var d = $q.defer();
+      var encoded = cinput.text;
+      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+
+      // phont
+      var phont = null;
+      angular.forEach($scope.phontList, function(value, key) {
+        if (value.id == yvoice.phont) { phont = value; }
+      });
+      if (!phont) {
+        MessageService.error('声の種類が未指定です。');
+        e.reject(null); return;
+      }
+
+      // disable rhythm if option is on
+      if (! yvoice.rhythmOn) {
+        encoded = AppUtilService.disableRhythm(encoded);
+      }
+
+      var speed = yvoice.speed;
+      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+        yvoice.writeMarginMs = 150;
+      }
+      var waveOptions = {
+        passPhrase:appCfg.passPhrase,
+        aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
+      };
+      if (phont.version == 'talk10') {
+        waveOptions.bas = yvoice.bas;
+        waveOptions.pit = yvoice.pit;
+        waveOptions.acc = yvoice.acc;
+        waveOptions.lmd = yvoice.lmd;
+        waveOptions.fsc = yvoice.fsc;
+      }
+      var playOptions = {
+        volume:yvoice.volume,
+        playbackRate:yvoice.playbackRate,
+        detune:yvoice.detune,
+        writeMarginMs:yvoice.writeMarginMs,
+      };
+
+      SeqFNameService.nextNumber(dir, prefix)
+        .then(function(nextNum) {
+          var nextFname = SeqFNameService.nextFname(prefix, nextNum);
+          var filePath = path.join(dir, nextFname);
+
+          AquesService.wave(encoded, phont, speed, waveOptions).then(
+            function(bufWav) {
+              AudioService.record(filePath, bufWav, playOptions).then(
+                function() { d.resolve(filePath); },
+                function(err) { d.reject(err); }
+              );
+              return filePath;
+            },
+            function(err) {
+              MessageService.error('音声データを作成できませんでした。');
+              d.reject(err);
+              throw err;
+            }
+          )
+          .then(function(filePath) {
+            if (!$scope.yvoice.sourceWrite) { return; }
+            var sourceFname = AudioSourceService.sourceFname(filePath);
+            AudioSourceService.save(sourceFname, $scope.yinput.source);
+          });
+        });
+      return d.promise;
     };
     ctrl.showSystemWindow = function() {
       if (!appCfg.isTest) { return; }

@@ -1,4 +1,4 @@
-// (UI dependecy)
+// (UI dependecy contains)
 // angular directive
 angular.module('yvoiceDirective', [])
   // static-include
