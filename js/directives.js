@@ -1,5 +1,5 @@
 // angular directive
-angular.module('yvoiceUiDirective', [])
+angular.module('yvoiceDirective', [])
   // static-include
   .directive('staticInclude', function() {
     return {
