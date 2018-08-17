@@ -288,7 +288,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }, $q.defer());
     };
     function playEach(cinput) {
-console.log('playEach called');
       var d = $q.defer();
       var encoded = cinput.text;
       var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
@@ -420,8 +419,6 @@ console.log('playEach called');
             p = p.promise;
           }
           return p.then(function() {
-  console.log('call recordEach');
-  console.log(cinput);
             return recordEach(cinput, dir, prefix);
           });
         }, $q.defer());
@@ -458,7 +455,6 @@ console.log('playEach called');
       }
     };
     function recordSolo(cinput, filePath) {
-console.log('-- y');
       var d = $q.defer();
       var encoded = cinput.text;
       var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
@@ -472,7 +468,6 @@ console.log('-- y');
         MessageService.error('声の種類が未指定です。');
         e.reject(null); return;
       }
-console.log('-- 1');
 
       // disable rhythm if option is on
       if (! yvoice.rhythmOn) {
@@ -501,53 +496,41 @@ console.log('-- 1');
         writeMarginMs:yvoice.writeMarginMs,
       };
 
-console.log('-- 2');
       AquesService.wave(encoded, phont, speed, waveOptions).then(
       function(bufWav) {
-console.log('-- 3');
         return AudioService.record(filePath, bufWav, playOptions).then(
         function() {
-console.log('-- 4');
           return filePath;
         },
         function(err) {
-console.log('-- 5');
           MessageService.error('音声データを記録できませんでした。', err);
           d.reject(err);
         });
       },
       function(err) {
-console.log('-- 6');
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       })
       .then(function(filePath) {
-console.log('-- 7');
         if (!$scope.yvoice.sourceWrite) {
           d.resolve('ok'); return;
         }
-console.log('-- 8');
         var sourceFname = AudioSourceService.sourceFname(filePath);
-        return AudioSourceService.save(sourceFname, $scope.yinput.source).then(
+        return AudioSourceService.save(sourceFname, cinput.text).then(
         function() {
-console.log('-- 9');
           d.resolve('ok');
         },
         function(err) {
-console.log('-- 10');
           MessageService.error('メッセージファイルを作成できませんでした。', err);
           d.reject(err);
         });
       },
       function(err) {
-console.log('-- 11');
         d.reject(err);
       });
       return d.promise;
     };
     function recordEach(cinput, dir, fnameprefix) {
-console.log('called recordEach');
-console.log('-- x');
       var d = $q.defer();
       var encoded = cinput.text;
       var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
@@ -589,19 +572,15 @@ console.log('-- x');
         writeMarginMs:yvoice.writeMarginMs,
       };
 
-console.log('-- 0');
-      SeqFNameService.nextNumber(dir, prefix).then(
+      SeqFNameService.nextNumber(dir, fnameprefix).then(
       function(nextNum) {
-        var nextFname = SeqFNameService.nextFname(prefix, nextNum);
+        var nextFname = SeqFNameService.nextFname(fnameprefix, nextNum);
         var filePath = path.join(dir, nextFname);
-console.log('-- 1');
 
         AquesService.wave(encoded, phont, speed, waveOptions).then(
         function(bufWav) {
-console.log('-- 2');
           return AudioService.record(filePath, bufWav, playOptions).then(
           function() {
-console.log('-- 3');
             return filePath;
           },
           function(err) {
@@ -614,25 +593,20 @@ console.log('-- 3');
           d.reject(err);
         })
         .then(function(filePath) {
-console.log('-- 4');
           if (!$scope.yvoice.sourceWrite) {
             d.resolve('ok'); return;
           }
           var sourceFname = AudioSourceService.sourceFname(filePath);
-console.log('-- 5');
-          return AudioSourceService.save(sourceFname, $scope.yinput.source).then(
+          return AudioSourceService.save(sourceFname, cinput.text).then(
           function() {
-console.log('-- 6');
             d.resolve('ok');
           },
           function(err) {
-console.log('-- 7');
             MessageService.error('メッセージファイルを作成できませんでした。', err);
             d.reject(err);
           });
         },
         function(err) {
-console.log('-- 8');
           d.reject(err);
         });
       });

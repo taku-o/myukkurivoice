@@ -596,6 +596,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             d.reject(err); return;
           }
           MessageService.info('メッセージファイルを保存しました。path: ' + filePath);
+          d.resolve(filePath);
         });
         return d.promise;
       }
