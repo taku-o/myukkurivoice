@@ -288,6 +288,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }, $q.defer());
     };
     function playEach(cinput) {
+console.log('playEach called');
       var d = $q.defer();
       var encoded = cinput.text;
       var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
@@ -420,8 +421,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           }
           return p.then(function() {
   console.log('call recordEach');
-  console.log(recordEach);
-            return recordEach(cinput, dir, fnameprefix);
+  console.log(cinput);
+            return recordEach(cinput, dir, prefix);
           });
         }, $q.defer());
 
@@ -446,7 +447,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
             return p.then(function() {
               if (containsCommand) {
-                return recordEach(cinput, dir, fnameprefix);
+                return recordEach(cinput, dir, prefix);
               } else {
                 return recordSolo(cinput, filePath);
               }
@@ -545,6 +546,7 @@ console.log('-- 11');
       return d.promise;
     };
     function recordEach(cinput, dir, fnameprefix) {
+console.log('called recordEach');
 console.log('-- x');
       var d = $q.defer();
       var encoded = cinput.text;
