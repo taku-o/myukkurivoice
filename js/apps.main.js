@@ -513,8 +513,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
                 AquesService.wave(encoded, phont, speed, waveOptions).then(
                   function(bufWav) {
-                    AudioService.record(filePath, bufWav, playOptions);
-                    d.resolve(filePath);
+                    AudioService.record(filePath, bufWav, playOptions).then(
+                      function() { d.resolve(filePath); },
+                      function(err) { d.reject(err); }
+                    );
                     return filePath;
                   },
                   function(err) {
@@ -605,8 +607,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
                   AquesService.wave(encoded, phont, speed, waveOptions).then(
                     function(bufWav) {
-                      AudioService.record(filePath, bufWav, playOptions);
-                      d.resolve(filePath);
+                      AudioService.record(filePath, bufWav, playOptions).then(
+                        function() { d.resolve(filePath); },
+                        function(err) { d.reject(err); }
+                      );
                       return filePath;
                     },
                     function(err) {
