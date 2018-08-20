@@ -7,7 +7,7 @@ describe('mainWindow', function() {
   beforeEach(function() {
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-      env: { DEBUG: 1, NODE_ENV: 'test', userData: 'test/userData' },
+      env: { DEBUG: 1, NODE_ENV: 'test', userData: process.cwd()+ '/test/userData' },
     });
     return this.app.start();
   });
