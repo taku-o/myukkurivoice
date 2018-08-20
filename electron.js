@@ -33,6 +33,9 @@ MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
 
 // load application settings
+if (process.env.NODE_ENV=='test' && process.env.userData) {
+  app.setPath('userData', process.env.userData);
+}
 myApp.loadAppConfig();
 
 // handle uncaughtException
