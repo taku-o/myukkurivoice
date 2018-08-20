@@ -413,15 +413,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
         // record
         var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+        var firstWroteFile = null;
+        // record wave files
         parsedList.reduce(function(p, cinput) {
           if(p.then === undefined) {
             p.resolve();
             p = p.promise;
           }
-          return p.then(function() {
+          return p.then(function(fp) {
+            if (!firstWroteFile) { firstWroteFile = fp; }
             return recordEach(cinput, dir, prefix);
           });
-        }, $q.defer());
+        }, $q.defer())
+        // record source message
+        .then(function(fp) {
+          if (!firstWroteFile) { firstWroteFile = fp; }
+          if (!$scope.yvoice.sourceWrite) { return; }
+          var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+          AudioSourceService.save(sourceFname, $scope.yinput.source).then(
+            function() {},
+            function(err) {
+              MessageService.error('メッセージファイルを作成できませんでした。', err);
+            });
+        });
 
       // 通常保存
       } else {
@@ -437,19 +451,33 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           // record
           var containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
           var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+          var firstWroteFile = null;
+          // record wave files
           parsedList.reduce(function(p, cinput) {
             if(p.then === undefined) {
               p.resolve();
               p = p.promise;
             }
-            return p.then(function() {
+            return p.then(function(fp) {
+              if (!firstWroteFile) { firstWroteFile = fp; }
               if (containsCommand) {
                 return recordEach(cinput, dir, prefix);
               } else {
                 return recordSolo(cinput, filePath);
               }
             });
-          }, $q.defer());
+          }, $q.defer())
+          // record source message
+          .then(function(fp) {
+            if (!firstWroteFile) { firstWroteFile = fp; }
+            if (!$scope.yvoice.sourceWrite) { return; }
+            var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+            AudioSourceService.save(sourceFname, $scope.yinput.source).then(
+              function() {},
+              function(err) {
+                MessageService.error('メッセージファイルを作成できませんでした。', err);
+              });
+          });
         });
         ipcRenderer.send('showSaveDialog', 'wav');
       }
@@ -500,7 +528,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       function(bufWav) {
         return AudioService.record(filePath, bufWav, playOptions).then(
         function() {
-          return filePath;
+          d.resolve(filePath);
         },
         function(err) {
           MessageService.error('音声データを記録できませんでした。', err);
@@ -509,23 +537,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       },
       function(err) {
         MessageService.error('音声データを作成できませんでした。', err);
-        d.reject(err);
-      })
-      .then(function(filePath) {
-        if (!$scope.yvoice.sourceWrite) {
-          d.resolve('ok'); return;
-        }
-        var sourceFname = AudioSourceService.sourceFname(filePath);
-        return AudioSourceService.save(sourceFname, cinput.text).then(
-        function() {
-          d.resolve('ok');
-        },
-        function(err) {
-          MessageService.error('メッセージファイルを作成できませんでした。', err);
-          d.reject(err);
-        });
-      },
-      function(err) {
         d.reject(err);
       });
       return d.promise;
@@ -581,7 +592,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         function(bufWav) {
           return AudioService.record(filePath, bufWav, playOptions).then(
           function() {
-            return filePath;
+            d.resolve(filePath);
           },
           function(err) {
             MessageService.error('音声データを記録できませんでした。', err);
@@ -590,23 +601,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         },
         function(err) {
           MessageService.error('音声データを作成できませんでした。', err);
-          d.reject(err);
-        })
-        .then(function(filePath) {
-          if (!$scope.yvoice.sourceWrite) {
-            d.resolve('ok'); return;
-          }
-          var sourceFname = AudioSourceService.sourceFname(filePath);
-          return AudioSourceService.save(sourceFname, cinput.text).then(
-          function() {
-            d.resolve('ok');
-          },
-          function(err) {
-            MessageService.error('メッセージファイルを作成できませんでした。', err);
-            d.reject(err);
-          });
-        },
-        function(err) {
           d.reject(err);
         });
       });
