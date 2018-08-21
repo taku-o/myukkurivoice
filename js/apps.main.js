@@ -63,6 +63,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         case 'fromClipboard':
           document.getElementById('from-clipboard').click();
           break;
+        case 'putVoiceName':
+          ctrl.putVoiceName();
+          break;
         case 'moveToSource':
           document.getElementById('source').focus();
           break;
@@ -723,6 +726,45 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         clearEncodedSelection();
       } else {
         MessageService.info('クリップボードにデータがありません。');
+      }
+    };
+    ctrl.putVoiceName = function() {
+      var field = document.activeElement;
+      if (field.id != 'source' && field.id != 'encoded') { return; }
+
+      var pos = field.selectionStart;
+      var length = field.value.length;
+
+      if (pos == 0) {
+        field.value = $scope.yvoice.name+ '＞'+ field.value;
+        field.selectionStart = ($scope.yvoice.name+ '＞').length;
+        field.selectionEnd = ($scope.yvoice.name+ '＞').length;
+      } else if (pos == length) {
+        var ch = field.value.substring(pos-1, pos);
+        if (ch == "\n") {
+          field.value = field.value+ $scope.yvoice.name+ '＞';
+          field.selectionStart = (field.value).length;
+          field.selectionEnd = (field.value).length;
+        } else {
+          field.value = field.value+ "\n"+ $scope.yvoice.name+ '＞';
+          field.selectionStart = (field.value).length;
+          field.selectionEnd = (field.value).length;
+        }
+      } else {
+        var prech = field.value.substring(pos-1, pos);
+        if (prech == "\n") {
+          field.value = field.value.substring(0, pos)+ $scope.yvoice.name+ '＞'+ field.value.substring(pos, length);
+          field.selectionStart = (field.value.substring(0, pos)+ $scope.yvoice.name+ '＞').length;
+          field.selectionEnd = (field.value.substring(0, pos)+ $scope.yvoice.name+ '＞').length;
+          return;
+        }
+        var post = field.value.substring(pos, pos+1);
+        if (post == "\n") {
+          field.value = field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞'+ field.value.substring(pos, length);
+          field.selectionStart = (field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞').length;
+          field.selectionEnd = (field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞').length;
+          return;
+        }
       }
     };
     ctrl.directory = function() {

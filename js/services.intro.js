@@ -173,6 +173,10 @@ angular.module('yvoiceIntroService', [])
               intro: 'Command + D でクリップボードに入っているテキストをメッセージ入力欄にコピーします'
             },
             {
+              element: '#source',
+              intro: 'Command + N で"声種プリセット名＞"をテキスト欄に入力します。マルチボイス機能で利用できます。'
+            },
+            {
               element: '#sidebar-items',
               position: 'right',
               intro: 'Command + ← で次(下)の設定に切り替え<br>Command + Shift + ← で前(上)の設定に切り替え'

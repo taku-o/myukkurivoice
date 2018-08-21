@@ -55,6 +55,9 @@ function showMainWindow() {
   var r = localShortcut.register(this.mainWindow, 'Command+D', function() {
     myApp.mainWindow.webContents.send('shortcut', 'fromClipboard');
   });
+  var r = localShortcut.register(this.mainWindow, 'Command+N', function() {
+    myApp.mainWindow.webContents.send('shortcut', 'putVoiceName');
+  });
   var r = localShortcut.register(this.mainWindow, 'Command+Left', function() {
     myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig');
   });

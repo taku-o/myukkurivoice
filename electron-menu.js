@@ -95,6 +95,13 @@ function initAppMenu() {
             myApp.mainWindow.webContents.send('shortcut', 'fromClipboard');
           }
         },
+        {
+          label:'選択中の声種プリセットを挿入',
+          accelerator: 'Command+N',
+          click () {
+            myApp.mainWindow.webContents.send('shortcut', 'putVoiceName');
+          }
+        },
         { type: 'separator' },
         {
           label:'音声の再生',
