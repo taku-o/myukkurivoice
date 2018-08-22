@@ -1,13 +1,16 @@
 var Application = require('spectron').Application;
 var assert = require('assert');
+var temp = require('temp').track();
 
 describe('settingsView', function() {
   this.timeout(10000);
 
   beforeEach(function() {
+    var fsprefix = '_myubo_test' + Date.now().toString(36);
+    var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-      env: { DEBUG: 1, NODE_ENV: 'test', userData: process.cwd()+ '/test/userData' },
+      env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath },
     });
     return this.app.start();
   });
