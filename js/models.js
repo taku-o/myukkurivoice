@@ -52,7 +52,7 @@ angular.module('yvoiceModel', [])
         'dir': '',
         'prefix': ''
       }
-    }
+    };
   })
   .factory('YVoiceInitialData', function() {
     return [
@@ -133,23 +133,23 @@ angular.module('yvoiceModel', [])
           'prefix': ''
         }
       }
-    ]
+    ];
   })
   .factory('YInput', function() {
     return {
       'source': '',
       'encoded': ''
-    }
+    };
   })
   .factory('YInputInitialData', function() {
     return {
       'source': 'エムユックリボイスへようこそ。ゆっくりしていってね！',
       'encoded': "エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、"
-    }
+    };
   })
   .factory('YCommandInput', function() {
     return {
       'name': '',
       'text': '',
-    }
+    };
   });

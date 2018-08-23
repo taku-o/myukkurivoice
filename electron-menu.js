@@ -4,7 +4,7 @@ const app = electron.app;
 const Menu = electron.Menu;
 
 // application menu
-function initAppMenu() {
+function initAppMenu(options) {
   var myApp = this;
   var menuList = [
     {
@@ -242,13 +242,13 @@ function initAppMenu() {
         { type: 'separator' },
         {
           label: 'Learn More',
-          click () { require('electron').shell.openExternal('https://github.com/taku-o/myukkurivoice') }
+          click () { require('electron').shell.openExternal('https://github.com/taku-o/myukkurivoice'); }
         }
       ]
     }
   ];
   // 表示メニューにToggle Developer Toolsメニューを追加
-  if (appCfg.debug) {
+  if (options.debug) {
     menuList[4].submenu.splice(1, 0,
       { role: 'toggledevtools' }
     );
@@ -279,7 +279,7 @@ function initDockMenu() {
     }
   ];
   var dockMenu = Menu.buildFromTemplate(dockMenuList);
-  app.dock.setMenu(dockMenu)
+  app.dock.setMenu(dockMenu);
 }
 
 // exports

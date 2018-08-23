@@ -18,7 +18,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
   .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', function($q, YVoice, YVoiceInitialData, MessageService) {
 
     function uniqId() {
-      return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
+      return ('0000' + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
     }
 
     return {
@@ -42,12 +42,12 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         return dataList;
       },
       create: function() {
-        cloned = angular.copy(YVoice);
+        var cloned = angular.copy(YVoice);
         cloned['id'] = uniqId();
         return cloned;
       },
       copy: function(original) {
-        cloned = angular.copy(original);
+        var cloned = angular.copy(original);
         cloned['id'] = uniqId();
         return cloned;
       },
@@ -72,7 +72,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         });
         return d.promise;
       }
-    }
+    };
   }])
   .factory('MasterService', ['YPhontList', function(YPhontList) {
     var phontList = YPhontList;
@@ -80,7 +80,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       getPhontList: function() {
         return phontList;
       }
-    }
+    };
   }])
   .factory('AquesService', ['$q', 'MessageService', 'LicenseService', function($q, MessageService, LicenseService) {
     var ptr_void  = ref.refType(ref.types.void);
@@ -96,23 +96,24 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       acc: ref.types.int,
       lmd: ref.types.int,
       fsc: ref.types.int
-    })
+    });
     var ptr_AQTK_VOICE = ref.refType(AQTK_VOICE);
 
     // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
     // void AqKanji2Koe_Release (void * hAqKanji2Koe)
     // int AqKanji2Koe_Convert (void * hAqKanji2Koe, const char *kanji, char *koe, int nBufKoe)
-    var frameworkPath = unpackedPath + '/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe';
+    var frameworkPath = null;
+    frameworkPath = unpackedPath + '/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe';
     var ptr_AqKanji2Koe_Create  = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
     var ptr_AqKanji2Koe_Release = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
-    var ptr_AqKanji2Koe_Convert = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert')
+    var ptr_AqKanji2Koe_Convert = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
     var fn_AqKanji2Koe_Create   = ffi.ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, [ 'string', ptr_int ]);
     var fn_AqKanji2Koe_Release  = ffi.ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ ptr_void ]);
     var fn_AqKanji2Koe_Convert  = ffi.ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ ptr_void, 'string', ptr_char, 'int' ]);
 
     // unsigned char * AquesTalk2_Synthe_Utf8(const char *koe, int iSpeed, int * size, void *phontDat)
     // void AquesTalk2_FreeWave (unsigned char *wav)
-    var frameworkPath = unpackedPath + '/vendor/AquesTalk2.framework/Versions/A/AquesTalk2';
+    frameworkPath = unpackedPath + '/vendor/AquesTalk2.framework/Versions/A/AquesTalk2';
     var ptr_AquesTalk2_Synthe_Utf8 = ffi.DynamicLibrary(frameworkPath).get('AquesTalk2_Synthe_Utf8');
     var ptr_AquesTalk2_FreeWave    = ffi.DynamicLibrary(frameworkPath).get('AquesTalk2_FreeWave');
     var fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, [ 'string', 'int', ptr_int, ptr_void ]);
@@ -122,7 +123,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     // void AquesTalk_FreeWave(unsigned char *wav)
     // int AquesTalk_SetDevKey(const char *key)
     // int AquesTalk_SetUsrKey(const char *key)
-    var frameworkPath = unpackedPath + '/vendor/AquesTalk10.framework/Versions/A/AquesTalk';
+    frameworkPath = unpackedPath + '/vendor/AquesTalk10.framework/Versions/A/AquesTalk';
     var ptr_AquesTalk10_Synthe_Utf8 = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_Synthe_Utf8');
     var ptr_AquesTalk10_FreeWave    = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_FreeWave');
     var ptr_AquesTalk10_SetDevKey   = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_SetDevKey');
@@ -197,7 +198,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           return '';
         }
 
-        var sourceLength = (new Blob([sourceLength], {type: "text/plain"})).size;
+        var sourceLength = (new Blob([sourceLength], {type: 'text/plain'})).size;
         var encodedLength = sourceLength >= 512? sourceLength * 4 : 512;
         var buf = Buffer.alloc(sourceLength >= 512? sourceLength * 4 : 512);
         var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encodedLength);
@@ -247,7 +248,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
               log.info('maquestalk1 failed. ' + err);
               d.reject(err); return;
             }
-            bufWav = new Buffer(stdout, 'binary');
+            var bufWav = new Buffer(stdout, 'binary');
             d.resolve(bufWav);
           }).on('close', (statusCode) => {
             if (statusCode < 0) {
@@ -326,7 +327,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             aqtkVoiceVal.acc = options.acc? options.acc: phont.struct.acc;
             aqtkVoiceVal.lmd = options.lmd? options.lmd: phont.struct.lmd;
             aqtkVoiceVal.fsc = options.fsc? options.fsc: phont.struct.fsc;
-            ptr_aqtkVoiceVal = aqtkVoiceVal.ref();
+            var ptr_aqtkVoiceVal = aqtkVoiceVal.ref();
 
             // create wave buffer
             var allocInt = ref.alloc('int');
@@ -350,7 +351,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         }
         return d.promise;
       }
-    }
+    };
   }])
   .factory('AudioService1', ['$q', 'MessageService', function($q, MessageService) {
     // Audio base AudioService
@@ -422,7 +423,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         });
         return d.promise;
       }
-    }
+    };
   }])
   .factory('AudioService2', ['$q', '$timeout', 'MessageService', 'AppUtilService',
     function($q, $timeout, MessageService, AppUtilService) {
@@ -437,7 +438,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         view[i] = bufWav[i];
       }
       return aBuffer;
-    };
+    }
 
     return {
       play: function(bufWav, options, parallel=false) {
@@ -575,7 +576,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         );
         return d.promise;
       }
-    }
+    };
   }])
   .factory('AudioSourceService', ['$q', 'MessageService', function($q, MessageService) {
     var waveExt = '.wav';
@@ -600,7 +601,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         });
         return d.promise;
       }
-    }
+    };
   }])
   .factory('SeqFNameService', ['$q', 'MessageService', function($q, MessageService) {
     var ext = '.wav';
@@ -617,7 +618,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         };
       },
       nextFname: function(prefix, num) {
-        formatted = ("0000"+ num).slice(-4)
+        var formatted = ('0000'+ num).slice(-4);
         return prefix + formatted + ext;
       },
       nextNumber: function(dir, prefix) {
@@ -658,16 +659,16 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         });
         return d.promise;
       }
-    }
+    };
   }])
   .factory('AppUtilService', ['$rootScope', function($rootScope) {
     return {
       disableRhythm: function(encoded) {
-        return encoded.replace(/['\/]/g, '');
+        return encoded.replace(/['/]/g, '');
       },
       reportDuration: function(duration) {
-        $rootScope.$broadcast("duration", duration);
+        $rootScope.$broadcast('duration', duration);
       },
-    }
+    };
   }]);
 

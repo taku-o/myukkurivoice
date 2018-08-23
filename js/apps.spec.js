@@ -148,7 +148,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.playResult1 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.playResult1 = err.message;
@@ -173,7 +173,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.playResult1 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.playResult1 = err.message;
@@ -198,7 +198,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.playResult1 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.playResult1 = err.message;
@@ -224,7 +224,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.recordResult1 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.recordResult1 = err.message;
@@ -249,7 +249,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.recordResult1 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.recordResult1 = err.message;
@@ -274,7 +274,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.recordResult1 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.recordResult1 = err.message;
@@ -302,7 +302,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.playResult2 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.playResult2 = err.message;
@@ -328,7 +328,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.playResult2 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.playResult2 = err.message;
@@ -354,7 +354,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.playResult2 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.playResult2 = err.message;
@@ -381,7 +381,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.recordResult2 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.recordResult2 = err.message;
@@ -407,7 +407,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.recordResult2 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.recordResult2 = err.message;
@@ -433,7 +433,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         },
         function(err) {
           $scope.recordResult2 = err.message;
-        })
+        });
       },
       function(err) {
         $scope.recordResult2 = err.message;
@@ -442,7 +442,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
 
     // AudioSourceService
     ctrl.sourceFname = function() {
-      var r = AudioSourceService.sourceFname($scope.wavFilePath)
+      var r = AudioSourceService.sourceFname($scope.wavFilePath);
       $scope.sourceFnameResult = r;
     };
     ctrl.save = function() {

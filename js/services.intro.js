@@ -185,6 +185,6 @@ angular.module('yvoiceIntroService', [])
         });
         intro.start();
       }
-    }
+    };
   });
 

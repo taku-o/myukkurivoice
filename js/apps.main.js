@@ -1,10 +1,8 @@
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer;
 var clipboard = require('electron').clipboard;
-var util = require('util');
 var path = require('path');
 var log = require('electron-log');
-var http = require('http');
 
 // application settings
 var appCfg = require('electron').remote.getGlobal('appCfg');
@@ -73,21 +71,25 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           document.getElementById('encoded').focus();
           break;
         case 'swichNextConfig':
-          var index = $scope.yvoiceList.indexOf($scope.yvoice);
-          if ($scope.yvoiceList.length > index + 1) {
-            $scope.yvoice = $scope.yvoiceList[index + 1];
-          } else {
-            $scope.yvoice = $scope.yvoiceList[0];
+          {
+            let index = $scope.yvoiceList.indexOf($scope.yvoice);
+            if ($scope.yvoiceList.length > index + 1) {
+              $scope.yvoice = $scope.yvoiceList[index + 1];
+            } else {
+              $scope.yvoice = $scope.yvoiceList[0];
+            }
           }
           $scope.display = 'main';
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'swichPreviousConfig':
-          var index = $scope.yvoiceList.indexOf($scope.yvoice);
-          if (index - 1 >= 0) {
-            $scope.yvoice = $scope.yvoiceList[index - 1];
-          } else {
-            $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
+          {
+            let index = $scope.yvoiceList.indexOf($scope.yvoice);
+            if (index - 1 >= 0) {
+              $scope.yvoice = $scope.yvoiceList[index - 1];
+            } else {
+              $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
+            }
           }
           $scope.display = 'main';
           $timeout(function(){ $scope.$apply(); });
@@ -110,13 +112,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'minus':
-          var index = $scope.yvoiceList.indexOf($scope.yvoice);
-          ctrl.minus(index);
+          {
+            let index = $scope.yvoiceList.indexOf($scope.yvoice);
+            ctrl.minus(index);
+          }
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'copy':
-          var index = $scope.yvoiceList.indexOf($scope.yvoice);
-          ctrl.copy(index);
+          {
+            let index = $scope.yvoiceList.indexOf($scope.yvoice);
+            ctrl.copy(index);
+          }
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'save':
@@ -161,7 +167,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         $scope.yvoice = $scope.yvoiceList[0];
         $timeout(function(){ $scope.$apply(); });
       });
-    };
+    }
     function selectedSource() {
       var textarea = document.getElementById('source');
       var start = textarea.selectionStart;
@@ -175,14 +181,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       var end = textarea.selectionEnd;
       var selectedText = textarea.value.substring(start, end);
       return selectedText;
-    };
+    }
 
     // selected text highlight
     $scope.sourceHighlight = {
-      '#619FFF' : "{{ sourceHighlight['#619FFF'] }}"
+      '#619FFF' : '{{ sourceHighlight["#619FFF"] }}'
     };
     $scope.encodedHighlight = {
-      '#619FFF' : "{{ encodedHighlight['#619FFF'] }}"
+      '#619FFF' : '{{ encodedHighlight["#619FFF"] }}'
     };
     ctrl.blurOnSource = function() {
       $scope.sourceHighlight['#619FFF'] = selectedSource();
@@ -257,7 +263,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         }
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-          var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+          let parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
           angular.forEach(parsedList, function(cinput) {
             cinput.text = AquesService.encode(cinput.text);
           });
@@ -279,7 +285,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       // play
-      var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+      let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
       parsedList.reduce(function(p, cinput) {
         if(p.then === undefined) {
           p.resolve();
@@ -302,7 +308,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        e.reject(null); return;
+        d.reject(null); return;
       }
 
       // disable rhythm if option is on
@@ -342,14 +348,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         function(err) {
           MessageService.error('音声データを再生できませんでした。', err);
           d.reject(err);
-        })
+        });
       },
       function(err) {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
       return d.promise;
-    };
+    }
     ctrl.stop = function() {
       MessageService.action('stop playing voice.');
       AudioService.stop();
@@ -385,7 +391,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         }
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-          var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+          let parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
           angular.forEach(parsedList, function(cinput) {
             cinput.text = AquesService.encode(cinput.text);
           });
@@ -415,7 +421,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         }
 
         // record
-        var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+        let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
         var firstWroteFile = null;
         // record wave files
         parsedList.reduce(function(p, cinput) {
@@ -497,7 +503,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        e.reject(null); return;
+        d.reject(null); return;
       }
 
       // disable rhythm if option is on
@@ -543,7 +549,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         d.reject(err);
       });
       return d.promise;
-    };
+    }
     function recordEach(cinput, dir, fnameprefix) {
       var d = $q.defer();
       var encoded = cinput.text;
@@ -556,7 +562,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        e.reject(null); return;
+        d.reject(null); return;
       }
 
       // disable rhythm if option is on
@@ -608,7 +614,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         });
       });
       return d.promise;
-    };
+    }
     ctrl.showSystemWindow = function() {
       if (!appCfg.isTest) { return; }
       ipcRenderer.send('showSystemWindow', 'system');

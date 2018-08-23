@@ -27,13 +27,13 @@
 * リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
 
 ```
-  sh bin/packaging.sh
+  npm run packaging
 ```
 
 * リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
 
 ```
-  sh bin/release.sh
+  npm run release
 ```
 
 ## Unit Test
@@ -42,8 +42,19 @@
 * spectronのmiddleバージョンはelectronのバージョンと合わせる。
 
 ```
-  sh bin/test_rebuild.sh
-  sh bin/test.sh
+  # build app, and run test
+  npm run test_rebuild
+  
+  # run test already build app
+  npm run test
+```
+
+## Lint
+* Lintツールを実行します。
+
+```
+  npm install -g eslint
+  npm run lint
 ```
 
 ## using devtron

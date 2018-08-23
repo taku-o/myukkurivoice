@@ -31,37 +31,37 @@ function showMainWindow() {
   this.mainWindow.loadURL('file://' + __dirname + '/contents-main.html');
 
   // shortcut
-  var r = localShortcut.register(this.mainWindow, 'Command+Q', function() {
+  localShortcut.register(this.mainWindow, 'Command+Q', function() {
     app.quit();
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+P', function() {
+  localShortcut.register(this.mainWindow, 'Command+P', function() {
     myApp.mainWindow.webContents.send('shortcut', 'play');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+W', function() {
+  localShortcut.register(this.mainWindow, 'Command+W', function() {
     myApp.mainWindow.webContents.send('shortcut', 'stop');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+S', function() {
+  localShortcut.register(this.mainWindow, 'Command+S', function() {
     myApp.mainWindow.webContents.send('shortcut', 'record');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+Up', function() {
+  localShortcut.register(this.mainWindow, 'Command+Up', function() {
     myApp.mainWindow.webContents.send('shortcut', 'moveToSource');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+Down', function() {
+  localShortcut.register(this.mainWindow, 'Command+Down', function() {
     myApp.mainWindow.webContents.send('shortcut', 'moveToEncoded');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+Right', function() {
+  localShortcut.register(this.mainWindow, 'Command+Right', function() {
     myApp.mainWindow.webContents.send('shortcut', 'encode');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+D', function() {
+  localShortcut.register(this.mainWindow, 'Command+D', function() {
     myApp.mainWindow.webContents.send('shortcut', 'fromClipboard');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+N', function() {
+  localShortcut.register(this.mainWindow, 'Command+N', function() {
     myApp.mainWindow.webContents.send('shortcut', 'putVoiceName');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+Left', function() {
+  localShortcut.register(this.mainWindow, 'Command+Left', function() {
     myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig');
   });
-  var r = localShortcut.register(this.mainWindow, 'Command+Shift+Left', function() {
+  localShortcut.register(this.mainWindow, 'Command+Shift+Left', function() {
     myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig');
   });
 
@@ -108,16 +108,16 @@ function showHelpWindow() {
   this.helpWindow.loadURL('file://' + __dirname + '/contents-help.html');
 
   // shortcut
-  var r = localShortcut.register(this.helpWindow, 'Command+Q', function() {
+  localShortcut.register(this.helpWindow, 'Command+Q', function() {
     app.quit();
   });
-  var r = localShortcut.register(this.helpWindow, 'Command+W', function() {
+  localShortcut.register(this.helpWindow, 'Command+W', function() {
     if (myApp.helpWindow) { myApp.helpWindow.close(); }
   });
-  var r = localShortcut.register(this.helpWindow, 'Up', function() {
+  localShortcut.register(this.helpWindow, 'Up', function() {
     if (myApp.helpWindow) { myApp.helpWindow.webContents.send('shortcut', 'moveToPreviousHelp'); }
   });
-  var r = localShortcut.register(this.helpWindow, 'Down', function() {
+  localShortcut.register(this.helpWindow, 'Down', function() {
     if (myApp.helpWindow) { myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp'); }
   });
 
@@ -160,10 +160,10 @@ function showSystemWindow() {
   this.systemWindow.loadURL('file://' + __dirname + '/contents-system.html');
 
   // shortcut
-  var r = localShortcut.register(this.systemWindow, 'Command+Q', function() {
+  localShortcut.register(this.systemWindow, 'Command+Q', function() {
     app.quit();
   });
-  var r = localShortcut.register(this.systemWindow, 'Command+W', function() {
+  localShortcut.register(this.systemWindow, 'Command+W', function() {
     if (myApp.systemWindow) { myApp.systemWindow.close(); }
   });
 
@@ -191,9 +191,9 @@ function showAboutWindow() {
     open_devtools: false,
   });
   if (this.mainWindow) { w.setParentWindow(this.mainWindow); }
-  var r = localShortcut.register(w, 'Command+Q', function() { app.quit(); });
-  var r = localShortcut.register(w, 'Command+W', function() { w.close(); });
-};
+  localShortcut.register(w, 'Command+Q', function() { app.quit(); });
+  localShortcut.register(w, 'Command+W', function() { w.close(); });
+}
 
 // application spec window
 function showSpecWindow() {

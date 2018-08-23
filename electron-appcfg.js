@@ -58,7 +58,7 @@ function resetAppConfig() {
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
-  global.appCfg = appCfg;
+  global.appCfg = this.appCfg;
 }
 
 // exports

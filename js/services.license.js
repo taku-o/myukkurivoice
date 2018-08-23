@@ -1,5 +1,5 @@
 var exec     = require('child_process').exec;
-var cryptico = require("cryptico.js");
+var cryptico = require('cryptico.js');
 
 var app = require('electron').remote.app;
 var appPath = app.getAppPath();
@@ -72,6 +72,6 @@ angular.module('yvoiceLicenseService', [])
         });
         return d.promise;
       }
-    }
+    };
   }]);
 

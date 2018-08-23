@@ -12,8 +12,8 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         // loop and command name check.
         var re = new RegExp('^(.+?)＞', 'gm');
         var hasCommand = false;
-        var matched = null;
-        while (matched = re.exec(input)) {
+        var matched = re.exec(input);
+        while (matched) {
           var name = matched[1];
           // error, unknown command name
           if (nameList.indexOf(name) < 0) {
@@ -21,6 +21,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
             return false;
           }
           hasCommand = true;
+          matched = re.exec(input);
         }
         return hasCommand;
       },
@@ -35,16 +36,16 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
 
           // command line
           if (matched) {
-            var ycinput = angular.copy(YCommandInput);
+            let ycinput = angular.copy(YCommandInput);
             ycinput.name = matched[1];
             ycinput.text = matched[2];
             parsed.push(ycinput);
           // not a command line
           } else {
             if (parsed.length < 1) {
-              var ycinput = angular.copy(YCommandInput);
-              ycinput.name = currentYvoice.name,
-              ycinput.text = line
+              let ycinput = angular.copy(YCommandInput);
+              ycinput.name = currentYvoice.name;
+              ycinput.text = line;
               parsed.push(ycinput);
             } else {
               // append to last item
@@ -70,5 +71,5 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         });
         return result;
       }
-    }
+    };
   }]);

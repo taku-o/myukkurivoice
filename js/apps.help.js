@@ -76,7 +76,7 @@ angular.module('yvoiceAppHelp', [])
       } else {
         $location.hash(menuList[moved]);
       }
-    };
+    }
     function moveToNextHelp() {
       var index = menuList.indexOf($scope.display);
       var moved = index + 1;
@@ -87,14 +87,14 @@ angular.module('yvoiceAppHelp', [])
       } else {
         $location.hash(menuList[moved]);
       }
-    };
+    }
 
     // action
     ctrl.browser = function(url) {
       require('electron').shell.openExternal(url);
     };
     ctrl.showItemInFolder = function(path) {
-      var expanded = path.replace('\$HOME', homeDir);
+      var expanded = path.replace('$HOME', homeDir);
       require('electron').shell.showItemInFolder(expanded);
     };
     ctrl.showSystemWindow = function() {

@@ -9,8 +9,8 @@ angular.module('yvoiceMessageService', [])
           created: new Date(),
           body: message,
           type: 'action'
-        }
-        $rootScope.$broadcast("message", post);
+        };
+        $rootScope.$broadcast('message', post);
       },
       record: function(message, wavFilePath) {
         var wavFileName = path.basename(wavFilePath);
@@ -21,24 +21,24 @@ angular.module('yvoiceMessageService', [])
           wavFileName: wavFileName,
           type: 'record'
         };
-        $rootScope.$broadcast("message", post);
-        $rootScope.$broadcast("wavGenerated", post);
+        $rootScope.$broadcast('message', post);
+        $rootScope.$broadcast('wavGenerated', post);
       },
       info: function(message) {
         var post = {
           created: new Date(),
           body: message,
           type: 'info'
-        }
-        $rootScope.$broadcast("message", post);
+        };
+        $rootScope.$broadcast('message', post);
       },
       error: function(message) {
         var post = {
           created: new Date(),
           body: message,
           type: 'error'
-        }
-        $rootScope.$broadcast("message", post);
+        };
+        $rootScope.$broadcast('message', post);
       },
       syserror: function(message, err=null) {
         if (err) {
@@ -48,8 +48,8 @@ angular.module('yvoiceMessageService', [])
           created: new Date(),
           body: message,
           type: 'syserror'
-        }
-        $rootScope.$broadcast("message", post);
+        };
+        $rootScope.$broadcast('message', post);
       }
-    }
+    };
   }]);

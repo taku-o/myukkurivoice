@@ -1,4 +1,6 @@
 // (UI dependecy contains)
+var ipcRenderer = require('electron').ipcRenderer;
+
 // angular directive
 angular.module('yvoiceDirective', [])
   // static-include
@@ -31,12 +33,12 @@ angular.module('yvoiceDirective', [])
         }
         f = function(e) {
           e.preventDefault();
-          ipcRenderer.send('ondragstartwav', wavFilePath)
+          ipcRenderer.send('ondragstartwav', wavFilePath);
           return false;
         };
         el.addEventListener('dragstart', f, false);
       });
-    }
+    };
   })
   // txt-droppable
   .directive('txtDroppable', function($parse) {
@@ -58,6 +60,6 @@ angular.module('yvoiceDirective', [])
         reader.readAsText(file);
         return false;
       });
-    }
+    };
   });
 

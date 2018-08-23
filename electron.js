@@ -58,7 +58,7 @@ app.on('ready', function() {
   myApp.showMainWindow();
 
   // init menu
-  myApp.initAppMenu();
+  myApp.initAppMenu({debug: myApp.appCfg.debug});
   myApp.initDockMenu();
 });
 
@@ -102,7 +102,7 @@ ipcMain.on('ondragstartwav', function (event, filePath) {
   event.sender.startDrag({
     file: filePath,
     icon: imgPath
-  })
+  });
 });
 
 // updateAppConfig
