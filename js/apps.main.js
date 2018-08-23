@@ -741,37 +741,35 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       var pos = field.selectionStart;
       var length = field.value.length;
 
+      // top
       if (pos == 0) {
-        field.value = $scope.yvoice.name+ '＞'+ field.value;
+        $scope.yinput[field.id] = $scope.yvoice.name+ '＞'+ field.value;
         field.selectionStart = ($scope.yvoice.name+ '＞').length;
         field.selectionEnd = ($scope.yvoice.name+ '＞').length;
+      // last
       } else if (pos == length) {
-        var ch = field.value.substring(pos-1, pos);
-        if (ch == "\n") {
-          field.value = field.value+ $scope.yvoice.name+ '＞';
+        if (field.value.substring(pos-1, pos) == "\n") {
+          $scope.yinput[field.id] = field.value+ $scope.yvoice.name+ '＞';
           field.selectionStart = (field.value).length;
           field.selectionEnd = (field.value).length;
         } else {
-          field.value = field.value+ "\n"+ $scope.yvoice.name+ '＞';
+          $scope.yinput[field.id] = field.value+ "\n"+ $scope.yvoice.name+ '＞';
           field.selectionStart = (field.value).length;
           field.selectionEnd = (field.value).length;
         }
+      // in text
       } else {
-        var prech = field.value.substring(pos-1, pos);
-        if (prech == "\n") {
-          field.value = field.value.substring(0, pos)+ $scope.yvoice.name+ '＞'+ field.value.substring(pos, length);
+        if (field.value.substring(pos-1, pos) == "\n") {
+          $scope.yinput[field.id] = field.value.substring(0, pos)+ $scope.yvoice.name+ '＞'+ field.value.substring(pos, length);
           field.selectionStart = (field.value.substring(0, pos)+ $scope.yvoice.name+ '＞').length;
           field.selectionEnd = (field.value.substring(0, pos)+ $scope.yvoice.name+ '＞').length;
-          return;
-        }
-        var post = field.value.substring(pos, pos+1);
-        if (post == "\n") {
-          field.value = field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞'+ field.value.substring(pos, length);
+        } else {
+          $scope.yinput[field.id] = field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞'+ field.value.substring(pos, length);
           field.selectionStart = (field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞').length;
           field.selectionEnd = (field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞').length;
-          return;
         }
       }
+      $timeout(function(){ $scope.$apply(); });
     };
     ctrl.directory = function() {
       MessageService.action('select directory.');
