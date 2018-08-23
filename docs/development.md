@@ -45,7 +45,7 @@
   # build app, and run test
   npm run test_rebuild
   
-  # run test already build app
+  # run test already built app
   npm run test
 ```
 
