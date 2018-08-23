@@ -28,15 +28,15 @@ describe('settingsView', function() {
       .isSelected('#seq-write-box .checkbox input').then(function(isSelected) {
         client.isVisible('#seq-write-box .form-group').then(function(isVisible) {
           assert.equal(isVisible, isSelected);
-        })
+        });
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('settingsView tutorial intro', function() {
@@ -51,12 +51,10 @@ describe('settingsView', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
-
 });
-

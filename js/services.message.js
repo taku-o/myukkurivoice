@@ -8,7 +8,7 @@ angular.module('yvoiceMessageService', [])
         var post = {
           created: new Date(),
           body: message,
-          type: 'action'
+          type: 'action',
         };
         $rootScope.$broadcast('message', post);
       },
@@ -19,7 +19,7 @@ angular.module('yvoiceMessageService', [])
           body: message,
           wavFilePath: wavFilePath,
           wavFileName: wavFileName,
-          type: 'record'
+          type: 'record',
         };
         $rootScope.$broadcast('message', post);
         $rootScope.$broadcast('wavGenerated', post);
@@ -28,7 +28,7 @@ angular.module('yvoiceMessageService', [])
         var post = {
           created: new Date(),
           body: message,
-          type: 'info'
+          type: 'info',
         };
         $rootScope.$broadcast('message', post);
       },
@@ -36,20 +36,20 @@ angular.module('yvoiceMessageService', [])
         var post = {
           created: new Date(),
           body: message,
-          type: 'error'
+          type: 'error',
         };
         $rootScope.$broadcast('message', post);
       },
-      syserror: function(message, err=null) {
+      syserror: function(message, err = null) {
         if (err) {
           message = message + err.message;
         }
         var post = {
           created: new Date(),
           body: message,
-          type: 'syserror'
+          type: 'syserror',
         };
         $rootScope.$broadcast('message', post);
-      }
+      },
     };
   }]);

@@ -12,29 +12,29 @@ function initAppMenu(options) {
       submenu: [
         {
           label: 'About MYukkuriVoice',
-          click () { myApp.showAboutWindow(); }
+          click() { myApp.showAboutWindow(); }
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: '環境設定',
-          click () { myApp.showSystemWindow(); }
+          click() { myApp.showSystemWindow(); }
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: '環境設定初期化',
-          click () { myApp.resetAppConfigOnMain(); }
+          click() { myApp.resetAppConfigOnMain(); }
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           role: 'services',
-          submenu: []
+          submenu: [],
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
-          role:'quit',
-          accelerator: 'Command+Q'
-        }
-      ]
+          role: 'quit',
+          accelerator: 'Command+Q',
+        },
+      ],
     },
     {
       label: '編集',
@@ -54,198 +54,198 @@ function initAppMenu(options) {
             { role: 'startspeaking' },
             { role: 'stopspeaking' }
           ]
-        }
-      ]
+        },
+      ],
     },
     {
       label: '音声',
       submenu: [
         {
-          label:'メッセージ入力欄に移動',
+          label: 'メッセージ入力欄に移動',
           accelerator: 'Command+Up',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'moveToSource');
-          }
+          },
         },
         {
-          label:'音記号列入力欄に移動',
+          label: '音記号列入力欄に移動',
           accelerator: 'Command+Down',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'moveToEncoded');
-          }
+          },
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
-          label:'音記号列に変換',
+          label: '音記号列に変換',
           accelerator: 'Command+Right',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'encode');
-          }
+          },
         },
         {
-          label:'入力をクリア',
-          click () {
+          label: '入力をクリア',
+          click() {
             myApp.mainWindow.webContents.send('menu', 'clear');
-          }
+          },
         },
         {
-          label:'クリップボードからコピー',
+          label: 'クリップボードからコピー',
           accelerator: 'Command+D',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'fromClipboard');
-          }
+          },
         },
         {
-          label:'選択中の声種プリセットを挿入',
+          label: '選択中の声種プリセットを挿入',
           accelerator: 'Command+N',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'putVoiceName');
-          }
+          },
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
-          label:'音声の再生',
+          label: '音声の再生',
           accelerator: 'Command+P',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'play');
-          }
+          },
         },
         {
-          label:'再生停止',
+          label: '再生停止',
           accelerator: 'Command+W',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'stop');
-          }
+          },
         },
         {
-          label:'音声の保存',
+          label: '音声の保存',
           accelerator: 'Command+S',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'record');
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       label: 'ボイス設定',
       submenu: [
         {
           label: '新規作成',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('menu', 'plus');
-          }
+          },
         },
         {
           label: '複製',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('menu', 'copy');
-          }
+          },
         },
         {
           label: '削除',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('menu', 'minus');
-          }
+          },
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: '保存',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('menu', 'save');
-          }
+          },
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: '次の設定に切り替え',
           accelerator: 'Command+Left',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig');
-          }
+          },
         },
         {
           label: '前の設定に切り替え',
           accelerator: 'Command+Shift+Left',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig');
-          }
+          },
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: 'ボイス設定オールリセット',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('menu', 'reset');
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       label: '表示',
       submenu: [
-        { role: 'reload' },
-        { type: 'separator' },
-        { role: 'resetzoom' },
-        { role: 'zoomin' },
-        { role: 'zoomout' },
-        { type: 'separator' },
-        { role: 'togglefullscreen' }
-      ]
+        {role: 'reload'},
+        {type: 'separator'},
+        {role: 'resetzoom'},
+        {role: 'zoomin'},
+        {role: 'zoomout'},
+        {type: 'separator'},
+        {role: 'togglefullscreen'},
+      ],
     },
     {
       label: 'ウインドウ',
       submenu: [
         {
           label: '前面表示固定切替',
-          click () { myApp.switchAlwaysOnTop(); }
+          click() { myApp.switchAlwaysOnTop(); }
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: 'Minimize',
           accelerator: 'CmdOrCtrl+M',
-          role: 'minimize'
+          role: 'minimize',
         },
         {
           label: 'Zoom',
-          role: 'zoom'
+          role: 'zoom',
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: 'Bring All to Front',
-          role: 'front'
+          role: 'front',
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: 'ウインドウ位置リセット',
-          click () { myApp.resetWindowPosition(); }
+          click() { myApp.resetWindowPosition(); }
         },
-      ]
+      ],
     },
     {
       label: 'ヘルプ',
       submenu: [
         {
           label: 'ヘルプ',
-          click () { myApp.showHelpWindow(); }
+          click() { myApp.showHelpWindow(); }
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: 'ショートカットキー',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('menu', 'shortcut');
-          }
+          },
         },
         {
           label: 'チュートリアル',
-          click () {
+          click() {
             myApp.mainWindow.webContents.send('menu', 'tutorial');
-          }
+          },
         },
-        { type: 'separator' },
+        {type: 'separator'},
         {
           label: 'Learn More',
-          click () { require('electron').shell.openExternal('https://github.com/taku-o/myukkurivoice'); }
-        }
-      ]
-    }
+          click() { require('electron').shell.openExternal('https://github.com/taku-o/myukkurivoice'); }
+        },
+      ],
+    },
   ];
   // 表示メニューにToggle Developer Toolsメニューを追加
   if (options.debug) {
@@ -263,20 +263,20 @@ function initDockMenu() {
   var dockMenuList = [
     {
       label: 'About MYukkuriVoice',
-      click () { myApp.showAboutWindow(); }
+      click() { myApp.showAboutWindow(); }
     },
     {
       label: '環境設定',
-      click () { myApp.showSystemWindow(); }
+      click() { myApp.showSystemWindow(); }
     },
     {
       label: 'ヘルプ',
-      click () { myApp.showHelpWindow(); }
+      click() { myApp.showHelpWindow(); }
     },
     {
       label: 'ウインドウ位置リセット',
-      click () { myApp.resetWindowPosition(); }
-    }
+      click() { myApp.resetWindowPosition(); }
+    },
   ];
   var dockMenu = Menu.buildFromTemplate(dockMenuList);
   app.dock.setMenu(dockMenu);
@@ -285,5 +285,5 @@ function initDockMenu() {
 // exports
 module.exports = {
   initAppMenu,
-  initDockMenu
+  initDockMenu,
 };

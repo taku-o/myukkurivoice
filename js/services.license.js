@@ -12,25 +12,25 @@ angular.module('yvoiceLicenseService', [])
 
     // encrypt decrypt
     var encrypt = function(passPhrase, plainKey) {
-        var bits = 1024;
-        var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
-        var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
+      var bits = 1024;
+      var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+      var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
 
-        var encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
-        return encryptionResult.cipher;
+      var encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
+      return encryptionResult.cipher;
     };
     var decrypt = function(passPhrase, encryptedKey) {
-        var bits = 1024;
-        var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+      var bits = 1024;
+      var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
 
-        var decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
-        //if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') // why?
-        if (decryptionResult.status == 'success') {
-          // ok
-        } else {
-          return '';
-        }
-        return decryptionResult.plaintext;
+      var decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
+      //if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') // why?
+      if (decryptionResult.status == 'success') {
+        // ok
+      } else {
+        return '';
+      }
+      return decryptionResult.plaintext;
     };
 
     // method

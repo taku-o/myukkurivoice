@@ -12,7 +12,7 @@ describe('helpWindow', function() {
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath },
     });
-    return this.app.start()
+    return this.app.start();
   });
 
   after(function() {
@@ -25,11 +25,11 @@ describe('helpWindow', function() {
     this.client = this.app.client;
     return this.client
       .click('#help')
-      .windowByIndex(1)
+      .windowByIndex(1);
   });
 
   afterEach(function() {
-    return this.client.close()
+    return this.client.close();
   });
 
   it('helpWindow menu list', function() {
@@ -39,7 +39,7 @@ describe('helpWindow', function() {
       })
       .elements('.nav-group-item.functions-item').then(function(response) {
         assert.equal(response.value.length, 9);
-      })
+      });
   });
 
   it('helpWindow menu click', function() {
@@ -166,8 +166,6 @@ describe('helpWindow', function() {
       // finally
       .isVisible('#about-pane').then(function(isVisible) {
         assert.ok(! isVisible);
-      })
+      });
   });
-
 });
-

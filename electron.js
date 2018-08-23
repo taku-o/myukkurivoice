@@ -33,7 +33,7 @@ MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
 
 // load application settings
-if (process.env.NODE_ENV=='test' && process.env.userData) {
+if (process.env.NODE_ENV == 'test' && process.env.userData) {
   app.setPath('userData', process.env.userData);
 }
 myApp.loadAppConfig();
@@ -63,18 +63,18 @@ app.on('ready', function() {
 });
 
 // show window event
-ipcMain.on('showHelpWindow', function (event, message) {
+ipcMain.on('showHelpWindow', function(event, message) {
   myApp.showHelpWindow();
 });
-ipcMain.on('showSystemWindow', function (event, message) {
+ipcMain.on('showSystemWindow', function(event, message) {
   myApp.showSystemWindow();
 });
-ipcMain.on('showSpecWindow', function (event, message) {
+ipcMain.on('showSpecWindow', function(event, message) {
   myApp.showSpecWindow();
 });
 
 // showSaveDialog
-ipcMain.on('showSaveDialog', function (event, message) {
+ipcMain.on('showSaveDialog', function(event, message) {
   var options = {
     title: 'wav save dialog',
     filters: [
@@ -86,27 +86,27 @@ ipcMain.on('showSaveDialog', function (event, message) {
 });
 
 // showDirDialog
-ipcMain.on('showDirDialog', function (event, defaultPath) {
+ipcMain.on('showDirDialog', function(event, defaultPath) {
   var options = {
     title: 'select wav save directory',
     properties: ['openDirectory', 'createDirectory'],
-    defaultPath: defaultPath
+    defaultPath: defaultPath,
   };
   var r = dialog.showOpenDialog(myApp.mainWindow, options);
   event.sender.send('showDirDialog', r);
 });
 
 // drag out wav file
-ipcMain.on('ondragstartwav', function (event, filePath) {
+ipcMain.on('ondragstartwav', function(event, filePath) {
   var imgPath = path.join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
   event.sender.startDrag({
     file: filePath,
-    icon: imgPath
+    icon: imgPath,
   });
 });
 
 // updateAppConfig
-ipcMain.on('updateAppConfig', function (event, options) {
+ipcMain.on('updateAppConfig', function(event, options) {
   myApp.updateAppConfig(options);
   var dialogOptions = {
     type: 'info',
@@ -122,7 +122,7 @@ ipcMain.on('updateAppConfig', function (event, options) {
 });
 
 // resetAppConfig
-ipcMain.on('resetAppConfig', function (event, message) {
+ipcMain.on('resetAppConfig', function(event, message) {
   myApp.resetAppConfig();
   var dialogOptions = {
     type: 'info',
@@ -165,7 +165,7 @@ function switchAlwaysOnTop() {
   myApp.mainWindow.setAlwaysOnTop(newflg);
   myApp.mainWindow.webContents.send('switchAlwaysOnTop', newflg);
 }
-ipcMain.on('switchAlwaysOnTop', function (event, message) {
+ipcMain.on('switchAlwaysOnTop', function(event, message) {
   var newflg = !myApp.mainWindow.isAlwaysOnTop();
   myApp.mainWindow.setAlwaysOnTop(newflg);
   event.sender.send('switchAlwaysOnTop', newflg);

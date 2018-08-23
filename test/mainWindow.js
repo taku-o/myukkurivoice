@@ -37,11 +37,11 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow input', function() {
@@ -78,18 +78,18 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow phont selection', function() {
     return this.app.client
       .elements('#phont option').then(function(response) {
         assert.equal(response.value.length, 26);
-      })
+      });
   });
 
   it('mainWindow voice config', function() {
@@ -117,11 +117,11 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow play', function() {
@@ -135,11 +135,11 @@ describe('mainWindow', function() {
       .click('#stop')
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow alwaysOnTop', function() {
@@ -149,29 +149,29 @@ describe('mainWindow', function() {
         assert.ok(! classes.includes('active'));
         app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
           assert.ok(! isAlwaysOnTop);
-        })
+        });
       })
       .click('#always-on-top-btn')
       .getAttribute('#always-on-top-btn span.icon', 'class').then(function(classes) {
         assert.ok(classes.includes('active'));
         app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
           assert.ok(isAlwaysOnTop);
-        })
+        });
       })
       .click('#always-on-top-btn')
       .getAttribute('#always-on-top-btn span.icon', 'class').then(function(classes) {
         assert.ok(! classes.includes('active'));
         app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
           assert.ok(! isAlwaysOnTop);
-        })
+        });
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow help', function() {
@@ -187,11 +187,11 @@ describe('mainWindow', function() {
       // error check
       .windowByIndex(0)
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow shortcut intro', function() {
@@ -205,11 +205,11 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow tutorial intro', function() {
@@ -223,11 +223,11 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow switchSettingsView', function() {
@@ -241,12 +241,10 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
-
 });
-

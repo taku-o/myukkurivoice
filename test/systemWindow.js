@@ -12,7 +12,7 @@ describe('systemWindow', function() {
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath },
     });
-    return this.app.start()
+    return this.app.start();
   });
 
   after(function() {
@@ -25,11 +25,11 @@ describe('systemWindow', function() {
     this.client = this.app.client;
     return this.client
       .click('#show-system-window')
-      .windowByIndex(1)
+      .windowByIndex(1);
   });
 
   afterEach(function() {
-    return this.client.close()
+    return this.client.close();
   });
 
   it('systemWindow load config', function() {
@@ -39,8 +39,6 @@ describe('systemWindow', function() {
       })
       .getValue('#main-height').then(function(value) {
         assert.ok(value);
-      })
+      });
   });
-
 });
-

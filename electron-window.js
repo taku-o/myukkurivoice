@@ -25,8 +25,8 @@ function showMainWindow() {
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
-      devTools: this.appCfg.debug
-    }
+      devTools: this.appCfg.debug,
+    },
   });
   this.mainWindow.loadURL('file://' + __dirname + '/contents-main.html');
 
@@ -102,8 +102,8 @@ function showHelpWindow() {
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
-      devTools: this.appCfg.debug
-    }
+      devTools: this.appCfg.debug,
+    },
   });
   this.helpWindow.loadURL('file://' + __dirname + '/contents-help.html');
 
@@ -154,8 +154,8 @@ function showSystemWindow() {
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
-      devTools: this.appCfg.debug
-    }
+      devTools: this.appCfg.debug,
+    },
   });
   this.systemWindow.loadURL('file://' + __dirname + '/contents-system.html');
 
@@ -204,8 +204,8 @@ function showSpecWindow() {
     height: 800,
     show: true,
     webPreferences: {
-      devTools: this.appCfg.debug
-    }
+      devTools: this.appCfg.debug,
+    },
   });
   specWindow.loadURL('file://' + __dirname + '/contents-spec.html');
 }
@@ -216,5 +216,5 @@ module.exports = {
   showHelpWindow,
   showSystemWindow,
   showAboutWindow,
-  showSpecWindow
+  showSpecWindow,
 };

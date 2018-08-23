@@ -12,7 +12,7 @@ describe('specWindow', function() {
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath },
     });
-    return this.app.start()
+    return this.app.start();
   });
 
   after(function() {
@@ -25,11 +25,11 @@ describe('specWindow', function() {
     this.client = this.app.client;
     return this.client
       .click('#show-spec-window')
-      .windowByIndex(1)
+      .windowByIndex(1);
   });
 
   afterEach(function() {
-    return this.client.close()
+    return this.client.close();
   });
 
   it('specWindow LicenseService', function() {
@@ -39,14 +39,14 @@ describe('specWindow', function() {
       .setValue('#plain-key', 'this is a plain key')
       .click('#encrypt')
       .getValue('#encrypted-key').then(function(value) {
-        assert.ok(value)
-        console.log('tested encrypted key is :'+ value);
+        assert.ok(value);
+        //console.log('tested encrypted key is :'+ value);
       })
       // decrypt
       .setValue('#plain-key', '')
       .click('#decrypt')
       .getValue('#plain-key').then(function(value) {
-        assert.equal(value, 'this is a plain key')
+        assert.equal(value, 'this is a plain key');
       })
       // consumerKey aquesTalk10DevKey
       .setValue('#license-type', 'aquesTalk10DevKey')
@@ -55,10 +55,10 @@ describe('specWindow', function() {
       .click('#consumer-key')
       .waitForValue('#consumer-key-result', 5000)
       .getValue('#consumer-key-result').then(function(value) {
-        assert.ok(value)
+        assert.ok(value);
       })
       .getValue('#consumer-key-err').then(function(value) {
-        assert.ok(! value)
+        assert.ok(! value);
       })
       // consumerKey unknown key
       .setValue('#license-type', 'unknown')
@@ -67,11 +67,11 @@ describe('specWindow', function() {
       .click('#consumer-key')
       .waitForValue('#consumer-key-done', 5000)
       .getValue('#consumer-key-result').then(function(value) {
-        assert.ok(! value)
+        assert.ok(! value);
       })
       .getValue('#consumer-key-err').then(function(value) {
-        assert.ok(! value)
-      })
+        assert.ok(! value);
+      });
   });
 
   // MessageService
@@ -82,32 +82,32 @@ describe('specWindow', function() {
       .click('#load')
       .waitForValue('#load-result', 2000)
       .getValue('#load-result').then(function(value) {
-        assert.ok(value)
+        assert.ok(value);
       })
       .getValue('#load-err').then(function(value) {
-        assert.ok(! value)
+        assert.ok(! value);
       })
       // initialData
       .click('#initial-data')
       .getValue('#initial-data-result').then(function(value) {
-        assert.ok(value)
+        assert.ok(value);
         var parsed = JSON.parse(value);
         assert.equal(parsed.length, 4);
       })
       // create
       .click('#create')
       .getValue('#create-result').then(function(value) {
-        assert.ok(value)
+        assert.ok(value);
         var parsed = JSON.parse(value);
         assert.ok(parsed.id);
       })
       // copy
       .click('#copy')
       .getValue('#copy-result').then(function(value) {
-        assert.ok(value)
+        assert.ok(value);
         var parsed = JSON.parse(value);
         assert.ok(parsed.id);
-      })
+      });
   });
 
   // AquesService
@@ -136,7 +136,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok');
       })
       .getValue('#wave-err').then(function(value) {
-        assert.ok(! value)
+        assert.ok(! value);
       })
       // wave talk1 empty
       .setValue('#encoded', '')
@@ -147,7 +147,7 @@ describe('specWindow', function() {
         assert.ok(!value);
       })
       .getValue('#wave-err').then(function(value) {
-        assert.ok(! value)
+        assert.ok(! value);
       })
       // wave talk2
       .setValue('#encoded', "テ'_スト")
@@ -159,7 +159,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok');
       })
       .getValue('#wave-err').then(function(value) {
-        assert.ok(! value)
+        assert.ok(! value);
       })
       // wave talk2 empty
       .setValue('#encoded', '')
@@ -170,7 +170,7 @@ describe('specWindow', function() {
         assert.ok(!value);
       })
       .getValue('#wave-err').then(function(value) {
-        assert.ok(! value)
+        assert.ok(! value);
       })
       // wave talk10
       .setValue('#encoded', "テ'_スト")
@@ -182,7 +182,7 @@ describe('specWindow', function() {
         assert.equal(value, 'ok');
       })
       .getValue('#wave-err').then(function(value) {
-        assert.ok(! value)
+        assert.ok(! value);
       })
       // wave talk10 empty
       .setValue('#encoded', '')
@@ -193,8 +193,8 @@ describe('specWindow', function() {
         assert.ok(!value);
       })
       .getValue('#wave-err').then(function(value) {
-        assert.ok(! value)
-      })
+        assert.ok(! value);
+      });
   });
 
   // AudioService1
@@ -206,7 +206,7 @@ describe('specWindow', function() {
       .click('#play1-aqver1')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // play aquestalk2
       .setValue('#play1-encoded', "テ'_スト")
@@ -214,7 +214,7 @@ describe('specWindow', function() {
       .click('#play1-aqver2')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // play aquestalk10
       .setValue('#play1-encoded', "テ'_スト")
@@ -222,7 +222,7 @@ describe('specWindow', function() {
       .click('#play1-aqver10')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // record aquestalk1
       .setValue('#play1-encoded', "テ'_スト")
@@ -231,7 +231,7 @@ describe('specWindow', function() {
       .click('#record1-aqver1')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // record aquestalk2
       .setValue('#play1-encoded', "テ'_スト")
@@ -240,7 +240,7 @@ describe('specWindow', function() {
       .click('#record1-aqver2')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // record aquestalk10
       .setValue('#play1-encoded', "テ'_スト")
@@ -249,8 +249,8 @@ describe('specWindow', function() {
       .click('#record1-aqver10')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then(function(value) {
-        assert.equal(value, 'ok')
-      })
+        assert.equal(value, 'ok');
+      });
       // TODO tmp file
       // TODO file exists
   });
@@ -264,7 +264,7 @@ describe('specWindow', function() {
       .click('#play2-aqver1')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // play aquestalk2
       .setValue('#play2-encoded', "テ'_スト")
@@ -272,7 +272,7 @@ describe('specWindow', function() {
       .click('#play2-aqver2')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // play aquestalk10
       .setValue('#play2-encoded', "テ'_スト")
@@ -280,7 +280,7 @@ describe('specWindow', function() {
       .click('#play2-aqver10')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // record aquestalk1
       .setValue('#play2-encoded', "テ'_スト")
@@ -289,7 +289,7 @@ describe('specWindow', function() {
       .click('#record2-aqver1')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // record aquestalk2
       .setValue('#play2-encoded', "テ'_スト")
@@ -298,7 +298,7 @@ describe('specWindow', function() {
       .click('#record2-aqver2')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then(function(value) {
-        assert.equal(value, 'ok')
+        assert.equal(value, 'ok');
       })
       // record aquestalk10
       .setValue('#play2-encoded', "テ'_スト")
@@ -307,8 +307,8 @@ describe('specWindow', function() {
       .click('#record2-aqver10')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then(function(value) {
-        assert.equal(value, 'ok')
-      })
+        assert.equal(value, 'ok');
+      });
       // TODO tmp file
       // TODO file exists
   });
@@ -320,15 +320,15 @@ describe('specWindow', function() {
       .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
       .click('#source-fname')
       .getValue('#source-fname-result').then(function(value) {
-        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt')
+        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt');
       })
       // save
       .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
       .setValue('#source-text', 'hogehoge')
       .click('#save')
       .getValue('#save-result').then(function(value) {
-        assert.ok(value)
-      })
+        assert.ok(value);
+      });
       // TODO tmp file
       // TODO file exists
       // TODO file content
@@ -341,7 +341,7 @@ describe('specWindow', function() {
       .getValue('#get-phont-list-result').then(function(value) {
         var parsed = JSON.parse(value);
         assert.equal(parsed.length, 26);
-      })
+      });
   });
 
   it('specWindow SeqFNameService', function() {
@@ -351,8 +351,8 @@ describe('specWindow', function() {
       .setValue('#num', '200')
       .click('#next-fname')
       .getValue('#next-fname-result').then(function(value) {
-        assert.equal(value, 'foo0200.wav')
-      })
+        assert.equal(value, 'foo0200.wav');
+      });
   });
 
   it('specWindow AppUtilService', function() {
@@ -361,21 +361,19 @@ describe('specWindow', function() {
       .setValue('#rhythm-text', 'test\' val/ue')
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then(function(value) {
-        assert.equal(value, 'test value')
+        assert.equal(value, 'test value');
       })
       // disableRhythm not contains
       .setValue('#rhythm-text', 'this is not a rhythm text')
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then(function(value) {
-        assert.equal(value, 'this is not a rhythm text')
+        assert.equal(value, 'this is not a rhythm text');
       })
       // disableRhythm empty
       .setValue('#rhythm-text', '')
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then(function(value) {
-        assert.ok(!value)
-      })
+        assert.ok(!value);
+      });
   });
-
 });
-

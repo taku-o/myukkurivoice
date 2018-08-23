@@ -9,13 +9,12 @@ angular.module('yvoiceDirective', [])
       restrict: 'AE',
       templateUrl: function(element, attrs) {
         return attrs.templatePath;
-      }
+      },
     };
   })
   // wav-draggable
   .directive('wavDraggable', function($parse) {
     return function(scope, element, attr) {
-
       var f;
       scope.$watch('lastWavFile', function(value) {
         var message = value;
@@ -42,7 +41,6 @@ angular.module('yvoiceDirective', [])
   })
   // txt-droppable
   .directive('txtDroppable', function($parse) {
-
     return function(scope, element, attr) {
       var el = element[0];
 
@@ -62,4 +60,3 @@ angular.module('yvoiceDirective', [])
       });
     };
   });
-
