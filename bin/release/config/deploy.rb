@@ -76,6 +76,7 @@ task :package do
       ' --ignore=".eslintrc.json" ' +
       ' --ignore=".jshintrc" ' +
       ' --ignore=".npmignore" ' +
+      ' --ignore=".prettierrc.json" ' +
       ' --ignore=".stylelintrc.json" ' +
       ' --ignore=".travis.yml" ' +
       ' --ignore="^/node_modules/about-window/LICENSE.txt" ' +
