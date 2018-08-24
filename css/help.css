@@ -1,3 +1,10 @@
+/* overwrite photon css */
+* {
+  cursor: auto;
+  -webkit-user-drag: auto;
+  -webkit-user-select: text;
+}
+
 .warn {
   color: red;
 }
