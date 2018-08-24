@@ -2,7 +2,7 @@ var Application = require('spectron').Application;
 var assert = require('assert');
 var temp = require('temp').track();
 
-describe('systemWindow', function() {
+describe('specWindow-service-AppUtilService', function() {
   this.timeout(10000);
 
   before(function() {
@@ -24,7 +24,7 @@ describe('systemWindow', function() {
   beforeEach(function() {
     this.client = this.app.client;
     return this.client
-      .click('#show-system-window')
+      .click('#show-spec-window')
       .windowByIndex(1);
   });
 
@@ -32,16 +32,25 @@ describe('systemWindow', function() {
     return this.client.close();
   });
 
-  it('systemWindow load config', function() {
+  it('AppUtilService', function() {
     return this.client
-      .getValue('#main-width').then(function(value) {
-        assert.ok(value);
+      // disableRhythm
+      .setValue('#rhythm-text', 'test\' val/ue')
+      .click('#disable-rhythm')
+      .getValue('#disable-rhythm-result').then(function(value) {
+        assert.equal(value, 'test value');
       })
-      .getValue('#main-height').then(function(value) {
-        assert.ok(value);
+      // disableRhythm not contains
+      .setValue('#rhythm-text', 'this is not a rhythm text')
+      .click('#disable-rhythm')
+      .getValue('#disable-rhythm-result').then(function(value) {
+        assert.equal(value, 'this is not a rhythm text');
+      })
+      // disableRhythm empty
+      .setValue('#rhythm-text', '')
+      .click('#disable-rhythm')
+      .getValue('#disable-rhythm-result').then(function(value) {
+        assert.ok(!value);
       });
   });
-
-  // TODO save config
-  // TODO load config
 });

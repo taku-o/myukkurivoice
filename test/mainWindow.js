@@ -44,6 +44,7 @@ describe('mainWindow', function() {
       });
   });
 
+  // TODO multivoice
   it('mainWindow input', function() {
     return this.app.client
       // encode
@@ -92,6 +93,11 @@ describe('mainWindow', function() {
       });
   });
 
+  // TODO initial
+  // TODO save config
+  // TODO delete config
+  // TODO copy config
+  // TODO filter
   it('mainWindow voice config', function() {
     var voiceConfigLength = 999;
     return this.app.client
@@ -124,6 +130,7 @@ describe('mainWindow', function() {
       });
   });
 
+  // TODO multivoice
   it('mainWindow play', function() {
     return this.app.client
       .setValue('#encoded', "テ'_スト")
@@ -141,6 +148,10 @@ describe('mainWindow', function() {
         assert.ok(! error);
       });
   });
+
+  // TODO record
+  //it('mainWindow play', function() {
+  //});
 
   it('mainWindow alwaysOnTop', function() {
     var app = this.app;
