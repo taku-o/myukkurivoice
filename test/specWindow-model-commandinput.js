@@ -32,9 +32,13 @@ describe('specWindow-model-YCommandInput', function() {
     return this.client.close();
   });
 
-  // TODO replace
   it('YCommandInput', function() {
     return this.client
-      .click('#get-phont-list');
+      .click('#getYCommandInput')
+      .getValue('#getYCommandInput-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.equal('', parsed.name);
+        assert.equal('', parsed.text);
+      });
   });
 });

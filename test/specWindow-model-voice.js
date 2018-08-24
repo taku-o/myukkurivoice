@@ -32,9 +32,25 @@ describe('specWindow-model-YVoice', function() {
     return this.client.close();
   });
 
-  // TODO replace
   it('YVoice', function() {
     return this.client
-      .click('#get-phont-list');
+      .click('#getYVoice')
+      .getValue('#getYVoice-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.equal(null, parsed.id);
+        assert.equal('f1 女声1(ゆっくり)', parsed.name);
+        assert.equal('at1_f1', parsed.phont);
+        assert.equal('talk1', parsed.version);
+        assert.equal(100, parsed.speed);
+        assert.equal(1.0, parsed.playbackRate);
+        assert.equal(0, parsed.detune);
+        assert.equal(1.0, parsed.volume);
+        assert.equal(true, parsed.rhythmOn);
+        assert.equal(150, parsed.writeMarginMs);
+        assert.equal(false, parsed.sourceWrite);
+        assert.equal(false, parsed.seqWrite);
+        assert.equal('', parsed.seqWriteOptions.dir);
+        assert.equal('', parsed.seqWriteOptions.prefix);
+      });
   });
 });

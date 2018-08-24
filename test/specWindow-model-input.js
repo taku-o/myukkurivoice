@@ -32,9 +32,13 @@ describe('specWindow-model-YInput', function() {
     return this.client.close();
   });
 
-  // TODO replace
   it('YInput', function() {
     return this.client
-      .click('#get-phont-list');
+      .click('#getYInput')
+      .getValue('#getYInput-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.equal('', parsed.source);
+        assert.equal('', parsed.encoded);
+      });
   });
 });

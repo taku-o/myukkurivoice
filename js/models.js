@@ -116,6 +116,8 @@ angular.module('yvoiceModel', [])
         phont: 'gVoice_F1',
         version: 'talk10',
         bas: 0,
+        spd: 100,
+        vol: 100,
         pit: 100,
         acc: 100,
         lmd: 100,

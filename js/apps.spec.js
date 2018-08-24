@@ -5,11 +5,13 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('SpecController', ['$scope',
+      'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
       'LicenseService',
       'DataService', 'MasterService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
       function($scope,
+      YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput,
       LicenseService,
       DataService, MasterService,
       AquesService, AudioService1, AudioService2, AudioSourceService,
@@ -17,6 +19,37 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
 
     // init
     var ctrl = this;
+
+    // YPhontList
+    ctrl.getYPhontList = function() {
+      var r = YPhontList;
+      $scope.getYPhontListResult = JSON.stringify(r);
+    };
+    // YVoice
+    ctrl.getYVoice = function() {
+      var r = YVoice;
+      $scope.getYVoiceResult = JSON.stringify(r);
+    };
+    // YVoiceInitialData
+    ctrl.getYVoiceInitialData = function() {
+      var r = YVoiceInitialData;
+      $scope.getYVoiceInitialDataResult = JSON.stringify(r);
+    };
+    // YInput
+    ctrl.getYInput = function() {
+      var r = YInput;
+      $scope.getYInputResult = JSON.stringify(r);
+    };
+    // YInputInitialData
+    ctrl.getYInputInitialData = function() {
+      var r = YInputInitialData;
+      $scope.getYInputInitialDataResult = JSON.stringify(r);
+    };
+    // YCommandInput
+    ctrl.getYCommandInput = function() {
+      var r = YCommandInput;
+      $scope.getYCommandInputResult = JSON.stringify(r);
+    };
 
     // LicenseService
     ctrl.encrypt = function() {

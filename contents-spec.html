@@ -19,6 +19,32 @@
 <div class="window" ng-controller="SpecController as ctrl">
 <div class="window-content">
   <form>
+    <!-- models -->
+    <div>YPhontList
+      <button id="getYPhontList" ng-click="ctrl.getYPhontList()">
+      <input id="getYPhontList-result" type="text" ng-model="getYPhontListResult">
+    </div>
+    <div>YVoice
+      <button id="getYVoice" ng-click="ctrl.getYVoice()">
+      <input id="getYVoice-result" type="text" ng-model="getYVoiceResult">
+    </div>
+    <div>YVoiceInitialData
+      <button id="getYVoiceInitialData" ng-click="ctrl.getYVoiceInitialData()">
+      <input id="getYVoiceInitialData-result" type="text" ng-model="getYVoiceInitialDataResult">
+    </div>
+    <div>YInput
+      <button id="getYInput" ng-click="ctrl.getYInput()">
+      <input id="getYInput-result" type="text" ng-model="getYInputResult">
+    </div>
+    <div>YInputInitialData
+      <button id="getYInputInitialData" ng-click="ctrl.getYInputInitialData()">
+      <input id="getYInputInitialData-result" type="text" ng-model="getYInputInitialDataResult">
+    </div>
+    <div>YCommandInput
+      <button id="getYCommandInput" ng-click="ctrl.getYCommandInput()">
+      <input id="getYCommandInput-result" type="text" ng-model="getYCommandInputResult">
+    </div>
+
     <div>LicenseService
       <input id="pass-phrase" type="text" ng-model="passPhrase">
       <input id="plain-key" type="text" ng-model="plainKey">

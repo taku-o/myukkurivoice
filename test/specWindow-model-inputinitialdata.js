@@ -32,9 +32,13 @@ describe('specWindow-model-YInputInitialData', function() {
     return this.client.close();
   });
 
-  // TODO replace
   it('YInputInitialData', function() {
     return this.client
-      .click('#get-phont-list');
+      .click('#getYInputInitialData')
+      .getValue('#getYInputInitialData-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source);
+        assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded);
+      });
   });
 });

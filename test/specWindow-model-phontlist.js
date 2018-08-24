@@ -32,9 +32,41 @@ describe('specWindow-model-YPhontList', function() {
     return this.client.close();
   });
 
-  // TODO replace
   it('YPhontList', function() {
     return this.client
-      .click('#get-phont-list');
+      .click('#getYPhontList')
+      .getValue('#getYPhontList-result').then(function(value) {
+        var parsed = JSON.parse(value);
+        assert.equal(parsed.length, 26);
+
+        for (var i=0; i < parsed.length; i++) {
+          var version = parsed[i].version;
+          switch (version) {
+            case 'talk1':
+              assert.ok(parsed[i].id);
+              assert.ok(parsed[i].name);
+              assert.ok('idVoice' in parsed[i]);
+              break;
+            case 'talk2':
+              assert.ok(parsed[i].id);
+              assert.ok(parsed[i].name);
+              assert.ok(parsed[i].path);
+              break;
+            case 'talk10':
+              assert.ok(parsed[i].id);
+              assert.ok(parsed[i].name);
+              assert.ok('bas' in parsed[i].struct);
+              assert.ok('spd' in parsed[i].struct);
+              assert.ok('vol' in parsed[i].struct);
+              assert.ok('pit' in parsed[i].struct);
+              assert.ok('acc' in parsed[i].struct);
+              assert.ok('lmd' in parsed[i].struct);
+              assert.ok('fsc' in parsed[i].struct);
+              break;
+            default:
+              assert.fail('unknown version');
+          }
+        }
+      });
   });
 });
