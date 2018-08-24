@@ -40,7 +40,7 @@ describe('specWindow-model-YVoiceInitialData', function() {
         assert.equal(parsed.length, 4);
 
         for (var i=0; i < parsed.length; i++) {
-          assert.equal(null, parsed[i].id);
+          assert.ok('id' in parsed[i]);
           assert.ok('name' in parsed[i]);
           assert.ok('phont' in parsed[i]);
           assert.ok('version' in parsed[i]);
