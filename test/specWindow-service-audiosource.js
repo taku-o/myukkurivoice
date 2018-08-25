@@ -2,7 +2,7 @@ var Application = require('spectron').Application;
 var assert = require('assert');
 var temp = require('temp').track();
 
-describe('systemWindow', function() {
+describe('specWindow-service-AudioSourceService', function() {
   this.timeout(10000);
 
   before(function() {
@@ -24,7 +24,7 @@ describe('systemWindow', function() {
   beforeEach(function() {
     this.client = this.app.client;
     return this.client
-      .click('#show-system-window')
+      .click('#show-spec-window')
       .windowByIndex(1);
   });
 
@@ -32,16 +32,24 @@ describe('systemWindow', function() {
     return this.client.close();
   });
 
-  it('systemWindow load config', function() {
+  // AudioSourceService
+  it('AudioSourceService', function() {
     return this.client
-      .getValue('#main-width').then(function(value) {
-        assert.ok(value);
+      // sourceFname
+      .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
+      .click('#source-fname')
+      .getValue('#source-fname-result').then(function(value) {
+        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt');
       })
-      .getValue('#main-height').then(function(value) {
+      // save
+      .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
+      .setValue('#source-text', 'hogehoge')
+      .click('#save')
+      .getValue('#save-result').then(function(value) {
         assert.ok(value);
       });
+      // TODO tmp file
+      // TODO file exists
+      // TODO file content
   });
-
-  // TODO save config
-  // TODO load config
 });

@@ -60,6 +60,9 @@
       <span class="nav-group-item functions-item" id="menu-dragout" ng-class="{active:display == 'dragout'}" ng-click="$location.hash('dragout')">
         <span class="icon icon-help-circled"></span>録音ファイルのドラッグアンドドロップ
       </span>
+      <span class="nav-group-item functions-item" id="menu-multivoice" ng-class="{active:display == 'multivoice'}" ng-click="$location.hash('multivoice')">
+        <span class="icon icon-help-circled"></span>マルチボイス機能
+      </span>
       <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="$location.hash('shortcut')">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
@@ -366,7 +369,8 @@
         <li class="link" ng-click="$location.hash('dragout')">アプリから動画編集ソフトに、音声ファイルを直接ドラッグアンドドロップできる機能</li>
         <li class="link" ng-click="$location.hash('dragout')">ウィンドウの前面表示固定、切替機能</li>
         <li>アプリを閉じた時のウィンドウの位置を記憶する</li>
-        <li>テキストファイルをドラッグアンドドロップしての、メッセージ入力欄、および音記号列入力欄の入力サポート</li>
+        <li class="link" ng-click="$location.hash('multivoice')">マルチボイス機能</li>
+        <li class="link" ng-click="$location.hash('multivoice')">テキストファイルをドロップしての入力</li>
         <li class="link" ng-click="$location.hash('shortcut')">各種ショートカットキー</li>
         <li class="link" ng-click="$location.hash('help')">チュートリアル・ヘルプ</li>
       </ul>
@@ -668,6 +672,55 @@
     </div>
   </div>
 
+  <!-- multivoice -->
+  <div class="pane" id="multivoice-pane" ng-show="display == 'multivoice'">
+    <div class="content">
+      <h3>マルチボイス機能</h3>
+      <h4>概要</h4>
+      <p>
+        複数の声種プリセットを指定して会話形式で音声を再生する、<br>
+        または、その会話音声を保存する機能です。<br>
+        あるいは、音声ファイルを一括で作成する機能としてもご利用できます。<br>
+      </p>
+
+      <h4>使い方</h4>
+      <p>
+        メッセージ入力欄と音記号列入力欄で、
+        決められたフォーマットで声種プリセットを指定してください。<br>
+<pre class="code"><code>ゆっくり＞こんにちわ。
+おとこ声＞おはようございます。今日も早いですね。
+ロボ＞がががが
+ゆっくり＞あ、また故障してる。</code></pre>
+      </p>
+
+      <h4>入力フォーマット</h4>
+      <p>
+        全角「＞」で区切って、声の設定名を指定してください。<br>
+        プリセット未指定の場合は、現在選択している声種プリセットか、
+        上の行で指定していた声種プリセットが使われます。
+<pre class="code"><code>声種プリセット＞話す内容</code></pre>
+        Command+Nで、選択中の声種プリセット名をテキスト欄に入力する<br>
+        ショートカットキーが定義されています。
+      </p>
+
+      <h4>音声ファイル保存</h4>
+      <p>
+        音声ファイル保存を実行すると、
+        全角「＞」で指定した範囲毎に、音声ファイルを作成して保存します。<br>
+        保存ファイルの設定は、
+        現在選択している声種プリセットの設定がそのまま利用されます。<br>
+        作成される音声ファイルには連番が付きます。
+      </p>
+
+      <h4>ドラッグアンドドロップでの入力</h4>
+      <p>
+        メッセージ入力欄と音記号列入力欄には、
+        テキストファイルをドロップしても文字を入力できるので、<br>
+        シナリオを書き起こしてから声を作る方は、利用してみてください。
+      </p>
+    </div>
+  </div>
+
   <!-- shortcut -->
   <div class="pane" id="shortcut-pane" ng-show="display == 'shortcut'">
     <div class="content">
@@ -711,6 +764,10 @@
           <tr>
             <td>Command + D</td>
             <td>クリップボードをメッセージ入力欄にコピー</td>
+          </tr>
+          <tr>
+            <td>Command + N</td>
+            <td>"声種プリセット名＞"をテキスト欄に入力します。メッセージ入力欄、音記号列入力欄、どちらでも利用できます。</td>
           </tr>
           <tr>
             <td>Command + ←</td>

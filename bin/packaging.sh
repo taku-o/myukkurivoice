@@ -24,7 +24,7 @@ electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion
     --ignore=".eslintrc.json" \
     --ignore=".jshintrc" \
     --ignore=".npmignore" \
-    --ignore=".npmignore" \
+    --ignore=".prettierrc.json" \
     --ignore=".stylelintrc.json" \
     --ignore=".travis.yml" \
     --ignore="^/node_modules/about-window/LICENSE.txt" \

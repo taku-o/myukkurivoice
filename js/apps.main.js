@@ -1,10 +1,8 @@
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer;
 var clipboard = require('electron').clipboard;
-var util = require('util');
 var path = require('path');
 var log = require('electron-log');
-var http = require('http');
 
 // application settings
 var appCfg = require('electron').remote.getGlobal('appCfg');
@@ -18,76 +16,17 @@ process.on('uncaughtException', function(err) {
 });
 
 // angular app
-angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroService', 'yvoiceModel'])
+angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceService', 'yvoiceCommandService', 'yvoiceIntroService', 'yvoiceModel'])
   .config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  // static-include
-  .directive('staticInclude', function() {
-    return {
-      restrict: 'AE',
-      templateUrl: function(element, attrs) {
-        return attrs.templatePath;
-      }
-    };
-  })
-  // wav-draggable
-  .directive('wavDraggable', function($parse) {
-    return function(scope, element, attr) {
-
-      var f;
-      scope.$watch('lastWavFile', function(value) {
-        var message = value;
-        if (!message || !message.wavFilePath) {
-          return;
-        }
-        var wavFilePath = message.wavFilePath;
-
-        var el = element[0];
-        el.draggable = true;
-
-        // replace event listener
-        if (f) {
-          el.removeEventListener('dragstart', f, false);
-        }
-        f = function(e) {
-          e.preventDefault();
-          ipcRenderer.send('ondragstartwav', wavFilePath)
-          return false;
-        };
-        el.addEventListener('dragstart', f, false);
-      });
-    }
-  })
-  // txt-droppable
-  .directive('txtDroppable', function($parse) {
-
-    return function(scope, element, attr) {
-      var el = element[0];
-
-      el.addEventListener('drop', function(e) {
-        e.preventDefault();
-
-        // read dropped file and set.
-        var reader = new FileReader();
-        reader.onload = function(loadedFile) {
-          // yinput.source or yinput.encoded
-          scope.yinput[el.id] = loadedFile.target.result;
-          scope.$apply();
-        };
-        var file = e.dataTransfer.files[0];
-        reader.readAsText(file);
-        return false;
-      });
-    }
-  })
   // controller
   .controller('MainController',
-    ['$scope', '$timeout', 'MessageService', 'DataService', 'MasterService', 'AquesService',
-     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'IntroService',
+    ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'AquesService',
+     'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
-    function($scope, $timeout, MessageService, DataService, MasterService, AquesService,
-             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, IntroService,
+    function($scope, $timeout, $q, MessageService, DataService, MasterService, AquesService,
+             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, CommandService, IntroService,
              YInput, YInputInitialData) {
 
     // event listener
@@ -122,6 +61,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
         case 'fromClipboard':
           document.getElementById('from-clipboard').click();
           break;
+        case 'putVoiceName':
+          ctrl.putVoiceName();
+          break;
         case 'moveToSource':
           document.getElementById('source').focus();
           break;
@@ -129,21 +71,25 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
           document.getElementById('encoded').focus();
           break;
         case 'swichNextConfig':
-          var index = $scope.yvoiceList.indexOf($scope.yvoice);
-          if ($scope.yvoiceList.length > index + 1) {
-            $scope.yvoice = $scope.yvoiceList[index + 1];
-          } else {
-            $scope.yvoice = $scope.yvoiceList[0];
+          {
+            let index = $scope.yvoiceList.indexOf($scope.yvoice);
+            if ($scope.yvoiceList.length > index + 1) {
+              $scope.yvoice = $scope.yvoiceList[index + 1];
+            } else {
+              $scope.yvoice = $scope.yvoiceList[0];
+            }
           }
           $scope.display = 'main';
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'swichPreviousConfig':
-          var index = $scope.yvoiceList.indexOf($scope.yvoice);
-          if (index - 1 >= 0) {
-            $scope.yvoice = $scope.yvoiceList[index - 1];
-          } else {
-            $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
+          {
+            let index = $scope.yvoiceList.indexOf($scope.yvoice);
+            if (index - 1 >= 0) {
+              $scope.yvoice = $scope.yvoiceList[index - 1];
+            } else {
+              $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
+            }
           }
           $scope.display = 'main';
           $timeout(function(){ $scope.$apply(); });
@@ -166,13 +112,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'minus':
-          var index = $scope.yvoiceList.indexOf($scope.yvoice);
-          ctrl.minus(index);
+          {
+            let index = $scope.yvoiceList.indexOf($scope.yvoice);
+            ctrl.minus(index);
+          }
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'copy':
-          var index = $scope.yvoiceList.indexOf($scope.yvoice);
-          ctrl.copy(index);
+          {
+            let index = $scope.yvoiceList.indexOf($scope.yvoice);
+            ctrl.copy(index);
+          }
           $timeout(function(){ $scope.$apply(); });
           break;
         case 'save':
@@ -217,7 +167,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
         $scope.yvoice = $scope.yvoiceList[0];
         $timeout(function(){ $scope.$apply(); });
       });
-    };
+    }
     function selectedSource() {
       var textarea = document.getElementById('source');
       var start = textarea.selectionStart;
@@ -231,14 +181,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       var end = textarea.selectionEnd;
       var selectedText = textarea.value.substring(start, end);
       return selectedText;
-    };
+    }
 
     // selected text highlight
     $scope.sourceHighlight = {
-      '#619FFF' : "{{ sourceHighlight['#619FFF'] }}"
+      '#619FFF' : '{{ sourceHighlight["#619FFF"] }}'
     };
     $scope.encodedHighlight = {
-      '#619FFF' : "{{ encodedHighlight['#619FFF'] }}"
+      '#619FFF' : '{{ encodedHighlight["#619FFF"] }}'
     };
     ctrl.blurOnSource = function() {
       $scope.sourceHighlight['#619FFF'] = selectedSource();
@@ -298,15 +248,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
         return;
       }
 
-      var phont = null;
-      angular.forEach($scope.phontList, function(value, key) {
-        if (value.id == $scope.yvoice.phont) { phont = value; }
-      });
-      if (!phont) {
-        MessageService.error('声の種類が未指定です。');
-        return;
-      }
-
+      // text converting
       var encoded = $scope.yinput.encoded;
       var _selectedEncoded = selectedEncoded();
       if (_selectedEncoded) {
@@ -319,21 +261,64 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
         if (_selectedSource) {
           source = _selectedSource;
         }
-        encoded = AquesService.encode(source);
-        if (!encoded) {
-          MessageService.error('音記号列に変換できませんでした。');
-          return;
+        // encoding, command
+        if (CommandService.containsCommand(source, $scope.yvoiceList)) {
+          let parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+          angular.forEach(parsedList, function(cinput) {
+            cinput.text = AquesService.encode(cinput.text);
+          });
+          for (var i=0; i < parsedList.length; i++) {
+            if (!parsedList[i].text) {
+              MessageService.error('一部テキストを音記号列に変換できませんでした。');
+              return;
+            }
+          }
+          encoded = CommandService.toString(parsedList);
+        // encoding, not command
+        } else {
+          encoded = AquesService.encode(source);
+          if (!encoded) {
+            MessageService.error('音記号列に変換できませんでした。');
+            return;
+          }
         }
       }
 
+      // play
+      let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+      parsedList.reduce(function(p, cinput) {
+        if(p.then === undefined) {
+          p.resolve();
+          p = p.promise;
+        }
+        return p.then(function() {
+          return playEach(cinput);
+        });
+      }, $q.defer());
+    };
+    function playEach(cinput) {
+      var d = $q.defer();
+      var encoded = cinput.text;
+      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+
+      // phont
+      var phont = null;
+      angular.forEach($scope.phontList, function(value, key) {
+        if (value.id == yvoice.phont) { phont = value; }
+      });
+      if (!phont) {
+        MessageService.error('声の種類が未指定です。');
+        d.reject(null); return;
+      }
+
       // disable rhythm if option is on
-      if (! $scope.yvoice.rhythmOn) {
+      if (! yvoice.rhythmOn) {
         encoded = AppUtilService.disableRhythm(encoded);
       }
 
-      var speed = $scope.yvoice.speed;
-      if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
-        $scope.yvoice.writeMarginMs = 150;
+      var speed = yvoice.speed;
+      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+        yvoice.writeMarginMs = 150;
       }
 
       var waveOptions = {
@@ -341,28 +326,36 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
       };
       if (phont.version == 'talk10') {
-        waveOptions.bas = $scope.yvoice.bas;
-        waveOptions.pit = $scope.yvoice.pit;
-        waveOptions.acc = $scope.yvoice.acc;
-        waveOptions.lmd = $scope.yvoice.lmd;
-        waveOptions.fsc = $scope.yvoice.fsc;
+        waveOptions.bas = yvoice.bas;
+        waveOptions.pit = yvoice.pit;
+        waveOptions.acc = yvoice.acc;
+        waveOptions.lmd = yvoice.lmd;
+        waveOptions.fsc = yvoice.fsc;
       }
       var playOptions = {
-        volume:$scope.yvoice.volume,
-        playbackRate:$scope.yvoice.playbackRate,
-        detune:$scope.yvoice.detune,
-        writeMarginMs:$scope.yvoice.writeMarginMs,
+        volume:yvoice.volume,
+        playbackRate:yvoice.playbackRate,
+        detune:yvoice.detune,
+        writeMarginMs:yvoice.writeMarginMs,
       };
 
       AquesService.wave(encoded, phont, speed, waveOptions).then(
-        function(bufWav) {
-          return AudioService.play(bufWav, playOptions);
+      function(bufWav) {
+        return AudioService.play(bufWav, playOptions).then(
+        function() {
+          d.resolve('ok');
         },
         function(err) {
-          MessageService.error('音声データを作成できませんでした。');
-        }
-      );
-    };
+          MessageService.error('音声データを再生できませんでした。', err);
+          d.reject(err);
+        });
+      },
+      function(err) {
+        MessageService.error('音声データを作成できませんでした。', err);
+        d.reject(err);
+      });
+      return d.promise;
+    }
     ctrl.stop = function() {
       MessageService.action('stop playing voice.');
       AudioService.stop();
@@ -383,6 +376,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
         return;
       }
 
+      // text converting
       var encoded = $scope.yinput.encoded;
       var _selectedEncoded = selectedEncoded();
       if (_selectedEncoded) {
@@ -395,39 +389,28 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
         if (_selectedSource) {
           source = _selectedSource;
         }
-        encoded = AquesService.encode(source);
-        if (!encoded) {
-          MessageService.error('音記号列に変換できませんでした。');
-          return;
+        // encoding, command
+        if (CommandService.containsCommand(source, $scope.yvoiceList)) {
+          let parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+          angular.forEach(parsedList, function(cinput) {
+            cinput.text = AquesService.encode(cinput.text);
+          });
+          for (var i=0; i < parsedList.length; i++) {
+            if (!parsedList[i].text) {
+              MessageService.error('一部テキストを音記号列に変換できませんでした。');
+              return;
+            }
+          }
+          encoded = CommandService.toString(parsedList);
+        // encoding, not command
+        } else {
+          encoded = AquesService.encode(source);
+          if (!encoded) {
+            MessageService.error('音記号列に変換できませんでした。');
+            return;
+          }
         }
       }
-
-      // disable rhythm if option is on
-      if (! $scope.yvoice.rhythmOn) {
-        encoded = AppUtilService.disableRhythm(encoded);
-      }
-
-      var speed = $scope.yvoice.speed;
-      if (! Number($scope.yvoice.writeMarginMs)===parseInt($scope.yvoice.writeMarginMs)) {
-        $scope.yvoice.writeMarginMs = 150;
-      }
-      var waveOptions = {
-        passPhrase:appCfg.passPhrase,
-        aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
-      };
-      if (phont.version == 'talk10') {
-        waveOptions.bas = $scope.yvoice.bas;
-        waveOptions.pit = $scope.yvoice.pit;
-        waveOptions.acc = $scope.yvoice.acc;
-        waveOptions.lmd = $scope.yvoice.lmd;
-        waveOptions.fsc = $scope.yvoice.fsc;
-      }
-      var playOptions = {
-        volume:$scope.yvoice.volume,
-        playbackRate:$scope.yvoice.playbackRate,
-        detune:$scope.yvoice.detune,
-        writeMarginMs:$scope.yvoice.writeMarginMs,
-      };
 
       // 連番保存
       if ($scope.yvoice.seqWrite) {
@@ -437,27 +420,31 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
           dir = desktopDir;
         }
 
-        SeqFNameService.nextNumber(dir, prefix)
-          .then(function(nextNum) {
-            var nextFname = SeqFNameService.nextFname(prefix, nextNum);
-            var filePath = path.join(dir, nextFname);
-
-            AquesService.wave(encoded, phont, speed, waveOptions).then(
-              function(bufWav) {
-                AudioService.record(filePath, bufWav, playOptions);
-                return filePath;
-              },
-              function(err) {
-                MessageService.error('音声データを作成できませんでした。');
-                throw err;
-              }
-            )
-            .then(function(filePath) {
-              if (!$scope.yvoice.sourceWrite) { return; }
-              var sourceFname = AudioSourceService.sourceFname(filePath);
-              AudioSourceService.save(sourceFname, $scope.yinput.source);
-            });
+        // record
+        let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+        var firstWroteFile = null;
+        // record wave files
+        parsedList.reduce(function(p, cinput) {
+          if(p.then === undefined) {
+            p.resolve();
+            p = p.promise;
+          }
+          return p.then(function(fp) {
+            if (!firstWroteFile) { firstWroteFile = fp; }
+            return recordEach(cinput, dir, prefix);
           });
+        }, $q.defer())
+        // record source message
+        .then(function(fp) {
+          if (!firstWroteFile) { firstWroteFile = fp; }
+          if (!$scope.yvoice.sourceWrite) { return; }
+          var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+          AudioSourceService.save(sourceFname, $scope.yinput.source).then(
+            function() {},
+            function(err) {
+              MessageService.error('メッセージファイルを作成できませんでした。', err);
+            });
+        });
 
       // 通常保存
       } else {
@@ -466,27 +453,168 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
             MessageService.error('保存先が指定されませんでした。');
             return;
           }
+          var splitted = SeqFNameService.splitFname(filePath);
+          var dir = splitted.dir;
+          var prefix = splitted.basename;
 
-          AquesService.wave(encoded, phont, speed, waveOptions)
-            .then(
-              function(bufWav) {
-                AudioService.record(filePath, bufWav, playOptions);
-                return filePath;
-              },
-              function(err) {
-                MessageService.error('音声データを作成できませんでした。');
-                throw err;
+          // record
+          var containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
+          var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+          var firstWroteFile = null;
+          // record wave files
+          parsedList.reduce(function(p, cinput) {
+            if(p.then === undefined) {
+              p.resolve();
+              p = p.promise;
+            }
+            return p.then(function(fp) {
+              if (!firstWroteFile) { firstWroteFile = fp; }
+              if (containsCommand) {
+                return recordEach(cinput, dir, prefix);
+              } else {
+                return recordSolo(cinput, filePath);
               }
-            )
-            .then(function(filePath) {
-              if (!$scope.yvoice.sourceWrite) { return; }
-              var sourceFname = AudioSourceService.sourceFname(filePath);
-              AudioSourceService.save(sourceFname, $scope.yinput.source);
             });
+          }, $q.defer())
+          // record source message
+          .then(function(fp) {
+            if (!firstWroteFile) { firstWroteFile = fp; }
+            if (!$scope.yvoice.sourceWrite) { return; }
+            var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+            AudioSourceService.save(sourceFname, $scope.yinput.source).then(
+              function() {},
+              function(err) {
+                MessageService.error('メッセージファイルを作成できませんでした。', err);
+              });
+          });
         });
         ipcRenderer.send('showSaveDialog', 'wav');
       }
     };
+    function recordSolo(cinput, filePath) {
+      var d = $q.defer();
+      var encoded = cinput.text;
+      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+
+      // phont
+      var phont = null;
+      angular.forEach($scope.phontList, function(value, key) {
+        if (value.id == yvoice.phont) { phont = value; }
+      });
+      if (!phont) {
+        MessageService.error('声の種類が未指定です。');
+        d.reject(null); return;
+      }
+
+      // disable rhythm if option is on
+      if (! yvoice.rhythmOn) {
+        encoded = AppUtilService.disableRhythm(encoded);
+      }
+
+      var speed = yvoice.speed;
+      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+        yvoice.writeMarginMs = 150;
+      }
+      var waveOptions = {
+        passPhrase:appCfg.passPhrase,
+        aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
+      };
+      if (phont.version == 'talk10') {
+        waveOptions.bas = yvoice.bas;
+        waveOptions.pit = yvoice.pit;
+        waveOptions.acc = yvoice.acc;
+        waveOptions.lmd = yvoice.lmd;
+        waveOptions.fsc = yvoice.fsc;
+      }
+      var playOptions = {
+        volume:yvoice.volume,
+        playbackRate:yvoice.playbackRate,
+        detune:yvoice.detune,
+        writeMarginMs:yvoice.writeMarginMs,
+      };
+
+      AquesService.wave(encoded, phont, speed, waveOptions).then(
+      function(bufWav) {
+        return AudioService.record(filePath, bufWav, playOptions).then(
+        function() {
+          d.resolve(filePath);
+        },
+        function(err) {
+          MessageService.error('音声データを記録できませんでした。', err);
+          d.reject(err);
+        });
+      },
+      function(err) {
+        MessageService.error('音声データを作成できませんでした。', err);
+        d.reject(err);
+      });
+      return d.promise;
+    }
+    function recordEach(cinput, dir, fnameprefix) {
+      var d = $q.defer();
+      var encoded = cinput.text;
+      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+
+      // phont
+      var phont = null;
+      angular.forEach($scope.phontList, function(value, key) {
+        if (value.id == yvoice.phont) { phont = value; }
+      });
+      if (!phont) {
+        MessageService.error('声の種類が未指定です。');
+        d.reject(null); return;
+      }
+
+      // disable rhythm if option is on
+      if (! yvoice.rhythmOn) {
+        encoded = AppUtilService.disableRhythm(encoded);
+      }
+
+      var speed = yvoice.speed;
+      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+        yvoice.writeMarginMs = 150;
+      }
+      var waveOptions = {
+        passPhrase:appCfg.passPhrase,
+        aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted
+      };
+      if (phont.version == 'talk10') {
+        waveOptions.bas = yvoice.bas;
+        waveOptions.pit = yvoice.pit;
+        waveOptions.acc = yvoice.acc;
+        waveOptions.lmd = yvoice.lmd;
+        waveOptions.fsc = yvoice.fsc;
+      }
+      var playOptions = {
+        volume:yvoice.volume,
+        playbackRate:yvoice.playbackRate,
+        detune:yvoice.detune,
+        writeMarginMs:yvoice.writeMarginMs,
+      };
+
+      SeqFNameService.nextNumber(dir, fnameprefix).then(
+      function(nextNum) {
+        var nextFname = SeqFNameService.nextFname(fnameprefix, nextNum);
+        var filePath = path.join(dir, nextFname);
+
+        AquesService.wave(encoded, phont, speed, waveOptions).then(
+        function(bufWav) {
+          return AudioService.record(filePath, bufWav, playOptions).then(
+          function() {
+            d.resolve(filePath);
+          },
+          function(err) {
+            MessageService.error('音声データを記録できませんでした。', err);
+            d.reject(err);
+          });
+        },
+        function(err) {
+          MessageService.error('音声データを作成できませんでした。', err);
+          d.reject(err);
+        });
+      });
+      return d.promise;
+    }
     ctrl.showSystemWindow = function() {
       if (!appCfg.isTest) { return; }
       ipcRenderer.send('showSystemWindow', 'system');
@@ -571,9 +699,21 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       if (_selectedSource) {
         source = _selectedSource;
       }
-      var encoded = AquesService.encode(source);
-      $scope.yinput.encoded = encoded;
-      clearEncodedSelection();
+
+      // command
+      if (CommandService.containsCommand(source, $scope.yvoiceList)) {
+        var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+        angular.forEach(parsedList, function(cinput) {
+          cinput.text = AquesService.encode(cinput.text);
+        });
+        $scope.yinput.encoded = CommandService.toString(parsedList);
+        clearEncodedSelection();
+      // not command
+      } else {
+        var encoded = AquesService.encode(source);
+        $scope.yinput.encoded = encoded;
+        clearEncodedSelection();
+      }
     };
     ctrl.clear = function() {
       MessageService.action('clear input text.');
@@ -593,6 +733,43 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceService', 'yvoiceIntroSer
       } else {
         MessageService.info('クリップボードにデータがありません。');
       }
+    };
+    ctrl.putVoiceName = function() {
+      var field = document.activeElement;
+      if (field.id != 'source' && field.id != 'encoded') { return; }
+
+      var pos = field.selectionStart;
+      var length = field.value.length;
+
+      // top
+      if (pos == 0) {
+        $scope.yinput[field.id] = $scope.yvoice.name+ '＞'+ field.value;
+        field.selectionStart = ($scope.yvoice.name+ '＞').length;
+        field.selectionEnd = ($scope.yvoice.name+ '＞').length;
+      // last
+      } else if (pos == length) {
+        if (field.value.substring(pos-1, pos) == "\n") {
+          $scope.yinput[field.id] = field.value+ $scope.yvoice.name+ '＞';
+          field.selectionStart = (field.value).length;
+          field.selectionEnd = (field.value).length;
+        } else {
+          $scope.yinput[field.id] = field.value+ "\n"+ $scope.yvoice.name+ '＞';
+          field.selectionStart = (field.value).length;
+          field.selectionEnd = (field.value).length;
+        }
+      // in text
+      } else {
+        if (field.value.substring(pos-1, pos) == "\n") {
+          $scope.yinput[field.id] = field.value.substring(0, pos)+ $scope.yvoice.name+ '＞'+ field.value.substring(pos, length);
+          field.selectionStart = (field.value.substring(0, pos)+ $scope.yvoice.name+ '＞').length;
+          field.selectionEnd = (field.value.substring(0, pos)+ $scope.yvoice.name+ '＞').length;
+        } else {
+          $scope.yinput[field.id] = field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞'+ field.value.substring(pos, length);
+          field.selectionStart = (field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞').length;
+          field.selectionEnd = (field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞').length;
+        }
+      }
+      $timeout(function(){ $scope.$apply(); });
     };
     ctrl.directory = function() {
       MessageService.action('select directory.');

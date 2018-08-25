@@ -91,6 +91,10 @@ angular.module('yvoiceIntroService', [])
               intro: '設定がおかしくなった時はメニューに「設定オールリセット」があります',
             },
             {
+              element: '#source',
+              intro: '＞で区切って声設定プリセット名を指定すると、複数音声まとめて入力できます。<br><br>f1 女声1(ゆっくり)＞こんにちわ<br>aq_yukkuri(サンプル設定2)＞おはよう<br>f1c 女声(サンプル設定3)＞わーい'
+            },
+            {
               element: '#tutorial',
               intro: 'チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください'
             }
@@ -169,6 +173,10 @@ angular.module('yvoiceIntroService', [])
               intro: 'Command + D でクリップボードに入っているテキストをメッセージ入力欄にコピーします'
             },
             {
+              element: '#source',
+              intro: 'Command + N で"声種プリセット名＞"をテキスト欄に入力します。マルチボイス機能で利用できます。'
+            },
+            {
               element: '#sidebar-items',
               position: 'right',
               intro: 'Command + ← で次(下)の設定に切り替え<br>Command + Shift + ← で前(上)の設定に切り替え'
@@ -177,6 +185,6 @@ angular.module('yvoiceIntroService', [])
         });
         intro.start();
       }
-    }
+    };
   });
 

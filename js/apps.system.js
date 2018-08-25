@@ -1,6 +1,5 @@
-var ipcRenderer = require('electron').ipcRenderer
+var ipcRenderer = require('electron').ipcRenderer;
 var log = require('electron-log');
-var cryptico = require("cryptico.js");
 
 // application settings
 var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));

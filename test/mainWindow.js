@@ -1,13 +1,16 @@
 var Application = require('spectron').Application;
 var assert = require('assert');
+var temp = require('temp').track();
 
 describe('mainWindow', function() {
   this.timeout(10000);
 
   beforeEach(function() {
+    var fsprefix = '_myubo_test' + Date.now().toString(36);
+    var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-      env: { DEBUG: 1, NODE_ENV: 'test' },
+      env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath },
     });
     return this.app.start();
   });
@@ -34,13 +37,14 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
+  // TODO multivoice
   it('mainWindow input', function() {
     return this.app.client
       // encode
@@ -75,20 +79,25 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow phont selection', function() {
     return this.app.client
       .elements('#phont option').then(function(response) {
         assert.equal(response.value.length, 26);
-      })
+      });
   });
 
+  // TODO initial
+  // TODO save config
+  // TODO delete config
+  // TODO copy config
+  // TODO filter
   it('mainWindow voice config', function() {
     var voiceConfigLength = 999;
     return this.app.client
@@ -114,13 +123,14 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
+  // TODO multivoice
   it('mainWindow play', function() {
     return this.app.client
       .setValue('#encoded', "テ'_スト")
@@ -132,12 +142,16 @@ describe('mainWindow', function() {
       .click('#stop')
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
+
+  // TODO record
+  //it('mainWindow play', function() {
+  //});
 
   it('mainWindow alwaysOnTop', function() {
     var app = this.app;
@@ -146,29 +160,29 @@ describe('mainWindow', function() {
         assert.ok(! classes.includes('active'));
         app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
           assert.ok(! isAlwaysOnTop);
-        })
+        });
       })
       .click('#always-on-top-btn')
       .getAttribute('#always-on-top-btn span.icon', 'class').then(function(classes) {
         assert.ok(classes.includes('active'));
         app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
           assert.ok(isAlwaysOnTop);
-        })
+        });
       })
       .click('#always-on-top-btn')
       .getAttribute('#always-on-top-btn span.icon', 'class').then(function(classes) {
         assert.ok(! classes.includes('active'));
         app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
           assert.ok(! isAlwaysOnTop);
-        })
+        });
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow help', function() {
@@ -184,11 +198,11 @@ describe('mainWindow', function() {
       // error check
       .windowByIndex(0)
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow shortcut intro', function() {
@@ -202,11 +216,11 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow tutorial intro', function() {
@@ -220,11 +234,11 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
 
   it('mainWindow switchSettingsView', function() {
@@ -238,12 +252,10 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then(function(error) {
-        assert.ok(! error)
+        assert.ok(! error);
       })
       .isExisting('tr.message-item.syserror').then(function(error) {
-        assert.ok(! error)
-      })
+        assert.ok(! error);
+      });
   });
-
 });
-

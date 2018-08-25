@@ -5,16 +5,16 @@ const Config = require('electron-config');
 // load
 function loadAppConfig() {
   var appCfg = {
-    mainWindow: { width: 800, height: 665, x:null, y:null },
-    helpWindow: { width: 700, height: 550 },
-    systemWindow: { width: 390, height: 530 },
+    mainWindow: {width: 800, height: 665, x: null, y: null},
+    helpWindow: {width: 700, height: 550},
+    systemWindow: {width: 390, height: 530},
     audioServVer: 'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
     acceptFirstMouse: false,
     passPhrase: crypto.randomBytes(16).toString('hex'),
     aq10UseKeyEncrypted: '',
     debug: process.env.DEBUG,
-    isTest: process.env.NODE_ENV == 'test'
+    isTest: process.env.NODE_ENV == 'test',
   };
 
   var config = new Config();
@@ -29,7 +29,7 @@ function loadAppConfig() {
 // update
 function updateAppConfig(options) {
   var myApp = this;
-  var {x,y} = this.mainWindow.getBounds();
+  var {x, y} = this.mainWindow.getBounds();
   options.mainWindow.x = x;
   options.mainWindow.y = y;
   this.config.set('mainWindow',          options.mainWindow);
@@ -58,12 +58,12 @@ function resetAppConfig() {
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function(k){
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
-  global.appCfg = appCfg;
+  global.appCfg = this.appCfg;
 }
 
 // exports
 module.exports = {
   loadAppConfig,
   updateAppConfig,
-  resetAppConfig
+  resetAppConfig,
 };

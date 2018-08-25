@@ -1,10 +1,14 @@
 {
   "name": "MYukkuriVoice",
-  "version": "0.6.11",
+  "version": "0.7.0",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
   "scripts": {
-    "test": "sh bin/test_rebuild.sh"
+    "test": "sh bin/test.sh",
+    "test_rebuild": "sh bin/test_rebuild.sh",
+    "packaging": "sh bin/packaging.sh",
+    "release": "sh bin/release.sh",
+    "lint": "eslint *.js js/*.js test/*.js"
   },
   "keywords": [],
   "homepage": "https://github.com/taku-o/myukkurivoice",

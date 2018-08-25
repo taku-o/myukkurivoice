@@ -1,3 +1,10 @@
+/* overwrite photon css */
+* {
+  cursor: auto;
+  -webkit-user-drag: auto;
+  -webkit-user-select: text;
+}
+
 .warn {
   color: red;
 }
@@ -34,5 +41,13 @@ li.link {
 
 table.param-table td {
   border-bottom: 1px solid #ddd;
+}
+
+pre.code {
+  background-color: #000000;
+  color: #ffffff;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 

@@ -2,7 +2,7 @@ var Application = require('spectron').Application;
 var assert = require('assert');
 var temp = require('temp').track();
 
-describe('systemWindow', function() {
+describe('specWindow-service-SeqFNameService', function() {
   this.timeout(10000);
 
   before(function() {
@@ -24,7 +24,7 @@ describe('systemWindow', function() {
   beforeEach(function() {
     this.client = this.app.client;
     return this.client
-      .click('#show-system-window')
+      .click('#show-spec-window')
       .windowByIndex(1);
   });
 
@@ -32,16 +32,14 @@ describe('systemWindow', function() {
     return this.client.close();
   });
 
-  it('systemWindow load config', function() {
+  it('SeqFNameService', function() {
     return this.client
-      .getValue('#main-width').then(function(value) {
-        assert.ok(value);
-      })
-      .getValue('#main-height').then(function(value) {
-        assert.ok(value);
+      // nextFname
+      .setValue('#prefix', 'foo')
+      .setValue('#num', '200')
+      .click('#next-fname')
+      .getValue('#next-fname-result').then(function(value) {
+        assert.equal(value, 'foo0200.wav');
       });
   });
-
-  // TODO save config
-  // TODO load config
 });

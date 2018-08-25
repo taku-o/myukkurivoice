@@ -1,15 +1,18 @@
 var Application = require('spectron').Application;
 var assert = require('assert');
+var temp = require('temp').track();
 
 describe('helpWindow', function() {
   this.timeout(10000);
 
   before(function() {
+    var fsprefix = '_myubo_test' + Date.now().toString(36);
+    var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-      env: { DEBUG: 1, NODE_ENV: 'test' },
+      env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath },
     });
-    return this.app.start()
+    return this.app.start();
   });
 
   after(function() {
@@ -22,11 +25,11 @@ describe('helpWindow', function() {
     this.client = this.app.client;
     return this.client
       .click('#help')
-      .windowByIndex(1)
+      .windowByIndex(1);
   });
 
   afterEach(function() {
-    return this.client.close()
+    return this.client.close();
   });
 
   it('helpWindow menu list', function() {
@@ -35,8 +38,8 @@ describe('helpWindow', function() {
         assert.equal(response.value.length, 8);
       })
       .elements('.nav-group-item.functions-item').then(function(response) {
-        assert.equal(response.value.length, 8);
-      })
+        assert.equal(response.value.length, 9);
+      });
   });
 
   it('helpWindow menu click', function() {
@@ -81,6 +84,9 @@ describe('helpWindow', function() {
         assert.ok(! isVisible);
       })
       .isVisible('#dragout-pane').then(function(isVisible) {
+        assert.ok(! isVisible);
+      })
+      .isVisible('#multivoice-pane').then(function(isVisible) {
         assert.ok(! isVisible);
       })
       .isVisible('#shortcut-pane').then(function(isVisible) {
@@ -145,6 +151,10 @@ describe('helpWindow', function() {
       .isVisible('#dragout-pane').then(function(isVisible) {
         assert.ok(isVisible);
       })
+      .click('#menu-multivoice')
+      .isVisible('#multivoice-pane').then(function(isVisible) {
+        assert.ok(isVisible);
+      })
       .click('#menu-shortcut')
       .isVisible('#shortcut-pane').then(function(isVisible) {
         assert.ok(isVisible);
@@ -156,8 +166,6 @@ describe('helpWindow', function() {
       // finally
       .isVisible('#about-pane').then(function(isVisible) {
         assert.ok(! isVisible);
-      })
+      });
   });
-
 });
-
