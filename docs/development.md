@@ -57,15 +57,6 @@
   npm run lint
 ```
 
-## Prettier
-* コードの整形ツールを実行します。
-* 現時点では一部ファイルにしか適用していません。
-
-```
-  npm install -g prettier
-  prettier $file_path --write
-```
-
 ## using devtron
 * devtronを使用するには、デバッグモードで次のコマンドを実行します。
 
