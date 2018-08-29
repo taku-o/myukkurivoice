@@ -1,8 +1,8 @@
 # MYukkuriVoice
 MYukkuriVoiceは、AquesTalkを利用したMac OSX向けの  
 動画制作向け合成音声生成アプリケーションです。  
-macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に対応しています。  
-(macOS High Sierra(10.13)もおそらく動く？)
+macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、
+macOS High Sierra(10.13に対応しています。  
 
 <img src="https://raw.github.com/taku-o/myukkurivoice/master/icns/myukkurivoice.iconset/icon_256x256.png">
 
