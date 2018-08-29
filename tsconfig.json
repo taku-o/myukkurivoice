@@ -10,6 +10,7 @@
     "*.ts",
     "js/service.*.ts",
     "js/service.ts",
+    "js/directives.ts",
     "test/*.ts",
   ],
   "exclude": [
