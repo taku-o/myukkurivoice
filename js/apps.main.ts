@@ -1,11 +1,11 @@
 import {remote, ipcRenderer, clipboard} from 'electron';
-var app = remote.app;
 import * as path from 'path';
 import * as log from 'electron-log';
 import * as angular from 'angular';
 
 // application settings
 var appCfg = remote.getGlobal('appCfg');
+var app = remote.app;
 var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException

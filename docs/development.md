@@ -68,6 +68,11 @@
   npm install --save-dev @types/intro.js
   npm install --save-dev @types/mocha
   npm install --save-dev @types/webdriverio
+  npm install --save-dev @types/temp
+  npm install --save-dev @types/electron-config
+  npm install --save-dev @types/ffi
+  npm install --save-dev @types/ref
+  npm install --save-dev @types/ref-struct
 
   npm run tsc
 ```

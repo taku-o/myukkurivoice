@@ -1,7 +1,7 @@
 import {remote} from 'electron';
-var app = remote.app;
 import * as angular from 'angular';
 
+var app = remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 

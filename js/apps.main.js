@@ -2,12 +2,12 @@
 var _this = this;
 exports.__esModule = true;
 var electron_1 = require("electron");
-var app = electron_1.remote.app;
 var path = require("path");
 var log = require("electron-log");
 var angular = require("angular");
 // application settings
 var appCfg = electron_1.remote.getGlobal('appCfg');
+var app = electron_1.remote.app;
 var desktopDir = app.getPath('desktop');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {

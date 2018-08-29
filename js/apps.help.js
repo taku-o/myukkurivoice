@@ -2,9 +2,9 @@
 var _this = this;
 exports.__esModule = true;
 var electron_1 = require("electron");
-var app = electron_1.remote.app;
 var log = require("electron-log");
 var angular = require("angular");
+var app = electron_1.remote.app;
 var homeDir = app.getPath('home');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {

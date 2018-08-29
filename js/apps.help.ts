@@ -1,8 +1,8 @@
 import {remote, ipcRenderer, shell} from 'electron';
-var app = remote.app;
 import * as log from 'electron-log';
 import * as angular from 'angular';
 
+var app = remote.app;
 var homeDir = app.getPath('home');
 
 // handle uncaughtException
