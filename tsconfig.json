@@ -8,6 +8,7 @@
   },
   "include": [
     "electron-appcfg.ts",
+    "electron-window.ts",
   ],
   "exclude": [
     "node_modules",
