@@ -1,11 +1,9 @@
 "use strict";
 var _this = this;
-exports.__esModule = true;
-var electron_1 = require("electron");
-var log = require("electron-log");
-var angular = require("angular");
+var ipcRenderer = require('electron').ipcRenderer;
+var log = require('electron-log');
 // application settings
-var appCfg = angular.copy(electron_1.remote.getGlobal('appCfg'));
+var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
     log.error('system:event:uncaughtException');
@@ -44,9 +42,9 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
                 'passPhrase': $scope.appCfg.passPhrase,
                 'aq10UseKeyEncrypted': aq10UseKeyEncrypted
             };
-            electron_1.ipcRenderer.send('updateAppConfig', options);
+            ipcRenderer.send('updateAppConfig', options);
         };
         ctrl.reset = function () {
-            electron_1.ipcRenderer.send('resetAppConfig', '');
+            ipcRenderer.send('resetAppConfig', '');
         };
     }]);

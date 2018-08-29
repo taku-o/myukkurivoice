@@ -1,7 +1,5 @@
 "use strict";
-exports.__esModule = true;
-var path = require("path");
-var angular = require("angular");
+var path = require('path');
 // angular message service
 angular.module('yvoiceMessageService', [])
     .factory('MessageService', ['$rootScope', function ($rootScope) {

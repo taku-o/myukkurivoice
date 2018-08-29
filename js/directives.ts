@@ -1,6 +1,5 @@
 // (UI dependecy contains)
-import {ipcRenderer} from 'electron';
-import * as angular from 'angular';
+var ipcRenderer = require('electron').ipcRenderer;
 
 // angular directive
 angular.module('yvoiceDirective', [])

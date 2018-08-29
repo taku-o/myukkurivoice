@@ -1,8 +1,8 @@
-import {remote, ipcRenderer, shell} from 'electron';
-import * as log from 'electron-log';
-import * as angular from 'angular';
+var app = require('electron').remote.app;
+var ipcRenderer = require('electron').ipcRenderer;
+var shell = require('electron').shell;
+var log = require('electron-log');
 
-var app = remote.app;
 var homeDir = app.getPath('home');
 
 // handle uncaughtException

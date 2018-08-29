@@ -1,10 +1,7 @@
 "use strict";
-exports.__esModule = true;
-var child_process_1 = require("child_process");
-var cryptico = require("cryptico.js");
-var electron_1 = require("electron");
-var angular = require("angular");
-var app = electron_1.remote.app;
+var exec = require('child_process').exec;
+var cryptico = require('cryptico.js');
+var app = require('electron').remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 // angular license service
@@ -51,14 +48,14 @@ angular.module('yvoiceLicenseService', [])
                 var cmdOptions = {};
                 var secretCmd = unpackedPath + '/vendor/secret';
                 // passPhrase
-                child_process_1.exec(secretCmd + ' -key=passPhrase', cmdOptions, function (err, stdout, stderr) {
+                exec(secretCmd + ' -key=passPhrase', cmdOptions, function (err, stdout, stderr) {
                     if (err) {
                         d.reject(err);
                         return;
                     }
                     var devPassPhrase = stdout;
                     // licenseKey
-                    child_process_1.exec(secretCmd + ' -key=' + licenseType, cmdOptions, function (err, stdout, stderr) {
+                    exec(secretCmd + ' -key=' + licenseType, cmdOptions, function (err, stdout, stderr) {
                         if (err) {
                             d.reject(err);
                             return;

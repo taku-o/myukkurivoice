@@ -1,13 +1,12 @@
 "use strict";
 var _this = this;
-exports.__esModule = true;
-var electron_1 = require("electron");
-var path = require("path");
-var log = require("electron-log");
-var angular = require("angular");
+var app = require('electron').remote.app;
+var ipcRenderer = require('electron').ipcRenderer;
+var clipboard = require('electron').clipboard;
+var path = require('path');
+var log = require('electron-log');
 // application settings
-var appCfg = electron_1.remote.getGlobal('appCfg');
-var app = electron_1.remote.app;
+var appCfg = require('electron').remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
@@ -42,7 +41,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             $timeout(function () { $scope.$apply(); });
         });
         // shortcut
-        electron_1.ipcRenderer.on('shortcut', function (event, action) {
+        ipcRenderer.on('shortcut', function (event, action) {
             switch (action) {
                 case 'play':
                     document.getElementById('play').click();
@@ -97,7 +96,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
         });
         // menu
-        electron_1.ipcRenderer.on('menu', function (event, action) {
+        ipcRenderer.on('menu', function (event, action) {
             switch (action) {
                 case 'clear':
                     document.getElementById('clear').click();
@@ -445,7 +444,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 // 通常保存
             }
             else {
-                electron_1.ipcRenderer.once('showSaveDialog', function (event, filePath) {
+                ipcRenderer.once('showSaveDialog', function (event, filePath) {
                     if (!filePath) {
                         MessageService.error('保存先が指定されませんでした。');
                         return;
@@ -489,7 +488,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                         });
                     });
                 });
-                electron_1.ipcRenderer.send('showSaveDialog', 'wav');
+                ipcRenderer.send('showSaveDialog', 'wav');
             }
         };
         function recordSolo(cinput, filePath) {
@@ -620,17 +619,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             if (!appCfg.isTest) {
                 return;
             }
-            electron_1.ipcRenderer.send('showSystemWindow', 'system');
+            ipcRenderer.send('showSystemWindow', 'system');
         };
         ctrl.showSpecWindow = function () {
             if (!appCfg.isTest) {
                 return;
             }
-            electron_1.ipcRenderer.send('showSpecWindow', 'spec');
+            ipcRenderer.send('showSpecWindow', 'spec');
         };
         ctrl.help = function () {
             MessageService.action('open help window.');
-            electron_1.ipcRenderer.send('showHelpWindow', 'help');
+            ipcRenderer.send('showHelpWindow', 'help');
         };
         ctrl.tutorial = function () {
             if ($scope.display == 'main') {
@@ -730,7 +729,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         };
         ctrl.fromClipboard = function () {
             MessageService.action('paste clipboard text to source.');
-            var text = electron_1.clipboard.readText();
+            var text = clipboard.readText();
             if (text) {
                 $scope.yinput.source = text;
                 $scope.yinput.encoded = '';
@@ -788,7 +787,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 MessageService.error('連番ファイル設定が無効です。');
                 return;
             }
-            electron_1.ipcRenderer.once('showDirDialog', function (event, dirs) {
+            ipcRenderer.once('showDirDialog', function (event, dirs) {
                 if (!dirs || dirs.length < 1) {
                     return;
                 }
@@ -799,7 +798,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             if (!optDir) {
                 optDir = desktopDir;
             }
-            electron_1.ipcRenderer.send('showDirDialog', optDir);
+            ipcRenderer.send('showDirDialog', optDir);
         };
         ctrl.switchSettingsView = function () {
             MessageService.action('switch to settings view.');
@@ -811,9 +810,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         };
         ctrl.switchAlwaysOnTop = function () {
             MessageService.action('switch alwaysOnTop option.');
-            electron_1.ipcRenderer.send('switchAlwaysOnTop', 'mainWindow');
+            ipcRenderer.send('switchAlwaysOnTop', 'mainWindow');
         };
-        electron_1.ipcRenderer.on('switchAlwaysOnTop', function (event, newflg) {
+        ipcRenderer.on('switchAlwaysOnTop', function (event, newflg) {
             $scope.alwaysOnTop = newflg;
             MessageService.info('update alwaysOnTop option ' + (newflg ? 'ON' : 'OFF'));
             $timeout(function () { $scope.$apply(); });

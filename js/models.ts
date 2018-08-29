@@ -1,7 +1,4 @@
-import {remote} from 'electron';
-import * as angular from 'angular';
-
-var app = remote.app;
+var app = require('electron').remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 

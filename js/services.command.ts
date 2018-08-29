@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 // angular command service
 angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
   .factory('CommandService', ['MessageService', 'YCommandInput', (MessageService, YCommandInput) => {

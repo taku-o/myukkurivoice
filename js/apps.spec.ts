@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 // application spec app
 angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
   .config(['$qProvider', ($qProvider) => {

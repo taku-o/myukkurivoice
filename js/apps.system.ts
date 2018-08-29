@@ -1,9 +1,8 @@
-import {remote, ipcRenderer} from 'electron';
-import * as log from 'electron-log';
-import * as angular from 'angular';
+var ipcRenderer = require('electron').ipcRenderer;
+var log = require('electron-log');
 
 // application settings
-var appCfg = angular.copy(remote.getGlobal('appCfg'));
+var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
 
 // handle uncaughtException
 process.on('uncaughtException', (err) => {

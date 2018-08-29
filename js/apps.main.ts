@@ -1,11 +1,11 @@
-import {remote, ipcRenderer, clipboard} from 'electron';
-import * as path from 'path';
-import * as log from 'electron-log';
-import * as angular from 'angular';
+var app = require('electron').remote.app;
+var ipcRenderer = require('electron').ipcRenderer;
+var clipboard = require('electron').clipboard;
+var path = require('path');
+var log = require('electron-log');
 
 // application settings
-var appCfg = remote.getGlobal('appCfg');
-var app = remote.app;
+var appCfg = require('electron').remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException

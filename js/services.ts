@@ -1,18 +1,15 @@
-import * as storage from 'electron-json-storage';
-import * as log from 'electron-log';
-import * as fs from 'fs';
-import * as ffi from 'ffi';
-import * as ref from 'ref';
-import * as StructType from 'ref-struct';
-import * as temp from 'temp';
-temp.track();
-import * as path from 'path';
-import {exec} from 'child_process';
-import * as WaveRecorder from 'wave-recorder';
-import {remote} from 'electron';
-import * as angular from 'angular';
+var storage      = require('electron-json-storage');
+var log          = require('electron-log');
+var fs           = require('fs');
+var ffi          = require('ffi');
+var ref          = require('ref');
+var StructType   = require('ref-struct');
+var temp         = require('temp').track();
+var path         = require('path');
+var exec         = require('child_process').exec;
+var WaveRecorder = require('wave-recorder');
 
-var app = remote.app;
+var app = require('electron').remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 

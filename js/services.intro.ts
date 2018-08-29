@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-
 // angular intro service
 angular.module('yvoiceIntroService', [])
   .factory('IntroService', () => {

@@ -1,6 +1,4 @@
 "use strict";
-exports.__esModule = true;
-var angular = require("angular");
 // angular intro service
 angular.module('yvoiceIntroService', [])
     .factory('IntroService', function () {

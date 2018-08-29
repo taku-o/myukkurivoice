@@ -1,5 +1,4 @@
-import * as path from 'path';
-import * as angular from 'angular';
+var path = require('path');
 
 // angular message service
 angular.module('yvoiceMessageService', [])

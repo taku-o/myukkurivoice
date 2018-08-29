@@ -1,19 +1,15 @@
 "use strict";
-exports.__esModule = true;
-var storage = require("electron-json-storage");
-var log = require("electron-log");
-var fs = require("fs");
-var ffi = require("ffi");
-var ref = require("ref");
-var StructType = require("ref-struct");
-var temp = require("temp");
-temp.track();
-var path = require("path");
-var child_process_1 = require("child_process");
-var WaveRecorder = require("wave-recorder");
-var electron_1 = require("electron");
-var angular = require("angular");
-var app = electron_1.remote.app;
+var storage = require('electron-json-storage');
+var log = require('electron-log');
+var fs = require('fs');
+var ffi = require('ffi');
+var ref = require('ref');
+var StructType = require('ref-struct');
+var temp = require('temp').track();
+var path = require('path');
+var exec = require('child_process').exec;
+var WaveRecorder = require('wave-recorder');
+var app = require('electron').remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 // angular service
@@ -310,7 +306,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                                 encoding: 'binary'
                             };
                             var waverCmd = unpackedPath.replace(' ', '\\ ') + '/vendor/maquestalk1';
-                            child_process_1.exec('cat ' + info.path + ' | VOICE=' + phont.idVoice + ' SPEED=' + speed + ' ' + waverCmd, cmdOptions, function (err, stdout, stderr) {
+                            exec('cat ' + info.path + ' | VOICE=' + phont.idVoice + ' SPEED=' + speed + ' ' + waverCmd, cmdOptions, function (err, stdout, stderr) {
                                 if (err) {
                                     log.info('maquestalk1 failed. ' + err);
                                     d.reject(err);

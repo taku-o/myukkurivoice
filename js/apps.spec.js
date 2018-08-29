@@ -1,7 +1,5 @@
 "use strict";
 var _this = this;
-exports.__esModule = true;
-var angular = require("angular");
 // application spec app
 angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
     .config(['$qProvider', function ($qProvider) {
