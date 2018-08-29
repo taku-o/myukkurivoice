@@ -64,6 +64,7 @@
   npm install --save-dev @types/angular
   npm install --save-dev @types/node
   npm install --save-dev @types/intro.js
+  npm install --save-dev @types/mocha
 ```
 
 ## using devtron
