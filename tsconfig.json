@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "removeComments": false,
+    "sourceMap": false,
+  },
+  "include": [
+    "electron-appcfg.ts",
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}

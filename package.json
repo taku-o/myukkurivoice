@@ -35,5 +35,10 @@
     "temp": "^0.8.3",
     "tunajs": "^1.0.0",
     "wave-recorder": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/angular": "^1.6.50",
+    "@types/intro.js": "^2.4.3",
+    "@types/node": "^10.9.3"
   }
 }
