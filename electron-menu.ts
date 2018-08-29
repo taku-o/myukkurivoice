@@ -2,7 +2,7 @@
 import {app,Menu,shell} from 'electron';
 
 // application menu
-function initAppMenu(options) {
+function initAppMenu(options): void {
   var myApp = this;
   var menuList = [
     {
@@ -258,7 +258,7 @@ function initAppMenu(options) {
 }
 
 // dock menu
-function initDockMenu() {
+function initDockMenu(): void {
   var myApp = this;
   var dockMenuList = [
     {

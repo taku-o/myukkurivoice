@@ -1,22 +1,23 @@
 // (UI dependecy contains)
-var ipcRenderer = require('electron').ipcRenderer;
+import {ipcRenderer} from 'electron';
+import * as angular from 'angular';
 
 // angular directive
 angular.module('yvoiceDirective', [])
   // static-include
-  .directive('staticInclude', function() {
+  .directive('staticInclude', () => {
     return {
       restrict: 'AE',
-      templateUrl: function(element, attrs) {
+      templateUrl: (element, attrs) => {
         return attrs.templatePath;
       },
     };
   })
   // wav-draggable
-  .directive('wavDraggable', function($parse) {
-    return function(scope, element, attr) {
+  .directive('wavDraggable', ($parse) => {
+    return (scope, element, attr) => {
       var f;
-      scope.$watch('lastWavFile', function(value) {
+      scope.$watch('lastWavFile', (value) => {
         var message = value;
         // @ts-ignore
         if (!message || !message.wavFilePath) {
@@ -32,7 +33,7 @@ angular.module('yvoiceDirective', [])
         if (f) {
           el.removeEventListener('dragstart', f, false);
         }
-        f = function(e) {
+        f = (e) => {
           e.preventDefault();
           ipcRenderer.send('ondragstartwav', wavFilePath);
           return false;
@@ -42,16 +43,16 @@ angular.module('yvoiceDirective', [])
     };
   })
   // txt-droppable
-  .directive('txtDroppable', function($parse) {
-    return function(scope, element, attr) {
+  .directive('txtDroppable', ($parse) => {
+    return (scope, element, attr) => {
       var el = element[0];
 
-      el.addEventListener('drop', function(e) {
+      el.addEventListener('drop', (e) => {
         e.preventDefault();
 
         // read dropped file and set.
         var reader = new FileReader();
-        reader.onload = function(loadedFile) {
+        reader.onload = (loadedFile) => {
           // yinput.source or yinput.encoded
           // @ts-ignore
           scope.yinput[el.id] = loadedFile.target.result;

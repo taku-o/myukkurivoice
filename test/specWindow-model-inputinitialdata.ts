@@ -1,11 +1,12 @@
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+import {Application} from 'spectron';
+import * as assert from 'assert';
+import * as temp from 'temp';
+temp.track();
 
-describe('specWindow-model-YInputInitialData', function() {
+describe('specWindow-model-YInputInitialData', () => {
   this.timeout(10000);
 
-  before(function() {
+  before(() => {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -15,27 +16,27 @@ describe('specWindow-model-YInputInitialData', function() {
     return this.app.start();
   });
 
-  after(function() {
+  after(() => {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  beforeEach(function() {
+  beforeEach(() => {
     this.client = this.app.client;
     return this.client
       .click('#show-spec-window')
       .windowByIndex(1);
   });
 
-  afterEach(function() {
+  afterEach(() => {
     return this.client.close();
   });
 
-  it('YInputInitialData', function() {
+  it('YInputInitialData', () => {
     return this.client
       .click('#getYInputInitialData')
-      .getValue('#getYInputInitialData-result').then(function(value) {
+      .getValue('#getYInputInitialData-result').then((value) => {
         var parsed = JSON.parse(value);
         assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source);
         assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded);

@@ -1,9 +1,10 @@
+import * as angular from 'angular';
 
 // angular intro service
 angular.module('yvoiceIntroService', [])
-  .factory('IntroService', function() {
+  .factory('IntroService', () => {
     return {
-      'mainTutorial': function() {
+      'mainTutorial': function(): void {
         var intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({
@@ -102,7 +103,7 @@ angular.module('yvoiceIntroService', [])
         });
         intro.start();
       },
-      'settingsTutorial': function() {
+      'settingsTutorial': function(): void {
         var intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({
@@ -147,7 +148,7 @@ angular.module('yvoiceIntroService', [])
         });
         intro.start();
       },
-      'shortcut': function() {
+      'shortcut': function(): void {
         var intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({

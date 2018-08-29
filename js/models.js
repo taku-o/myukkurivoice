@@ -1,5 +1,8 @@
 "use strict";
-var app = require('electron').remote.app;
+exports.__esModule = true;
+var electron_1 = require("electron");
+var app = electron_1.remote.app;
+var angular = require("angular");
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 // angular model

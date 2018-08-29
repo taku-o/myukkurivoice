@@ -1,11 +1,12 @@
-var app = require('electron').remote.app;
-var ipcRenderer = require('electron').ipcRenderer;
-var log = require('electron-log');
+import {remote, ipcRenderer, shell} from 'electron';
+var app = remote.app;
+import * as log from 'electron-log';
+import * as angular from 'angular';
 
 var homeDir = app.getPath('home');
 
 // handle uncaughtException
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', (err) => {
   log.error('help:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
@@ -13,10 +14,10 @@ process.on('uncaughtException', function(err) {
 
 // help app
 angular.module('yvoiceAppHelp', [])
-  .config(['$qProvider', function ($qProvider) {
+  .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  .controller('HelpController', ['$scope', '$timeout', '$location', function($scope, $timeout, $location) {
+  .controller('HelpController', ['$scope', '$timeout', '$location', ($scope, $timeout, $location) => {
 
     var menuList = [
       'about',
@@ -43,7 +44,7 @@ angular.module('yvoiceAppHelp', [])
     $scope.$location = $location;
 
     // event url hash changed
-    $scope.$on('$locationChangeSuccess', function(event) {
+    $scope.$on('$locationChangeSuccess', (event) => {
       var hash = $location.hash();
       // @ts-ignore
       if (menuList.includes(hash)) {
@@ -51,23 +52,23 @@ angular.module('yvoiceAppHelp', [])
       } else {
         $scope.display = 'about';
       }
-      $timeout(function(){ $scope.$apply(); });
+      $timeout(() => { $scope.$apply(); });
     });
 
     // shortcut
-    ipcRenderer.on('shortcut', function (event, action) {
+    ipcRenderer.on('shortcut', (event, action) => {
       switch (action) {
         case 'moveToPreviousHelp':
           moveToPreviousHelp();
-          $timeout(function(){ $scope.$apply(); });
+          $timeout(() => { $scope.$apply(); });
           break;
         case 'moveToNextHelp':
           moveToNextHelp();
-          $timeout(function(){ $scope.$apply(); });
+          $timeout(() => { $scope.$apply(); });
           break;
       }
     });
-    function moveToPreviousHelp() {
+    function moveToPreviousHelp(): void {
       var index = menuList.indexOf($scope.display);
       var moved = index - 1;
       if (index < 0) {
@@ -78,7 +79,7 @@ angular.module('yvoiceAppHelp', [])
         $location.hash(menuList[moved]);
       }
     }
-    function moveToNextHelp() {
+    function moveToNextHelp(): void {
       var index = menuList.indexOf($scope.display);
       var moved = index + 1;
       if (index < 0) {
@@ -91,14 +92,14 @@ angular.module('yvoiceAppHelp', [])
     }
 
     // action
-    ctrl.browser = function(url) {
-      require('electron').shell.openExternal(url);
+    ctrl.browser = function(url): void {
+      shell.openExternal(url);
     };
-    ctrl.showItemInFolder = function(path) {
+    ctrl.showItemInFolder = function(path): void {
       var expanded = path.replace('$HOME', homeDir);
-      require('electron').shell.showItemInFolder(expanded);
+      shell.showItemInFolder(expanded);
     };
-    ctrl.showSystemWindow = function() {
+    ctrl.showSystemWindow = function(): void {
       ipcRenderer.send('showSystemWindow', 'system');
     };
   }]);

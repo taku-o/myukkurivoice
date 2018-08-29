@@ -1,11 +1,12 @@
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+import {Application} from 'spectron';
+import * as assert from 'assert';
+import * as temp from 'temp';
+temp.track();
 
-describe('mainWindow', function() {
+describe('mainWindow', () => {
   this.timeout(10000);
 
-  beforeEach(function() {
+  beforeEach(() => {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -15,80 +16,80 @@ describe('mainWindow', function() {
     return this.app.start();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  it('open mainWindow at startup', function() {
+  it('open mainWindow at startup', () => {
     return this.app.client
-      .getWindowCount().then(function(count) {
+      .getWindowCount().then((count) => {
         assert.equal(count, 1);
       })
-      .isVisible('#main-pane').then(function(isVisible) {
+      .isVisible('#main-pane').then((isVisible) => {
         assert.ok(isVisible);
       })
-      .isVisible('#settings-pane').then(function(isVisible) {
+      .isVisible('#settings-pane').then((isVisible) => {
         assert.ok(! isVisible);
       })
-      .getTitle().then(function(title) {
+      .getTitle().then((title) => {
         assert.equal(title, 'MYukkuriVoice');
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
   // TODO multivoice
-  it('mainWindow input', function() {
+  it('mainWindow input', () => {
     return this.app.client
       // encode
       .setValue('#source', 'test')
       .click('#encode')
-      .getValue('#encoded').then(function(encoded) {
+      .getValue('#encoded').then((encoded) => {
         assert.equal(encoded, "テ'_スト");
       })
       // clear
       .click('#clear')
-      .getValue('#source').then(function(source) {
+      .getValue('#source').then((source) => {
         assert.equal(source, '');
       })
-      .getValue('#encoded').then(function(encoded) {
+      .getValue('#encoded').then((encoded) => {
         assert.equal(encoded, '');
       })
       // play and record is enabled
-      .isEnabled('#play').then(function(isEnabled) {
+      .isEnabled('#play').then((isEnabled) => {
         assert.ok(! isEnabled);
       })
       .setValue('#source', 'test')
-      .isEnabled('#play').then(function(isEnabled) {
+      .isEnabled('#play').then((isEnabled) => {
         assert.ok(isEnabled);
       })
       .click('#clear')
-      .isEnabled('#play').then(function(isEnabled) {
+      .isEnabled('#play').then((isEnabled) => {
         assert.ok(! isEnabled);
       })
       .setValue('#encoded', "テ'_スト")
-      .isEnabled('#play').then(function(isEnabled) {
+      .isEnabled('#play').then((isEnabled) => {
         assert.ok(isEnabled);
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
-  it('mainWindow phont selection', function() {
+  it('mainWindow phont selection', () => {
     return this.app.client
-      .elements('#phont option').then(function(response) {
+      .elements('#phont option').then((response) => {
         assert.equal(response.value.length, 26);
       });
   });
@@ -98,163 +99,163 @@ describe('mainWindow', function() {
   // TODO delete config
   // TODO copy config
   // TODO filter
-  it('mainWindow voice config', function() {
+  it('mainWindow voice config', () => {
     var voiceConfigLength = 999;
     return this.app.client
       // filter
-      .elements('.voice-config-item').then(function(response) {
+      .elements('.voice-config-item').then((response) => {
         assert.ok(response.value.length > 0);
       })
       .setValue('#filter-text', 'xxxxxxxxxxxxxxxxxx')
-      .elements('.voice-config-item').then(function(response) {
+      .elements('.voice-config-item').then((response) => {
         assert.equal(response.value.length, 0);
       })
       .setValue('#filter-text', '')
-      .elements('.voice-config-item').then(function(response) {
+      .elements('.voice-config-item').then((response) => {
         assert.ok(response.value.length > 0);
       })
       // add config
-      .elements('.voice-config-item').then(function(response) {
+      .elements('.voice-config-item').then((response) => {
         voiceConfigLength = response.value.length;
       })
       .click('#plus')
-      .elements('.voice-config-item').then(function(response) {
+      .elements('.voice-config-item').then((response) => {
         assert.equal(response.value.length, voiceConfigLength + 1);
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
   // TODO multivoice
-  it('mainWindow play', function() {
+  it('mainWindow play', () => {
     return this.app.client
       .setValue('#encoded', "テ'_スト")
       .click('#play')
       .waitForText('#duration', 2000)
-      .getValue('#duration').then(function(duration) {
+      .getValue('#duration').then((duration) => {
         assert.ok(duration != '');
       })
       .click('#stop')
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
   // TODO record
-  //it('mainWindow play', function() {
+  //it('mainWindow play', () => {
   //});
 
-  it('mainWindow alwaysOnTop', function() {
+  it('mainWindow alwaysOnTop', () => {
     var app = this.app;
     return this.app.client
-      .getAttribute('#always-on-top-btn span.icon', 'class').then(function(classes) {
+      .getAttribute('#always-on-top-btn span.icon', 'class').then((classes) => {
         assert.ok(! classes.includes('active'));
-        app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
+        app.browserWindow.isAlwaysOnTop().then((isAlwaysOnTop) => {
           assert.ok(! isAlwaysOnTop);
         });
       })
       .click('#always-on-top-btn')
-      .getAttribute('#always-on-top-btn span.icon', 'class').then(function(classes) {
+      .getAttribute('#always-on-top-btn span.icon', 'class').then((classes) => {
         assert.ok(classes.includes('active'));
-        app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
+        app.browserWindow.isAlwaysOnTop().then((isAlwaysOnTop) => {
           assert.ok(isAlwaysOnTop);
         });
       })
       .click('#always-on-top-btn')
-      .getAttribute('#always-on-top-btn span.icon', 'class').then(function(classes) {
+      .getAttribute('#always-on-top-btn span.icon', 'class').then((classes) => {
         assert.ok(! classes.includes('active'));
-        app.browserWindow.isAlwaysOnTop().then(function(isAlwaysOnTop) {
+        app.browserWindow.isAlwaysOnTop().then((isAlwaysOnTop) => {
           assert.ok(! isAlwaysOnTop);
         });
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
-  it('mainWindow help', function() {
+  it('mainWindow help', () => {
     return this.app.client
       .click('#help')
-      .getWindowCount().then(function(count) {
+      .getWindowCount().then((count) => {
         assert.equal(count, 2);
       })
       .windowByIndex(1)
-      .getTitle().then(function(title) {
+      .getTitle().then((title) => {
         assert.equal(title, 'MYukkuriVoice Help');
       })
       // error check
       .windowByIndex(0)
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
-  it('mainWindow shortcut intro', function() {
+  it('mainWindow shortcut intro', () => {
     return this.app.client
-      .isVisible('.introjs-tooltip').then(function(isVisible) {
+      .isVisible('.introjs-tooltip').then((isVisible) => {
         assert.ok(! isVisible);
       })
       .click('#shortcut')
-      .isVisible('.introjs-tooltip').then(function(isVisible) {
+      .isVisible('.introjs-tooltip').then((isVisible) => {
         assert.ok(isVisible);
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
-  it('mainWindow tutorial intro', function() {
+  it('mainWindow tutorial intro', () => {
     return this.app.client
-      .isVisible('.introjs-tooltip').then(function(isVisible) {
+      .isVisible('.introjs-tooltip').then((isVisible) => {
         assert.ok(! isVisible);
       })
       .click('#tutorial')
-      .isVisible('.introjs-tooltip').then(function(isVisible) {
+      .isVisible('.introjs-tooltip').then((isVisible) => {
         assert.ok(isVisible);
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
-  it('mainWindow switchSettingsView', function() {
+  it('mainWindow switchSettingsView', () => {
     return this.app.client
       .click('#switch-settings-view')
-      .isVisible('#main-pane').then(function(isVisible) {
+      .isVisible('#main-pane').then((isVisible) => {
         assert.ok(! isVisible);
       })
-      .isVisible('#settings-pane').then(function(isVisible) {
+      .isVisible('#settings-pane').then((isVisible) => {
         assert.ok(isVisible);
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });

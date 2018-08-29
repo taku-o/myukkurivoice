@@ -1,11 +1,13 @@
+import * as angular from 'angular';
+
 // angular command service
 angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
-  .factory('CommandService', ['MessageService', 'YCommandInput', function(MessageService, YCommandInput) {
+  .factory('CommandService', ['MessageService', 'YCommandInput', (MessageService, YCommandInput) => {
     return {
-      containsCommand: function(input, yvoiceList) {
+      containsCommand: function(input, yvoiceList): boolean {
         // command name list
         var nameList = [];
-        angular.forEach(yvoiceList, function(voice) {
+        angular.forEach(yvoiceList, (voice) => {
           nameList.push(voice.name);
         });
 
@@ -25,12 +27,12 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         }
         return hasCommand;
       },
-      parseInput: function(input, yvoiceList, currentYvoice) {
+      parseInput: function(input, yvoiceList, currentYvoice): any {
         var parsed = [];
         var lines = input.split(/\n/);
 
         // parse lines
-        angular.forEach(lines, function(line) {
+        angular.forEach(lines, (line) => {
           var re = new RegExp('^(.+?)＞(.*)$');
           var matched = re.exec(line);
 
@@ -56,7 +58,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         });
         return parsed;
       },
-      detectVoiceConfig: function(commandInput, yvoiceList) {
+      detectVoiceConfig: function(commandInput, yvoiceList): any {
         for (var i=0; i<yvoiceList.length; i++) {
           if (yvoiceList[i].name == commandInput.name) {
             return yvoiceList[i];
@@ -64,9 +66,9 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         }
         return null;
       },
-      toString: function(commandInputList) {
+      toString: function(commandInputList): string {
         var result = '';
-        angular.forEach(commandInputList, function(cinput) {
+        angular.forEach(commandInputList, (cinput) => {
           result += cinput.name+ '＞'+ cinput.text+ "\n";
         });
         return result;

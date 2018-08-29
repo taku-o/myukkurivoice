@@ -1,11 +1,12 @@
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+import {Application} from 'spectron';
+import * as assert from 'assert';
+import * as temp from 'temp';
+temp.track();
 
-describe('specWindow-service-DataService', function() {
+describe('specWindow-service-DataService', () => {
   this.timeout(10000);
 
-  before(function() {
+  before(() => {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -15,51 +16,51 @@ describe('specWindow-service-DataService', function() {
     return this.app.start();
   });
 
-  after(function() {
+  after(() => {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  beforeEach(function() {
+  beforeEach(() => {
     this.client = this.app.client;
     return this.client
       .click('#show-spec-window')
       .windowByIndex(1);
   });
 
-  afterEach(function() {
+  afterEach(() => {
     return this.client.close();
   });
 
-  it('DataService', function() {
+  it('DataService', () => {
     return this.client
       // load
       .click('#load')
       .waitForValue('#load-result', 2000)
-      .getValue('#load-result').then(function(value) {
+      .getValue('#load-result').then((value) => {
         assert.ok(value);
       })
-      .getValue('#load-err').then(function(value) {
+      .getValue('#load-err').then((value) => {
         assert.ok(! value);
       })
       // initialData
       .click('#initial-data')
-      .getValue('#initial-data-result').then(function(value) {
+      .getValue('#initial-data-result').then((value) => {
         assert.ok(value);
         var parsed = JSON.parse(value);
         assert.equal(parsed.length, 4);
       })
       // create
       .click('#create')
-      .getValue('#create-result').then(function(value) {
+      .getValue('#create-result').then((value) => {
         assert.ok(value);
         var parsed = JSON.parse(value);
         assert.ok(parsed.id);
       })
       // copy
       .click('#copy')
-      .getValue('#copy-result').then(function(value) {
+      .getValue('#copy-result').then((value) => {
         assert.ok(value);
         var parsed = JSON.parse(value);
         assert.ok(parsed.id);

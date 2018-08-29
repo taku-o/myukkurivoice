@@ -1,26 +1,29 @@
 "use strict";
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+var _this = this;
+exports.__esModule = true;
+var spectron_1 = require("spectron");
+var assert = require("assert");
+var temp = require("temp");
+temp.track();
 describe('settingsView', function () {
-    this.timeout(10000);
+    _this.timeout(10000);
     beforeEach(function () {
         var fsprefix = '_myubo_test' + Date.now().toString(36);
         var dirPath = temp.mkdirSync(fsprefix);
-        this.app = new Application({
+        _this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
             env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
         });
-        return this.app.start();
+        return _this.app.start();
     });
     afterEach(function () {
-        if (this.app && this.app.isRunning()) {
-            return this.app.stop();
+        if (_this.app && _this.app.isRunning()) {
+            return _this.app.stop();
         }
     });
     it('settingsView seq-write-box option', function () {
-        var client = this.app.client;
-        return this.app.client
+        var client = _this.app.client;
+        return _this.app.client
             .click('#switch-settings-view')
             .isSelected('#seq-write-box .checkbox input').then(function (isSelected) {
             client.isVisible('#seq-write-box .form-group').then(function (isVisible) {
@@ -36,7 +39,7 @@ describe('settingsView', function () {
         });
     });
     it('settingsView tutorial intro', function () {
-        return this.app.client
+        return _this.app.client
             .click('#switch-settings-view')
             .isVisible('.introjs-tooltip').then(function (isVisible) {
             assert.ok(!isVisible);

@@ -1,35 +1,38 @@
 "use strict";
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+var _this = this;
+exports.__esModule = true;
+var spectron_1 = require("spectron");
+var assert = require("assert");
+var temp = require("temp");
+temp.track();
 describe('specWindow-service-AudioService2', function () {
-    this.timeout(10000);
+    _this.timeout(10000);
     before(function () {
         var fsprefix = '_myubo_test' + Date.now().toString(36);
         var dirPath = temp.mkdirSync(fsprefix);
-        this.app = new Application({
+        _this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
             env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
         });
-        return this.app.start();
+        return _this.app.start();
     });
     after(function () {
-        if (this.app && this.app.isRunning()) {
-            return this.app.stop();
+        if (_this.app && _this.app.isRunning()) {
+            return _this.app.stop();
         }
     });
     beforeEach(function () {
-        this.client = this.app.client;
-        return this.client
+        _this.client = _this.app.client;
+        return _this.client
             .click('#show-spec-window')
             .windowByIndex(1);
     });
     afterEach(function () {
-        return this.client.close();
+        return _this.client.close();
     });
     // AudioService2
     it('AudioService2', function () {
-        return this.client
+        return _this.client
             // play aquestalk1
             .setValue('#play2-encoded', "テ'_スト")
             .setValue('#play-result-2', '')

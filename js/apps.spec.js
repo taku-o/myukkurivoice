@@ -1,4 +1,7 @@
 "use strict";
+var _this = this;
+exports.__esModule = true;
+var angular = require("angular");
 // application spec app
 angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
     .config(['$qProvider', function ($qProvider) {
@@ -12,7 +15,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
     'AppUtilService', 'SeqFNameService',
     function ($scope, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
         // init
-        var ctrl = this;
+        var ctrl = _this;
         // YPhontList
         ctrl.getYPhontList = function () {
             var r = YPhontList;

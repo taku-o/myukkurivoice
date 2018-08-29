@@ -1,6 +1,8 @@
 "use strict";
+exports.__esModule = true;
 // (UI dependecy contains)
-var ipcRenderer = require('electron').ipcRenderer;
+var electron_1 = require("electron");
+var angular = require("angular");
 // angular directive
 angular.module('yvoiceDirective', [])
     // static-include
@@ -32,7 +34,7 @@ angular.module('yvoiceDirective', [])
             }
             f = function (e) {
                 e.preventDefault();
-                ipcRenderer.send('ondragstartwav', wavFilePath);
+                electron_1.ipcRenderer.send('ondragstartwav', wavFilePath);
                 return false;
             };
             el.addEventListener('dragstart', f, false);

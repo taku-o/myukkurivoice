@@ -1,10 +1,13 @@
-var app = require('electron').remote.app;
+import {remote} from 'electron';
+var app = remote.app;
+import * as angular from 'angular';
+
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 
 // angular model
 angular.module('yvoiceModel', [])
-  .factory('YPhontList', function() {
+  .factory('YPhontList', () => {
     return [
       {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0},
       {id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1},
@@ -34,7 +37,7 @@ angular.module('yvoiceModel', [])
       {id:'gVoice_R2',  name:'aq10-R2 ロボット2',         version:'talk10', struct:{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
     ];
   })
-  .factory('YVoice', function() {
+  .factory('YVoice', () => {
     return {
       id: null,
       name: 'f1 女声1(ゆっくり)',
@@ -54,7 +57,7 @@ angular.module('yvoiceModel', [])
       },
     };
   })
-  .factory('YVoiceInitialData', function() {
+  .factory('YVoiceInitialData', () => {
     return [
       {
         id: 'sample_1',
@@ -137,19 +140,19 @@ angular.module('yvoiceModel', [])
       },
     ];
   })
-  .factory('YInput', function() {
+  .factory('YInput', () => {
     return {
       source: '',
       encoded: '',
     };
   })
-  .factory('YInputInitialData', function() {
+  .factory('YInputInitialData', () => {
     return {
       source: 'エムユックリボイスへようこそ。ゆっくりしていってね！',
       encoded: "エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、",
     };
   })
-  .factory('YCommandInput', function() {
+  .factory('YCommandInput', () => {
     return {
       name: '',
       text: '',

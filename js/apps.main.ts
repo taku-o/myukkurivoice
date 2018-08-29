@@ -1,15 +1,15 @@
-var app = require('electron').remote.app;
-var ipcRenderer = require('electron').ipcRenderer;
-var clipboard = require('electron').clipboard;
-var path = require('path');
-var log = require('electron-log');
+import {remote, ipcRenderer, clipboard} from 'electron';
+var app = remote.app;
+import * as path from 'path';
+import * as log from 'electron-log';
+import * as angular from 'angular';
 
 // application settings
-var appCfg = require('electron').remote.getGlobal('appCfg');
+var appCfg = remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', (err) => {
   log.error('main:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
@@ -17,7 +17,7 @@ process.on('uncaughtException', function(err) {
 
 // angular app
 angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceService', 'yvoiceCommandService', 'yvoiceIntroService', 'yvoiceModel'])
-  .config(['$qProvider', function ($qProvider) {
+  .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   // controller
@@ -25,29 +25,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'AquesService',
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
-    function($scope, $timeout, $q, MessageService, DataService, MasterService, AquesService,
-             audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, CommandService, IntroService,
-             YInput, YInputInitialData) {
+     ($scope, $timeout, $q, MessageService, DataService, MasterService, AquesService,
+      audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, CommandService, IntroService,
+      YInput, YInputInitialData) => {
 
     // event listener
-    $scope.$on('message', function(event, message) {
+    $scope.$on('message', (event, message) => {
       $scope.messageList.unshift(message);
       while ($scope.messageList.length > 5) {
         $scope.messageList.pop();
       }
-      $timeout(function(){ $scope.$apply(); });
+      $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('wavGenerated', function(event, wavFileInfo) {
+    $scope.$on('wavGenerated', (event, wavFileInfo) => {
       $scope.lastWavFile = wavFileInfo;
-      $timeout(function(){ $scope.$apply(); });
+      $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('duration', function(event, duration) {
+    $scope.$on('duration', (event, duration) => {
       $scope.duration = duration;
-      $timeout(function(){ $scope.$apply(); });
+      $timeout(() => { $scope.$apply(); });
     });
 
     // shortcut
-    ipcRenderer.on('shortcut', function (event, action) {
+    ipcRenderer.on('shortcut', (event, action) => {
       switch (action) {
         case 'play':
           document.getElementById('play').click();
@@ -80,7 +80,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
           }
           $scope.display = 'main';
-          $timeout(function(){ $scope.$apply(); });
+          $timeout(() => { $scope.$apply(); });
           break;
         case 'swichPreviousConfig':
           {
@@ -92,7 +92,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
           }
           $scope.display = 'main';
-          $timeout(function(){ $scope.$apply(); });
+          $timeout(() => { $scope.$apply(); });
           break;
         case 'encode':
           document.getElementById('encode').click();
@@ -101,29 +101,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     });
 
     // menu
-    ipcRenderer.on('menu', function (event, action) {
+    ipcRenderer.on('menu', (event, action) => {
       switch (action) {
         case 'clear':
           document.getElementById('clear').click();
-          $timeout(function(){ $scope.$apply(); });
+          $timeout(() => { $scope.$apply(); });
           break;
         case 'plus':
           document.getElementById('plus').click();
-          $timeout(function(){ $scope.$apply(); });
+          $timeout(() => { $scope.$apply(); });
           break;
         case 'minus':
           {
             let index = $scope.yvoiceList.indexOf($scope.yvoice);
             ctrl.minus(index);
           }
-          $timeout(function(){ $scope.$apply(); });
+          $timeout(() => { $scope.$apply(); });
           break;
         case 'copy':
           {
             let index = $scope.yvoiceList.indexOf($scope.yvoice);
             ctrl.copy(index);
           }
-          $timeout(function(){ $scope.$apply(); });
+          $timeout(() => { $scope.$apply(); });
           break;
         case 'save':
           document.getElementById('save').click();
@@ -157,25 +157,25 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     loadData();
 
     // util
-    function loadData() {
-      DataService.load().then(function(dataList) {
+    function loadData(): void {
+      DataService.load().then((dataList) => {
         if (dataList.length < 1) {
           MessageService.info('初期データを読み込みます。');
           dataList = DataService.initialData();
         }
         $scope.yvoiceList = dataList;
         $scope.yvoice = $scope.yvoiceList[0];
-        $timeout(function(){ $scope.$apply(); });
+        $timeout(() => { $scope.$apply(); });
       });
     }
-    function selectedSource() {
+    function selectedSource(): string {
       var textarea = document.getElementById('source') as HTMLInputElement;
       var start = textarea.selectionStart;
       var end = textarea.selectionEnd;
       var selectedText = textarea.value.substring(start, end);
       return selectedText;
     }
-    function selectedEncoded() {
+    function selectedEncoded(): string {
       var textarea = document.getElementById('encoded') as HTMLInputElement;
       var start = textarea.selectionStart;
       var end = textarea.selectionEnd;
@@ -190,27 +190,27 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     $scope.encodedHighlight = {
       '#619FFF' : '{{ encodedHighlight["#619FFF"] }}'
     };
-    ctrl.blurOnSource = function() {
+    ctrl.blurOnSource = function(): void {
       $scope.sourceHighlight['#619FFF'] = selectedSource();
     };
-    ctrl.blurOnEncoded = function() {
+    ctrl.blurOnEncoded = function(): void {
       $scope.encodedHighlight['#619FFF'] = selectedEncoded();
     };
-    ctrl.focusOnSource = function() {
+    ctrl.focusOnSource = function(): void {
       clearSourceSelection();
       clearEncodedSelection();
     };
-    ctrl.focusOnEncoded = function() {
+    ctrl.focusOnEncoded = function(): void {
       clearSourceSelection();
       clearEncodedSelection();
     };
-    function clearSourceSelection() {
+    function clearSourceSelection(): void {
       $scope.sourceHighlight['#619FFF'] = '';
       var textarea = document.getElementById('source') as HTMLInputElement;
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
     }
-    function clearEncodedSelection() {
+    function clearEncodedSelection(): void {
       $scope.encodedHighlight['#619FFF'] = '';
       var textarea = document.getElementById('encoded') as HTMLInputElement;
       textarea.selectionStart = 0;
@@ -218,9 +218,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     }
 
     // list box selection changed
-    ctrl.onChangePhont = function() {
+    ctrl.onChangePhont = function(): void {
       var phont = null;
-      angular.forEach($scope.phontList, function(value, key) {
+      angular.forEach($scope.phontList, (value, key) => {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) { return; }
@@ -241,7 +241,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     };
 
     // action
-    ctrl.play = function() {
+    ctrl.play = function(): void {
       MessageService.action('start to play voice.');
       if (!$scope.yinput.source && !$scope.yinput.encoded) {
         MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
@@ -264,7 +264,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
           let parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-          angular.forEach(parsedList, function(cinput) {
+          angular.forEach(parsedList, (cinput) => {
             cinput.text = AquesService.encode(cinput.text);
           });
           for (var i=0; i < parsedList.length; i++) {
@@ -286,29 +286,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
       // play
       let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-      parsedList.reduce(function(p, cinput) {
+      parsedList.reduce((p, cinput) => {
         if(p.then === undefined) {
           p.resolve();
           p = p.promise;
         }
-        return p.then(function() {
+        return p.then(() => {
           return playEach(cinput);
         });
       }, $q.defer());
     };
-    function playEach(cinput) {
+    function playEach(cinput): ng.IPromise<string> {
       var d = $q.defer();
       var encoded = cinput.text;
       var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
       var phont = null;
-      angular.forEach($scope.phontList, function(value, key) {
+      angular.forEach($scope.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        d.reject(null); return;
+        d.reject(null); return d.promise;
       }
 
       // disable rhythm if option is on
@@ -346,27 +346,27 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       };
 
       AquesService.wave(encoded, phont, speed, waveOptions).then(
-      function(bufWav) {
+      (bufWav) => {
         return AudioService.play(bufWav, playOptions).then(
-        function() {
+        () => {
           d.resolve('ok');
         },
-        function(err) {
+        (err) => {
           MessageService.error('音声データを再生できませんでした。', err);
           d.reject(err);
         });
       },
-      function(err) {
+      (err) => {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
       return d.promise;
     }
-    ctrl.stop = function() {
+    ctrl.stop = function(): void {
       MessageService.action('stop playing voice.');
       AudioService.stop();
     };
-    ctrl.record = function() {
+    ctrl.record = function(): void {
       MessageService.action('record voice.');
       if (!$scope.yinput.source && !$scope.yinput.encoded) {
         MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
@@ -374,7 +374,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       var phont = null;
-      angular.forEach($scope.phontList, function(value, key) {
+      angular.forEach($scope.phontList, (value, key) => {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) {
@@ -398,7 +398,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
           let parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-          angular.forEach(parsedList, function(cinput) {
+          angular.forEach(parsedList, (cinput) => {
             cinput.text = AquesService.encode(cinput.text);
           });
           for (var i=0; i < parsedList.length; i++) {
@@ -430,31 +430,31 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
         var firstWroteFile = null;
         // record wave files
-        parsedList.reduce(function(p, cinput) {
+        parsedList.reduce((p, cinput) => {
           if(p.then === undefined) {
             p.resolve();
             p = p.promise;
           }
-          return p.then(function(fp) {
+          return p.then((fp) => {
             if (!firstWroteFile) { firstWroteFile = fp; }
             return recordEach(cinput, dir, prefix);
           });
         }, $q.defer())
         // record source message
-        .then(function(fp) {
+        .then((fp) => {
           if (!firstWroteFile) { firstWroteFile = fp; }
           if (!$scope.yvoice.sourceWrite) { return; }
           var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
           AudioSourceService.save(sourceFname, $scope.yinput.source).then(
-            function() {},
-            function(err) {
+            () => {},
+            (err) => {
               MessageService.error('メッセージファイルを作成できませんでした。', err);
             });
         });
 
       // 通常保存
       } else {
-        ipcRenderer.once('showSaveDialog', function (event, filePath) {
+        ipcRenderer.once('showSaveDialog', (event, filePath) => {
           if (!filePath) {
             MessageService.error('保存先が指定されませんでした。');
             return;
@@ -468,12 +468,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
           var firstWroteFile = null;
           // record wave files
-          parsedList.reduce(function(p, cinput) {
+          parsedList.reduce((p, cinput) => {
             if(p.then === undefined) {
               p.resolve();
               p = p.promise;
             }
-            return p.then(function(fp) {
+            return p.then((fp) => {
               if (!firstWroteFile) { firstWroteFile = fp; }
               if (containsCommand) {
                 return recordEach(cinput, dir, prefix);
@@ -483,13 +483,13 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             });
           }, $q.defer())
           // record source message
-          .then(function(fp) {
+          .then((fp) => {
             if (!firstWroteFile) { firstWroteFile = fp; }
             if (!$scope.yvoice.sourceWrite) { return; }
             var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
             AudioSourceService.save(sourceFname, $scope.yinput.source).then(
-              function() {},
-              function(err) {
+              () => {},
+              (err) => {
                 MessageService.error('メッセージファイルを作成できませんでした。', err);
               });
           });
@@ -497,19 +497,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         ipcRenderer.send('showSaveDialog', 'wav');
       }
     };
-    function recordSolo(cinput, filePath) {
+    function recordSolo(cinput, filePath): ng.IPromise<string> {
       var d = $q.defer();
       var encoded = cinput.text;
       var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
       var phont = null;
-      angular.forEach($scope.phontList, function(value, key) {
+      angular.forEach($scope.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        d.reject(null); return;
+        d.reject(null); return d.promise;
       }
 
       // disable rhythm if option is on
@@ -546,35 +546,35 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       };
 
       AquesService.wave(encoded, phont, speed, waveOptions).then(
-      function(bufWav) {
+      (bufWav) => {
         return AudioService.record(filePath, bufWav, playOptions).then(
-        function() {
+        () => {
           d.resolve(filePath);
         },
-        function(err) {
+        (err) => {
           MessageService.error('音声データを記録できませんでした。', err);
           d.reject(err);
         });
       },
-      function(err) {
+      (err) => {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
       return d.promise;
     }
-    function recordEach(cinput, dir, fnameprefix) {
+    function recordEach(cinput, dir, fnameprefix): ng.IPromise<string> {
       var d = $q.defer();
       var encoded = cinput.text;
       var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
       var phont = null;
-      angular.forEach($scope.phontList, function(value, key) {
+      angular.forEach($scope.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        d.reject(null); return;
+        d.reject(null); return d.promise;
       }
 
       // disable rhythm if option is on
@@ -611,41 +611,41 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       };
 
       SeqFNameService.nextNumber(dir, fnameprefix).then(
-      function(nextNum) {
+      (nextNum) => {
         var nextFname = SeqFNameService.nextFname(fnameprefix, nextNum);
         var filePath = path.join(dir, nextFname);
 
         AquesService.wave(encoded, phont, speed, waveOptions).then(
-        function(bufWav) {
+        (bufWav) => {
           return AudioService.record(filePath, bufWav, playOptions).then(
-          function() {
+          () => {
             d.resolve(filePath);
           },
-          function(err) {
+          (err) => {
             MessageService.error('音声データを記録できませんでした。', err);
             d.reject(err);
           });
         },
-        function(err) {
+        (err) => {
           MessageService.error('音声データを作成できませんでした。', err);
           d.reject(err);
         });
       });
       return d.promise;
     }
-    ctrl.showSystemWindow = function() {
+    ctrl.showSystemWindow = function(): void {
       if (!appCfg.isTest) { return; }
       ipcRenderer.send('showSystemWindow', 'system');
     };
-    ctrl.showSpecWindow = function() {
+    ctrl.showSpecWindow = function(): void {
       if (!appCfg.isTest) { return; }
       ipcRenderer.send('showSpecWindow', 'spec');
     };
-    ctrl.help = function() {
+    ctrl.help = function(): void {
       MessageService.action('open help window.');
       ipcRenderer.send('showHelpWindow', 'help');
     };
-    ctrl.tutorial = function() {
+    ctrl.tutorial = function(): void {
       if ($scope.display == 'main') {
         MessageService.action('run main tutorial.');
         IntroService.mainTutorial();
@@ -654,7 +654,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         IntroService.settingsTutorial();
       }
     };
-    ctrl.shortcut = function() {
+    ctrl.shortcut = function(): void {
       MessageService.action('show shortcut key help.');
       if ($scope.display == 'main') {
         IntroService.shortcut();
@@ -667,17 +667,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         });
       }
     };
-    ctrl.select = function(index) {
+    ctrl.select = function(index): void {
       MessageService.action('switch voice config.');
       $scope.yvoice = $scope.yvoiceList[index];
       $scope.display = 'main';
     };
-    ctrl.plus = function() {
+    ctrl.plus = function(): void {
       MessageService.action('add new voice config.');
       var newYvoice = DataService.create();
       $scope.yvoiceList.push(newYvoice);
     };
-    ctrl.minus = function(index) {
+    ctrl.minus = function(index): void {
       MessageService.action('delete voice config.');
       if ($scope.yvoiceList.length < 2) {
         MessageService.error('ボイス設定は1件以上必要です。');
@@ -687,17 +687,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       $scope.yvoice = $scope.yvoiceList[0];
       $scope.display = 'main';
     };
-    ctrl.copy = function(index) {
+    ctrl.copy = function(index): void {
       MessageService.action('copy and create new voice config.');
       var original = $scope.yvoiceList[index];
       var newYvoice = DataService.copy(original);
       $scope.yvoiceList.push(newYvoice);
     };
-    ctrl.save = function() {
+    ctrl.save = function(): void {
       MessageService.action('save voice config.');
       DataService.save($scope.yvoiceList);
     };
-    ctrl.reset = function() {
+    ctrl.reset = function(): void {
       MessageService.action('reset all voice config data.');
       // voice data clear
       DataService.clear();
@@ -710,7 +710,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       clearEncodedSelection();
     };
 
-    ctrl.encode = function() {
+    ctrl.encode = function(): void {
       MessageService.action('encode source text.');
       var source = $scope.yinput.source;
       var _selectedSource = selectedSource();
@@ -733,14 +733,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         clearEncodedSelection();
       }
     };
-    ctrl.clear = function() {
+    ctrl.clear = function(): void {
       MessageService.action('clear input text.');
       $scope.yinput.source = '';
       $scope.yinput.encoded = '';
       clearSourceSelection();
       clearEncodedSelection();
     };
-    ctrl.fromClipboard = function() {
+    ctrl.fromClipboard = function(): void {
       MessageService.action('paste clipboard text to source.');
       var text = clipboard.readText();
       if (text) {
@@ -752,7 +752,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         MessageService.info('クリップボードにデータがありません。');
       }
     };
-    ctrl.putVoiceName = function() {
+    ctrl.putVoiceName = function(): void {
       var field = document.activeElement as HTMLInputElement;
       if (field.id != 'source' && field.id != 'encoded') { return; }
 
@@ -787,44 +787,44 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           field.selectionEnd = (field.value.substring(0, pos)+ "\n"+ $scope.yvoice.name+ '＞').length;
         }
       }
-      $timeout(function(){ $scope.$apply(); });
+      $timeout(() => { $scope.$apply(); });
     };
-    ctrl.directory = function() {
+    ctrl.directory = function(): void {
       MessageService.action('select directory.');
       if (!$scope.yvoice.seqWrite) {
         MessageService.error('連番ファイル設定が無効です。');
         return;
       }
 
-      ipcRenderer.once('showDirDialog', function (event, dirs) {
+      ipcRenderer.once('showDirDialog', (event, dirs) => {
         if (!dirs || dirs.length < 1) {
           return;
         }
         $scope.yvoice.seqWriteOptions.dir = dirs[0];
-        $timeout(function(){ $scope.$apply(); });
+        $timeout(() => { $scope.$apply(); });
       });
       var optDir = $scope.yvoice.seqWriteOptions.dir;
       if (!optDir) { optDir = desktopDir; }
       ipcRenderer.send('showDirDialog', optDir);
     };
 
-    ctrl.switchSettingsView = function() {
+    ctrl.switchSettingsView = function(): void {
       MessageService.action('switch to settings view.');
       $scope.display = 'settings';
     };
-    ctrl.switchMainView = function() {
+    ctrl.switchMainView = function(): void {
       MessageService.action('switch to main view.');
       $scope.display = 'main';
     };
 
-    ctrl.switchAlwaysOnTop = function() {
+    ctrl.switchAlwaysOnTop = function(): void {
       MessageService.action('switch alwaysOnTop option.');
       ipcRenderer.send('switchAlwaysOnTop', 'mainWindow');
     };
-    ipcRenderer.on('switchAlwaysOnTop', function (event, newflg) {
+    ipcRenderer.on('switchAlwaysOnTop', (event, newflg) => {
       $scope.alwaysOnTop = newflg;
       MessageService.info('update alwaysOnTop option '+(newflg?'ON':'OFF'));
-      $timeout(function(){ $scope.$apply(); });
+      $timeout(() => { $scope.$apply(); });
     });
 
   }]);

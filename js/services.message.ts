@@ -1,10 +1,11 @@
-var path = require('path');
+import * as path from 'path';
+import * as angular from 'angular';
 
 // angular message service
 angular.module('yvoiceMessageService', [])
-  .factory('MessageService', ['$rootScope', function($rootScope) {
+  .factory('MessageService', ['$rootScope', ($rootScope) => {
     return {
-      action: function(message) {
+        action: function(message): void {
         var post = {
           created: new Date(),
           body: message,
@@ -12,7 +13,7 @@ angular.module('yvoiceMessageService', [])
         };
         $rootScope.$broadcast('message', post);
       },
-      record: function(message, wavFilePath) {
+      record: function(message, wavFilePath): void {
         var wavFileName = path.basename(wavFilePath);
         var post = {
           created: new Date(),
@@ -24,7 +25,7 @@ angular.module('yvoiceMessageService', [])
         $rootScope.$broadcast('message', post);
         $rootScope.$broadcast('wavGenerated', post);
       },
-      info: function(message) {
+      info: function(message): void {
         var post = {
           created: new Date(),
           body: message,
@@ -32,7 +33,7 @@ angular.module('yvoiceMessageService', [])
         };
         $rootScope.$broadcast('message', post);
       },
-      error: function(message) {
+      error: function(message): void {
         var post = {
           created: new Date(),
           body: message,
@@ -40,7 +41,7 @@ angular.module('yvoiceMessageService', [])
         };
         $rootScope.$broadcast('message', post);
       },
-      syserror: function(message, err = null) {
+      syserror: function(message, err = null): void {
         if (err) {
           message = message + err.message;
         }

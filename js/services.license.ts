@@ -1,17 +1,19 @@
-var exec     = require('child_process').exec;
-var cryptico = require('cryptico.js');
+import {exec} from 'child_process';
+import * as cryptico from 'cryptico.js';
+import {remote} from 'electron';
+import * as angular from 'angular';
 
-var app = require('electron').remote.app;
+var app = remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 
 // angular license service
 angular.module('yvoiceLicenseService', [])
-  .factory('LicenseService', ['$q', function($q) {
+  .factory('LicenseService', ['$q', ($q) => {
     var consumerKeyCache = {};
 
     // encrypt decrypt
-    var encrypt = function(passPhrase, plainKey) {
+    var encrypt = function(passPhrase, plainKey): string {
       var bits = 1024;
       var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
       var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
@@ -19,7 +21,7 @@ angular.module('yvoiceLicenseService', [])
       var encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
       return encryptionResult.cipher;
     };
-    var decrypt = function(passPhrase, encryptedKey) {
+    var decrypt = function(passPhrase, encryptedKey): string {
       var bits = 1024;
       var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
 
@@ -35,13 +37,13 @@ angular.module('yvoiceLicenseService', [])
 
     // method
     return {
-      encrypt: function(passPhrase, plainKey) {
+      encrypt: function(passPhrase, plainKey): string {
         return encrypt(passPhrase, plainKey);
       },
-      decrypt: function(passPhrase, encryptedKey) {
+      decrypt: function(passPhrase, encryptedKey): string {
         return decrypt(passPhrase, encryptedKey);
       },
-      consumerKey: function(licenseType) {
+      consumerKey: function(licenseType): ng.IPromise<string> {
         var d = $q.defer();
 
         // get key from cache if exists

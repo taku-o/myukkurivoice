@@ -1,11 +1,12 @@
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+import {Application} from 'spectron';
+import * as assert from 'assert';
+import * as temp from 'temp';
+temp.track();
 
-describe('specWindow-service-AppUtilService', function() {
+describe('specWindow-service-AppUtilService', () => {
   this.timeout(10000);
 
-  before(function() {
+  before(() => {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -15,41 +16,41 @@ describe('specWindow-service-AppUtilService', function() {
     return this.app.start();
   });
 
-  after(function() {
+  after(() => {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  beforeEach(function() {
+  beforeEach(() => {
     this.client = this.app.client;
     return this.client
       .click('#show-spec-window')
       .windowByIndex(1);
   });
 
-  afterEach(function() {
+  afterEach(() => {
     return this.client.close();
   });
 
-  it('AppUtilService', function() {
+  it('AppUtilService', () => {
     return this.client
       // disableRhythm
       .setValue('#rhythm-text', 'test\' val/ue')
       .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then(function(value) {
+      .getValue('#disable-rhythm-result').then((value) => {
         assert.equal(value, 'test value');
       })
       // disableRhythm not contains
       .setValue('#rhythm-text', 'this is not a rhythm text')
       .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then(function(value) {
+      .getValue('#disable-rhythm-result').then((value) => {
         assert.equal(value, 'this is not a rhythm text');
       })
       // disableRhythm empty
       .setValue('#rhythm-text', '')
       .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then(function(value) {
+      .getValue('#disable-rhythm-result').then((value) => {
         assert.ok(!value);
       });
   });

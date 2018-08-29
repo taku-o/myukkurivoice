@@ -1,7 +1,7 @@
 'use strict';
 exports.__esModule = true;
 var electron_1 = require("electron");
-var electron_log_1 = require("electron-log");
+var log = require("electron-log");
 var path = require("path");
 var Menu = require("./electron-menu");
 var Pane = require("./electron-window");
@@ -33,9 +33,9 @@ if (process.env.NODE_ENV == 'test' && process.env.userData) {
 myApp.loadAppConfig();
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
-    electron_log_1["default"].error('electron:event:uncaughtException');
-    electron_log_1["default"].error(err);
-    electron_log_1["default"].error(err.stack);
+    log.error('electron:event:uncaughtException');
+    log.error(err);
+    log.error(err.stack);
     electron_1.app.quit();
 });
 // Quit when all windows are closed.

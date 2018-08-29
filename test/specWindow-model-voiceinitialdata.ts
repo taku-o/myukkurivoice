@@ -1,11 +1,12 @@
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+import {Application} from 'spectron';
+import * as assert from 'assert';
+import * as temp from 'temp';
+temp.track();
 
-describe('specWindow-model-YVoiceInitialData', function() {
+describe('specWindow-model-YVoiceInitialData', () => {
   this.timeout(10000);
 
-  before(function() {
+  before(() => {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -15,27 +16,27 @@ describe('specWindow-model-YVoiceInitialData', function() {
     return this.app.start();
   });
 
-  after(function() {
+  after(() => {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  beforeEach(function() {
+  beforeEach(() => {
     this.client = this.app.client;
     return this.client
       .click('#show-spec-window')
       .windowByIndex(1);
   });
 
-  afterEach(function() {
+  afterEach(() => {
     return this.client.close();
   });
 
-  it('YVoiceInitialData', function() {
+  it('YVoiceInitialData', () => {
     return this.client
       .click('#getYVoiceInitialData')
-      .getValue('#getYVoiceInitialData-result').then(function(value) {
+      .getValue('#getYVoiceInitialData-result').then((value) => {
         var parsed = JSON.parse(value);
         assert.equal(parsed.length, 4);
 

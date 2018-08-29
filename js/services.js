@@ -1,20 +1,25 @@
 "use strict";
-var storage = require('electron-json-storage');
-var log = require('electron-log');
-var fs = require('fs');
-var ffi = require('ffi');
-var ref = require('ref');
-var StructType = require('ref-struct');
-var temp = require('temp').track();
-var path = require('path');
-var exec = require('child_process').exec;
-var WaveRecorder = require('wave-recorder');
-var app = require('electron').remote.app;
+exports.__esModule = true;
+var storage = require("electron-json-storage");
+var log = require("electron-log");
+var fs = require("fs");
+var ffi = require("ffi");
+var ref = require("ref");
+var StructType = require("ref-struct");
+var temp = require("temp");
+temp.track();
+var path = require("path");
+var child_process_1 = require("child_process");
+var WaveRecorder = require("wave-recorder");
+var electron_1 = require("electron");
+var angular = require("angular");
+var app = electron_1.remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 // angular service
 angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService', 'yvoiceModel'])
-    .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', function ($q, YVoice, YVoiceInitialData, MessageService) {
+    .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService',
+    function ($q, YVoice, YVoiceInitialData, MessageService) {
         function uniqId() {
             return ('0000' + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
         }
@@ -82,7 +87,8 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             }
         };
     }])
-    .factory('AquesService', ['$q', 'MessageService', 'LicenseService', function ($q, MessageService, LicenseService) {
+    .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
+    function ($q, MessageService, LicenseService) {
         var ptr_void = ref.refType(ref.types["void"]);
         var ptr_int = ref.refType(ref.types.int);
         var ptr_char = ref.refType(ref.types.char);
@@ -304,12 +310,13 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                                 encoding: 'binary'
                             };
                             var waverCmd = unpackedPath.replace(' ', '\\ ') + '/vendor/maquestalk1';
-                            exec('cat ' + info.path + ' | VOICE=' + phont.idVoice + ' SPEED=' + speed + ' ' + waverCmd, cmdOptions, function (err, stdout, stderr) {
+                            child_process_1.exec('cat ' + info.path + ' | VOICE=' + phont.idVoice + ' SPEED=' + speed + ' ' + waverCmd, cmdOptions, function (err, stdout, stderr) {
                                 if (err) {
                                     log.info('maquestalk1 failed. ' + err);
                                     d.reject(err);
                                     return;
                                 }
+                                // @ts-ignore
                                 var bufWav = new Buffer(stdout, 'binary');
                                 d.resolve(bufWav);
                             }).on('close', function (statusCode) {

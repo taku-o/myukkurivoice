@@ -1,11 +1,12 @@
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+import {Application} from 'spectron';
+import * as assert from 'assert';
+import * as temp from 'temp';
+temp.track();
 
-describe('settingsView', function() {
+describe('settingsView', () => {
   this.timeout(10000);
 
-  beforeEach(function() {
+  beforeEach(() => {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -15,45 +16,45 @@ describe('settingsView', function() {
     return this.app.start();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  it('settingsView seq-write-box option', function() {
+  it('settingsView seq-write-box option', () => {
     var client = this.app.client;
     return this.app.client
       .click('#switch-settings-view')
-      .isSelected('#seq-write-box .checkbox input').then(function(isSelected) {
-        client.isVisible('#seq-write-box .form-group').then(function(isVisible) {
+      .isSelected('#seq-write-box .checkbox input').then((isSelected) => {
+        client.isVisible('#seq-write-box .form-group').then((isVisible) => {
           assert.equal(isVisible, isSelected);
         });
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });
 
-  it('settingsView tutorial intro', function() {
+  it('settingsView tutorial intro', () => {
     return this.app.client
       .click('#switch-settings-view')
-      .isVisible('.introjs-tooltip').then(function(isVisible) {
+      .isVisible('.introjs-tooltip').then((isVisible) => {
         assert.ok(! isVisible);
       })
       .click('#tutorial')
-      .isVisible('.introjs-tooltip').then(function(isVisible) {
+      .isVisible('.introjs-tooltip').then((isVisible) => {
         assert.ok(isVisible);
       })
       // error check
-      .isExisting('tr.message-item.error').then(function(error) {
+      .isExisting('tr.message-item.error').then((error) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then(function(error) {
+      .isExisting('tr.message-item.syserror').then((error) => {
         assert.ok(! error);
       });
   });

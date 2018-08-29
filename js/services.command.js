@@ -1,4 +1,6 @@
 "use strict";
+exports.__esModule = true;
+var angular = require("angular");
 // angular command service
 angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
     .factory('CommandService', ['MessageService', 'YCommandInput', function (MessageService, YCommandInput) {

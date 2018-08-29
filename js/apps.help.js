@@ -1,7 +1,10 @@
 "use strict";
-var app = require('electron').remote.app;
-var ipcRenderer = require('electron').ipcRenderer;
-var log = require('electron-log');
+var _this = this;
+exports.__esModule = true;
+var electron_1 = require("electron");
+var app = electron_1.remote.app;
+var log = require("electron-log");
+var angular = require("angular");
 var homeDir = app.getPath('home');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
@@ -35,7 +38,7 @@ angular.module('yvoiceAppHelp', [])
             'help'
         ];
         // init
-        var ctrl = this;
+        var ctrl = _this;
         $scope.$location = $location;
         // event url hash changed
         $scope.$on('$locationChangeSuccess', function (event) {
@@ -50,7 +53,7 @@ angular.module('yvoiceAppHelp', [])
             $timeout(function () { $scope.$apply(); });
         });
         // shortcut
-        ipcRenderer.on('shortcut', function (event, action) {
+        electron_1.ipcRenderer.on('shortcut', function (event, action) {
             switch (action) {
                 case 'moveToPreviousHelp':
                     moveToPreviousHelp();
@@ -90,13 +93,13 @@ angular.module('yvoiceAppHelp', [])
         }
         // action
         ctrl.browser = function (url) {
-            require('electron').shell.openExternal(url);
+            electron_1.shell.openExternal(url);
         };
         ctrl.showItemInFolder = function (path) {
             var expanded = path.replace('$HOME', homeDir);
-            require('electron').shell.showItemInFolder(expanded);
+            electron_1.shell.showItemInFolder(expanded);
         };
         ctrl.showSystemWindow = function () {
-            ipcRenderer.send('showSystemWindow', 'system');
+            electron_1.ipcRenderer.send('showSystemWindow', 'system');
         };
     }]);

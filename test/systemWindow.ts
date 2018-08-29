@@ -1,11 +1,12 @@
-var Application = require('spectron').Application;
-var assert = require('assert');
-var temp = require('temp').track();
+import {Application} from 'spectron';
+import * as assert from 'assert';
+import * as temp from 'temp';
+temp.track();
 
-describe('systemWindow', function() {
+describe('systemWindow', () => {
   this.timeout(10000);
 
-  before(function() {
+  before(() => {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -15,29 +16,29 @@ describe('systemWindow', function() {
     return this.app.start();
   });
 
-  after(function() {
+  after(() => {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  beforeEach(function() {
+  beforeEach(() => {
     this.client = this.app.client;
     return this.client
       .click('#show-system-window')
       .windowByIndex(1);
   });
 
-  afterEach(function() {
+  afterEach(() => {
     return this.client.close();
   });
 
-  it('systemWindow load config', function() {
+  it('systemWindow load config', () => {
     return this.client
-      .getValue('#main-width').then(function(value) {
+      .getValue('#main-width').then((value) => {
         assert.ok(value);
       })
-      .getValue('#main-height').then(function(value) {
+      .getValue('#main-height').then((value) => {
         assert.ok(value);
       });
   });

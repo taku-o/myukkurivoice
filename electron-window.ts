@@ -6,7 +6,7 @@ import * as path from 'path';
 const openAboutWindow: any = require('about-window').default;
 
 // main window
-function showMainWindow() {
+function showMainWindow(): void {
   var myApp = this;
   if (this.mainWindow && !this.mainWindow.isDestroyed()) {
     this.mainWindow.show(); this.mainWindow.focus();
@@ -29,61 +29,61 @@ function showMainWindow() {
   this.mainWindow.loadURL('file://' + __dirname + '/contents-main.html');
 
   // shortcut
-  localShortcut.register(this.mainWindow, 'Command+Q', function() {
+  localShortcut.register(this.mainWindow, 'Command+Q', () => {
     app.quit();
   });
-  localShortcut.register(this.mainWindow, 'Command+P', function() {
+  localShortcut.register(this.mainWindow, 'Command+P', () => {
     myApp.mainWindow.webContents.send('shortcut', 'play');
   });
-  localShortcut.register(this.mainWindow, 'Command+W', function() {
+  localShortcut.register(this.mainWindow, 'Command+W', () => {
     myApp.mainWindow.webContents.send('shortcut', 'stop');
   });
-  localShortcut.register(this.mainWindow, 'Command+S', function() {
+  localShortcut.register(this.mainWindow, 'Command+S', () => {
     myApp.mainWindow.webContents.send('shortcut', 'record');
   });
-  localShortcut.register(this.mainWindow, 'Command+Up', function() {
+  localShortcut.register(this.mainWindow, 'Command+Up', () => {
     myApp.mainWindow.webContents.send('shortcut', 'moveToSource');
   });
-  localShortcut.register(this.mainWindow, 'Command+Down', function() {
+  localShortcut.register(this.mainWindow, 'Command+Down', () => {
     myApp.mainWindow.webContents.send('shortcut', 'moveToEncoded');
   });
-  localShortcut.register(this.mainWindow, 'Command+Right', function() {
+  localShortcut.register(this.mainWindow, 'Command+Right', () => {
     myApp.mainWindow.webContents.send('shortcut', 'encode');
   });
-  localShortcut.register(this.mainWindow, 'Command+D', function() {
+  localShortcut.register(this.mainWindow, 'Command+D', () => {
     myApp.mainWindow.webContents.send('shortcut', 'fromClipboard');
   });
-  localShortcut.register(this.mainWindow, 'Command+N', function() {
+  localShortcut.register(this.mainWindow, 'Command+N', () => {
     myApp.mainWindow.webContents.send('shortcut', 'putVoiceName');
   });
-  localShortcut.register(this.mainWindow, 'Command+Left', function() {
+  localShortcut.register(this.mainWindow, 'Command+Left', () => {
     myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig');
   });
-  localShortcut.register(this.mainWindow, 'Command+Shift+Left', function() {
+  localShortcut.register(this.mainWindow, 'Command+Shift+Left', () => {
     myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig');
   });
 
   // main window event
-  this.mainWindow.webContents.on('did-finish-load', function() {
+  this.mainWindow.webContents.on('did-finish-load', () => {
     myApp.mainWindow.show(); myApp.mainWindow.focus();
   });
-  this.mainWindow.on('close', function() {
+  this.mainWindow.on('close', () => {
     var bounds = myApp.mainWindow.getBounds();
     myApp.config.set('mainWindow', bounds);
   });
-  this.mainWindow.on('closed', function() {
+  this.mainWindow.on('closed', () => {
     myApp.mainWindow = null;
   });
-  this.mainWindow.on('unresponsive', function() {
+  this.mainWindow.on('unresponsive', () => {
     log.warn('main:event:unresponsive');
   });
-  this.mainWindow.webContents.on('crashed', function() {
+  this.mainWindow.webContents.on('crashed', () => {
     log.error('main:event:crashed');
   });
 }
 
 // help window
-function showHelpWindow() {
+function showHelpWindow(): void {
   var myApp = this;
   if (this.helpWindow && !this.helpWindow.isDestroyed()) {
     this.helpWindow.show(); this.helpWindow.focus();
@@ -106,36 +106,36 @@ function showHelpWindow() {
   this.helpWindow.loadURL('file://' + __dirname + '/contents-help.html');
 
   // shortcut
-  localShortcut.register(this.helpWindow, 'Command+Q', function() {
+  localShortcut.register(this.helpWindow, 'Command+Q', () => {
     app.quit();
   });
-  localShortcut.register(this.helpWindow, 'Command+W', function() {
+  localShortcut.register(this.helpWindow, 'Command+W', () => {
     if (myApp.helpWindow) { myApp.helpWindow.close(); }
   });
-  localShortcut.register(this.helpWindow, 'Up', function() {
+  localShortcut.register(this.helpWindow, 'Up', () => {
     if (myApp.helpWindow) { myApp.helpWindow.webContents.send('shortcut', 'moveToPreviousHelp'); }
   });
-  localShortcut.register(this.helpWindow, 'Down', function() {
+  localShortcut.register(this.helpWindow, 'Down', () => {
     if (myApp.helpWindow) { myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp'); }
   });
 
   // event
-  this.helpWindow.webContents.on('did-finish-load', function() {
+  this.helpWindow.webContents.on('did-finish-load', () => {
     myApp.helpWindow.show(); myApp.helpWindow.focus();
   });
-  this.helpWindow.on('closed', function() {
+  this.helpWindow.on('closed', () => {
     myApp.helpWindow = null;
   });
-  this.helpWindow.on('unresponsive', function() {
+  this.helpWindow.on('unresponsive', () => {
     log.warn('help:event:unresponsive');
   });
-  this.helpWindow.webContents.on('crashed', function() {
+  this.helpWindow.webContents.on('crashed', () => {
     log.error('help:event:crashed');
   });
 }
 
 // application config window
-function showSystemWindow() {
+function showSystemWindow(): void {
   var myApp = this;
   if (this.systemWindow && !this.systemWindow.isDestroyed()) {
     this.systemWindow.show(); this.systemWindow.focus();
@@ -158,30 +158,30 @@ function showSystemWindow() {
   this.systemWindow.loadURL('file://' + __dirname + '/contents-system.html');
 
   // shortcut
-  localShortcut.register(this.systemWindow, 'Command+Q', function() {
+  localShortcut.register(this.systemWindow, 'Command+Q', () => {
     app.quit();
   });
-  localShortcut.register(this.systemWindow, 'Command+W', function() {
+  localShortcut.register(this.systemWindow, 'Command+W', () => {
     if (myApp.systemWindow) { myApp.systemWindow.close(); }
   });
 
   // event
-  this.systemWindow.webContents.on('did-finish-load', function() {
+  this.systemWindow.webContents.on('did-finish-load', () => {
     myApp.systemWindow.show(); myApp.systemWindow.focus();
   });
-  this.systemWindow.on('closed', function() {
+  this.systemWindow.on('closed', () => {
     myApp.systemWindow = null;
   });
-  this.systemWindow.on('unresponsive', function() {
+  this.systemWindow.on('unresponsive', () => {
     log.warn('system:event:unresponsive');
   });
-  this.systemWindow.webContents.on('crashed', function() {
+  this.systemWindow.webContents.on('crashed', () => {
     log.error('system:event:crashed');
   });
 }
 
 // about application window
-function showAboutWindow() {
+function showAboutWindow(): void {
   var w = openAboutWindow({
     icon_path: path.join(__dirname, 'img/icon_128x128.png'),
     css_path: path.join(__dirname, 'css/about.css'),
@@ -189,12 +189,12 @@ function showAboutWindow() {
     open_devtools: false,
   });
   if (this.mainWindow) { w.setParentWindow(this.mainWindow); }
-  localShortcut.register(w, 'Command+Q', function() { app.quit(); });
-  localShortcut.register(w, 'Command+W', function() { w.close(); });
+  localShortcut.register(w, 'Command+Q', () => { app.quit(); });
+  localShortcut.register(w, 'Command+W', () => { w.close(); });
 }
 
 // application spec window
-function showSpecWindow() {
+function showSpecWindow(): void {
   var specWindow = new BrowserWindow({
     parent: this.mainWindow,
     modal: false,

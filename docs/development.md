@@ -67,6 +67,7 @@
   npm install --save-dev @types/node
   npm install --save-dev @types/intro.js
   npm install --save-dev @types/mocha
+  npm install --save-dev @types/webdriverio
 
   npm run tsc
 ```
