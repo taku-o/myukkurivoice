@@ -79,6 +79,7 @@ task :package do
       ' --ignore=".prettierrc.json" ' +
       ' --ignore=".stylelintrc.json" ' +
       ' --ignore=".travis.yml" ' +
+      ' --ignore=".ts$" ' +
       ' --ignore="^/node_modules/about-window/LICENSE.txt" ' +
       ' --ignore="^/node_modules/about-window/README.md" ' +
       ' --ignore="^/node_modules/angular-input-highlight/README.md" ' +
