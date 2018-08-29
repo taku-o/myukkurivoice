@@ -7,8 +7,7 @@
     "sourceMap": false,
   },
   "include": [
-    "electron-appcfg.ts",
-    "electron-window.ts",
+    "*.ts",
   ],
   "exclude": [
     "node_modules",

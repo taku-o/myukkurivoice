@@ -1,7 +1,7 @@
 'use strict';
 import * as crypto from 'crypto';
 import * as Config from 'electron-config';
-const globalAny:any = global;
+const globalAny: any = global;
 
 // load
 function loadAppConfig() {

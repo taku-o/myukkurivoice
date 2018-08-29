@@ -3,7 +3,7 @@ import {app,BrowserWindow} from 'electron';
 import * as localShortcut from 'electron-localshortcut';
 import * as log from 'electron-log';
 import * as path from 'path';
-const openAboutWindow:any = require('about-window').default;
+const openAboutWindow: any = require('about-window').default;
 
 // main window
 function showMainWindow() {
