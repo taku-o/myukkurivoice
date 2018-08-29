@@ -212,7 +212,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     }
     function clearEncodedSelection() {
       $scope.encodedHighlight['#619FFF'] = '';
-      var textarea = document.getElementById('encoded') as HTMLInputElement;;
+      var textarea = document.getElementById('encoded') as HTMLInputElement;
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
     }

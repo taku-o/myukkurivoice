@@ -8,7 +8,8 @@
     "test_rebuild": "sh bin/test_rebuild.sh",
     "packaging": "sh bin/packaging.sh",
     "release": "sh bin/release.sh",
-    "lint": "eslint *.js js/*.js test/*.js"
+    "lint": "eslint *.ts js/*.ts test/*.ts",
+    "tsc": "tsc"
   },
   "keywords": [],
   "homepage": "https://github.com/taku-o/myukkurivoice",

@@ -54,10 +54,12 @@
 
 ```
   npm install -g eslint
+  npm install -g typescript-eslint-parser
   npm run lint
 ```
 
 ## typescript
+* tscコマンドを実行してタイプスクリプトをビルドします。
 
 ```
   npm install -g typescript
@@ -65,6 +67,8 @@
   npm install --save-dev @types/node
   npm install --save-dev @types/intro.js
   npm install --save-dev @types/mocha
+
+  npm run tsc
 ```
 
 ## using devtron
