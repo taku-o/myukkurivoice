@@ -1,3 +1,4 @@
+"use strict";
 var storage = require('electron-json-storage');
 var log = require('electron-log');
 var fs = require('fs');

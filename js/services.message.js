@@ -1,3 +1,4 @@
+"use strict";
 var path = require('path');
 // angular message service
 angular.module('yvoiceMessageService', [])

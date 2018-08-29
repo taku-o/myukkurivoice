@@ -1,3 +1,4 @@
+"use strict";
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer;
 var log = require('electron-log');

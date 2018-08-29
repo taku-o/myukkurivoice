@@ -1,3 +1,4 @@
+"use strict";
 var exec = require('child_process').exec;
 var cryptico = require('cryptico.js');
 var app = require('electron').remote.app;

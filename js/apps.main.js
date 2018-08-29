@@ -1,3 +1,4 @@
+"use strict";
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer;
 var clipboard = require('electron').clipboard;
@@ -202,7 +203,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         function clearEncodedSelection() {
             $scope.encodedHighlight['#619FFF'] = '';
             var textarea = document.getElementById('encoded');
-            ;
             textarea.selectionStart = 0;
             textarea.selectionEnd = 0;
         }

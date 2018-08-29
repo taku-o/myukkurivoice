@@ -1,3 +1,4 @@
+"use strict";
 // angular intro service
 angular.module('yvoiceIntroService', [])
     .factory('IntroService', function () {

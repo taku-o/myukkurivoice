@@ -1,3 +1,4 @@
+"use strict";
 var ipcRenderer = require('electron').ipcRenderer;
 var log = require('electron-log');
 // application settings

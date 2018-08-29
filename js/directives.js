@@ -1,3 +1,4 @@
+"use strict";
 // (UI dependecy contains)
 var ipcRenderer = require('electron').ipcRenderer;
 // angular directive

@@ -1,3 +1,4 @@
+"use strict";
 // application spec app
 angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
     .config(['$qProvider', function ($qProvider) {

@@ -1,3 +1,4 @@
+"use strict";
 // angular command service
 angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
     .factory('CommandService', ['MessageService', 'YCommandInput', function (MessageService, YCommandInput) {
