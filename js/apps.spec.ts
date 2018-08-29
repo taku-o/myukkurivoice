@@ -9,12 +9,12 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       'DataService', 'MasterService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
-      ($scope,
+    function($scope,
       YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput,
       LicenseService,
       DataService, MasterService,
       AquesService, AudioService1, AudioService2, AudioSourceService,
-      AppUtilService, SeqFNameService) => {
+      AppUtilService, SeqFNameService) {
 
     // init
     var ctrl = this;

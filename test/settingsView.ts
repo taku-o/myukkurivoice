@@ -3,10 +3,10 @@ import * as assert from 'assert';
 import * as temp from 'temp';
 temp.track();
 
-describe('settingsView', () => {
+describe('settingsView', function() {
   this.timeout(10000);
 
-  beforeEach(() => {
+  beforeEach(function() {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -16,13 +16,13 @@ describe('settingsView', () => {
     return this.app.start();
   });
 
-  afterEach(() => {
+  afterEach(function() {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  it('settingsView seq-write-box option', () => {
+  it('settingsView seq-write-box option', function() {
     var client = this.app.client;
     return this.app.client
       .click('#switch-settings-view')
@@ -40,7 +40,7 @@ describe('settingsView', () => {
       });
   });
 
-  it('settingsView tutorial intro', () => {
+  it('settingsView tutorial intro', function() {
     return this.app.client
       .click('#switch-settings-view')
       .isVisible('.introjs-tooltip').then((isVisible) => {

@@ -3,10 +3,10 @@ import * as assert from 'assert';
 import * as temp from 'temp';
 temp.track();
 
-describe('helpWindow', () => {
+describe('helpWindow', function() {
   this.timeout(10000);
 
-  before(() => {
+  before(function() {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -16,24 +16,24 @@ describe('helpWindow', () => {
     return this.app.start();
   });
 
-  after(() => {
+  after(function() {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  beforeEach(() => {
+  beforeEach(function() {
     this.client = this.app.client;
     return this.client
       .click('#help')
       .windowByIndex(1);
   });
 
-  afterEach(() => {
+  afterEach(function() {
     return this.client.close();
   });
 
-  it('helpWindow menu list', () => {
+  it('helpWindow menu list', function() {
     return this.client
       .elements('.nav-group-item.help-item').then((response) => {
         assert.equal(response.value.length, 8);
@@ -43,7 +43,7 @@ describe('helpWindow', () => {
       });
   });
 
-  it('helpWindow menu click', () => {
+  it('helpWindow menu click', function() {
     return this.client
       .isVisible('#about-pane').then((isVisible) => {
         assert.ok(isVisible);

@@ -3,10 +3,10 @@ import * as assert from 'assert';
 import * as temp from 'temp';
 temp.track();
 
-describe('specWindow-service-MessageService', () => {
+describe('specWindow-service-MessageService', function() {
   this.timeout(10000);
 
-  before(() => {
+  before(function() {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -16,25 +16,25 @@ describe('specWindow-service-MessageService', () => {
     return this.app.start();
   });
 
-  after(() => {
+  after(function() {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  beforeEach(() => {
+  beforeEach(function() {
     this.client = this.app.client;
     return this.client
       .click('#show-spec-window')
       .windowByIndex(1);
   });
 
-  afterEach(() => {
+  afterEach(function() {
     return this.client.close();
   });
 
   // TODO replace
-  it('MessageService', () => {
+  it('MessageService', function() {
     return this.client
       .click('#get-phont-list');
   });

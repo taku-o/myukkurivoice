@@ -3,10 +3,10 @@ import * as assert from 'assert';
 import * as temp from 'temp';
 temp.track();
 
-describe('specWindow-model-YVoiceInitialData', () => {
+describe('specWindow-model-YVoiceInitialData', function() {
   this.timeout(10000);
 
-  before(() => {
+  before(function() {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -16,24 +16,24 @@ describe('specWindow-model-YVoiceInitialData', () => {
     return this.app.start();
   });
 
-  after(() => {
+  after(function() {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  beforeEach(() => {
+  beforeEach(function() {
     this.client = this.app.client;
     return this.client
       .click('#show-spec-window')
       .windowByIndex(1);
   });
 
-  afterEach(() => {
+  afterEach(function() {
     return this.client.close();
   });
 
-  it('YVoiceInitialData', () => {
+  it('YVoiceInitialData', function() {
     return this.client
       .click('#getYVoiceInitialData')
       .getValue('#getYVoiceInitialData-result').then((value) => {

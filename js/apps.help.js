@@ -1,5 +1,4 @@
 "use strict";
-var _this = this;
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer;
 var shell = require('electron').shell;
@@ -16,7 +15,8 @@ angular.module('yvoiceAppHelp', [])
     .config(['$qProvider', function ($qProvider) {
         $qProvider.errorOnUnhandledRejections(false);
     }])
-    .controller('HelpController', ['$scope', '$timeout', '$location', function ($scope, $timeout, $location) {
+    .controller('HelpController', ['$scope', '$timeout', '$location',
+    function ($scope, $timeout, $location) {
         var menuList = [
             'about',
             'voicecode',
@@ -37,7 +37,7 @@ angular.module('yvoiceAppHelp', [])
             'help'
         ];
         // init
-        var ctrl = _this;
+        var ctrl = this;
         $scope.$location = $location;
         // event url hash changed
         $scope.$on('$locationChangeSuccess', function (event) {

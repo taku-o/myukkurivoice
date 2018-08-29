@@ -1,5 +1,4 @@
 "use strict";
-var _this = this;
 var ipcRenderer = require('electron').ipcRenderer;
 var log = require('electron-log');
 // application settings
@@ -18,7 +17,7 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
     .controller('SystemController', ['$scope', '$timeout', 'LicenseService',
     function ($scope, $timeout, LicenseService) {
         // init
-        var ctrl = _this;
+        var ctrl = this;
         $timeout(function () { $scope.$apply(); });
         $scope.appCfg = appCfg;
         $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted ?

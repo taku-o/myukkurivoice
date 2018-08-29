@@ -17,7 +17,8 @@ angular.module('yvoiceAppHelp', [])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  .controller('HelpController', ['$scope', '$timeout', '$location', ($scope, $timeout, $location) => {
+  .controller('HelpController', ['$scope', '$timeout', '$location',
+                         function($scope, $timeout, $location) {
 
     var menuList = [
       'about',

@@ -25,9 +25,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'AquesService',
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
-     ($scope, $timeout, $q, MessageService, DataService, MasterService, AquesService,
+     function($scope, $timeout, $q, MessageService, DataService, MasterService, AquesService,
       audioServVer1, audioServVer2, AudioSourceService, SeqFNameService, AppUtilService, CommandService, IntroService,
-      YInput, YInputInitialData) => {
+      YInput, YInputInitialData) {
 
     // event listener
     $scope.$on('message', (event, message) => {

@@ -1,28 +1,27 @@
 "use strict";
-var _this = this;
 exports.__esModule = true;
 var spectron_1 = require("spectron");
 var assert = require("assert");
 var temp = require("temp");
 temp.track();
 describe('mainWindow', function () {
-    _this.timeout(10000);
+    this.timeout(10000);
     beforeEach(function () {
         var fsprefix = '_myubo_test' + Date.now().toString(36);
         var dirPath = temp.mkdirSync(fsprefix);
-        _this.app = new spectron_1.Application({
+        this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
             env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
         });
-        return _this.app.start();
+        return this.app.start();
     });
     afterEach(function () {
-        if (_this.app && _this.app.isRunning()) {
-            return _this.app.stop();
+        if (this.app && this.app.isRunning()) {
+            return this.app.stop();
         }
     });
     it('open mainWindow at startup', function () {
-        return _this.app.client
+        return this.app.client
             .getWindowCount().then(function (count) {
             assert.equal(count, 1);
         })
@@ -45,7 +44,7 @@ describe('mainWindow', function () {
     });
     // TODO multivoice
     it('mainWindow input', function () {
-        return _this.app.client
+        return this.app.client
             // encode
             .setValue('#source', 'test')
             .click('#encode')
@@ -85,7 +84,7 @@ describe('mainWindow', function () {
         });
     });
     it('mainWindow phont selection', function () {
-        return _this.app.client
+        return this.app.client
             .elements('#phont option').then(function (response) {
             assert.equal(response.value.length, 26);
         });
@@ -97,7 +96,7 @@ describe('mainWindow', function () {
     // TODO filter
     it('mainWindow voice config', function () {
         var voiceConfigLength = 999;
-        return _this.app.client
+        return this.app.client
             // filter
             .elements('.voice-config-item').then(function (response) {
             assert.ok(response.value.length > 0);
@@ -128,7 +127,7 @@ describe('mainWindow', function () {
     });
     // TODO multivoice
     it('mainWindow play', function () {
-        return _this.app.client
+        return this.app.client
             .setValue('#encoded', "テ'_スト")
             .click('#play')
             .waitForText('#duration', 2000)
@@ -148,8 +147,8 @@ describe('mainWindow', function () {
     //it('mainWindow play', () => {
     //});
     it('mainWindow alwaysOnTop', function () {
-        var app = _this.app;
-        return _this.app.client
+        var app = this.app;
+        return this.app.client
             .getAttribute('#always-on-top-btn span.icon', 'class').then(function (classes) {
             assert.ok(!classes.includes('active'));
             app.browserWindow.isAlwaysOnTop().then(function (isAlwaysOnTop) {
@@ -179,7 +178,7 @@ describe('mainWindow', function () {
         });
     });
     it('mainWindow help', function () {
-        return _this.app.client
+        return this.app.client
             .click('#help')
             .getWindowCount().then(function (count) {
             assert.equal(count, 2);
@@ -198,7 +197,7 @@ describe('mainWindow', function () {
         });
     });
     it('mainWindow shortcut intro', function () {
-        return _this.app.client
+        return this.app.client
             .isVisible('.introjs-tooltip').then(function (isVisible) {
             assert.ok(!isVisible);
         })
@@ -215,7 +214,7 @@ describe('mainWindow', function () {
         });
     });
     it('mainWindow tutorial intro', function () {
-        return _this.app.client
+        return this.app.client
             .isVisible('.introjs-tooltip').then(function (isVisible) {
             assert.ok(!isVisible);
         })
@@ -232,7 +231,7 @@ describe('mainWindow', function () {
         });
     });
     it('mainWindow switchSettingsView', function () {
-        return _this.app.client
+        return this.app.client
             .click('#switch-settings-view')
             .isVisible('#main-pane').then(function (isVisible) {
             assert.ok(!isVisible);

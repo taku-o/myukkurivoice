@@ -3,10 +3,10 @@ import * as assert from 'assert';
 import * as temp from 'temp';
 temp.track();
 
-describe('mainWindow', () => {
+describe('mainWindow', function() {
   this.timeout(10000);
 
-  beforeEach(() => {
+  beforeEach(function() {
     var fsprefix = '_myubo_test' + Date.now().toString(36);
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
@@ -16,13 +16,13 @@ describe('mainWindow', () => {
     return this.app.start();
   });
 
-  afterEach(() => {
+  afterEach(function() {
     if (this.app && this.app.isRunning()) {
       return this.app.stop();
     }
   });
 
-  it('open mainWindow at startup', () => {
+  it('open mainWindow at startup', function() {
     return this.app.client
       .getWindowCount().then((count) => {
         assert.equal(count, 1);
@@ -46,7 +46,7 @@ describe('mainWindow', () => {
   });
 
   // TODO multivoice
-  it('mainWindow input', () => {
+  it('mainWindow input', function() {
     return this.app.client
       // encode
       .setValue('#source', 'test')
@@ -87,7 +87,7 @@ describe('mainWindow', () => {
       });
   });
 
-  it('mainWindow phont selection', () => {
+  it('mainWindow phont selection', function() {
     return this.app.client
       .elements('#phont option').then((response) => {
         assert.equal(response.value.length, 26);
@@ -99,7 +99,7 @@ describe('mainWindow', () => {
   // TODO delete config
   // TODO copy config
   // TODO filter
-  it('mainWindow voice config', () => {
+  it('mainWindow voice config', function() {
     var voiceConfigLength = 999;
     return this.app.client
       // filter
@@ -132,7 +132,7 @@ describe('mainWindow', () => {
   });
 
   // TODO multivoice
-  it('mainWindow play', () => {
+  it('mainWindow play', function() {
     return this.app.client
       .setValue('#encoded', "テ'_スト")
       .click('#play')
@@ -154,7 +154,7 @@ describe('mainWindow', () => {
   //it('mainWindow play', () => {
   //});
 
-  it('mainWindow alwaysOnTop', () => {
+  it('mainWindow alwaysOnTop', function() {
     var app = this.app;
     return this.app.client
       .getAttribute('#always-on-top-btn span.icon', 'class').then((classes) => {
@@ -186,7 +186,7 @@ describe('mainWindow', () => {
       });
   });
 
-  it('mainWindow help', () => {
+  it('mainWindow help', function() {
     return this.app.client
       .click('#help')
       .getWindowCount().then((count) => {
@@ -206,7 +206,7 @@ describe('mainWindow', () => {
       });
   });
 
-  it('mainWindow shortcut intro', () => {
+  it('mainWindow shortcut intro', function() {
     return this.app.client
       .isVisible('.introjs-tooltip').then((isVisible) => {
         assert.ok(! isVisible);
@@ -224,7 +224,7 @@ describe('mainWindow', () => {
       });
   });
 
-  it('mainWindow tutorial intro', () => {
+  it('mainWindow tutorial intro', function() {
     return this.app.client
       .isVisible('.introjs-tooltip').then((isVisible) => {
         assert.ok(! isVisible);
@@ -242,7 +242,7 @@ describe('mainWindow', () => {
       });
   });
 
-  it('mainWindow switchSettingsView', () => {
+  it('mainWindow switchSettingsView', function() {
     return this.app.client
       .click('#switch-settings-view')
       .isVisible('#main-pane').then((isVisible) => {

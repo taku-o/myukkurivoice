@@ -1,5 +1,4 @@
 "use strict";
-var _this = this;
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer;
 var clipboard = require('electron').clipboard;
@@ -138,7 +137,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         var AudioService = appCfg.audioServVer == 'html5audio' ? audioServVer1 : audioServVer2;
         $scope.appCfg = appCfg;
         // init
-        var ctrl = _this;
+        var ctrl = this;
         $scope.display = 'main';
         $scope.phontList = MasterService.getPhontList();
         $scope.aq10BasList = [{ name: 'F1E', id: 0 }, { name: 'F2E', id: 1 }, { name: 'M1E', id: 2 }];
