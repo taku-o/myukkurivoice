@@ -8,9 +8,7 @@
   },
   "include": [
     "*.ts",
-    "js/service.*.ts",
-    "js/service.ts",
-    "js/directives.ts",
+    "js/*.ts",
     "test/*.ts",
   ],
   "exclude": [
