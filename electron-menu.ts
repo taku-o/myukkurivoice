@@ -61,66 +61,48 @@ function initAppMenu(options): void {
         {
           label: 'メッセージ入力欄に移動',
           accelerator: 'Command+Up',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'moveToSource');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'moveToSource'); },
         },
         {
           label: '音記号列入力欄に移動',
           accelerator: 'Command+Down',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'moveToEncoded');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'moveToEncoded'); },
         },
         {type: 'separator'},
         {
           label: '音記号列に変換',
           accelerator: 'Command+Right',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'encode');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'encode'); },
         },
         {
           label: '入力をクリア',
-          click() {
-            myApp.mainWindow.webContents.send('menu', 'clear');
-          },
+          click() { myApp.mainWindow.webContents.send('menu', 'clear'); },
         },
         {
           label: 'クリップボードからコピー',
           accelerator: 'Command+D',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'fromClipboard');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'fromClipboard'); },
         },
         {
           label: '選択中の声種プリセットを挿入',
           accelerator: 'Command+N',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'putVoiceName');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'putVoiceName'); },
         },
         {type: 'separator'},
         {
           label: '音声の再生',
           accelerator: 'Command+P',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'play');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'play'); },
         },
         {
           label: '再生停止',
           accelerator: 'Command+W',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'stop');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'stop'); },
         },
         {
           label: '音声の保存',
           accelerator: 'Command+S',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'record');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'record'); },
         },
       ],
     },
@@ -129,50 +111,36 @@ function initAppMenu(options): void {
       submenu: [
         {
           label: '新規作成',
-          click() {
-            myApp.mainWindow.webContents.send('menu', 'plus');
-          },
+          click() { myApp.mainWindow.webContents.send('menu', 'plus'); },
         },
         {
           label: '複製',
-          click() {
-            myApp.mainWindow.webContents.send('menu', 'copy');
-          },
+          click() { myApp.mainWindow.webContents.send('menu', 'copy'); },
         },
         {
           label: '削除',
-          click() {
-            myApp.mainWindow.webContents.send('menu', 'minus');
-          },
+          click() { myApp.mainWindow.webContents.send('menu', 'minus'); },
         },
         {type: 'separator'},
         {
           label: '保存',
-          click() {
-            myApp.mainWindow.webContents.send('menu', 'save');
-          },
+          click() { myApp.mainWindow.webContents.send('menu', 'save'); },
         },
         {type: 'separator'},
         {
           label: '次の設定に切り替え',
           accelerator: 'Command+Left',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig'); },
         },
         {
           label: '前の設定に切り替え',
           accelerator: 'Command+Shift+Left',
-          click() {
-            myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig');
-          },
+          click() { myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig'); },
         },
         {type: 'separator'},
         {
           label: 'ボイス設定オールリセット',
-          click() {
-            myApp.mainWindow.webContents.send('menu', 'reset');
-          },
+          click() { myApp.mainWindow.webContents.send('menu', 'reset'); },
         },
       ],
     },
@@ -227,15 +195,11 @@ function initAppMenu(options): void {
         {type: 'separator'},
         {
           label: 'ショートカットキー',
-          click() {
-            myApp.mainWindow.webContents.send('menu', 'shortcut');
-          },
+          click() { myApp.mainWindow.webContents.send('menu', 'shortcut'); },
         },
         {
           label: 'チュートリアル',
-          click() {
-            myApp.mainWindow.webContents.send('menu', 'tutorial');
-          },
+          click() { myApp.mainWindow.webContents.send('menu', 'tutorial'); },
         },
         {type: 'separator'},
         {
