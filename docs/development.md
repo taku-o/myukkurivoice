@@ -57,6 +57,15 @@
   npm run lint
 ```
 
+## typescript
+
+```
+  npm install -g typescript
+  npm install --save-dev @types/angular
+  npm install --save-dev @types/node
+  npm install --save-dev @types/intro.js
+```
+
 ## using devtron
 * devtronを使用するには、デバッグモードで次のコマンドを実行します。
 
