@@ -9,7 +9,9 @@
     "packaging": "sh bin/packaging.sh",
     "release": "sh bin/release.sh",
     "lint": "eslint *.ts js/*.ts test/*.ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "app": "electron .",
+    "debug": "DEBUG=1 electron ."
   },
   "keywords": [],
   "homepage": "https://github.com/taku-o/myukkurivoice",

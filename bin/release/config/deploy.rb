@@ -55,9 +55,9 @@ task :package do
     execute "cd #{application}; electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor " +
       ' --ignore="^/MYukkuriVoice-darwin-x64" ' +
       ' --ignore="^/README.md" ' +
-      ' --ignore="^/.git" ' +
-      ' --ignore="^/.gitignore" ' +
-      ' --ignore="^/.gitmodules" ' +
+      ' --ignore="^/\.git" ' +
+      ' --ignore="^/\.gitignore" ' +
+      ' --ignore="^/\.gitmodules" ' +
       ' --ignore="^/bin" ' +
       ' --ignore="^/docs" ' +
       ' --ignore="^/icns" ' +
@@ -69,6 +69,8 @@ task :package do
       ' --ignore="^/vendor/aqtk2-mac" ' +
       ' --ignore="^/js/apps.spec.js" ' +    # is test code
       ' --ignore="^/contents-spec.html" ' + # is test code
+      ' --ignore="^/.+\.ts" ' +
+      ' --ignore="^/js/.+\.ts" ' +
       ' --ignore=".DS_Store" ' +
       ' --ignore=".babelrc" ' +
       ' --ignore=".editorconfig" ' +
@@ -79,7 +81,6 @@ task :package do
       ' --ignore=".prettierrc.json" ' +
       ' --ignore=".stylelintrc.json" ' +
       ' --ignore=".travis.yml" ' +
-      ' --ignore=".ts$" ' +
       ' --ignore="^/node_modules/about-window/LICENSE.txt" ' +
       ' --ignore="^/node_modules/about-window/README.md" ' +
       ' --ignore="^/node_modules/angular-input-highlight/README.md" ' +
