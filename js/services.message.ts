@@ -5,7 +5,7 @@ angular.module('yvoiceMessageService', [])
   .factory('MessageService', ['$rootScope', ($rootScope) => {
     return {
         action: function(message): void {
-        var post: myv.IMessage = {
+        var post: yubo.IMessage = {
           created: new Date(),
           body: message,
           type: 'action',
@@ -14,7 +14,7 @@ angular.module('yvoiceMessageService', [])
       },
       record: function(message, wavFilePath): void {
         var wavFileName = path.basename(wavFilePath);
-        var post: myv.IRecordMessage = {
+        var post: yubo.IRecordMessage = {
           created: new Date(),
           body: message,
           wavFilePath: wavFilePath,
@@ -25,7 +25,7 @@ angular.module('yvoiceMessageService', [])
         $rootScope.$broadcast('wavGenerated', post);
       },
       info: function(message): void {
-        var post: myv.IMessage = {
+        var post: yubo.IMessage = {
           created: new Date(),
           body: message,
           type: 'info',
@@ -33,7 +33,7 @@ angular.module('yvoiceMessageService', [])
         $rootScope.$broadcast('message', post);
       },
       error: function(message): void {
-        var post: myv.IMessage = {
+        var post: yubo.IMessage = {
           created: new Date(),
           body: message,
           type: 'error',
@@ -44,7 +44,7 @@ angular.module('yvoiceMessageService', [])
         if (err) {
           message = message + err.message;
         }
-        var post: myv.IMessage = {
+        var post: yubo.IMessage = {
           created: new Date(),
           body: message,
           type: 'syserror',
@@ -54,7 +54,7 @@ angular.module('yvoiceMessageService', [])
     };
   }]);
 
-namespace myv {
+namespace yubo {
   export interface IMessage {
     readonly created: Date;
     readonly body: string;

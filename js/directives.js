@@ -47,8 +47,7 @@ angular.module('yvoiceDirective', [])
             var reader = new FileReader();
             reader.onload = function (loadedFile) {
                 // yinput.source or yinput.encoded
-                // @ts-ignore
-                scope.yinput[el.id] = loadedFile.target.result;
+                scope.yinput[el.id] = reader.result;
                 scope.$apply();
             };
             var file = e.dataTransfer.files[0];

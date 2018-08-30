@@ -25,7 +25,9 @@
   },
   "overrides": {
     "files": [
-      "js/services.message.ts"
+      "js/apps.main.ts",
+      "js/services.message.ts",
+      "js/models.ts"
     ],
     "parser": "typescript-eslint-parser",
     "rules": {

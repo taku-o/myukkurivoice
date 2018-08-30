@@ -829,3 +829,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
   }]);
 
+namespace yubo {
+  export interface IScope extends ng.IScope {
+    yinput: yubo.YInput;
+  }
+}

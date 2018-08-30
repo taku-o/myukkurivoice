@@ -155,3 +155,10 @@ angular.module('yvoiceModel', [])
       text: '',
     };
   });
+
+namespace yubo {
+  export interface YInput {
+    source: string;
+    encoded: string;
+  }
+}
