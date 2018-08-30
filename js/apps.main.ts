@@ -317,8 +317,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       var speed = yvoice.speed;
-      // @ts-ignore
-      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+      if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
         yvoice.writeMarginMs = 150;
       }
 
@@ -518,8 +517,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       var speed = yvoice.speed;
-      // @ts-ignore
-      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+      if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
         yvoice.writeMarginMs = 150;
       }
       var waveOptions = {
@@ -583,8 +581,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       var speed = yvoice.speed;
-      // @ts-ignore
-      if (! Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs)) {
+      if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
         yvoice.writeMarginMs = 150;
       }
       var waveOptions = {

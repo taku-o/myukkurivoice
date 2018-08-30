@@ -42,7 +42,6 @@ angular.module('yvoiceAppHelp', [])
         // event url hash changed
         $scope.$on('$locationChangeSuccess', function (event) {
             var hash = $location.hash();
-            // @ts-ignore
             if (menuList.includes(hash)) {
                 $scope.display = hash;
             }
