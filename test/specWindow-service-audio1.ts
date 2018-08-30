@@ -41,7 +41,7 @@ describe('specWindow-service-AudioService1', function() {
       .setValue('#play-result-1', '')
       .click('#play1-aqver1')
       .waitForValue('#play-result-1', 5000)
-      .getValue('#play-result-1').then((value) => {
+      .getValue('#play-result-1').then((value: string) => {
         assert.equal(value, 'ok');
       })
       // play aquestalk2
@@ -49,7 +49,7 @@ describe('specWindow-service-AudioService1', function() {
       .setValue('#play-result-1', '')
       .click('#play1-aqver2')
       .waitForValue('#play-result-1', 5000)
-      .getValue('#play-result-1').then((value) => {
+      .getValue('#play-result-1').then((value: string) => {
         assert.equal(value, 'ok');
       })
       // play aquestalk10
@@ -57,7 +57,7 @@ describe('specWindow-service-AudioService1', function() {
       .setValue('#play-result-1', '')
       .click('#play1-aqver10')
       .waitForValue('#play-result-1', 5000)
-      .getValue('#play-result-1').then((value) => {
+      .getValue('#play-result-1').then((value: string) => {
         assert.equal(value, 'ok');
       })
       // record aquestalk1
@@ -66,7 +66,7 @@ describe('specWindow-service-AudioService1', function() {
       .setValue('#record-result-1', '')
       .click('#record1-aqver1')
       .waitForValue('#record-result-1', 5000)
-      .getValue('#record-result-1').then((value) => {
+      .getValue('#record-result-1').then((value: string) => {
         assert.equal(value, 'ok');
       })
       // record aquestalk2
@@ -75,7 +75,7 @@ describe('specWindow-service-AudioService1', function() {
       .setValue('#record-result-1', '')
       .click('#record1-aqver2')
       .waitForValue('#record-result-1', 5000)
-      .getValue('#record-result-1').then((value) => {
+      .getValue('#record-result-1').then((value: string) => {
         assert.equal(value, 'ok');
       })
       // record aquestalk10
@@ -84,7 +84,7 @@ describe('specWindow-service-AudioService1', function() {
       .setValue('#record-result-1', '')
       .click('#record1-aqver10')
       .waitForValue('#record-result-1', 5000)
-      .getValue('#record-result-1').then((value) => {
+      .getValue('#record-result-1').then((value: string) => {
         assert.equal(value, 'ok');
       });
       // TODO tmp file

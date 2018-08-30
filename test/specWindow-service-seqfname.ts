@@ -39,7 +39,7 @@ describe('specWindow-service-SeqFNameService', function() {
       .setValue('#prefix', 'foo')
       .setValue('#num', '200')
       .click('#next-fname')
-      .getValue('#next-fname-result').then((value) => {
+      .getValue('#next-fname-result').then((value: string) => {
         assert.equal(value, 'foo0200.wav');
       });
   });

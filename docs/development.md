@@ -21,6 +21,9 @@
 
 ```
   DEBUG=1 electron .
+
+  # or this command
+  npm run debug
 ```
 
 ## パッケージング

@@ -26,16 +26,16 @@ describe('settingsView', function() {
     var client = this.app.client;
     return this.app.client
       .click('#switch-settings-view')
-      .isSelected('#seq-write-box .checkbox input').then((isSelected) => {
-        client.isVisible('#seq-write-box .form-group').then((isVisible) => {
+      .isSelected('#seq-write-box .checkbox input').then((isSelected: boolean) => {
+        client.isVisible('#seq-write-box .form-group').then((isVisible: boolean) => {
           assert.equal(isVisible, isSelected);
         });
       })
       // error check
-      .isExisting('tr.message-item.error').then((error) => {
+      .isExisting('tr.message-item.error').then((error: boolean) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then((error) => {
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
       });
   });
@@ -43,18 +43,18 @@ describe('settingsView', function() {
   it('settingsView tutorial intro', function() {
     return this.app.client
       .click('#switch-settings-view')
-      .isVisible('.introjs-tooltip').then((isVisible) => {
+      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
         assert.ok(! isVisible);
       })
       .click('#tutorial')
-      .isVisible('.introjs-tooltip').then((isVisible) => {
+      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
         assert.ok(isVisible);
       })
       // error check
-      .isExisting('tr.message-item.error').then((error) => {
+      .isExisting('tr.message-item.error').then((error: boolean) => {
         assert.ok(! error);
       })
-      .isExisting('tr.message-item.syserror').then((error) => {
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
       });
   });

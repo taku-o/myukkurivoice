@@ -39,14 +39,14 @@ describe('specWindow-service-LicenseService', function() {
       .setValue('#pass-phrase', 'hogehoge')
       .setValue('#plain-key', 'this is a plain key')
       .click('#encrypt')
-      .getValue('#encrypted-key').then((value) => {
+      .getValue('#encrypted-key').then((value: string) => {
         assert.ok(value);
         //console.log('tested encrypted key is :'+ value);
       })
       // decrypt
       .setValue('#plain-key', '')
       .click('#decrypt')
-      .getValue('#plain-key').then((value) => {
+      .getValue('#plain-key').then((value: string) => {
         assert.equal(value, 'this is a plain key');
       })
       // consumerKey aquesTalk10DevKey
@@ -55,10 +55,10 @@ describe('specWindow-service-LicenseService', function() {
       .setValue('#consumer-key-err', '')
       .click('#consumer-key')
       .waitForValue('#consumer-key-result', 5000)
-      .getValue('#consumer-key-result').then((value) => {
+      .getValue('#consumer-key-result').then((value: string) => {
         assert.ok(value);
       })
-      .getValue('#consumer-key-err').then((value) => {
+      .getValue('#consumer-key-err').then((value: string) => {
         assert.ok(! value);
       })
       // consumerKey unknown key
@@ -67,10 +67,10 @@ describe('specWindow-service-LicenseService', function() {
       .setValue('#consumer-key-err', '')
       .click('#consumer-key')
       .waitForValue('#consumer-key-done', 5000)
-      .getValue('#consumer-key-result').then((value) => {
+      .getValue('#consumer-key-result').then((value: string) => {
         assert.ok(! value);
       })
-      .getValue('#consumer-key-err').then((value) => {
+      .getValue('#consumer-key-err').then((value: string) => {
         assert.ok(! value);
       });
   });

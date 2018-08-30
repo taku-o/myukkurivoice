@@ -35,10 +35,10 @@ describe('systemWindow', function() {
 
   it('systemWindow load config', function() {
     return this.client
-      .getValue('#main-width').then((value) => {
+      .getValue('#main-width').then((value: number) => {
         assert.ok(value);
       })
-      .getValue('#main-height').then((value) => {
+      .getValue('#main-height').then((value: number) => {
         assert.ok(value);
       });
   });

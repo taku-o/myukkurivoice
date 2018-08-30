@@ -38,19 +38,19 @@ describe('specWindow-service-AppUtilService', function() {
       // disableRhythm
       .setValue('#rhythm-text', 'test\' val/ue')
       .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then((value) => {
+      .getValue('#disable-rhythm-result').then((value: string) => {
         assert.equal(value, 'test value');
       })
       // disableRhythm not contains
       .setValue('#rhythm-text', 'this is not a rhythm text')
       .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then((value) => {
+      .getValue('#disable-rhythm-result').then((value: string) => {
         assert.equal(value, 'this is not a rhythm text');
       })
       // disableRhythm empty
       .setValue('#rhythm-text', '')
       .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then((value) => {
+      .getValue('#disable-rhythm-result').then((value: string) => {
         assert.ok(!value);
       });
   });

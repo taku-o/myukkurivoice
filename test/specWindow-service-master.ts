@@ -37,7 +37,7 @@ describe('specWindow-service-MasterService', function() {
     return this.client
       // getPhontList
       .click('#get-phont-list')
-      .getValue('#get-phont-list-result').then((value) => {
+      .getValue('#get-phont-list-result').then((value: string) => {
         var parsed = JSON.parse(value);
         assert.equal(parsed.length, 26);
       });

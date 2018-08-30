@@ -38,29 +38,29 @@ describe('specWindow-service-DataService', function() {
       // load
       .click('#load')
       .waitForValue('#load-result', 2000)
-      .getValue('#load-result').then((value) => {
+      .getValue('#load-result').then((value: string) => {
         assert.ok(value);
       })
-      .getValue('#load-err').then((value) => {
+      .getValue('#load-err').then((value: string) => {
         assert.ok(! value);
       })
       // initialData
       .click('#initial-data')
-      .getValue('#initial-data-result').then((value) => {
+      .getValue('#initial-data-result').then((value: string) => {
         assert.ok(value);
         var parsed = JSON.parse(value);
         assert.equal(parsed.length, 4);
       })
       // create
       .click('#create')
-      .getValue('#create-result').then((value) => {
+      .getValue('#create-result').then((value: string) => {
         assert.ok(value);
         var parsed = JSON.parse(value);
         assert.ok(parsed.id);
       })
       // copy
       .click('#copy')
-      .getValue('#copy-result').then((value) => {
+      .getValue('#copy-result').then((value: string) => {
         assert.ok(value);
         var parsed = JSON.parse(value);
         assert.ok(parsed.id);

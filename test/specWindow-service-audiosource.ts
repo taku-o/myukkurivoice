@@ -39,14 +39,14 @@ describe('specWindow-service-AudioSourceService', function() {
       // sourceFname
       .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
       .click('#source-fname')
-      .getValue('#source-fname-result').then((value) => {
+      .getValue('#source-fname-result').then((value: string) => {
         assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt');
       })
       // save
       .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
       .setValue('#source-text', 'hogehoge')
       .click('#save')
-      .getValue('#save-result').then((value) => {
+      .getValue('#save-result').then((value: string) => {
         assert.ok(value);
       });
       // TODO tmp file
