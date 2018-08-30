@@ -22,5 +22,14 @@
     "no-unused-vars": "warn",
     "quotes": ["warn", "single"],
     "semi": ["error", "always"]
+  },
+  "overrides": {
+    "files": [
+      "js/services.message.ts"
+    ],
+    "parser": "typescript-eslint-parser",
+    "rules": {
+      "no-undef": "off"
+    }
   }
 }

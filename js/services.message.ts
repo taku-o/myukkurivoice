@@ -1,19 +1,3 @@
-namespace myv {
-  export interface IMessage {
-    created: Date;
-    body: string;
-    type: string;
-  }
-
-  export interface IRecordMessage {
-    created: Date;
-    body: string;
-    wavFilePath: string;
-    wavFileName: string;
-    type: string;
-  }
-};
-
 var path = require('path');
 
 // angular message service
@@ -69,3 +53,19 @@ angular.module('yvoiceMessageService', [])
       },
     };
   }]);
+
+namespace myv {
+  export interface IMessage {
+    readonly created: Date;
+    readonly body: string;
+    readonly type: string;
+  }
+
+  export interface IRecordMessage {
+    readonly created: Date;
+    readonly body: string;
+    readonly wavFilePath: string;
+    readonly wavFileName: string;
+    readonly type: string;
+  }
+}
