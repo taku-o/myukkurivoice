@@ -26,7 +26,7 @@ function showMainWindow(): void {
       devTools: this.appCfg.debug,
     },
   });
-  this.mainWindow.loadURL('file://' + __dirname + '/contents-main.html');
+  this.mainWindow.loadURL(`file://${__dirname}/contents-main.html`);
 
   // shortcut
   localShortcut.register(this.mainWindow, 'Command+Q', () => {
@@ -103,7 +103,7 @@ function showHelpWindow(): void {
       devTools: this.appCfg.debug,
     },
   });
-  this.helpWindow.loadURL('file://' + __dirname + '/contents-help.html');
+  this.helpWindow.loadURL(`file://${__dirname}/contents-help.html`);
 
   // shortcut
   localShortcut.register(this.helpWindow, 'Command+Q', () => {
@@ -155,7 +155,7 @@ function showSystemWindow(): void {
       devTools: this.appCfg.debug,
     },
   });
-  this.systemWindow.loadURL('file://' + __dirname + '/contents-system.html');
+  this.systemWindow.loadURL(`file://${__dirname}/contents-system.html`);
 
   // shortcut
   localShortcut.register(this.systemWindow, 'Command+Q', () => {
@@ -205,7 +205,7 @@ function showSpecWindow(): void {
       devTools: this.appCfg.debug,
     },
   });
-  specWindow.loadURL('file://' + __dirname + '/contents-spec.html');
+  specWindow.loadURL(`file://${__dirname}/contents-spec.html`);
 }
 
 // exports

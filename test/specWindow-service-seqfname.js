@@ -7,7 +7,7 @@ temp.track();
 describe('specWindow-service-SeqFNameService', function () {
     this.timeout(10000);
     before(function () {
-        var fsprefix = '_myubo_test' + Date.now().toString(36);
+        var fsprefix = "_myubo_test" + Date.now().toString(36);
         var dirPath = temp.mkdirSync(fsprefix);
         this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',

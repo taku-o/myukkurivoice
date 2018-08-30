@@ -17,7 +17,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
                     var name = matched[1];
                     // error, unknown command name
                     if (nameList.indexOf(name) < 0) {
-                        MessageService.error('マルチボイスに未知の名前が指定されました。name:' + name);
+                        MessageService.error("" + 'マルチボイスに未知の名前が指定されました。name:' + name);
                         return false;
                     }
                     hasCommand = true;
@@ -50,7 +50,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
                         else {
                             // append to last item
                             var last = parsed[parsed.length - 1];
-                            last.text += ("\n" + line);
+                            last.text = last.text + "\n" + line;
                         }
                     }
                 });
@@ -67,7 +67,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
             toString: function (commandInputList) {
                 var result = '';
                 angular.forEach(commandInputList, function (cinput) {
-                    result += cinput.name + '＞' + cinput.text + "\n";
+                    result = "" + result + cinput.name + '＞' + cinput.text + "\n";
                 });
                 return result;
             }

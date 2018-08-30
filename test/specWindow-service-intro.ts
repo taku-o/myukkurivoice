@@ -7,7 +7,7 @@ describe('specWindow-service-IntroService', function() {
   this.timeout(10000);
 
   before(function() {
-    var fsprefix = '_myubo_test' + Date.now().toString(36);
+    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
     var dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',

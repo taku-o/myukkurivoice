@@ -103,7 +103,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         // void AqKanji2Koe_Release (void * hAqKanji2Koe)
         // int AqKanji2Koe_Convert (void * hAqKanji2Koe, const char *kanji, char *koe, int nBufKoe)
         var frameworkPath = null;
-        frameworkPath = unpackedPath + '/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe';
+        frameworkPath = unpackedPath + "/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe";
         var ptr_AqKanji2Koe_Create = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
         var ptr_AqKanji2Koe_Release = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
         var ptr_AqKanji2Koe_Convert = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
@@ -112,7 +112,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         var fn_AqKanji2Koe_Convert = ffi.ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
         // unsigned char * AquesTalk2_Synthe_Utf8(const char *koe, int iSpeed, int * size, void *phontDat)
         // void AquesTalk2_FreeWave (unsigned char *wav)
-        frameworkPath = unpackedPath + '/vendor/AquesTalk2.framework/Versions/A/AquesTalk2';
+        frameworkPath = unpackedPath + "/vendor/AquesTalk2.framework/Versions/A/AquesTalk2";
         var ptr_AquesTalk2_Synthe_Utf8 = ffi.DynamicLibrary(frameworkPath).get('AquesTalk2_Synthe_Utf8');
         var ptr_AquesTalk2_FreeWave = ffi.DynamicLibrary(frameworkPath).get('AquesTalk2_FreeWave');
         var fn_AquesTalk2_Synthe_Utf8 = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, ['string', 'int', ptr_int, ptr_void]);
@@ -121,7 +121,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         // void AquesTalk_FreeWave(unsigned char *wav)
         // int AquesTalk_SetDevKey(const char *key)
         // int AquesTalk_SetUsrKey(const char *key)
-        frameworkPath = unpackedPath + '/vendor/AquesTalk10.framework/Versions/A/AquesTalk';
+        frameworkPath = unpackedPath + "/vendor/AquesTalk10.framework/Versions/A/AquesTalk";
         var ptr_AquesTalk10_Synthe_Utf8 = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_Synthe_Utf8');
         var ptr_AquesTalk10_FreeWave = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_FreeWave');
         var ptr_AquesTalk10_SetDevKey = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_SetDevKey');
@@ -255,11 +255,11 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                     return '';
                 }
                 var allocInt = ref.alloc('int');
-                var aqKanji2Koe = fn_AqKanji2Koe_Create(unpackedPath + '/vendor/aq_dic_large', allocInt);
+                var aqKanji2Koe = fn_AqKanji2Koe_Create(unpackedPath + "/vendor/aq_dic_large", allocInt);
                 var errorCode = allocInt.deref();
                 if (errorCode != 0) {
                     MessageService.syserror(errorTable_AqKanji2Koe(errorCode));
-                    log.warn('fn_AqKanji2Koe_Create raise error. error_code:' + errorTable_AqKanji2Koe(errorCode));
+                    log.warn("fn_AqKanji2Koe_Create raise error. error_code:" + errorTable_AqKanji2Koe(errorCode));
                     return '';
                 }
                 var sourceLength = (new Blob([sourceLength], { type: 'text/plain' })).size;
@@ -268,7 +268,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                 var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encodedLength);
                 if (r != 0) {
                     MessageService.syserror(errorTable_AqKanji2Koe(r));
-                    log.info('fn_AqKanji2Koe_Convert raise error. error_code:' + errorTable_AqKanji2Koe(r));
+                    log.info("fn_AqKanji2Koe_Convert raise error. error_code:" + errorTable_AqKanji2Koe(r));
                     return '';
                 }
                 var encoded = ref.readCString(buf, 0);
@@ -285,7 +285,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                 // version 1
                 if (phont.version == 'talk1') {
                     // write encoded to tempory file
-                    var fsprefix = '_myubow' + Date.now().toString(36);
+                    var fsprefix = "_myubow" + Date.now().toString(36);
                     temp.open(fsprefix, function (err, info) {
                         if (err) {
                             MessageService.syserror('一時作業ファイルを作れませんでした。', err);
@@ -305,10 +305,10 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                                 },
                                 encoding: 'binary'
                             };
-                            var waverCmd = unpackedPath.replace(' ', '\\ ') + '/vendor/maquestalk1';
-                            exec('cat ' + info.path + ' | VOICE=' + phont.idVoice + ' SPEED=' + speed + ' ' + waverCmd, cmdOptions, function (err, stdout, stderr) {
+                            var waverCmd = unpackedPath.replace(' ', '\\ ') + "/vendor/maquestalk1";
+                            exec("cat " + info.path + " | VOICE=" + phont.idVoice + " SPEED=" + speed + " " + waverCmd, cmdOptions, function (err, stdout, stderr) {
                                 if (err) {
-                                    log.info('maquestalk1 failed. ' + err);
+                                    log.info("maquestalk1 failed. " + err);
                                     d.reject(err);
                                     return;
                                 }
@@ -319,7 +319,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                                 if (statusCode < 0) {
                                     var errorCode = statusCode * -1; // maquestalk1 library result
                                     MessageService.syserror(errorTable_AquesTalk2(errorCode));
-                                    log.info('AquesTalk_SyntheMV raise error. error_code:' + errorTable_AquesTalk2(errorCode));
+                                    log.info("AquesTalk_SyntheMV raise error. error_code:" + errorTable_AquesTalk2(errorCode));
                                 }
                             }); // maquestalk1
                         }); // fs.writeFile
@@ -338,7 +338,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         if (ref.isNull(r)) {
                             var errorCode = allocInt.deref();
                             MessageService.syserror(errorTable_AquesTalk2(errorCode));
-                            log.info('fn_AquesTalk2_Synthe_Utf8 raise error. error_code:' + errorTable_AquesTalk2(errorCode));
+                            log.info("fn_AquesTalk2_Synthe_Utf8 raise error. error_code:" + errorTable_AquesTalk2(errorCode));
                             d.reject(null);
                             return;
                         }
@@ -374,7 +374,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                             if (encryptedUseKey) {
                                 var usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
                                 if (usrKey != 0) {
-                                    MessageService.error('AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。' + aquesTalk10UseKey);
+                                    MessageService.error("" + 'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。' + aquesTalk10UseKey);
                                     d.reject(null);
                                     return;
                                 }
@@ -398,7 +398,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         if (ref.isNull(r)) {
                             var errorCode = allocInt.deref();
                             MessageService.syserror(errorTable_AquesTalk10(errorCode));
-                            log.info('fn_AquesTalk10_Synthe_Utf8 raise error. error_code:' + errorTable_AquesTalk10(errorCode));
+                            log.info("fn_AquesTalk10_Synthe_Utf8 raise error. error_code:" + errorTable_AquesTalk10(errorCode));
                             d.reject(null);
                             return;
                         }
@@ -432,7 +432,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         audio.pause();
                     }
                 }
-                var fsprefix = '_myubop' + Date.now().toString(36);
+                var fsprefix = "_myubop" + Date.now().toString(36);
                 temp.open(fsprefix, function (err, info) {
                     if (err) {
                         MessageService.syserror('一時作業ファイルを作れませんでした。', err);
@@ -487,7 +487,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         d.reject(err);
                         return;
                     }
-                    MessageService.record('音声ファイルを保存しました。path: ' + wavFilePath, wavFilePath);
+                    MessageService.record("" + '音声ファイルを保存しました。path: ' + wavFilePath, wavFilePath);
                     d.resolve('ok');
                 });
                 return d.promise;
@@ -601,7 +601,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         // onendedのタイミングでは出力が終わっていない
                         $timeout(function () {
                             recorder.end();
-                            MessageService.record('音声ファイルを保存しました。path: ' + wavFilePath, wavFilePath);
+                            MessageService.record("" + '音声ファイルを保存しました。path: ' + wavFilePath, wavFilePath);
                             d.resolve('ok');
                         }, options.writeMarginMs);
                     };
@@ -660,7 +660,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         d.reject(err);
                         return;
                     }
-                    MessageService.info('メッセージファイルを保存しました。path: ' + filePath);
+                    MessageService.info("" + 'メッセージファイルを保存しました。path: ' + filePath);
                     d.resolve(filePath);
                 });
                 return d.promise;
@@ -692,7 +692,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         d.reject(err);
                         return;
                     }
-                    var pattern = new RegExp('^' + prefix + '(' + numPattern + ')' + ext + '$');
+                    var pattern = new RegExp("^" + prefix + "(" + numPattern + ")" + ext + "$");
                     var npList = [];
                     files.forEach(function (file) {
                         try {
@@ -715,7 +715,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                     }
                     var maxNum = Math.max.apply(null, npList);
                     if (maxNum >= limit) {
-                        MessageService.syserror(limit + 'までファイルが作られているので、これ以上ファイルを作成できません。');
+                        MessageService.syserror("" + limit + 'までファイルが作られているので、これ以上ファイルを作成できません。');
                         d.reject(null);
                         return;
                     }

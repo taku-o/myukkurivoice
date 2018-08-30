@@ -748,14 +748,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             var length = field.value.length;
             // top
             if (pos == 0) {
-                $scope.yinput[field.id] = $scope.yvoice.name + '＞' + field.value;
-                field.selectionStart = ($scope.yvoice.name + '＞').length;
-                field.selectionEnd = ($scope.yvoice.name + '＞').length;
+                $scope.yinput[field.id] = "" + $scope.yvoice.name + '＞' + field.value;
+                field.selectionStart = ("" + $scope.yvoice.name + '＞').length;
+                field.selectionEnd = ("" + $scope.yvoice.name + '＞').length;
                 // last
             }
             else if (pos == length) {
                 if (field.value.substring(pos - 1, pos) == "\n") {
-                    $scope.yinput[field.id] = field.value + $scope.yvoice.name + '＞';
+                    $scope.yinput[field.id] = "" + field.value + $scope.yvoice.name + '＞';
                     field.selectionStart = (field.value).length;
                     field.selectionEnd = (field.value).length;
                 }
@@ -768,9 +768,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
             else {
                 if (field.value.substring(pos - 1, pos) == "\n") {
-                    $scope.yinput[field.id] = field.value.substring(0, pos) + $scope.yvoice.name + '＞' + field.value.substring(pos, length);
-                    field.selectionStart = (field.value.substring(0, pos) + $scope.yvoice.name + '＞').length;
-                    field.selectionEnd = (field.value.substring(0, pos) + $scope.yvoice.name + '＞').length;
+                    $scope.yinput[field.id] = "" + field.value.substring(0, pos) + $scope.yvoice.name + '＞' + field.value.substring(pos, length);
+                    field.selectionStart = ("" + field.value.substring(0, pos) + $scope.yvoice.name + '＞').length;
+                    field.selectionEnd = ("" + field.value.substring(0, pos) + $scope.yvoice.name + '＞').length;
                 }
                 else {
                     $scope.yinput[field.id] = field.value.substring(0, pos) + "\n" + $scope.yvoice.name + '＞' + field.value.substring(pos, length);
@@ -813,7 +813,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         };
         ipcRenderer.on('switchAlwaysOnTop', function (event, newflg) {
             $scope.alwaysOnTop = newflg;
-            MessageService.info('update alwaysOnTop option ' + (newflg ? 'ON' : 'OFF'));
+            MessageService.info("update alwaysOnTop option " + (newflg ? 'ON' : 'OFF'));
             $timeout(function () { $scope.$apply(); });
         });
     }]);
