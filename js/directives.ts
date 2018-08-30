@@ -16,13 +16,11 @@ angular.module('yvoiceDirective', [])
   .directive('wavDraggable', ($parse) => {
     return (scope, element, attr) => {
       var f;
-      scope.$watch('lastWavFile', (value) => {
+      scope.$watch('lastWavFile', (value: myv.IRecordMessage) => {
         var message = value;
-        // @ts-ignore
         if (!message || !message.wavFilePath) {
           return;
         }
-        // @ts-ignore
         var wavFilePath = message.wavFilePath;
 
         var el = element[0];

@@ -18,11 +18,9 @@ angular.module('yvoiceDirective', [])
         var f;
         scope.$watch('lastWavFile', function (value) {
             var message = value;
-            // @ts-ignore
             if (!message || !message.wavFilePath) {
                 return;
             }
-            // @ts-ignore
             var wavFilePath = message.wavFilePath;
             var el = element[0];
             el.draggable = true;
