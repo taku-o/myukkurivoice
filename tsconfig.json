@@ -19,6 +19,7 @@
     "skipDefaultLibCheck": false,
     "skipLibCheck": false,
     "sourceMap": false,
+    //"strictNullChecks": true,
     "traceResolution": false,
     "lib": [
       "dom",

@@ -79,7 +79,6 @@ electron_1.ipcMain.on('showDirDialog', function (event, defaultPath) {
         properties: ['openDirectory', 'createDirectory'],
         defaultPath: defaultPath
     };
-    // @ts-ignore
     var r = electron_1.dialog.showOpenDialog(myApp.mainWindow, options, function (filePaths) { });
     event.sender.send('showDirDialog', r);
 });

@@ -9,9 +9,8 @@
     "packaging": "sh bin/packaging.sh",
     "release": "sh bin/release.sh",
     "lint": "eslint *.ts js/*.ts test/*.ts",
-    "lint-q": "eslint *.ts js/*.ts test/*.ts --quiet",
     "lint-js": "eslint *.js js/*.js test/*.js",
-    "lint-js-q": "eslint *.js js/*.js test/*.js --quiet",
+    "lint-q": "eslint *.ts js/*.ts test/*.ts *.js js/*.js test/*.js --quiet",
     "tsc": "tsc",
     "app": "electron .",
     "debug": "DEBUG=1 electron ."

@@ -86,10 +86,9 @@ ipcMain.on('showSaveDialog', (event, message) => {
 ipcMain.on('showDirDialog', (event, defaultPath) => {
   var options = {
     title: 'select wav save directory',
-    properties: ['openDirectory', 'createDirectory'],
+    properties: ['openDirectory' as 'openDirectory', 'createDirectory' as 'createDirectory'],
     defaultPath: defaultPath,
   };
-  // @ts-ignore
   var r = dialog.showOpenDialog(myApp.mainWindow, options, (filePaths: string[]) => {});
   event.sender.send('showDirDialog', r);
 });
