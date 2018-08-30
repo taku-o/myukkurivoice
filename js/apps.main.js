@@ -65,29 +65,29 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     break;
                 case 'swichNextConfig':
                     {
-                        var index = $scope.yvoiceList.indexOf($scope.yvoice);
-                        if ($scope.yvoiceList.length > index + 1) {
-                            $scope.yvoice = $scope.yvoiceList[index + 1];
+                        var indexToN = $scope.yvoiceList.indexOf($scope.yvoice);
+                        if ($scope.yvoiceList.length > indexToN + 1) {
+                            $scope.yvoice = $scope.yvoiceList[indexToN + 1];
                         }
                         else {
                             $scope.yvoice = $scope.yvoiceList[0];
                         }
+                        $scope.display = 'main';
+                        $timeout(function () { $scope.$apply(); });
                     }
-                    $scope.display = 'main';
-                    $timeout(function () { $scope.$apply(); });
                     break;
                 case 'swichPreviousConfig':
                     {
-                        var index = $scope.yvoiceList.indexOf($scope.yvoice);
-                        if (index - 1 >= 0) {
-                            $scope.yvoice = $scope.yvoiceList[index - 1];
+                        var indexToP = $scope.yvoiceList.indexOf($scope.yvoice);
+                        if (indexToP - 1 >= 0) {
+                            $scope.yvoice = $scope.yvoiceList[indexToP - 1];
                         }
                         else {
                             $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
                         }
+                        $scope.display = 'main';
+                        $timeout(function () { $scope.$apply(); });
                     }
-                    $scope.display = 'main';
-                    $timeout(function () { $scope.$apply(); });
                     break;
                 case 'encode':
                     document.getElementById('encode').click();
@@ -107,17 +107,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     break;
                 case 'minus':
                     {
-                        var index = $scope.yvoiceList.indexOf($scope.yvoice);
-                        ctrl.minus(index);
+                        var indexForM = $scope.yvoiceList.indexOf($scope.yvoice);
+                        ctrl.minus(indexForM);
+                        $timeout(function () { $scope.$apply(); });
                     }
-                    $timeout(function () { $scope.$apply(); });
                     break;
                 case 'copy':
                     {
-                        var index = $scope.yvoiceList.indexOf($scope.yvoice);
-                        ctrl.copy(index);
+                        var indexForCP = $scope.yvoiceList.indexOf($scope.yvoice);
+                        ctrl.copy(indexForCP);
+                        $timeout(function () { $scope.$apply(); });
                     }
-                    $timeout(function () { $scope.$apply(); });
                     break;
                 case 'save':
                     document.getElementById('save').click();
@@ -255,17 +255,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 }
                 // encoding, command
                 if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-                    var parsedList_1 = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-                    angular.forEach(parsedList_1, function (cinput) {
+                    var parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+                    angular.forEach(parsedListForEnc, function (cinput) {
                         cinput.text = AquesService.encode(cinput.text);
                     });
-                    for (var i = 0; i < parsedList_1.length; i++) {
-                        if (!parsedList_1[i].text) {
+                    for (var i = 0; i < parsedListForEnc.length; i++) {
+                        if (!parsedListForEnc[i].text) {
                             MessageService.error('一部テキストを音記号列に変換できませんでした。');
                             return;
                         }
                     }
-                    encoded = CommandService.toString(parsedList_1);
+                    encoded = CommandService.toString(parsedListForEnc);
                     // encoding, not command
                 }
                 else {
@@ -383,17 +383,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 }
                 // encoding, command
                 if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-                    var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-                    angular.forEach(parsedList, function (cinput) {
+                    var parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+                    angular.forEach(parsedListForEnc, function (cinput) {
                         cinput.text = AquesService.encode(cinput.text);
                     });
-                    for (var i = 0; i < parsedList.length; i++) {
-                        if (!parsedList[i].text) {
+                    for (var i = 0; i < parsedListForEnc.length; i++) {
+                        if (!parsedListForEnc[i].text) {
                             MessageService.error('一部テキストを音記号列に変換できませんでした。');
                             return;
                         }
                     }
-                    encoded = CommandService.toString(parsedList);
+                    encoded = CommandService.toString(parsedListForEnc);
                     // encoding, not command
                 }
                 else {

@@ -36,17 +36,17 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
 
           // command line
           if (matched) {
-            let ycinput = angular.copy(YCommandInput);
-            ycinput.name = matched[1];
-            ycinput.text = matched[2];
-            parsed.push(ycinput);
+            let ycinputForC = angular.copy(YCommandInput);
+            ycinputForC.name = matched[1];
+            ycinputForC.text = matched[2];
+            parsed.push(ycinputForC);
           // not a command line
           } else {
             if (parsed.length < 1) {
-              let ycinput = angular.copy(YCommandInput);
-              ycinput.name = currentYvoice.name;
-              ycinput.text = line;
-              parsed.push(ycinput);
+              let ycinputForNotC = angular.copy(YCommandInput);
+              ycinputForNotC.name = currentYvoice.name;
+              ycinputForNotC.text = line;
+              parsed.push(ycinputForNotC);
             } else {
               // append to last item
               var last = parsed[parsed.length - 1];
