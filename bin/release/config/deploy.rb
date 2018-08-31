@@ -51,6 +51,9 @@ task :package do
     # git init
     execute "cd #{application}; git submodule update --init"
 
+    # build typescript
+    execute "cd #{application}; tsc"
+
     # build
     execute "cd #{application}; electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor " +
       ' --ignore="^/MYukkuriVoice-darwin-x64" ' +
@@ -69,8 +72,12 @@ task :package do
       ' --ignore="^/vendor/aqtk2-mac" ' +
       ' --ignore="^/js/apps.spec.js" ' +    # is test code
       ' --ignore="^/contents-spec.html" ' + # is test code
+      ' --ignore="^/package-lock.json" ' +
+      ' --ignore="^/tsconfig.json" ' +
       ' --ignore="^/.+\.ts" ' +
       ' --ignore="^/js/.+\.ts" ' +
+      ' --ignore="^/Gemfile" ' +
+      ' --ignore="^/Gemfile.lock" ' +
       ' --ignore=".DS_Store" ' +
       ' --ignore=".babelrc" ' +
       ' --ignore=".editorconfig" ' +
