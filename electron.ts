@@ -17,7 +17,7 @@ var MYukkuriVoice = function(): void {
   this.helpWindow = null;
   this.systemWindow = null;
 };
-var myApp = new MYukkuriVoice();
+var myApp = new MYukkuriVoice() as yubo.MYukkuriVoice;
 MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;

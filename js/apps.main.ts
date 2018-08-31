@@ -816,12 +816,4 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
       $timeout(() => { $scope.$apply(); });
     });
-
   }]);
-
-/* eslint-disable */
-namespace yubo {
-  export interface IScope extends ng.IScope {
-    yinput: yubo.YInput;
-  }
-}

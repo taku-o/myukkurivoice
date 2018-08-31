@@ -3,6 +3,7 @@
   "version": "0.7.1",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
+  "types": "types.d.ts",
   "scripts": {
     "test": "sh bin/test.sh",
     "test_rebuild": "sh bin/test_rebuild.sh",

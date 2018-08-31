@@ -17,7 +17,7 @@ function loadAppConfig(): void {
     isTest: process.env.NODE_ENV == 'test',
   };
 
-  var config = new Config();
+  var config = new Config() as yubo.ElectronConfig;
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (config.has(k)) { appCfg[k] = config.get(k); }
   });
@@ -69,22 +69,3 @@ export {
 };
 
 declare var global: yubo.Global;
-
-/* eslint-disable */
-namespace yubo {
-  export interface Global extends NodeJS.Global {
-    appCfg: AppCfg;
-  }
-  export interface AppCfg {
-    mainWindow:   { width: number, height: number, x: number, y: number };
-    helpWindow:   { width: number, height: number };
-    systemWindow: { width: number, height: number };
-    audioServVer:        string; //'html5audio' | 'webaudioapi'
-    showMsgPane:         boolean;
-    acceptFirstMouse:    boolean;
-    passPhrase:          string;
-    aq10UseKeyEncrypted: string;
-    debug:               string;
-    isTest:              boolean;
-  }
-}

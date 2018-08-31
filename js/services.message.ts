@@ -53,20 +53,3 @@ angular.module('yvoiceMessageService', [])
       },
     };
   }]);
-
-/* eslint-disable */
-namespace yubo {
-  export interface IMessage {
-    readonly created: Date;
-    readonly body: string;
-    readonly type: string;
-  }
-
-  export interface IRecordMessage {
-    readonly created: Date;
-    readonly body: string;
-    readonly wavFilePath: string;
-    readonly wavFileName: string;
-    readonly type: string;
-  }
-}
