@@ -2,7 +2,7 @@ var path = require('path');
 
 // angular message service
 angular.module('yvoiceMessageService', [])
-  .factory('MessageService', ['$rootScope', ($rootScope) => {
+  .factory('MessageService', ['$rootScope', ($rootScope): yubo.MessageService => {
     return {
       action: function(message: string): void {
         var post: yubo.IMessage = {

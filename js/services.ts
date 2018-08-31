@@ -16,7 +16,7 @@ var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 // angular service
 angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService', 'yvoiceModel'])
   .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', 
-                           ($q, YVoice, YVoiceInitialData, MessageService) => {
+                           ($q, YVoice, YVoiceInitialData, MessageService): yubo.DataService => {
 
     function uniqId(): string {
       return ('0000' + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
@@ -75,7 +75,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       }
     };
   }])
-  .factory('MasterService', ['YPhontList', (YPhontList) => {
+  .factory('MasterService', ['YPhontList', (YPhontList): yubo.MasterService => {
     var phontList = YPhontList;
     return {
       getPhontList: function(): Array<any> {
@@ -84,7 +84,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     };
   }])
   .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
-                            ($q, MessageService, LicenseService) => {
+                            ($q, MessageService, LicenseService): yubo.AquesService => {
     var ptr_void  = ref.refType(ref.types.void);
     var ptr_int   = ref.refType(ref.types.int);
     var ptr_char  = ref.refType(ref.types.char);
@@ -355,7 +355,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       }
     };
   }])
-  .factory('AudioService1', ['$q', 'MessageService', ($q, MessageService) => {
+  .factory('AudioService1', ['$q', 'MessageService', ($q, MessageService): yubo.AudioService1 => {
     // Audio base AudioService
     var audio = null;
 
@@ -428,7 +428,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     };
   }])
   .factory('AudioService2', ['$q', '$timeout', 'MessageService', 'AppUtilService',
-                             ($q, $timeout, MessageService, AppUtilService) => {
+                             ($q, $timeout, MessageService, AppUtilService): yubo.AudioService2 => {
     // Web Audio API base AudioService
     // @ts-ignore
     var audioCtx = new window.AudioContext();
@@ -577,7 +577,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       }
     };
   }])
-  .factory('AudioSourceService', ['$q', 'MessageService', ($q, MessageService) => {
+  .factory('AudioSourceService', ['$q', 'MessageService', ($q, MessageService): yubo.AudioSourceService => {
     var waveExt = '.wav';
     var sourceExt = '.txt';
 
@@ -602,7 +602,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       }
     };
   }])
-  .factory('SeqFNameService', ['$q', 'MessageService', ($q, MessageService) => {
+  .factory('SeqFNameService', ['$q', 'MessageService', ($q, MessageService): yubo.SeqFNameService => {
     var ext = '.wav';
     var numPattern = '[0-9]{4}';
     var limit = 9999;
@@ -660,7 +660,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       }
     };
   }])
-  .factory('AppUtilService', ['$rootScope', ($rootScope) => {
+  .factory('AppUtilService', ['$rootScope', ($rootScope): yubo.AppUtilService => {
     return {
       disableRhythm: function(encoded: string): string {
         return encoded.replace(/['/]/g, '');

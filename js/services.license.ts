@@ -7,7 +7,7 @@ var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 
 // angular license service
 angular.module('yvoiceLicenseService', [])
-  .factory('LicenseService', ['$q', ($q) => {
+  .factory('LicenseService', ['$q', ($q): yubo.LicenseService => {
     var consumerKeyCache = {};
 
     // encrypt decrypt

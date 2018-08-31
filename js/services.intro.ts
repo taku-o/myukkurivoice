@@ -1,6 +1,6 @@
 // angular intro service
 angular.module('yvoiceIntroService', [])
-  .factory('IntroService', () => {
+  .factory('IntroService', (): yubo.IntroService => {
     return {
       'mainTutorial': function(): void {
         var intro = introJs();

@@ -118,4 +118,67 @@ declare namespace yubo {
     env:      { VOICE: number, SPEED: number };
     encoding: string;
   }
+
+  export interface IntroService {
+    mainTutorial(): void;
+    settingsTutorial(): void;
+    shortcut(): void;
+  }
+  export interface CommandService {
+    containsCommand(input: string, yvoiceList: yubo.YVoice[]): boolean;
+    parseInput(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): any;
+    detectVoiceConfig(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): any;
+    toString(commandInputList: yubo.YCommandInput[]): string;
+  }
+  export interface LicenseService {
+    encrypt(passPhrase: string, plainKey: string): string;
+    decrypt(passPhrase: string, encryptedKey: string): string;
+    consumerKey(licenseType: string): ng.IPromise<string>;
+  }
+  export interface MessageService {
+    action(message: string): void;
+    record(message: string, wavFilePath: string): void;
+    info(message: string): void;
+    error(message: string): void;
+    syserror(message: string, err: Error): void;
+  }
+
+  export interface DataService {
+    load(): ng.IPromise<Array<any>>;
+    initialData(): Array<any>;
+    create(): any;
+    copy(original: any): any;
+    save(dataList: yubo.YVoice[]): void;
+    clear(): ng.IPromise<boolean>;
+  }
+  export interface MasterService {
+    getPhontList(): Array<any>;
+  }
+  export interface AquesService {
+    encode(source: string): string;
+    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any>;
+  }
+  export interface AudioService1 {
+    play(bufWav: any, options: yubo.PlayOptions, parallel: boolean): ng.IPromise<string>;
+    stop(): void;
+    record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
+  }
+  export interface AudioService2 {
+    play(bufWav: any, options: yubo.PlayOptions, parallel: boolean): ng.IPromise<string>;
+    stop(): void;
+    record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
+  }
+  export interface AudioSourceService {
+    sourceFname(wavFilePath: string): string;
+    save(filePath: string, sourceText: string): ng.IPromise<string>;
+  }
+  export interface SeqFNameService {
+    splitFname(filePath: string): any;
+    nextFname(prefix: string, num: number): string;
+    nextNumber(dir: string, prefix: string): ng.IPromise<number>;
+  }
+  export interface AppUtilService {
+    disableRhythm(encoded: string): string;
+    reportDuration(duration: number): void;
+  }
 }
