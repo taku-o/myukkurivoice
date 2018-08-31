@@ -11,7 +11,7 @@ angular.module('yvoiceLicenseService', [])
     var consumerKeyCache = {};
 
     // encrypt decrypt
-    var encrypt = function(passPhrase, plainKey): string {
+    var encrypt = function(passPhrase: string, plainKey: string): string {
       var bits = 1024;
       var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
       var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
@@ -19,7 +19,7 @@ angular.module('yvoiceLicenseService', [])
       var encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
       return encryptionResult.cipher;
     };
-    var decrypt = function(passPhrase, encryptedKey): string {
+    var decrypt = function(passPhrase: string, encryptedKey: string): string {
       var bits = 1024;
       var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
 
@@ -35,13 +35,13 @@ angular.module('yvoiceLicenseService', [])
 
     // method
     return {
-      encrypt: function(passPhrase, plainKey): string {
+      encrypt: function(passPhrase: string, plainKey: string): string {
         return encrypt(passPhrase, plainKey);
       },
-      decrypt: function(passPhrase, encryptedKey): string {
+      decrypt: function(passPhrase: string, encryptedKey: string): string {
         return decrypt(passPhrase, encryptedKey);
       },
-      consumerKey: function(licenseType): ng.IPromise<string> {
+      consumerKey: function(licenseType: string): ng.IPromise<string> {
         var d = $q.defer();
 
         // get key from cache if exists

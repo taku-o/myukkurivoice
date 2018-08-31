@@ -38,7 +38,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         });
         return d.promise;
       },
-        initialData: function(): Array<any> {
+      initialData: function(): Array<any> {
         var dataList = angular.copy(YVoiceInitialData);
         return dataList;
       },
@@ -47,12 +47,12 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         cloned['id'] = uniqId();
         return cloned;
       },
-      copy: function(original): any {
+      copy: function(original: any): any {
         var cloned = angular.copy(original);
         cloned['id'] = uniqId();
         return cloned;
       },
-      save: function(dataList): void {
+      save: function(dataList: yubo.YVoice[]): void {
         storage.set('data', dataList, function(error) {
           if (error) {
             MessageService.syserror('ボイス設定の保存に失敗しました。', error);
@@ -135,7 +135,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     var fn_AquesTalk10_SetDevKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetDevKey, 'int', [ 'string' ]);
     var fn_AquesTalk10_SetUsrKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetUsrKey, 'int', [ 'string' ]);
 
-    function errorTable_AqKanji2Koe(code): string {
+    function errorTable_AqKanji2Koe(code: number): string {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
       if (code == 105)               { return '入力テキストが長すぎる'; }
       if (code == 107)               { return '変換できない文字コードが含まれている'; }
@@ -145,7 +145,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       return '';
     }
 
-    function errorTable_AquesTalk2(code): string {
+    function errorTable_AquesTalk2(code: number): string {
       if (code == 100)                  { return 'その他のエラー'; }
       if (code == 101)                  { return 'メモリ不足'; }
       if (code == 102)                  { return '音記号列に未定義の読み記号が指定された'; }
@@ -168,7 +168,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       return '';
     }
 
-    function errorTable_AquesTalk10(code): string {
+    function errorTable_AquesTalk10(code: number): string {
       if (code == 100) { return 'その他のエラー'; }
       if (code == 101) { return 'メモリ不足'; }
       if (code == 103) { return '音声記号列指定エラー(語頭の長音、促音の連続など)'; }
@@ -185,7 +185,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
 
     var _isAquesTalk10LicensekeySet = false;
     return {
-      encode: function(source): string {
+      encode: function(source: string): string {
         if (!source) {
           MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
           return '';
@@ -214,7 +214,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         fn_AqKanji2Koe_Release(aqKanji2Koe);
         return encoded;
       },
-      wave: function(encoded, phont, speed, options): ng.IPromise<any> {
+      wave: function(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any> {
         var d = $q.defer();
         if (!encoded) {
           MessageService.syserror('音記号列が入力されていません。');
@@ -237,7 +237,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
               d.reject(err); return;
             }
 
-          var cmdOptions = {
+          var cmdOptions: yubo.CmdOptions = {
             env: {
               VOICE: phont.idVoice,
               SPEED: speed
@@ -360,7 +360,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     var audio = null;
 
     return {
-      play: function(bufWav, options, parallel=false): ng.IPromise<string> {
+      play: function(bufWav: any, options: yubo.PlayOptions, parallel: boolean = false): ng.IPromise<string> {
         var d = $q.defer();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -404,7 +404,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         if (!audio) { return; }
         audio.pause();
       },
-      record: function(wavFilePath, bufWav, options): ng.IPromise<string> {
+      record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
         var d = $q.defer();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -444,7 +444,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     }
 
     return {
-      play: function(bufWav, options, parallel=false): ng.IPromise<string> {
+      play: function(bufWav: any, options: yubo.PlayOptions, parallel: boolean = false): ng.IPromise<string> {
         var d = $q.defer();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -509,7 +509,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       stop: function(): void {
         if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
       },
-      record: function(wavFilePath, bufWav, options): ng.IPromise<string> {
+      record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
         var d = $q.defer();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -582,13 +582,13 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     var sourceExt = '.txt';
 
     return {
-      sourceFname: function(wavFilePath): string {
+      sourceFname: function(wavFilePath: string): string {
         var dir = path.dirname(wavFilePath);
         var basename = path.basename(wavFilePath, waveExt);
         var filename = basename + sourceExt;
         return path.join(dir, filename);
       },
-      save: function(filePath, sourceText): ng.IPromise<string> {
+      save: function(filePath: string, sourceText: string): ng.IPromise<string> {
         var d = $q.defer();
         fs.writeFile(filePath, sourceText, 'utf-8', function(err) {
           if (err) {
@@ -608,7 +608,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     var limit = 9999;
 
     return {
-      splitFname: function(filePath): any {
+      splitFname: function(filePath: string): any {
         var dir = path.dirname(filePath);
         var basename = path.basename(filePath, ext);
         return {
@@ -616,11 +616,11 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           basename: basename
         };
       },
-      nextFname: function(prefix, num): string {
+      nextFname: function(prefix: string, num: number): string {
         var formatted = ('0000'+ num).slice(-4);
         return prefix + formatted + ext;
       },
-      nextNumber: function(dir, prefix): ng.IPromise<number> {
+      nextNumber: function(dir: string, prefix: string): ng.IPromise<number> {
         var d = $q.defer();
         fs.readdir(dir, (err, files) => {
           if (err) {
@@ -662,10 +662,10 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
   }])
   .factory('AppUtilService', ['$rootScope', ($rootScope) => {
     return {
-      disableRhythm: function(encoded): string {
+      disableRhythm: function(encoded: string): string {
         return encoded.replace(/['/]/g, '');
       },
-      reportDuration: function(duration): void {
+      reportDuration: function(duration: number): void {
         $rootScope.$broadcast('duration', duration);
       },
     };

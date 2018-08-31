@@ -2,7 +2,7 @@
 angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
   .factory('CommandService', ['MessageService', 'YCommandInput', (MessageService, YCommandInput) => {
     return {
-      containsCommand: function(input, yvoiceList): boolean {
+      containsCommand: function(input: string, yvoiceList: yubo.YVoice[]): boolean {
         // command name list
         var nameList = [];
         angular.forEach(yvoiceList, (voice) => {
@@ -25,7 +25,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         }
         return hasCommand;
       },
-      parseInput: function(input, yvoiceList, currentYvoice): any {
+      parseInput: function(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): any {
         var parsed = [];
         var lines = input.split(/\n/);
 
@@ -56,7 +56,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         });
         return parsed;
       },
-      detectVoiceConfig: function(commandInput, yvoiceList): any {
+      detectVoiceConfig: function(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): any {
         for (var i=0; i<yvoiceList.length; i++) {
           if (yvoiceList[i].name == commandInput.name) {
             return yvoiceList[i];
@@ -64,7 +64,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         }
         return null;
       },
-      toString: function(commandInputList): string {
+      toString: function(commandInputList: yubo.YCommandInput[]): string {
         var result = '';
         angular.forEach(commandInputList, (cinput) => {
           result = `${result}${cinput.name}${'＞'}${cinput.text}\n`;

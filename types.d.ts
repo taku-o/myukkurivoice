@@ -7,9 +7,9 @@ declare namespace yubo {
     yinput: yubo.YInput;
   }
   export interface ElectronConfig {
-	get(key: string):           any;
+	get(key: string): any;
 	set(key: string, val: any): void;
-	has(key: string):           boolean
+	has(key: string): boolean
   }
 
   // electron-appcfg.ts
@@ -33,15 +33,15 @@ declare namespace yubo {
     mainWindow:   Electron.BrowserWindow;
     helpWindow:   Electron.BrowserWindow;
     systemWindow: Electron.BrowserWindow;
-    showMainWindow():                       void;
-    showHelpWindow():                       void;
-    showSystemWindow():                     void;
-    showSpecWindow():                       void;
+    showMainWindow(): void;
+    showHelpWindow(): void;
+    showSystemWindow(): void;
+    showSpecWindow(): void;
     initAppMenu(options: {debug: boolean}): void;
-    initDockMenu():                         void;
-    loadAppConfig():                        void;
-    updateAppConfig(options: yubo.AppCfg):  void;
-    resetAppConfig():                       void;
+    initDockMenu(): void;
+    loadAppConfig(): void;
+    updateAppConfig(options: yubo.AppCfg): void;
+    resetAppConfig(): void;
   }
 
   // js/models.ts
@@ -114,5 +114,8 @@ declare namespace yubo {
     detune:        number;
     writeMarginMs: number;
   }
+  export interface CmdOptions {
+    env:      { VOICE: number, SPEED: number };
+    encoding: string;
+  }
 }
-
