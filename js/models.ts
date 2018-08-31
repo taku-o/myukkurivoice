@@ -4,7 +4,7 @@ var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 
 // angular model
 angular.module('yvoiceModel', [])
-  .factory('YPhontList', () => {
+  .factory('YPhontList', (): yubo.YPhont[] => {
     return [
       {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0},
       {id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1},
@@ -34,7 +34,7 @@ angular.module('yvoiceModel', [])
       {id:'gVoice_R2',  name:'aq10-R2 ロボット2',         version:'talk10', struct:{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
     ];
   })
-  .factory('YVoice', () => {
+  .factory('YVoice', (): yubo.YVoice => {
     return {
       id: null,
       name: 'f1 女声1(ゆっくり)',
@@ -54,7 +54,7 @@ angular.module('yvoiceModel', [])
       },
     };
   })
-  .factory('YVoiceInitialData', () => {
+  .factory('YVoiceInitialData', (): yubo.YVoice[] => {
     return [
       {
         id: 'sample_1',
@@ -137,19 +137,19 @@ angular.module('yvoiceModel', [])
       },
     ];
   })
-  .factory('YInput', () => {
+  .factory('YInput', (): yubo.YInput => {
     return {
       source: '',
       encoded: '',
     };
   })
-  .factory('YInputInitialData', () => {
+  .factory('YInputInitialData', (): yubo.YInput => {
     return {
       source: 'エムユックリボイスへようこそ。ゆっくりしていってね！',
       encoded: "エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、",
     };
   })
-  .factory('YCommandInput', () => {
+  .factory('YCommandInput', (): yubo.YCommandInput => {
     return {
       name: '',
       text: '',
@@ -158,8 +158,42 @@ angular.module('yvoiceModel', [])
 
 /* eslint-disable */
 namespace yubo {
+  export interface YPhont {
+    readonly id:       string;
+    readonly name:     string;
+    readonly version:  string; //'talk1' | 'talk2' | 'talk10';
+    readonly idVoice?: number; //0 | 1;
+    readonly path?:    string;
+    readonly struct?:  { bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number };
+  }
+  export interface YVoice {
+    id?:           string;
+    name:          string;
+    phont:         string;
+    version:       string; //'talk1' | 'talk2' | 'talk10';
+    bas?:          number;
+    spd?:          number;
+    vol?:          number;
+    pit?:          number;
+    acc?:          number;
+    lmd?:          number;
+    fsc?:          number;
+    speed:         number;
+    playbackRate:  number;
+    detune:        number;
+    volume:        number;
+    rhythmOn:      boolean,
+    writeMarginMs: number;
+    sourceWrite:   boolean;
+    seqWrite:      boolean;
+    seqWriteOptions: { dir: string, prefix: string };
+  }
   export interface YInput {
-    source: string;
+    source:  string;
     encoded: string;
+  }
+  export interface YCommandInput {
+    name: string;
+    text: string;
   }
 }

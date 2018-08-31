@@ -2,7 +2,6 @@
 exports.__esModule = true;
 var crypto = require("crypto");
 var Config = require("electron-config");
-var globalAny = global;
 // load
 function loadAppConfig() {
     var appCfg = {
@@ -25,7 +24,7 @@ function loadAppConfig() {
     });
     this.config = config;
     this.appCfg = appCfg;
-    globalAny.appCfg = appCfg;
+    global.appCfg = appCfg;
 }
 exports.loadAppConfig = loadAppConfig;
 // update
@@ -45,7 +44,7 @@ function updateAppConfig(options) {
             myApp.appCfg[k] = myApp.config.get(k);
         }
     });
-    globalAny.appCfg = this.appCfg;
+    global.appCfg = this.appCfg;
 }
 exports.updateAppConfig = updateAppConfig;
 // reset
@@ -62,6 +61,6 @@ function resetAppConfig() {
             myApp.appCfg[k] = myApp.config.get(k);
         }
     });
-    globalAny.appCfg = this.appCfg;
+    global.appCfg = this.appCfg;
 }
 exports.resetAppConfig = resetAppConfig;

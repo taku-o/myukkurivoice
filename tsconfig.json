@@ -9,8 +9,8 @@
     "listFiles": false,
     "noEmitOnError": false,
     "noFallthroughCasesInSwitch": true,
+    // temporary
     "noImplicitAny": false,
-    //"noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
@@ -19,7 +19,8 @@
     "skipDefaultLibCheck": false,
     "skipLibCheck": false,
     "sourceMap": false,
-    //"strictNullChecks": true,
+    // temporary
+    "strictNullChecks": false,
     "traceResolution": false,
     "lib": [
       "dom",

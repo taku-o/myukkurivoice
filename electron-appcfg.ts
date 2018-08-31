@@ -1,11 +1,10 @@
 'use strict';
 import * as crypto from 'crypto';
 import * as Config from 'electron-config';
-const globalAny: any = global;
 
 // load
 function loadAppConfig(): void {
-  var appCfg = {
+  var appCfg: yubo.AppCfg = {
     mainWindow: {width: 800, height: 665, x: null, y: null},
     helpWindow: {width: 700, height: 550},
     systemWindow: {width: 390, height: 530},
@@ -24,7 +23,7 @@ function loadAppConfig(): void {
   });
   this.config = config;
   this.appCfg = appCfg;
-  globalAny.appCfg = appCfg;
+  global.appCfg = appCfg;
 }
 
 // update
@@ -43,7 +42,7 @@ function updateAppConfig(options): void {
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
-  globalAny.appCfg = this.appCfg;
+  global.appCfg = this.appCfg;
 }
 
 // reset
@@ -59,7 +58,7 @@ function resetAppConfig(): void {
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
-  globalAny.appCfg = this.appCfg;
+  global.appCfg = this.appCfg;
 }
 
 // exports
@@ -68,3 +67,24 @@ export {
   updateAppConfig,
   resetAppConfig,
 };
+
+declare var global: yubo.Global;
+
+/* eslint-disable */
+namespace yubo {
+  export interface Global extends NodeJS.Global {
+    appCfg: AppCfg;
+  }
+  export interface AppCfg {
+    mainWindow:   { width: number, height: number, x: number, y: number };
+    helpWindow:   { width: number, height: number };
+    systemWindow: { width: number, height: number };
+    audioServVer:        string; //'html5audio' | 'webaudioapi'
+    showMsgPane:         boolean;
+    acceptFirstMouse:    boolean;
+    passPhrase:          string;
+    aq10UseKeyEncrypted: string;
+    debug:               string;
+    isTest:              boolean;
+  }
+}
