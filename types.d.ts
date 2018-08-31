@@ -12,11 +12,12 @@ declare namespace yubo {
 	has(key: string):           boolean
   }
 
+  // js/models.ts
   export interface YPhont {
     readonly id:       string;
     readonly name:     string;
-    readonly version:  string; //'talk1' | 'talk2' | 'talk10';
-    readonly idVoice?: number; //0 | 1;
+    readonly version:  'talk1' | 'talk2' | 'talk10';
+    readonly idVoice?: 0 | 1;
     readonly path?:    string;
     readonly struct?:  { bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number };
   }
@@ -24,7 +25,7 @@ declare namespace yubo {
     id?:           string;
     name:          string;
     phont:         string;
-    version:       string; //'talk1' | 'talk2' | 'talk10';
+    version:       'talk1' | 'talk2' | 'talk10';
     bas?:          number;
     spd?:          number;
     vol?:          number;
@@ -51,12 +52,12 @@ declare namespace yubo {
     text: string;
   }
 
+  // js/services.message.ts
   export interface IMessage {
     readonly created: Date;
     readonly body: string;
     readonly type: string;
   }
-
   export interface IRecordMessage {
     readonly created: Date;
     readonly body: string;
@@ -65,11 +66,12 @@ declare namespace yubo {
     readonly type: string;
   }
 
+  // electron-appcfg.ts
   export interface AppCfg {
     mainWindow:   { width: number, height: number, x: number, y: number };
     helpWindow:   { width: number, height: number };
     systemWindow: { width: number, height: number };
-    audioServVer:        string; //'html5audio' | 'webaudioapi'
+    audioServVer:        'html5audio' | 'webaudioapi';
     showMsgPane:         boolean;
     acceptFirstMouse:    boolean;
     passPhrase:          string;
@@ -78,6 +80,7 @@ declare namespace yubo {
     isTest:              boolean;
   }
 
+  // electron.ts
   export interface MYukkuriVoice {
     appCfg:       yubo.AppCfg;
     config:       yubo.ElectronConfig;
