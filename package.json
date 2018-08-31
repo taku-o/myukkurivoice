@@ -14,7 +14,8 @@
     "lint-q": "eslint *.ts js/*.ts test/*.ts *.js js/*.js test/*.js --quiet",
     "tsc": "tsc",
     "app": "electron .",
-    "debug": "DEBUG=1 electron ."
+    "debug": "DEBUG=1 electron .",
+    "clean-js": "rm -f *.js js/*.js test/*.js"
   },
   "keywords": [],
   "homepage": "https://github.com/taku-o/myukkurivoice",
