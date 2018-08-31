@@ -9,12 +9,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       'DataService', 'MasterService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
-    function($scope,
-      YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput,
-      LicenseService,
-      DataService, MasterService,
-      AquesService, AudioService1, AudioService2, AudioSourceService,
-      AppUtilService, SeqFNameService) {
+    function($scope: any,
+      YPhontList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
+      YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
+      LicenseService: yubo.LicenseService,
+      DataService: yubo.DataService, MasterService: yubo.MasterService,
+      AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
+      AudioSourceService: yubo.AudioSourceService,
+      AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService) {
 
     // init
     var ctrl = this;
@@ -112,7 +114,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = {};
+      var options: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
       AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
         $scope.waveResult = 'ok';
       })
@@ -129,7 +134,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = {};
+      var options: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
       AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
         $scope.waveResult = 'ok';
       })
@@ -166,11 +174,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = {};
+      var woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, options).then((value) => {
+        AudioService1.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
         .catch((err) => {
@@ -191,11 +208,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = {};
+      var woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, options).then((value) => {
+        AudioService1.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
         .catch((err) => {
@@ -216,11 +242,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
+      var woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, options).then((value) => {
+        AudioService1.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
         .catch((err) => {
@@ -242,11 +277,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = {};
+      var woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.record($scope.wavFilePath1, bufWav, options).then((value) => {
+        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err) => {
@@ -267,11 +311,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = {};
+      var woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.record($scope.wavFilePath1, bufWav, options).then((value) => {
+        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err) => {
@@ -292,11 +345,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
+      var woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.record($scope.wavFilePath1, bufWav, options).then((value) => {
+        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err) => {
@@ -319,12 +381,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var wavOptions = {};
-      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      var woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.play(bufWav, playOptions).then((value) => {
+        AudioService2.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
         .catch((err) => {
@@ -345,12 +415,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var wavOptions = {};
-      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      var woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.play(bufWav, playOptions).then((value) => {
+        AudioService2.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
         .catch((err) => {
@@ -371,12 +449,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var wavOptions = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
-      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      var woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.play(bufWav, playOptions).then((value) => {
+        AudioService2.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
         .catch((err) => {
@@ -398,12 +484,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var wavOptions = {};
-      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      var woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then((value) => {
+        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err) => {
@@ -424,12 +518,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var wavOptions = {};
-      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      var woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then((value) => {
+        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err) => {
@@ -450,12 +552,20 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var wavOptions = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
-      var playOptions = { writeMarginMs: 150, playbackRate: 1.0, detune: 0, volume: 1.0 };
+      var woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      var poptions: yubo.PlayOptions = {
+        volume: 1.0,
+        playbackRate: 1.0,
+        detune: 0,
+        writeMarginMs: 150,
+      };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then((value) => {
+        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err) => {
@@ -473,7 +583,8 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       $scope.sourceFnameResult = r;
     };
     ctrl.save = function(): void {
-      AudioSourceService.sourceFname($scope.filePath, $scope.sourceText);
+      // TODO save test
+      //AudioSourceService.save($scope.filePath, $scope.sourceText);
       $scope.saveResult = 'ok';
     };
 

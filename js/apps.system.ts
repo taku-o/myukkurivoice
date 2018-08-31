@@ -17,7 +17,7 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('SystemController', ['$scope', '$timeout', 'LicenseService',
-                           function($scope, $timeout, LicenseService) {
+                           function($scope, $timeout, LicenseService: yubo.LicenseService) {
 
     // init
     var ctrl = this;

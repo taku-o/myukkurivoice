@@ -140,7 +140,7 @@ declare namespace yubo {
     record(message: string, wavFilePath: string): void;
     info(message: string): void;
     error(message: string): void;
-    syserror(message: string, err: Error): void;
+    syserror(message: string, err?: Error): void;
   }
 
   export interface DataService {
@@ -159,12 +159,12 @@ declare namespace yubo {
     wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any>;
   }
   export interface AudioService1 {
-    play(bufWav: any, options: yubo.PlayOptions, parallel: boolean): ng.IPromise<string>;
+    play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
     stop(): void;
     record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
   }
   export interface AudioService2 {
-    play(bufWav: any, options: yubo.PlayOptions, parallel: boolean): ng.IPromise<string>;
+    play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
     stop(): void;
     record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
   }

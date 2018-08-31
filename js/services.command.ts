@@ -1,7 +1,7 @@
 // angular command service
 angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
   .factory('CommandService', ['MessageService', 'YCommandInput',
-                              (MessageService, YCommandInput): yubo.CommandService => {
+                              (MessageService: yubo.MessageService, YCommandInput: yubo.YCommandInput): yubo.CommandService => {
     return {
       containsCommand: function(input: string, yvoiceList: yubo.YVoice[]): boolean {
         // command name list
