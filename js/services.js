@@ -406,7 +406,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         var managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
                         fn_AquesTalk10_FreeWave(r);
                         d.resolve(managedBuf);
-                    }, function (err) {
+                    })["catch"](function (err) {
                         MessageService.syserror('AquesTalk10開発ライセンスキーの読み込みに失敗しました。', err);
                         d.reject(err);
                     });
@@ -565,7 +565,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                     lastNode.connect(audioCtx.destination);
                     // and start
                     inSourceNode.start(0);
-                }, function (err) {
+                })["catch"](function (err) {
                     MessageService.syserror('音源の再生に失敗しました。', err);
                     d.reject(err);
                     return;
@@ -633,7 +633,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                     lastNode.connect(recorder.input);
                     // and start
                     inSourceNode.start(0);
-                }, function (err) {
+                })["catch"](function (err) {
                     MessageService.syserror('音源の再生に失敗しました。', err);
                     d.reject(err);
                     return;

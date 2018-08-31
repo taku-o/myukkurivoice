@@ -289,8 +289,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         // version 10
         } else if (phont.version == 'talk10') {
           // get and set aquesTalk10 developer key
-          LicenseService.consumerKey('aquesTalk10DevKey').then(
-          (licenseKey) => {
+          LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
             // set license key if is not set.
             if (! _isAquesTalk10LicensekeySet) {
               var devKey = fn_AquesTalk10_SetDevKey(licenseKey);
@@ -346,8 +345,8 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             var managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
             fn_AquesTalk10_FreeWave(r);
             d.resolve(managedBuf);
-          },
-          (err) => {
+          })
+          .catch((err) => {
             MessageService.syserror('AquesTalk10開発ライセンスキーの読み込みに失敗しました。', err);
             d.reject(err);
           });
@@ -456,57 +455,55 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         }
 
         var aBuffer = toArrayBuffer(bufWav);
-        audioCtx.decodeAudioData(aBuffer).then(
-          (decodedData) => {
-            // report duration
-            AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
+        audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
+          // report duration
+          AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
 
-            // source
-            var inSourceNode = null;
-            if (parallel) {
-              inSourceNode = audioCtx.createBufferSource();
-            } else {
-              sourceNode = audioCtx.createBufferSource();
-              inSourceNode = sourceNode;
-            }
-            inSourceNode.buffer = decodedData;
-            inSourceNode.onended = () => {
-              // onendedのタイミングでは出力が終わっていない
-              $timeout(() => {
-                d.resolve('ok');
-              }, options.writeMarginMs);
-            };
-
-            var nodeList = [];
-
-            // playbackRate
-            if (options.playbackRate && options.playbackRate != 1.0) {
-              inSourceNode.playbackRate.value = options.playbackRate;
-            }
-            // detune
-            if (options.detune && options.detune != 0) {
-              inSourceNode.detune.value = options.detune;
-            }
-            // gain
-            var gainNode = audioCtx.createGain();
-            gainNode.gain.value = options.volume;
-            nodeList.push(gainNode);
-
-            // connect
-            var lastNode = inSourceNode;
-            angular.forEach(nodeList, (node) => {
-              lastNode.connect(node); lastNode = node;
-            });
-            lastNode.connect(audioCtx.destination);
-
-            // and start
-            inSourceNode.start(0);
-          },
-          (err) => {
-            MessageService.syserror('音源の再生に失敗しました。', err);
-            d.reject(err); return;
+          // source
+          var inSourceNode = null;
+          if (parallel) {
+            inSourceNode = audioCtx.createBufferSource();
+          } else {
+            sourceNode = audioCtx.createBufferSource();
+            inSourceNode = sourceNode;
           }
-        );
+          inSourceNode.buffer = decodedData;
+          inSourceNode.onended = () => {
+            // onendedのタイミングでは出力が終わっていない
+            $timeout(() => {
+              d.resolve('ok');
+            }, options.writeMarginMs);
+          };
+
+          var nodeList = [];
+
+          // playbackRate
+          if (options.playbackRate && options.playbackRate != 1.0) {
+            inSourceNode.playbackRate.value = options.playbackRate;
+          }
+          // detune
+          if (options.detune && options.detune != 0) {
+            inSourceNode.detune.value = options.detune;
+          }
+          // gain
+          var gainNode = audioCtx.createGain();
+          gainNode.gain.value = options.volume;
+          nodeList.push(gainNode);
+
+          // connect
+          var lastNode = inSourceNode;
+          angular.forEach(nodeList, (node) => {
+            lastNode.connect(node); lastNode = node;
+          });
+          lastNode.connect(audioCtx.destination);
+
+          // and start
+          inSourceNode.start(0);
+        })
+        .catch((err) => {
+          MessageService.syserror('音源の再生に失敗しました。', err);
+          d.reject(err); return;
+        });
         return d.promise;
       },
       stop: function(): void {
@@ -524,60 +521,58 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         }
 
         var aBuffer = toArrayBuffer(bufWav);
-        audioCtx.decodeAudioData(aBuffer).then(
-          (decodedData) => {
-            // report duration
-            AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
+        audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
+          // report duration
+          AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
 
-            // source
-            var inSourceNode = audioCtx.createBufferSource();
-            inSourceNode.buffer = decodedData;
-            inSourceNode.onended = () => {
-              // onendedのタイミングでは出力が終わっていない
-              $timeout(() => {
-                recorder.end();
-                MessageService.record(`${'音声ファイルを保存しました。path: '}${wavFilePath}`, wavFilePath);
-                d.resolve('ok');
-              }, options.writeMarginMs);
-            };
+          // source
+          var inSourceNode = audioCtx.createBufferSource();
+          inSourceNode.buffer = decodedData;
+          inSourceNode.onended = () => {
+            // onendedのタイミングでは出力が終わっていない
+            $timeout(() => {
+              recorder.end();
+              MessageService.record(`${'音声ファイルを保存しました。path: '}${wavFilePath}`, wavFilePath);
+              d.resolve('ok');
+            }, options.writeMarginMs);
+          };
 
-            var nodeList = [];
+          var nodeList = [];
 
-            // playbackRate
-            if (options.playbackRate && options.playbackRate != 1.0) {
-              inSourceNode.playbackRate.value = options.playbackRate;
-            }
-            // detune
-            if (options.detune && options.detune != 0) {
-              inSourceNode.detune.value = options.detune;
-            }
-            // gain
-            var gainNode = audioCtx.createGain();
-            gainNode.gain.value = options.volume;
-            nodeList.push(gainNode);
-
-            // recorder
-            var recorder = WaveRecorder(audioCtx, {
-              channels: 1, // 1 or 2
-              bitDepth: 16 // 16 or 32
-            });
-            recorder.pipe(fs.createWriteStream(wavFilePath));
-
-            // connect
-            var lastNode = inSourceNode;
-            angular.forEach(nodeList, (node) => {
-              lastNode.connect(node); lastNode = node;
-            });
-            lastNode.connect(recorder.input);
-
-            // and start
-            inSourceNode.start(0);
-          },
-          (err) => {
-            MessageService.syserror('音源の再生に失敗しました。', err);
-            d.reject(err); return;
+          // playbackRate
+          if (options.playbackRate && options.playbackRate != 1.0) {
+            inSourceNode.playbackRate.value = options.playbackRate;
           }
-        );
+          // detune
+          if (options.detune && options.detune != 0) {
+            inSourceNode.detune.value = options.detune;
+          }
+          // gain
+          var gainNode = audioCtx.createGain();
+          gainNode.gain.value = options.volume;
+          nodeList.push(gainNode);
+
+          // recorder
+          var recorder = WaveRecorder(audioCtx, {
+            channels: 1, // 1 or 2
+            bitDepth: 16 // 16 or 32
+          });
+          recorder.pipe(fs.createWriteStream(wavFilePath));
+
+          // connect
+          var lastNode = inSourceNode;
+          angular.forEach(nodeList, (node) => {
+            lastNode.connect(node); lastNode = node;
+          });
+          lastNode.connect(recorder.input);
+
+          // and start
+          inSourceNode.start(0);
+        })
+        .catch((err) => {
+          MessageService.syserror('音源の再生に失敗しました。', err);
+          d.reject(err); return;
+        });
         return d.promise;
       }
     };

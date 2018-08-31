@@ -54,6 +54,7 @@ angular.module('yvoiceMessageService', [])
     };
   }]);
 
+/* eslint-disable */
 namespace yubo {
   export interface IMessage {
     readonly created: Date;

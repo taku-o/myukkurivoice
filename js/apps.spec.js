@@ -56,7 +56,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
             LicenseService.consumerKey($scope.licenseType).then(function (value) {
                 $scope.consumerKeyResult = value;
                 $scope.consumerKeyDone = 'ok';
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.consumerKeyErr = err;
             });
         };
@@ -64,7 +64,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         ctrl.load = function () {
             DataService.load().then(function (list) {
                 $scope.loadResult = JSON.stringify(list);
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.loadErr = err;
             });
         };
@@ -104,7 +104,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
             var options = {};
             AquesService.wave($scope.encoded, phont, speed, options).then(function (value) {
                 $scope.waveResult = 'ok';
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.waveErr = err;
             });
         };
@@ -121,7 +121,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
             var options = {};
             AquesService.wave($scope.encoded, phont, speed, options).then(function (value) {
                 $scope.waveResult = 'ok';
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.waveErr = err;
             });
         };
@@ -138,7 +138,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
             var options = { passPhrase: 'xxxxxxx', aq10UseKeyEncrypted: '' };
             AquesService.wave($scope.encoded, phont, speed, options).then(function (value) {
                 $scope.waveResult = 'ok';
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.waveErr = err;
             });
         };
@@ -160,10 +160,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService1.play(bufWav, options).then(function (value) {
                     $scope.playResult1 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.playResult1 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.playResult1 = err.message;
             });
         };
@@ -184,10 +184,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService1.play(bufWav, options).then(function (value) {
                     $scope.playResult1 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.playResult1 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.playResult1 = err.message;
             });
         };
@@ -208,10 +208,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService1.play(bufWav, options).then(function (value) {
                     $scope.playResult1 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.playResult1 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.playResult1 = err.message;
             });
         };
@@ -232,10 +232,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService1.record($scope.wavFilePath1, bufWav, options).then(function (value) {
                     $scope.recordResult1 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.recordResult1 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.recordResult1 = err.message;
             });
         };
@@ -256,10 +256,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService1.record($scope.wavFilePath1, bufWav, options).then(function (value) {
                     $scope.recordResult1 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.recordResult1 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.recordResult1 = err.message;
             });
         };
@@ -280,10 +280,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService1.record($scope.wavFilePath1, bufWav, options).then(function (value) {
                     $scope.recordResult1 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.recordResult1 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.recordResult1 = err.message;
             });
         };
@@ -306,10 +306,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService2.play(bufWav, playOptions).then(function (value) {
                     $scope.playResult2 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.playResult2 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.playResult2 = err.message;
             });
         };
@@ -331,10 +331,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService2.play(bufWav, playOptions).then(function (value) {
                     $scope.playResult2 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.playResult2 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.playResult2 = err.message;
             });
         };
@@ -356,10 +356,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService2.play(bufWav, playOptions).then(function (value) {
                     $scope.playResult2 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.playResult2 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.playResult2 = err.message;
             });
         };
@@ -381,10 +381,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(function (value) {
                     $scope.recordResult2 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.recordResult2 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.recordResult2 = err.message;
             });
         };
@@ -406,10 +406,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(function (value) {
                     $scope.recordResult2 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.recordResult2 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.recordResult2 = err.message;
             });
         };
@@ -431,10 +431,10 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 // play
                 AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(function (value) {
                     $scope.recordResult2 = 'ok';
-                }, function (err) {
+                })["catch"](function (err) {
                     $scope.recordResult2 = err.message;
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 $scope.recordResult2 = err.message;
             });
         };

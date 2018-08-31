@@ -156,6 +156,7 @@ angular.module('yvoiceModel', [])
     };
   });
 
+/* eslint-disable */
 namespace yubo {
   export interface YInput {
     source: string;

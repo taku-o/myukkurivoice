@@ -60,25 +60,23 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       $scope.plainKey = r;
     };
     ctrl.consumerKey = function(): void {
-      LicenseService.consumerKey($scope.licenseType).then(
-        (value) => {
-          $scope.consumerKeyResult = value;
-          $scope.consumerKeyDone = 'ok';
-        },
-        (err) => {
-          $scope.consumerKeyErr = err;
-        });
+      LicenseService.consumerKey($scope.licenseType).then((value) => {
+        $scope.consumerKeyResult = value;
+        $scope.consumerKeyDone = 'ok';
+      })
+      .catch((err) => {
+        $scope.consumerKeyErr = err;
+      });
     };
 
     // DataService
     ctrl.load = function(): void {
-      DataService.load().then(
-        (list) => {
-          $scope.loadResult = JSON.stringify(list);
-        },
-        (err) => {
-          $scope.loadErr = err;
-        });
+      DataService.load().then((list) => {
+        $scope.loadResult = JSON.stringify(list);
+      })
+      .catch((err) => {
+        $scope.loadErr = err;
+      });
     };
     ctrl.initialData = function(): void {
       var r = DataService.initialData();
@@ -115,13 +113,12 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       }
       var speed = 100;
       var options = {};
-      AquesService.wave($scope.encoded, phont, speed, options).then(
-        (value) => {
-          $scope.waveResult = 'ok';
-        },
-        (err) => {
-          $scope.waveErr = err;
-        });
+      AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
+        $scope.waveResult = 'ok';
+      })
+      .catch((err) => {
+        $scope.waveErr = err;
+      });
     };
     ctrl.waveVer2 = function(): void {
       var list = MasterService.getPhontList();
@@ -133,13 +130,12 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       }
       var speed = 100;
       var options = {};
-      AquesService.wave($scope.encoded, phont, speed, options).then(
-        (value) => {
-          $scope.waveResult = 'ok';
-        },
-        (err) => {
-          $scope.waveErr = err;
-        });
+      AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
+        $scope.waveResult = 'ok';
+      })
+      .catch((err) => {
+        $scope.waveErr = err;
+      });
     };
     ctrl.waveVer10 = function(): void {
       var list = MasterService.getPhontList();
@@ -151,13 +147,12 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       }
       var speed = 100;
       var options = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
-      AquesService.wave($scope.encoded, phont, speed, options).then(
-        (value) => {
-          $scope.waveResult = 'ok';
-        },
-        (err) => {
-          $scope.waveErr = err;
-        });
+      AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
+        $scope.waveResult = 'ok';
+      })
+      .catch((err) => {
+        $scope.waveErr = err;
+      });
     };
 
     // AudioService1
@@ -175,15 +170,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, options).then(
-        (value) => {
+        AudioService1.play(bufWav, options).then((value) => {
           $scope.playResult1 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.playResult1 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.playResult1 = err.message;
       });
     };
@@ -201,15 +195,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, options).then(
-        (value) => {
+        AudioService1.play(bufWav, options).then((value) => {
           $scope.playResult1 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.playResult1 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.playResult1 = err.message;
       });
     };
@@ -227,15 +220,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, options).then(
-        (value) => {
+        AudioService1.play(bufWav, options).then((value) => {
           $scope.playResult1 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.playResult1 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.playResult1 = err.message;
       });
     };
@@ -254,15 +246,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
         // play
-        AudioService1.record($scope.wavFilePath1, bufWav, options).then(
-        (value) => {
+        AudioService1.record($scope.wavFilePath1, bufWav, options).then((value) => {
           $scope.recordResult1 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.recordResult1 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.recordResult1 = err.message;
       });
     };
@@ -280,15 +271,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
         // play
-        AudioService1.record($scope.wavFilePath1, bufWav, options).then(
-        (value) => {
+        AudioService1.record($scope.wavFilePath1, bufWav, options).then((value) => {
           $scope.recordResult1 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.recordResult1 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.recordResult1 = err.message;
       });
     };
@@ -306,15 +296,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, options).then((bufWav) => {
         // play
-        AudioService1.record($scope.wavFilePath1, bufWav, options).then(
-        (value) => {
+        AudioService1.record($scope.wavFilePath1, bufWav, options).then((value) => {
           $scope.recordResult1 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.recordResult1 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.recordResult1 = err.message;
       });
     };
@@ -335,15 +324,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
         // play
-        AudioService2.play(bufWav, playOptions).then(
-        (value) => {
+        AudioService2.play(bufWav, playOptions).then((value) => {
           $scope.playResult2 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.playResult2 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.playResult2 = err.message;
       });
     };
@@ -362,15 +350,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
         // play
-        AudioService2.play(bufWav, playOptions).then(
-        (value) => {
+        AudioService2.play(bufWav, playOptions).then((value) => {
           $scope.playResult2 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.playResult2 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.playResult2 = err.message;
       });
     };
@@ -389,15 +376,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
         // play
-        AudioService2.play(bufWav, playOptions).then(
-        (value) => {
+        AudioService2.play(bufWav, playOptions).then((value) => {
           $scope.playResult2 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.playResult2 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.playResult2 = err.message;
       });
     };
@@ -417,15 +403,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
         // play
-        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(
-        (value) => {
+        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then((value) => {
           $scope.recordResult2 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.recordResult2 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.recordResult2 = err.message;
       });
     };
@@ -444,15 +429,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
         // play
-        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(
-        (value) => {
+        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then((value) => {
           $scope.recordResult2 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.recordResult2 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.recordResult2 = err.message;
       });
     };
@@ -471,15 +455,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, wavOptions).then((bufWav) => {
         // play
-        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then(
-        (value) => {
+        AudioService2.record($scope.wavFilePath2, bufWav, playOptions).then((value) => {
           $scope.recordResult2 = 'ok';
-        },
-        (err) => {
+        })
+        .catch((err) => {
           $scope.recordResult2 = err.message;
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         $scope.recordResult2 = err.message;
       });
     };
@@ -505,6 +488,5 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       var r = AppUtilService.disableRhythm($scope.rhythmText);
       $scope.disableRhythmResult = r;
     };
-
   }]);
 

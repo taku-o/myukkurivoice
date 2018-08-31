@@ -337,11 +337,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             AquesService.wave(encoded, phont, speed, waveOptions).then(function (bufWav) {
                 return AudioService.play(bufWav, playOptions).then(function () {
                     d.resolve('ok');
-                }, function (err) {
+                })["catch"](function (err) {
                     MessageService.error('音声データを再生できませんでした。', err);
                     d.reject(err);
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 MessageService.error('音声データを作成できませんでした。', err);
                 d.reject(err);
             });
@@ -435,7 +435,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                         return;
                     }
                     var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
-                    AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () { }, function (err) {
+                    AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () {
+                    })["catch"](function (err) {
                         MessageService.error('メッセージファイルを作成できませんでした。', err);
                     });
                 });
@@ -481,7 +482,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                             return;
                         }
                         var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
-                        AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () { }, function (err) {
+                        AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () {
+                        })["catch"](function (err) {
                             MessageService.error('メッセージファイルを作成できませんでした。', err);
                         });
                     });
@@ -538,11 +540,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             AquesService.wave(encoded, phont, speed, waveOptions).then(function (bufWav) {
                 return AudioService.record(filePath, bufWav, playOptions).then(function () {
                     d.resolve(filePath);
-                }, function (err) {
+                })["catch"](function (err) {
                     MessageService.error('音声データを記録できませんでした。', err);
                     d.reject(err);
                 });
-            }, function (err) {
+            })["catch"](function (err) {
                 MessageService.error('音声データを作成できませんでした。', err);
                 d.reject(err);
             });
@@ -600,11 +602,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 AquesService.wave(encoded, phont, speed, waveOptions).then(function (bufWav) {
                     return AudioService.record(filePath, bufWav, playOptions).then(function () {
                         d.resolve(filePath);
-                    }, function (err) {
+                    })["catch"](function (err) {
                         MessageService.error('音声データを記録できませんでした。', err);
                         d.reject(err);
                     });
-                }, function (err) {
+                })["catch"](function (err) {
                     MessageService.error('音声データを作成できませんでした。', err);
                     d.reject(err);
                 });

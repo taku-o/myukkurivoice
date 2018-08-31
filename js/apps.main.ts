@@ -344,18 +344,16 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         writeMarginMs:yvoice.writeMarginMs,
       };
 
-      AquesService.wave(encoded, phont, speed, waveOptions).then(
-      (bufWav) => {
-        return AudioService.play(bufWav, playOptions).then(
-        () => {
+      AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
+        return AudioService.play(bufWav, playOptions).then(() => {
           d.resolve('ok');
-        },
-        (err) => {
+        })
+        .catch((err) => {
           MessageService.error('音声データを再生できませんでした。', err);
           d.reject(err);
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
@@ -444,11 +442,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           if (!firstWroteFile) { firstWroteFile = fp; }
           if (!$scope.yvoice.sourceWrite) { return; }
           var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
-          AudioSourceService.save(sourceFname, $scope.yinput.source).then(
-            () => {},
-            (err) => {
-              MessageService.error('メッセージファイルを作成できませんでした。', err);
-            });
+          AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
+          })
+          .catch((err) => {
+            MessageService.error('メッセージファイルを作成できませんでした。', err);
+          });
         });
 
       // 通常保存
@@ -486,11 +484,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             if (!firstWroteFile) { firstWroteFile = fp; }
             if (!$scope.yvoice.sourceWrite) { return; }
             var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
-            AudioSourceService.save(sourceFname, $scope.yinput.source).then(
-              () => {},
-              (err) => {
-                MessageService.error('メッセージファイルを作成できませんでした。', err);
-              });
+            AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
+            })
+            .catch((err) => {
+              MessageService.error('メッセージファイルを作成できませんでした。', err);
+            });
           });
         });
         ipcRenderer.send('showSaveDialog', 'wav');
@@ -543,18 +541,16 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         writeMarginMs:yvoice.writeMarginMs,
       };
 
-      AquesService.wave(encoded, phont, speed, waveOptions).then(
-      (bufWav) => {
-        return AudioService.record(filePath, bufWav, playOptions).then(
-        () => {
+      AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
+        return AudioService.record(filePath, bufWav, playOptions).then(() => {
           d.resolve(filePath);
-        },
-        (err) => {
+        })
+        .catch((err) => {
           MessageService.error('音声データを記録できませんでした。', err);
           d.reject(err);
         });
-      },
-      (err) => {
+      })
+      .catch((err) => {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
@@ -607,23 +603,20 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         writeMarginMs:yvoice.writeMarginMs,
       };
 
-      SeqFNameService.nextNumber(dir, fnameprefix).then(
-      (nextNum) => {
+      SeqFNameService.nextNumber(dir, fnameprefix).then((nextNum) => {
         var nextFname = SeqFNameService.nextFname(fnameprefix, nextNum);
         var filePath = path.join(dir, nextFname);
 
-        AquesService.wave(encoded, phont, speed, waveOptions).then(
-        (bufWav) => {
-          return AudioService.record(filePath, bufWav, playOptions).then(
-          () => {
+        AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
+          return AudioService.record(filePath, bufWav, playOptions).then(() => {
             d.resolve(filePath);
-          },
-          (err) => {
+          })
+          .catch((err) => {
             MessageService.error('音声データを記録できませんでした。', err);
             d.reject(err);
           });
-        },
-        (err) => {
+        })
+        .catch((err) => {
           MessageService.error('音声データを作成できませんでした。', err);
           d.reject(err);
         });
@@ -826,6 +819,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
   }]);
 
+/* eslint-disable */
 namespace yubo {
   export interface IScope extends ng.IScope {
     yinput: yubo.YInput;
