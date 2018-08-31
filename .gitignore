@@ -3,6 +3,3 @@ Thumbs.db
 /bin/release/log/
 /bin/release/myukkurivoice/
 /MYukkuriVoice-darwin-x64/
-/*.js
-/js/*.js
-/test/*.js
