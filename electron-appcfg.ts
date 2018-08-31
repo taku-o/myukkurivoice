@@ -13,7 +13,7 @@ function loadAppConfig(): void {
     acceptFirstMouse: false,
     passPhrase: crypto.randomBytes(16).toString('hex'),
     aq10UseKeyEncrypted: '',
-    debug: process.env.DEBUG,
+    debug: process.env.DEBUG != null,
     isTest: process.env.NODE_ENV == 'test',
   };
 
@@ -27,7 +27,7 @@ function loadAppConfig(): void {
 }
 
 // update
-function updateAppConfig(options): void {
+function updateAppConfig(options: yubo.AppCfg): void {
   var myApp = this;
   var {x, y} = this.mainWindow.getBounds();
   options.mainWindow.x = x;

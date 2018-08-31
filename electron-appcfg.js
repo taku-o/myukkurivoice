@@ -13,7 +13,7 @@ function loadAppConfig() {
         acceptFirstMouse: false,
         passPhrase: crypto.randomBytes(16).toString('hex'),
         aq10UseKeyEncrypted: '',
-        debug: process.env.DEBUG,
+        debug: process.env.DEBUG != null,
         isTest: process.env.NODE_ENV == 'test'
     };
     var config = new Config();

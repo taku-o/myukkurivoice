@@ -12,6 +12,38 @@ declare namespace yubo {
 	has(key: string):           boolean
   }
 
+  // electron-appcfg.ts
+  export interface AppCfg {
+    mainWindow:    { width: number, height: number, x: number, y: number };
+    helpWindow?:   { width: number, height: number };
+    systemWindow?: { width: number, height: number };
+    audioServVer:        'html5audio' | 'webaudioapi';
+    showMsgPane:         boolean;
+    acceptFirstMouse:    boolean;
+    passPhrase:          string;
+    aq10UseKeyEncrypted: string;
+    debug?:              boolean;
+    isTest?:             boolean;
+  }
+
+  // electron.ts
+  export interface MYukkuriVoice {
+    appCfg:       yubo.AppCfg;
+    config:       yubo.ElectronConfig;
+    mainWindow:   Electron.BrowserWindow;
+    helpWindow:   Electron.BrowserWindow;
+    systemWindow: Electron.BrowserWindow;
+    showMainWindow():                       void;
+    showHelpWindow():                       void;
+    showSystemWindow():                     void;
+    showSpecWindow():                       void;
+    initAppMenu(options: {debug: boolean}): void;
+    initDockMenu():                         void;
+    loadAppConfig():                        void;
+    updateAppConfig(options: yubo.AppCfg):  void;
+    resetAppConfig():                       void;
+  }
+
   // js/models.ts
   export interface YPhont {
     readonly id:       string;
@@ -66,35 +98,21 @@ declare namespace yubo {
     readonly type: string;
   }
 
-  // electron-appcfg.ts
-  export interface AppCfg {
-    mainWindow:   { width: number, height: number, x: number, y: number };
-    helpWindow:   { width: number, height: number };
-    systemWindow: { width: number, height: number };
-    audioServVer:        'html5audio' | 'webaudioapi';
-    showMsgPane:         boolean;
-    acceptFirstMouse:    boolean;
+  // js/apps.main.ts
+  export interface WaveOptions {
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
-    debug:               string;
-    isTest:              boolean;
+    bas?:                number;
+    pit?:                number;
+    acc?:                number;
+    lmd?:                number;
+    fsc?:                number;
   }
-
-  // electron.ts
-  export interface MYukkuriVoice {
-    appCfg:       yubo.AppCfg;
-    config:       yubo.ElectronConfig;
-    mainWindow:   Electron.BrowserWindow;
-    helpWindow:   Electron.BrowserWindow;
-    systemWindow: Electron.BrowserWindow;
-    showMainWindow():              void;
-    showHelpWindow():              void;
-    showSystemWindow():            void;
-    showSpecWindow():              void;
-    initAppMenu(options: any):     void;
-    initDockMenu():                void;
-    loadAppConfig():               void;
-    updateAppConfig(options: any): void;
-    resetAppConfig():              void;
+  export interface PlayOptions {
+    volume:        number;
+    playbackRate:  number;
+    detune:        number;
+    writeMarginMs: number;
   }
 }
+

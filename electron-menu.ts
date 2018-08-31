@@ -2,7 +2,7 @@
 import {app,Menu,shell} from 'electron';
 
 // application menu
-function initAppMenu(options): void {
+function initAppMenu(options: {debug: boolean}): void {
   var myApp = this;
   var menuList = [
     {

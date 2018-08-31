@@ -321,14 +321,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         yvoice.writeMarginMs = 150;
       }
 
-      var waveOptions = {
+      var waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
-        bas:null,
-        pit:null,
-        acc:null,
-        lmd:null,
-        fsc:null,
       };
       if (phont.version == 'talk10') {
         waveOptions.bas = yvoice.bas;
@@ -337,7 +332,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         waveOptions.lmd = yvoice.lmd;
         waveOptions.fsc = yvoice.fsc;
       }
-      var playOptions = {
+      var playOptions: yubo.PlayOptions = {
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,
@@ -518,14 +513,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
         yvoice.writeMarginMs = 150;
       }
-      var waveOptions = {
+      var waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
-        bas:null,
-        pit:null,
-        acc:null,
-        lmd:null,
-        fsc:null,
       };
       if (phont.version == 'talk10') {
         waveOptions.bas = yvoice.bas;
@@ -534,7 +524,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         waveOptions.lmd = yvoice.lmd;
         waveOptions.fsc = yvoice.fsc;
       }
-      var playOptions = {
+      var playOptions: yubo.PlayOptions = {
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,
@@ -580,14 +570,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
         yvoice.writeMarginMs = 150;
       }
-      var waveOptions = {
+      var waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
-        bas:null,
-        pit:null,
-        acc:null,
-        lmd:null,
-        fsc:null,
       };
       if (phont.version == 'talk10') {
         waveOptions.bas = yvoice.bas;
@@ -596,7 +581,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         waveOptions.lmd = yvoice.lmd;
         waveOptions.fsc = yvoice.fsc;
       }
-      var playOptions = {
+      var playOptions: yubo.PlayOptions = {
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,

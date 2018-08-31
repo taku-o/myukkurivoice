@@ -314,12 +314,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
             var waveOptions = {
                 passPhrase: appCfg.passPhrase,
-                aq10UseKeyEncrypted: appCfg.aq10UseKeyEncrypted,
-                bas: null,
-                pit: null,
-                acc: null,
-                lmd: null,
-                fsc: null
+                aq10UseKeyEncrypted: appCfg.aq10UseKeyEncrypted
             };
             if (phont.version == 'talk10') {
                 waveOptions.bas = yvoice.bas;
@@ -517,12 +512,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
             var waveOptions = {
                 passPhrase: appCfg.passPhrase,
-                aq10UseKeyEncrypted: appCfg.aq10UseKeyEncrypted,
-                bas: null,
-                pit: null,
-                acc: null,
-                lmd: null,
-                fsc: null
+                aq10UseKeyEncrypted: appCfg.aq10UseKeyEncrypted
             };
             if (phont.version == 'talk10') {
                 waveOptions.bas = yvoice.bas;
@@ -576,12 +566,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
             var waveOptions = {
                 passPhrase: appCfg.passPhrase,
-                aq10UseKeyEncrypted: appCfg.aq10UseKeyEncrypted,
-                bas: null,
-                pit: null,
-                acc: null,
-                lmd: null,
-                fsc: null
+                aq10UseKeyEncrypted: appCfg.aq10UseKeyEncrypted
             };
             if (phont.version == 'talk10') {
                 waveOptions.bas = yvoice.bas;

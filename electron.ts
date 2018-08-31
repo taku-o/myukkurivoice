@@ -103,7 +103,7 @@ ipcMain.on('ondragstartwav', (event, filePath) => {
 });
 
 // updateAppConfig
-ipcMain.on('updateAppConfig', (event, options) => {
+ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
   myApp.updateAppConfig(options);
   var dialogOptions = {
     type: 'info',
