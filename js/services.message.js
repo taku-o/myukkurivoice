@@ -32,7 +32,11 @@ angular.module('yvoiceMessageService', [])
                 };
                 $rootScope.$broadcast('message', post);
             },
-            error: function (message) {
+            error: function (message, err) {
+                if (err === void 0) { err = null; }
+                if (err) {
+                    message = message + err.message;
+                }
                 var post = {
                     created: new Date(),
                     body: message,

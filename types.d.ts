@@ -5,6 +5,19 @@ declare namespace yubo {
   }
   export interface IScope extends ng.IScope {
     yinput: yubo.YInput;
+    yvoice: yubo.YVoice;
+    yvoiceList: yubo.YVoice[];
+    phontList: YPhont[];
+    appCfg: AppCfg;
+    duration: number;
+    lastWavFile: string;
+    encodedHighlight: any;
+    sourceHighlight: any;
+    aq10BasList: { name: string, id: number}[];
+    display: string;
+    alwaysOnTop: boolean;
+    isTest: boolean;
+    messageList: (IMessage | IRecordMessage)[];
   }
   export interface ElectronConfig {
 	get(key: string): any;
@@ -139,7 +152,7 @@ declare namespace yubo {
     action(message: string): void;
     record(message: string, wavFilePath: string): void;
     info(message: string): void;
-    error(message: string): void;
+    error(message: string, err?: Error): void;
     syserror(message: string, err?: Error): void;
   }
 
