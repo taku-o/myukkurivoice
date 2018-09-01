@@ -1,5 +1,5 @@
 .DS_Store
 Thumbs.db
-bin/release/log/
-bin/release/myukkurivoice/
-myukkurivoice-darwin-x64
+/bin/release/log/
+/bin/release/myukkurivoice/
+/MYukkuriVoice-darwin-x64/

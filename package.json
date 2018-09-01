@@ -1,14 +1,20 @@
 {
   "name": "MYukkuriVoice",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
+  "types": "types.d.ts",
   "scripts": {
     "test": "sh bin/test.sh",
     "test_rebuild": "sh bin/test_rebuild.sh",
     "packaging": "sh bin/packaging.sh",
     "release": "sh bin/release.sh",
-    "lint": "eslint *.js js/*.js test/*.js"
+    "lint": "eslint *.ts js/*.ts test/*.ts",
+    "lint-js": "eslint *.js js/*.js test/*.js",
+    "lint-q": "eslint *.ts js/*.ts test/*.ts *.js js/*.js test/*.js --quiet",
+    "tsc": "tsc",
+    "app": "electron .",
+    "debug": "DEBUG=1 electron ."
   },
   "keywords": [],
   "homepage": "https://github.com/taku-o/myukkurivoice",
@@ -35,5 +41,17 @@
     "temp": "^0.8.3",
     "tunajs": "^1.0.0",
     "wave-recorder": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/angular": "^1.6.50",
+    "@types/electron-config": "^0.2.1",
+    "@types/ffi": "^0.2.0",
+    "@types/intro.js": "^2.4.3",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.9.3",
+    "@types/ref": "0.0.28",
+    "@types/ref-struct": "0.0.29",
+    "@types/temp": "^0.8.32",
+    "@types/webdriverio": "^4.10.3"
   }
 }

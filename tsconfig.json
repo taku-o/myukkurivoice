@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "charset": "utf8",
+    "diagnostics": false,
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "noEmitOnError": false,
+    "noFallthroughCasesInSwitch": true,
+    // temporary
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "pretty": true,
+    "removeComments": false,
+    "skipDefaultLibCheck": false,
+    "skipLibCheck": false,
+    "sourceMap": false,
+    // temporary
+    "strictNullChecks": false,
+    "traceResolution": false,
+    "lib": [
+      "dom",
+      "es7",
+    ],
+  },
+  "include": [
+    "*.ts",
+    "js/*.ts",
+    "test/*.ts",
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}
