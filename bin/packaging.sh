@@ -1,7 +1,7 @@
 #!/bin/sh
 cd `dirname $0`
 cd ..
-tsc
+tsc && prettier *.js js/*.js test/*.js --write
 rm -rf MYukkuriVoice-darwin-x64/
 electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
     --ignore="^/MYukkuriVoice-darwin-x64" \

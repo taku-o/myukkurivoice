@@ -80,6 +80,15 @@
   npm run tsc
 ```
 
+## prettier
+* javascriptの整形にprettierを使用します。
+
+```
+  npm install -g prettier
+
+  npm run format
+```
+
 ## using devtron
 * devtronを使用するには、デバッグモードで次のコマンドを実行します。
 

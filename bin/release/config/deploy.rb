@@ -51,8 +51,8 @@ task :package do
     # git init
     execute "cd #{application}; git submodule update --init"
 
-    # build typescript
-    execute "cd #{application}; tsc"
+    # build typescript and format javascript
+    execute "cd #{application}; tsc && prettier *.js js/*.js test/*.js --write"
 
     # build
     execute "cd #{application}; electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor " +

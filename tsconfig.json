@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": true,
@@ -7,11 +9,11 @@
     "diagnostics": false,
     "listEmittedFiles": false,
     "listFiles": false,
-    "noEmitOnError": false,
+    "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    // temporary
-    "noImplicitAny": false,
+    "noImplicitAny": false, // temporary
     "noImplicitReturns": true,
+    "noImplicitThis": false, // temporary
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "pretty": true,
@@ -19,8 +21,7 @@
     "skipDefaultLibCheck": false,
     "skipLibCheck": false,
     "sourceMap": false,
-    // temporary
-    "strictNullChecks": false,
+    "strictNullChecks": false, // temporary
     "traceResolution": false,
     "lib": [
       "dom",
