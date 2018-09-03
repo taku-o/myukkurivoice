@@ -6,11 +6,11 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
     }])
     .controller('SpecController', ['$scope',
     'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
-    'LicenseService', 'IntroService',
+    'LicenseService',
     'DataService', 'MasterService',
     'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
     'AppUtilService', 'SeqFNameService',
-    function ($scope, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, IntroService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
+    function ($scope, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
         // init
         var ctrl = this;
         // YPhontList
@@ -60,15 +60,16 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
                 $scope.consumerKeyErr = err;
             });
         };
+        // TODO
         // IntroService
         ctrl.mainTutorial = function () {
-            IntroService.mainTutorial();
+            //IntroService.mainTutorial();
         };
         ctrl.settingsTutorial = function () {
-            IntroService.settingsTutorial();
+            //IntroService.settingsTutorial();
         };
         ctrl.shortcut = function () {
-            IntroService.shortcut();
+            //IntroService.shortcut();
         };
         // DataService
         ctrl.load = function () {
