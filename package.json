@@ -13,7 +13,6 @@
     "lint-js": "eslint *.js js/*.js test/*.js",
     "lint-q": "eslint *.ts js/*.ts test/*.ts *.js js/*.js test/*.js --quiet",
     "tsc": "tsc",
-    "app": "electron .",
     "debug": "DEBUG=1 electron ."
   },
   "keywords": [],
