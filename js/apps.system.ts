@@ -43,7 +43,7 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
         'showMsgPane':$scope.appCfg.showMsgPane,
         'acceptFirstMouse':$scope.appCfg.acceptFirstMouse,
         'passPhrase':$scope.appCfg.passPhrase,
-        'aq10UseKeyEncrypted':aq10UseKeyEncrypted
+        'aq10UseKeyEncrypted':aq10UseKeyEncrypted,
       };
       ipcRenderer.send('updateAppConfig', options);
     };

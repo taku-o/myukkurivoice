@@ -48,7 +48,7 @@ function updateAppConfig(options: yubo.AppCfg): void {
 // reset
 function resetAppConfig(): void {
   var myApp = this;
-  this.config.set('mainWindow',          { width: 800, height: 665, x:null, y:null });
+  this.config.set('mainWindow',          {width: 800, height: 665, x:null, y:null});
   this.config.set('audioServVer',        'webaudioapi');
   this.config.set('showMsgPane',         true);
   this.config.set('acceptFirstMouse',    false);

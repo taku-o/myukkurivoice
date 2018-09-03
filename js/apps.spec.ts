@@ -89,7 +89,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       $scope.createResult = JSON.stringify(r);
     };
     ctrl.copy = function(): void {
-      var original = { text: 'value' };
+      var original = {text: 'value'};
       var r = DataService.copy(original);
       $scope.copyResult = JSON.stringify(r);
     };
@@ -154,7 +154,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
         }
       }
       var speed = 100;
-      var options = { passPhrase:'xxxxxxx', aq10UseKeyEncrypted:'' };
+      var options = {passPhrase:'xxxxxxx', aq10UseKeyEncrypted:''};
       AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
         $scope.waveResult = 'ok';
       })

@@ -10,17 +10,17 @@ function initAppMenu(options: {debug: boolean}): void {
       submenu: [
         {
           label: 'About MYukkuriVoice',
-          click() { myApp.showAboutWindow(); }
+          click() { myApp.showAboutWindow(); },
         },
         {type: 'separator'},
         {
           label: '環境設定',
-          click() { myApp.showSystemWindow(); }
+          click() { myApp.showSystemWindow(); },
         },
         {type: 'separator'},
         {
           label: '環境設定初期化',
-          click() { myApp.resetAppConfigOnMain(); }
+          click() { myApp.resetAppConfigOnMain(); },
         },
         {type: 'separator'},
         {
@@ -37,21 +37,21 @@ function initAppMenu(options: {debug: boolean}): void {
     {
       label: '編集',
       submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'pasteandmatchstyle' },
-        { role: 'delete' },
-        { role: 'selectall' },
-        { type: 'separator' },
-        { label: 'Speech',
+        {role: 'undo'},
+        {role: 'redo'},
+        {type: 'separator'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {role: 'pasteandmatchstyle'},
+        {role: 'delete'},
+        {role: 'selectall'},
+        {type: 'separator'},
+        {label: 'Speech',
           submenu: [
-            { role: 'startspeaking' },
-            { role: 'stopspeaking' }
-          ]
+            {role: 'startspeaking'},
+            {role: 'stopspeaking'},
+          ],
         },
       ],
     },
@@ -161,7 +161,7 @@ function initAppMenu(options: {debug: boolean}): void {
       submenu: [
         {
           label: '前面表示固定切替',
-          click() { myApp.switchAlwaysOnTop(); }
+          click() { myApp.switchAlwaysOnTop(); },
         },
         {type: 'separator'},
         {
@@ -181,7 +181,7 @@ function initAppMenu(options: {debug: boolean}): void {
         {type: 'separator'},
         {
           label: 'ウインドウ位置リセット',
-          click() { myApp.resetWindowPosition(); }
+          click() { myApp.resetWindowPosition(); },
         },
       ],
     },
@@ -190,7 +190,7 @@ function initAppMenu(options: {debug: boolean}): void {
       submenu: [
         {
           label: 'ヘルプ',
-          click() { myApp.showHelpWindow(); }
+          click() { myApp.showHelpWindow(); },
         },
         {type: 'separator'},
         {
@@ -204,7 +204,7 @@ function initAppMenu(options: {debug: boolean}): void {
         {type: 'separator'},
         {
           label: 'Learn More',
-          click() { shell.openExternal('https://github.com/taku-o/myukkurivoice'); }
+          click() { shell.openExternal('https://github.com/taku-o/myukkurivoice'); },
         },
       ],
     },
@@ -213,7 +213,7 @@ function initAppMenu(options: {debug: boolean}): void {
   if (options.debug) {
     // @ts-ignore
     menuList[4].submenu.splice(1, 0,
-      { role: 'toggledevtools' }
+      {role: 'toggledevtools'}
     );
   }
   // @ts-ignore
@@ -227,19 +227,19 @@ function initDockMenu(): void {
   var dockMenuList = [
     {
       label: 'About MYukkuriVoice',
-      click() { myApp.showAboutWindow(); }
+      click() { myApp.showAboutWindow(); },
     },
     {
       label: '環境設定',
-      click() { myApp.showSystemWindow(); }
+      click() { myApp.showSystemWindow(); },
     },
     {
       label: 'ヘルプ',
-      click() { myApp.showHelpWindow(); }
+      click() { myApp.showHelpWindow(); },
     },
     {
       label: 'ウインドウ位置リセット',
-      click() { myApp.resetWindowPosition(); }
+      click() { myApp.resetWindowPosition(); },
     },
   ];
   var dockMenu = Menu.buildFromTemplate(dockMenuList);

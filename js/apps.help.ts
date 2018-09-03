@@ -37,7 +37,7 @@ angular.module('yvoiceAppHelp', [])
       'dragout',
       'multivoice',
       'shortcut',
-      'help'
+      'help',
     ];
 
     // init

@@ -71,7 +71,7 @@ angular.module('yvoiceLicenseService', [])
         });
         });
         return d.promise;
-      }
+      },
     };
   }]);
 

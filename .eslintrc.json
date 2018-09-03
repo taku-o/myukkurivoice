@@ -16,10 +16,13 @@
     "sourceType": "module"
   },
   "rules": {
+    "array-bracket-spacing": ["error", "never"],
+    "comma-dangle": ["error", "always-multiline"],
     "indent": 0,
     "linebreak-style": ["error", "unix"],
     "no-unused-vars": "warn",
-    "quotes": ["warn", "single"],
+    "object-curly-spacing": ["error", "never"],
+    "quotes": ["error", "single", { "avoidEscape": true }],
     "semi": ["error", "always"]
   },
   "overrides": {

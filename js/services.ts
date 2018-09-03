@@ -72,7 +72,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           d.resolve(true);
         });
         return d.promise;
-      }
+      },
     };
   }])
   .factory('MasterService', ['YPhontList', (YPhontList: yubo.YPhont[]): yubo.MasterService => {
@@ -80,7 +80,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     return {
       getPhontList: function(): Array<any> {
         return phontList;
-      }
+      },
     };
   }])
   .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
@@ -97,7 +97,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       pit: ref.types.int,
       acc: ref.types.int,
       lmd: ref.types.int,
-      fsc: ref.types.int
+      fsc: ref.types.int,
     });
     var ptr_AQTK_VOICE = ref.refType(AQTK_VOICE);
 
@@ -109,17 +109,17 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     var ptr_AqKanji2Koe_Create  = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
     var ptr_AqKanji2Koe_Release = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
     var ptr_AqKanji2Koe_Convert = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
-    var fn_AqKanji2Koe_Create   = ffi.ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, [ 'string', ptr_int ]);
-    var fn_AqKanji2Koe_Release  = ffi.ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ ptr_void ]);
-    var fn_AqKanji2Koe_Convert  = ffi.ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ ptr_void, 'string', ptr_char, 'int' ]);
+    var fn_AqKanji2Koe_Create   = ffi.ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, ['string', ptr_int]);
+    var fn_AqKanji2Koe_Release  = ffi.ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ptr_void]);
+    var fn_AqKanji2Koe_Convert  = ffi.ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
 
     // unsigned char * AquesTalk2_Synthe_Utf8(const char *koe, int iSpeed, int * size, void *phontDat)
     // void AquesTalk2_FreeWave (unsigned char *wav)
     frameworkPath = `${unpackedPath}/vendor/AquesTalk2.framework/Versions/A/AquesTalk2`;
     var ptr_AquesTalk2_Synthe_Utf8 = ffi.DynamicLibrary(frameworkPath).get('AquesTalk2_Synthe_Utf8');
     var ptr_AquesTalk2_FreeWave    = ffi.DynamicLibrary(frameworkPath).get('AquesTalk2_FreeWave');
-    var fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, [ 'string', 'int', ptr_int, ptr_void ]);
-    var fn_AquesTalk2_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk2_FreeWave, 'void', [ ptr_uchar ]);
+    var fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, ['string', 'int', ptr_int, ptr_void]);
+    var fn_AquesTalk2_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk2_FreeWave, 'void', [ptr_uchar]);
 
     // unsigned char * AquesTalk_Synthe_Utf8(const AQTK_VOICE *pParam, const char *koe, int *size)
     // void AquesTalk_FreeWave(unsigned char *wav)
@@ -130,10 +130,10 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     var ptr_AquesTalk10_FreeWave    = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_FreeWave');
     var ptr_AquesTalk10_SetDevKey   = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_SetDevKey');
     var ptr_AquesTalk10_SetUsrKey   = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_SetUsrKey');
-    var fn_AquesTalk10_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk10_Synthe_Utf8, ptr_uchar, [ ptr_AQTK_VOICE, 'string', ptr_int ]);
-    var fn_AquesTalk10_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk10_FreeWave, 'void', [ ptr_uchar ]);
-    var fn_AquesTalk10_SetDevKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetDevKey, 'int', [ 'string' ]);
-    var fn_AquesTalk10_SetUsrKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetUsrKey, 'int', [ 'string' ]);
+    var fn_AquesTalk10_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk10_Synthe_Utf8, ptr_uchar, [ptr_AQTK_VOICE, 'string', ptr_int]);
+    var fn_AquesTalk10_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk10_FreeWave, 'void', [ptr_uchar]);
+    var fn_AquesTalk10_SetDevKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetDevKey, 'int', ['string']);
+    var fn_AquesTalk10_SetUsrKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetUsrKey, 'int', ['string']);
 
     function errorTable_AqKanji2Koe(code: number): string {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
@@ -240,9 +240,9 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           var cmdOptions: yubo.CmdOptions = {
             env: {
               VOICE: phont.idVoice,
-              SPEED: speed
+              SPEED: speed,
             },
-            encoding: 'binary'
+            encoding: 'binary',
           };
           var waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
           exec(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err, stdout, stderr) => {
@@ -352,7 +352,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           });
         }
         return d.promise;
-      }
+      },
     };
   }])
   .factory('AudioService1', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.AudioService1 => {
@@ -424,7 +424,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           d.resolve('ok');
         });
         return d.promise;
-      }
+      },
     };
   }])
   .factory('AudioService2', ['$q', '$timeout', 'MessageService', 'AppUtilService',
@@ -554,8 +554,8 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
 
           // recorder
           var recorder = WaveRecorder(audioCtx, {
-            channels: 1, // 1 or 2
-            bitDepth: 16 // 16 or 32
+            channels: 1,  // 1 or 2
+            bitDepth: 16, // 16 or 32
           });
           recorder.pipe(fs.createWriteStream(wavFilePath));
 
@@ -574,7 +574,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           d.reject(err); return;
         });
         return d.promise;
-      }
+      },
     };
   }])
   .factory('AudioSourceService', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.AudioSourceService => {
@@ -599,7 +599,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           d.resolve(filePath);
         });
         return d.promise;
-      }
+      },
     };
   }])
   .factory('SeqFNameService', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.SeqFNameService => {
@@ -613,7 +613,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         var basename = path.basename(filePath, ext);
         return {
           dir: dir,
-          basename: basename
+          basename: basename,
         };
       },
       nextFname: function(prefix: string, num: number): string {
@@ -657,7 +657,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           d.resolve(next);
         });
         return d.promise;
-      }
+      },
     };
   }])
   .factory('AppUtilService', ['$rootScope', ($rootScope): yubo.AppUtilService => {

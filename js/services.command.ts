@@ -71,6 +71,6 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
           result = `${result}${cinput.name}${'＞'}${cinput.text}\n`;
         });
         return result;
-      }
+      },
     };
   }]);

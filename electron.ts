@@ -75,8 +75,8 @@ ipcMain.on('showSaveDialog', (event, message) => {
   var options = {
     title: 'wav save dialog',
     filters: [
-      { name: 'Wav File', extensions: ['wav']}
-    ]
+      {name: 'Wav File', extensions: ['wav']},
+    ],
   };
   var r = dialog.showSaveDialog(myApp.mainWindow, options);
   event.sender.send('showSaveDialog', r);
