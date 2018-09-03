@@ -3,7 +3,7 @@
 angular.module('yvoiceIntroService', [])
     .factory('IntroService', function () {
     return {
-        'mainTutorial': function () {
+        mainTutorial: function () {
             var intro = introJs();
             intro.setOption('showProgress', true);
             intro.setOptions({
@@ -97,12 +97,12 @@ angular.module('yvoiceIntroService', [])
                     {
                         element: '#tutorial',
                         intro: 'チュートリアルは以上です。またチュートリアルをまた確認したくなったら、ここを押してください'
-                    }
+                    },
                 ]
             });
             intro.start();
         },
-        'settingsTutorial': function () {
+        settingsTutorial: function () {
             var intro = introJs();
             intro.setOption('showProgress', true);
             intro.setOptions({
@@ -142,12 +142,12 @@ angular.module('yvoiceIntroService', [])
                     {
                         element: '#tutorial',
                         intro: 'チュートリアルは以上です'
-                    }
+                    },
                 ]
             });
             intro.start();
         },
-        'shortcut': function () {
+        shortcut: function () {
             var intro = introJs();
             intro.setOption('showProgress', true);
             intro.setOptions({
@@ -180,7 +180,7 @@ angular.module('yvoiceIntroService', [])
                         element: '#sidebar-items',
                         position: 'right',
                         intro: 'Command + ← で次(下)の設定に切り替え<br>Command + Shift + ← で前(上)の設定に切り替え'
-                    }
+                    },
                 ]
             });
             intro.start();

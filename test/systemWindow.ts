@@ -40,6 +40,10 @@ describe('systemWindow', function() {
       })
       .getValue('#main-height').then((value: number) => {
         assert.ok(value);
+      })
+      // error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 

@@ -17,12 +17,9 @@
   },
   "rules": {
     "array-bracket-spacing": ["error", "never"],
-    "comma-dangle": ["error", "always-multiline"],
     "indent": 0,
     "linebreak-style": ["error", "unix"],
     "no-unused-vars": "warn",
-    "object-curly-spacing": ["error", "never"],
-    "quotes": ["error", "single", { "avoidEscape": true }],
     "semi": ["error", "always"]
   },
   "overrides": {
@@ -33,7 +30,10 @@
     ],
     "parser": "typescript-eslint-parser",
     "rules": {
-      "no-undef": "off"
+      "comma-dangle": ["error", "always-multiline"],
+      "no-undef": "off",
+      "quotes": ["error", "single", { "avoidEscape": true }],
+      "object-curly-spacing": ["error", "never"]
     }
   }
 }

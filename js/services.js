@@ -621,7 +621,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                     // recorder
                     var recorder = WaveRecorder(audioCtx, {
                         channels: 1,
-                        bitDepth: 16 // 16 or 32
+                        bitDepth: 16
                     });
                     recorder.pipe(fs.createWriteStream(wavFilePath));
                     // connect

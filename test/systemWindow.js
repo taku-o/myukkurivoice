@@ -36,6 +36,8 @@ describe('systemWindow', function () {
         })
             .getValue('#main-height').then(function (value) {
             assert.ok(value);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     // TODO save config

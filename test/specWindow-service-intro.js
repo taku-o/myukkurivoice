@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var spectron_1 = require("spectron");
+var assert = require("assert");
 var temp = require("temp");
 temp.track();
 describe('specWindow-service-IntroService', function () {
@@ -28,9 +29,33 @@ describe('specWindow-service-IntroService', function () {
     afterEach(function () {
         return this.client.close();
     });
-    // TODO replace
     it('IntroService', function () {
         return this.client
-            .click('#get-phont-list');
+            // mainTutorial
+            .click('#mainTutorial')
+            .waitForVisible('.introjs-tooltip', 5000)
+            .isVisible('.introjs-tooltip').then(function (isVisible) {
+            assert.ok(isVisible);
+        })
+            // reset (ESC)
+            .pressKeycode('\uE00C')
+            // settingsTutorial
+            .click('#settingsTutorial')
+            .waitForVisible('.introjs-tooltip', 5000)
+            .isVisible('.introjs-tooltip').then(function (isVisible) {
+            assert.ok(isVisible);
+        })
+            // reset (ESC)
+            .pressKeycode('\uE00C')
+            // shortcut
+            .click('#shortcut')
+            .waitForVisible('.introjs-tooltip', 5000)
+            .isVisible('.introjs-tooltip').then(function (isVisible) {
+            assert.ok(isVisible);
+        })
+            // reset (ESC)
+            .pressKeycode('\uE00C')["catch"](function (err) {
+            assert.fail(err.message);
+        });
     });
 });

@@ -5,14 +5,14 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
   }])
   .controller('SpecController', ['$scope',
       'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
-      'LicenseService',
+      'LicenseService', 'IntroService',
       'DataService', 'MasterService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
     function($scope: any,
       YPhontList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
       YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
-      LicenseService: yubo.LicenseService,
+      LicenseService: yubo.LicenseService, IntroService: yubo.IntroService,
       DataService: yubo.DataService, MasterService: yubo.MasterService,
       AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
       AudioSourceService: yubo.AudioSourceService,
@@ -69,6 +69,17 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       .catch((err) => {
         $scope.consumerKeyErr = err;
       });
+    };
+
+    // IntroService
+    ctrl.mainTutorial = function(): void {
+      IntroService.mainTutorial();
+    };
+    ctrl.settingsTutorial = function(): void {
+      IntroService.settingsTutorial();
+    };
+    ctrl.shortcut = function(): void {
+      IntroService.shortcut();
     };
 
     // DataService

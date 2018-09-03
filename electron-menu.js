@@ -50,7 +50,7 @@ function initAppMenu(options) {
                 { label: 'Speech',
                     submenu: [
                         { role: 'startspeaking' },
-                        { role: 'stopspeaking' }
+                        { role: 'stopspeaking' },
                     ]
                 },
             ]

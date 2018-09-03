@@ -738,7 +738,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 // last
             }
             else if (pos == length) {
-                if (field.value.substring(pos - 1, pos) == "\n") {
+                if (field.value.substring(pos - 1, pos) == '\n') {
                     $scope.yinput[field.id] = "" + field.value + $scope.yvoice.name + '＞';
                     field.selectionStart = (field.value).length;
                     field.selectionEnd = (field.value).length;
@@ -751,7 +751,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 // in text
             }
             else {
-                if (field.value.substring(pos - 1, pos) == "\n") {
+                if (field.value.substring(pos - 1, pos) == '\n') {
                     $scope.yinput[field.id] = "" + field.value.substring(0, pos) + $scope.yvoice.name + '＞' + field.value.substring(pos, length);
                     field.selectionStart = ("" + field.value.substring(0, pos) + $scope.yvoice.name + '＞').length;
                     field.selectionEnd = ("" + field.value.substring(0, pos) + $scope.yvoice.name + '＞').length;

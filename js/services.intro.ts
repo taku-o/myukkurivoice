@@ -2,7 +2,7 @@
 angular.module('yvoiceIntroService', [])
   .factory('IntroService', (): yubo.IntroService => {
     return {
-      'mainTutorial': function(): void {
+      mainTutorial: function(): void {
         var intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({
@@ -101,7 +101,7 @@ angular.module('yvoiceIntroService', [])
         });
         intro.start();
       },
-      'settingsTutorial': function(): void {
+      settingsTutorial: function(): void {
         var intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({
@@ -146,7 +146,7 @@ angular.module('yvoiceIntroService', [])
         });
         intro.start();
       },
-      'shortcut': function(): void {
+      shortcut: function(): void {
         var intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({

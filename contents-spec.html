@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>MYukkuriVoice Test</title>
+  <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
   <script src="node_modules/angular/angular.min.js"></script>
+  <script src="node_modules/intro.js/minified/intro.min.js"></script>
   <script src="js/models.js"></script>
+  <script src="js/services.intro.js"></script>
   <script src="js/services.license.js"></script>
   <script src="js/services.message.js"></script>
+  <script src="js/services.command.js"></script>
   <script src="js/services.js"></script>
   <script src="js/apps.spec.js"></script>
   <script type="text/javascript">
@@ -57,6 +61,12 @@
       <input id="consumer-key-result" type="text" ng-model="consumerKeyResult">
       <input id="consumer-key-done" type="text" ng-model="consumerKeyDone">
       <input id="consumer-key-err" type="text" ng-model="consumerKeyErr">
+    </div>
+
+    <div>IntroService
+      <button id="mainTutorial" ng-click="ctrl.mainTutorial()">
+      <button id="settingsTutorial" ng-click="ctrl.settingsTutorial()">
+      <button id="shortcut" ng-click="ctrl.shortcut()">
     </div>
 
     <!-- MessageService -->
