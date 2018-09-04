@@ -13,7 +13,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false, // temporary
     "noImplicitReturns": true,
-    "noImplicitThis": false, // temporary
+    "noImplicitThis": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "pretty": true,
