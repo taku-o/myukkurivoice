@@ -41,6 +41,10 @@ describe('specWindow-service-SeqFNameService', function() {
       .click('#next-fname')
       .getValue('#next-fname-result').then((value: string) => {
         assert.equal(value, 'foo0200.wav');
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

@@ -52,6 +52,10 @@ describe('specWindow-service-AppUtilService', function() {
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then((value: string) => {
         assert.ok(!value);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

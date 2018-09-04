@@ -42,6 +42,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -84,6 +88,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -91,6 +99,10 @@ describe('mainWindow', function() {
     return this.app.client
       .elements('#phont option').then((response: HTMLInputElement) => {
         assert.equal(response.value.length, 26);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -128,6 +140,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -147,6 +163,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -183,6 +203,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -203,6 +227,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -221,6 +249,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -239,6 +271,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -257,6 +293,10 @@ describe('mainWindow', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

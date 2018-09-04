@@ -36,6 +36,8 @@ describe('specWindow-service-MasterService', function () {
             .getValue('#get-phont-list-result').then(function (value) {
             var parsed = JSON.parse(value);
             assert.equal(parsed.length, 26);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

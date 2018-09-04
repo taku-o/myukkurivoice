@@ -36,6 +36,8 @@ describe('specWindow-model-YInputInitialData', function () {
             var parsed = JSON.parse(value);
             assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source);
             assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

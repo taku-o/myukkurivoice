@@ -40,6 +40,10 @@ describe('specWindow-model-YCommandInput', function() {
         var parsed = JSON.parse(value);
         assert.equal('', parsed.name);
         assert.equal('', parsed.text);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

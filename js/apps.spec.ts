@@ -1,11 +1,12 @@
 // application spec app
-angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
+angular.module('yvoiceSpec',
+  ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseService', 'yvoiceIntroService', 'yvoiceMessageService', 'yvoiceCommandService'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('SpecController', ['$scope',
       'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
-      'LicenseService',
+      'LicenseService', 'IntroService',
       'DataService', 'MasterService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
@@ -13,6 +14,7 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       YPhontList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
       YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
       LicenseService: yubo.LicenseService,
+      IntroService: yubo.IntroService,
       DataService: yubo.DataService, MasterService: yubo.MasterService,
       AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
       AudioSourceService: yubo.AudioSourceService,
@@ -71,16 +73,15 @@ angular.module('yvoiceSpec', ['yvoiceService', 'yvoiceLicenseService'])
       });
     };
 
-    // TODO
     // IntroService
     ctrl.mainTutorial = function(): void {
-      //IntroService.mainTutorial();
+      IntroService.mainTutorial();
     };
     ctrl.settingsTutorial = function(): void {
-      //IntroService.settingsTutorial();
+      IntroService.settingsTutorial();
     };
     ctrl.shortcut = function(): void {
-      //IntroService.shortcut();
+      IntroService.shortcut();
     };
 
     // DataService

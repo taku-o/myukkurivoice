@@ -40,6 +40,8 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     // TODO multivoice
@@ -81,12 +83,16 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     it('mainWindow phont selection', function () {
         return this.app.client
             .elements('#phont option').then(function (response) {
             assert.equal(response.value.length, 26);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     // TODO initial
@@ -123,6 +129,8 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     // TODO multivoice
@@ -141,6 +149,8 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     // TODO record
@@ -175,6 +185,8 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     it('mainWindow help', function () {
@@ -194,6 +206,8 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     it('mainWindow shortcut intro', function () {
@@ -211,6 +225,8 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     it('mainWindow tutorial intro', function () {
@@ -228,6 +244,8 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     it('mainWindow switchSettingsView', function () {
@@ -245,6 +263,8 @@ describe('mainWindow', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

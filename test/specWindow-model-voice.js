@@ -48,6 +48,8 @@ describe('specWindow-model-YVoice', function () {
             assert.equal(false, parsed.seqWrite);
             assert.equal('', parsed.seqWriteOptions.dir);
             assert.equal('', parsed.seqWriteOptions.prefix);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

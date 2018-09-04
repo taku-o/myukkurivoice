@@ -68,6 +68,8 @@ describe('specWindow-model-YVoiceInitialData', function () {
                         assert.fail('unknown version');
                 }
             }
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

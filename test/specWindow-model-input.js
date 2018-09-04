@@ -36,6 +36,8 @@ describe('specWindow-model-YInput', function () {
             var parsed = JSON.parse(value);
             assert.equal('', parsed.source);
             assert.equal('', parsed.encoded);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

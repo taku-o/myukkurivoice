@@ -37,6 +37,10 @@ describe('settingsView', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 
@@ -56,6 +60,10 @@ describe('settingsView', function() {
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
         assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

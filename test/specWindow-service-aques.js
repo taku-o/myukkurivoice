@@ -113,6 +113,8 @@ describe('specWindow-service-AquesService', function () {
         })
             .getValue('#wave-err').then(function (value) {
             assert.ok(!value);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

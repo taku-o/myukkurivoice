@@ -72,6 +72,10 @@ describe('specWindow-service-LicenseService', function() {
       })
       .getValue('#consumer-key-err').then((value: string) => {
         assert.ok(! value);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

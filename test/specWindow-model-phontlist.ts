@@ -68,6 +68,10 @@ describe('specWindow-model-YPhontList', function() {
               assert.fail('unknown version');
           }
         }
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

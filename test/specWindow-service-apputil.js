@@ -48,6 +48,8 @@ describe('specWindow-service-AppUtilService', function () {
             .click('#disable-rhythm')
             .getValue('#disable-rhythm-result').then(function (value) {
             assert.ok(!value);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

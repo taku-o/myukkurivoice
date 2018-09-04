@@ -40,6 +40,10 @@ describe('specWindow-model-YInputInitialData', function() {
         var parsed = JSON.parse(value);
         assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source);
         assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

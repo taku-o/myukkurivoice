@@ -40,6 +40,10 @@ describe('specWindow-service-MasterService', function() {
       .getValue('#get-phont-list-result').then((value: string) => {
         var parsed = JSON.parse(value);
         assert.equal(parsed.length, 26);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

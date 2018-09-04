@@ -162,6 +162,8 @@ describe('helpWindow', function () {
             // finally
             .isVisible('#about-pane').then(function (isVisible) {
             assert.ok(!isVisible);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

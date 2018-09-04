@@ -40,6 +40,10 @@ describe('specWindow-model-YInput', function() {
         var parsed = JSON.parse(value);
         assert.equal('', parsed.source);
         assert.equal('', parsed.encoded);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

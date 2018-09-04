@@ -117,6 +117,10 @@ describe('specWindow-service-AquesService', function() {
       })
       .getValue('#wave-err').then((value: string) => {
         assert.ok(! value);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

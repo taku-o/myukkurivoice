@@ -86,6 +86,10 @@ describe('specWindow-service-AudioService2', function() {
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then((value: string) => {
         assert.equal(value, 'ok');
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
       // TODO tmp file
       // TODO file exists

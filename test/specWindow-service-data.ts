@@ -64,6 +64,10 @@ describe('specWindow-service-DataService', function() {
         assert.ok(value);
         var parsed = JSON.parse(value);
         assert.ok(parsed.id);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
       });
   });
 });

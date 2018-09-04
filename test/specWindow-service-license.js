@@ -68,6 +68,8 @@ describe('specWindow-service-LicenseService', function () {
         })
             .getValue('#consumer-key-err').then(function (value) {
             assert.ok(!value);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

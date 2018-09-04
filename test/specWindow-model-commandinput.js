@@ -36,6 +36,8 @@ describe('specWindow-model-YCommandInput', function () {
             var parsed = JSON.parse(value);
             assert.equal('', parsed.name);
             assert.equal('', parsed.text);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

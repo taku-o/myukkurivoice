@@ -35,6 +35,8 @@ describe('settingsView', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
     it('settingsView tutorial intro', function () {
@@ -53,6 +55,8 @@ describe('settingsView', function () {
         })
             .isExisting('tr.message-item.syserror').then(function (error) {
             assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

@@ -33,36 +33,42 @@ describe('specWindow-service-IntroService', function() {
     return this.client.close();
   });
 
-  // TODO imple
-  it('IntroService', function() {
+  it('mainTutorial', function() {
     return this.client
-      // mainTutorial
-      .click('#mainTutorial');
-      //.waitForVisible('.introjs-tooltip', 5000)
-      //.isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-      //  assert.ok(isVisible);
-      //})
-      //// reset (ESC)
-      //.pressKeycode('\uE00C')
-      //// settingsTutorial
-      //.click('#settingsTutorial')
-      //.waitForVisible('.introjs-tooltip', 5000)
-      //.isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-      //  assert.ok(isVisible);
-      //})
-      //// reset (ESC)
-      //.pressKeycode('\uE00C')
-      //// shortcut
-      //.click('#shortcut')
-      //.waitForVisible('.introjs-tooltip', 5000)
-      //.isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-      //  assert.ok(isVisible);
-      //})
-      //// reset (ESC)
-      //.pressKeycode('\uE00C')
-      //// error
-      //.catch((err: Error) => {
-      //  assert.fail(err.message);
-      //});
+      .click('#mainTutorial')
+      .waitForVisible('.introjs-tooltip', 5000)
+      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
+        assert.ok(isVisible);
+      })
+      // error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('settingsTutorial', function() {
+    return this.client
+      .click('#settingsTutorial')
+      .waitForVisible('.introjs-tooltip', 5000)
+      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
+        assert.ok(isVisible);
+      })
+      // error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('shortcut', function() {
+    return this.client
+      .click('#shortcut')
+      .waitForVisible('.introjs-tooltip', 5000)
+      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
+        assert.ok(isVisible);
+      })
+      // error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
   });
 });

@@ -60,6 +60,8 @@ describe('specWindow-service-DataService', function () {
             assert.ok(value);
             var parsed = JSON.parse(value);
             assert.ok(parsed.id);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
     });
 });

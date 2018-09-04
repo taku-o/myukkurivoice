@@ -44,6 +44,8 @@ describe('specWindow-service-AudioSourceService', function () {
             .click('#save')
             .getValue('#save-result').then(function (value) {
             assert.ok(value);
+        })["catch"](function (err) {
+            assert.fail(err.message);
         });
         // TODO tmp file
         // TODO file exists
