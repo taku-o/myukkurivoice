@@ -25,28 +25,28 @@
   <form>
     <!-- models -->
     <div>YPhontList
-      <button id="getYPhontList" ng-click="ctrl.getYPhontList()">
-      <input id="getYPhontList-result" type="text" ng-model="getYPhontListResult">
+      <button id="get-yphont-list" ng-click="ctrl.getYPhontList()">
+      <input id="get-yphont-list-result" type="text" ng-model="getYPhontListResult">
     </div>
     <div>YVoice
-      <button id="getYVoice" ng-click="ctrl.getYVoice()">
-      <input id="getYVoice-result" type="text" ng-model="getYVoiceResult">
+      <button id="get-yvoice" ng-click="ctrl.getYVoice()">
+      <input id="get-yvoice-result" type="text" ng-model="getYVoiceResult">
     </div>
     <div>YVoiceInitialData
-      <button id="getYVoiceInitialData" ng-click="ctrl.getYVoiceInitialData()">
-      <input id="getYVoiceInitialData-result" type="text" ng-model="getYVoiceInitialDataResult">
+      <button id="get-yvoice-initial-data" ng-click="ctrl.getYVoiceInitialData()">
+      <input id="get-yvoice-initial-data-result" type="text" ng-model="getYVoiceInitialDataResult">
     </div>
     <div>YInput
-      <button id="getYInput" ng-click="ctrl.getYInput()">
-      <input id="getYInput-result" type="text" ng-model="getYInputResult">
+      <button id="get-yinput" ng-click="ctrl.getYInput()">
+      <input id="get-yinput-result" type="text" ng-model="getYInputResult">
     </div>
     <div>YInputInitialData
-      <button id="getYInputInitialData" ng-click="ctrl.getYInputInitialData()">
-      <input id="getYInputInitialData-result" type="text" ng-model="getYInputInitialDataResult">
+      <button id="get-yinput-initial-data" ng-click="ctrl.getYInputInitialData()">
+      <input id="get-yinput-initial-data-result" type="text" ng-model="getYInputInitialDataResult">
     </div>
     <div>YCommandInput
-      <button id="getYCommandInput" ng-click="ctrl.getYCommandInput()">
-      <input id="getYCommandInput-result" type="text" ng-model="getYCommandInputResult">
+      <button id="get-ycommand-input" ng-click="ctrl.getYCommandInput()">
+      <input id="get-ycommand-input-result" type="text" ng-model="getYCommandInputResult">
     </div>
 
     <div>LicenseService
@@ -64,12 +64,26 @@
     </div>
 
     <div>IntroService
-      <button id="mainTutorial" ng-click="ctrl.mainTutorial()">
-      <button id="settingsTutorial" ng-click="ctrl.settingsTutorial()">
+      <button id="main-tutorial" ng-click="ctrl.mainTutorial()">
+      <button id="settings-tutorial" ng-click="ctrl.settingsTutorial()">
       <button id="shortcut" ng-click="ctrl.shortcut()">
     </div>
 
-    <!-- MessageService -->
+    <div>MessageService
+      <button id="action" ng-click="ctrl.action()">
+      <button id="record" ng-click="ctrl.record()">
+      <button id="info" ng-click="ctrl.info()">
+      <button id="error" ng-click="ctrl.error()">
+      <button id="error-null" ng-click="ctrl.errorNull()">
+      <button id="syserror" ng-click="ctrl.syserror()">
+      <button id="syserror-null" ng-click="ctrl.syserrorNull()">
+      <input id="message-service-post-created" type="text" ng-model="messageServicePostCreated">
+      <input id="message-service-post-body" type="text" ng-model="messageServicePostBody">
+      <input id="message-service-post-wav-file-path" type="text" ng-model="messageServicePostWavFilePath">
+      <input id="message-service-post-wav-file-name" type="text" ng-model="messageServicePostWavFileName">
+      <input id="message-service-post-type" type="text" ng-model="messageServicePostType">
+      <input id="last-wav-file" type="text" ng-model="lastWavFile">
+    </div>
 
     <div>DataService
       <button id="load" ng-click="ctrl.load()">

@@ -29,6 +29,12 @@ describe('specWindow-service-DataService', function () {
     afterEach(function () {
         return this.client.close();
     });
+    // TODO  load(): ng.IPromise<Array<any>>;
+    // TODO  initialData(): Array<any>;
+    // TODO  create(): any;
+    // TODO  copy(original: any): any;
+    // TODO  save(dataList: yubo.YVoice[]): void;
+    // TODO  clear(): ng.IPromise<boolean>;
     it('DataService', function () {
         return this.client
             // load

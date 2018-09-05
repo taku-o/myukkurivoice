@@ -31,8 +31,8 @@ describe('specWindow-model-YVoiceInitialData', function () {
     });
     it('YVoiceInitialData', function () {
         return this.client
-            .click('#getYVoiceInitialData')
-            .getValue('#getYVoiceInitialData-result').then(function (value) {
+            .click('#get-yvoice-initial-data')
+            .getValue('#get-yvoice-initial-data-result').then(function (value) {
             var parsed = JSON.parse(value);
             assert.equal(parsed.length, 4);
             for (var i = 0; i < parsed.length; i++) {

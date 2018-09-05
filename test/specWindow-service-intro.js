@@ -31,7 +31,7 @@ describe('specWindow-service-IntroService', function () {
     });
     it('mainTutorial', function () {
         return this.client
-            .click('#mainTutorial')
+            .click('#main-tutorial')
             .waitForVisible('.introjs-tooltip', 5000)
             .isVisible('.introjs-tooltip').then(function (isVisible) {
             assert.ok(isVisible);
@@ -41,7 +41,7 @@ describe('specWindow-service-IntroService', function () {
     });
     it('settingsTutorial', function () {
         return this.client
-            .click('#settingsTutorial')
+            .click('#settings-tutorial')
             .waitForVisible('.introjs-tooltip', 5000)
             .isVisible('.introjs-tooltip').then(function (isVisible) {
             assert.ok(isVisible);

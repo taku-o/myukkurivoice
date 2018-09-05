@@ -35,8 +35,8 @@ describe('specWindow-model-YInputInitialData', function() {
 
   it('YInputInitialData', function() {
     return this.client
-      .click('#getYInputInitialData')
-      .getValue('#getYInputInitialData-result').then((value: string) => {
+      .click('#get-yinput-initial-data')
+      .getValue('#get-yinput-initial-data-result').then((value: string) => {
         var parsed = JSON.parse(value);
         assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source);
         assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded);

@@ -4,13 +4,13 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
     .config(['$qProvider', function ($qProvider) {
         $qProvider.errorOnUnhandledRejections(false);
     }])
-    .controller('SpecController', ['$scope',
+    .controller('SpecController', ['$scope', '$timeout',
     'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
-    'LicenseService', 'IntroService',
+    'LicenseService', 'IntroService', 'MessageService',
     'DataService', 'MasterService',
     'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
     'AppUtilService', 'SeqFNameService',
-    function ($scope, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, IntroService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
+    function ($scope, $timeout, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, IntroService, MessageService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
         // init
         var ctrl = this;
         // YPhontList
@@ -70,6 +70,60 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
         ctrl.shortcut = function () {
             IntroService.shortcut();
         };
+        // MessageService
+        ctrl.action = function () {
+            var msg = 'action message';
+            MessageService.action(msg);
+        };
+        ctrl.record = function () {
+            var msg = 'record message';
+            var wavFilePath = '/tmp/hoge.txt';
+            MessageService.record(msg, wavFilePath);
+        };
+        ctrl.info = function () {
+            var msg = 'info message';
+            MessageService.info(msg);
+        };
+        ctrl.error = function () {
+            var msg = 'error message';
+            var err = new Error('err');
+            MessageService.error(msg, err);
+        };
+        ctrl.errorNull = function () {
+            var msg = 'error message';
+            MessageService.error(msg);
+        };
+        ctrl.syserror = function () {
+            var msg = 'syserror message';
+            var err = new Error('err');
+            MessageService.syserror(msg, err);
+        };
+        ctrl.syserrorNull = function () {
+            var msg = 'syserror message';
+            MessageService.syserror(msg);
+        };
+        $scope.$on('message', function (event, message) {
+            if (message.type == 'record') {
+                var msg = message;
+                $scope.messageServicePostCreated = msg.created;
+                $scope.messageServicePostBody = msg.body;
+                $scope.messageServicePostWavFilePath = msg.wavFilePath;
+                $scope.messageServicePostWavFileName = msg.wavFileName;
+                $scope.messageServicePostType = msg.type;
+            }
+            else {
+                $scope.messageServicePostCreated = message.created;
+                $scope.messageServicePostBody = message.body;
+                $scope.messageServicePostWavFilePath = '';
+                $scope.messageServicePostWavFileName = '';
+                $scope.messageServicePostType = message.type;
+            }
+            $timeout(function () { $scope.$apply(); });
+        });
+        $scope.$on('wavGenerated', function (event, wavFileInfo) {
+            $scope.lastWavFile = wavFileInfo;
+            $timeout(function () { $scope.$apply(); });
+        });
         // DataService
         ctrl.load = function () {
             DataService.load().then(function (list) {

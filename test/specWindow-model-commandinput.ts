@@ -35,8 +35,8 @@ describe('specWindow-model-YCommandInput', function() {
 
   it('YCommandInput', function() {
     return this.client
-      .click('#getYCommandInput')
-      .getValue('#getYCommandInput-result').then((value: string) => {
+      .click('#get-ycommand-input')
+      .getValue('#get-ycommand-input-result').then((value: string) => {
         var parsed = JSON.parse(value);
         assert.equal('', parsed.name);
         assert.equal('', parsed.text);

@@ -33,6 +33,8 @@ describe('specWindow-service-SeqFNameService', function() {
     return this.client.close();
   });
 
+  // TODO splitFname(filePath: string): any;
+  // TODO nextNumber(dir: string, prefix: string): ng.IPromise<number>;
   it('SeqFNameService', function() {
     return this.client
       // nextFname

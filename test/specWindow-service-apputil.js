@@ -29,6 +29,7 @@ describe('specWindow-service-AppUtilService', function () {
     afterEach(function () {
         return this.client.close();
     });
+    // TODO reportDuration(duration: number): void;
     it('AppUtilService', function () {
         return this.client
             // disableRhythm
