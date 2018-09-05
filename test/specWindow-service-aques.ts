@@ -33,8 +33,7 @@ describe('specWindow-service-AquesService', function() {
     return this.client.close();
   });
 
-  // AquesService
-  it('AquesService', function() {
+  it('encode', function() {
     return this.client
       // encode
       .setValue('#source', 'test')
@@ -49,6 +48,14 @@ describe('specWindow-service-AquesService', function() {
       .getValue('#encode-result').then((value: string) => {
         assert.ok(!value);
       })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('wave', function() {
+    return this.client
       // wave talk1
       .setValue('#encoded', "テ'_スト")
       .setValue('#wave-result', '')

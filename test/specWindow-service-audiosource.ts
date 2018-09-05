@@ -33,8 +33,7 @@ describe('specWindow-service-AudioSourceService', function() {
     return this.client.close();
   });
 
-  // AudioSourceService
-  it('AudioSourceService', function() {
+  it('sourceFname', function() {
     return this.client
       // sourceFname
       .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
@@ -42,6 +41,18 @@ describe('specWindow-service-AudioSourceService', function() {
       .getValue('#source-fname-result').then((value: string) => {
         assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt');
       })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+      // TODO tmp file
+      // TODO file exists
+      // TODO file content
+  });
+
+  // TODO save(filePath: string, sourceText: string): ng.IPromise<string>;
+  it('save', function() {
+    return this.client
       // save
       .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
       .setValue('#source-text', 'hogehoge')

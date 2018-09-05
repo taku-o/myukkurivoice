@@ -33,7 +33,7 @@ describe('specWindow-service-AppUtilService', function() {
     return this.client.close();
   });
 
-  it('AppUtilService', function() {
+  it('disableRhythm', function() {
     return this.client
       // disableRhythm
       .setValue('#rhythm-text', 'test\' val/ue')
@@ -57,5 +57,11 @@ describe('specWindow-service-AppUtilService', function() {
       .catch((err: Error) => {
         assert.fail(err.message);
       });
+  });
+
+  // TODO reportDuration(duration: number): void;
+  it('reportDuration', function() {
+    return this.client
+      .setValue('#rhythm-text', 'test\' val/ue');
   });
 });

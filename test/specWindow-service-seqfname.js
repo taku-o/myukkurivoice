@@ -29,7 +29,32 @@ describe('specWindow-service-SeqFNameService', function () {
     afterEach(function () {
         return this.client.close();
     });
-    it('SeqFNameService', function () {
+    it('nextFname', function () {
+        return this.client
+            .setValue('#prefix', 'foo')
+            .setValue('#num', '200')
+            .click('#next-fname')
+            .getValue('#next-fname-result').then(function (value) {
+            assert.equal(value, 'foo0200.wav');
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    // TODO splitFname(filePath: string): any;
+    it('splitFname', function () {
+        return this.client
+            // nextFname
+            .setValue('#prefix', 'foo')
+            .setValue('#num', '200')
+            .click('#next-fname')
+            .getValue('#next-fname-result').then(function (value) {
+            assert.equal(value, 'foo0200.wav');
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    // TODO nextNumber(dir: string, prefix: string): ng.IPromise<number>;
+    it('nextNumber', function () {
         return this.client
             // nextFname
             .setValue('#prefix', 'foo')

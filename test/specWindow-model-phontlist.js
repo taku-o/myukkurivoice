@@ -31,8 +31,8 @@ describe('specWindow-model-YPhontList', function () {
     });
     it('YPhontList', function () {
         return this.client
-            .click('#getYPhontList')
-            .getValue('#getYPhontList-result').then(function (value) {
+            .click('#get-yphont-list')
+            .getValue('#get-yphont-list-result').then(function (value) {
             var parsed = JSON.parse(value);
             assert.equal(parsed.length, 26);
             for (var i = 0; i < parsed.length; i++) {

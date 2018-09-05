@@ -29,15 +29,23 @@ describe('specWindow-service-AudioSourceService', function () {
     afterEach(function () {
         return this.client.close();
     });
-    // AudioSourceService
-    it('AudioSourceService', function () {
+    it('sourceFname', function () {
         return this.client
             // sourceFname
             .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
             .click('#source-fname')
             .getValue('#source-fname-result').then(function (value) {
             assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt');
-        })
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+        // TODO tmp file
+        // TODO file exists
+        // TODO file content
+    });
+    // TODO save(filePath: string, sourceText: string): ng.IPromise<string>;
+    it('save', function () {
+        return this.client
             // save
             .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
             .setValue('#source-text', 'hogehoge')

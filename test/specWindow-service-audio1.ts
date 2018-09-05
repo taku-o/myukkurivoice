@@ -33,8 +33,7 @@ describe('specWindow-service-AudioService1', function() {
     return this.client.close();
   });
 
-  // AudioService1
-  it('AudioService1', function() {
+  it('play', function() {
     return this.client
       // play aquestalk1
       .setValue('#play1-encoded', "テ'_スト")
@@ -60,6 +59,16 @@ describe('specWindow-service-AudioService1', function() {
       .getValue('#play-result-1').then((value: string) => {
         assert.equal(value, 'ok');
       })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+      // TODO tmp file
+      // TODO file exists
+  });
+
+  it('record', function() {
+    return this.client
       // record aquestalk1
       .setValue('#play1-encoded', "テ'_スト")
       .setValue('#wav-file-path-1', '/tmp/_myukkurivoice_hogehoge.wav')

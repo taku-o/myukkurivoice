@@ -31,8 +31,8 @@ describe('specWindow-model-YInput', function () {
     });
     it('YInput', function () {
         return this.client
-            .click('#getYInput')
-            .getValue('#getYInput-result').then(function (value) {
+            .click('#get-yinput')
+            .getValue('#get-yinput-result').then(function (value) {
             var parsed = JSON.parse(value);
             assert.equal('', parsed.source);
             assert.equal('', parsed.encoded);

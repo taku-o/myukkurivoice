@@ -29,9 +29,8 @@ describe('specWindow-service-DataService', function () {
     afterEach(function () {
         return this.client.close();
     });
-    it('DataService', function () {
+    it('load', function () {
         return this.client
-            // load
             .click('#load')
             .waitForValue('#load-result', 2000)
             .getValue('#load-result').then(function (value) {
@@ -39,28 +38,54 @@ describe('specWindow-service-DataService', function () {
         })
             .getValue('#load-err').then(function (value) {
             assert.ok(!value);
-        })
-            // initialData
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('initialData', function () {
+        return this.client
             .click('#initial-data')
             .getValue('#initial-data-result').then(function (value) {
             assert.ok(value);
             var parsed = JSON.parse(value);
             assert.equal(parsed.length, 4);
-        })
-            // create
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('create', function () {
+        return this.client
             .click('#create')
             .getValue('#create-result').then(function (value) {
             assert.ok(value);
             var parsed = JSON.parse(value);
             assert.ok(parsed.id);
-        })
-            // copy
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('copy', function () {
+        return this.client
             .click('#copy')
             .getValue('#copy-result').then(function (value) {
             assert.ok(value);
             var parsed = JSON.parse(value);
             assert.ok(parsed.id);
         })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    // TODO  save(dataList: yubo.YVoice[]): void;
+    it('save', function () {
+        return this.client
+            .click('#copy')["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    // TODO  clear(): ng.IPromise<boolean>;
+    it('clear', function () {
+        return this.client
+            .click('#copy')["catch"](function (err) {
             assert.fail(err.message);
         });
     });

@@ -12,6 +12,10 @@ function initAppMenu(options) {
                     label: 'About MYukkuriVoice',
                     click: function () { myApp.showAboutWindow(); }
                 },
+                {
+                    label: 'アップデートを確認する',
+                    click: function () { myApp.showVersionDialog(); }
+                },
                 { type: 'separator' },
                 {
                     label: '環境設定',

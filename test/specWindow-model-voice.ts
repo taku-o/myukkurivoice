@@ -35,8 +35,8 @@ describe('specWindow-model-YVoice', function() {
 
   it('YVoice', function() {
     return this.client
-      .click('#getYVoice')
-      .getValue('#getYVoice-result').then((value: string) => {
+      .click('#get-yvoice')
+      .getValue('#get-yvoice-result').then((value: string) => {
         var parsed = JSON.parse(value);
         assert.equal(null, parsed.id);
         assert.equal('f1 女声1(ゆっくり)', parsed.name);
