@@ -36,7 +36,6 @@ describe('specWindow-service-LicenseService', function () {
             .click('#encrypt')
             .getValue('#encrypted-key').then(function (value) {
             assert.ok(value);
-            console.log('tested encrypted key is :' + value);
         })["catch"](function (err) {
             assert.fail(err.message);
         });
