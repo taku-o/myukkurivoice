@@ -73,7 +73,8 @@ function showVersionDialog() {
             title: 'application version check.',
             message: message,
             buttons: buttons,
-            defaultId: 0
+            defaultId: 0,
+            cancelId: 0
         };
         var btnId = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
         if (btnId == 1) {
@@ -85,7 +86,9 @@ function showVersionDialog() {
             type: 'error',
             title: 'application version check error.',
             message: 'バージョン情報の取得に失敗しました。',
-            buttons: ['OK']
+            buttons: ['OK'],
+            defaultId: 0,
+            cancelId: 0
         };
         var r = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
     });
@@ -127,7 +130,9 @@ electron_1.ipcMain.on('updateAppConfig', function (event, options) {
         type: 'info',
         title: 'application config updated.',
         message: '環境設定を更新しました。アプリケーションを更新します。',
-        buttons: ['OK']
+        buttons: ['OK'],
+        defaultId: 0,
+        cancelId: 0
     };
     var r = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
     event.sender.send('updateAppConfig', r);
@@ -144,7 +149,9 @@ electron_1.ipcMain.on('resetAppConfig', function (event, message) {
         type: 'info',
         title: 'application config initialized.',
         message: '環境設定を初期化しました。アプリケーションを更新します。',
-        buttons: ['OK']
+        buttons: ['OK'],
+        defaultId: 0,
+        cancelId: 0
     };
     var r = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
     event.sender.send('resetAppConfig', r);
@@ -161,7 +168,9 @@ function resetAppConfigOnMain() {
         type: 'info',
         title: 'application config initialized.',
         message: '環境設定を初期化しました。アプリケーションを更新します。',
-        buttons: ['OK']
+        buttons: ['OK'],
+        defaultId: 0,
+        cancelId: 0
     };
     var r = electron_1.dialog.showMessageBox(myApp.mainWindow, dialogOptions);
     myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);

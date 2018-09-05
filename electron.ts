@@ -84,6 +84,7 @@ function showVersionDialog() {
       message: message,
       buttons: buttons,
       defaultId: 0,
+      cancelId: 0,
     };
     var btnId: number = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
     if (btnId == 1) {
@@ -97,6 +98,8 @@ function showVersionDialog() {
       title: 'application version check error.',
       message: 'バージョン情報の取得に失敗しました。',
       buttons: ['OK'],
+      defaultId: 0,
+      cancelId: 0,
     };
     var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   });
@@ -143,6 +146,8 @@ ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
     title: 'application config updated.',
     message: '環境設定を更新しました。アプリケーションを更新します。',
     buttons: ['OK'],
+    defaultId: 0,
+    cancelId: 0,
   };
   var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   event.sender.send('updateAppConfig', r);
@@ -159,6 +164,8 @@ ipcMain.on('resetAppConfig', (event, message) => {
     title: 'application config initialized.',
     message: '環境設定を初期化しました。アプリケーションを更新します。',
     buttons: ['OK'],
+    defaultId: 0,
+    cancelId: 0,
   };
   var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   event.sender.send('resetAppConfig', r);
@@ -175,6 +182,8 @@ function resetAppConfigOnMain(): void {
     title: 'application config initialized.',
     message: '環境設定を初期化しました。アプリケーションを更新します。',
     buttons: ['OK'],
+    defaultId: 0,
+    cancelId: 0,
   };
   var r = dialog.showMessageBox(myApp.mainWindow, dialogOptions);
   myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
