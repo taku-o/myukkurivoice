@@ -92,6 +92,13 @@ function showVersionDialog() {
   })
   .catch((err: Error) => {
     log.error(err);
+    var dialogOptions = {
+      type: 'error',
+      title: 'application version check error.',
+      message: 'バージョン情報の取得に失敗しました。',
+      buttons: ['OK'],
+    };
+    var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   });
 }
 MYukkuriVoice.prototype.showVersionDialog = showVersionDialog;
