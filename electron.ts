@@ -1,11 +1,12 @@
 'use strict';
-import {app,dialog,ipcMain} from 'electron';
+import {app,dialog,shell,ipcMain} from 'electron';
 import * as log from 'electron-log';
 import * as path from 'path';
 
 import * as Menu from './electron-menu';
 import * as Pane from './electron-window';
 import * as AppConfig from './electron-appcfg';
+import * as version from './lib-version';
 
 // MYukkuriVoice application
 var MYukkuriVoice = function(): void {
@@ -17,7 +18,7 @@ var MYukkuriVoice = function(): void {
   this.helpWindow = null;
   this.systemWindow = null;
 };
-var myApp = new MYukkuriVoice() as yubo.MYukkuriVoice;
+var myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
@@ -69,6 +70,31 @@ ipcMain.on('showSystemWindow', (event, message) => {
 ipcMain.on('showSpecWindow', (event, message) => {
   myApp.showSpecWindow();
 });
+
+// showVersionDialog
+function showVersionDialog() {
+  let versionChecker = new version.Version();
+  versionChecker.get().then((version: yubo.IVersion) => {
+    let message = version.hasLatest()? '新しいバージョンのアプリがあります': 'バージョンは最新です';
+    let buttons = version.hasLatest()? ['CLOSE', 'Open Release Page']: ['OK'];
+
+    var dialogOptions = {
+      type: 'info',
+      title: 'application version check.',
+      message: message,
+      buttons: buttons,
+      defaultId: 0,
+    };
+    var btnId: number = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+    if (btnId == 1) {
+      shell.openExternal(version.latestUrl);
+    }
+  })
+  .catch((err: Error) => {
+    log.error(err);
+  });
+}
+MYukkuriVoice.prototype.showVersionDialog = showVersionDialog;
 
 // showSaveDialog
 ipcMain.on('showSaveDialog', (event, message) => {

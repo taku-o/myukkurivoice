@@ -40,7 +40,7 @@ declare namespace yubo {
   }
 
   // electron.ts
-  export interface MYukkuriVoice {
+  export interface IMYukkuriVoice {
     appCfg:       yubo.AppCfg;
     config:       yubo.ElectronConfig;
     mainWindow:   Electron.BrowserWindow;
@@ -55,6 +55,16 @@ declare namespace yubo {
     loadAppConfig(): void;
     updateAppConfig(options: yubo.AppCfg): void;
     resetAppConfig(): void;
+  }
+
+  // lib-version
+  export interface IVersion {
+    latestVersion:  string;
+    publishedAt:    Date;
+    currentVersion: string;
+    latestUrl:      string;
+    hasLatest(): boolean;
+    get(): any;
   }
 
   // js/models.ts

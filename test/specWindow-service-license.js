@@ -29,22 +29,31 @@ describe('specWindow-service-LicenseService', function () {
     afterEach(function () {
         return this.client.close();
     });
-    it('LicenseService', function () {
+    it('encrypt', function () {
         return this.client
-            // encrypt
             .setValue('#pass-phrase', 'hogehoge')
             .setValue('#plain-key', 'this is a plain key')
             .click('#encrypt')
             .getValue('#encrypted-key').then(function (value) {
             assert.ok(value);
             //console.log('tested encrypted key is :'+ value);
-        })
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('decrypt', function () {
+        return this.client
             // decrypt
             .setValue('#plain-key', '')
             .click('#decrypt')
             .getValue('#plain-key').then(function (value) {
             assert.equal(value, 'this is a plain key');
-        })
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('consumerKey', function () {
+        return this.client
             // consumerKey aquesTalk10DevKey
             .setValue('#license-type', 'aquesTalk10DevKey')
             .setValue('#consumer-key-result', '')

@@ -6,6 +6,7 @@ var path = require("path");
 var Menu = require("./electron-menu");
 var Pane = require("./electron-window");
 var AppConfig = require("./electron-appcfg");
+var version = require("./lib-version");
 // MYukkuriVoice application
 var MYukkuriVoice = function () {
     this.appCfg = null;
@@ -61,6 +62,28 @@ electron_1.ipcMain.on('showSystemWindow', function (event, message) {
 electron_1.ipcMain.on('showSpecWindow', function (event, message) {
     myApp.showSpecWindow();
 });
+// showVersionDialog
+function showVersionDialog() {
+    var versionChecker = new version.Version();
+    versionChecker.get().then(function (version) {
+        var message = version.hasLatest() ? '新しいバージョンのアプリがあります' : 'バージョンは最新です';
+        var buttons = version.hasLatest() ? ['CLOSE', 'Open Release Page'] : ['OK'];
+        var dialogOptions = {
+            type: 'info',
+            title: 'application version check.',
+            message: message,
+            buttons: buttons,
+            defaultId: 0
+        };
+        var btnId = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+        if (btnId == 1) {
+            electron_1.shell.openExternal(version.latestUrl);
+        }
+    })["catch"](function (err) {
+        log.error(err);
+    });
+}
+MYukkuriVoice.prototype.showVersionDialog = showVersionDialog;
 // showSaveDialog
 electron_1.ipcMain.on('showSaveDialog', function (event, message) {
     var options = {

@@ -33,9 +33,8 @@ describe('specWindow-service-LicenseService', function() {
     return this.client.close();
   });
 
-  it('LicenseService', function() {
+  it('encrypt', function() {
     return this.client
-      // encrypt
       .setValue('#pass-phrase', 'hogehoge')
       .setValue('#plain-key', 'this is a plain key')
       .click('#encrypt')
@@ -43,12 +42,28 @@ describe('specWindow-service-LicenseService', function() {
         assert.ok(value);
         //console.log('tested encrypted key is :'+ value);
       })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('decrypt', function() {
+    return this.client
       // decrypt
       .setValue('#plain-key', '')
       .click('#decrypt')
       .getValue('#plain-key').then((value: string) => {
         assert.equal(value, 'this is a plain key');
       })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('consumerKey', function() {
+    return this.client
       // consumerKey aquesTalk10DevKey
       .setValue('#license-type', 'aquesTalk10DevKey')
       .setValue('#consumer-key-result', '')
