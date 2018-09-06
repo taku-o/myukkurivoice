@@ -37,7 +37,7 @@ if (process.env.NODE_ENV == 'test' && process.env.userData) {
 myApp.loadAppConfig();
 
 // handle uncaughtException
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   log.error('electron:event:uncaughtException');
   log.error(err);
   log.error(err.stack);

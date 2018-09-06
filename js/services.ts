@@ -25,7 +25,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     return {
       load: function(): ng.IPromise<Array<any>> {
         const d = $q.defer();
-        storage.get('data', function (error, data) {
+        storage.get('data', function (error: Error, data) {
           if (error) {
             MessageService.syserror('ボイス設定の読込に失敗しました。', error);
             d.reject(error); return;
@@ -53,7 +53,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         return cloned;
       },
       save: function(dataList: yubo.YVoice[]): void {
-        storage.set('data', dataList, function(error) {
+        storage.set('data', dataList, function(error: Error) {
           if (error) {
             MessageService.syserror('ボイス設定の保存に失敗しました。', error);
             throw error;
@@ -63,7 +63,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       },
       clear: function(): ng.IPromise<boolean> {
         const d = $q.defer();
-        storage.remove('data', function(error) {
+        storage.remove('data', function(error: Error) {
           if (error) {
             MessageService.syserror('ボイス設定の削除に失敗しました。', error);
             d.reject(error); return;
@@ -225,13 +225,13 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         if (phont.version == 'talk1') {
           // write encoded to tempory file
           const fsprefix = `_myubow${Date.now().toString(36)}`;
-          temp.open(fsprefix, (err, info) => {
+          temp.open(fsprefix, (err: Error, info) => {
             if (err) {
               MessageService.syserror('一時作業ファイルを作れませんでした。', err);
               d.reject(null); return;
             }
 
-          fs.writeFile(info.path, encoded, (err) => {
+          fs.writeFile(info.path, encoded, (err: Error) => {
             if (err) {
               MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
               d.reject(err); return;
@@ -245,7 +245,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             encoding: 'binary',
           };
           const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
-          exec(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err, stdout, stderr) => {
+          exec(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout, stderr) => {
             if (err) {
               log.info(`maquestalk1 failed. ${err}`);
               d.reject(err); return;
@@ -265,7 +265,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
 
         // version 2
         } else if (phont.version == 'talk2') {
-          fs.readFile(phont.path, (err, phontData) => {
+          fs.readFile(phont.path, (err: Error, phontData) => {
             if (err) {
               MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
               d.reject(err); return;
@@ -346,7 +346,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             fn_AquesTalk10_FreeWave(r);
             d.resolve(managedBuf);
           })
-          .catch((err) => {
+          .catch((err: Error) => {
             MessageService.syserror('AquesTalk10開発ライセンスキーの読み込みに失敗しました。', err);
             d.reject(err);
           });
@@ -371,13 +371,13 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         }
 
         const fsprefix = `_myubop${Date.now().toString(36)}`;
-        temp.open(fsprefix, (err, info) => {
+        temp.open(fsprefix, (err: Error, info) => {
           if (err) {
             MessageService.syserror('一時作業ファイルを作れませんでした。', err);
             d.reject(null); return;
           }
 
-          fs.writeFile(info.path, bufWav, (err) => {
+          fs.writeFile(info.path, bufWav, (err: Error) => {
             if (err) {
               MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
               d.reject(err); return;
@@ -415,7 +415,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           d.reject(null); return d.promise;
         }
 
-        fs.writeFile(wavFilePath, bufWav, (err) => {
+        fs.writeFile(wavFilePath, bufWav, (err: Error) => {
           if (err) {
             MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
             d.reject(err); return;
@@ -500,7 +500,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           // and start
           inSourceNode.start(0);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           MessageService.syserror('音源の再生に失敗しました。', err);
           d.reject(err); return;
         });
@@ -569,7 +569,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           // and start
           inSourceNode.start(0);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           MessageService.syserror('音源の再生に失敗しました。', err);
           d.reject(err); return;
         });
@@ -590,7 +590,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       },
       save: function(filePath: string, sourceText: string): ng.IPromise<string> {
         const d = $q.defer();
-        fs.writeFile(filePath, sourceText, 'utf-8', function(err) {
+        fs.writeFile(filePath, sourceText, 'utf-8', function(err: Error) {
           if (err) {
             MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
             d.reject(err); return;
@@ -622,7 +622,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       },
       nextNumber: function(dir: string, prefix: string): ng.IPromise<number> {
         const d = $q.defer();
-        fs.readdir(dir, (err, files) => {
+        fs.readdir(dir, (err: Error, files) => {
           if (err) {
             MessageService.syserror('ディレクトリを参照できませんでした。', err);
             d.reject(err); return;

@@ -54,13 +54,13 @@ angular.module('yvoiceLicenseService', [])
         const cmdOptions = {};
         const secretCmd = `${unpackedPath}/vendor/secret`;
         // passPhrase
-        exec(`${secretCmd} -key=passPhrase`, cmdOptions, (err, stdout, stderr) => {
+        exec(`${secretCmd} -key=passPhrase`, cmdOptions, (err: Error, stdout, stderr) => {
           if (err) {
             d.reject(err); return;
           }
           const devPassPhrase = stdout;
         // licenseKey
-        exec(`${secretCmd} -key=${licenseType}`, cmdOptions, (err, stdout, stderr) => {
+        exec(`${secretCmd} -key=${licenseType}`, cmdOptions, (err: Error, stdout, stderr) => {
           if (err) {
             d.reject(err); return;
           }

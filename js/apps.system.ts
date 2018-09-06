@@ -5,7 +5,7 @@ var log = require('electron-log');
 var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
 
 // handle uncaughtException
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   log.error('system:event:uncaughtException');
   log.error(err);
   log.error(err.stack);

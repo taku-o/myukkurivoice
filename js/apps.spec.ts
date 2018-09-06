@@ -67,7 +67,7 @@ angular.module('yvoiceSpec',
         $scope.consumerKeyResult = value;
         $scope.consumerKeyDone = 'ok';
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.consumerKeyErr = err;
       });
     };
@@ -142,7 +142,7 @@ angular.module('yvoiceSpec',
       DataService.load().then((list) => {
         $scope.loadResult = JSON.stringify(list);
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.loadErr = err;
       });
     };
@@ -187,7 +187,7 @@ angular.module('yvoiceSpec',
       AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
         $scope.waveResult = 'ok';
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.waveErr = err;
       });
     };
@@ -207,7 +207,7 @@ angular.module('yvoiceSpec',
       AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
         $scope.waveResult = 'ok';
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.waveErr = err;
       });
     };
@@ -224,7 +224,7 @@ angular.module('yvoiceSpec',
       AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
         $scope.waveResult = 'ok';
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.waveErr = err;
       });
     };
@@ -256,11 +256,11 @@ angular.module('yvoiceSpec',
         AudioService1.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.playResult1 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.playResult1 = err.message;
       });
     };
@@ -290,11 +290,11 @@ angular.module('yvoiceSpec',
         AudioService1.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.playResult1 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.playResult1 = err.message;
       });
     };
@@ -324,11 +324,11 @@ angular.module('yvoiceSpec',
         AudioService1.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.playResult1 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.playResult1 = err.message;
       });
     };
@@ -359,11 +359,11 @@ angular.module('yvoiceSpec',
         AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.recordResult1 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.recordResult1 = err.message;
       });
     };
@@ -393,11 +393,11 @@ angular.module('yvoiceSpec',
         AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.recordResult1 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.recordResult1 = err.message;
       });
     };
@@ -427,11 +427,11 @@ angular.module('yvoiceSpec',
         AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.recordResult1 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.recordResult1 = err.message;
       });
     };
@@ -463,11 +463,11 @@ angular.module('yvoiceSpec',
         AudioService2.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.playResult2 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.playResult2 = err.message;
       });
     };
@@ -497,11 +497,11 @@ angular.module('yvoiceSpec',
         AudioService2.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.playResult2 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.playResult2 = err.message;
       });
     };
@@ -531,11 +531,11 @@ angular.module('yvoiceSpec',
         AudioService2.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.playResult2 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.playResult2 = err.message;
       });
     };
@@ -566,11 +566,11 @@ angular.module('yvoiceSpec',
         AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.recordResult2 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.recordResult2 = err.message;
       });
     };
@@ -600,11 +600,11 @@ angular.module('yvoiceSpec',
         AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.recordResult2 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.recordResult2 = err.message;
       });
     };
@@ -634,11 +634,11 @@ angular.module('yvoiceSpec',
         AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           $scope.recordResult2 = err.message;
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         $scope.recordResult2 = err.message;
       });
     };

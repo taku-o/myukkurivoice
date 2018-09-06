@@ -9,7 +9,7 @@ var appCfg = require('electron').remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   log.error('main:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
@@ -348,12 +348,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         return AudioService.play(bufWav, playOptions).then(() => {
           d.resolve('ok');
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           MessageService.error('音声データを再生できませんでした。', err);
           d.reject(err);
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
@@ -444,7 +444,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           const sourceFname = AudioSourceService.sourceFname(firstWroteFile);
           AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
           })
-          .catch((err) => {
+          .catch((err: Error) => {
             MessageService.error('メッセージファイルを作成できませんでした。', err);
           });
         });
@@ -486,7 +486,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             const sourceFname = AudioSourceService.sourceFname(firstWroteFile);
             AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
             })
-            .catch((err) => {
+            .catch((err: Error) => {
               MessageService.error('メッセージファイルを作成できませんでした。', err);
             });
           });
@@ -540,12 +540,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         return AudioService.record(filePath, bufWav, playOptions).then(() => {
           d.resolve(filePath);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           MessageService.error('音声データを記録できませんでした。', err);
           d.reject(err);
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
@@ -601,12 +601,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           return AudioService.record(filePath, bufWav, playOptions).then(() => {
             d.resolve(filePath);
           })
-          .catch((err) => {
+          .catch((err: Error) => {
             MessageService.error('音声データを記録できませんでした。', err);
             d.reject(err);
           });
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           MessageService.error('音声データを作成できませんでした。', err);
           d.reject(err);
         });

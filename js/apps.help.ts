@@ -6,7 +6,7 @@ var log = require('electron-log');
 var homeDir = app.getPath('home');
 
 // handle uncaughtException
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   log.error('help:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
