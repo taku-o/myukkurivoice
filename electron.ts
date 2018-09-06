@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as Menu from './electron-menu';
 import * as Pane from './electron-window';
 import * as AppConfig from './electron-appcfg';
-import * as version from './lib-version';
+import {Version} from 'github-version-compare';
 
 // MYukkuriVoice application
 var MYukkuriVoice = function(): void {
@@ -73,12 +73,15 @@ ipcMain.on('showSpecWindow', (event, message) => {
 
 // showVersionDialog
 function showVersionDialog() {
-  let versionChecker = new version.Version();
-  versionChecker.get().then((version: yubo.IVersion) => {
-    let message = version.hasLatest()? '新しいバージョンのアプリがあります': 'バージョンは最新です';
-    let buttons = version.hasLatest()? ['CLOSE', 'Open Release Page']: ['OK'];
+  const repository = 'taku-o/myukkurivoice';
+  const packagejson = require('./package.json');
 
-    var dialogOptions = {
+  const version = new Version(repository, packagejson);
+  version.pull().then((version) => {
+    const message = version.hasLatestVersion()? '新しいバージョンのアプリがあります': 'バージョンは最新です';
+    const buttons = version.hasLatestVersion()? ['CLOSE', 'Open Release Page']: ['OK'];
+
+    const dialogOptions = {
       type: 'info',
       title: 'application version check.',
       message: message,
@@ -86,14 +89,14 @@ function showVersionDialog() {
       defaultId: 0,
       cancelId: 0,
     };
-    var btnId: number = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+    const btnId: number = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
     if (btnId == 1) {
-      shell.openExternal(version.latestUrl);
+      shell.openExternal(version.latestReleaseUrl);
     }
   })
   .catch((err: Error) => {
     log.error(err);
-    var dialogOptions = {
+    const dialogOptions = {
       type: 'error',
       title: 'application version check error.',
       message: 'バージョン情報の取得に失敗しました。',
@@ -101,7 +104,7 @@ function showVersionDialog() {
       defaultId: 0,
       cancelId: 0,
     };
-    var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+    const r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   });
 }
 MYukkuriVoice.prototype.showVersionDialog = showVersionDialog;

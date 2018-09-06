@@ -1,6 +1,6 @@
 {
   "name": "MYukkuriVoice",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
   "types": "types.d.ts",
@@ -8,6 +8,7 @@
     "test": "sh bin/test.sh",
     "test_rebuild": "sh bin/test_rebuild.sh",
     "packaging": "sh bin/packaging.sh",
+    "build": "sh bin/packaging.sh",
     "release": "sh bin/release.sh",
     "lint": "eslint *.ts js/*.ts test/*.ts",
     "lint-js": "eslint *.js js/*.js test/*.js",
@@ -34,11 +35,11 @@
     "electron-localshortcut": "^1.1.1",
     "electron-log": "^1.3.0",
     "ffi": "^2.2.0",
+    "github-version-compare": "git+https://github.com/taku-o/github-version-compare.git",
     "intro.js": "^2.7.0",
     "photon": "git+https://github.com/connors/photon.git",
     "ref": "^1.3.5",
     "ref-struct": "^1.1.0",
-    "semver": "^5.5.1",
     "temp": "^0.8.3",
     "tunajs": "^1.0.0",
     "wave-recorder": "^2.3.0"

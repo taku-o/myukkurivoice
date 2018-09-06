@@ -1,3 +1,7 @@
+# 0.7.3 (in test)
+* アップデート確認モジュールを分離。
+    * https://github.com/taku-o/github-version-compare
+
 # 0.7.2 (in test)
 * アップデートを確認メニューを追加。
 

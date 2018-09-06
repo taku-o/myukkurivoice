@@ -6,7 +6,7 @@ var path = require("path");
 var Menu = require("./electron-menu");
 var Pane = require("./electron-window");
 var AppConfig = require("./electron-appcfg");
-var version = require("./lib-version");
+var github_version_compare_1 = require("github-version-compare");
 // MYukkuriVoice application
 var MYukkuriVoice = function () {
     this.appCfg = null;
@@ -64,10 +64,12 @@ electron_1.ipcMain.on('showSpecWindow', function (event, message) {
 });
 // showVersionDialog
 function showVersionDialog() {
-    var versionChecker = new version.Version();
-    versionChecker.get().then(function (version) {
-        var message = version.hasLatest() ? '新しいバージョンのアプリがあります' : 'バージョンは最新です';
-        var buttons = version.hasLatest() ? ['CLOSE', 'Open Release Page'] : ['OK'];
+    var repository = 'taku-o/myukkurivoice';
+    var packagejson = require('./package.json');
+    var version = new github_version_compare_1.Version(repository, packagejson);
+    version.pull().then(function (version) {
+        var message = version.hasLatestVersion() ? '新しいバージョンのアプリがあります' : 'バージョンは最新です';
+        var buttons = version.hasLatestVersion() ? ['CLOSE', 'Open Release Page'] : ['OK'];
         var dialogOptions = {
             type: 'info',
             title: 'application version check.',
@@ -78,7 +80,7 @@ function showVersionDialog() {
         };
         var btnId = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
         if (btnId == 1) {
-            electron_1.shell.openExternal(version.latestUrl);
+            electron_1.shell.openExternal(version.latestReleaseUrl);
         }
     })["catch"](function (err) {
         log.error(err);

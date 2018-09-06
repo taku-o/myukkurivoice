@@ -57,16 +57,6 @@ declare namespace yubo {
     resetAppConfig(): void;
   }
 
-  // lib-version
-  export interface IVersion {
-    latestVersion:  string;
-    publishedAt:    Date;
-    currentVersion: string;
-    latestUrl:      string;
-    hasLatest(): boolean;
-    get(): any;
-  }
-
   // js/models.ts
   export interface YPhont {
     readonly id:       string;
