@@ -1,11 +1,12 @@
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer;
 var clipboard = require('electron').clipboard;
+var remote = require('electron').remote;
 var path = require('path');
 var log = require('electron-log');
 
 // application settings
-var appCfg = require('electron').remote.getGlobal('appCfg');
+var appCfg = remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException
