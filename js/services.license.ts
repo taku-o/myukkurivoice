@@ -8,22 +8,22 @@ var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
 // angular license service
 angular.module('yvoiceLicenseService', [])
   .factory('LicenseService', ['$q', ($q): yubo.LicenseService => {
-    var consumerKeyCache = {};
+    const consumerKeyCache = {};
 
     // encrypt decrypt
-    var encrypt = function(passPhrase: string, plainKey: string): string {
-      var bits = 1024;
-      var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
-      var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
+    const encrypt = function(passPhrase: string, plainKey: string): string {
+      const bits = 1024;
+      const mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+      const mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
 
-      var encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
+      const encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
       return encryptionResult.cipher;
     };
-    var decrypt = function(passPhrase: string, encryptedKey: string): string {
-      var bits = 1024;
-      var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
+    const decrypt = function(passPhrase: string, encryptedKey: string): string {
+      const bits = 1024;
+      const mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
 
-      var decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
+      const decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
       //if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') // why?
       if (decryptionResult.status == 'success') {
         // ok
@@ -42,7 +42,7 @@ angular.module('yvoiceLicenseService', [])
         return decrypt(passPhrase, encryptedKey);
       },
       consumerKey: function(licenseType: string): ng.IPromise<string> {
-        var d = $q.defer();
+        const d = $q.defer();
 
         // get key from cache if exists
         if (consumerKeyCache[licenseType]) {
@@ -51,22 +51,22 @@ angular.module('yvoiceLicenseService', [])
         }
 
         // get encrypted consumer key
-        var cmdOptions = {};
-        var secretCmd = `${unpackedPath}/vendor/secret`;
+        const cmdOptions = {};
+        const secretCmd = `${unpackedPath}/vendor/secret`;
         // passPhrase
         exec(`${secretCmd} -key=passPhrase`, cmdOptions, (err, stdout, stderr) => {
           if (err) {
             d.reject(err); return;
           }
-          var devPassPhrase = stdout;
+          const devPassPhrase = stdout;
         // licenseKey
         exec(`${secretCmd} -key=${licenseType}`, cmdOptions, (err, stdout, stderr) => {
           if (err) {
             d.reject(err); return;
           }
-          var encryptedKey = stdout;
+          const encryptedKey = stdout;
 
-          var decrypted = decrypt(devPassPhrase, encryptedKey);
+          const decrypted = decrypt(devPassPhrase, encryptedKey);
           d.resolve(decrypted);
         });
         });

@@ -7,8 +7,8 @@ describe('specWindow-model-YVoiceInitialData', function() {
   this.timeout(10000);
 
   before(function() {
-    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    var dirPath = temp.mkdirSync(fsprefix);
+    const fsprefix = `_myubo_test${Date.now().toString(36)}`;
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -37,10 +37,10 @@ describe('specWindow-model-YVoiceInitialData', function() {
     return this.client
       .click('#get-yvoice-initial-data')
       .getValue('#get-yvoice-initial-data-result').then((value: string) => {
-        var parsed = JSON.parse(value);
+        const parsed = JSON.parse(value);
         assert.equal(parsed.length, 4);
 
-        for (var i=0; i < parsed.length; i++) {
+        for (let i=0; i < parsed.length; i++) {
           assert.ok('id' in parsed[i]);
           assert.ok('name' in parsed[i]);
           assert.ok('phont' in parsed[i]);
@@ -56,7 +56,7 @@ describe('specWindow-model-YVoiceInitialData', function() {
           assert.equal('', parsed[i].seqWriteOptions.dir);
           assert.equal('', parsed[i].seqWriteOptions.prefix);
 
-          var version = parsed[i].version;
+          const version = parsed[i].version;
           switch (version) {
             case 'talk1':
             case 'talk2':

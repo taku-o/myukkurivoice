@@ -7,8 +7,8 @@ describe('specWindow-model-YPhontList', function() {
   this.timeout(10000);
 
   before(function() {
-    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    var dirPath = temp.mkdirSync(fsprefix);
+    const fsprefix = `_myubo_test${Date.now().toString(36)}`;
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -37,11 +37,11 @@ describe('specWindow-model-YPhontList', function() {
     return this.client
       .click('#get-yphont-list')
       .getValue('#get-yphont-list-result').then((value: string) => {
-        var parsed = JSON.parse(value);
+        const parsed = JSON.parse(value);
         assert.equal(parsed.length, 26);
 
-        for (var i=0; i < parsed.length; i++) {
-          var version = parsed[i].version;
+        for (let i=0; i < parsed.length; i++) {
+          const version = parsed[i].version;
           switch (version) {
             case 'talk1':
               assert.ok(parsed[i].id);

@@ -7,8 +7,8 @@ describe('specWindow-service-MasterService', function() {
   this.timeout(10000);
 
   before(function() {
-    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    var dirPath = temp.mkdirSync(fsprefix);
+    const fsprefix = `_myubo_test${Date.now().toString(36)}`;
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -38,7 +38,7 @@ describe('specWindow-service-MasterService', function() {
       // getPhontList
       .click('#get-phont-list')
       .getValue('#get-phont-list-result').then((value: string) => {
-        var parsed = JSON.parse(value);
+        const parsed = JSON.parse(value);
         assert.equal(parsed.length, 26);
       })
       // catch error

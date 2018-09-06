@@ -7,8 +7,8 @@ describe('specWindow-model-YVoice', function() {
   this.timeout(10000);
 
   before(function() {
-    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    var dirPath = temp.mkdirSync(fsprefix);
+    const fsprefix = `_myubo_test${Date.now().toString(36)}`;
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -37,7 +37,7 @@ describe('specWindow-model-YVoice', function() {
     return this.client
       .click('#get-yvoice')
       .getValue('#get-yvoice-result').then((value: string) => {
-        var parsed = JSON.parse(value);
+        const parsed = JSON.parse(value);
         assert.equal(null, parsed.id);
         assert.equal('f1 女声1(ゆっくり)', parsed.name);
         assert.equal('at1_f1', parsed.phont);

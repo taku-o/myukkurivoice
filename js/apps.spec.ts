@@ -20,46 +20,46 @@ angular.module('yvoiceSpec',
       AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService) {
 
     // init
-    var ctrl = this;
+    const ctrl = this;
 
     // YPhontList
     ctrl.getYPhontList = function(): void {
-      var r = YPhontList;
+      const r = YPhontList;
       $scope.getYPhontListResult = JSON.stringify(r);
     };
     // YVoice
     ctrl.getYVoice = function(): void {
-      var r = YVoice;
+      const r = YVoice;
       $scope.getYVoiceResult = JSON.stringify(r);
     };
     // YVoiceInitialData
     ctrl.getYVoiceInitialData = function(): void {
-      var r = YVoiceInitialData;
+      const r = YVoiceInitialData;
       $scope.getYVoiceInitialDataResult = JSON.stringify(r);
     };
     // YInput
     ctrl.getYInput = function(): void {
-      var r = YInput;
+      const r = YInput;
       $scope.getYInputResult = JSON.stringify(r);
     };
     // YInputInitialData
     ctrl.getYInputInitialData = function(): void {
-      var r = YInputInitialData;
+      const r = YInputInitialData;
       $scope.getYInputInitialDataResult = JSON.stringify(r);
     };
     // YCommandInput
     ctrl.getYCommandInput = function(): void {
-      var r = YCommandInput;
+      const r = YCommandInput;
       $scope.getYCommandInputResult = JSON.stringify(r);
     };
 
     // LicenseService
     ctrl.encrypt = function(): void {
-      var r = LicenseService.encrypt($scope.passPhrase, $scope.plainKey);
+      const r = LicenseService.encrypt($scope.passPhrase, $scope.plainKey);
       $scope.encryptedKey = r;
     };
     ctrl.decrypt = function(): void {
-      var r = LicenseService.decrypt($scope.passPhrase, $scope.encryptedKey);
+      const r = LicenseService.decrypt($scope.passPhrase, $scope.encryptedKey);
       $scope.plainKey = r;
     };
     ctrl.consumerKey = function(): void {
@@ -85,39 +85,39 @@ angular.module('yvoiceSpec',
 
     // MessageService
     ctrl.action = function(): void {
-      var msg = 'action message';
+      const msg = 'action message';
       MessageService.action(msg);
     };
     ctrl.record = function(): void {
-      var msg = 'record message';
-      var wavFilePath = '/tmp/hoge.txt';
+      const msg = 'record message';
+      const wavFilePath = '/tmp/hoge.txt';
       MessageService.record(msg, wavFilePath);
     };
     ctrl.info = function(): void {
-      var msg = 'info message';
+      const msg = 'info message';
       MessageService.info(msg);
     };
     ctrl.error = function(): void {
-      var msg = 'error message';
-      var err = new Error('err');
+      const msg = 'error message';
+      const err = new Error('err');
       MessageService.error(msg, err);
     };
     ctrl.errorNull = function(): void {
-      var msg = 'error message';
+      const msg = 'error message';
       MessageService.error(msg);
     };
     ctrl.syserror = function(): void {
-      var msg = 'syserror message';
-      var err = new Error('err');
+      const msg = 'syserror message';
+      const err = new Error('err');
       MessageService.syserror(msg, err);
     };
     ctrl.syserrorNull = function(): void {
-      var msg = 'syserror message';
+      const msg = 'syserror message';
       MessageService.syserror(msg);
     };
     $scope.$on('message', (event, message: yubo.IMessage | yubo.IRecordMessage) => {
       if (message.type == 'record') {
-        let msg = message as yubo.IRecordMessage;
+        const msg = message as yubo.IRecordMessage;
         $scope.messageServicePostCreated = msg.created;
         $scope.messageServicePostBody = msg.body;
         $scope.messageServicePostWavFilePath = msg.wavFilePath;
@@ -147,40 +147,40 @@ angular.module('yvoiceSpec',
       });
     };
     ctrl.initialData = function(): void {
-      var r = DataService.initialData();
+      const r = DataService.initialData();
       $scope.initialDataResult = JSON.stringify(r);
     };
     ctrl.create = function(): void {
-      var r = DataService.create();
+      const r = DataService.create();
       $scope.createResult = JSON.stringify(r);
     };
     ctrl.copy = function(): void {
-      var original = {text: 'value'};
-      var r = DataService.copy(original);
+      const original = {text: 'value'};
+      const r = DataService.copy(original);
       $scope.copyResult = JSON.stringify(r);
     };
 
     // MasterService
     ctrl.getPhontList = function(): void {
-      var list = MasterService.getPhontList();
+      const list = MasterService.getPhontList();
       $scope.getPhontListResult = JSON.stringify(list);
     };
 
     // AquesService
     ctrl.encode = function(): void {
-      var r = AquesService.encode($scope.source);
+      const r = AquesService.encode($scope.source);
       $scope.encodeResult = r;
     };
     ctrl.waveVer1 = function(): void {
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var options: yubo.WaveOptions = {
+      const speed = 100;
+      const options: yubo.WaveOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
@@ -192,15 +192,15 @@ angular.module('yvoiceSpec',
       });
     };
     ctrl.waveVer2 = function(): void {
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var options: yubo.WaveOptions = {
+      const speed = 100;
+      const options: yubo.WaveOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
@@ -212,15 +212,15 @@ angular.module('yvoiceSpec',
       });
     };
     ctrl.waveVer10 = function(): void {
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var options = {passPhrase:'xxxxxxx', aq10UseKeyEncrypted:''};
+      const speed = 100;
+      const options = {passPhrase:'xxxxxxx', aq10UseKeyEncrypted:''};
       AquesService.wave($scope.encoded, phont, speed, options).then((value) => {
         $scope.waveResult = 'ok';
       })
@@ -232,19 +232,19 @@ angular.module('yvoiceSpec',
     // AudioService1
     ctrl.play1AqVer1 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -266,19 +266,19 @@ angular.module('yvoiceSpec',
     };
     ctrl.play1AqVer2 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -300,19 +300,19 @@ angular.module('yvoiceSpec',
     };
     ctrl.play1AqVer10 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -335,19 +335,19 @@ angular.module('yvoiceSpec',
 
     ctrl.record1AqVer1 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -369,19 +369,19 @@ angular.module('yvoiceSpec',
     };
     ctrl.record1AqVer2 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -403,19 +403,19 @@ angular.module('yvoiceSpec',
     };
     ctrl.record1AqVer10 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -439,19 +439,19 @@ angular.module('yvoiceSpec',
     // AudioService2
     ctrl.play2AqVer1 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -473,19 +473,19 @@ angular.module('yvoiceSpec',
     };
     ctrl.play2AqVer2 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -507,19 +507,19 @@ angular.module('yvoiceSpec',
     };
     ctrl.play2AqVer10 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -542,19 +542,19 @@ angular.module('yvoiceSpec',
 
     ctrl.record2AqVer1 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -576,19 +576,19 @@ angular.module('yvoiceSpec',
     };
     ctrl.record2AqVer2 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -610,19 +610,19 @@ angular.module('yvoiceSpec',
     };
     ctrl.record2AqVer10 = function(): void {
       // phont
-      var list = MasterService.getPhontList();
-      var phont;
-      for (var i = 0; i < list.length; i ++) {
+      const list = MasterService.getPhontList();
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
           phont = list[i]; break;
         }
       }
-      var speed = 100;
-      var woptions: yubo.WaveOptions = {
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      var poptions: yubo.PlayOptions = {
+      const poptions: yubo.PlayOptions = {
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
@@ -645,7 +645,7 @@ angular.module('yvoiceSpec',
 
     // AudioSourceService
     ctrl.sourceFname = function(): void {
-      var r = AudioSourceService.sourceFname($scope.wavFilePath);
+      const r = AudioSourceService.sourceFname($scope.wavFilePath);
       $scope.sourceFnameResult = r;
     };
     ctrl.save = function(): void {
@@ -656,13 +656,13 @@ angular.module('yvoiceSpec',
 
     // SeqFNameService
     ctrl.nextFname = function(): void {
-      var r = SeqFNameService.nextFname($scope.prefix, $scope.num);
+      const r = SeqFNameService.nextFname($scope.prefix, $scope.num);
       $scope.nextFnameResult = r;
     };
 
     // AppUtilService
     ctrl.disableRhythm = function(): void {
-      var r = AppUtilService.disableRhythm($scope.rhythmText);
+      const r = AppUtilService.disableRhythm($scope.rhythmText);
       $scope.disableRhythmResult = r;
     };
   }]);

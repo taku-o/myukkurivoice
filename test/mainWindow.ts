@@ -7,8 +7,8 @@ describe('mainWindow', function() {
   this.timeout(10000);
 
   beforeEach(function() {
-    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    var dirPath = temp.mkdirSync(fsprefix);
+    const fsprefix = `_myubo_test${Date.now().toString(36)}`;
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -112,7 +112,7 @@ describe('mainWindow', function() {
   // TODO copy config
   // TODO filter
   it('mainWindow voice config', function() {
-    var voiceConfigLength = 999;
+    let voiceConfigLength = 999;
     return this.app.client
       // filter
       .elements('.voice-config-item').then((response: HTMLInputElement) => {
@@ -175,7 +175,7 @@ describe('mainWindow', function() {
   //});
 
   it('mainWindow alwaysOnTop', function() {
-    var app = this.app;
+    const app = this.app;
     return this.app.client
       .getAttribute('#always-on-top-btn span.icon', 'class').then((classes: string[]) => {
         assert.ok(! classes.includes('active'));

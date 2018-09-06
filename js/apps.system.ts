@@ -20,7 +20,7 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
                            function($scope, $timeout, LicenseService: yubo.LicenseService) {
 
     // init
-    var ctrl = this;
+    const ctrl = this;
     $timeout(() => { $scope.$apply(); });
     $scope.appCfg = appCfg;
     $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted?
@@ -30,14 +30,14 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
     // actions
     ctrl.cancel = function(): void {
       $scope.appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
-      var window = require('electron').remote.getCurrentWindow();
+      const window = require('electron').remote.getCurrentWindow();
       window.close();
     };
     ctrl.save = function(): void {
-      var aq10UseKeyEncrypted = $scope.aq10UseKey?
+      const aq10UseKeyEncrypted = $scope.aq10UseKey?
         LicenseService.encrypt($scope.appCfg.passPhrase, $scope.aq10UseKey):
         '';
-      var options = {
+      const options = {
         'mainWindow':$scope.appCfg.mainWindow,
         'audioServVer':$scope.appCfg.audioServVer,
         'showMsgPane':$scope.appCfg.showMsgPane,

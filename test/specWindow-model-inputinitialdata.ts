@@ -7,8 +7,8 @@ describe('specWindow-model-YInputInitialData', function() {
   this.timeout(10000);
 
   before(function() {
-    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    var dirPath = temp.mkdirSync(fsprefix);
+    const fsprefix = `_myubo_test${Date.now().toString(36)}`;
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -37,7 +37,7 @@ describe('specWindow-model-YInputInitialData', function() {
     return this.client
       .click('#get-yinput-initial-data')
       .getValue('#get-yinput-initial-data-result').then((value: string) => {
-        var parsed = JSON.parse(value);
+        const parsed = JSON.parse(value);
         assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source);
         assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded);
       })

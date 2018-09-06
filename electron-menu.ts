@@ -3,8 +3,8 @@ import {app,Menu,shell} from 'electron';
 
 // application menu
 function initAppMenu(options: {debug: boolean}): void {
-  var myApp = this;
-  var menuList = [
+  const myApp = this;
+  const menuList = [
     {
       label: 'MYukkuriVoice',
       submenu: [
@@ -221,14 +221,14 @@ function initAppMenu(options: {debug: boolean}): void {
     );
   }
   // @ts-ignore
-  var menuTemplate = Menu.buildFromTemplate(menuList);
+  const menuTemplate = Menu.buildFromTemplate(menuList);
   Menu.setApplicationMenu(menuTemplate);
 }
 
 // dock menu
 function initDockMenu(): void {
-  var myApp = this;
-  var dockMenuList = [
+  const myApp = this;
+  const dockMenuList = [
     {
       label: 'About MYukkuriVoice',
       click() { myApp.showAboutWindow(); },
@@ -246,7 +246,7 @@ function initDockMenu(): void {
       click() { myApp.resetWindowPosition(); },
     },
   ];
-  var dockMenu = Menu.buildFromTemplate(dockMenuList);
+  const dockMenu = Menu.buildFromTemplate(dockMenuList);
   app.dock.setMenu(dockMenu);
 }
 

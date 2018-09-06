@@ -262,7 +262,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                     log.warn("fn_AqKanji2Koe_Create raise error. error_code:" + errorTable_AqKanji2Koe(errorCode));
                     return '';
                 }
-                var sourceLength = (new Blob([sourceLength], { type: 'text/plain' })).size;
+                var sourceLength = (new Blob([source], { type: 'text/plain' })).size;
                 var encodedLength = sourceLength >= 512 ? sourceLength * 4 : 512;
                 var buf = Buffer.alloc(sourceLength >= 512 ? sourceLength * 4 : 512);
                 var r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encodedLength);

@@ -15,15 +15,15 @@ angular.module('yvoiceDirective', [])
   // wav-draggable
   .directive('wavDraggable', ($parse) => {
     return (scope: ng.IScope, element, attr) => {
-      var f;
+      let f;
       scope.$watch('lastWavFile', (value: yubo.IRecordMessage) => {
-        var message = value;
+        const message = value;
         if (!message || !message.wavFilePath) {
           return;
         }
-        var wavFilePath = message.wavFilePath;
+        const wavFilePath = message.wavFilePath;
 
-        var el = element[0];
+        const el = element[0];
         el.draggable = true;
 
         // replace event listener
@@ -42,19 +42,19 @@ angular.module('yvoiceDirective', [])
   // txt-droppable
   .directive('txtDroppable', ($parse) => {
     return (scope: yubo.IScope, element, attr) => {
-      var el = element[0];
+      const el = element[0];
 
       el.addEventListener('drop', (e) => {
         e.preventDefault();
 
         // read dropped file and set.
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = (loadedFile) => {
           // yinput.source or yinput.encoded
           scope.yinput[el.id] = reader.result;
           scope.$apply();
         };
-        var file = e.dataTransfer.files[0];
+        const file = e.dataTransfer.files[0];
         reader.readAsText(file);
         return false;
       });
