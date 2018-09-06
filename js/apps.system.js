@@ -1,9 +1,6 @@
 "use strict";
 var ipcRenderer = require('electron').ipcRenderer;
-var remote = require('electron').remote;
 var log = require('electron-log');
-// application settings
-var appCfg = angular.copy(remote.getGlobal('appCfg'));
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
     log.error('system:event:uncaughtException');
@@ -20,14 +17,15 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
         // init
         var ctrl = this;
         $timeout(function () { $scope.$apply(); });
+        var appCfg = require('electron').remote.getGlobal('appCfg');
         $scope.appCfg = appCfg;
         $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted ?
             LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted) :
             '';
         // actions
         ctrl.cancel = function () {
-            $scope.appCfg = angular.copy(remote.getGlobal('appCfg'));
-            var window = remote.getCurrentWindow();
+            $scope.appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
+            var window = require('electron').remote.getCurrentWindow();
             window.close();
         };
         ctrl.save = function () {

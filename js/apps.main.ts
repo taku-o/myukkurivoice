@@ -1,12 +1,10 @@
 var app = require('electron').remote.app;
 var ipcRenderer = require('electron').ipcRenderer;
 var clipboard = require('electron').clipboard;
-var remote = require('electron').remote;
 var path = require('path');
 var log = require('electron-log');
 
 // application settings
-var appCfg = remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException
@@ -147,6 +145,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     });
 
     // application settings
+    let appCfg = require('electron').remote.getGlobal('appCfg');
     let AudioService = appCfg.audioServVer == 'html5audio'? audioServVer1: audioServVer2;
     $scope.appCfg = appCfg;
 

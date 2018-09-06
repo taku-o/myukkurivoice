@@ -5,7 +5,6 @@ var clipboard = require('electron').clipboard;
 var path = require('path');
 var log = require('electron-log');
 // application settings
-var appCfg = require('electron').remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
@@ -134,6 +133,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
         });
         // application settings
+        var appCfg = require('electron').remote.getGlobal('appCfg');
         var AudioService = appCfg.audioServVer == 'html5audio' ? audioServVer1 : audioServVer2;
         $scope.appCfg = appCfg;
         // init
