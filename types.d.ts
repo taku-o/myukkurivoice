@@ -3,26 +3,35 @@ declare namespace yubo {
   export interface Global extends NodeJS.Global {
     appCfg: AppCfg;
   }
-  export interface IScope extends ng.IScope {
-    yinput: yubo.YInput;
-    yvoice: yubo.YVoice;
-    yvoiceList: yubo.YVoice[];
-    phontList: YPhont[];
-    appCfg: AppCfg;
-    duration: number;
-    lastWavFile: string;
-    encodedHighlight: any;
-    sourceHighlight: any;
-    aq10BasList: { name: string, id: number}[];
-    display: string;
-    alwaysOnTop: boolean;
-    isTest: boolean;
-    messageList: (IMessage | IRecordMessage)[];
-  }
   export interface ElectronConfig {
 	get(key: string): any;
 	set(key: string, val: any): void;
 	has(key: string): boolean
+  }
+
+  export interface IMainScope extends ng.IScope {
+    yinput:           yubo.YInput;
+    yvoice:           yubo.YVoice;
+    yvoiceList:       yubo.YVoice[];
+    phontList:        YPhont[];
+    appCfg:           AppCfg;
+    duration:         number;
+    lastWavFile:      string;
+    encodedHighlight: any;
+    sourceHighlight:  any;
+    aq10BasList:      { name: string, id: number}[];
+    display:          string;
+    alwaysOnTop:      boolean;
+    isTest:           boolean;
+    messageList:      (IMessage | IRecordMessage)[];
+  }
+  export interface ISystemScope extends ng.IScope {
+    appCfg:     AppCfg;
+    aq10UseKey: string;
+  }
+  export interface IHelpScope extends ng.IScope {
+    display:   string;
+    $location: ng.ILocaleService;
   }
 
   // electron-appcfg.ts

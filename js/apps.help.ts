@@ -18,7 +18,7 @@ angular.module('yvoiceAppHelp', [])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('HelpController', ['$scope', '$timeout', '$location',
-                         function($scope, $timeout, $location) {
+  function($scope: yubo.IHelpScope, $timeout, $location) {
 
     const menuList = [
       'about',

@@ -41,7 +41,7 @@ angular.module('yvoiceDirective', [])
   })
   // txt-droppable
   .directive('txtDroppable', ($parse) => {
-    return (scope: yubo.IScope, element, attr) => {
+    return (scope: yubo.IMainScope, element, attr) => {
       const el = element[0];
 
       el.addEventListener('drop', (e) => {

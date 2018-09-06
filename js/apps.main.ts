@@ -26,7 +26,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
     function(
-      $scope: yubo.IScope, $timeout, $q,
+      $scope: yubo.IMainScope, $timeout, $q,
       MessageService: yubo.MessageService, DataService: yubo.DataService, MasterService: yubo.MasterService,
       AquesService: yubo.AquesService,
       audioServVer1: yubo.AudioService1, audioServVer2: yubo.AudioService2, AudioSourceService: yubo.AudioSourceService,

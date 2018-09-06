@@ -1,8 +1,9 @@
 var ipcRenderer = require('electron').ipcRenderer;
+var remote = require('electron').remote;
 var log = require('electron-log');
 
 // application settings
-var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
+var appCfg = angular.copy(remote.getGlobal('appCfg'));
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
@@ -17,7 +18,7 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('SystemController', ['$scope', '$timeout', 'LicenseService',
-                           function($scope, $timeout, LicenseService: yubo.LicenseService) {
+  function($scope: yubo.ISystemScope, $timeout, LicenseService: yubo.LicenseService) {
 
     // init
     const ctrl = this;
@@ -29,8 +30,8 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
 
     // actions
     ctrl.cancel = function(): void {
-      $scope.appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
-      const window = require('electron').remote.getCurrentWindow();
+      $scope.appCfg = angular.copy(remote.getGlobal('appCfg'));
+      const window = remote.getCurrentWindow();
       window.close();
     };
     ctrl.save = function(): void {
