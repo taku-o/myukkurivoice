@@ -1,11 +1,8 @@
 var ipcRenderer = require('electron').ipcRenderer;
 var log = require('electron-log');
 
-// application settings
-var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
-
 // handle uncaughtException
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   log.error('system:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
@@ -17,11 +14,12 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('SystemController', ['$scope', '$timeout', 'LicenseService',
-                           function($scope, $timeout, LicenseService: yubo.LicenseService) {
+  function($scope: yubo.ISystemScope, $timeout, LicenseService: yubo.LicenseService) {
 
     // init
-    var ctrl = this;
+    const ctrl = this;
     $timeout(() => { $scope.$apply(); });
+    let appCfg = require('electron').remote.getGlobal('appCfg');
     $scope.appCfg = appCfg;
     $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted?
       LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted):
@@ -30,14 +28,14 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
     // actions
     ctrl.cancel = function(): void {
       $scope.appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
-      var window = require('electron').remote.getCurrentWindow();
+      const window = require('electron').remote.getCurrentWindow();
       window.close();
     };
     ctrl.save = function(): void {
-      var aq10UseKeyEncrypted = $scope.aq10UseKey?
+      const aq10UseKeyEncrypted = $scope.aq10UseKey?
         LicenseService.encrypt($scope.appCfg.passPhrase, $scope.aq10UseKey):
         '';
-      var options = {
+      const options = {
         'mainWindow':$scope.appCfg.mainWindow,
         'audioServVer':$scope.appCfg.audioServVer,
         'showMsgPane':$scope.appCfg.showMsgPane,

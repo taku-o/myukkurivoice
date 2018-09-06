@@ -7,8 +7,8 @@ describe('settingsView', function() {
   this.timeout(10000);
 
   beforeEach(function() {
-    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    var dirPath = temp.mkdirSync(fsprefix);
+    const fsprefix = `_myubo_test${Date.now().toString(36)}`;
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -23,7 +23,7 @@ describe('settingsView', function() {
   });
 
   it('settingsView seq-write-box option', function() {
-    var client = this.app.client;
+    const client = this.app.client;
     return this.app.client
       .click('#switch-settings-view')
       .isSelected('#seq-write-box .checkbox input').then((isSelected: boolean) => {

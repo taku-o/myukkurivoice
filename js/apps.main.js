@@ -5,7 +5,6 @@ var clipboard = require('electron').clipboard;
 var path = require('path');
 var log = require('electron-log');
 // application settings
-var appCfg = require('electron').remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
@@ -134,6 +133,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
         });
         // application settings
+        var appCfg = require('electron').remote.getGlobal('appCfg');
         var AudioService = appCfg.audioServVer == 'html5audio' ? audioServVer1 : audioServVer2;
         $scope.appCfg = appCfg;
         // init
@@ -400,14 +400,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             }
             // 連番保存
             if ($scope.yvoice.seqWrite) {
-                var dir = $scope.yvoice.seqWriteOptions.dir;
-                var prefix = $scope.yvoice.seqWriteOptions.prefix;
-                if (!dir) {
-                    dir = desktopDir;
+                var dir_1 = $scope.yvoice.seqWriteOptions.dir;
+                var prefix_1 = $scope.yvoice.seqWriteOptions.prefix;
+                if (!dir_1) {
+                    dir_1 = desktopDir;
                 }
                 // record
                 var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-                var firstWroteFile = null;
+                var firstWroteFile_1 = null;
                 // record wave files
                 parsedList.reduce(function (p, cinput) {
                     if (p.then === undefined) {
@@ -415,21 +415,21 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                         p = p.promise;
                     }
                     return p.then(function (fp) {
-                        if (!firstWroteFile) {
-                            firstWroteFile = fp;
+                        if (!firstWroteFile_1) {
+                            firstWroteFile_1 = fp;
                         }
-                        return recordEach(cinput, dir, prefix);
+                        return recordEach(cinput, dir_1, prefix_1);
                     });
                 }, $q.defer())
                     // record source message
                     .then(function (fp) {
-                    if (!firstWroteFile) {
-                        firstWroteFile = fp;
+                    if (!firstWroteFile_1) {
+                        firstWroteFile_1 = fp;
                     }
                     if (!$scope.yvoice.sourceWrite) {
                         return;
                     }
-                    var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+                    var sourceFname = AudioSourceService.sourceFname(firstWroteFile_1);
                     AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () {
                     })["catch"](function (err) {
                         MessageService.error('メッセージファイルを作成できませんでした。', err);

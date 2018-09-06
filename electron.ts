@@ -9,7 +9,7 @@ import * as AppConfig from './electron-appcfg';
 import {Version} from 'github-version-compare';
 
 // MYukkuriVoice application
-var MYukkuriVoice = function(): void {
+const MYukkuriVoice = function(): void {
   this.appCfg = null;
   this.config = null;
 
@@ -18,7 +18,7 @@ var MYukkuriVoice = function(): void {
   this.helpWindow = null;
   this.systemWindow = null;
 };
-var myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
+const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV == 'test' && process.env.userData) {
 myApp.loadAppConfig();
 
 // handle uncaughtException
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   log.error('electron:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
@@ -111,30 +111,30 @@ MYukkuriVoice.prototype.showVersionDialog = showVersionDialog;
 
 // showSaveDialog
 ipcMain.on('showSaveDialog', (event, message) => {
-  var options = {
+  const options = {
     title: 'wav save dialog',
     filters: [
       {name: 'Wav File', extensions: ['wav']},
     ],
   };
-  var r = dialog.showSaveDialog(myApp.mainWindow, options);
+  const r = dialog.showSaveDialog(myApp.mainWindow, options);
   event.sender.send('showSaveDialog', r);
 });
 
 // showDirDialog
 ipcMain.on('showDirDialog', (event, defaultPath) => {
-  var options = {
+  const options = {
     title: 'select wav save directory',
     properties: ['openDirectory' as 'openDirectory', 'createDirectory' as 'createDirectory'],
     defaultPath: defaultPath,
   };
-  var r = dialog.showOpenDialog(myApp.mainWindow, options, (filePaths: string[]) => {});
+  const r = dialog.showOpenDialog(myApp.mainWindow, options, (filePaths: string[]) => {});
   event.sender.send('showDirDialog', r);
 });
 
 // drag out wav file
 ipcMain.on('ondragstartwav', (event, filePath) => {
-  var imgPath = path.join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
+  const imgPath = path.join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
   event.sender.startDrag({
     file: filePath,
     icon: imgPath,
@@ -144,7 +144,7 @@ ipcMain.on('ondragstartwav', (event, filePath) => {
 // updateAppConfig
 ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
   myApp.updateAppConfig(options);
-  var dialogOptions = {
+  const dialogOptions = {
     type: 'info',
     title: 'application config updated.',
     message: '環境設定を更新しました。アプリケーションを更新します。',
@@ -152,7 +152,7 @@ ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
     defaultId: 0,
     cancelId: 0,
   };
-  var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+  const r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   event.sender.send('updateAppConfig', r);
   myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
   myApp.mainWindow.webContents.reload();
@@ -162,7 +162,7 @@ ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
 // resetAppConfig
 ipcMain.on('resetAppConfig', (event, message) => {
   myApp.resetAppConfig();
-  var dialogOptions = {
+  const dialogOptions = {
     type: 'info',
     title: 'application config initialized.',
     message: '環境設定を初期化しました。アプリケーションを更新します。',
@@ -170,7 +170,7 @@ ipcMain.on('resetAppConfig', (event, message) => {
     defaultId: 0,
     cancelId: 0,
   };
-  var r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+  const r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   event.sender.send('resetAppConfig', r);
   myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
   myApp.mainWindow.webContents.reload();
@@ -180,7 +180,7 @@ ipcMain.on('resetAppConfig', (event, message) => {
 // resetAppConfigOnMain
 function resetAppConfigOnMain(): void {
   myApp.resetAppConfig();
-  var dialogOptions = {
+  const dialogOptions = {
     type: 'info',
     title: 'application config initialized.',
     message: '環境設定を初期化しました。アプリケーションを更新します。',
@@ -188,7 +188,7 @@ function resetAppConfigOnMain(): void {
     defaultId: 0,
     cancelId: 0,
   };
-  var r = dialog.showMessageBox(myApp.mainWindow, dialogOptions);
+  const r = dialog.showMessageBox(myApp.mainWindow, dialogOptions);
   myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
   myApp.mainWindow.webContents.reload();
   if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
@@ -203,12 +203,12 @@ MYukkuriVoice.prototype.resetWindowPosition = resetWindowPosition;
 
 // switchAlwaysOnTop
 function switchAlwaysOnTop(): void {
-  var newflg = !myApp.mainWindow.isAlwaysOnTop();
+  const newflg = !myApp.mainWindow.isAlwaysOnTop();
   myApp.mainWindow.setAlwaysOnTop(newflg);
   myApp.mainWindow.webContents.send('switchAlwaysOnTop', newflg);
 }
 ipcMain.on('switchAlwaysOnTop', (event, message) => {
-  var newflg = !myApp.mainWindow.isAlwaysOnTop();
+  const newflg = !myApp.mainWindow.isAlwaysOnTop();
   myApp.mainWindow.setAlwaysOnTop(newflg);
   event.sender.send('switchAlwaysOnTop', newflg);
 });

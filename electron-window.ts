@@ -7,14 +7,14 @@ const openAboutWindow: any = require('about-window').default;
 
 // main window
 function showMainWindow(): void {
-  var myApp = this;
+  const myApp = this;
   if (this.mainWindow && !this.mainWindow.isDestroyed()) {
     this.mainWindow.show(); this.mainWindow.focus();
     return;
   }
 
-  var {width, height, x, y} = this.appCfg.mainWindow;
-  var acceptFirstMouse = this.appCfg.acceptFirstMouse;
+  const {width, height, x, y} = this.appCfg.mainWindow;
+  const acceptFirstMouse = this.appCfg.acceptFirstMouse;
   this.mainWindow = new BrowserWindow({
     width: width,
     height: height,
@@ -68,7 +68,7 @@ function showMainWindow(): void {
     myApp.mainWindow.show(); myApp.mainWindow.focus();
   });
   this.mainWindow.on('close', () => {
-    var bounds = myApp.mainWindow.getBounds();
+    const bounds = myApp.mainWindow.getBounds();
     myApp.config.set('mainWindow', bounds);
   });
   this.mainWindow.on('closed', () => {
@@ -84,14 +84,14 @@ function showMainWindow(): void {
 
 // help window
 function showHelpWindow(): void {
-  var myApp = this;
+  const myApp = this;
   if (this.helpWindow && !this.helpWindow.isDestroyed()) {
     this.helpWindow.show(); this.helpWindow.focus();
     return;
   }
 
-  var {width, height} = this.appCfg.helpWindow;
-  var acceptFirstMouse = this.appCfg.acceptFirstMouse;
+  const {width, height} = this.appCfg.helpWindow;
+  const acceptFirstMouse = this.appCfg.acceptFirstMouse;
   this.helpWindow = new BrowserWindow({
     parent: this.mainWindow,
     modal: false,
@@ -136,14 +136,14 @@ function showHelpWindow(): void {
 
 // application config window
 function showSystemWindow(): void {
-  var myApp = this;
+  const myApp = this;
   if (this.systemWindow && !this.systemWindow.isDestroyed()) {
     this.systemWindow.show(); this.systemWindow.focus();
     return;
   }
 
-  var {width, height} = this.appCfg.systemWindow;
-  var acceptFirstMouse = this.appCfg.acceptFirstMouse;
+  const {width, height} = this.appCfg.systemWindow;
+  const acceptFirstMouse = this.appCfg.acceptFirstMouse;
   this.systemWindow = new BrowserWindow({
     parent: this.mainWindow,
     modal: false,
@@ -182,7 +182,7 @@ function showSystemWindow(): void {
 
 // about application window
 function showAboutWindow(): void {
-  var w = openAboutWindow({
+  const w = openAboutWindow({
     icon_path: path.join(__dirname, 'img/icon_128x128.png'),
     css_path: path.join(__dirname, 'css/about.css'),
     package_json_dir: __dirname,
@@ -195,7 +195,7 @@ function showAboutWindow(): void {
 
 // application spec window
 function showSpecWindow(): void {
-  var specWindow = new BrowserWindow({
+  const specWindow = new BrowserWindow({
     parent: this.mainWindow,
     modal: false,
     width: 800,

@@ -5,7 +5,7 @@ angular.module('yvoiceMessageService', [])
   .factory('MessageService', ['$rootScope', ($rootScope): yubo.MessageService => {
     return {
       action: function(message: string): void {
-        var post: yubo.IMessage = {
+        const post: yubo.IMessage = {
           created: new Date(),
           body: message,
           type: 'action',
@@ -13,8 +13,8 @@ angular.module('yvoiceMessageService', [])
         $rootScope.$broadcast('message', post);
       },
       record: function(message: string, wavFilePath: string): void {
-        var wavFileName = path.basename(wavFilePath);
-        var post: yubo.IRecordMessage = {
+        const wavFileName = path.basename(wavFilePath);
+        const post: yubo.IRecordMessage = {
           created: new Date(),
           body: message,
           wavFilePath: wavFilePath,
@@ -25,7 +25,7 @@ angular.module('yvoiceMessageService', [])
         $rootScope.$broadcast('wavGenerated', post);
       },
       info: function(message: string): void {
-        var post: yubo.IMessage = {
+        const post: yubo.IMessage = {
           created: new Date(),
           body: message,
           type: 'info',
@@ -36,7 +36,7 @@ angular.module('yvoiceMessageService', [])
         if (err) {
           message = message + err.message;
         }
-        var post: yubo.IMessage = {
+        const post: yubo.IMessage = {
           created: new Date(),
           body: message,
           type: 'error',
@@ -47,7 +47,7 @@ angular.module('yvoiceMessageService', [])
         if (err) {
           message = message + err.message;
         }
-        var post: yubo.IMessage = {
+        const post: yubo.IMessage = {
           created: new Date(),
           body: message,
           type: 'syserror',

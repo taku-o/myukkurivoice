@@ -6,7 +6,7 @@ var log = require('electron-log');
 var homeDir = app.getPath('home');
 
 // handle uncaughtException
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   log.error('help:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
@@ -18,9 +18,9 @@ angular.module('yvoiceAppHelp', [])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('HelpController', ['$scope', '$timeout', '$location',
-                         function($scope, $timeout, $location) {
+  function($scope: yubo.IHelpScope, $timeout, $location) {
 
-    var menuList = [
+    const menuList = [
       'about',
       'voicecode',
       'trouble',
@@ -41,12 +41,12 @@ angular.module('yvoiceAppHelp', [])
     ];
 
     // init
-    var ctrl = this;
+    const ctrl = this;
     $scope.$location = $location;
 
     // event url hash changed
     $scope.$on('$locationChangeSuccess', (event) => {
-      var hash = $location.hash();
+      const hash = $location.hash();
       if (menuList.includes(hash)) {
         $scope.display = hash;
       } else {
@@ -69,8 +69,8 @@ angular.module('yvoiceAppHelp', [])
       }
     });
     function moveToPreviousHelp(): void {
-      var index = menuList.indexOf($scope.display);
-      var moved = index - 1;
+      const index = menuList.indexOf($scope.display);
+      const moved = index - 1;
       if (index < 0) {
         $location.hash(menuList[0]);
       } else if (moved < 0) {
@@ -80,8 +80,8 @@ angular.module('yvoiceAppHelp', [])
       }
     }
     function moveToNextHelp(): void {
-      var index = menuList.indexOf($scope.display);
-      var moved = index + 1;
+      const index = menuList.indexOf($scope.display);
+      const moved = index + 1;
       if (index < 0) {
         $location.hash(menuList[0]);
       } else if (moved >= menuList.length) {
@@ -96,7 +96,7 @@ angular.module('yvoiceAppHelp', [])
       shell.openExternal(url);
     };
     ctrl.showItemInFolder = function(path): void {
-      var expanded = path.replace('$HOME', homeDir);
+      const expanded = path.replace('$HOME', homeDir);
       shell.showItemInFolder(expanded);
     };
     ctrl.showSystemWindow = function(): void {

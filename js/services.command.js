@@ -15,10 +15,10 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
                 var hasCommand = false;
                 var matched = re.exec(input);
                 while (matched) {
-                    var name = matched[1];
+                    var name_1 = matched[1];
                     // error, unknown command name
-                    if (nameList.indexOf(name) < 0) {
-                        MessageService.error("" + 'マルチボイスに未知の名前が指定されました。name:' + name);
+                    if (nameList.indexOf(name_1) < 0) {
+                        MessageService.error("" + 'マルチボイスに未知の名前が指定されました。name:' + name_1);
                         return false;
                     }
                     hasCommand = true;

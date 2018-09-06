@@ -3,7 +3,7 @@ angular.module('yvoiceIntroService', [])
   .factory('IntroService', (): yubo.IntroService => {
     return {
       mainTutorial: function(): void {
-        var intro = introJs();
+        const intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({
           steps: [
@@ -102,7 +102,7 @@ angular.module('yvoiceIntroService', [])
         intro.start();
       },
       settingsTutorial: function(): void {
-        var intro = introJs();
+        const intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({
           steps: [
@@ -147,7 +147,7 @@ angular.module('yvoiceIntroService', [])
         intro.start();
       },
       shortcut: function(): void {
-        var intro = introJs();
+        const intro = introJs();
         intro.setOption('showProgress', true);
         intro.setOptions({
           steps: [

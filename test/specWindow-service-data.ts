@@ -7,8 +7,8 @@ describe('specWindow-service-DataService', function() {
   this.timeout(10000);
 
   before(function() {
-    var fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    var dirPath = temp.mkdirSync(fsprefix);
+    const fsprefix = `_myubo_test${Date.now().toString(36)}`;
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -54,7 +54,7 @@ describe('specWindow-service-DataService', function() {
       .click('#initial-data')
       .getValue('#initial-data-result').then((value: string) => {
         assert.ok(value);
-        var parsed = JSON.parse(value);
+        const parsed = JSON.parse(value);
         assert.equal(parsed.length, 4);
       })
       // catch error
@@ -68,7 +68,7 @@ describe('specWindow-service-DataService', function() {
       .click('#create')
       .getValue('#create-result').then((value: string) => {
         assert.ok(value);
-        var parsed = JSON.parse(value);
+        const parsed = JSON.parse(value);
         assert.ok(parsed.id);
       })
       // catch error
@@ -82,7 +82,7 @@ describe('specWindow-service-DataService', function() {
       .click('#copy')
       .getValue('#copy-result').then((value: string) => {
         assert.ok(value);
-        var parsed = JSON.parse(value);
+        const parsed = JSON.parse(value);
         assert.ok(parsed.id);
       })
       // catch error

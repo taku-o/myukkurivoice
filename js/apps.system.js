@@ -1,8 +1,6 @@
 "use strict";
 var ipcRenderer = require('electron').ipcRenderer;
 var log = require('electron-log');
-// application settings
-var appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
     log.error('system:event:uncaughtException');
@@ -19,6 +17,7 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
         // init
         var ctrl = this;
         $timeout(function () { $scope.$apply(); });
+        var appCfg = require('electron').remote.getGlobal('appCfg');
         $scope.appCfg = appCfg;
         $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted ?
             LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted) :

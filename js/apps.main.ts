@@ -5,11 +5,10 @@ var path = require('path');
 var log = require('electron-log');
 
 // application settings
-var appCfg = require('electron').remote.getGlobal('appCfg');
 var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   log.error('main:event:uncaughtException');
   log.error(err);
   log.error(err.stack);
@@ -26,7 +25,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
     function(
-      $scope: yubo.IScope, $timeout, $q,
+      $scope: yubo.IMainScope, $timeout, $q,
       MessageService: yubo.MessageService, DataService: yubo.DataService, MasterService: yubo.MasterService,
       AquesService: yubo.AquesService,
       audioServVer1: yubo.AudioService1, audioServVer2: yubo.AudioService2, AudioSourceService: yubo.AudioSourceService,
@@ -77,7 +76,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           break;
         case 'swichNextConfig':
           {
-            let indexToN = $scope.yvoiceList.indexOf($scope.yvoice);
+            const indexToN = $scope.yvoiceList.indexOf($scope.yvoice);
             if ($scope.yvoiceList.length > indexToN + 1) {
               $scope.yvoice = $scope.yvoiceList[indexToN + 1];
             } else {
@@ -89,7 +88,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           break;
         case 'swichPreviousConfig':
           {
-            let indexToP = $scope.yvoiceList.indexOf($scope.yvoice);
+            const indexToP = $scope.yvoiceList.indexOf($scope.yvoice);
             if (indexToP - 1 >= 0) {
               $scope.yvoice = $scope.yvoiceList[indexToP - 1];
             } else {
@@ -118,14 +117,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           break;
         case 'minus':
           {
-            let indexForM = $scope.yvoiceList.indexOf($scope.yvoice);
+            const indexForM = $scope.yvoiceList.indexOf($scope.yvoice);
             ctrl.minus(indexForM);
             $timeout(() => { $scope.$apply(); });
           }
           break;
         case 'copy':
           {
-            let indexForCP = $scope.yvoiceList.indexOf($scope.yvoice);
+            const indexForCP = $scope.yvoiceList.indexOf($scope.yvoice);
             ctrl.copy(indexForCP);
             $timeout(() => { $scope.$apply(); });
           }
@@ -146,11 +145,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     });
 
     // application settings
-    var AudioService = appCfg.audioServVer == 'html5audio'? audioServVer1: audioServVer2;
+    let appCfg = require('electron').remote.getGlobal('appCfg');
+    let AudioService = appCfg.audioServVer == 'html5audio'? audioServVer1: audioServVer2;
     $scope.appCfg = appCfg;
 
     // init
-    var ctrl = this;
+    const ctrl = this;
     $scope.display = 'main';
     $scope.phontList = MasterService.getPhontList();
     $scope.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
@@ -174,17 +174,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
     }
     function selectedSource(): string {
-      var textarea = document.getElementById('source') as HTMLInputElement;
-      var start = textarea.selectionStart;
-      var end = textarea.selectionEnd;
-      var selectedText = textarea.value.substring(start, end);
+      const textarea = document.getElementById('source') as HTMLInputElement;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = textarea.value.substring(start, end);
       return selectedText;
     }
     function selectedEncoded(): string {
-      var textarea = document.getElementById('encoded') as HTMLInputElement;
-      var start = textarea.selectionStart;
-      var end = textarea.selectionEnd;
-      var selectedText = textarea.value.substring(start, end);
+      const textarea = document.getElementById('encoded') as HTMLInputElement;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = textarea.value.substring(start, end);
       return selectedText;
     }
 
@@ -211,20 +211,20 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     };
     function clearSourceSelection(): void {
       $scope.sourceHighlight['#619FFF'] = '';
-      var textarea = document.getElementById('source') as HTMLInputElement;
+      const textarea = document.getElementById('source') as HTMLInputElement;
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
     }
     function clearEncodedSelection(): void {
       $scope.encodedHighlight['#619FFF'] = '';
-      var textarea = document.getElementById('encoded') as HTMLInputElement;
+      const textarea = document.getElementById('encoded') as HTMLInputElement;
       textarea.selectionStart = 0;
       textarea.selectionEnd = 0;
     }
 
     // list box selection changed
     ctrl.onChangePhont = function(): void {
-      var phont = null;
+      let phont = null;
       angular.forEach($scope.phontList, (value, key) => {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
@@ -254,25 +254,25 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       // text converting
-      var encoded = $scope.yinput.encoded;
-      var _selectedEncoded = selectedEncoded();
+      let encoded = $scope.yinput.encoded;
+      const _selectedEncoded = selectedEncoded();
       if (_selectedEncoded) {
         encoded = _selectedEncoded;
         clearSourceSelection();
       }
       if (!encoded) {
-        var source = $scope.yinput.source;
-        var _selectedSource = selectedSource();
+        let source = $scope.yinput.source;
+        const _selectedSource = selectedSource();
         if (_selectedSource) {
           source = _selectedSource;
         }
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-          let parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+          const parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
           angular.forEach(parsedListForEnc, (cinput) => {
             cinput.text = AquesService.encode(cinput.text);
           });
-          for (var i=0; i < parsedListForEnc.length; i++) {
+          for (let i=0; i < parsedListForEnc.length; i++) {
             if (!parsedListForEnc[i].text) {
               MessageService.error('一部テキストを音記号列に変換できませんでした。');
               return;
@@ -290,7 +290,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       // play
-      let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+      const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
       parsedList.reduce((p, cinput) => {
         if(p.then === undefined) {
           p.resolve();
@@ -302,12 +302,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }, $q.defer());
     };
     function playEach(cinput): ng.IPromise<string> {
-      var d = $q.defer();
-      var encoded = cinput.text;
-      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+      const d = $q.defer();
+      let encoded = cinput.text;
+      const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
-      var phont = null;
+      let phont = null;
       angular.forEach($scope.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
@@ -321,12 +321,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         encoded = AppUtilService.disableRhythm(encoded);
       }
 
-      var speed = yvoice.speed;
+      const speed = yvoice.speed;
       if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
         yvoice.writeMarginMs = 150;
       }
 
-      var waveOptions: yubo.WaveOptions = {
+      const waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
       };
@@ -337,7 +337,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         waveOptions.lmd = yvoice.lmd;
         waveOptions.fsc = yvoice.fsc;
       }
-      var playOptions: yubo.PlayOptions = {
+      const playOptions: yubo.PlayOptions = {
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,
@@ -348,12 +348,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         return AudioService.play(bufWav, playOptions).then(() => {
           d.resolve('ok');
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           MessageService.error('音声データを再生できませんでした。', err);
           d.reject(err);
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
@@ -370,7 +370,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         return;
       }
 
-      var phont = null;
+      let phont = null;
       angular.forEach($scope.phontList, (value, key) => {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
@@ -380,25 +380,25 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       // text converting
-      var encoded = $scope.yinput.encoded;
-      var _selectedEncoded = selectedEncoded();
+      let encoded = $scope.yinput.encoded;
+      const _selectedEncoded = selectedEncoded();
       if (_selectedEncoded) {
         encoded = _selectedEncoded;
         clearSourceSelection();
       }
       if (!encoded) {
-        var source = $scope.yinput.source;
-        var _selectedSource = selectedSource();
+        let source = $scope.yinput.source;
+        const _selectedSource = selectedSource();
         if (_selectedSource) {
           source = _selectedSource;
         }
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-          let parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+          const parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
           angular.forEach(parsedListForEnc, (cinput) => {
             cinput.text = AquesService.encode(cinput.text);
           });
-          for (var i=0; i < parsedListForEnc.length; i++) {
+          for (let i=0; i < parsedListForEnc.length; i++) {
             if (!parsedListForEnc[i].text) {
               MessageService.error('一部テキストを音記号列に変換できませんでした。');
               return;
@@ -417,15 +417,15 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
       // 連番保存
       if ($scope.yvoice.seqWrite) {
-        var dir = $scope.yvoice.seqWriteOptions.dir;
-        var prefix = $scope.yvoice.seqWriteOptions.prefix;
+        let dir = $scope.yvoice.seqWriteOptions.dir;
+        const prefix = $scope.yvoice.seqWriteOptions.prefix;
         if (!dir) {
           dir = desktopDir;
         }
 
         // record
-        let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-        var firstWroteFile = null;
+        const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+        let firstWroteFile = null;
         // record wave files
         parsedList.reduce((p, cinput) => {
           if(p.then === undefined) {
@@ -441,10 +441,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         .then((fp) => {
           if (!firstWroteFile) { firstWroteFile = fp; }
           if (!$scope.yvoice.sourceWrite) { return; }
-          var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+          const sourceFname = AudioSourceService.sourceFname(firstWroteFile);
           AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
           })
-          .catch((err) => {
+          .catch((err: Error) => {
             MessageService.error('メッセージファイルを作成できませんでした。', err);
           });
         });
@@ -456,14 +456,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             MessageService.error('保存先が指定されませんでした。');
             return;
           }
-          var splitted = SeqFNameService.splitFname(filePath);
-          var dir = splitted.dir;
-          var prefix = splitted.basename;
+          const splitted = SeqFNameService.splitFname(filePath);
+          const dir = splitted.dir;
+          const prefix = splitted.basename;
 
           // record
-          var containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
-          let parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-          var firstWroteFile = null;
+          const containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
+          const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+          let firstWroteFile = null;
           // record wave files
           parsedList.reduce((p, cinput) => {
             if(p.then === undefined) {
@@ -483,10 +483,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           .then((fp) => {
             if (!firstWroteFile) { firstWroteFile = fp; }
             if (!$scope.yvoice.sourceWrite) { return; }
-            var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+            const sourceFname = AudioSourceService.sourceFname(firstWroteFile);
             AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
             })
-            .catch((err) => {
+            .catch((err: Error) => {
               MessageService.error('メッセージファイルを作成できませんでした。', err);
             });
           });
@@ -495,12 +495,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
     };
     function recordSolo(cinput, filePath): ng.IPromise<string> {
-      var d = $q.defer();
-      var encoded = cinput.text;
-      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+      const d = $q.defer();
+      let encoded = cinput.text;
+      const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
-      var phont = null;
+      let phont = null;
       angular.forEach($scope.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
@@ -514,11 +514,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         encoded = AppUtilService.disableRhythm(encoded);
       }
 
-      var speed = yvoice.speed;
+      const speed = yvoice.speed;
       if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
         yvoice.writeMarginMs = 150;
       }
-      var waveOptions: yubo.WaveOptions = {
+      const waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
       };
@@ -529,7 +529,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         waveOptions.lmd = yvoice.lmd;
         waveOptions.fsc = yvoice.fsc;
       }
-      var playOptions: yubo.PlayOptions = {
+      const playOptions: yubo.PlayOptions = {
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,
@@ -540,24 +540,24 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         return AudioService.record(filePath, bufWav, playOptions).then(() => {
           d.resolve(filePath);
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           MessageService.error('音声データを記録できませんでした。', err);
           d.reject(err);
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         MessageService.error('音声データを作成できませんでした。', err);
         d.reject(err);
       });
       return d.promise;
     }
     function recordEach(cinput, dir, fnameprefix): ng.IPromise<string> {
-      var d = $q.defer();
-      var encoded = cinput.text;
-      var yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
+      const d = $q.defer();
+      let encoded = cinput.text;
+      const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
-      var phont = null;
+      let phont = null;
       angular.forEach($scope.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
@@ -571,11 +571,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         encoded = AppUtilService.disableRhythm(encoded);
       }
 
-      var speed = yvoice.speed;
+      const speed = yvoice.speed;
       if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
         yvoice.writeMarginMs = 150;
       }
-      var waveOptions: yubo.WaveOptions = {
+      const waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
       };
@@ -586,7 +586,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         waveOptions.lmd = yvoice.lmd;
         waveOptions.fsc = yvoice.fsc;
       }
-      var playOptions: yubo.PlayOptions = {
+      const playOptions: yubo.PlayOptions = {
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,
@@ -594,19 +594,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       };
 
       SeqFNameService.nextNumber(dir, fnameprefix).then((nextNum) => {
-        var nextFname = SeqFNameService.nextFname(fnameprefix, nextNum);
-        var filePath = path.join(dir, nextFname);
+        const nextFname = SeqFNameService.nextFname(fnameprefix, nextNum);
+        const filePath = path.join(dir, nextFname);
 
         AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
           return AudioService.record(filePath, bufWav, playOptions).then(() => {
             d.resolve(filePath);
           })
-          .catch((err) => {
+          .catch((err: Error) => {
             MessageService.error('音声データを記録できませんでした。', err);
             d.reject(err);
           });
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           MessageService.error('音声データを作成できませんでした。', err);
           d.reject(err);
         });
@@ -654,7 +654,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     };
     ctrl.plus = function(): void {
       MessageService.action('add new voice config.');
-      var newYvoice = DataService.create();
+      const newYvoice = DataService.create();
       $scope.yvoiceList.push(newYvoice);
     };
     ctrl.minus = function(index): void {
@@ -669,8 +669,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     };
     ctrl.copy = function(index): void {
       MessageService.action('copy and create new voice config.');
-      var original = $scope.yvoiceList[index];
-      var newYvoice = DataService.copy(original);
+      const original = $scope.yvoiceList[index];
+      const newYvoice = DataService.copy(original);
       $scope.yvoiceList.push(newYvoice);
     };
     ctrl.save = function(): void {
@@ -692,15 +692,15 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
     ctrl.encode = function(): void {
       MessageService.action('encode source text.');
-      var source = $scope.yinput.source;
-      var _selectedSource = selectedSource();
+      let source = $scope.yinput.source;
+      const _selectedSource = selectedSource();
       if (_selectedSource) {
         source = _selectedSource;
       }
 
       // command
       if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-        var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+        const parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
         angular.forEach(parsedList, function(cinput) {
           cinput.text = AquesService.encode(cinput.text);
         });
@@ -708,7 +708,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         clearEncodedSelection();
       // not command
       } else {
-        var encoded = AquesService.encode(source);
+        const encoded = AquesService.encode(source);
         $scope.yinput.encoded = encoded;
         clearEncodedSelection();
       }
@@ -722,7 +722,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     };
     ctrl.fromClipboard = function(): void {
       MessageService.action('paste clipboard text to source.');
-      var text = clipboard.readText();
+      const text = clipboard.readText();
       if (text) {
         $scope.yinput.source = text;
         $scope.yinput.encoded = '';
@@ -733,11 +733,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
     };
     ctrl.putVoiceName = function(): void {
-      var field = document.activeElement as HTMLInputElement;
+      const field = document.activeElement as HTMLInputElement;
       if (field.id != 'source' && field.id != 'encoded') { return; }
 
-      var pos = field.selectionStart;
-      var length = field.value.length;
+      const pos = field.selectionStart;
+      const length = field.value.length;
 
       // top
       if (pos == 0) {
@@ -783,7 +783,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         $scope.yvoice.seqWriteOptions.dir = dirs[0];
         $timeout(() => { $scope.$apply(); });
       });
-      var optDir = $scope.yvoice.seqWriteOptions.dir;
+      let optDir = $scope.yvoice.seqWriteOptions.dir;
       if (!optDir) { optDir = desktopDir; }
       ipcRenderer.send('showDirDialog', optDir);
     };

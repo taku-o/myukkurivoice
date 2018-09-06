@@ -4,7 +4,7 @@ import * as Config from 'electron-config';
 
 // load
 function loadAppConfig(): void {
-  var appCfg: yubo.AppCfg = {
+  const appCfg: yubo.AppCfg = {
     mainWindow: {width: 800, height: 665, x: null, y: null},
     helpWindow: {width: 700, height: 550},
     systemWindow: {width: 390, height: 530},
@@ -17,7 +17,7 @@ function loadAppConfig(): void {
     isTest: process.env.NODE_ENV == 'test',
   };
 
-  var config = new Config() as yubo.ElectronConfig;
+  const config = new Config() as yubo.ElectronConfig;
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (config.has(k)) { appCfg[k] = config.get(k); }
   });
@@ -28,8 +28,8 @@ function loadAppConfig(): void {
 
 // update
 function updateAppConfig(options: yubo.AppCfg): void {
-  var myApp = this;
-  var {x, y} = this.mainWindow.getBounds();
+  const myApp = this;
+  const {x, y} = this.mainWindow.getBounds();
   options.mainWindow.x = x;
   options.mainWindow.y = y;
   this.config.set('mainWindow',          options.mainWindow);
@@ -47,7 +47,7 @@ function updateAppConfig(options: yubo.AppCfg): void {
 
 // reset
 function resetAppConfig(): void {
-  var myApp = this;
+  const myApp = this;
   this.config.set('mainWindow',          {width: 800, height: 665, x:null, y:null});
   this.config.set('audioServVer',        'webaudioapi');
   this.config.set('showMsgPane',         true);
@@ -68,4 +68,4 @@ export {
   resetAppConfig,
 };
 
-declare var global: yubo.Global;
+declare const global: yubo.Global;
