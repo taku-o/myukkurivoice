@@ -55,11 +55,11 @@ describe('specWindow-service-AudioSourceService', function() {
     return this.client
       // save
       .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
-      .setValue('#source-text', 'hogehoge')
-      .click('#save')
-      .getValue('#save-result').then((value: string) => {
-        assert.ok(value);
-      })
+      //.setValue('#source-text', 'hogehoge')
+      //.click('#save')
+      //.getValue('#save-result').then((value: string) => {
+      //  assert.ok(value);
+      //})
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);

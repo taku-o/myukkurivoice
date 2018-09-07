@@ -68,7 +68,7 @@ angular.module('yvoiceSpec',
         $scope.consumerKeyDone = 'ok';
       })
       .catch((err: Error) => {
-        $scope.consumerKeyErr = err;
+        $scope.consumerKeyErr = err.message;
       });
     };
 
@@ -143,7 +143,7 @@ angular.module('yvoiceSpec',
         $scope.loadResult = JSON.stringify(list);
       })
       .catch((err: Error) => {
-        $scope.loadErr = err;
+        $scope.loadErr = err.message;
       });
     };
     ctrl.initialData = function(): void {
@@ -188,7 +188,7 @@ angular.module('yvoiceSpec',
         $scope.waveResult = 'ok';
       })
       .catch((err: Error) => {
-        $scope.waveErr = err;
+        $scope.waveErr = err.message;
       });
     };
     ctrl.waveVer2 = function(): void {
@@ -208,7 +208,7 @@ angular.module('yvoiceSpec',
         $scope.waveResult = 'ok';
       })
       .catch((err: Error) => {
-        $scope.waveErr = err;
+        $scope.waveErr = err.message;
       });
     };
     ctrl.waveVer10 = function(): void {
@@ -225,7 +225,7 @@ angular.module('yvoiceSpec',
         $scope.waveResult = 'ok';
       })
       .catch((err: Error) => {
-        $scope.waveErr = err;
+        $scope.waveErr = err.message;
       });
     };
 
@@ -649,9 +649,13 @@ angular.module('yvoiceSpec',
       $scope.sourceFnameResult = r;
     };
     ctrl.save = function(): void {
-      // TODO save test
-      //AudioSourceService.save($scope.filePath, $scope.sourceText);
-      $scope.saveResult = 'ok';
+      AudioSourceService.save($scope.filePath, $scope.sourceText)
+      .then(() => {
+        $scope.saveResult = 'ok';
+      })
+      .catch((err: Error) => {
+        $scope.saveError = err.message;
+      });
     };
 
     // SeqFNameService
