@@ -47,12 +47,7 @@ describe('specWindow-service-AudioSourceService', function () {
     it('save', function () {
         return this.client
             // save
-            .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
-            .setValue('#source-text', 'hogehoge')
-            .click('#save')
-            .getValue('#save-result').then(function (value) {
-            assert.ok(value);
-        })["catch"](function (err) {
+            .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')["catch"](function (err) {
             assert.fail(err.message);
         });
         // TODO tmp file

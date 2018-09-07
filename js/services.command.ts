@@ -26,8 +26,8 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         }
         return hasCommand;
       },
-      parseInput: function(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): any {
-        const parsed = [];
+      parseInput: function(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): yubo.YCommandInput[] {
+        const parsed: yubo.YCommandInput[] = [];
         const lines = input.split(/\n/);
 
         // parse lines
@@ -57,7 +57,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
         });
         return parsed;
       },
-      detectVoiceConfig: function(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): any {
+      detectVoiceConfig: function(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): yubo.YVoice | null {
         for (let i=0; i<yvoiceList.length; i++) {
           if (yvoiceList[i].name == commandInput.name) {
             return yvoiceList[i];

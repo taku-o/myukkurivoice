@@ -23,9 +23,9 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     }
 
     return {
-      load: function(): ng.IPromise<Array<any>> {
+      load: function(): ng.IPromise<yubo.YVoice[]> {
         const d = $q.defer();
-        storage.get('data', function (error: Error, data) {
+        storage.get('data', function(error: Error, data: yubo.YVoice[]) {
           if (error) {
             MessageService.syserror('ボイス設定の読込に失敗しました。', error);
             d.reject(error); return;
@@ -38,16 +38,16 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         });
         return d.promise;
       },
-      initialData: function(): Array<any> {
+      initialData: function(): yubo.YVoice[] {
         const dataList = angular.copy(YVoiceInitialData);
         return dataList;
       },
-      create: function(): any {
+      create: function(): yubo.YVoice {
         const cloned = angular.copy(YVoice);
         cloned['id'] = uniqId();
         return cloned;
       },
-      copy: function(original: any): any {
+      copy: function(original: yubo.YVoice): yubo.YVoice {
         const cloned = angular.copy(original);
         cloned['id'] = uniqId();
         return cloned;
@@ -78,7 +78,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
   .factory('MasterService', ['YPhontList', (YPhontList: yubo.YPhont[]): yubo.MasterService => {
     const phontList = YPhontList;
     return {
-      getPhontList: function(): Array<any> {
+      getPhontList: function(): yubo.YPhont[] {
         return phontList;
       },
     };
@@ -608,7 +608,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     const limit = 9999;
 
     return {
-      splitFname: function(filePath: string): any {
+      splitFname: function(filePath: string): {dir: string, basename: string} {
         const dir = path.dirname(filePath);
         const basename = path.basename(filePath, ext);
         return {

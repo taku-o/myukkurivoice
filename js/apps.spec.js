@@ -57,7 +57,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
                 $scope.consumerKeyResult = value;
                 $scope.consumerKeyDone = 'ok';
             })["catch"](function (err) {
-                $scope.consumerKeyErr = err;
+                $scope.consumerKeyErr = err.message;
             });
         };
         // IntroService
@@ -103,25 +103,11 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             MessageService.syserror(msg);
         };
         $scope.$on('message', function (event, message) {
-            if (message.type == 'record') {
-                var msg = message;
-                $scope.messageServicePostCreated = msg.created;
-                $scope.messageServicePostBody = msg.body;
-                $scope.messageServicePostWavFilePath = msg.wavFilePath;
-                $scope.messageServicePostWavFileName = msg.wavFileName;
-                $scope.messageServicePostType = msg.type;
-            }
-            else {
-                $scope.messageServicePostCreated = message.created;
-                $scope.messageServicePostBody = message.body;
-                $scope.messageServicePostWavFilePath = '';
-                $scope.messageServicePostWavFileName = '';
-                $scope.messageServicePostType = message.type;
-            }
+            $scope.messageServicePost = JSON.stringify(message);
             $timeout(function () { $scope.$apply(); });
         });
         $scope.$on('wavGenerated', function (event, wavFileInfo) {
-            $scope.lastWavFile = wavFileInfo;
+            $scope.lastWavFile = JSON.stringify(wavFileInfo);
             $timeout(function () { $scope.$apply(); });
         });
         // DataService
@@ -129,7 +115,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             DataService.load().then(function (list) {
                 $scope.loadResult = JSON.stringify(list);
             })["catch"](function (err) {
-                $scope.loadErr = err;
+                $scope.loadErr = err.message;
             });
         };
         ctrl.initialData = function () {
@@ -141,7 +127,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             $scope.createResult = JSON.stringify(r);
         };
         ctrl.copy = function () {
-            var original = { text: 'value' };
+            var original = YVoice;
             var r = DataService.copy(original);
             $scope.copyResult = JSON.stringify(r);
         };
@@ -172,7 +158,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             AquesService.wave($scope.encoded, phont, speed, options).then(function (value) {
                 $scope.waveResult = 'ok';
             })["catch"](function (err) {
-                $scope.waveErr = err;
+                $scope.waveErr = err.message;
             });
         };
         ctrl.waveVer2 = function () {
@@ -192,7 +178,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             AquesService.wave($scope.encoded, phont, speed, options).then(function (value) {
                 $scope.waveResult = 'ok';
             })["catch"](function (err) {
-                $scope.waveErr = err;
+                $scope.waveErr = err.message;
             });
         };
         ctrl.waveVer10 = function () {
@@ -209,7 +195,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             AquesService.wave($scope.encoded, phont, speed, options).then(function (value) {
                 $scope.waveResult = 'ok';
             })["catch"](function (err) {
-                $scope.waveErr = err;
+                $scope.waveErr = err.message;
             });
         };
         // AudioService1
@@ -616,9 +602,12 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             $scope.sourceFnameResult = r;
         };
         ctrl.save = function () {
-            // TODO save test
-            //AudioSourceService.save($scope.filePath, $scope.sourceText);
-            $scope.saveResult = 'ok';
+            AudioSourceService.save($scope.filePath, $scope.sourceText)
+                .then(function () {
+                $scope.saveResult = 'ok';
+            })["catch"](function (err) {
+                $scope.saveError = err.message;
+            });
         };
         // SeqFNameService
         ctrl.nextFname = function () {
@@ -630,4 +619,11 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             var r = AppUtilService.disableRhythm($scope.rhythmText);
             $scope.disableRhythmResult = r;
         };
+        ctrl.reportDuration = function () {
+            AppUtilService.reportDuration($scope.duration);
+        };
+        $scope.$on('duration', function (event, duration) {
+            $scope.reportDurationResult = duration;
+            $timeout(function () { $scope.$apply(); });
+        });
     }]);

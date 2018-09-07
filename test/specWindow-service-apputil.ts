@@ -59,9 +59,17 @@ describe('specWindow-service-AppUtilService', function() {
       });
   });
 
-  // TODO reportDuration(duration: number): void;
   it('reportDuration', function() {
     return this.client
-      .setValue('#rhythm-text', 'test\' val/ue');
+      .setValue('#duration', 340)
+      .click('#report-duration')
+      .waitForValue('#report-duration-result', 5000)
+      .getValue('#report-duration-result').then((value: number) => {
+        assert.equal(340, value);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
   });
 });

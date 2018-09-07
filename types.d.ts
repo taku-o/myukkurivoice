@@ -16,7 +16,7 @@ declare namespace yubo {
     phontList:        YPhont[];
     appCfg:           AppCfg;
     duration:         number;
-    lastWavFile:      string;
+    lastWavFile:      yubo.IRecordMessage;
     encodedHighlight: any;
     sourceHighlight:  any;
     aq10BasList:      { name: string, id: number}[];
@@ -148,8 +148,8 @@ declare namespace yubo {
   }
   export interface CommandService {
     containsCommand(input: string, yvoiceList: yubo.YVoice[]): boolean;
-    parseInput(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): any;
-    detectVoiceConfig(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): any;
+    parseInput(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): yubo.YCommandInput[];
+    detectVoiceConfig(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): yubo.YVoice | null;
     toString(commandInputList: yubo.YCommandInput[]): string;
   }
   export interface LicenseService {
@@ -166,15 +166,15 @@ declare namespace yubo {
   }
 
   export interface DataService {
-    load(): ng.IPromise<Array<any>>;
-    initialData(): Array<any>;
-    create(): any;
-    copy(original: any): any;
+    load(): ng.IPromise<yubo.YVoice[]>;
+    initialData(): yubo.YVoice[];
+    create(): yubo.YVoice;
+    copy(original: yubo.YVoice): yubo.YVoice;
     save(dataList: yubo.YVoice[]): void;
     clear(): ng.IPromise<boolean>;
   }
   export interface MasterService {
-    getPhontList(): Array<any>;
+    getPhontList(): yubo.YPhont[];
   }
   export interface AquesService {
     encode(source: string): string;
@@ -195,7 +195,7 @@ declare namespace yubo {
     save(filePath: string, sourceText: string): ng.IPromise<string>;
   }
   export interface SeqFNameService {
-    splitFname(filePath: string): any;
+    splitFname(filePath: string): {dir: string, basename: string};
     nextFname(prefix: string, num: number): string;
     nextNumber(dir: string, prefix: string): ng.IPromise<number>;
   }

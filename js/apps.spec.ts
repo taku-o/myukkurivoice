@@ -116,24 +116,11 @@ angular.module('yvoiceSpec',
       MessageService.syserror(msg);
     };
     $scope.$on('message', (event, message: yubo.IMessage | yubo.IRecordMessage) => {
-      if (message.type == 'record') {
-        const msg = message as yubo.IRecordMessage;
-        $scope.messageServicePostCreated = msg.created;
-        $scope.messageServicePostBody = msg.body;
-        $scope.messageServicePostWavFilePath = msg.wavFilePath;
-        $scope.messageServicePostWavFileName = msg.wavFileName;
-        $scope.messageServicePostType = msg.type;
-      } else {
-        $scope.messageServicePostCreated = message.created;
-        $scope.messageServicePostBody = message.body;
-        $scope.messageServicePostWavFilePath = '';
-        $scope.messageServicePostWavFileName = '';
-        $scope.messageServicePostType = message.type;
-      }
+      $scope.messageServicePost = JSON.stringify(message);
       $timeout(() => { $scope.$apply(); });
     });
     $scope.$on('wavGenerated', (event, wavFileInfo) => {
-      $scope.lastWavFile = wavFileInfo;
+      $scope.lastWavFile = JSON.stringify(wavFileInfo);
       $timeout(() => { $scope.$apply(); });
     });
 
@@ -155,7 +142,7 @@ angular.module('yvoiceSpec',
       $scope.createResult = JSON.stringify(r);
     };
     ctrl.copy = function(): void {
-      const original = {text: 'value'};
+      const original = YVoice;
       const r = DataService.copy(original);
       $scope.copyResult = JSON.stringify(r);
     };
@@ -669,5 +656,12 @@ angular.module('yvoiceSpec',
       const r = AppUtilService.disableRhythm($scope.rhythmText);
       $scope.disableRhythmResult = r;
     };
+    ctrl.reportDuration = function(): void {
+      AppUtilService.reportDuration($scope.duration);
+    };
+    $scope.$on('duration', (event, duration: number) => {
+      $scope.reportDurationResult = duration;
+      $timeout(() => { $scope.$apply(); });
+    });
   }]);
 
