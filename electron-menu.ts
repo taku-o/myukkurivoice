@@ -208,7 +208,7 @@ function initAppMenu(options: {debug: boolean}): void {
         {type: 'separator'},
         {
           label: 'Learn More',
-          click() { shell.openExternal('https://github.com/taku-o/myukkurivoice'); },
+          click() { shell.openExternal('https://taku-o.github.io/myukkurivoice/'); },
         },
       ],
     },

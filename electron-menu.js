@@ -208,7 +208,7 @@ function initAppMenu(options) {
                 { type: 'separator' },
                 {
                     label: 'Learn More',
-                    click: function () { electron_1.shell.openExternal('https://github.com/taku-o/myukkurivoice'); }
+                    click: function () { electron_1.shell.openExternal('https://taku-o.github.io/myukkurivoice/'); }
                 },
             ]
         },
