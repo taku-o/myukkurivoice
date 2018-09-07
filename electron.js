@@ -114,7 +114,7 @@ electron_1.ipcMain.on('showDirDialog', function (event, defaultPath) {
         properties: ['openDirectory', 'createDirectory'],
         defaultPath: defaultPath
     };
-    var r = electron_1.dialog.showOpenDialog(myApp.mainWindow, options, function (filePaths) { });
+    var r = electron_1.dialog.showOpenDialog(myApp.mainWindow, options);
     event.sender.send('showDirDialog', r);
 });
 // drag out wav file

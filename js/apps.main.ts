@@ -34,24 +34,24 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       YInput: yubo.YInput, YInputInitialData: yubo.YInput) {
 
     // event listener
-    $scope.$on('message', (event, message) => {
+    $scope.$on('message', (event, message: yubo.IMessage | yubo.IRecordMessage) => {
       $scope.messageList.unshift(message);
       while ($scope.messageList.length > 5) {
         $scope.messageList.pop();
       }
       $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('wavGenerated', (event, wavFileInfo) => {
+    $scope.$on('wavGenerated', (event, wavFileInfo: yubo.IRecordMessage) => {
       $scope.lastWavFile = wavFileInfo;
       $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('duration', (event, duration) => {
+    $scope.$on('duration', (event, duration: number) => {
       $scope.duration = duration;
       $timeout(() => { $scope.$apply(); });
     });
 
     // shortcut
-    ipcRenderer.on('shortcut', (event, action) => {
+    ipcRenderer.on('shortcut', (event, action: string) => {
       switch (action) {
         case 'play':
           document.getElementById('play').click();
@@ -105,7 +105,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     });
 
     // menu
-    ipcRenderer.on('menu', (event, action) => {
+    ipcRenderer.on('menu', (event, action: string) => {
       switch (action) {
         case 'clear':
           document.getElementById('clear').click();
@@ -322,10 +322,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       const speed = yvoice.speed;
-      if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
+      if (! (Number(yvoice.writeMarginMs)===parseInt(`${yvoice.writeMarginMs}`))) {
         yvoice.writeMarginMs = 150;
       }
-
       const waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
@@ -515,7 +514,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       const speed = yvoice.speed;
-      if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
+      if (! (Number(yvoice.writeMarginMs)===parseInt(`${yvoice.writeMarginMs}`))) {
         yvoice.writeMarginMs = 150;
       }
       const waveOptions: yubo.WaveOptions = {
@@ -572,7 +571,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       const speed = yvoice.speed;
-      if (! (Number(yvoice.writeMarginMs)===parseInt(yvoice.writeMarginMs))) {
+      if (! (Number(yvoice.writeMarginMs)===parseInt(`${yvoice.writeMarginMs}`))) {
         yvoice.writeMarginMs = 150;
       }
       const waveOptions: yubo.WaveOptions = {

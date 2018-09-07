@@ -77,11 +77,7 @@
       <button id="error-null" ng-click="ctrl.errorNull()">
       <button id="syserror" ng-click="ctrl.syserror()">
       <button id="syserror-null" ng-click="ctrl.syserrorNull()">
-      <input id="message-service-post-created" type="text" ng-model="messageServicePostCreated">
-      <input id="message-service-post-body" type="text" ng-model="messageServicePostBody">
-      <input id="message-service-post-wav-file-path" type="text" ng-model="messageServicePostWavFilePath">
-      <input id="message-service-post-wav-file-name" type="text" ng-model="messageServicePostWavFileName">
-      <input id="message-service-post-type" type="text" ng-model="messageServicePostType">
+      <input id="message-service-post" type="text" ng-model="messageServicePost">
       <input id="last-wav-file" type="text" ng-model="lastWavFile">
     </div>
 
@@ -171,6 +167,9 @@
       <input id="rhythm-text" type="text" ng-model="rhythmText">
       <button id="disable-rhythm" ng-click="ctrl.disableRhythm()">
       <input id="disable-rhythm-result" type="text" ng-model="disableRhythmResult">
+      <input id="duration" type="text" ng-model="duration">
+      <button id="report-duration" ng-click="ctrl.reportDuration()">
+      <input id="report-duration-result" type="text" ng-model="reportDurationResult">
     </div>
 
   </form>
