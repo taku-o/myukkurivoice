@@ -1,4 +1,5 @@
 # 0.7.3 (in test)
+* ファイル保存ディレクトリを選択出来なくなっていた問題を修正。
 * 音声記号化する文字列の長さが、長くても短くても、512byteで切られてしまうバグの修正。
 * アップデート確認モジュールをMYukkuriVoice本体から分離。
     * https://www.npmjs.com/package/github-version-compare

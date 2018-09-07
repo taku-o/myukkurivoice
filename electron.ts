@@ -128,7 +128,7 @@ ipcMain.on('showDirDialog', (event, defaultPath) => {
     properties: ['openDirectory' as 'openDirectory', 'createDirectory' as 'createDirectory'],
     defaultPath: defaultPath,
   };
-  const r = dialog.showOpenDialog(myApp.mainWindow, options, (filePaths: string[]) => {});
+  const r = dialog.showOpenDialog(myApp.mainWindow, options);
   event.sender.send('showDirDialog', r);
 });
 
