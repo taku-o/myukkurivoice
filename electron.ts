@@ -1,12 +1,11 @@
 'use strict';
-import {app,dialog,shell,ipcMain} from 'electron';
+import {app,dialog,ipcMain} from 'electron';
 import * as log from 'electron-log';
 import * as path from 'path';
 
 import * as Menu from './electron-menu';
 import * as Pane from './electron-window';
 import * as AppConfig from './electron-appcfg';
-import {Version} from 'github-version-compare';
 
 // MYukkuriVoice application
 const MYukkuriVoice = function(): void {
@@ -23,6 +22,7 @@ MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
 MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
+MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
 MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
 MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
 MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
@@ -70,44 +70,6 @@ ipcMain.on('showSystemWindow', (event, message) => {
 ipcMain.on('showSpecWindow', (event, message) => {
   myApp.showSpecWindow();
 });
-
-// showVersionDialog
-function showVersionDialog() {
-  const repository = 'taku-o/myukkurivoice';
-  const packagejson = require('./package.json');
-
-  const version = new Version(repository, packagejson);
-  version.pull().then((version) => {
-    const message = version.hasLatestVersion()? '新しいバージョンのアプリがあります': 'バージョンは最新です';
-    const buttons = version.hasLatestVersion()? ['CLOSE', 'Open Release Page']: ['OK'];
-
-    const dialogOptions = {
-      type: 'info',
-      title: 'application version check.',
-      message: message,
-      buttons: buttons,
-      defaultId: 0,
-      cancelId: 0,
-    };
-    const btnId: number = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
-    if (btnId == 1) {
-      shell.openExternal(version.latestReleaseUrl);
-    }
-  })
-  .catch((err: Error) => {
-    log.error(err);
-    const dialogOptions = {
-      type: 'error',
-      title: 'application version check error.',
-      message: 'バージョン情報の取得に失敗しました。',
-      buttons: ['OK'],
-      defaultId: 0,
-      cancelId: 0,
-    };
-    const r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
-  });
-}
-MYukkuriVoice.prototype.showVersionDialog = showVersionDialog;
 
 // showSaveDialog
 ipcMain.on('showSaveDialog', (event, message) => {

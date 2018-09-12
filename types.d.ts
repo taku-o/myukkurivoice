@@ -58,6 +58,8 @@ declare namespace yubo {
     showMainWindow(): void;
     showHelpWindow(): void;
     showSystemWindow(): void;
+    showAboutWindow(): void;
+    showVersionDialog(): void;
     showSpecWindow(): void;
     initAppMenu(options: {debug: boolean}): void;
     initDockMenu(): void;

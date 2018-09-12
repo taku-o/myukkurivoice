@@ -5,6 +5,7 @@ var localShortcut = require("electron-localshortcut");
 var log = require("electron-log");
 var path = require("path");
 var openAboutWindow = require('about-window')["default"];
+var github_version_compare_1 = require("github-version-compare");
 // main window
 function showMainWindow() {
     var myApp = this;
@@ -200,6 +201,41 @@ function showAboutWindow() {
     localShortcut.register(w, 'Command+W', function () { w.close(); });
 }
 exports.showAboutWindow = showAboutWindow;
+// showVersionDialog
+function showVersionDialog() {
+    var _this = this;
+    var repository = 'taku-o/myukkurivoice';
+    var packagejson = require('./package.json');
+    var version = new github_version_compare_1.Version(repository, packagejson);
+    version.pull().then(function (version) {
+        var message = version.hasLatestVersion() ? '新しいバージョンのアプリがあります' : 'バージョンは最新です';
+        var buttons = version.hasLatestVersion() ? ['CLOSE', 'Open Release Page'] : ['OK'];
+        var dialogOptions = {
+            type: 'info',
+            title: 'application version check.',
+            message: message,
+            buttons: buttons,
+            defaultId: 0,
+            cancelId: 0
+        };
+        var btnId = electron_1.dialog.showMessageBox(_this.systemWindow, dialogOptions);
+        if (btnId == 1) {
+            electron_1.shell.openExternal(version.latestReleaseUrl);
+        }
+    })["catch"](function (err) {
+        log.error(err);
+        var dialogOptions = {
+            type: 'error',
+            title: 'application version check error.',
+            message: 'バージョン情報の取得に失敗しました。',
+            buttons: ['OK'],
+            defaultId: 0,
+            cancelId: 0
+        };
+        var r = electron_1.dialog.showMessageBox(_this.systemWindow, dialogOptions);
+    });
+}
+exports.showVersionDialog = showVersionDialog;
 // application spec window
 function showSpecWindow() {
     var specWindow = new electron_1.BrowserWindow({

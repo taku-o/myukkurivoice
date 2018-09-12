@@ -1,9 +1,10 @@
 'use strict';
-import {app,BrowserWindow} from 'electron';
+import {app,BrowserWindow,dialog,shell} from 'electron';
 import * as localShortcut from 'electron-localshortcut';
 import * as log from 'electron-log';
 import * as path from 'path';
 const openAboutWindow: any = require('about-window').default;
+import {Version} from 'github-version-compare';
 
 // main window
 function showMainWindow(): void {
@@ -193,6 +194,43 @@ function showAboutWindow(): void {
   localShortcut.register(w, 'Command+W', () => { w.close(); });
 }
 
+// showVersionDialog
+function showVersionDialog() {
+  const repository = 'taku-o/myukkurivoice';
+  const packagejson = require('./package.json');
+
+  const version = new Version(repository, packagejson);
+  version.pull().then((version) => {
+    const message = version.hasLatestVersion()? '新しいバージョンのアプリがあります': 'バージョンは最新です';
+    const buttons = version.hasLatestVersion()? ['CLOSE', 'Open Release Page']: ['OK'];
+
+    const dialogOptions = {
+      type: 'info',
+      title: 'application version check.',
+      message: message,
+      buttons: buttons,
+      defaultId: 0,
+      cancelId: 0,
+    };
+    const btnId: number = dialog.showMessageBox(this.systemWindow, dialogOptions);
+    if (btnId == 1) {
+      shell.openExternal(version.latestReleaseUrl);
+    }
+  })
+  .catch((err: Error) => {
+    log.error(err);
+    const dialogOptions = {
+      type: 'error',
+      title: 'application version check error.',
+      message: 'バージョン情報の取得に失敗しました。',
+      buttons: ['OK'],
+      defaultId: 0,
+      cancelId: 0,
+    };
+    const r = dialog.showMessageBox(this.systemWindow, dialogOptions);
+  });
+}
+
 // application spec window
 function showSpecWindow(): void {
   const specWindow = new BrowserWindow({
@@ -214,5 +252,6 @@ export {
   showHelpWindow,
   showSystemWindow,
   showAboutWindow,
+  showVersionDialog,
   showSpecWindow,
 };

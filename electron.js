@@ -6,7 +6,6 @@ var path = require("path");
 var Menu = require("./electron-menu");
 var Pane = require("./electron-window");
 var AppConfig = require("./electron-appcfg");
-var github_version_compare_1 = require("github-version-compare");
 // MYukkuriVoice application
 var MYukkuriVoice = function () {
     this.appCfg = null;
@@ -21,6 +20,7 @@ MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
 MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
+MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
 MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
 MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
 MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
@@ -62,40 +62,6 @@ electron_1.ipcMain.on('showSystemWindow', function (event, message) {
 electron_1.ipcMain.on('showSpecWindow', function (event, message) {
     myApp.showSpecWindow();
 });
-// showVersionDialog
-function showVersionDialog() {
-    var repository = 'taku-o/myukkurivoice';
-    var packagejson = require('./package.json');
-    var version = new github_version_compare_1.Version(repository, packagejson);
-    version.pull().then(function (version) {
-        var message = version.hasLatestVersion() ? '新しいバージョンのアプリがあります' : 'バージョンは最新です';
-        var buttons = version.hasLatestVersion() ? ['CLOSE', 'Open Release Page'] : ['OK'];
-        var dialogOptions = {
-            type: 'info',
-            title: 'application version check.',
-            message: message,
-            buttons: buttons,
-            defaultId: 0,
-            cancelId: 0
-        };
-        var btnId = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
-        if (btnId == 1) {
-            electron_1.shell.openExternal(version.latestReleaseUrl);
-        }
-    })["catch"](function (err) {
-        log.error(err);
-        var dialogOptions = {
-            type: 'error',
-            title: 'application version check error.',
-            message: 'バージョン情報の取得に失敗しました。',
-            buttons: ['OK'],
-            defaultId: 0,
-            cancelId: 0
-        };
-        var r = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
-    });
-}
-MYukkuriVoice.prototype.showVersionDialog = showVersionDialog;
 // showSaveDialog
 electron_1.ipcMain.on('showSaveDialog', function (event, message) {
     var options = {
