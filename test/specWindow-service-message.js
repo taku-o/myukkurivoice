@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var spectron_1 = require("spectron");
+var assert = require("assert");
 var temp = require("temp");
 temp.track();
 describe('specWindow-service-MessageService', function () {
@@ -28,9 +29,110 @@ describe('specWindow-service-MessageService', function () {
     afterEach(function () {
         return this.client.close();
     });
-    // TODO replace
-    it('MessageService', function () {
+    it('action', function () {
         return this.client
-            .click('#get-phont-list');
+            .setValue('#message-service-post', '')
+            .click('#action')
+            .waitForValue('#message-service-post', 5000)
+            .getValue('#message-service-post').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('action message', parsed.body);
+            assert.equal('action', parsed.type);
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('record', function () {
+        return this.client
+            .setValue('#message-service-post', '')
+            .setValue('#last-wav-file', '')
+            .click('#record')
+            // event on message
+            .waitForValue('#message-service-post', 5000)
+            .getValue('#message-service-post').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('record message', parsed.body);
+            assert.equal('record', parsed.type);
+            assert.equal('/tmp/hoge.txt', parsed.wavFilePath);
+            assert.equal('hoge.txt', parsed.wavFileName);
+        })
+            // event on wavGenerated
+            .waitForValue('#last-wav-file', 5000)
+            .getValue('#last-wav-file').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('record message', parsed.body);
+            assert.equal('record', parsed.type);
+            assert.equal('/tmp/hoge.txt', parsed.wavFilePath);
+            assert.equal('hoge.txt', parsed.wavFileName);
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('info', function () {
+        return this.client
+            .setValue('#message-service-post', '')
+            .click('#info')
+            .waitForValue('#message-service-post', 5000)
+            .getValue('#message-service-post').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('info message', parsed.body);
+            assert.equal('info', parsed.type);
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('error', function () {
+        return this.client
+            // with error
+            .setValue('#message-service-post', '')
+            .click('#error')
+            .waitForValue('#message-service-post', 5000)
+            .getValue('#message-service-post').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('error message' + 'err', parsed.body);
+            assert.equal('error', parsed.type);
+        })
+            // with no error
+            .setValue('#message-service-post', '')
+            .click('#errorNull')
+            .waitForValue('#message-service-post', 5000)
+            .getValue('#message-service-post').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('error message', parsed.body);
+            assert.equal('error', parsed.type);
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('syserror', function () {
+        return this.client
+            // with error
+            .setValue('#message-service-post', '')
+            .click('#syserror')
+            .waitForValue('#message-service-post', 5000)
+            .getValue('#message-service-post').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('syserror message' + 'err', parsed.body);
+            assert.equal('syserror', parsed.type);
+        })
+            // with no error
+            .setValue('#message-service-post', '')
+            .click('#syserrorNull')
+            .waitForValue('#message-service-post', 5000)
+            .getValue('#message-service-post').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('syserror message', parsed.body);
+            assert.equal('syserror', parsed.type);
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
     });
 });

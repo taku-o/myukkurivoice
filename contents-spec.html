@@ -81,6 +81,24 @@
       <input id="last-wav-file" type="text" ng-model="lastWavFile">
     </div>
 
+    <div>CommandService
+      <input id="contains-command-input" type="text" ng-model="containsCommandInput">
+      <button id="contains-command" ng-click="ctrl.containsCommand()">
+      <input id="contains-command-result" type="text" ng-model="containsCommandResult">
+
+      <input id="parse-input-input" type="text" ng-model="parseInputInput">
+      <button id="parse-input" ng-click="ctrl.parseInput()">
+      <input id="parse-input-result" type="text" ng-model="parseInputResult">
+
+      <input id="command-input-source" type="text" ng-model="commandInputSource">
+      <button id="detect-voice-config" ng-click="ctrl.detectVoiceConfig()">
+      <input id="detect-voice-config-result" type="text" ng-model="detectVoiceConfigResult">
+
+      <input id="command-input-list" type="text" ng-model="commandInputList">
+      <button id="to-string" ng-click="ctrl.toString()">
+      <input id="to-string-result" type="text" ng-model="toStringResult">
+    </div>
+
     <div>DataService
       <button id="load" ng-click="ctrl.load()">
       <input id="load-result" type="text" ng-model="loadResult">

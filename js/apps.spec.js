@@ -6,11 +6,11 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
     }])
     .controller('SpecController', ['$scope', '$timeout',
     'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
-    'LicenseService', 'IntroService', 'MessageService',
+    'LicenseService', 'IntroService', 'MessageService', 'CommandService',
     'DataService', 'MasterService',
     'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
     'AppUtilService', 'SeqFNameService',
-    function ($scope, $timeout, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, IntroService, MessageService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
+    function ($scope, $timeout, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, IntroService, MessageService, CommandService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
         // init
         var ctrl = this;
         // YPhontList
@@ -110,6 +110,29 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             $scope.lastWavFile = JSON.stringify(wavFileInfo);
             $timeout(function () { $scope.$apply(); });
         });
+        // CommandService
+        ctrl.containsCommand = function () {
+            var yvoiceList = YVoiceInitialData;
+            var r = CommandService.containsCommand($scope.containsCommandInput, yvoiceList);
+            $scope.containsCommandResult = r;
+        };
+        ctrl.parseInput = function () {
+            var yvoiceList = YVoiceInitialData;
+            var currentYvoice = yvoiceList[0];
+            var r = CommandService.parseInput($scope.parseInputInput, yvoiceList, currentYvoice);
+            $scope.parseInputResult = JSON.stringify(r);
+        };
+        ctrl.detectVoiceConfig = function () {
+            var commandInput = JSON.parse($scope.commandInputSource);
+            var yvoiceList = YVoiceInitialData;
+            var r = CommandService.detectVoiceConfig(commandInput, yvoiceList);
+            $scope.detectVoiceConfigResult = JSON.stringify(r);
+        };
+        ctrl.toString = function () {
+            var commandInputList = JSON.parse($scope.commandInputList);
+            var r = CommandService.toString(commandInputList);
+            $scope.toStringResult = JSON.stringify(r);
+        };
         // DataService
         ctrl.load = function () {
             DataService.load().then(function (list) {
