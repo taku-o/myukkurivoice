@@ -112,7 +112,7 @@ describe('specWindow-service-MessageService', function() {
       })
       // with no error
       .setValue('#message-service-post', '')
-      .click('#errorNull')
+      .click('#error-null')
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
@@ -140,7 +140,7 @@ describe('specWindow-service-MessageService', function() {
       })
       // with no error
       .setValue('#message-service-post', '')
-      .click('#syserrorNull')
+      .click('#syserror-null')
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);

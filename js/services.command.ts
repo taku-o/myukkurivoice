@@ -5,7 +5,7 @@ angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
     return {
       containsCommand: function(input: string, yvoiceList: yubo.YVoice[]): boolean {
         // command name list
-        const nameList = [];
+        const nameList: string[] = [];
         angular.forEach(yvoiceList, (voice) => {
           nameList.push(voice.name);
         });
