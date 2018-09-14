@@ -6,6 +6,9 @@ var log = require("electron-log");
 var path = require("path");
 var openAboutWindow = require('about-window')["default"];
 var github_version_compare_1 = require("github-version-compare");
+// window options for test
+var transparent = (process.env.NODE_ENV == 'test' && process.env.transparent != null);
+var frame = !(process.env.NODE_ENV == 'test' && process.env.transparent != null);
 // main window
 function showMainWindow() {
     var myApp = this;
@@ -21,6 +24,8 @@ function showMainWindow() {
         height: height,
         x: x,
         y: y,
+        transparent: transparent,
+        frame: frame,
         acceptFirstMouse: acceptFirstMouse,
         show: false,
         webPreferences: {
@@ -97,6 +102,8 @@ function showHelpWindow() {
         modal: false,
         width: width,
         height: height,
+        transparent: transparent,
+        frame: frame,
         acceptFirstMouse: acceptFirstMouse,
         show: false,
         webPreferences: {
@@ -154,6 +161,8 @@ function showSystemWindow() {
         modal: false,
         width: width,
         height: height,
+        transparent: transparent,
+        frame: frame,
         acceptFirstMouse: acceptFirstMouse,
         show: false,
         webPreferences: {
@@ -243,6 +252,8 @@ function showSpecWindow() {
         modal: false,
         width: 800,
         height: 800,
+        transparent: transparent,
+        frame: frame,
         show: true,
         webPreferences: {
             devTools: this.appCfg.debug

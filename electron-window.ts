@@ -6,6 +6,10 @@ import * as path from 'path';
 const openAboutWindow: any = require('about-window').default;
 import {Version} from 'github-version-compare';
 
+// window options for test
+const transparent = (process.env.NODE_ENV == 'test' && process.env.transparent != null);
+const frame = !(process.env.NODE_ENV == 'test' && process.env.transparent != null);
+
 // main window
 function showMainWindow(): void {
   const myApp = this;
@@ -21,6 +25,8 @@ function showMainWindow(): void {
     height: height,
     x: x,
     y: y,
+    transparent: transparent,
+    frame: frame,
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
@@ -98,6 +104,8 @@ function showHelpWindow(): void {
     modal: false,
     width: width,
     height: height,
+    transparent: transparent,
+    frame: frame,
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
@@ -150,6 +158,8 @@ function showSystemWindow(): void {
     modal: false,
     width: width,
     height: height,
+    transparent: transparent,
+    frame: frame,
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
     webPreferences: {
@@ -238,6 +248,8 @@ function showSpecWindow(): void {
     modal: false,
     width: 800,
     height: 800,
+    transparent: transparent,
+    frame: frame,
     show: true,
     webPreferences: {
       devTools: this.appCfg.debug,

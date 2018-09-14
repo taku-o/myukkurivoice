@@ -13,6 +13,11 @@
       e.preventDefault(); return false;
     };
   </script>
+  <script type="text/javascript">
+    if (process.env.NODE_ENV == 'test' && process.env.transparent) {
+      document.write('<link rel="stylesheet" href="css/transparent.css" type="text/css">');
+    }
+  </script>
 </head>
 <body>
 <div class="window" ng-controller="HelpController as ctrl">
