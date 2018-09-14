@@ -138,14 +138,6 @@ describe('specWindow-service-CommandService', function () {
             .setValue('#command-input-list', JSON.stringify(cmdInputList))
             .click('#to-string')
             .getValue('#to-string-result').then(function (value) {
-            var log = require('electron-log');
-            log.error('--');
-            log.error(value);
-            log.error(cmdInputListToString);
-            // @ts-ignore
-            log.error(value == cmdInputListToString);
-            // @ts-ignore
-            log.error(value == cmdInputListToString);
             assert.equal(cmdInputListToString, value);
         })["catch"](function (err) {
             assert.fail(err.message);
