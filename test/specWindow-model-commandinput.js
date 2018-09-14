@@ -11,7 +11,7 @@ describe('specWindow-model-YCommandInput', function () {
         var dirPath = temp.mkdirSync(fsprefix);
         this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-            env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
+            env: { DEBUG: 1, NODE_ENV: 'test', transparent: 1, userData: dirPath }
         });
         return this.app.start();
     });
