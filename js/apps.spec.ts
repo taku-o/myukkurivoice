@@ -675,6 +675,16 @@ angular.module('yvoiceSpec',
       const r = SeqFNameService.nextFname($scope.prefix, $scope.num);
       $scope.nextFnameResult = r;
     };
+    ctrl.splitFname = function(): void {
+      const r = SeqFNameService.splitFname($scope.splitFnameFilepath);
+      $scope.splitFnameResult = JSON.stringify(r);
+    }
+    ctrl.nextNumber = function(): void {
+      SeqFNameService.nextNumber($scope.nextNumberDir, $scope.nextNumberPrefix)
+      .then((n: number) => {
+        $scope.nextNumberResult = n;
+      });
+    }
 
     // AppUtilService
     ctrl.disableRhythm = function(): void {

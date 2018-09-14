@@ -2,13 +2,15 @@ import {Application} from 'spectron';
 import * as assert from 'assert';
 import * as temp from 'temp';
 temp.track();
+import * as fs from 'fs';
 
 describe('specWindow-service-SeqFNameService', function() {
   this.timeout(10000);
 
+  let dirPath;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    const dirPath = temp.mkdirSync(fsprefix);
+    dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -47,15 +49,14 @@ describe('specWindow-service-SeqFNameService', function() {
       });
   });
 
-  // TODO splitFname(filePath: string): any;
   it('splitFname', function() {
     return this.client
-      // nextFname
-      .setValue('#prefix', 'foo')
-      .setValue('#num', '200')
-      .click('#next-fname')
-      .getValue('#next-fname-result').then((value: string) => {
-        assert.equal(value, 'foo0200.wav');
+      .setValue('#split-fname-filepath', '/tmp/hoge/foo.txt')
+      .click('#split-fname')
+      .getValue('#split-fname-result').then((value: string) => {
+        const r = JSON.parse(value);
+        assert.equal('/tmp/hoge', r.dir);
+        assert.equal('foo.txt', r.basename);
       })
       // catch error
       .catch((err: Error) => {
@@ -63,15 +64,50 @@ describe('specWindow-service-SeqFNameService', function() {
       });
   });
 
-  // TODO nextNumber(dir: string, prefix: string): ng.IPromise<number>;
   it('nextNumber', function() {
+    const prefixP1 = 'prefix';
+    const prefixP2 = 'some';
+    const prefixP3 = 'hoge';
+    const prefixP4 = 'phlx';
+    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
+    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
+    const fileP3 = `${dirPath}/${prefixP3}.wav`;
+    fs.closeSync(fs.openSync(fileP1, 'w'));
+    fs.closeSync(fs.openSync(fileP2, 'w'));
+    fs.closeSync(fs.openSync(fileP3, 'w'));
+
     return this.client
-      // nextFname
-      .setValue('#prefix', 'foo')
-      .setValue('#num', '200')
-      .click('#next-fname')
-      .getValue('#next-fname-result').then((value: string) => {
-        assert.equal(value, 'foo0200.wav');
+      // get simply next number
+      .setValue('#next-number-dir', dirPath)
+      .setValue('#next-number-prefix', prefixP1)
+      .click('#next-number')
+      .waitForValue('#next-number-result', 5000)
+      .getValue('#next-number-result').then((value: number) => {
+        assert.equal(102, value);
+      })
+      // count up
+      .setValue('#next-number-dir', dirPath)
+      .setValue('#next-number-prefix', prefixP2)
+      .click('#next-number')
+      .waitForValue('#next-number-result', 5000)
+      .getValue('#next-number-result').then((value: number) => {
+        assert.equal(1, value);
+      })
+      // newly
+      .setValue('#next-number-dir', dirPath)
+      .setValue('#next-number-prefix', prefixP3)
+      .click('#next-number')
+      .waitForValue('#next-number-result', 5000)
+      .getValue('#next-number-result').then((value: number) => {
+        assert.equal(0, value);
+      })
+      // not exists
+      .setValue('#next-number-dir', dirPath)
+      .setValue('#next-number-prefix', prefixP4)
+      .click('#next-number')
+      .waitForValue('#next-number-result', 5000)
+      .getValue('#next-number-result').then((value: number) => {
+        assert.equal(0, value);
       })
       // catch error
       .catch((err: Error) => {
