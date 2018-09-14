@@ -51,23 +51,21 @@ describe('specWindow-service-CommandService', function() {
       .getValue('#contains-command-result').then((value: string) => {
         assert.equal('false', value, 'isNotCmd');
       })
-      // TODO failed
-      //.setValue('#contains-command-input', isCmdML1)
-      //.click('#contains-command')
-      //.getValue('#contains-command-result').then((value: string) => {
-      //  assert.equal('true', value, 'isCmdML1');
-      //})
+      .setValue('#contains-command-input', isCmdML1)
+      .click('#contains-command')
+      .getValue('#contains-command-result').then((value: string) => {
+        assert.equal('true', value, 'isCmdML1');
+      })
       .setValue('#contains-command-input', isCmdML2)
       .click('#contains-command')
       .getValue('#contains-command-result').then((value: string) => {
         assert.equal('true', value, 'isCmdML2');
       })
-      // TODO failed
-      //.setValue('#contains-command-input', isCmdML3)
-      //.click('#contains-command')
-      //.getValue('#contains-command-result').then((value: string) => {
-      //  assert.equal('true', value, 'isCmdML3');
-      //})
+      .setValue('#contains-command-input', isCmdML3)
+      .click('#contains-command')
+      .getValue('#contains-command-result').then((value: string) => {
+        assert.equal('true', value, 'isCmdML3');
+      })
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
@@ -96,17 +94,16 @@ describe('specWindow-service-CommandService', function() {
         assert.equal('f1 女声1(ゆっくり)', parsed[0].name);
         assert.equal('test', parsed[0].text);
       })
-      // TODO failed
-      //.setValue('#parse-input-input', defaultAnd)
-      //.click('#parse-input')
-      //.getValue('#parse-input-result').then((value: string) => {
-      //  const parsed = JSON.parse(value);
-      //  assert.equal(2, parsed.length);
-      //  assert.equal('f1 女声1(ゆっくり)', parsed[0].name);
-      //  assert.equal('test', parsed[0].text);
-      //  assert.equal('aq_yukkuri(サンプル設定2)', parsed[1].name);
-      //  assert.equal('test2', parsed[1].text);
-      //})
+      .setValue('#parse-input-input', defaultAnd)
+      .click('#parse-input')
+      .getValue('#parse-input-result').then((value: string) => {
+        const parsed = JSON.parse(value);
+        assert.equal(2, parsed.length);
+        assert.equal('f1 女声1(ゆっくり)', parsed[0].name);
+        assert.equal('test', parsed[0].text);
+        assert.equal('aq_yukkuri(サンプル設定2)', parsed[1].name);
+        assert.equal('test2', parsed[1].text);
+      })
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
@@ -134,36 +131,35 @@ describe('specWindow-service-CommandService', function() {
       });
   });
 
-  // TODO failed
-  //it('toString', function() {
-  //  const cmdInputList = [
-  //    {
-  //      name: 'aq_yukkuri(サンプル設定2)',
-  //      text: 'test',
-  //    },
-  //    {
-  //      name: 'f1 女声1(ゆっくり)',
-  //      text: 'test1',
-  //    },
-  //    {
-  //      name: 'aq_yukkuri(サンプル設定2)',
-  //      text: 'test2',
-  //    },
-  //  ];
-  //  const cmdInputListToString =
-  //    'aq_yukkuri(サンプル設定2)＞test\n'
-  //    + 'f1 女声1(ゆっくり)＞test1\n'
-  //    + 'aq_yukkuri(サンプル設定2)＞text2\n';
+  it('toString', function() {
+    const cmdInputList = [
+      {
+        name: 'aq_yukkuri(サンプル設定2)',
+        text: 'test',
+      },
+      {
+        name: 'f1 女声1(ゆっくり)',
+        text: 'test1',
+      },
+      {
+        name: 'aq_yukkuri(サンプル設定2)',
+        text: 'test2',
+      },
+    ];
+    const cmdInputListToString =
+      'aq_yukkuri(サンプル設定2)＞test\n'
+      + 'f1 女声1(ゆっくり)＞test1\n'
+      + 'aq_yukkuri(サンプル設定2)＞test2\n';
 
-  //  return this.client
-  //    .setValue('#command-input-list', JSON.stringify(cmdInputList))
-  //    .click('#to-string')
-  //    .getValue('#to-string-result').then((value: string) => {
-  //      assert.equal(cmdInputListToString, value);
-  //    })
-  //    // catch error
-  //    .catch((err: Error) => {
-  //      assert.fail(err.message);
-  //    });
-  //});
+    return this.client
+      .setValue('#command-input-list', JSON.stringify(cmdInputList))
+      .click('#to-string')
+      .getValue('#to-string-result').then((value: string) => {
+        assert.equal(cmdInputListToString, value);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
 });

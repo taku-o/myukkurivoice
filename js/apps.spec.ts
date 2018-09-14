@@ -146,7 +146,7 @@ angular.module('yvoiceSpec',
     ctrl.toString = function(): void {
       const commandInputList = JSON.parse($scope.commandInputList);
       const r = CommandService.toString(commandInputList);
-      $scope.toStringResult = JSON.stringify(r);
+      $scope.toStringResult = r;
     };
 
     // DataService

@@ -7,6 +7,7 @@
   "scripts": {
     "test": "sh bin/test.sh",
     "test_rebuild": "sh bin/test_rebuild.sh",
+    "rtest": "sh bin/test_rebuild.sh",
     "packaging": "sh bin/packaging.sh",
     "build": "sh bin/packaging.sh",
     "release": "sh bin/release.sh",
@@ -16,6 +17,7 @@
     "tsc": "tsc",
     "compile": "tsc",
     "debug": "DEBUG=1 electron .",
+    "app": "DEBUG=1 electron .",
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
   },
   "keywords": [

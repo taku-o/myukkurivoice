@@ -131,7 +131,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
         ctrl.toString = function () {
             var commandInputList = JSON.parse($scope.commandInputList);
             var r = CommandService.toString(commandInputList);
-            $scope.toStringResult = JSON.stringify(r);
+            $scope.toStringResult = r;
         };
         // DataService
         ctrl.load = function () {
