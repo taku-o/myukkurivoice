@@ -66,6 +66,14 @@
     "@types/ref": "0.0.28",
     "@types/ref-struct": "0.0.29",
     "@types/temp": "^0.8.32",
-    "@types/webdriverio": "^4.10.3"
+    "@types/webdriverio": "^4.10.3",
+    "asar": "^0.14.0",
+    "electron": "^1.7.9",
+    "electron-packager": "^9.1.0",
+    "eslint": "^5.6.0",
+    "mocha": "^4.0.1",
+    "spectron": "^3.7.2",
+    "typescript": "^3.0.3",
+    "typescript-eslint-parser": "^18.0.0"
   }
 }

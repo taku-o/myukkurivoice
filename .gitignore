@@ -12,4 +12,5 @@ Thumbs.db
 !/node_modules/ref-struct/
 !/node_modules/@types/electron.d.ts
 !/node_modules/@types/spectron.d.ts
+/node_modules/
 
