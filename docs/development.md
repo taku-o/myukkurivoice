@@ -16,13 +16,18 @@
     +-- secret                AquesTalk10ライセンスキー取得コード
 ```
 
+## セットアップ
+* 必要なモジュールの取り込み
+
+```
+  npm install
+  git submodule update --init
+```
+
 ## デバッグ実行
 * デバッグモードでアプリケーションを実行するには、環境変数でDEBUGを設定します。
 
 ```
-  DEBUG=1 electron .
-
-  # or this command
   npm run debug
 ```
 
@@ -39,10 +44,10 @@
   npm run release
 ```
 
-## Unit Test
+## 単体テスト
 * 単体テストを実行するには、次のコマンドを実行します。
 * テストコードはtestディレクトリ以下にあります。
-* spectronのmiddleバージョンはelectronのバージョンと合わせる。
+* spectronのmiddleバージョンはelectronのバージョンと合わせる必要があります。
 
 ```
   # build app, and run test
@@ -56,32 +61,19 @@
 * Lintツールを実行します。
 
 ```
-  npm install -g eslint
-  npm install -g typescript-eslint-parser
   npm run lint
 ```
 
 ## typescript
-* tscコマンドを実行してタイプスクリプトをビルドします。
+* ソースコードはタイプスクリプトで記載されています。
+* tscコマンドでタイプスクリプトをビルドします。
 
 ```
-  npm install -g typescript
-  npm install --save-dev @types/angular
-  npm install --save-dev @types/node
-  npm install --save-dev @types/intro.js
-  npm install --save-dev @types/mocha
-  npm install --save-dev @types/webdriverio
-  npm install --save-dev @types/temp
-  npm install --save-dev @types/electron-config
-  npm install --save-dev @types/ffi
-  npm install --save-dev @types/ref
-  npm install --save-dev @types/ref-struct
-
   npm run tsc
 ```
 
-## using devtron
-* devtronを使用するには、デバッグモードで次のコマンドを実行します。
+## devtron
+* devtronを使用するには、デバッグモードで次のコマンドを実行してください。
 
 ```
   npm install --save-dev devtron
@@ -92,7 +84,6 @@
 * asarでパッケージングされたファイルを解凍するには、asarコマンドを実行します
 
 ```
-  npm -g install asar
   asar e app.asar dest
 ```
 
@@ -106,40 +97,18 @@
     nvm install v8.2.1
     nvm use v8.2.1
 
-## install electron and command
-    npm install -g electron
-
-## install package command
-    npm install -g electron-packager
-
 ## install capistrano
     gem install bundler
     bundle install
 
-## install test library
-    npm install -g spectron@3.7.2
-    npm install -g mocha
-
 ## using library
-* native関連のバイナリ管理がキツいので、node_modules以下にそのまま入れる。
+* native関連のバイナリ管理がキツいものはレポジトリ内で管理しています。
 * このコマンドは実行しなくて良い。
 
 ```
-  npm install --save angular
-  npm install --save angular-input-highlight
-  npm install --save https://github.com/connors/photon
-  npm install --save electron-json-storage
-  npm install --save electron-config
-  npm install --save electron-log
-  npm install --save electron-localshortcut
   npm install --save ref
   npm install --save ref-struct
   npm install --save ffi
-  npm install --save intro.js
-  npm install --save temp
-  npm install --save wave-recorder
-  npm install --save tunajs
-  npm install --save about-window
 ```
 
 ### Module version mismatch. Expected 50, got 51
@@ -163,5 +132,4 @@
 ## README用のアニメーションGIFの作成
     brew install ffmpeg
     ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
-
 
