@@ -1,9 +1,9 @@
 #!/bin/sh
 cd `dirname $0`
 cd ..
-tsc
+node_modules/.bin/tsc
 rm -rf MYukkuriVoice-darwin-x64/
-electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+node_modules/.bin/electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/README.md" \
     --ignore="^/\.git" \

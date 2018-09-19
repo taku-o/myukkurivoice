@@ -5,4 +5,4 @@ cd ..
 sh bin/packaging.sh
 
 # run test
-NODE_PATH="$HOME/.nvm/versions/node/v8.2.1/lib/node_modules" mocha --bail $*
+node_modules/.bin/mocha --bail $*

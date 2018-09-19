@@ -4,6 +4,7 @@ lock "3.8.1"
 set :application, "MYukkuriVoice"
 set :package_name, "MYukkuriVoice-darwin-x64"
 set :repo_url, "git@github.com:taku-o/myukkurivoice.git"
+set :electron_packager, "../../../node_modules/.bin/electron-packager"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -44,18 +45,19 @@ task :package do
   run_locally do
     application = fetch :application
     package_name = fetch :package_name
+    electron_packager = fetch :electron_packager
 
     # fetch source code
     execute "git clone #{fetch :repo_url} #{application}"
 
+    # npm install
+    execute "cd #{application}; npm install --only=production"
+
     # git init
     execute "cd #{application}; git submodule update --init"
 
-    # build typescript
-    execute "cd #{application}; tsc"
-
     # build
-    execute "cd #{application}; electron-packager . MYukkuriVoice --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor " +
+    execute "cd #{application}; #{electron_packager} . #{application} --platform=darwin --arch=x64 --electronVersion=1.7.9 --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor " +
       ' --ignore="^/MYukkuriVoice-darwin-x64" ' +
       ' --ignore="^/README.md" ' +
       ' --ignore="^/\.git" ' +
