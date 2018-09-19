@@ -10,6 +10,7 @@
     "rtest": "sh bin/test_rebuild.sh",
     "package": "sh bin/packaging.sh",
     "release": "sh bin/release.sh",
+    "staging": "sh bin/staging.sh",
     "lint": "eslint *.ts js/*.ts test/*.ts",
     "lint-js": "eslint *.js js/*.js test/*.js",
     "lint-q": "eslint *.ts js/*.ts test/*.ts *.js js/*.js test/*.js --quiet",

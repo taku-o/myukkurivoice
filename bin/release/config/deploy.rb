@@ -3,7 +3,6 @@ lock "3.8.1"
 
 set :application, "MYukkuriVoice"
 set :package_name, "MYukkuriVoice-darwin-x64"
-set :repo_url, "git@github.com:taku-o/myukkurivoice.git"
 set :electron_packager, "../../../node_modules/.bin/electron-packager"
 
 # Default branch is :master
