@@ -31,7 +31,7 @@
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 set :stage, :staging
-set :repo_url, "-b feature/dev_module git@github.com:taku-o/myukkurivoice.git"
+set :repo_url, "-b #{ENV['GIT_BRANCH']} git@github.com:taku-o/myukkurivoice.git"
 
 
 # Custom SSH Options
