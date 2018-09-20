@@ -52,14 +52,17 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         cloned['id'] = uniqId();
         return cloned;
       },
-      save: function(dataList: yubo.YVoice[]): void {
+      save: function(dataList: yubo.YVoice[]): ng.IPromise<boolean> {
+        const d = $q.defer();
         storage.set('data', dataList, function(error: Error) {
           if (error) {
             MessageService.syserror('ボイス設定の保存に失敗しました。', error);
-            throw error;
+            d.reject(error); return;
           }
           MessageService.info('ボイス設定を保存しました。');
+          d.resolve(true);
         });
+        return d.promise;
       },
       clear: function(): ng.IPromise<boolean> {
         const d = $q.defer();

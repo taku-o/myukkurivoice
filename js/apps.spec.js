@@ -154,6 +154,17 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
             var r = DataService.copy(original);
             $scope.copyResult = JSON.stringify(r);
         };
+        ctrl.saveData = function () {
+            var r = DataService.initialData();
+            DataService.save(r).then(function (success) {
+                $scope.saveDataResult = 'ok';
+            });
+        };
+        ctrl.clear = function () {
+            DataService.clear().then(function (success) {
+                $scope.clearResult = 'ok';
+            });
+        };
         // MasterService
         ctrl.getPhontList = function () {
             var list = MasterService.getPhontList();

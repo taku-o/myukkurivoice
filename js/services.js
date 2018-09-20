@@ -52,13 +52,17 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                 return cloned;
             },
             save: function (dataList) {
+                var d = $q.defer();
                 storage.set('data', dataList, function (error) {
                     if (error) {
                         MessageService.syserror('ボイス設定の保存に失敗しました。', error);
-                        throw error;
+                        d.reject(error);
+                        return;
                     }
                     MessageService.info('ボイス設定を保存しました。');
+                    d.resolve(true);
                 });
+                return d.promise;
             },
             clear: function () {
                 var d = $q.defer();

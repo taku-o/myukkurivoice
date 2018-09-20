@@ -171,6 +171,17 @@ angular.module('yvoiceSpec',
       const r = DataService.copy(original);
       $scope.copyResult = JSON.stringify(r);
     };
+    ctrl.saveData = function(): void {
+      const r = DataService.initialData();
+      DataService.save(r).then((success) => {
+        $scope.saveDataResult = 'ok';
+      });
+    };
+    ctrl.clear = function(): void {
+      DataService.clear().then((success) => {
+        $scope.clearResult = 'ok';
+      });
+    };
 
     // MasterService
     ctrl.getPhontList = function(): void {
