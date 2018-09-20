@@ -16,41 +16,54 @@
     +-- secret                AquesTalk10ライセンスキー取得コード
 ```
 
-## セットアップ
-* 必要なモジュールの取り込み
+## library for binary
+* native関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
+
+```
+  - ref
+  - ref-struct
+  - ffi
+```
+
+## 開発の進め方
+* セットアップ
+** 最初に動作に必要なモジュールを取り込んでください。
 
 ```
   npm install
   git submodule update --init
 ```
 
-## デバッグ実行
-* デバッグモードでアプリケーションを実行するには、環境変数でDEBUGを設定して実行します。
+* ソースコードを修正します。ソースコードはtypescriptで記載されています。
+* tscコマンドでtypescriptをビルドします。
 
 ```
-  DEBUG=1 electron .
-
-  # or this command
-  npm run app
+  npm run tsc
 ```
 
-## パッケージング
-* リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
+* 次のコマンドでElectronアプリをビルドします。
 
 ```
   npm run package
 ```
 
-* リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
+* デバッグモードで動かして、動作を確認しましょう。
+
+```
+  npm run app
+```
+
+## リリース
+* リリース用のアプリケーションを作成するにはリリース用のコマンドを実行します。
 
 ```
   npm run release
 ```
 
-## 単体テスト
+## 開発テスト
+### 単体テスト
 * 単体テストを実行するには、次のコマンドを実行します。
 * テストコードはtestディレクトリ以下にあります。
-* spectronのmiddleバージョンはelectronのバージョンと合わせる必要があります。
 
 ```
   # build app, and run test
@@ -60,58 +73,34 @@
   npm run test
 ```
 
-## Lint
-* Lintツールを実行します。
+### Lint
+* Lintツールは次のコマンドで実行できます。
 
 ```
   npm run lint
 ```
 
-## typescript
-* ソースコードはタイプスクリプトで記載されています。
-* tscコマンドでタイプスクリプトをビルドします。
-
-```
-  npm run tsc
-```
-
-## devtron
-* devtronを使用するには、デバッグモードで次のコマンドを実行してください。
-
-```
-  npm install --save-dev devtron
-  require('devtron').install()
-```
-
-## asarの解凍
-* asarでパッケージングされたファイルを解凍するには、asarコマンドを実行します
-
-```
-  asar e app.asar dest
-```
-
 # 環境設定まわりの情報
 ## install xcode
-    xcode-select --install
-
-## install node
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
-    nvm ls-remote
-    nvm install v8.2.1
-    nvm use v8.2.1
-
-## install capistrano
-    gem install bundler
-    bundle install
-
-## using library
-* native関連のバイナリ管理がキツいものはレポジトリ内で管理しています。
-* このコマンドは実行しなくて良い。
 
 ```
-  npm install --save ref
-  npm install --save ref-struct
-  npm install --save ffi
+  xcode-select --install
+```
+
+## install node
+
+```
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
+  nvm ls-remote
+  nvm install v8.2.1
+  nvm use v8.2.1
+```
+
+## install capistrano
+
+```
+  gem install bundler
+  bundle install
 ```
 
 ### Module version mismatch. Expected 50, got 51
@@ -133,6 +122,9 @@
 ```
 
 ## README用のアニメーションGIFの作成
-    brew install ffmpeg
-    ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
+
+```
+  brew install ffmpeg
+  ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
+```
 
