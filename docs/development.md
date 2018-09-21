@@ -87,6 +87,14 @@
   npm run lint
 ```
 
+### devtron
+* devtronを利用するには、Developer Toolで次のコマンドを実行してください。
+* (debugモードないとDeveloper toolのconsole画面は開けません。)
+
+```
+require('devtron').install()
+```
+
 # 環境設定まわりの情報
 ## install xcode
 
