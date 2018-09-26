@@ -2,13 +2,15 @@ import {Application} from 'spectron';
 import * as assert from 'assert';
 import * as temp from 'temp';
 temp.track();
+import * as fs from 'fs';
 
 describe('specWindow-service-DataService', function() {
   this.timeout(10000);
 
+  let dirPath = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    const dirPath = temp.mkdirSync(fsprefix);
+    dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -91,20 +93,51 @@ describe('specWindow-service-DataService', function() {
       });
   });
 
-  // TODO  save(dataList: yubo.YVoice[]): void;
   it('save', function() {
     return this.client
-      .click('#copy')
+      .getValue('#save-data-result').then((value: string) => {
+        assert.equal('', value);
+        const isExists = fs.existsSync(`${dirPath}/data.json`);
+        assert.ok(! isExists);
+      })
+      .click('#save-data')
+      .waitForValue('#save-data-result', 2000)
+      .getValue('#save-data-result').then((value: string) => {
+        assert.equal('ok', value);
+        const data = fs.readFileSync(`${dirPath}/data.json`);
+        const parsed = JSON.parse(data.toString());
+        assert.equal(parsed.length, 4);
+      })
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
       });
   });
 
-  // TODO  clear(): ng.IPromise<boolean>;
   it('clear', function() {
     return this.client
-      .click('#copy')
+      // before test, save data
+      .click('#save-data')
+      .waitForValue('#save-data-result', 2000)
+      .getValue('#save-data-result').then((value: string) => {
+        assert.equal('ok', value);
+      })
+      // test
+      .getValue('#clear-result').then((value: string) => {
+        assert.equal('', value);
+        const isExists = fs.existsSync(`${dirPath}/data.json`);
+        assert.ok(isExists);
+        const data = fs.readFileSync(`${dirPath}/data.json`);
+        const parsed = JSON.parse(data.toString());
+        assert.equal(parsed.length, 4);
+      })
+      .click('#clear')
+      .waitForValue('#clear-result', 2000)
+      .getValue('#clear-result').then((value: string) => {
+        assert.equal('ok', value);
+        const isExists = fs.existsSync(`${dirPath}/data.json`);
+        assert.ok(! isExists);
+      })
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);

@@ -16,33 +16,61 @@
     +-- secret                AquesTalk10ライセンスキー取得コード
 ```
 
-## デバッグ実行
-* デバッグモードでアプリケーションを実行するには、環境変数でDEBUGを設定します。
+## library for binary
+* native関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
 
 ```
-  DEBUG=1 electron .
-
-  # or this command
-  npm run debug
+  - ref
+  - ref-struct
+  - ffi
 ```
 
-## パッケージング
-* リリーステスト用のアプリケーションを作成するには、次のコマンドを実行します。
+## 開発の進め方
+* セットアップ
+** 最初に動作に必要なモジュールを取り込んでください。
 
 ```
-  npm run packaging
+  npm install
+  git submodule update --init
 ```
 
-* リリース用のアプリケーションを作成するには上で作ったアプリを固めるか、リリース用のコマンドを実行します。
+* ソースコードを修正します。ソースコードはtypescriptで記載されています。
+* tscコマンドでtypescriptをビルドします。
+
+```
+  npm run tsc
+```
+
+* 次のコマンドでElectronアプリをビルドします。
+
+```
+  npm run package
+```
+
+* デバッグモードで動かして、動作を確認しましょう。
+
+```
+  npm run app
+```
+
+## リリース
+* リリース用のアプリケーションを作成するにはリリース用のコマンドを実行します。
 
 ```
   npm run release
 ```
 
-## Unit Test
+## 開発テスト
+### 特定バージョンのアプリのビルド
+* stagingコマンドで特定のブランチを指定して、ビルドできます。
+
+```
+  npm run staging -- develop
+```
+
+### 単体テスト
 * 単体テストを実行するには、次のコマンドを実行します。
 * テストコードはtestディレクトリ以下にあります。
-* spectronのmiddleバージョンはelectronのバージョンと合わせる。
 
 ```
   # build app, and run test
@@ -52,94 +80,42 @@
   npm run test
 ```
 
-## Lint
-* Lintツールを実行します。
+### Lint
+* Lintツールは次のコマンドで実行できます。
 
 ```
-  npm install -g eslint
-  npm install -g typescript-eslint-parser
   npm run lint
 ```
 
-## typescript
-* tscコマンドを実行してタイプスクリプトをビルドします。
+### devtron
+* devtronを利用するには、Developer Toolで次のコマンドを実行してください。
+* (debugモードないとDeveloper toolのconsole画面は開けません。)
 
 ```
-  npm install -g typescript
-  npm install --save-dev @types/angular
-  npm install --save-dev @types/node
-  npm install --save-dev @types/intro.js
-  npm install --save-dev @types/mocha
-  npm install --save-dev @types/webdriverio
-  npm install --save-dev @types/temp
-  npm install --save-dev @types/electron-config
-  npm install --save-dev @types/ffi
-  npm install --save-dev @types/ref
-  npm install --save-dev @types/ref-struct
-
-  npm run tsc
-```
-
-## using devtron
-* devtronを使用するには、デバッグモードで次のコマンドを実行します。
-
-```
-  npm install --save-dev devtron
-  require('devtron').install()
-```
-
-## asarの解凍
-* asarでパッケージングされたファイルを解凍するには、asarコマンドを実行します
-
-```
-  npm -g install asar
-  asar e app.asar dest
+require('devtron').install()
 ```
 
 # 環境設定まわりの情報
 ## install xcode
-    xcode-select --install
-
-## install node
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
-    nvm ls-remote
-    nvm install v8.2.1
-    nvm use v8.2.1
-
-## install electron and command
-    npm install -g electron
-
-## install package command
-    npm install -g electron-packager
-
-## install capistrano
-    gem install bundler
-    bundle install
-
-## install test library
-    npm install -g spectron@3.7.2
-    npm install -g mocha
-
-## using library
-* native関連のバイナリ管理がキツいので、node_modules以下にそのまま入れる。
-* このコマンドは実行しなくて良い。
 
 ```
-  npm install --save angular
-  npm install --save angular-input-highlight
-  npm install --save https://github.com/connors/photon
-  npm install --save electron-json-storage
-  npm install --save electron-config
-  npm install --save electron-log
-  npm install --save electron-localshortcut
-  npm install --save ref
-  npm install --save ref-struct
-  npm install --save ffi
-  npm install --save intro.js
-  npm install --save temp
-  npm install --save wave-recorder
-  npm install --save tunajs
-  npm install --save about-window
+  xcode-select --install
+```
+
+## install node
+
+```
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
+  nvm ls-remote
+  nvm install v8.2.1
+  nvm use v8.2.1
+```
+
+## install capistrano
+
+```
+  gem install bundler
+  bundle install
 ```
 
 ### Module version mismatch. Expected 50, got 51
@@ -161,7 +137,9 @@
 ```
 
 ## README用のアニメーションGIFの作成
-    brew install ffmpeg
-    ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
 
+```
+  brew install ffmpeg
+  ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
+```
 

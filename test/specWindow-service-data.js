@@ -4,11 +4,13 @@ var spectron_1 = require("spectron");
 var assert = require("assert");
 var temp = require("temp");
 temp.track();
+var fs = require("fs");
 describe('specWindow-service-DataService', function () {
     this.timeout(10000);
+    var dirPath = null;
     before(function () {
         var fsprefix = "_myubo_test" + Date.now().toString(36);
-        var dirPath = temp.mkdirSync(fsprefix);
+        dirPath = temp.mkdirSync(fsprefix);
         this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
             env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
@@ -75,17 +77,48 @@ describe('specWindow-service-DataService', function () {
             assert.fail(err.message);
         });
     });
-    // TODO  save(dataList: yubo.YVoice[]): void;
     it('save', function () {
         return this.client
-            .click('#copy')["catch"](function (err) {
+            .getValue('#save-data-result').then(function (value) {
+            assert.equal('', value);
+            var isExists = fs.existsSync(dirPath + "/data.json");
+            assert.ok(!isExists);
+        })
+            .click('#save-data')
+            .waitForValue('#save-data-result', 2000)
+            .getValue('#save-data-result').then(function (value) {
+            assert.equal('ok', value);
+            var data = fs.readFileSync(dirPath + "/data.json");
+            var parsed = JSON.parse(data.toString());
+            assert.equal(parsed.length, 4);
+        })["catch"](function (err) {
             assert.fail(err.message);
         });
     });
-    // TODO  clear(): ng.IPromise<boolean>;
     it('clear', function () {
         return this.client
-            .click('#copy')["catch"](function (err) {
+            // before test, save data
+            .click('#save-data')
+            .waitForValue('#save-data-result', 2000)
+            .getValue('#save-data-result').then(function (value) {
+            assert.equal('ok', value);
+        })
+            // test
+            .getValue('#clear-result').then(function (value) {
+            assert.equal('', value);
+            var isExists = fs.existsSync(dirPath + "/data.json");
+            assert.ok(isExists);
+            var data = fs.readFileSync(dirPath + "/data.json");
+            var parsed = JSON.parse(data.toString());
+            assert.equal(parsed.length, 4);
+        })
+            .click('#clear')
+            .waitForValue('#clear-result', 2000)
+            .getValue('#clear-result').then(function (value) {
+            assert.equal('ok', value);
+            var isExists = fs.existsSync(dirPath + "/data.json");
+            assert.ok(!isExists);
+        })["catch"](function (err) {
             assert.fail(err.message);
         });
     });

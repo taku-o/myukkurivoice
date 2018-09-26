@@ -99,11 +99,11 @@ macOS High Sierra(10.13)に対応しています。
 * 各種ショートカットキー
 * チュートリアル、ヘルプ
 
-## 動画
-[![](http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg)](https://www.youtube.com/watch?v=DUbXHZrW1Ms)
+## 動画リンク
+[![](https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm30435205.png)](http://www.nicovideo.jp/watch/sm30435205)
 
-[![](http://img.youtube.com/vi/povuqyEl6L4/0.jpg)](https://www.youtube.com/watch?v=povuqyEl6L4)
+[![](https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm30826557.png)](http://www.nicovideo.jp/watch/sm30826557)
 
-[![](http://img.youtube.com/vi/iv2GgKt7mJU/0.jpg)](https://www.youtube.com/watch?v=iv2GgKt7mJU)
+[![](https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm32273442.png)](http://www.nicovideo.jp/watch/sm32273442)
 
 

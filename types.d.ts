@@ -172,7 +172,7 @@ declare namespace yubo {
     initialData(): yubo.YVoice[];
     create(): yubo.YVoice;
     copy(original: yubo.YVoice): yubo.YVoice;
-    save(dataList: yubo.YVoice[]): void;
+    save(dataList: yubo.YVoice[]): ng.IPromise<boolean>;
     clear(): ng.IPromise<boolean>;
   }
   export interface MasterService {

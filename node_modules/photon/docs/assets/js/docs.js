@@ -1,1 +1,0 @@
-$('.example-component-container').Stickyfill();

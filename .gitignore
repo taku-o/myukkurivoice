@@ -3,3 +3,14 @@ Thumbs.db
 /bin/release/log/
 /bin/release/myukkurivoice/
 /MYukkuriVoice-darwin-x64/
+!/node_modules/bindings/
+!/node_modules/debug/
+!/node_modules/ffi/
+!/node_modules/ms/
+!/node_modules/nan/
+!/node_modules/ref/
+!/node_modules/ref-struct/
+!/node_modules/@types/electron.d.ts
+!/node_modules/@types/spectron.d.ts
+/node_modules/
+

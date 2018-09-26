@@ -30,8 +30,8 @@
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
-set :stage, :production
-set :repo_url, "git@github.com:taku-o/myukkurivoice.git"
+set :stage, :staging
+set :repo_url, "-b #{ENV['GIT_BRANCH']} git@github.com:taku-o/myukkurivoice.git"
 
 
 # Custom SSH Options
