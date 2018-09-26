@@ -100,10 +100,10 @@ macOS High Sierra(10.13)に対応しています。
 * チュートリアル、ヘルプ
 
 ## 動画リンク
-[![](http://img.youtube.com/vi/DUbXHZrW1Ms/0.jpg)](http://www.nicovideo.jp/watch/sm30435205)
+[![](https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm30435205.png)](http://www.nicovideo.jp/watch/sm30435205)
 
-[![](http://img.youtube.com/vi/povuqyEl6L4/0.jpg)](http://www.nicovideo.jp/watch/sm30826557)
+[![](https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm30826557.png)](http://www.nicovideo.jp/watch/sm30826557)
 
-[![](http://img.youtube.com/vi/iv2GgKt7mJU/0.jpg)](http://www.nicovideo.jp/watch/sm32273442)
+[![](https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm32273442.png)](http://www.nicovideo.jp/watch/sm32273442)
 
 
