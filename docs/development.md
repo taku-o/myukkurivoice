@@ -32,6 +32,7 @@
 ```
   npm install
   git submodule update --init
+  npm install -g gulp-cli
 ```
 
 * ソースコードを修正します。ソースコードはtypescriptで記載されています。
