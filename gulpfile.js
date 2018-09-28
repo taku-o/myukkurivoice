@@ -1,12 +1,8 @@
 var gulp = require("gulp");
-// tsc
 var ts = require("gulp-typescript");
 var tsProject = ts.createProject("tsconfig.json");
-// lint
 var eslint = require("gulp-eslint");
-// app
 var exec = require('child_process').exec;
-// package
 var del = require('del');
 
 //    "test": "sh bin/test.sh",
@@ -22,12 +18,14 @@ var del = require('del');
 gulp.task("default", () => {
 });
 
+// tsc
 gulp.task("tsc", () => {
   return tsProject.src()
     .pipe(tsProject())
     .js.pipe(gulp.dest("."));
 });
 
+// lint
 gulp.task('lint', () => {
   return gulp.src(['*.ts','js/*.ts','test/*.ts'])
     .pipe(eslint({ useEslintrc: true }))
@@ -44,6 +42,7 @@ gulp.task('lint-q', () => {
     .pipe(eslint.format());
 });
 
+// app
 gulp.task('app', (cb) => {
   exec('DEBUG=1 node_modules/.bin/electron .', (err, stdout, stderr) => {
     console.log(stdout);
@@ -52,6 +51,7 @@ gulp.task('app', (cb) => {
   });
 })
 
+// package
 gulp.task('package', ['tsc'], (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(`node_modules/.bin/electron-packager . MYukkuriVoice \
@@ -77,6 +77,7 @@ gulp.task('package', ['tsc'], (cb) => {
             --ignore="^/js/.+\.ts" \
             --ignore="^/Gemfile" \
             --ignore="^/Gemfile.lock" \
+            --ignore="^/gulpfile.js" \
             --ignore=".DS_Store" \
             --ignore=".babelrc" \
             --ignore=".editorconfig" \

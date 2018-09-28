@@ -90,7 +90,7 @@
 
 ### devtron
 * devtronを利用するには、Developer Toolで次のコマンドを実行してください。
-* (debugモードないとDeveloper toolのconsole画面は開けません。)
+* (debugモードでないとDeveloper toolのconsole画面は開けません。)
 
 ```
 require('devtron').install()
