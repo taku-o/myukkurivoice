@@ -35,5 +35,9 @@
   ],
   "exclude": [
     "node_modules",
-  ]
+  ],
+  "formatCodeOptions": {
+    "indentSize": 2,
+    "tabSize": 2
+  }
 }
