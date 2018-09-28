@@ -4,6 +4,8 @@ var tsProject = ts.createProject("tsconfig.json");
 var eslint = require("gulp-eslint");
 var exec = require('child_process').exec;
 var del = require('del');
+var git = require('gulp-git');
+var argv = require('yargs').argv;
 
 //    "test": "sh bin/test.sh",
 //    "test_rebuild": "sh bin/test_rebuild.sh",
@@ -42,7 +44,7 @@ gulp.task('lint-q', () => {
     .pipe(eslint.format());
 });
 
-// app
+// run app
 gulp.task('app', (cb) => {
   exec('DEBUG=1 node_modules/.bin/electron .', (err, stdout, stderr) => {
     console.log(stdout);
@@ -282,6 +284,22 @@ gulp.task('package', ['tsc'], (cb) => {
           }
     );
   });
+});
+
+gulp.task('release', ['tsc'], (cb) => {
+  process.chdir('./bin/release');
+});
+
+gulp.task('clone', (cb) => {
+  var opts = (argv && argv.branch)? {args: '-b '+argv.branch}: {args: '-b master'};
+  git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
+    if (err) {
+      cb(err);
+    }
+  });
+});
+gulp.task('submodule', () => {
+  git.updateSubmodule({ args: '--init' });
 });
 
 
