@@ -11,8 +11,12 @@ const runSequence = require('run-sequence');
 const ts = require("gulp-typescript");
 const tsProject = ts.createProject("tsconfig.json");
 
-const electronCmd = __dirname+ 'node_modules/.bin/electron';
-const packagerCmd = __dirname+ 'node_modules/.bin/electron-packager';
+const ELECTRON_CMD = 'DEBUG=1 '+ __dirname+ '/node_modules/.bin/electron';
+const PACKAGER_CMD = __dirname+ '/node_modules/.bin/electron-packager';
+const WORK_DIR = __dirname+ '/bin/release';
+const WORK_REPO_DIR = __dirname+ '/bin/release/myukkurivoice';
+const APP_NAME = 'MYukkuriVoice';
+const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
 //    "test": "sh bin/test.sh",
 //    "test_rebuild": "sh bin/test_rebuild.sh",
@@ -24,7 +28,14 @@ const packagerCmd = __dirname+ 'node_modules/.bin/electron-packager';
 
 
 
-gulp.task("default", () => {
+gulp.task("default", (cb) => {
+  runSequence(
+    'ch-repodir',
+    'package-release',
+    (err) => {
+      cb(err);
+    }
+  );
 });
 
 // tsc
@@ -53,33 +64,40 @@ gulp.task('lint-q', ['tsc'], () => {
 
 // run app
 gulp.task('app', ['tsc'], (cb) => {
-  exec('DEBUG=1 '+ electronCmd+ ' .', (err, stdout, stderr) => {
+  exec(ELECTRON_CMD+ ' .', (err, stdout, stderr) => {
     cb(err);
   });
-})
+});
 
+// package
+gulp.task('package', ['tsc', 'package-debug']);
+
+// release
+    // zip
+    // open
 gulp.task('release', (cb) => {
   runSequence(
     'rm-workdir', 'mk-workdir', 'ch-workdir',
     'git-clone', 'ch-repodir', 'git-submodule', 'npm-install',
-    'package-release',
+    'package-release', 'zip-app', 'open-app',
     (err) => {
-    cb(err);
-  });
+      cb(err);
+    }
+  );
 });
 
 gulp.task('rm-workdir', (cb) => {
-  rimraf(__dirname+ '/ttt', (err) => {
+  rimraf(WORK_DIR, (err) => {
     cb(err);
   });
 });
 gulp.task('mk-workdir', (cb) => {
-  mkdirp(__dirname+ '/ttt', (err) => {
+  mkdirp(WORK_DIR, (err) => {
     cb(err);
   });
 });
 gulp.task('ch-workdir', () => {
-  process.chdir(__dirname+ '/ttt');
+  process.chdir(WORK_DIR);
 });
 
 gulp.task('git-clone', (cb) => {
@@ -92,22 +110,39 @@ gulp.task('git-submodule', (cb) => {
   git.updateSubmodule({ args: '--init' }, cb);
 });
 gulp.task('ch-repodir', () => {
-  process.chdir(__dirname+ '/ttt/myukkurivoice');
+  process.chdir(WORK_REPO_DIR);
 });
 
-gulp.task('npm-install', (cb) => {
-  gulp.src(['./package.json'])
-  .pipe(gulp.dest('./'))
-  .on('end', cb)
-  .pipe(install({
-    npm: '--production'
-  }));
+gulp.task('npm-install', () => {
+  new Promise((resolve, reject) => {
+    gulp.src(['./package.json'])
+    .pipe(gulp.dest('./'))
+    .on('error', reject)
+    .pipe(install({
+      npm: '--production'
+    }))
+    .on('end', resolve);
+  });
+});
+
+// zip
+gulp.task('zip-app', (cb) => {
+  exec('ditto -c -k --sequesterRsrc --keepParent '+ APP_PACKAGE_NAME+ ' '+ APP_PACKAGE_NAME+ '.zip', (err, stdout, stderr) => {
+    cb(err);
+  });
+});
+
+// open
+gulp.task('open-app', (cb) => {
+  exec('open '+ APP_NAME+ '/'+ APP_PACKAGE_NAME, (err, stdout, stderr) => {
+    cb(err);
+  });
 });
 
 // package
-gulp.task('package-release', ['tsc'], (cb) => {
+gulp.task('package-release', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
-    exec(packagerCmd+ ` . MYukkuriVoice \
+    exec(PACKAGER_CMD+ ` . MYukkuriVoice \
             --platform=darwin --arch=x64 --electronVersion=1.7.9 \
             --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
             --ignore="^/js/apps.spec.js" \
@@ -337,9 +372,9 @@ gulp.task('package-release', ['tsc'], (cb) => {
   });
 });
 
-gulp.task('package-debug', ['tsc'], (cb) => {
+gulp.task('package-debug', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
-    exec(packagerCmd+ ` . MYukkuriVoice \
+    exec(PACKAGER_CMD+ ` . MYukkuriVoice \
             --platform=darwin --arch=x64 --electronVersion=1.7.9 \
             --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
             --ignore="^/MYukkuriVoice-darwin-x64" \
