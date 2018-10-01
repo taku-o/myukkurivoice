@@ -92,7 +92,7 @@ gulp.task('test-select', ['tsc'], (cb) => {
   }
   runSequence('package-debug', (err) => {
     if (err) { cb(err); }
-    const targets = (argv && argv.t)? t: 'test/*.js';
+    const targets = (argv && argv.t)? argv.t: 'test/*.js';
     gulp.src([targets], {read: false})
       .pipe(mocha({bail: true}))
       .on('end', () => { cb(); });
@@ -174,7 +174,7 @@ gulp.task('npm-install', (cb) => {
   .pipe(gulp.dest('./'))
   .pipe(install({
     npm: '--production'
-  }, cb))
+  }, cb));
 });
 
 // zip
