@@ -20,6 +20,7 @@ const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
 const APP_NAME = 'MYukkuriVoice';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
+// gulp --tasks
 // gulp tsc
 // gulp lint
 // gulp lint-js
@@ -63,7 +64,7 @@ gulp.task('lint-q', ['tsc'], () => {
 gulp.task('test', ['tsc'], (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('package-debug', (err) => {
+      runSequence('_package-debug', (err) => {
         if (err) { cb(err); }
         gulp.src(['test/*.js'], {read: false})
           .pipe(mocha({bail: true}))
@@ -78,7 +79,7 @@ gulp.task('test', ['tsc'], (cb) => {
 });
 
 gulp.task('test-rebuild', ['tsc'], (cb) => {
-  runSequence('package-debug', (err) => {
+  runSequence('_package-debug', (err) => {
     if (err) { cb(err); }
     gulp.src(['test/*.js'], {read: false})
       .pipe(mocha({bail: true}))
@@ -90,7 +91,7 @@ gulp.task('test-select', ['tsc'], (cb) => {
   if (!(argv && argv.t)) {
     cb('test is not selected.'); return;
   }
-  runSequence('package-debug', (err) => {
+  runSequence('_package-debug', (err) => {
     if (err) { cb(err); }
     const targets = (argv && argv.t)? argv.t: 'test/*.js';
     gulp.src([targets], {read: false})
@@ -107,7 +108,7 @@ gulp.task('app', ['tsc'], (cb) => {
 });
 
 // package
-gulp.task('package', ['tsc', 'package-debug']);
+gulp.task('package', ['tsc', '_package-debug']);
 
 // release
 gulp.task('release', (cb) => {
@@ -115,9 +116,9 @@ gulp.task('release', (cb) => {
     cb('branch is selected'); return;
   }
   runSequence(
-    'rm-workdir', 'mk-workdir', 'ch-workdir',
-    'git-clone', 'ch-repodir', 'git-submodule', 'npm-install',
-    'package-release', 'zip-app', 'open-appdir',
+    '_rm-workdir', '_mk-workdir', '_ch-workdir',
+    '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
+    '_package-release', '_zip-app', '_open-appdir',
     (err) => {
       cb(err);
     }
@@ -130,9 +131,9 @@ gulp.task('staging', (cb) => {
     cb('branch is not selected'); return;
   }
   runSequence(
-    'rm-workdir', 'mk-workdir', 'ch-workdir',
-    'git-clone', 'ch-repodir', 'git-submodule', 'npm-install',
-    'package-release', 'zip-app', 'open-appdir',
+    '_rm-workdir', '_mk-workdir', '_ch-workdir',
+    '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
+    '_package-release', '_zip-app', '_open-appdir',
     (err) => {
       cb(err);
     }
@@ -140,36 +141,36 @@ gulp.task('staging', (cb) => {
 });
 
 // workdir
-gulp.task('rm-workdir', (cb) => {
+gulp.task('_rm-workdir', (cb) => {
   rimraf(WORK_DIR, (err) => {
     cb(err);
   });
 });
-gulp.task('mk-workdir', (cb) => {
+gulp.task('_mk-workdir', (cb) => {
   mkdirp(WORK_DIR, (err) => {
     cb(err);
   });
 });
-gulp.task('ch-workdir', () => {
+gulp.task('_ch-workdir', () => {
   process.chdir(WORK_DIR);
 });
 
 // git
-gulp.task('git-clone', (cb) => {
+gulp.task('_git-clone', (cb) => {
   const opts = (argv && argv.branch)? {args: '-b '+argv.branch}: {args: '-b master'};
   git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
     cb(err);
   });
 });
-gulp.task('git-submodule', (cb) => {
+gulp.task('_git-submodule', (cb) => {
   git.updateSubmodule({ args: '--init' }, cb);
 });
-gulp.task('ch-repodir', () => {
+gulp.task('_ch-repodir', () => {
   process.chdir(WORK_REPO_DIR);
 });
 
 // npm
-gulp.task('npm-install', (cb) => {
+gulp.task('_npm-install', (cb) => {
   gulp.src(['./package.json'])
   .pipe(gulp.dest('./'))
   .pipe(install({
@@ -178,21 +179,21 @@ gulp.task('npm-install', (cb) => {
 });
 
 // zip
-gulp.task('zip-app', (cb) => {
+gulp.task('_zip-app', (cb) => {
   exec('ditto -c -k --sequesterRsrc --keepParent '+ APP_PACKAGE_NAME+ ' '+ APP_PACKAGE_NAME+ '.zip', (err, stdout, stderr) => {
     cb(err);
   });
 });
 
 // open
-gulp.task('open-appdir', (cb) => {
+gulp.task('_open-appdir', (cb) => {
   exec('open '+ APP_PACKAGE_NAME, (err, stdout, stderr) => {
     cb(err);
   });
 });
 
 // package
-gulp.task('package-release', (cb) => {
+gulp.task('_package-release', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
             --platform=darwin --arch=x64 --electronVersion=1.7.9 \
@@ -421,7 +422,7 @@ gulp.task('package-release', (cb) => {
   });
 });
 
-gulp.task('package-debug', (cb) => {
+gulp.task('_package-debug', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
             --platform=darwin --arch=x64 --electronVersion=1.7.9 \
