@@ -2,10 +2,12 @@ const argv = require('yargs').argv;
 const del = require('del');
 const eslint = require("gulp-eslint");
 const exec = require('child_process').exec;
+const fs = require('fs');
 const git = require('gulp-git');
 const gulp = require("gulp");
 const install = require("gulp-install");
 const mkdirp = require('mkdirp');
+const mocha = require('gulp-mocha');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
 const ts = require("gulp-typescript");
@@ -18,26 +20,20 @@ const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
 const APP_NAME = 'MYukkuriVoice';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
-//    "test": "sh bin/test.sh",
-//    "test_rebuild": "sh bin/test_rebuild.sh",
-//    "rtest": "sh bin/test_rebuild.sh",
-//    "release": "sh bin/release.sh",
-//    "staging": "sh bin/staging.sh",
-//    "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
+// gulp tsc
+// gulp lint
+// gulp lint-js
+// gulp lint-q
+// gulp test
+// gulp test-rebuild
+// gulp test-select --t=test/mainWindow.js
+// gulp app
+// gulp package
+// gulp release
+// gulp staging --branch=develop
 
-
-
-
-gulp.task("default", (cb) => {
-  runSequence(
-    'ch-repodir',
-    'package-release',
-    'open-appdir',
-    (err) => {
-      cb(err);
-    }
-  );
-});
+// default task
+gulp.task("default", ['tsc', 'lint-q', 'test-rebuild']);
 
 // tsc
 gulp.task("tsc", () => {
@@ -63,6 +59,46 @@ gulp.task('lint-q', ['tsc'], () => {
     .pipe(eslint.format());
 });
 
+// test
+gulp.task('test', ['tsc'], (cb) => {
+  fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
+    if (err) {
+      runSequence('package-debug', (err) => {
+        if (err) { cb(err); }
+        gulp.src(['test/*.js'], {read: false})
+          .pipe(mocha({bail: true}))
+          .on('end', () => { cb(); });
+      });
+    } else {
+      gulp.src(['test/*.js'], {read: false})
+        .pipe(mocha({bail: true}))
+        .on('end', () => { cb(); });
+    }
+  });
+});
+
+gulp.task('test-rebuild', ['tsc'], (cb) => {
+  runSequence('package-debug', (err) => {
+    if (err) { cb(err); }
+    gulp.src(['test/*.js'], {read: false})
+      .pipe(mocha({bail: true}))
+      .on('end', () => { cb(); });
+  });
+});
+
+gulp.task('test-select', ['tsc'], (cb) => {
+  if (!(argv && argv.t)) {
+    cb('test is not selected.'); return;
+  }
+  runSequence('package-debug', (err) => {
+    if (err) { cb(err); }
+    const targets = (argv && argv.t)? t: 'test/*.js';
+    gulp.src([targets], {read: false})
+      .pipe(mocha({bail: true}))
+      .on('end', () => { cb(); });
+  });
+});
+
 // run app
 gulp.task('app', ['tsc'], (cb) => {
   exec(ELECTRON_CMD+ ' .', (err, stdout, stderr) => {
@@ -75,6 +111,9 @@ gulp.task('package', ['tsc', 'package-debug']);
 
 // release
 gulp.task('release', (cb) => {
+  if (argv && argv.branch) {
+    cb('branch is selected'); return;
+  }
   runSequence(
     'rm-workdir', 'mk-workdir', 'ch-workdir',
     'git-clone', 'ch-repodir', 'git-submodule', 'npm-install',
@@ -85,6 +124,22 @@ gulp.task('release', (cb) => {
   );
 });
 
+// staging
+gulp.task('staging', (cb) => {
+  if (!(argv && argv.branch)) {
+    cb('branch is not selected'); return;
+  }
+  runSequence(
+    'rm-workdir', 'mk-workdir', 'ch-workdir',
+    'git-clone', 'ch-repodir', 'git-submodule', 'npm-install',
+    'package-release', 'zip-app', 'open-appdir',
+    (err) => {
+      cb(err);
+    }
+  );
+});
+
+// workdir
 gulp.task('rm-workdir', (cb) => {
   rimraf(WORK_DIR, (err) => {
     cb(err);
@@ -99,6 +154,7 @@ gulp.task('ch-workdir', () => {
   process.chdir(WORK_DIR);
 });
 
+// git
 gulp.task('git-clone', (cb) => {
   const opts = (argv && argv.branch)? {args: '-b '+argv.branch}: {args: '-b master'};
   git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
@@ -112,6 +168,7 @@ gulp.task('ch-repodir', () => {
   process.chdir(WORK_REPO_DIR);
 });
 
+// npm
 gulp.task('npm-install', (cb) => {
   gulp.src(['./package.json'])
   .pipe(gulp.dest('./'))
@@ -135,19 +192,6 @@ gulp.task('open-appdir', (cb) => {
 });
 
 // package
-gulp.task('package-n', (cb) => {
-  del(['MYukkuriVoice-darwin-x64']).then(() => {
-    exec(PACKAGER_CMD+ ` . MYukkuriVoice \
-            --platform=darwin --arch=x64 --electronVersion=1.7.9 \
-            --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor `
-          , (err, stdout, stderr) => {
-            cb(err);
-          }
-    );
-  });
-});
-
-
 gulp.task('package-release', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
@@ -160,7 +204,6 @@ gulp.task('package-release', (cb) => {
             --ignore="^/\\.git$" \
             --ignore="^/\\.gitignore$" \
             --ignore="^/\\.gitmodules$" \
-            --ignore="^/bin" \
             --ignore="^/docs" \
             --ignore="^/icns" \
             --ignore="^/test" \
@@ -173,8 +216,6 @@ gulp.task('package-release', (cb) => {
             --ignore="^/tsconfig.json$" \
             --ignore="^/.+\\.ts$" \
             --ignore="^/js/.+\\.ts$" \
-            --ignore="^/Gemfile$" \
-            --ignore="^/Gemfile.lock$" \
             --ignore="^/gulpfile.js$" \
             --ignore=".DS_Store$" \
             --ignore=".babelrc$" \
@@ -390,7 +431,6 @@ gulp.task('package-debug', (cb) => {
             --ignore="^/\\.git$" \
             --ignore="^/\\.gitignore$" \
             --ignore="^/\\.gitmodules$" \
-            --ignore="^/bin" \
             --ignore="^/docs" \
             --ignore="^/icns" \
             --ignore="^/test" \
@@ -403,8 +443,6 @@ gulp.task('package-debug', (cb) => {
             --ignore="^/tsconfig.json$" \
             --ignore="^/.+\\.ts$" \
             --ignore="^/js/.+\\.ts$" \
-            --ignore="^/Gemfile$" \
-            --ignore="^/Gemfile.lock$" \
             --ignore="^/gulpfile.js$" \
             --ignore=".DS_Store$" \
             --ignore=".babelrc$" \
@@ -609,5 +647,4 @@ gulp.task('package-debug', (cb) => {
     );
   });
 });
-
 
