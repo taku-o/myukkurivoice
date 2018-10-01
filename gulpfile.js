@@ -13,8 +13,8 @@ const tsProject = ts.createProject("tsconfig.json");
 
 const ELECTRON_CMD = 'DEBUG=1 '+ __dirname+ '/node_modules/.bin/electron';
 const PACKAGER_CMD = __dirname+ '/node_modules/.bin/electron-packager';
-const WORK_DIR = __dirname+ '/bin/release';
-const WORK_REPO_DIR = __dirname+ '/bin/release/myukkurivoice';
+const WORK_DIR = __dirname+ '/release';
+const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
 const APP_NAME = 'MYukkuriVoice';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
@@ -31,7 +31,7 @@ const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 gulp.task("default", (cb) => {
   runSequence(
     'ch-repodir',
-    'package-release',
+    'open-appdir',
     (err) => {
       cb(err);
     }
@@ -73,13 +73,11 @@ gulp.task('app', ['tsc'], (cb) => {
 gulp.task('package', ['tsc', 'package-debug']);
 
 // release
-    // zip
-    // open
 gulp.task('release', (cb) => {
   runSequence(
     'rm-workdir', 'mk-workdir', 'ch-workdir',
     'git-clone', 'ch-repodir', 'git-submodule', 'npm-install',
-    'package-release', 'zip-app', 'open-app',
+    'package-release', 'zip-app', 'open-appdir',
     (err) => {
       cb(err);
     }
@@ -113,16 +111,12 @@ gulp.task('ch-repodir', () => {
   process.chdir(WORK_REPO_DIR);
 });
 
-gulp.task('npm-install', () => {
-  new Promise((resolve, reject) => {
-    gulp.src(['./package.json'])
-    .pipe(gulp.dest('./'))
-    .on('error', reject)
-    .pipe(install({
-      npm: '--production'
-    }))
-    .on('end', resolve);
-  });
+gulp.task('npm-install', (cb) => {
+  gulp.src(['./package.json'])
+  .pipe(gulp.dest('./'))
+  .pipe(install({
+    npm: '--production'
+  }, cb))
 });
 
 // zip
@@ -133,8 +127,8 @@ gulp.task('zip-app', (cb) => {
 });
 
 // open
-gulp.task('open-app', (cb) => {
-  exec('open '+ APP_NAME+ '/'+ APP_PACKAGE_NAME, (err, stdout, stderr) => {
+gulp.task('open-appdir', (cb) => {
+  exec('open '+ APP_PACKAGE_NAME, (err, stdout, stderr) => {
     cb(err);
   });
 });
