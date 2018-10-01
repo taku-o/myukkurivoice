@@ -31,6 +31,7 @@ const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 gulp.task("default", (cb) => {
   runSequence(
     'ch-repodir',
+    'package-release',
     'open-appdir',
     (err) => {
       cb(err);
@@ -134,6 +135,19 @@ gulp.task('open-appdir', (cb) => {
 });
 
 // package
+gulp.task('package-n', (cb) => {
+  del(['MYukkuriVoice-darwin-x64']).then(() => {
+    exec(PACKAGER_CMD+ ` . MYukkuriVoice \
+            --platform=darwin --arch=x64 --electronVersion=1.7.9 \
+            --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor `
+          , (err, stdout, stderr) => {
+            cb(err);
+          }
+    );
+  });
+});
+
+
 gulp.task('package-release', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
@@ -142,36 +156,36 @@ gulp.task('package-release', (cb) => {
             --ignore="^/js/apps.spec.js" \
             --ignore="^/contents-spec.html" \
             --ignore="^/MYukkuriVoice-darwin-x64" \
-            --ignore="^/README.md" \
-            --ignore="^/\.git" \
-            --ignore="^/\.gitignore" \
-            --ignore="^/\.gitmodules" \
+            --ignore="^/README.md$" \
+            --ignore="^/\\.git$" \
+            --ignore="^/\\.gitignore$" \
+            --ignore="^/\\.gitmodules$" \
             --ignore="^/bin" \
             --ignore="^/docs" \
             --ignore="^/icns" \
             --ignore="^/test" \
-            --ignore="^/vendor/.gitignore" \
+            --ignore="^/vendor/.gitignore$" \
             --ignore="^/vendor/aqk2k_mac" \
             --ignore="^/vendor/aqtk1-mac" \
             --ignore="^/vendor/aqtk10-mac" \
             --ignore="^/vendor/aqtk2-mac" \
-            --ignore="^/package-lock.json" \
-            --ignore="^/tsconfig.json" \
-            --ignore="^/.+\.ts" \
-            --ignore="^/js/.+\.ts" \
-            --ignore="^/Gemfile" \
-            --ignore="^/Gemfile.lock" \
-            --ignore="^/gulpfile.js" \
-            --ignore=".DS_Store" \
-            --ignore=".babelrc" \
-            --ignore=".editorconfig" \
-            --ignore=".eslintrc" \
-            --ignore=".eslintrc.json" \
-            --ignore=".jshintrc" \
-            --ignore=".npmignore" \
-            --ignore=".prettierrc.json" \
-            --ignore=".stylelintrc.json" \
-            --ignore=".travis.yml" \
+            --ignore="^/package-lock.json$" \
+            --ignore="^/tsconfig.json$" \
+            --ignore="^/.+\\.ts$" \
+            --ignore="^/js/.+\\.ts$" \
+            --ignore="^/Gemfile$" \
+            --ignore="^/Gemfile.lock$" \
+            --ignore="^/gulpfile.js$" \
+            --ignore=".DS_Store$" \
+            --ignore=".babelrc$" \
+            --ignore=".editorconfig$" \
+            --ignore=".eslintrc$" \
+            --ignore=".eslintrc.json$" \
+            --ignore=".jshintrc$" \
+            --ignore=".npmignore$" \
+            --ignore=".prettierrc.json$" \
+            --ignore=".stylelintrc.json$" \
+            --ignore=".travis.yml$" \
             --ignore="^/node_modules/about-window/LICENSE.txt" \
             --ignore="^/node_modules/about-window/README.md" \
             --ignore="^/node_modules/angular-input-highlight/README.md" \
@@ -372,36 +386,36 @@ gulp.task('package-debug', (cb) => {
             --platform=darwin --arch=x64 --electronVersion=1.7.9 \
             --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
             --ignore="^/MYukkuriVoice-darwin-x64" \
-            --ignore="^/README.md" \
-            --ignore="^/\.git" \
-            --ignore="^/\.gitignore" \
-            --ignore="^/\.gitmodules" \
+            --ignore="^/README.md$" \
+            --ignore="^/\\.git$" \
+            --ignore="^/\\.gitignore$" \
+            --ignore="^/\\.gitmodules$" \
             --ignore="^/bin" \
             --ignore="^/docs" \
             --ignore="^/icns" \
             --ignore="^/test" \
-            --ignore="^/vendor/.gitignore" \
+            --ignore="^/vendor/.gitignore$" \
             --ignore="^/vendor/aqk2k_mac" \
             --ignore="^/vendor/aqtk1-mac" \
             --ignore="^/vendor/aqtk10-mac" \
             --ignore="^/vendor/aqtk2-mac" \
-            --ignore="^/package-lock.json" \
-            --ignore="^/tsconfig.json" \
-            --ignore="^/.+\.ts" \
-            --ignore="^/js/.+\.ts" \
-            --ignore="^/Gemfile" \
-            --ignore="^/Gemfile.lock" \
-            --ignore="^/gulpfile.js" \
-            --ignore=".DS_Store" \
-            --ignore=".babelrc" \
-            --ignore=".editorconfig" \
-            --ignore=".eslintrc" \
-            --ignore=".eslintrc.json" \
-            --ignore=".jshintrc" \
-            --ignore=".npmignore" \
-            --ignore=".prettierrc.json" \
-            --ignore=".stylelintrc.json" \
-            --ignore=".travis.yml" \
+            --ignore="^/package-lock.json$" \
+            --ignore="^/tsconfig.json$" \
+            --ignore="^/.+\\.ts$" \
+            --ignore="^/js/.+\\.ts$" \
+            --ignore="^/Gemfile$" \
+            --ignore="^/Gemfile.lock$" \
+            --ignore="^/gulpfile.js$" \
+            --ignore=".DS_Store$" \
+            --ignore=".babelrc$" \
+            --ignore=".editorconfig$" \
+            --ignore=".eslintrc$" \
+            --ignore=".eslintrc.json$" \
+            --ignore=".jshintrc$" \
+            --ignore=".npmignore$" \
+            --ignore=".prettierrc.json$" \
+            --ignore=".stylelintrc.json$" \
+            --ignore=".travis.yml$" \
             --ignore="^/node_modules/about-window/LICENSE.txt" \
             --ignore="^/node_modules/about-window/README.md" \
             --ignore="^/node_modules/angular-input-highlight/README.md" \
