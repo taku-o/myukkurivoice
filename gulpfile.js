@@ -1,11 +1,15 @@
-var gulp = require("gulp");
-var ts = require("gulp-typescript");
-var tsProject = ts.createProject("tsconfig.json");
-var eslint = require("gulp-eslint");
-var exec = require('child_process').exec;
-var del = require('del');
-var git = require('gulp-git');
-var argv = require('yargs').argv;
+const argv = require('yargs').argv;
+const del = require('del');
+const eslint = require("gulp-eslint");
+const exec = require('child_process').exec;
+const git = require('gulp-git');
+const gulp = require("gulp");
+const mkdirp = require('mkdirp');
+const rimraf = require('rimraf');
+const runSequence = require('run-sequence');
+const ts = require("gulp-typescript");
+const tsProject = ts.createProject("tsconfig.json");
+const install = require("gulp-install");
 
 //    "test": "sh bin/test.sh",
 //    "test_rebuild": "sh bin/test_rebuild.sh",
@@ -33,25 +37,63 @@ gulp.task('lint', () => {
     .pipe(eslint({ useEslintrc: true }))
     .pipe(eslint.format());
 });
-gulp.task('lint-js', () => {
+gulp.task('lint-js', ['tsc'], () => {
   return gulp.src(['*.js','js/*.js','test/*.js'])
     .pipe(eslint({ useEslintrc: true }))
     .pipe(eslint.format());
 });
-gulp.task('lint-q', () => {
+gulp.task('lint-q', ['tsc'], () => {
   return gulp.src(['*.ts','js/*.ts','test/*.ts','*.js','js/*.js','test/*.js'])
     .pipe(eslint({ useEslintrc: true, quiet: true }))
     .pipe(eslint.format());
 });
 
 // run app
-gulp.task('app', (cb) => {
+gulp.task('app', ['tsc'], (cb) => {
   exec('DEBUG=1 node_modules/.bin/electron .', (err, stdout, stderr) => {
-    console.log(stdout);
-    console.log(stderr);
     cb(err);
   });
 })
+
+gulp.task('release', (cb) => {
+  runSequence('rm-workdir', 'mk-workdir', 'ch-workdir', 'git-clone', 'ch-repodir', 'git-submodule', 'npm-install', (err) => {
+    cb(err);
+  });
+});
+
+gulp.task('rm-workdir', (cb) => {
+  rimraf(__dirname+ '/ttt', (err) => {
+    cb(err);
+  });
+});
+gulp.task('mk-workdir', (cb) => {
+  mkdirp(__dirname+ '/ttt', (err) => {
+    cb(err);
+  });
+});
+gulp.task('ch-workdir', () => {
+  process.chdir(__dirname+ '/ttt');
+});
+
+gulp.task('git-clone', (cb) => {
+  const opts = (argv && argv.branch)? {args: '-b '+argv.branch}: {args: '-b master'};
+  git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
+    cb(err);
+  });
+});
+gulp.task('git-submodule', (cb) => {
+  git.updateSubmodule({ args: '--init' });
+});
+gulp.task('ch-repodir', () => {
+  process.chdir(__dirname+ '/ttt/myukkurivoice');
+});
+
+gulp.task('npm-install', () => {
+  gulp.src(['./package.json'])
+  .pipe(install({
+    npm: '--production'
+  }));
+});
 
 // package
 gulp.task('package', ['tsc'], (cb) => {
@@ -278,28 +320,10 @@ gulp.task('package', ['tsc'], (cb) => {
             --ignore="^/node_modules/xtend/README.md" \
             --ignore="^/node_modules/xtend/test.js"`
           , (err, stdout, stderr) => {
-            console.log(stdout);
-            console.log(stderr);
             cb(err);
           }
     );
   });
-});
-
-gulp.task('release', ['tsc'], (cb) => {
-  process.chdir('./bin/release');
-});
-
-gulp.task('clone', (cb) => {
-  var opts = (argv && argv.branch)? {args: '-b '+argv.branch}: {args: '-b master'};
-  git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
-    if (err) {
-      cb(err);
-    }
-  });
-});
-gulp.task('submodule', () => {
-  git.updateSubmodule({ args: '--init' });
 });
 
 
