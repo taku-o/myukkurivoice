@@ -5,17 +5,17 @@
   "main": "electron.js",
   "types": "types.d.ts",
   "scripts": {
-    "test": "sh bin/test.sh",
-    "test_rebuild": "sh bin/test_rebuild.sh",
-    "rtest": "sh bin/test_rebuild.sh",
-    "package": "sh bin/packaging.sh",
-    "release": "sh bin/release.sh",
-    "staging": "sh bin/staging.sh",
-    "lint": "eslint *.ts js/*.ts test/*.ts",
-    "lint-js": "eslint *.js js/*.js test/*.js",
-    "lint-q": "eslint *.ts js/*.ts test/*.ts *.js js/*.js test/*.js --quiet",
-    "tsc": "tsc",
-    "app": "DEBUG=1 electron .",
+    "test": "gulp test",
+    "rtest": "gulp test-rebuild",
+    "stest": "gulp test-select",
+    "package": "gulp package",
+    "release": "gulp release",
+    "staging": "gulp staging",
+    "lint": "gulp lint",
+    "lint-js": "gulp lint-js",
+    "lint-q": "gulp lint-q",
+    "tsc": "gulp tsc",
+    "app": "gulp app",
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
   },
   "keywords": [
@@ -70,9 +70,17 @@
     "electron": "^1.7.9",
     "electron-packager": "^9.1.0",
     "eslint": "^5.6.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^5.0.0",
+    "gulp-git": "^2.8.0",
+    "gulp-install": "^1.1.0",
+    "gulp-mocha": "^6.0.0",
+    "gulp-typescript": "^5.0.0-alpha.3",
     "mocha": "^4.0.1",
+    "run-sequence": "^2.2.1",
     "spectron": "^3.7.2",
     "typescript": "^3.0.3",
-    "typescript-eslint-parser": "^18.0.0"
+    "typescript-eslint-parser": "^18.0.0",
+    "yargs": "^12.0.2"
   }
 }

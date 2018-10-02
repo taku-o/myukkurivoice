@@ -32,32 +32,33 @@
 ```
   npm install
   git submodule update --init
+  npm install -g gulp-cli
 ```
 
 * ソースコードを修正します。ソースコードはtypescriptで記載されています。
 * tscコマンドでtypescriptをビルドします。
 
 ```
-  npm run tsc
+  gulp tsc
 ```
 
 * 次のコマンドでElectronアプリをビルドします。
 
 ```
-  npm run package
+  gulp package
 ```
 
 * デバッグモードで動かして、動作を確認しましょう。
 
 ```
-  npm run app
+  gulp app
 ```
 
 ## リリース
 * リリース用のアプリケーションを作成するにはリリース用のコマンドを実行します。
 
 ```
-  npm run release
+  gulp release
 ```
 
 ## 開発テスト
@@ -65,7 +66,7 @@
 * stagingコマンドで特定のブランチを指定して、ビルドできます。
 
 ```
-  npm run staging -- develop
+  gulp staging --branch=develop
 ```
 
 ### 単体テスト
@@ -74,17 +75,17 @@
 
 ```
   # build app, and run test
-  npm run test_rebuild
+  gulp test-rebuild
   
   # run test already built app
-  npm run test
+  gulp test
 ```
 
 ### Lint
 * Lintツールは次のコマンドで実行できます。
 
 ```
-  npm run lint
+  gulp lint
 ```
 
 ### devtron
@@ -109,13 +110,6 @@ require('devtron').install()
   nvm ls-remote
   nvm install v8.2.1
   nvm use v8.2.1
-```
-
-## install capistrano
-
-```
-  gem install bundler
-  bundle install
 ```
 
 ### Module version mismatch. Expected 50, got 51

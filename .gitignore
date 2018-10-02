@@ -1,7 +1,6 @@
 .DS_Store
 Thumbs.db
-/bin/release/log/
-/bin/release/myukkurivoice/
+/release/
 /MYukkuriVoice-darwin-x64/
 !/node_modules/bindings/
 !/node_modules/debug/
