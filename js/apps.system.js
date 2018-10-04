@@ -1,11 +1,11 @@
 "use strict";
-var ipcRenderer = require('electron').ipcRenderer;
-var log = require('electron-log');
+var _ipcRenderer, ipcRenderer = function () { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _log, log = function () { _log = _log || require('electron-log'); return _log; };
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
-    log.error('system:event:uncaughtException');
-    log.error(err);
-    log.error(err.stack);
+    log().error('system:event:uncaughtException');
+    log().error(err);
+    log().error(err.stack);
 });
 // application config app
 angular.module('yvoiceSystem', ['yvoiceLicenseService'])
@@ -40,9 +40,9 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
                 'passPhrase': $scope.appCfg.passPhrase,
                 'aq10UseKeyEncrypted': aq10UseKeyEncrypted
             };
-            ipcRenderer.send('updateAppConfig', options);
+            ipcRenderer().send('updateAppConfig', options);
         };
         ctrl.reset = function () {
-            ipcRenderer.send('resetAppConfig', '');
+            ipcRenderer().send('resetAppConfig', '');
         };
     }]);

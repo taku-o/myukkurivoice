@@ -1,5 +1,5 @@
 // (UI dependecy contains)
-var ipcRenderer = require('electron').ipcRenderer;
+var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // angular directive
 angular.module('yvoiceDirective', [])
@@ -32,7 +32,7 @@ angular.module('yvoiceDirective', [])
         }
         f = (e) => {
           e.preventDefault();
-          ipcRenderer.send('ondragstartwav', wavFilePath);
+          ipcRenderer().send('ondragstartwav', wavFilePath);
           return false;
         };
         el.addEventListener('dragstart', f, false);

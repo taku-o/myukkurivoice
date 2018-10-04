@@ -1,6 +1,6 @@
 "use strict";
-var exec = require('child_process').exec;
-var cryptico = require('cryptico.js');
+var _exec, exec = function () { _exec = _exec || require('child_process').exec; return _exec; };
+var _cryptico, cryptico = function () { _cryptico = _cryptico || require('cryptico.js'); return _cryptico; };
 var app = require('electron').remote.app;
 var appPath = app.getAppPath();
 var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
@@ -11,15 +11,15 @@ angular.module('yvoiceLicenseService', [])
         // encrypt decrypt
         var encrypt = function (passPhrase, plainKey) {
             var bits = 1024;
-            var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
-            var mattsPublicKeyString = cryptico.publicKeyString(mattsRSAkey);
-            var encryptionResult = cryptico.encrypt(plainKey, mattsPublicKeyString);
+            var mattsRSAkey = cryptico().generateRSAKey(passPhrase, bits);
+            var mattsPublicKeyString = cryptico().publicKeyString(mattsRSAkey);
+            var encryptionResult = cryptico().encrypt(plainKey, mattsPublicKeyString);
             return encryptionResult.cipher;
         };
         var decrypt = function (passPhrase, encryptedKey) {
             var bits = 1024;
-            var mattsRSAkey = cryptico.generateRSAKey(passPhrase, bits);
-            var decryptionResult = cryptico.decrypt(encryptedKey, mattsRSAkey);
+            var mattsRSAkey = cryptico().generateRSAKey(passPhrase, bits);
+            var decryptionResult = cryptico().decrypt(encryptedKey, mattsRSAkey);
             //if (decryptionResult.status == 'success' && decryptionResult.signature == 'verified') // why?
             if (decryptionResult.status == 'success') {
                 // ok
@@ -48,14 +48,14 @@ angular.module('yvoiceLicenseService', [])
                 var cmdOptions = {};
                 var secretCmd = unpackedPath + "/vendor/secret";
                 // passPhrase
-                exec(secretCmd + " -key=passPhrase", cmdOptions, function (err, stdout, stderr) {
+                exec()(secretCmd + " -key=passPhrase", cmdOptions, function (err, stdout, stderr) {
                     if (err) {
                         d.reject(err);
                         return;
                     }
                     var devPassPhrase = stdout;
                     // licenseKey
-                    exec(secretCmd + " -key=" + licenseType, cmdOptions, function (err, stdout, stderr) {
+                    exec()(secretCmd + " -key=" + licenseType, cmdOptions, function (err, stdout, stderr) {
                         if (err) {
                             d.reject(err);
                             return;

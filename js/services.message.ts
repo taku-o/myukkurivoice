@@ -1,4 +1,4 @@
-var path = require('path');
+var _path, path = () => { _path = _path || require('path'); return _path; };
 
 // angular message service
 angular.module('yvoiceMessageService', [])
@@ -13,7 +13,7 @@ angular.module('yvoiceMessageService', [])
         $rootScope.$broadcast('message', post);
       },
       record: function(message: string, wavFilePath: string): void {
-        const wavFileName = path.basename(wavFilePath);
+        const wavFileName = path().basename(wavFilePath);
         const post: yubo.IRecordMessage = {
           created: new Date(),
           body: message,
