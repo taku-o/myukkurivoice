@@ -1,23 +1,23 @@
 const argv = require('yargs').argv;
 const del = require('del');
-const eslint = require("gulp-eslint");
+const eslint = require('gulp-eslint');
 const exec = require('child_process').exec;
 const fs = require('fs');
 const git = require('gulp-git');
-const gulp = require("gulp");
-const install = require("gulp-install");
+const gulp = require('gulp');
+const install = require('gulp-install');
 const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
-const ts = require("gulp-typescript");
-const tsProject = ts.createProject("tsconfig.json");
+const ts = require('gulp-typescript');
+
+const tsProject = ts.createProject('tsconfig.json');
 
 const ELECTRON_CMD = 'DEBUG=1 '+ __dirname+ '/node_modules/.bin/electron';
 const PACKAGER_CMD = __dirname+ '/node_modules/.bin/electron-packager';
 const WORK_DIR = __dirname+ '/release';
 const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
-const APP_NAME = 'MYukkuriVoice';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
 // gulp --tasks
@@ -25,22 +25,22 @@ const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 // gulp lint
 // gulp lint-js
 // gulp lint-q
-// gulp test
-// gulp test-rebuild
-// gulp test-select --t=test/mainWindow.js
+// gulp test [--t=test/mainWindow.js]
+// gulp test-rebuild [--t=test/mainWindow.js]
 // gulp app
 // gulp package
 // gulp release
 // gulp staging --branch=develop
 
 // default task
-gulp.task("default", ['tsc', 'lint-q', 'test-rebuild']);
+gulp.task('default', () => {
+});
 
 // tsc
-gulp.task("tsc", () => {
+gulp.task('tsc', () => {
   return tsProject.src()
     .pipe(tsProject())
-    .js.pipe(gulp.dest("."));
+    .js.pipe(gulp.dest('.'));
 });
 
 // lint
@@ -64,40 +64,26 @@ gulp.task('lint-q', ['tsc'], () => {
 gulp.task('test', ['tsc'], (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('_package-debug', (err) => {
-        if (err) { cb(err); return; }
-        gulp.src(['test/*.js'], {read: false})
-          .pipe(mocha({bail: true}))
-          .on('end', () => { cb(); });
+      runSequence('_package-debug', '_test', (err) => {
+        cb(err);
       });
     } else {
-      gulp.src(['test/*.js'], {read: false})
-        .pipe(mocha({bail: true}))
-        .on('end', () => { cb(); });
+      runSequence('_test', (err) => {
+        cb(err);
+      });
     }
   });
 });
-
 gulp.task('test-rebuild', ['tsc'], (cb) => {
-  runSequence('_package-debug', (err) => {
-    if (err) { cb(err); return; }
-    gulp.src(['test/*.js'], {read: false})
-      .pipe(mocha({bail: true}))
-      .on('end', () => { cb(); });
+  runSequence('_package-debug', '_test', (err) => {
+    cb(err);
   });
 });
-
-gulp.task('test-select', ['tsc'], (cb) => {
-  if (!(argv && argv.t)) {
-    cb('test is not selected.'); return;
-  }
-  runSequence('_package-debug', (err) => {
-    if (err) { cb(err); return; }
-    const targets = (argv && argv.t)? argv.t: 'test/*.js';
-    gulp.src([targets], {read: false})
-      .pipe(mocha({bail: true}))
-      .on('end', () => { cb(); });
-  });
+gulp.task('_test', (cb) => {
+  const targets = (argv && argv.t)? argv.t: 'test/*.js';
+  gulp.src([targets], {read: false})
+    .pipe(mocha({bail: true}))
+    .on('end', () => { cb(); });
 });
 
 // run app
