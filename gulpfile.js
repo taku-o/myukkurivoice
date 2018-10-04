@@ -65,7 +65,7 @@ gulp.task('test', ['tsc'], (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
       runSequence('_package-debug', (err) => {
-        if (err) { cb(err); }
+        if (err) { cb(err); return; }
         gulp.src(['test/*.js'], {read: false})
           .pipe(mocha({bail: true}))
           .on('end', () => { cb(); });
@@ -80,7 +80,7 @@ gulp.task('test', ['tsc'], (cb) => {
 
 gulp.task('test-rebuild', ['tsc'], (cb) => {
   runSequence('_package-debug', (err) => {
-    if (err) { cb(err); }
+    if (err) { cb(err); return; }
     gulp.src(['test/*.js'], {read: false})
       .pipe(mocha({bail: true}))
       .on('end', () => { cb(); });
@@ -92,7 +92,7 @@ gulp.task('test-select', ['tsc'], (cb) => {
     cb('test is not selected.'); return;
   }
   runSequence('_package-debug', (err) => {
-    if (err) { cb(err); }
+    if (err) { cb(err); return; }
     const targets = (argv && argv.t)? argv.t: 'test/*.js';
     gulp.src([targets], {read: false})
       .pipe(mocha({bail: true}))
