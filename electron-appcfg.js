@@ -1,7 +1,7 @@
 'use strict';
 exports.__esModule = true;
-var crypto = require("crypto");
-var Config = require("electron-config");
+var _crypto, crypto = function () { _crypto = _crypto || require('crypto'); return _crypto; };
+var _Config, Config = function () { _Config = _Config || require('electron-config'); return _Config; };
 // load
 function loadAppConfig() {
     var appCfg = {
@@ -11,12 +11,12 @@ function loadAppConfig() {
         audioServVer: 'webaudioapi',
         showMsgPane: true,
         acceptFirstMouse: false,
-        passPhrase: crypto.randomBytes(16).toString('hex'),
+        passPhrase: crypto().randomBytes(16).toString('hex'),
         aq10UseKeyEncrypted: '',
         debug: process.env.DEBUG != null,
         isTest: process.env.NODE_ENV == 'test'
     };
-    var config = new Config();
+    var config = new (Config())();
     ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function (k) {
         if (config.has(k)) {
             appCfg[k] = config.get(k);
@@ -54,7 +54,7 @@ function resetAppConfig() {
     this.config.set('audioServVer', 'webaudioapi');
     this.config.set('showMsgPane', true);
     this.config.set('acceptFirstMouse', false);
-    this.config.set('passPhrase', crypto.randomBytes(16).toString('hex'));
+    this.config.set('passPhrase', crypto().randomBytes(16).toString('hex'));
     this.config.set('aq10UseKeyEncrypted', '');
     ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach(function (k) {
         if (myApp.config.has(k)) {

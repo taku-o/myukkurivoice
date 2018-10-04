@@ -1,7 +1,7 @@
 'use strict';
 import {app,dialog,ipcMain} from 'electron';
-import * as log from 'electron-log';
-import * as path from 'path';
+var _log, log   = () => { _log = _log || require('electron-log'); return _log; };
+var _path, path = () => { _path = _path || require('path'); return _path; };
 
 import * as Menu from './electron-menu';
 import * as Pane from './electron-window';
@@ -38,9 +38,9 @@ myApp.loadAppConfig();
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
-  log.error('electron:event:uncaughtException');
-  log.error(err);
-  log.error(err.stack);
+  log().error('electron:event:uncaughtException');
+  log().error(err);
+  log().error(err.stack);
   app.quit();
 });
 
@@ -96,7 +96,7 @@ ipcMain.on('showDirDialog', (event, defaultPath) => {
 
 // drag out wav file
 ipcMain.on('ondragstartwav', (event, filePath) => {
-  const imgPath = path.join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
+  const imgPath = path().join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
   event.sender.startDrag({
     file: filePath,
     icon: imgPath,

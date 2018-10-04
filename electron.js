@@ -1,8 +1,8 @@
 'use strict';
 exports.__esModule = true;
 var electron_1 = require("electron");
-var log = require("electron-log");
-var path = require("path");
+var _log, log = function () { _log = _log || require('electron-log'); return _log; };
+var _path, path = function () { _path = _path || require('path'); return _path; };
 var Menu = require("./electron-menu");
 var Pane = require("./electron-window");
 var AppConfig = require("./electron-appcfg");
@@ -34,9 +34,9 @@ if (process.env.NODE_ENV == 'test' && process.env.userData) {
 myApp.loadAppConfig();
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
-    log.error('electron:event:uncaughtException');
-    log.error(err);
-    log.error(err.stack);
+    log().error('electron:event:uncaughtException');
+    log().error(err);
+    log().error(err.stack);
     electron_1.app.quit();
 });
 // Quit when all windows are closed.
@@ -85,7 +85,7 @@ electron_1.ipcMain.on('showDirDialog', function (event, defaultPath) {
 });
 // drag out wav file
 electron_1.ipcMain.on('ondragstartwav', function (event, filePath) {
-    var imgPath = path.join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
+    var imgPath = path().join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
     event.sender.startDrag({
         file: filePath,
         icon: imgPath

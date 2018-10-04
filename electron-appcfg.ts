@@ -1,6 +1,6 @@
 'use strict';
-import * as crypto from 'crypto';
-import * as Config from 'electron-config';
+var _crypto, crypto = () => { _crypto = _crypto || require('crypto'); return _crypto; };
+var _Config, Config = () => { _Config = _Config || require('electron-config'); return _Config; };
 
 // load
 function loadAppConfig(): void {
@@ -11,13 +11,13 @@ function loadAppConfig(): void {
     audioServVer: 'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
     acceptFirstMouse: false,
-    passPhrase: crypto.randomBytes(16).toString('hex'),
+    passPhrase: crypto().randomBytes(16).toString('hex'),
     aq10UseKeyEncrypted: '',
     debug: process.env.DEBUG != null,
     isTest: process.env.NODE_ENV == 'test',
   };
 
-  const config = new Config() as yubo.ElectronConfig;
+  const config = new (Config())() as yubo.ElectronConfig;
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (config.has(k)) { appCfg[k] = config.get(k); }
   });
@@ -52,7 +52,7 @@ function resetAppConfig(): void {
   this.config.set('audioServVer',        'webaudioapi');
   this.config.set('showMsgPane',         true);
   this.config.set('acceptFirstMouse',    false);
-  this.config.set('passPhrase',          crypto.randomBytes(16).toString('hex'));
+  this.config.set('passPhrase',          crypto().randomBytes(16).toString('hex'));
   this.config.set('aq10UseKeyEncrypted', '');
 
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
