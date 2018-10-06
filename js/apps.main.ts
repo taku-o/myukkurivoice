@@ -1,17 +1,17 @@
 var app = require('electron').remote.app;
-var ipcRenderer = require('electron').ipcRenderer;
-var clipboard = require('electron').clipboard;
-var path = require('path');
-var log = require('electron-log');
+var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _clipboard, clipboard     = () => { _clipboard = _clipboard || require('electron').clipboard; return _clipboard; };
+var _path, path               = () => { _path = _path || require('path'); return _path; };
+var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 
 // application settings
 var desktopDir = app.getPath('desktop');
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
-  log.error('main:event:uncaughtException');
-  log.error(err);
-  log.error(err.stack);
+  log().error('main:event:uncaughtException');
+  log().error(err);
+  log().error(err.stack);
 });
 
 // angular app
@@ -51,7 +51,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     });
 
     // shortcut
-    ipcRenderer.on('shortcut', (event, action: string) => {
+    ipcRenderer().on('shortcut', (event, action: string) => {
       switch (action) {
         case 'play':
           document.getElementById('play').click();
@@ -105,7 +105,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     });
 
     // menu
-    ipcRenderer.on('menu', (event, action: string) => {
+    ipcRenderer().on('menu', (event, action: string) => {
       switch (action) {
         case 'clear':
           document.getElementById('clear').click();
@@ -450,7 +450,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
       // 通常保存
       } else {
-        ipcRenderer.once('showSaveDialog', (event, filePath) => {
+        ipcRenderer().once('showSaveDialog', (event, filePath) => {
           if (!filePath) {
             MessageService.error('保存先が指定されませんでした。');
             return;
@@ -490,7 +490,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             });
           });
         });
-        ipcRenderer.send('showSaveDialog', 'wav');
+        ipcRenderer().send('showSaveDialog', 'wav');
       }
     };
     function recordSolo(cinput, filePath): ng.IPromise<string> {
@@ -594,7 +594,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
       SeqFNameService.nextNumber(dir, fnameprefix).then((nextNum) => {
         const nextFname = SeqFNameService.nextFname(fnameprefix, nextNum);
-        const filePath = path.join(dir, nextFname);
+        const filePath = path().join(dir, nextFname);
 
         AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
           return AudioService.record(filePath, bufWav, playOptions).then(() => {
@@ -614,15 +614,15 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     }
     ctrl.showSystemWindow = function(): void {
       if (!appCfg.isTest) { return; }
-      ipcRenderer.send('showSystemWindow', 'system');
+      ipcRenderer().send('showSystemWindow', 'system');
     };
     ctrl.showSpecWindow = function(): void {
       if (!appCfg.isTest) { return; }
-      ipcRenderer.send('showSpecWindow', 'spec');
+      ipcRenderer().send('showSpecWindow', 'spec');
     };
     ctrl.help = function(): void {
       MessageService.action('open help window.');
-      ipcRenderer.send('showHelpWindow', 'help');
+      ipcRenderer().send('showHelpWindow', 'help');
     };
     ctrl.tutorial = function(): void {
       if ($scope.display == 'main') {
@@ -721,7 +721,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     };
     ctrl.fromClipboard = function(): void {
       MessageService.action('paste clipboard text to source.');
-      const text = clipboard.readText();
+      const text = clipboard().readText();
       if (text) {
         $scope.yinput.source = text;
         $scope.yinput.encoded = '';
@@ -775,7 +775,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         return;
       }
 
-      ipcRenderer.once('showDirDialog', (event, dirs) => {
+      ipcRenderer().once('showDirDialog', (event, dirs) => {
         if (!dirs || dirs.length < 1) {
           return;
         }
@@ -784,7 +784,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
       let optDir = $scope.yvoice.seqWriteOptions.dir;
       if (!optDir) { optDir = desktopDir; }
-      ipcRenderer.send('showDirDialog', optDir);
+      ipcRenderer().send('showDirDialog', optDir);
     };
 
     ctrl.switchSettingsView = function(): void {
@@ -798,9 +798,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
     ctrl.switchAlwaysOnTop = function(): void {
       MessageService.action('switch alwaysOnTop option.');
-      ipcRenderer.send('switchAlwaysOnTop', 'mainWindow');
+      ipcRenderer().send('switchAlwaysOnTop', 'mainWindow');
     };
-    ipcRenderer.on('switchAlwaysOnTop', (event, newflg) => {
+    ipcRenderer().on('switchAlwaysOnTop', (event, newflg) => {
       $scope.alwaysOnTop = newflg;
       MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
       $timeout(() => { $scope.$apply(); });

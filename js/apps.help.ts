@@ -1,15 +1,15 @@
 var app = require('electron').remote.app;
-var ipcRenderer = require('electron').ipcRenderer;
-var shell = require('electron').shell;
-var log = require('electron-log');
+var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _shell, shell             = () => { _shell = _shell || require('electron').shell; return _shell; };
+var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 
 var homeDir = app.getPath('home');
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
-  log.error('help:event:uncaughtException');
-  log.error(err);
-  log.error(err.stack);
+  log().error('help:event:uncaughtException');
+  log().error(err);
+  log().error(err.stack);
 });
 
 // help app
@@ -56,7 +56,7 @@ angular.module('yvoiceAppHelp', [])
     });
 
     // shortcut
-    ipcRenderer.on('shortcut', (event, action) => {
+    ipcRenderer().on('shortcut', (event, action) => {
       switch (action) {
         case 'moveToPreviousHelp':
           moveToPreviousHelp();
@@ -93,14 +93,14 @@ angular.module('yvoiceAppHelp', [])
 
     // action
     ctrl.browser = function(url): void {
-      shell.openExternal(url);
+      shell().openExternal(url);
     };
     ctrl.showItemInFolder = function(path): void {
       const expanded = path.replace('$HOME', homeDir);
-      shell.showItemInFolder(expanded);
+      shell().showItemInFolder(expanded);
     };
     ctrl.showSystemWindow = function(): void {
-      ipcRenderer.send('showSystemWindow', 'system');
+      ipcRenderer().send('showSystemWindow', 'system');
     };
   }]);
 

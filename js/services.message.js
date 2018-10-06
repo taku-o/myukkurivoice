@@ -1,5 +1,5 @@
 "use strict";
-var path = require('path');
+var _path, path = function () { _path = _path || require('path'); return _path; };
 // angular message service
 angular.module('yvoiceMessageService', [])
     .factory('MessageService', ['$rootScope', function ($rootScope) {
@@ -13,7 +13,7 @@ angular.module('yvoiceMessageService', [])
                 $rootScope.$broadcast('message', post);
             },
             record: function (message, wavFilePath) {
-                var wavFileName = path.basename(wavFilePath);
+                var wavFileName = path().basename(wavFilePath);
                 var post = {
                     created: new Date(),
                     body: message,

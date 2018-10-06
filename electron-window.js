@@ -1,11 +1,11 @@
 'use strict';
 exports.__esModule = true;
 var electron_1 = require("electron");
-var localShortcut = require("electron-localshortcut");
-var log = require("electron-log");
-var path = require("path");
-var openAboutWindow = require('about-window')["default"];
-var github_version_compare_1 = require("github-version-compare");
+var _localShortcut, localShortcut = function () { _localShortcut = _localShortcut || require('electron-localshortcut'); return _localShortcut; };
+var _log, log = function () { _log = _log || require('electron-log'); return _log; };
+var _path, path = function () { _path = _path || require('path'); return _path; };
+var _openAboutWindow, openAboutWindow = function () { _openAboutWindow = _openAboutWindow || require('about-window')["default"]; return _openAboutWindow; };
+var _Version, Version = function () { _Version = _Version || require('github-version-compare').Version; return _Version; };
 // main window
 function showMainWindow() {
     var myApp = this;
@@ -29,37 +29,37 @@ function showMainWindow() {
     });
     this.mainWindow.loadURL("file://" + __dirname + "/contents-main.html");
     // shortcut
-    localShortcut.register(this.mainWindow, 'Command+Q', function () {
+    localShortcut().register(this.mainWindow, 'Command+Q', function () {
         electron_1.app.quit();
     });
-    localShortcut.register(this.mainWindow, 'Command+P', function () {
+    localShortcut().register(this.mainWindow, 'Command+P', function () {
         myApp.mainWindow.webContents.send('shortcut', 'play');
     });
-    localShortcut.register(this.mainWindow, 'Command+W', function () {
+    localShortcut().register(this.mainWindow, 'Command+W', function () {
         myApp.mainWindow.webContents.send('shortcut', 'stop');
     });
-    localShortcut.register(this.mainWindow, 'Command+S', function () {
+    localShortcut().register(this.mainWindow, 'Command+S', function () {
         myApp.mainWindow.webContents.send('shortcut', 'record');
     });
-    localShortcut.register(this.mainWindow, 'Command+Up', function () {
+    localShortcut().register(this.mainWindow, 'Command+Up', function () {
         myApp.mainWindow.webContents.send('shortcut', 'moveToSource');
     });
-    localShortcut.register(this.mainWindow, 'Command+Down', function () {
+    localShortcut().register(this.mainWindow, 'Command+Down', function () {
         myApp.mainWindow.webContents.send('shortcut', 'moveToEncoded');
     });
-    localShortcut.register(this.mainWindow, 'Command+Right', function () {
+    localShortcut().register(this.mainWindow, 'Command+Right', function () {
         myApp.mainWindow.webContents.send('shortcut', 'encode');
     });
-    localShortcut.register(this.mainWindow, 'Command+D', function () {
+    localShortcut().register(this.mainWindow, 'Command+D', function () {
         myApp.mainWindow.webContents.send('shortcut', 'fromClipboard');
     });
-    localShortcut.register(this.mainWindow, 'Command+N', function () {
+    localShortcut().register(this.mainWindow, 'Command+N', function () {
         myApp.mainWindow.webContents.send('shortcut', 'putVoiceName');
     });
-    localShortcut.register(this.mainWindow, 'Command+Left', function () {
+    localShortcut().register(this.mainWindow, 'Command+Left', function () {
         myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig');
     });
-    localShortcut.register(this.mainWindow, 'Command+Shift+Left', function () {
+    localShortcut().register(this.mainWindow, 'Command+Shift+Left', function () {
         myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig');
     });
     // main window event
@@ -75,10 +75,10 @@ function showMainWindow() {
         myApp.mainWindow = null;
     });
     this.mainWindow.on('unresponsive', function () {
-        log.warn('main:event:unresponsive');
+        log().warn('main:event:unresponsive');
     });
     this.mainWindow.webContents.on('crashed', function () {
-        log.error('main:event:crashed');
+        log().error('main:event:crashed');
     });
 }
 exports.showMainWindow = showMainWindow;
@@ -105,20 +105,20 @@ function showHelpWindow() {
     });
     this.helpWindow.loadURL("file://" + __dirname + "/contents-help.html");
     // shortcut
-    localShortcut.register(this.helpWindow, 'Command+Q', function () {
+    localShortcut().register(this.helpWindow, 'Command+Q', function () {
         electron_1.app.quit();
     });
-    localShortcut.register(this.helpWindow, 'Command+W', function () {
+    localShortcut().register(this.helpWindow, 'Command+W', function () {
         if (myApp.helpWindow) {
             myApp.helpWindow.close();
         }
     });
-    localShortcut.register(this.helpWindow, 'Up', function () {
+    localShortcut().register(this.helpWindow, 'Up', function () {
         if (myApp.helpWindow) {
             myApp.helpWindow.webContents.send('shortcut', 'moveToPreviousHelp');
         }
     });
-    localShortcut.register(this.helpWindow, 'Down', function () {
+    localShortcut().register(this.helpWindow, 'Down', function () {
         if (myApp.helpWindow) {
             myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp');
         }
@@ -132,10 +132,10 @@ function showHelpWindow() {
         myApp.helpWindow = null;
     });
     this.helpWindow.on('unresponsive', function () {
-        log.warn('help:event:unresponsive');
+        log().warn('help:event:unresponsive');
     });
     this.helpWindow.webContents.on('crashed', function () {
-        log.error('help:event:crashed');
+        log().error('help:event:crashed');
     });
 }
 exports.showHelpWindow = showHelpWindow;
@@ -162,10 +162,10 @@ function showSystemWindow() {
     });
     this.systemWindow.loadURL("file://" + __dirname + "/contents-system.html");
     // shortcut
-    localShortcut.register(this.systemWindow, 'Command+Q', function () {
+    localShortcut().register(this.systemWindow, 'Command+Q', function () {
         electron_1.app.quit();
     });
-    localShortcut.register(this.systemWindow, 'Command+W', function () {
+    localShortcut().register(this.systemWindow, 'Command+W', function () {
         if (myApp.systemWindow) {
             myApp.systemWindow.close();
         }
@@ -179,26 +179,26 @@ function showSystemWindow() {
         myApp.systemWindow = null;
     });
     this.systemWindow.on('unresponsive', function () {
-        log.warn('system:event:unresponsive');
+        log().warn('system:event:unresponsive');
     });
     this.systemWindow.webContents.on('crashed', function () {
-        log.error('system:event:crashed');
+        log().error('system:event:crashed');
     });
 }
 exports.showSystemWindow = showSystemWindow;
 // about application window
 function showAboutWindow() {
-    var w = openAboutWindow({
-        icon_path: path.join(__dirname, 'img/icon_128x128.png'),
-        css_path: path.join(__dirname, 'css/about.css'),
+    var w = openAboutWindow()({
+        icon_path: path().join(__dirname, 'img/icon_128x128.png'),
+        css_path: path().join(__dirname, 'css/about.css'),
         package_json_dir: __dirname,
         open_devtools: false
     });
     if (this.mainWindow) {
         w.setParentWindow(this.mainWindow);
     }
-    localShortcut.register(w, 'Command+Q', function () { electron_1.app.quit(); });
-    localShortcut.register(w, 'Command+W', function () { w.close(); });
+    localShortcut().register(w, 'Command+Q', function () { electron_1.app.quit(); });
+    localShortcut().register(w, 'Command+W', function () { w.close(); });
 }
 exports.showAboutWindow = showAboutWindow;
 // showVersionDialog
@@ -206,7 +206,7 @@ function showVersionDialog() {
     var _this = this;
     var repository = 'taku-o/myukkurivoice';
     var packagejson = require('./package.json');
-    var version = new github_version_compare_1.Version(repository, packagejson);
+    var version = new (Version())(repository, packagejson);
     version.pull().then(function (version) {
         var message = version.hasLatestVersion() ? '新しいバージョンのアプリがあります' : 'バージョンは最新です';
         var buttons = version.hasLatestVersion() ? ['CLOSE', 'Open Release Page'] : ['OK'];
@@ -223,7 +223,7 @@ function showVersionDialog() {
             electron_1.shell.openExternal(version.latestReleaseUrl);
         }
     })["catch"](function (err) {
-        log.error(err);
+        log().error(err);
         var dialogOptions = {
             type: 'error',
             title: 'application version check error.',

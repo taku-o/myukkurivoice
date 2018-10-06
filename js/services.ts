@@ -1,13 +1,13 @@
-var storage      = require('electron-json-storage');
-var log          = require('electron-log');
-var fs           = require('fs');
-var ffi          = require('ffi');
-var ref          = require('ref');
-var StructType   = require('ref-struct');
-var temp         = require('temp').track();
-var path         = require('path');
-var exec         = require('child_process').exec;
-var WaveRecorder = require('wave-recorder');
+var _storage, storage           = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
+var _log, log                   = () => { _log = _log || require('electron-log'); return _log; };
+var _fs, fs                     = () => { _fs = _fs || require('fs'); return _fs; };
+var _ffi, ffi                   = () => { _ffi = _ffi || require('ffi'); return _ffi; };
+var _ref, ref                   = () => { _ref = _ref || require('ref'); return _ref; };
+var _StructType, StructType     = () => { _StructType = _StructType || require('ref-struct'); return _StructType; };
+var _temp, temp                 = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _path, path                 = () => { _path = _path || require('path'); return _path; };
+var _exec, exec                 = () => { _exec = _exec || require('child_process').exec; return _exec; };
+var _WaveRecorder, WaveRecorder = () => { _WaveRecorder = _WaveRecorder || require('wave-recorder'); return _WaveRecorder; };
 
 var app = require('electron').remote.app;
 var appPath = app.getAppPath();
@@ -25,7 +25,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
     return {
       load: function(): ng.IPromise<yubo.YVoice[]> {
         const d = $q.defer();
-        storage.get('data', function(error: Error, data: yubo.YVoice[]) {
+        storage().get('data', function(error: Error, data: yubo.YVoice[]) {
           if (error) {
             MessageService.syserror('ボイス設定の読込に失敗しました。', error);
             d.reject(error); return;
@@ -54,7 +54,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       },
       save: function(dataList: yubo.YVoice[]): ng.IPromise<boolean> {
         const d = $q.defer();
-        storage.set('data', dataList, function(error: Error) {
+        storage().set('data', dataList, function(error: Error) {
           if (error) {
             MessageService.syserror('ボイス設定の保存に失敗しました。', error);
             d.reject(error); return;
@@ -66,7 +66,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       },
       clear: function(): ng.IPromise<boolean> {
         const d = $q.defer();
-        storage.remove('data', function(error: Error) {
+        storage().remove('data', function(error: Error) {
           if (error) {
             MessageService.syserror('ボイス設定の削除に失敗しました。', error);
             d.reject(error); return;
@@ -88,55 +88,55 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
   }])
   .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
   ($q, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
-    const ptr_void  = ref.refType(ref.types.void);
-    const ptr_int   = ref.refType(ref.types.int);
-    const ptr_char  = ref.refType(ref.types.char);
-    const ptr_uchar = ref.refType(ref.types.uchar);
+    const ptr_void  = ref().refType(ref().types.void);
+    const ptr_int   = ref().refType(ref().types.int);
+    const ptr_char  = ref().refType(ref().types.char);
+    const ptr_uchar = ref().refType(ref().types.uchar);
 
-    const AQTK_VOICE = StructType({
-      bas: ref.types.int,
-      spd: ref.types.int,
-      vol: ref.types.int,
-      pit: ref.types.int,
-      acc: ref.types.int,
-      lmd: ref.types.int,
-      fsc: ref.types.int,
+    const AQTK_VOICE = StructType()({
+      bas: ref().types.int,
+      spd: ref().types.int,
+      vol: ref().types.int,
+      pit: ref().types.int,
+      acc: ref().types.int,
+      lmd: ref().types.int,
+      fsc: ref().types.int,
     });
-    const ptr_AQTK_VOICE = ref.refType(AQTK_VOICE);
+    const ptr_AQTK_VOICE = ref().refType(AQTK_VOICE);
 
     // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
     // void AqKanji2Koe_Release (void * hAqKanji2Koe)
     // int AqKanji2Koe_Convert (void * hAqKanji2Koe, const char *kanji, char *koe, int nBufKoe)
     let frameworkPath = null;
     frameworkPath = `${unpackedPath}/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`;
-    const ptr_AqKanji2Koe_Create  = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
-    const ptr_AqKanji2Koe_Release = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
-    const ptr_AqKanji2Koe_Convert = ffi.DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
-    const fn_AqKanji2Koe_Create   = ffi.ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, ['string', ptr_int]);
-    const fn_AqKanji2Koe_Release  = ffi.ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ptr_void]);
-    const fn_AqKanji2Koe_Convert  = ffi.ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
+    const ptr_AqKanji2Koe_Create  = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
+    const ptr_AqKanji2Koe_Release = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
+    const ptr_AqKanji2Koe_Convert = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
+    const fn_AqKanji2Koe_Create   = ffi().ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, ['string', ptr_int]);
+    const fn_AqKanji2Koe_Release  = ffi().ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ptr_void]);
+    const fn_AqKanji2Koe_Convert  = ffi().ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
 
     // unsigned char * AquesTalk2_Synthe_Utf8(const char *koe, int iSpeed, int * size, void *phontDat)
     // void AquesTalk2_FreeWave (unsigned char *wav)
     frameworkPath = `${unpackedPath}/vendor/AquesTalk2.framework/Versions/A/AquesTalk2`;
-    const ptr_AquesTalk2_Synthe_Utf8 = ffi.DynamicLibrary(frameworkPath).get('AquesTalk2_Synthe_Utf8');
-    const ptr_AquesTalk2_FreeWave    = ffi.DynamicLibrary(frameworkPath).get('AquesTalk2_FreeWave');
-    const fn_AquesTalk2_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, ['string', 'int', ptr_int, ptr_void]);
-    const fn_AquesTalk2_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk2_FreeWave, 'void', [ptr_uchar]);
+    const ptr_AquesTalk2_Synthe_Utf8 = ffi().DynamicLibrary(frameworkPath).get('AquesTalk2_Synthe_Utf8');
+    const ptr_AquesTalk2_FreeWave    = ffi().DynamicLibrary(frameworkPath).get('AquesTalk2_FreeWave');
+    const fn_AquesTalk2_Synthe_Utf8  = ffi().ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, ['string', 'int', ptr_int, ptr_void]);
+    const fn_AquesTalk2_FreeWave     = ffi().ForeignFunction(ptr_AquesTalk2_FreeWave, 'void', [ptr_uchar]);
 
     // unsigned char * AquesTalk_Synthe_Utf8(const AQTK_VOICE *pParam, const char *koe, int *size)
     // void AquesTalk_FreeWave(unsigned char *wav)
     // int AquesTalk_SetDevKey(const char *key)
     // int AquesTalk_SetUsrKey(const char *key)
     frameworkPath = `${unpackedPath}/vendor/AquesTalk10.framework/Versions/A/AquesTalk`;
-    const ptr_AquesTalk10_Synthe_Utf8 = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_Synthe_Utf8');
-    const ptr_AquesTalk10_FreeWave    = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_FreeWave');
-    const ptr_AquesTalk10_SetDevKey   = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_SetDevKey');
-    const ptr_AquesTalk10_SetUsrKey   = ffi.DynamicLibrary(frameworkPath).get('AquesTalk_SetUsrKey');
-    const fn_AquesTalk10_Synthe_Utf8  = ffi.ForeignFunction(ptr_AquesTalk10_Synthe_Utf8, ptr_uchar, [ptr_AQTK_VOICE, 'string', ptr_int]);
-    const fn_AquesTalk10_FreeWave     = ffi.ForeignFunction(ptr_AquesTalk10_FreeWave, 'void', [ptr_uchar]);
-    const fn_AquesTalk10_SetDevKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetDevKey, 'int', ['string']);
-    const fn_AquesTalk10_SetUsrKey    = ffi.ForeignFunction(ptr_AquesTalk10_SetUsrKey, 'int', ['string']);
+    const ptr_AquesTalk10_Synthe_Utf8 = ffi().DynamicLibrary(frameworkPath).get('AquesTalk_Synthe_Utf8');
+    const ptr_AquesTalk10_FreeWave    = ffi().DynamicLibrary(frameworkPath).get('AquesTalk_FreeWave');
+    const ptr_AquesTalk10_SetDevKey   = ffi().DynamicLibrary(frameworkPath).get('AquesTalk_SetDevKey');
+    const ptr_AquesTalk10_SetUsrKey   = ffi().DynamicLibrary(frameworkPath).get('AquesTalk_SetUsrKey');
+    const fn_AquesTalk10_Synthe_Utf8  = ffi().ForeignFunction(ptr_AquesTalk10_Synthe_Utf8, ptr_uchar, [ptr_AQTK_VOICE, 'string', ptr_int]);
+    const fn_AquesTalk10_FreeWave     = ffi().ForeignFunction(ptr_AquesTalk10_FreeWave, 'void', [ptr_uchar]);
+    const fn_AquesTalk10_SetDevKey    = ffi().ForeignFunction(ptr_AquesTalk10_SetDevKey, 'int', ['string']);
+    const fn_AquesTalk10_SetUsrKey    = ffi().ForeignFunction(ptr_AquesTalk10_SetUsrKey, 'int', ['string']);
 
     function errorTable_AqKanji2Koe(code: number): string {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
@@ -194,12 +194,12 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           return '';
         }
 
-        const allocInt = ref.alloc('int');
+        const allocInt = ref().alloc('int');
         const aqKanji2Koe = fn_AqKanji2Koe_Create(`${unpackedPath}/vendor/aq_dic_large`, allocInt);
         const errorCode = allocInt.deref();
         if (errorCode != 0) {
           MessageService.syserror(errorTable_AqKanji2Koe(errorCode));
-          log.warn(`fn_AqKanji2Koe_Create raise error. error_code:${errorTable_AqKanji2Koe(errorCode)}`);
+          log().warn(`fn_AqKanji2Koe_Create raise error. error_code:${errorTable_AqKanji2Koe(errorCode)}`);
           return '';
         }
 
@@ -209,10 +209,10 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         const r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encodedLength);
         if (r != 0) {
           MessageService.syserror(errorTable_AqKanji2Koe(r));
-          log.info(`fn_AqKanji2Koe_Convert raise error. error_code:${errorTable_AqKanji2Koe(r)}`);
+          log().info(`fn_AqKanji2Koe_Convert raise error. error_code:${errorTable_AqKanji2Koe(r)}`);
           return '';
         }
-        const encoded = ref.readCString(buf, 0);
+        const encoded = ref().readCString(buf, 0);
 
         fn_AqKanji2Koe_Release(aqKanji2Koe);
         return encoded;
@@ -228,13 +228,13 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         if (phont.version == 'talk1') {
           // write encoded to tempory file
           const fsprefix = `_myubow${Date.now().toString(36)}`;
-          temp.open(fsprefix, (err: Error, info) => {
+          temp().open(fsprefix, (err: Error, info) => {
             if (err) {
               MessageService.syserror('一時作業ファイルを作れませんでした。', err);
               d.reject(null); return;
             }
 
-          fs.writeFile(info.path, encoded, (err: Error) => {
+          fs().writeFile(info.path, encoded, (err: Error) => {
             if (err) {
               MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
               d.reject(err); return;
@@ -248,9 +248,9 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             encoding: 'binary',
           };
           const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
-          exec(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout, stderr) => {
+          exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout, stderr) => {
             if (err) {
-              log.info(`maquestalk1 failed. ${err}`);
+              log().info(`maquestalk1 failed. ${err}`);
               d.reject(err); return;
             }
             // @ts-ignore
@@ -260,7 +260,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             if (statusCode < 0) {
               const errorCode = statusCode * -1; // maquestalk1 library result
               MessageService.syserror(errorTable_AquesTalk2(errorCode));
-              log.info(`AquesTalk_SyntheMV raise error. error_code:${errorTable_AquesTalk2(errorCode)}`);
+              log().info(`AquesTalk_SyntheMV raise error. error_code:${errorTable_AquesTalk2(errorCode)}`);
             }
           }); // maquestalk1
           }); // fs.writeFile
@@ -268,22 +268,22 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
 
         // version 2
         } else if (phont.version == 'talk2') {
-          fs.readFile(phont.path, (err: Error, phontData) => {
+          fs().readFile(phont.path, (err: Error, phontData) => {
             if (err) {
               MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
               d.reject(err); return;
             }
 
-            const allocInt = ref.alloc('int');
+            const allocInt = ref().alloc('int');
             const r = fn_AquesTalk2_Synthe_Utf8(encoded, speed, allocInt, phontData);
-            if (ref.isNull(r)) {
+            if (ref().isNull(r)) {
               const errorCode = allocInt.deref();
               MessageService.syserror(errorTable_AquesTalk2(errorCode));
-              log.info(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk2(errorCode)}`);
+              log().info(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk2(errorCode)}`);
               d.reject(null); return;
             }
 
-            const bufWav = ref.reinterpret(r, allocInt.deref(), 0);
+            const bufWav = ref().reinterpret(r, allocInt.deref(), 0);
             const managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
             fn_AquesTalk2_FreeWave(r);
             d.resolve(managedBuf);
@@ -335,16 +335,16 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
             const ptr_aqtkVoiceVal = aqtkVoiceVal.ref();
 
             // create wave buffer
-            const allocInt = ref.alloc('int');
+            const allocInt = ref().alloc('int');
             const r = fn_AquesTalk10_Synthe_Utf8(ptr_aqtkVoiceVal, encoded, allocInt);
-            if (ref.isNull(r)) {
+            if (ref().isNull(r)) {
               const errorCode = allocInt.deref();
               MessageService.syserror(errorTable_AquesTalk10(errorCode));
-              log.info(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk10(errorCode)}`);
+              log().info(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk10(errorCode)}`);
               d.reject(null); return;
             }
 
-            const bufWav = ref.reinterpret(r, allocInt.deref(), 0);
+            const bufWav = ref().reinterpret(r, allocInt.deref(), 0);
             const managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
             fn_AquesTalk10_FreeWave(r);
             d.resolve(managedBuf);
@@ -374,13 +374,13 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         }
 
         const fsprefix = `_myubop${Date.now().toString(36)}`;
-        temp.open(fsprefix, (err: Error, info) => {
+        temp().open(fsprefix, (err: Error, info) => {
           if (err) {
             MessageService.syserror('一時作業ファイルを作れませんでした。', err);
             d.reject(null); return;
           }
 
-          fs.writeFile(info.path, bufWav, (err: Error) => {
+          fs().writeFile(info.path, bufWav, (err: Error) => {
             if (err) {
               MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
               d.reject(err); return;
@@ -418,7 +418,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           d.reject(null); return d.promise;
         }
 
-        fs.writeFile(wavFilePath, bufWav, (err: Error) => {
+        fs().writeFile(wavFilePath, bufWav, (err: Error) => {
           if (err) {
             MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
             d.reject(err); return;
@@ -556,11 +556,11 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
           nodeList.push(gainNode);
 
           // recorder
-          const recorder = WaveRecorder(audioCtx, {
+          const recorder = WaveRecorder()(audioCtx, {
             channels: 1,  // 1 or 2
             bitDepth: 16, // 16 or 32
           });
-          recorder.pipe(fs.createWriteStream(wavFilePath));
+          recorder.pipe(fs().createWriteStream(wavFilePath));
 
           // connect
           let lastNode = inSourceNode;
@@ -586,14 +586,14 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
 
     return {
       sourceFname: function(wavFilePath: string): string {
-        const dir = path.dirname(wavFilePath);
-        const basename = path.basename(wavFilePath, waveExt);
+        const dir = path().dirname(wavFilePath);
+        const basename = path().basename(wavFilePath, waveExt);
         const filename = basename + sourceExt;
-        return path.join(dir, filename);
+        return path().join(dir, filename);
       },
       save: function(filePath: string, sourceText: string): ng.IPromise<string> {
         const d = $q.defer();
-        fs.writeFile(filePath, sourceText, 'utf-8', function(err: Error) {
+        fs().writeFile(filePath, sourceText, 'utf-8', function(err: Error) {
           if (err) {
             MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
             d.reject(err); return;
@@ -612,8 +612,8 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
 
     return {
       splitFname: function(filePath: string): {dir: string, basename: string} {
-        const dir = path.dirname(filePath);
-        const basename = path.basename(filePath, ext);
+        const dir = path().dirname(filePath);
+        const basename = path().basename(filePath, ext);
         return {
           dir: dir,
           basename: basename,
@@ -625,7 +625,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
       },
       nextNumber: function(dir: string, prefix: string): ng.IPromise<number> {
         const d = $q.defer();
-        fs.readdir(dir, (err: Error, files) => {
+        fs().readdir(dir, (err: Error, files) => {
           if (err) {
             MessageService.syserror('ディレクトリを参照できませんでした。', err);
             d.reject(err); return;

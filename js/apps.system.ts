@@ -1,11 +1,11 @@
-var ipcRenderer = require('electron').ipcRenderer;
-var log = require('electron-log');
+var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
-  log.error('system:event:uncaughtException');
-  log.error(err);
-  log.error(err.stack);
+  log().error('system:event:uncaughtException');
+  log().error(err);
+  log().error(err.stack);
 });
 
 // application config app
@@ -43,10 +43,10 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
         'passPhrase':$scope.appCfg.passPhrase,
         'aq10UseKeyEncrypted':aq10UseKeyEncrypted,
       };
-      ipcRenderer.send('updateAppConfig', options);
+      ipcRenderer().send('updateAppConfig', options);
     };
     ctrl.reset = function(): void {
-      ipcRenderer.send('resetAppConfig', '');
+      ipcRenderer().send('resetAppConfig', '');
     };
   }]);
 

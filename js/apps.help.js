@@ -1,14 +1,14 @@
 "use strict";
 var app = require('electron').remote.app;
-var ipcRenderer = require('electron').ipcRenderer;
-var shell = require('electron').shell;
-var log = require('electron-log');
+var _ipcRenderer, ipcRenderer = function () { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _shell, shell = function () { _shell = _shell || require('electron').shell; return _shell; };
+var _log, log = function () { _log = _log || require('electron-log'); return _log; };
 var homeDir = app.getPath('home');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
-    log.error('help:event:uncaughtException');
-    log.error(err);
-    log.error(err.stack);
+    log().error('help:event:uncaughtException');
+    log().error(err);
+    log().error(err.stack);
 });
 // help app
 angular.module('yvoiceAppHelp', [])
@@ -51,7 +51,7 @@ angular.module('yvoiceAppHelp', [])
             $timeout(function () { $scope.$apply(); });
         });
         // shortcut
-        ipcRenderer.on('shortcut', function (event, action) {
+        ipcRenderer().on('shortcut', function (event, action) {
             switch (action) {
                 case 'moveToPreviousHelp':
                     moveToPreviousHelp();
@@ -91,13 +91,13 @@ angular.module('yvoiceAppHelp', [])
         }
         // action
         ctrl.browser = function (url) {
-            shell.openExternal(url);
+            shell().openExternal(url);
         };
         ctrl.showItemInFolder = function (path) {
             var expanded = path.replace('$HOME', homeDir);
-            shell.showItemInFolder(expanded);
+            shell().showItemInFolder(expanded);
         };
         ctrl.showSystemWindow = function () {
-            ipcRenderer.send('showSystemWindow', 'system');
+            ipcRenderer().send('showSystemWindow', 'system');
         };
     }]);

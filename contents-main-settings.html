@@ -15,7 +15,7 @@
         <div><small class="label-tuna">AquesTalk10 音声カスタマイズ</small></div>
         <small class="label-tuna">ﾍﾞｰｽ:</small>
         <select ng-model="yvoice.bas" id="voice-qa10-bas">
-          <option ng-repeat="option in aq10BasList" ng-value="option.id">{{option.name}}</option>
+          <option ng-repeat="option in aq10BasList track by option.id" ng-value="option.id">{{option.name}}</option>
         </select>
         <small class="label-tuna">高さ:</small><input type="number" min="20" max="200" step="1" id="voice-aq10-pit" ng-model="yvoice.pit">
         <small class="label-tuna">ｱｸｾﾝﾄ:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-acc" ng-model="yvoice.acc">
