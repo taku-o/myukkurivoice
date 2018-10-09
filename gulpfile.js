@@ -191,7 +191,7 @@ gulp.task('_open-appdir', (cb) => {
 gulp.task('_package-release', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
-            --platform=darwin --arch=x64 --electronVersion=1.7.9 \
+            --platform=darwin --arch=x64 --electronVersion=1.8.8 \
             --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
             --ignore="^/js/apps.spec.js" \
             --ignore="^/contents-spec.html" \
@@ -421,7 +421,7 @@ gulp.task('_package-release', (cb) => {
 gulp.task('_package-debug', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
-            --platform=darwin --arch=x64 --electronVersion=1.7.9 \
+            --platform=darwin --arch=x64 --electronVersion=1.8.8 \
             --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
             --ignore="^/MYukkuriVoice-darwin-x64" \
             --ignore="^/README.md$" \
