@@ -6,6 +6,7 @@ const fs = require('fs');
 const git = require('gulp-git');
 const gulp = require('gulp');
 const install = require('gulp-install');
+const less = require('gulp-less');
 const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
 const rimraf = require('rimraf');
@@ -25,6 +26,7 @@ const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 // gulp lint
 // gulp lint-js
 // gulp lint-q
+// gulp less
 // gulp test [--t=test/mainWindow.js]
 // gulp test-rebuild [--t=test/mainWindow.js]
 // gulp app
@@ -58,6 +60,13 @@ gulp.task('lint-q', ['tsc'], () => {
   return gulp.src(['*.ts','js/*.ts','test/*.ts','*.js','js/*.js','test/*.js'])
     .pipe(eslint({ useEslintrc: true, quiet: true }))
     .pipe(eslint.format());
+});
+
+// less
+gulp.task('less', () => {
+  return gulp.src('css/*.less')
+    .pipe(less())
+    .pipe(gulp.dest('css'));
 });
 
 // test
@@ -203,6 +212,7 @@ gulp.task('_package-release', (cb) => {
             --ignore="^/tsconfig.json$" \
             --ignore="^/.+\\.ts$" \
             --ignore="^/js/.+\\.ts$" \
+            --ignore="^/css/.+\\.less$" \
             --ignore="^/gulpfile.js$" \
             --ignore=".DS_Store$" \
             --ignore=".babelrc$" \
@@ -430,6 +440,7 @@ gulp.task('_package-debug', (cb) => {
             --ignore="^/tsconfig.json$" \
             --ignore="^/.+\\.ts$" \
             --ignore="^/js/.+\\.ts$" \
+            --ignore="^/css/.+\\.less$" \
             --ignore="^/gulpfile.js$" \
             --ignore=".DS_Store$" \
             --ignore=".babelrc$" \
