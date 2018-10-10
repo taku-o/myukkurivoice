@@ -199,7 +199,7 @@ gulp.task('_notify', () => {
   return notifier.notify({
     title: 'gulp-task',
     message: 'finished.',
-    sound: true,
+    sound: 'Glass',
   });
 });
 
