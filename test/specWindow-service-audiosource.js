@@ -2,13 +2,15 @@
 exports.__esModule = true;
 var spectron_1 = require("spectron");
 var assert = require("assert");
+var fs = require("fs");
 var temp = require("temp");
 temp.track();
 describe('specWindow-service-AudioSourceService', function () {
     this.timeout(10000);
+    var dirPath = null;
     before(function () {
         var fsprefix = "_myubo_test" + Date.now().toString(36);
-        var dirPath = temp.mkdirSync(fsprefix);
+        dirPath = temp.mkdirSync(fsprefix);
         this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
             env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
@@ -31,7 +33,6 @@ describe('specWindow-service-AudioSourceService', function () {
     });
     it('sourceFname', function () {
         return this.client
-            // sourceFname
             .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
             .click('#source-fname')
             .getValue('#source-fname-result').then(function (value) {
@@ -39,19 +40,22 @@ describe('specWindow-service-AudioSourceService', function () {
         })["catch"](function (err) {
             assert.fail(err.message);
         });
-        // TODO tmp file
-        // TODO file exists
-        // TODO file content
     });
-    // TODO save(filePath: string, sourceText: string): ng.IPromise<string>;
     it('save', function () {
+        var txtfile = dirPath + "/_myukkurivoice_hogehoge.txt";
         return this.client
-            // save
-            .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')["catch"](function (err) {
+            .setValue('#file-path', txtfile)
+            .setValue('#source-text', 'hogehoge')
+            .click('#save')
+            .waitForValue('#save-result', 5000)
+            .getValue('#save-result').then(function (value) {
+            assert.ok(value);
+            fs.readFile(txtfile, 'utf8', function (err, text) {
+                assert.ok(!err);
+                assert.equal('hogehoge', text);
+            });
+        })["catch"](function (err) {
             assert.fail(err.message);
         });
-        // TODO tmp file
-        // TODO file exists
-        // TODO file content
     });
 });

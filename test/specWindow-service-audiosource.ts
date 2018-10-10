@@ -1,14 +1,16 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 
 describe('specWindow-service-AudioSourceService', function() {
   this.timeout(10000);
 
+  let dirPath = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    const dirPath = temp.mkdirSync(fsprefix);
+    dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -35,7 +37,6 @@ describe('specWindow-service-AudioSourceService', function() {
 
   it('sourceFname', function() {
     return this.client
-      // sourceFname
       .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
       .click('#source-fname')
       .getValue('#source-fname-result').then((value: string) => {
@@ -45,27 +46,25 @@ describe('specWindow-service-AudioSourceService', function() {
       .catch((err: Error) => {
         assert.fail(err.message);
       });
-      // TODO tmp file
-      // TODO file exists
-      // TODO file content
   });
 
-  // TODO save(filePath: string, sourceText: string): ng.IPromise<string>;
   it('save', function() {
+    const txtfile = `${dirPath}/_myukkurivoice_hogehoge.txt`;
     return this.client
-      // save
-      .setValue('#file-path', '/tmp/_myukkurivoice_hogehoge.txt')
-      //.setValue('#source-text', 'hogehoge')
-      //.click('#save')
-      //.getValue('#save-result').then((value: string) => {
-      //  assert.ok(value);
-      //})
+      .setValue('#file-path', txtfile)
+      .setValue('#source-text', 'hogehoge')
+      .click('#save')
+      .waitForValue('#save-result', 5000)
+      .getValue('#save-result').then((value: string) => {
+        assert.ok(value);
+        fs.readFile(txtfile, 'utf8', (err, text) => {
+          assert.ok(!err);
+          assert.equal('hogehoge', text);
+        });
+      })
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
       });
-      // TODO tmp file
-      // TODO file exists
-      // TODO file content
   });
 });
