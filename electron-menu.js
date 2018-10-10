@@ -215,7 +215,6 @@ function initAppMenu(options) {
     ];
     // 表示メニューにToggle Developer Toolsメニューを追加
     if (options.debug) {
-        // @ts-ignore
         menuList[4].submenu.splice(1, 0, { role: 'toggledevtools' });
     }
     // @ts-ignore
