@@ -213,10 +213,19 @@ function initAppMenu(options: {debug: boolean}): void {
       ],
     },
   ];
-  // 表示メニューにToggle Developer Toolsメニューを追加
+  // Debugメニューを追加 (Toggle Developer Tools、Install Devtron)
   if (options.debug) {
-    (menuList[4].submenu as any[]).splice(1, 0,
-      {role: 'toggledevtools'}
+    (menuList as any[]).splice(6, 0,
+      {
+        label: 'Debug',
+        submenu: [
+          {role: 'toggledevtools'},
+          {
+            label: 'Install Devtron',
+            click() { myApp.mainWindow.webContents.send('menu', 'devtron'); },
+          },
+        ],
+      }
     );
   }
   // @ts-ignore

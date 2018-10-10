@@ -141,6 +141,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         case 'tutorial':
           document.getElementById('tutorial').click();
           break;
+        case 'devtron':
+          require('devtron').install();
+          break;
       }
     });
 
