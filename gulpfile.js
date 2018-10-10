@@ -198,7 +198,8 @@ gulp.task('_open-appdir', (cb) => {
 gulp.task('_notify', () => {
   return notifier.notify({
     title: 'gulp-task',
-    message: 'finished.'
+    message: 'finished.',
+    sound: true,
   });
 });
 
