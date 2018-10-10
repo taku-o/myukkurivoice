@@ -9,6 +9,7 @@ const install = require('gulp-install');
 const less = require('gulp-less');
 const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
+const notifier = require('node-notifier');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
 const ts = require('gulp-typescript');
@@ -73,26 +74,25 @@ gulp.task('less', () => {
 gulp.task('test', ['tsc'], (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('_package-debug', '_test', (err) => {
+      runSequence('_package-debug', '_test', '_notify', (err) => {
         cb(err);
       });
     } else {
-      runSequence('_test', (err) => {
+      runSequence('_test', '_notify', (err) => {
         cb(err);
       });
     }
   });
 });
 gulp.task('test-rebuild', ['tsc'], (cb) => {
-  runSequence('_package-debug', '_test', (err) => {
+  runSequence('_package-debug', '_test', '_notify', (err) => {
     cb(err);
   });
 });
-gulp.task('_test', (cb) => {
+gulp.task('_test', () => {
   const targets = (argv && argv.t)? argv.t: 'test/*.js';
-  gulp.src([targets], {read: false})
-    .pipe(mocha({bail: true}))
-    .on('end', () => { cb(); });
+  return gulp.src([targets], {read: false})
+    .pipe(mocha({bail: true}));
 });
 
 // run app
@@ -103,7 +103,14 @@ gulp.task('app', ['tsc'], (cb) => {
 });
 
 // package
-gulp.task('package', ['tsc', '_package-debug']);
+gulp.task('package', (cb) => {
+  runSequence(
+    'tsc', '_package-debug', '_notify',
+    (err) => {
+      cb(err);
+    }
+  );
+});
 
 // release
 gulp.task('release', (cb) => {
@@ -113,7 +120,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_package-release', '_zip-app', '_open-appdir',
+    '_package-release', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       cb(err);
     }
@@ -128,7 +135,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_package-release', '_zip-app', '_open-appdir',
+    '_package-release', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       cb(err);
     }
@@ -184,6 +191,14 @@ gulp.task('_zip-app', (cb) => {
 gulp.task('_open-appdir', (cb) => {
   exec('open '+ APP_PACKAGE_NAME, (err, stdout, stderr) => {
     cb(err);
+  });
+});
+
+// notify
+gulp.task('_notify', () => {
+  return notifier.notify({
+    title: 'gulp-task',
+    message: 'finished.'
   });
 });
 
