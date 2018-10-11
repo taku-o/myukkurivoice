@@ -26,7 +26,7 @@ const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 gulp.task('default', () => {
   console.log(`
 usage:
-    gulp --tasks
+    gulp --tasks-simple
     gulp tsc
     gulp lint
     gulp lint-js
