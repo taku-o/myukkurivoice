@@ -22,21 +22,23 @@ const WORK_DIR = __dirname+ '/release';
 const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
-// gulp --tasks
-// gulp tsc
-// gulp lint
-// gulp lint-js
-// gulp lint-q
-// gulp less
-// gulp test [--t=test/mainWindow.js]
-// gulp test-rebuild [--t=test/mainWindow.js]
-// gulp app
-// gulp package
-// gulp release
-// gulp staging --branch=develop
-
 // default task
 gulp.task('default', () => {
+  console.log(`
+usage:
+    gulp --tasks
+    gulp tsc
+    gulp lint
+    gulp lint-js
+    gulp lint-q
+    gulp less
+    gulp test [--t=test/mainWindow.js]
+    gulp test-rebuild [--t=test/mainWindow.js]
+    gulp app
+    gulp package
+    gulp release
+    gulp staging --branch=develop
+  `);
 });
 
 // tsc
