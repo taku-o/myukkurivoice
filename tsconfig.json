@@ -32,6 +32,7 @@
     "*.ts",
     "js/*.ts",
     "test/*.ts",
+    "docs/assets/js/*.ts",
   ],
   "exclude": [
     "node_modules",

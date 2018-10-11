@@ -48,7 +48,7 @@ gulp.task('tsc', () => {
 
 // lint
 gulp.task('lint', () => {
-  return gulp.src(['*.ts','js/*.ts','test/*.ts'])
+  return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts'])
     .pipe(eslint({ useEslintrc: true }))
     .pipe(eslint.format());
 });
@@ -58,16 +58,16 @@ gulp.task('lint-js', ['tsc'], () => {
     .pipe(eslint.format());
 });
 gulp.task('lint-q', ['tsc'], () => {
-  return gulp.src(['*.ts','js/*.ts','test/*.ts','*.js','js/*.js','test/*.js'])
+  return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts','*.js','js/*.js','test/*.js', 'docs/assets/js/*.js'])
     .pipe(eslint({ useEslintrc: true, quiet: true }))
     .pipe(eslint.format());
 });
 
 // less
 gulp.task('less', () => {
-  return gulp.src('css/*.less')
+  return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
     .pipe(less())
-    .pipe(gulp.dest('css'));
+    .pipe(gulp.dest('.'));
 });
 
 // test
