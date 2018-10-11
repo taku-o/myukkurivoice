@@ -32,6 +32,7 @@ usage:
     gulp lint-js
     gulp lint-q
     gulp less
+    gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
     gulp app
@@ -71,6 +72,9 @@ gulp.task('less', () => {
     .pipe(less())
     .pipe(gulp.dest('.'));
 });
+
+// clean
+gulp.task('clean', ['_rm-workdir']);
 
 // test
 gulp.task('test', ['tsc'], (cb) => {
