@@ -451,7 +451,7 @@ gulp.task('_package-release', (cb) => {
 gulp.task('_package-debug', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
-            --platform=darwin --arch=x64 --electronVersion=1.7.9 \
+            --platform=darwin --arch=x64 --electronVersion=2.0.11 \
             --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
             --ignore="^/MYukkuriVoice-darwin-x64" \
             --ignore=".DS_Store$" \
