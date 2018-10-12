@@ -1,6 +1,6 @@
 'use strict';
 var _crypto, crypto = () => { _crypto = _crypto || require('crypto'); return _crypto; };
-var _Config, Config = () => { _Config = _Config || require('electron-config'); return _Config; };
+var _Config, Config = () => { _Config = _Config || require('electron-store'); return _Config; };
 
 // load
 function loadAppConfig(): void {
