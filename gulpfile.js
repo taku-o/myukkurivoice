@@ -81,10 +81,12 @@ gulp.task('test', ['tsc'], (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
       runSequence('_package-debug', '_test', '_notify', (err) => {
+        if (err) { _notifyError(); }
         cb(err);
       });
     } else {
       runSequence('_test', '_notify', (err) => {
+        if (err) { _notifyError(); }
         cb(err);
       });
     }
@@ -92,6 +94,7 @@ gulp.task('test', ['tsc'], (cb) => {
 });
 gulp.task('test-rebuild', ['tsc'], (cb) => {
   runSequence('_package-debug', '_test', '_notify', (err) => {
+    if (err) { _notifyError(); }
     cb(err);
   });
 });
@@ -113,6 +116,7 @@ gulp.task('package', (cb) => {
   runSequence(
     'tsc', '_package-debug', '_notify',
     (err) => {
+      if (err) { _notifyError(); }
       cb(err);
     }
   );
@@ -128,6 +132,7 @@ gulp.task('release', (cb) => {
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
     '_package-release', '_zip-app', '_open-appdir', '_notify',
     (err) => {
+      if (err) { _notifyError(); }
       cb(err);
     }
   );
@@ -143,6 +148,7 @@ gulp.task('staging', (cb) => {
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
     '_package-release', '_zip-app', '_open-appdir', '_notify',
     (err) => {
+      if (err) { _notifyError(); }
       cb(err);
     }
   );
@@ -208,6 +214,13 @@ gulp.task('_notify', () => {
     sound: 'Glass',
   });
 });
+function _notifyError() {
+  return notifier.notify({
+    title: 'gulp-task',
+    message: 'error.',
+    sound: 'Frog',
+  });
+}
 
 // package
 gulp.task('_package-release', (cb) => {
