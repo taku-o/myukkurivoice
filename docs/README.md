@@ -44,7 +44,7 @@ macOS High Sierra(10.13)に対応しています。
 * MacOSX Sierra以降で動作検証。
 * 設定を用意して切り替えて作業するスタイルで利用します。
 
-<img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme.gif" width="400">
+<a href="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme.gif"><img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme.gif" width="400"></a>
 
 ### ショートカット
 * 動画制作向きのショートカットキーがいくつか定義されています
@@ -68,7 +68,7 @@ macOS High Sierra(10.13)に対応しています。
 * 最後に保存した音声ファイルのリンクが、アプリの左下に表示されます。
 * ドラッグアンドドロップで動画編集ソフトに渡せます。
 
-<img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif" width="400">
+<a href="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif"><img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif" width="400"></a>
 
 ### その他
 * チュートリアル、ヘルプが用意されています

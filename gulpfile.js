@@ -7,7 +7,8 @@ const git = require('gulp-git');
 const gulp = require('gulp');
 const install = require('gulp-install');
 const less = require('gulp-less');
-const markdown = require('gulp-markdown-pdf');
+const markdownPdf = require('gulp-markdown-pdf');
+const markdownHtml = require('gulp-markdown');
 const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
 const notifier = require('node-notifier');
@@ -81,16 +82,29 @@ gulp.task('less', () => {
 });
 
 // readme
-gulp.task('readme', ['_readme:pdf']);
+gulp.task('readme', ['_readme:pdf', '_readme:html']);
 gulp.task('_readme:pdf', ['less'], () => {
   return gulp.src('docs/README.md')
-    .pipe(replace('https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'docs/'))
-    .pipe(markdown({
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
+    .pipe(markdownPdf({
       cssPath: 'docs/assets/css/pdf.css'
     }))
     .pipe(rename({
-      extname: '.pdf'
+      extname: '.html'
     }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_readme:html', ['_readme:html:images'], () => {
+  return gulp.src('docs/README.md')
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
+    .pipe(markdownHtml())
+    .pipe(rename({
+      extname: '.html'
+    }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_readme:html:images', () => {
+  return gulp.src(['docs/images/*'], { base: '.' })
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 
