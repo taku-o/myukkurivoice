@@ -40,6 +40,7 @@ usage:
     gulp lint-q
     gulp less
     gulp readme
+    gulp manual
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
@@ -106,6 +107,29 @@ gulp.task('_readme:html', ['_readme:html:images'], () => {
 gulp.task('_readme:html:images', () => {
   return gulp.src(['docs/images/*'], { base: '.' })
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+
+// manual
+gulp.task('manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
+gulp.task('_manual:html', () => {
+  return gulp.src(['docs/help.html'])
+    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'docs/node_modules/photon/dist/css/photon.css'))
+    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'docs/node_modules/angular/angular.min.js'))
+    .pipe(replace('assets/css/help.css', 'docs/assets/css/help.css'))
+    .pipe(replace('assets/js/apps.help.js', 'docs/assets/js/apps.help.js'))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_manual:assets:docs', () => {
+  return gulp.src(['docs/assets/js/apps.help.js', 'docs/assets/css/help.css'], { base: '.' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_manual:assets:angular', () => {
+  return gulp.src(['node_modules/angular/**/*'], { base: '.' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/docs'));
+});
+gulp.task('_manual:assets:photon', () => {
+  return gulp.src(['node_modules/photon/**/*'], { base: '.' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/docs'));
 });
 
 // _package-contents
@@ -177,7 +201,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', 'readme', '_package-contents', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'readme', 'manual', '_package-contents', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -193,7 +217,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', 'readme', '_package-contents', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'readme', 'manual', '_package-contents', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
