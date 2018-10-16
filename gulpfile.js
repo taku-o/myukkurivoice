@@ -12,6 +12,7 @@ const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
 const notifier = require('node-notifier');
 const rename = require("gulp-rename");
+const replace = require('gulp-replace');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
 const ts = require('gulp-typescript');
@@ -80,8 +81,10 @@ gulp.task('less', () => {
 });
 
 // readme
-gulp.task('readme', ['less'], () => {
+gulp.task('readme', ['_readme:pdf']);
+gulp.task('_readme:pdf', ['less'], () => {
   return gulp.src('docs/README.md')
+    .pipe(replace('https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'docs/'))
     .pipe(markdown({
       cssPath: 'docs/assets/css/pdf.css'
     }))
@@ -91,12 +94,16 @@ gulp.task('readme', ['less'], () => {
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 
-// version
+// _package-contents
+gulp.task('_package-contents', ['_version', '_license']);
 gulp.task('_version', (cb) => {
   fs.writeFile('MYukkuriVoice-darwin-x64/version', APP_VERSION, (err) => {
     if (err) { _notifyError(); }
     cb(err);
   });
+});
+gulp.task('_license', (cb) => {
+  return del(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html']);
 });
 
 // clean
@@ -156,7 +163,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', 'readme', '_version', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'readme', '_package-contents', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -172,7 +179,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', 'readme', '_version', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'readme', '_package-contents', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);

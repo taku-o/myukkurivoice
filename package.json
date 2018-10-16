@@ -78,6 +78,7 @@
     "gulp-markdown-pdf": "^6.0.0",
     "gulp-mocha": "^6.0.0",
     "gulp-rename": "^1.4.0",
+    "gulp-replace": "^1.0.0",
     "gulp-typescript": "^5.0.0-alpha.3",
     "mocha": "^4.1.0",
     "node-notifier": "^5.2.1",
