@@ -90,7 +90,7 @@ gulp.task('_readme:pdf', ['less'], () => {
       cssPath: 'docs/assets/css/pdf.css'
     }))
     .pipe(rename({
-      extname: '.html'
+      extname: '.pdf'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
