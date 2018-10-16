@@ -86,6 +86,7 @@ gulp.task('less', () => {
 gulp.task('readme', ['_readme:pdf', '_readme:html']);
 gulp.task('_readme:pdf', ['less'], () => {
   return gulp.src('docs/README.md')
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
     .pipe(markdownPdf({
       cssPath: 'docs/assets/css/pdf.css'
@@ -95,14 +96,19 @@ gulp.task('_readme:pdf', ['less'], () => {
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_readme:html', ['_readme:html:images'], () => {
+gulp.task('_readme:html', ['_readme:html:icns', '_readme:html:images'], () => {
   return gulp.src('docs/README.md')
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="docs/icns/'))
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
     .pipe(markdownHtml())
     .pipe(rename({
       extname: '.html'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_readme:html:icns', () => {
+  return gulp.src(['icns/myukkurivoice.iconset/icon_256x256.png'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/docs/icns/myukkurivoice.iconset'));
 });
 gulp.task('_readme:html:images', () => {
   return gulp.src(['docs/images/*'], { base: '.' })
