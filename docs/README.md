@@ -10,8 +10,6 @@ macOS High Sierra(10.13)に対応しています。
 本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。ご注意ください。  
 [http://www.a-quest.com/](http://www.a-quest.com/)
 
-* 関連: [Mac用ニコ生コメントビューワ + 読み上げ + コメジェネ、ワンパックアプリ Zosui](https://github.com/taku-o/zosui)
-
 ## 開発ステータス
 * アプリ公開
 * (NEW!! 2017/11/15) AquesTalk10の音声の再生に対応。

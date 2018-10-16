@@ -37,6 +37,7 @@ usage:
     gulp lint-js
     gulp lint-q
     gulp less
+    gulp readme
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
@@ -79,11 +80,13 @@ gulp.task('less', () => {
 });
 
 // readme
-gulp.task('_readme', () => {
+gulp.task('readme', ['less'], () => {
   return gulp.src('docs/README.md')
-    .pipe(markdown())
+    .pipe(markdown({
+      cssPath: 'docs/assets/css/pdf.css'
+    }))
     .pipe(rename({
-      extname: ".pdf"
+      extname: '.pdf'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
@@ -153,7 +156,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', '_readme', '_version', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'readme', '_version', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -169,7 +172,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', '_readme', '_version', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'readme', '_version', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
