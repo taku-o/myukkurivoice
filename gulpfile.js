@@ -7,9 +7,11 @@ const git = require('gulp-git');
 const gulp = require('gulp');
 const install = require('gulp-install');
 const less = require('gulp-less');
+const markdown = require('gulp-markdown-pdf');
 const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
 const notifier = require('node-notifier');
+const rename = require("gulp-rename");
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
 const ts = require('gulp-typescript');
@@ -21,6 +23,9 @@ const PACKAGER_CMD = __dirname+ '/node_modules/.bin/electron-packager';
 const WORK_DIR = __dirname+ '/release';
 const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
+
+const ELECTRON_VERSION = '1.8.8';
+const APP_VERSION = require('./package.json').version;
 
 // default task
 gulp.task('default', () => {
@@ -71,6 +76,24 @@ gulp.task('less', () => {
   return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
     .pipe(less())
     .pipe(gulp.dest('.'));
+});
+
+// readme
+gulp.task('_readme', () => {
+  return gulp.src('docs/README.md')
+    .pipe(markdown())
+    .pipe(rename({
+      extname: ".pdf"
+    }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+
+// version
+gulp.task('_version', (cb) => {
+  fs.writeFile('MYukkuriVoice-darwin-x64/version', APP_VERSION, (err) => {
+    if (err) { _notifyError(); }
+    cb(err);
+  });
 });
 
 // clean
@@ -130,7 +153,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_package-release', '_zip-app', '_open-appdir', '_notify',
+    '_package-release', '_readme', '_version', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -146,7 +169,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_package-release', '_zip-app', '_open-appdir', '_notify',
+    '_package-release', '_readme', '_version', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -226,7 +249,7 @@ function _notifyError() {
 gulp.task('_package-release', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
-            --platform=darwin --arch=x64 --electronVersion=1.8.8 \
+            --platform=darwin --arch=x64 --electronVersion=${ELECTRON_VERSION} \
             --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
             --ignore="^/js/apps.spec.js" \
             --ignore="^/contents-spec.html" \
@@ -464,7 +487,7 @@ gulp.task('_package-release', (cb) => {
 gulp.task('_package-debug', (cb) => {
   del(['MYukkuriVoice-darwin-x64']).then(() => {
     exec(PACKAGER_CMD+ ` . MYukkuriVoice \
-            --platform=darwin --arch=x64 --electronVersion=1.8.8 \
+            --platform=darwin --arch=x64 --electronVersion=${ELECTRON_VERSION} \
             --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
             --ignore="^/MYukkuriVoice-darwin-x64" \
             --ignore=".DS_Store$" \
