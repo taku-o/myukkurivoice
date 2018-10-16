@@ -4,7 +4,7 @@ MYukkuriVoiceは、AquesTalkを利用したMac OSX向けの
 macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、
 macOS High Sierra(10.13)に対応しています。  
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/icns/myukkurivoice.iconset/icon_256x256.png">
+<img src="https://raw.github.com/taku-o/myukkurivoice/master/icns/myukkurivoice.iconset/icon_256x256.png" class="noborder">
 
 本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。  
 本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。ご注意ください。  

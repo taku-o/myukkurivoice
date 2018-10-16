@@ -575,3 +575,7 @@ body img {
   border: 1px black solid;
   border-style: 1px black solid;
 }
+body img.noborder {
+  border: none;
+  border-style: none;
+}
