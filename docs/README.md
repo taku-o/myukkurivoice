@@ -24,49 +24,58 @@ macOS High Sierra(10.13)に対応しています。
   * アプリをバージョンアップする前は、大事な設定はメモを取っておいてください。
   * 動作がおかしい場合はメニューから設定の初期化を実施するか、過去のバージョンを利用してください。
 
-## ダウンロード
+## MYukkuriVoiceの導入
+### ダウンロード
 * 最新のアプリは次のURLからダウンロードできます。
 * [https://github.com/taku-o/myukkurivoice/releases](https://github.com/taku-o/myukkurivoice/releases)
   * [※Chromeで「一般的にダウンロードされておらず、危険を及ぼす可能性があります」と表示される](https://taku-o.github.io/myukkurivoice/help#!#trouble)。そのままダウンロードを進めてください。
 
-## インストール
+### インストール
 圧縮ファイル(MYukkuriVoice-darwin-x64.zip)を  
 ダウンロードして解凍後、  
 初回の起動は MYukkuriVoice.app を右クリックして「開く」を選択してください。
 
-## アンインストール
+### アンインストール
 * アプリケーションをアンインストールするには、次のファイル・フォルダを削除してください。
   * アプリケーション MYukkuriVoice.app
   * ~/Application Support/MYukkuriVoice フォルダ
   * ~/Library/Logs/MYukkuriVoice フォルダ
 
-## 取り扱い種別・使用ライセンス
+## MYukkuriVoiceに関して
+### アプリの使い方を学ぶには、まず何から始めれば良いか？
+* MYukkuriVoiceを起動すると、右上に「チュートリアル」ボタンがあるので、それを押してチュートリアルを読んでみましょう。
+* メッセージ入力欄に文字を入力、「▶再生」ボタンを押して、音声を再生してみましょう。
+* メッセージ入力欄に文字を入力、「●記録」ボタンを押して、音声を録音してみましょう。
+* 声の種類を切り替えて、音声を再生、記録してみましょう。
+
+### 取り扱い種別・使用ライセンス
 本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。  
 [http://www.a-quest.com/](http://www.a-quest.com/)
 
-本ソフトを個人の動画作成で使うなど、非営利目的で扱う場合には無償で扱えますが、  
+本ソフトを個人の動画作成で使うなど、非営利目的で扱う場合にはフリーソフトとして扱えますが、  
 例えば、企業での利用であったり、広告をつけた動画で利用するなど収益が発生する場合には、  
 営利目的での利用となり、当該ライブラリの使用ライセンスが必要となります。  
 
 どのようなケースが営利目的に該当するか、  
-どのように使用ライセンスを得れば良いかについては、  
-こちらのページにまとめてありますので、ご覧ください。  
+どのようにして使用ライセンスを入手すれば良いか、については、  
+こちらのページにまとめてありますのでご覧ください。  
 [AquesTalkのライセンスについて](https://taku-o.github.io/myukkurivoice/help#!#license)
 
-## アプリケーションヘルプ・マニュアル
+### アプリケーションヘルプ・マニュアル
 * [https://taku-o.github.io/myukkurivoice/help](https://taku-o.github.io/myukkurivoice/help)
   * アプリ内にある「ヘルプ」ボタンでも同じ内容をご覧になれます。
 
-## リリースノート
-* [https://taku-o.github.io/myukkurivoice/releases](https://taku-o.github.io/myukkurivoice/releases)
+### リリースノート
+* 各バージョンごとの変更点
+  * [https://taku-o.github.io/myukkurivoice/releases](https://taku-o.github.io/myukkurivoice/releases)
 
-## 連絡先・問題の報告
-* MYukkuriVoiceは、次のURLで開発されています。
+### 連絡先・問題の報告
+* MYukkuriVoiceは、次のURLで開発してています。
   * [https://github.com/taku-o/myukkurivoice](https://github.com/taku-o/myukkurivoice)
-* バグ報告はこちら([課題リスト](https://github.com/taku-o/myukkurivoice/issues)に登録お願いいたします。
+* バグ報告は[こちら(課題リスト)](https://github.com/taku-o/myukkurivoice/issues)に登録お願いいたします。
 * 連絡はこちら(mail@nanasi.jp)までお願いします。
 
-## 主な特徴
+## MYukkuriVoiceの主な特徴
 ### 基本
 * MacOSX Sierra以降で動作検証。
 * 設定を用意して切り替えて作業するスタイルで利用します。
