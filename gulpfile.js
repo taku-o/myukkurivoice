@@ -93,7 +93,7 @@ gulp.task('doc', ['readme', 'manual', 'releases', 'version', '_package-contents'
 
 // readme
 gulp.task('readme', ['_readme:html']);
-gulp.task('_readme:pdf', ['less'], () => {
+gulp.task('_readme:pdf', () => {
   return gulp.src('docs/README.md')
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
@@ -128,7 +128,7 @@ gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:htm
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_readme:html:css', ['less'], () => {
+gulp.task('_readme:html:css', () => {
   return gulp.src(['docs/assets/css/readme-html.css'])
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
 });
