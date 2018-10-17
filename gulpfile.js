@@ -44,6 +44,7 @@ usage:
     gulp doc
     gulp readme
     gulp manual
+    gulp releases
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
@@ -86,7 +87,7 @@ gulp.task('less', () => {
 });
 
 // doc
-gulp.task('doc', ['readme', 'manual', '_package-contents']);
+gulp.task('doc', ['readme', 'manual', 'releases', '_package-contents']);
 
 // readme
 gulp.task('readme', ['_readme:html']);
@@ -163,6 +164,29 @@ gulp.task('_manual:assets:angular', () => {
 gulp.task('_manual:assets:photon', () => {
   return gulp.src(['node_modules/photon/dist/css/photon.css', 'node_modules/photon/dist/fonts/photon-entypo.woff'], { base: 'node_modules' })
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
+});
+
+// releases
+gulp.task('releases', ['_releases:html', '_readme:html:css']);
+gulp.task('_releases:html', ['_readme:html:css'], () => {
+  return gulp.src('docs/releases.md')
+    .pipe(markdownHtml())
+    .pipe(wrapper({
+       header: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MYukkuriVoice</title>
+  <link rel="stylesheet" href="assets/css/readme-html.css">
+</head>
+<body>`,
+       footer: '</body></html>',
+    }))
+    .pipe(rename({
+      basename: 'releases',
+      extname: '.html'
+    }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 
 // _package-contents
