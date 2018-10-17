@@ -276,7 +276,6 @@ gulp.task('_ch-workdir', () => {
 
 // git
 gulp.task('_git-clone', (cb) => {
-    console.log(argv.branch);
   const opts = (argv && argv.branch)? {args: '-b '+argv.branch}: {args: '-b master'};
   git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
     cb(err);
