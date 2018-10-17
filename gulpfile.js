@@ -165,13 +165,6 @@ gulp.task('_manual:assets:photon', () => {
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
 
-// contact
-// 連絡先
-// 取り扱い種別 フリーソフト
-// 動作環境
-// バージョン
-gulp.task('contact', () => {});
-
 // _package-contents
 gulp.task('_package-contents', ['_version', '_license']);
 gulp.task('_version', () => {
