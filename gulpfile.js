@@ -273,7 +273,7 @@ gulp.task('release', (cb) => {
 // staging
 gulp.task('staging', (cb) => {
   if (!(argv && argv.branch)) {
-    argv.branch = execSync('/usr/local/bin/git symbolic-ref --short HEAD').toString().trim();
+    argv.branch = execSync('/usr/bin/git symbolic-ref --short HEAD').toString().trim();
   }
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
