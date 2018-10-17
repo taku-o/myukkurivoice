@@ -27,12 +27,11 @@ macOS High Sierra(10.13)に対応しています。
 ## MYukkuriVoiceの導入
 ### ダウンロード
 * 最新のアプリは次のURLからダウンロードできます。
-* [https://github.com/taku-o/myukkurivoice/releases](https://github.com/taku-o/myukkurivoice/releases)
-  * [※Chromeで「一般的にダウンロードされておらず、危険を及ぼす可能性があります」と表示される](https://taku-o.github.io/myukkurivoice/help#!#trouble)。そのままダウンロードを進めてください。
+  * [https://github.com/taku-o/myukkurivoice/releases](https://github.com/taku-o/myukkurivoice/releases)
+    * [※Chromeで「一般的にダウンロードされておらず、危険を及ぼす可能性があります」と表示される](https://taku-o.github.io/myukkurivoice/help#!#trouble)。そのままダウンロードを進めてください。
 
 ### インストール
-圧縮ファイル(MYukkuriVoice-darwin-x64.zip)を  
-ダウンロードして解凍後、  
+圧縮ファイル(MYukkuriVoice-darwin-x64.zip)をダウンロードして解凍後、  
 初回の起動は MYukkuriVoice.app を右クリックして「開く」を選択してください。
 
 ### アンインストール
@@ -43,26 +42,26 @@ macOS High Sierra(10.13)に対応しています。
 
 ## MYukkuriVoiceに関して
 ### アプリの使い方を学ぶには、まず何から始めれば良いか？
-* MYukkuriVoiceを起動すると、右上に「チュートリアル」ボタンがあるので、それを押してチュートリアルを読んでみましょう。
-* メッセージ入力欄に文字を入力、「▶再生」ボタンを押して、音声を再生してみましょう。
-* メッセージ入力欄に文字を入力、「●記録」ボタンを押して、音声を録音してみましょう。
-* 声の種類を切り替えて、音声を再生、記録してみましょう。
+1. MYukkuriVoiceを起動すると、右上に「チュートリアル」ボタンがあるので、それを押してチュートリアルを読んでみましょう。
+2. メッセージ入力欄に文字を入力、「▶再生」ボタンを押して、音声を再生してみましょう。
+3. メッセージ入力欄に文字を入力、「●記録」ボタンを押して、音声を録音してみましょう。
+4. 声の種類を切り替えて、音声を再生、記録してみましょう。
 
 ### 取り扱い種別・使用ライセンス
 本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。  
-[http://www.a-quest.com/](http://www.a-quest.com/)
+* [http://www.a-quest.com/](http://www.a-quest.com/)
 
 本ソフトは個人の動画作成で使うなど、非営利目的で扱う場合には無償で扱えますが、  
 例えば、企業での利用であったり、広告をつけた動画で利用するなど収益が発生する場合には、  
 営利目的での利用となり、当該ライブラリの使用ライセンスが必要となります。  
 
-どのようなケースが営利目的に該当するか、  
-どのようにして使用ライセンスを入手すれば良いか、については、  
-こちらのページにまとめてありますのでご覧ください。  
-[AquesTalkのライセンスについて](https://taku-o.github.io/myukkurivoice/help#!#license)
+どのようなケースが営利目的に該当するか、どのようにして使用ライセンスを入手すれば良いか、については、  
+こちらのページにまとめてありますのでご確認ください。
+* [AquesTalkのライセンスについて](https://taku-o.github.io/myukkurivoice/help#!#license)
 
 ### ヘルプ・マニュアル
-* [https://taku-o.github.io/myukkurivoice/help](https://taku-o.github.io/myukkurivoice/help)
+* MYukkuriVoiceのヘルプです。
+  * [https://taku-o.github.io/myukkurivoice/help](https://taku-o.github.io/myukkurivoice/help)
   * アプリ内にある「ヘルプ」ボタンでも同じ内容をご覧になれます。
 
 ### リリースノート
