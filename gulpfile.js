@@ -2,6 +2,7 @@ const argv = require('yargs').argv;
 const del = require('del');
 const eslint = require('gulp-eslint');
 const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
 const fs = require('fs');
 const git = require('gulp-git');
 const gulp = require('gulp');
@@ -39,6 +40,7 @@ usage:
     gulp lint-js
     gulp lint-q
     gulp less
+    gulp doc
     gulp readme
     gulp manual
     gulp clean
@@ -47,7 +49,7 @@ usage:
     gulp app
     gulp package
     gulp release
-    gulp staging --branch=develop
+    gulp staging [--branch=develop]
   `);
 });
 
@@ -82,8 +84,11 @@ gulp.task('less', () => {
     .pipe(gulp.dest('.'));
 });
 
+// doc
+gulp.task('doc', ['readme', 'manual', '_package-contents']);
+
 // readme
-gulp.task('readme', ['_readme:pdf', '_readme:html']);
+gulp.task('readme', ['_readme:html']);
 gulp.task('_readme:pdf', ['less'], () => {
   return gulp.src('docs/README.md')
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
@@ -119,32 +124,33 @@ gulp.task('_readme:html:images', () => {
 gulp.task('manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
 gulp.task('_manual:html', () => {
   return gulp.src(['docs/help.html'])
-    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'docs/node_modules/photon/dist/css/photon.css'))
-    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'docs/node_modules/angular/angular.min.js'))
-    .pipe(replace('assets/css/help.css', 'docs/assets/css/help.css'))
-    .pipe(replace('assets/js/apps.help.js', 'docs/assets/js/apps.help.js'))
+    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'assets/photon/dist/css/photon.css'))
+    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'assets/angular/angular.min.js'))
+    //.pipe(replace('assets/css/help.css', 'docs/assets/css/help.css'))
+    //.pipe(replace('assets/js/apps.help.js', 'docs/assets/js/apps.help.js'))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:docs', () => {
-  return gulp.src(['docs/assets/js/apps.help.js', 'docs/assets/css/help.css'], { base: '.' })
+  return gulp.src(['docs/assets/js/apps.help.js', 'docs/assets/css/help.css'], { base: 'docs' })
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:angular', () => {
-  return gulp.src(['node_modules/angular/**/*'], { base: '.' })
-    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/docs'));
+  return gulp.src(['node_modules/angular/angular.min.js'], { base: 'node_modules' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
 gulp.task('_manual:assets:photon', () => {
-  return gulp.src(['node_modules/photon/**/*'], { base: '.' })
-    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/docs'));
+  return gulp.src(['node_modules/photon/dist/css/photon.css', 'node_modules/photon/dist/fonts/photon-entypo.woff'], { base: 'node_modules' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
 
 // _package-contents
 gulp.task('_package-contents', ['_version', '_license']);
-gulp.task('_version', (cb) => {
-  fs.writeFile('MYukkuriVoice-darwin-x64/version', APP_VERSION, (err) => {
-    if (err) { _notifyError(); }
-    cb(err);
-  });
+gulp.task('_version', () => {
+  //fs.writeFile('MYukkuriVoice-darwin-x64/version', APP_VERSION, (err) => {
+  //  if (err) { _notifyError(); }
+  //  cb(err);
+  //});
+  return del(['MYukkuriVoice-darwin-x64/version']);
 });
 gulp.task('_license', (cb) => {
   return del(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html']);
@@ -207,7 +213,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', 'readme', 'manual', '_package-contents', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -218,12 +224,12 @@ gulp.task('release', (cb) => {
 // staging
 gulp.task('staging', (cb) => {
   if (!(argv && argv.branch)) {
-    cb('branch is not selected'); return;
+    argv.branch = execSync('/usr/local/bin/git symbolic-ref --short HEAD').toString().trim();
   }
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', 'readme', 'manual', '_package-contents', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -248,6 +254,7 @@ gulp.task('_ch-workdir', () => {
 
 // git
 gulp.task('_git-clone', (cb) => {
+    console.log(argv.branch);
   const opts = (argv && argv.branch)? {args: '-b '+argv.branch}: {args: '-b master'};
   git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
     cb(err);
@@ -321,6 +328,11 @@ gulp.task('_package-release', (cb) => {
           --ignore="^/vendor/aqtk10-mac" \
           --ignore="^/vendor/aqtk2-mac" \
           --ignore="/ffi/deps/" \
+          --ignore="/node_modules/angular/angular-csp\\.css$" \
+          --ignore="/node_modules/angular/angular\\.js$" \
+          --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
+          --ignore="/node_modules/angular/index\\.js$" \
+          --ignore="/node_modules/angular/package\\.json$" \
           --ignore="/docs/" \
           --ignore="/example/" \
           --ignore="/examples/" \
@@ -425,6 +437,11 @@ gulp.task('_package-debug', (cb) => {
           --ignore="^/vendor/aqtk10-mac" \
           --ignore="^/vendor/aqtk2-mac" \
           --ignore="/ffi/deps/" \
+          --ignore="/node_modules/angular/angular-csp\\.css$" \
+          --ignore="/node_modules/angular/angular\\.js$" \
+          --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
+          --ignore="/node_modules/angular/index\\.js$" \
+          --ignore="/node_modules/angular/package\\.json$" \
           --ignore="/docs/" \
           --ignore="/example/" \
           --ignore="/examples/" \
