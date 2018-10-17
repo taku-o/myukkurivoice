@@ -63,8 +63,7 @@ macOS High Sierra(10.13)に対応しています。
 ## 連絡先・問題の報告
 * MYukkuriVoiceは、次のURLで開発されています。
   * [https://github.com/taku-o/myukkurivoice](https://github.com/taku-o/myukkurivoice)
-* バグ報告は課題リストで受け付けています。
-  * [https://github.com/taku-o/myukkurivoice/issues](https://github.com/taku-o/myukkurivoice/issues)
+* バグ報告はこちら([課題リスト](https://github.com/taku-o/myukkurivoice/issues)に登録お願いいたします。
 * 連絡はこちら(mail@nanasi.jp)までお願いします。
 
 ## 主な特徴
