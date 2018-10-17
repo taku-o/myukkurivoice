@@ -191,7 +191,17 @@ gulp.task('version', (cb) => {
 });
 
 // _package-contents
-gulp.task('_package-contents', () => {
+gulp.task('_package-contents', (cb) => {
+  runSequence('_package-contents:cp', '_package-contents:rm', (err) => {
+    if (err) { _notifyError(); }
+    cb(err);
+  });
+});
+gulp.task('_package-contents:cp', () => {
+  return gulp.src(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html', 'MYukkuriVoice-darwin-x64/version'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/licenses'));
+});
+gulp.task('_package-contents:rm', () => {
   return del(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html', 'MYukkuriVoice-darwin-x64/version']);
 });
 
