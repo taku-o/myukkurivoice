@@ -100,7 +100,7 @@ gulp.task('_readme:pdf', ['less'], () => {
       cssPath: 'docs/assets/css/readme-pdf.css'
     }))
     .pipe(rename({
-      basename: 'README',
+      basename: 'はじめにお読みください',
       extname: '.pdf'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
@@ -122,7 +122,7 @@ gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:htm
        footer: '</body></html>',
     }))
     .pipe(rename({
-      basename: 'README',
+      basename: 'はじめにお読みください',
       extname: '.html'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));

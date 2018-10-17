@@ -52,7 +52,7 @@ macOS High Sierra(10.13)に対応しています。
 本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。  
 [http://www.a-quest.com/](http://www.a-quest.com/)
 
-本ソフトを個人の動画作成で使うなど、非営利目的で扱う場合にはフリーソフトとして扱えますが、  
+本ソフトは個人の動画作成で使うなど、非営利目的で扱う場合にはフリーソフトとして扱えますが、  
 例えば、企業での利用であったり、広告をつけた動画で利用するなど収益が発生する場合には、  
 営利目的での利用となり、当該ライブラリの使用ライセンスが必要となります。  
 
@@ -61,7 +61,7 @@ macOS High Sierra(10.13)に対応しています。
 こちらのページにまとめてありますのでご覧ください。  
 [AquesTalkのライセンスについて](https://taku-o.github.io/myukkurivoice/help#!#license)
 
-### アプリケーションヘルプ・マニュアル
+### ヘルプ・マニュアル
 * [https://taku-o.github.io/myukkurivoice/help](https://taku-o.github.io/myukkurivoice/help)
   * アプリ内にある「ヘルプ」ボタンでも同じ内容をご覧になれます。
 
@@ -70,10 +70,10 @@ macOS High Sierra(10.13)に対応しています。
   * [https://taku-o.github.io/myukkurivoice/releases](https://taku-o.github.io/myukkurivoice/releases)
 
 ### 連絡先・問題の報告
-* MYukkuriVoiceは、次のURLで開発してています。
+* MYukkuriVoiceは、次のURLで開発しています。
   * [https://github.com/taku-o/myukkurivoice](https://github.com/taku-o/myukkurivoice)
 * バグ報告は[こちら(課題リスト)](https://github.com/taku-o/myukkurivoice/issues)に登録お願いいたします。
-* 連絡はこちら(mail@nanasi.jp)までお願いします。
+* 連絡する際はこちら(mail@nanasi.jp)までお願いします。
 
 ## MYukkuriVoiceの主な特徴
 ### 基本
