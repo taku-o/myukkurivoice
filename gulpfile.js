@@ -33,6 +33,7 @@ const APP_VERSION = require('./package.json').version;
 
 // default task
 gulp.task('default', () => {
+  /* eslint-disable-next-line no-console */
   console.log(`
 usage:
     gulp --tasks-simple
@@ -393,6 +394,7 @@ gulp.task('_package-release', (cb) => {
           --ignore="/.+\\.scss$" \
           --ignore="/.+\\.swp$" \
           --ignore="/.+\\.target\\.mk$" \
+          --ignore="/.+\\.tgz$" \
           --ignore="/.+\\.ts$" \
           --ignore="/AUTHORS$" \
           --ignore="/CHANGELOG$" \
@@ -430,6 +432,7 @@ gulp.task('_package-release', (cb) => {
           --ignore="/\\.git$" \
           --ignore="/\\.gitignore$" \
           --ignore="/\\.gitmodules$" \
+          --ignore="/\\.hound.yml$" \
           --ignore="/\\.jshintrc$" \
           --ignore="/\\.keep$" \
           --ignore="/\\.npmignore$" \
@@ -502,6 +505,7 @@ gulp.task('_package-debug', (cb) => {
           --ignore="/.+\\.scss$" \
           --ignore="/.+\\.swp$" \
           --ignore="/.+\\.target\\.mk$" \
+          --ignore="/.+\\.tgz$" \
           --ignore="/.+\\.ts$" \
           --ignore="/AUTHORS$" \
           --ignore="/CHANGELOG$" \
@@ -539,6 +543,7 @@ gulp.task('_package-debug', (cb) => {
           --ignore="/\\.git$" \
           --ignore="/\\.gitignore$" \
           --ignore="/\\.gitmodules$" \
+          --ignore="/\\.hound.yml$" \
           --ignore="/\\.jshintrc$" \
           --ignore="/\\.keep$" \
           --ignore="/\\.npmignore$" \
