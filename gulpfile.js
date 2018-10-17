@@ -97,6 +97,7 @@ gulp.task('_readme:pdf', ['less'], () => {
       cssPath: 'docs/assets/css/pdf.css'
     }))
     .pipe(rename({
+      basename: 'README',
       extname: '.pdf'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
@@ -107,6 +108,7 @@ gulp.task('_readme:html', ['_readme:html:icns', '_readme:html:images'], () => {
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
     .pipe(markdownHtml())
     .pipe(rename({
+      basename: 'README',
       extname: '.html'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
@@ -128,6 +130,10 @@ gulp.task('_manual:html', () => {
     .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'assets/angular/angular.min.js'))
     //.pipe(replace('assets/css/help.css', 'docs/assets/css/help.css'))
     //.pipe(replace('assets/js/apps.help.js', 'docs/assets/js/apps.help.js'))
+    .pipe(rename({
+      basename: 'help',
+      extname: '.html'
+    }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:docs', () => {
