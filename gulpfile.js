@@ -2,17 +2,23 @@ const argv = require('yargs').argv;
 const del = require('del');
 const eslint = require('gulp-eslint');
 const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
 const fs = require('fs');
 const git = require('gulp-git');
 const gulp = require('gulp');
 const install = require('gulp-install');
 const less = require('gulp-less');
+const markdownPdf = require('gulp-markdown-pdf');
+const markdownHtml = require('gulp-markdown');
 const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
 const notifier = require('node-notifier');
+const rename = require("gulp-rename");
+const replace = require('gulp-replace');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
 const ts = require('gulp-typescript');
+const wrapper = require('gulp-wrapper');
 
 const tsProject = ts.createProject('tsconfig.json');
 
@@ -22,8 +28,12 @@ const WORK_DIR = __dirname+ '/release';
 const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
+const ELECTRON_VERSION = '1.8.8';
+const APP_VERSION = require('./package.json').version;
+
 // default task
 gulp.task('default', () => {
+  /* eslint-disable-next-line no-console */
   console.log(`
 usage:
     gulp --tasks-simple
@@ -32,13 +42,18 @@ usage:
     gulp lint-js
     gulp lint-q
     gulp less
+    gulp doc
+    gulp readme
+    gulp manual
+    gulp releases
+    gulp version
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
     gulp app
     gulp package
     gulp release
-    gulp staging --branch=develop
+    gulp staging [--branch=develop]
   `);
 });
 
@@ -73,25 +88,145 @@ gulp.task('less', () => {
     .pipe(gulp.dest('.'));
 });
 
+// doc
+gulp.task('doc', ['readme', 'manual', 'releases', 'version', '_package-contents']);
+
+// readme
+gulp.task('readme', ['_readme:html']);
+gulp.task('_readme:pdf', ['less'], () => {
+  return gulp.src('docs/README.md')
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
+    .pipe(markdownPdf({
+      cssPath: 'docs/assets/css/readme-pdf.css'
+    }))
+    .pipe(rename({
+      basename: 'README',
+      extname: '.pdf'
+    }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:html:images'], () => {
+  return gulp.src('docs/README.md')
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/', 'src="assets/images/'))
+    .pipe(markdownHtml())
+    .pipe(wrapper({
+       header: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MYukkuriVoice</title>
+  <link rel="stylesheet" href="assets/css/readme-html.css">
+</head>
+<body>`,
+       footer: '</body></html>',
+    }))
+    .pipe(rename({
+      basename: 'README',
+      extname: '.html'
+    }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_readme:html:css', ['less'], () => {
+  return gulp.src(['docs/assets/css/readme-html.css'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
+});
+gulp.task('_readme:html:icns', () => {
+  return gulp.src(['icns/myukkurivoice.iconset/icon_256x256.png'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/icns/myukkurivoice.iconset'));
+});
+gulp.task('_readme:html:images', () => {
+  return gulp.src(['docs/images/*'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
+});
+
+// manual
+gulp.task('manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
+gulp.task('_manual:html', () => {
+  return gulp.src(['docs/help.html'])
+    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'assets/photon/dist/css/photon.css'))
+    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'assets/angular/angular.min.js'))
+    //.pipe(replace('assets/css/help.css', 'docs/assets/css/help.css'))
+    //.pipe(replace('assets/js/apps.help.js', 'docs/assets/js/apps.help.js'))
+    .pipe(rename({
+      basename: 'help',
+      extname: '.html'
+    }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_manual:assets:docs', () => {
+  return gulp.src(['docs/assets/js/apps.help.js', 'docs/assets/css/help.css'], { base: 'docs' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_manual:assets:angular', () => {
+  return gulp.src(['node_modules/angular/angular.min.js'], { base: 'node_modules' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
+});
+gulp.task('_manual:assets:photon', () => {
+  return gulp.src(['node_modules/photon/dist/css/photon.css', 'node_modules/photon/dist/fonts/photon-entypo.woff'], { base: 'node_modules' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
+});
+
+// releases
+gulp.task('releases', ['_releases:txt']);
+gulp.task('_releases:txt', () => {
+  return gulp.src('docs/releases.md')
+    .pipe(rename({
+      basename: 'releases',
+      extname: '.txt'
+    }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+
+// version
+gulp.task('version', (cb) => {
+  mkdirp('MYukkuriVoice-darwin-x64', (err) => {
+    if (err) { _notifyError(); cb(err); return; }
+    fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
+      if (err) { _notifyError(); }
+      cb(err);
+    });
+  });
+});
+
+// _package-contents
+gulp.task('_package-contents', (cb) => {
+  runSequence('_package-contents:cp', '_package-contents:rm', (err) => {
+    if (err) { _notifyError(); }
+    cb(err);
+  });
+});
+gulp.task('_package-contents:cp', () => {
+  return gulp.src(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html', 'MYukkuriVoice-darwin-x64/version'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/licenses'));
+});
+gulp.task('_package-contents:rm', () => {
+  return del(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html', 'MYukkuriVoice-darwin-x64/version']);
+});
+
 // clean
-gulp.task('clean', ['_rm-workdir']);
+gulp.task('clean', ['_rm-package', '_rm-workdir']);
 
 // test
 gulp.task('test', ['tsc'], (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('_package-debug', '_test', '_notify', (err) => {
+      runSequence('_rm-package', '_package-debug', '_test', '_notify', (err) => {
+        if (err) { _notifyError(); }
         cb(err);
       });
     } else {
       runSequence('_test', '_notify', (err) => {
+        if (err) { _notifyError(); }
         cb(err);
       });
     }
   });
 });
 gulp.task('test-rebuild', ['tsc'], (cb) => {
-  runSequence('_package-debug', '_test', '_notify', (err) => {
+  runSequence('_rm-package', '_package-debug', '_test', '_notify', (err) => {
+    if (err) { _notifyError(); }
     cb(err);
   });
 });
@@ -111,8 +246,9 @@ gulp.task('app', ['tsc'], (cb) => {
 // package
 gulp.task('package', (cb) => {
   runSequence(
-    'tsc', '_package-debug', '_notify',
+    'tsc', '_rm-package', '_package-debug', '_notify',
     (err) => {
+      if (err) { _notifyError(); }
       cb(err);
     }
   );
@@ -126,8 +262,9 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_package-release', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
+      if (err) { _notifyError(); }
       cb(err);
     }
   );
@@ -136,13 +273,14 @@ gulp.task('release', (cb) => {
 // staging
 gulp.task('staging', (cb) => {
   if (!(argv && argv.branch)) {
-    cb('branch is not selected'); return;
+    argv.branch = execSync('/usr/bin/git symbolic-ref --short HEAD').toString().trim();
   }
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_package-release', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
+      if (err) { _notifyError(); }
       cb(err);
     }
   );
@@ -208,477 +346,238 @@ gulp.task('_notify', () => {
     sound: 'Glass',
   });
 });
+function _notifyError() {
+  return notifier.notify({
+    title: 'gulp-task',
+    message: 'error.',
+    sound: 'Frog',
+  });
+}
 
 // package
+gulp.task('_rm-package', () => {
+  return del(['MYukkuriVoice-darwin-x64']);
+});
+
 gulp.task('_package-release', (cb) => {
-  del(['MYukkuriVoice-darwin-x64']).then(() => {
-    exec(PACKAGER_CMD+ ` . MYukkuriVoice \
-            --platform=darwin --arch=x64 --electronVersion=1.7.9 \
-            --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
-            --ignore="^/js/apps.spec.js" \
-            --ignore="^/contents-spec.html" \
-            --ignore="^/MYukkuriVoice-darwin-x64" \
-            --ignore=".DS_Store$" \
-            --ignore=".babelrc$" \
-            --ignore=".editorconfig$" \
-            --ignore=".eslintrc$" \
-            --ignore=".eslintrc.json$" \
-            --ignore=".jshintrc$" \
-            --ignore=".npmignore$" \
-            --ignore=".prettierrc.json$" \
-            --ignore=".stylelintrc.json$" \
-            --ignore=".travis.yml$" \
-            --ignore="^/.+\\.ts$" \
-            --ignore="^/README.md$" \
-            --ignore="^/\\.git$" \
-            --ignore="^/\\.gitignore$" \
-            --ignore="^/\\.gitmodules$" \
-            --ignore="^/css/.+\\.less$" \
-            --ignore="^/docs" \
-            --ignore="^/gulpfile.js$" \
-            --ignore="^/icns" \
-            --ignore="^/js/.+\\.ts$" \
-            --ignore="^/package-lock.json$" \
-            --ignore="^/test" \
-            --ignore="^/tsconfig.json$" \
-            --ignore="^/vendor/.gitignore$" \
-            --ignore="^/vendor/aqk2k_mac" \
-            --ignore="^/vendor/aqtk1-mac" \
-            --ignore="^/vendor/aqtk10-mac" \
-            --ignore="^/vendor/aqtk2-mac" \
-            --ignore="^/node_modules/about-window/LICENSE.txt" \
-            --ignore="^/node_modules/about-window/README.md" \
-            --ignore="^/node_modules/angular-input-highlight/README.md" \
-            --ignore="^/node_modules/angular-input-highlight/angular-input-highlight.coffee" \
-            --ignore="^/node_modules/angular-input-highlight/karma.conf.coffee" \
-            --ignore="^/node_modules/angular-input-highlight/test" \
-            --ignore="^/node_modules/angular/LICENSE.md" \
-            --ignore="^/node_modules/angular/README.md" \
-            --ignore="^/node_modules/async/CHANGELOG.md" \
-            --ignore="^/node_modules/async/LICENSE" \
-            --ignore="^/node_modules/async/README.md" \
-            --ignore="^/node_modules/audio-buffer-stream/README.md" \
-            --ignore="^/node_modules/audio-buffer-stream/test" \
-            --ignore="^/node_modules/balanced-match/LICENSE.md" \
-            --ignore="^/node_modules/balanced-match/README.md" \
-            --ignore="^/node_modules/bindings/README.md" \
-            --ignore="^/node_modules/brace-expansion/README.md" \
-            --ignore="^/node_modules/concat-map/LICENSE" \
-            --ignore="^/node_modules/concat-map/README.markdown" \
-            --ignore="^/node_modules/concat-map/example" \
-            --ignore="^/node_modules/concat-map/test" \
-            --ignore="^/node_modules/conf/license" \
-            --ignore="^/node_modules/conf/readme.md" \
-            --ignore="^/node_modules/core-util-is/LICENSE" \
-            --ignore="^/node_modules/core-util-is/README.md" \
-            --ignore="^/node_modules/core-util-is/test.js" \
-            --ignore="^/node_modules/cryptico.js/README.md" \
-            --ignore="^/node_modules/cryptico.js/sample" \
-            --ignore="^/node_modules/cryptico.js/yarn.lock" \
-            --ignore="^/node_modules/debug/CHANGELOG.md" \
-            --ignore="^/node_modules/debug/LICENSE" \
-            --ignore="^/node_modules/debug/Makefile" \
-            --ignore="^/node_modules/debug/README.md" \
-            --ignore="^/node_modules/dot-prop/license" \
-            --ignore="^/node_modules/dot-prop/readme.md" \
-            --ignore="^/node_modules/electron-config/license" \
-            --ignore="^/node_modules/electron-config/readme.md" \
-            --ignore="^/node_modules/electron-is-accelerator/LICENSE" \
-            --ignore="^/node_modules/electron-is-accelerator/README.md" \
-            --ignore="^/node_modules/electron-is-accelerator/test.js" \
-            --ignore="^/node_modules/electron-json-storage/CHANGELOG.md" \
-            --ignore="^/node_modules/electron-json-storage/README.md" \
-            --ignore="^/node_modules/electron-json-storage/doc" \
-            --ignore="^/node_modules/electron-json-storage/tests" \
-            --ignore="^/node_modules/electron-localshortcut/license" \
-            --ignore="^/node_modules/electron-localshortcut/readme.md" \
-            --ignore="^/node_modules/electron-log/LICENSE" \
-            --ignore="^/node_modules/electron-log/README.md" \
-            --ignore="^/node_modules/env-paths/license" \
-            --ignore="^/node_modules/env-paths/readme.md" \
-            --ignore="^/node_modules/exists-file/CHANGELOG.md" \
-            --ignore="^/node_modules/exists-file/LICENSE.md" \
-            --ignore="^/node_modules/ffi/CHANGELOG.md" \
-            --ignore="^/node_modules/ffi/LICENSE" \
-            --ignore="^/node_modules/ffi/README.md" \
-            --ignore="^/node_modules/ffi/deps" \
-            --ignore="^/node_modules/ffi/example" \
-            --ignore="^/node_modules/ffi/src" \
-            --ignore="^/node_modules/ffi/test" \
-            --ignore="^/node_modules/find-up/license" \
-            --ignore="^/node_modules/find-up/readme.md" \
-            --ignore="^/node_modules/fs.realpath/LICENSE" \
-            --ignore="^/node_modules/fs.realpath/README.md" \
-            --ignore="^/node_modules/github-version-compare/README.md" \
-            --ignore="^/node_modules/github-version-compare/tsconfig.json" \
-            --ignore="^/node_modules/glob/LICENSE" \
-            --ignore="^/node_modules/glob/README.md" \
-            --ignore="^/node_modules/glob/changelog.md" \
-            --ignore="^/node_modules/inflight/LICENSE" \
-            --ignore="^/node_modules/inflight/README.md" \
-            --ignore="^/node_modules/inherits/LICENSE" \
-            --ignore="^/node_modules/inherits/README.md" \
-            --ignore="^/node_modules/intro.js/CODE_OF_CONDUCT.md" \
-            --ignore="^/node_modules/intro.js/CONTRIBUTING.md" \
-            --ignore="^/node_modules/intro.js/Makefile" \
-            --ignore="^/node_modules/intro.js/README.md" \
-            --ignore="^/node_modules/intro.js/changelog.md" \
-            --ignore="^/node_modules/intro.js/docs" \
-            --ignore="^/node_modules/intro.js/example" \
-            --ignore="^/node_modules/intro.js/license.md" \
-            --ignore="^/node_modules/is-obj/license" \
-            --ignore="^/node_modules/is-obj/readme.md" \
-            --ignore="^/node_modules/isarray/README.md" \
-            --ignore="^/node_modules/lodash/LICENSE" \
-            --ignore="^/node_modules/lodash/README.md" \
-            --ignore="^/node_modules/minimatch/LICENSE" \
-            --ignore="^/node_modules/minimatch/README.md" \
-            --ignore="^/node_modules/minimist/LICENSE" \
-            --ignore="^/node_modules/minimist/example" \
-            --ignore="^/node_modules/minimist/readme.markdown" \
-            --ignore="^/node_modules/minimist/test" \
-            --ignore="^/node_modules/mkdirp/LICENSE" \
-            --ignore="^/node_modules/mkdirp/bin/usage.txt" \
-            --ignore="^/node_modules/mkdirp/examples" \
-            --ignore="^/node_modules/mkdirp/readme.markdown" \
-            --ignore="^/node_modules/mkdirp/test" \
-            --ignore="^/node_modules/ms/LICENSE.md" \
-            --ignore="^/node_modules/ms/README.md" \
-            --ignore="^/node_modules/nan/CHANGELOG.md" \
-            --ignore="^/node_modules/nan/LICENSE.md" \
-            --ignore="^/node_modules/nan/README.md" \
-            --ignore="^/node_modules/nan/doc" \
-            --ignore="^/node_modules/nan/nan.h" \
-            --ignore="^/node_modules/nan/nan_callbacks.h" \
-            --ignore="^/node_modules/nan/nan_callbacks_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_callbacks_pre_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_converters.h" \
-            --ignore="^/node_modules/nan/nan_converters_43_inl.h" \
-            --ignore="^/node_modules/nan/nan_converters_pre_43_inl.h" \
-            --ignore="^/node_modules/nan/nan_implementation_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_implementation_pre_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_maybe_43_inl.h" \
-            --ignore="^/node_modules/nan/nan_maybe_pre_43_inl.h" \
-            --ignore="^/node_modules/nan/nan_new.h" \
-            --ignore="^/node_modules/nan/nan_object_wrap.h" \
-            --ignore="^/node_modules/nan/nan_persistent_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_persistent_pre_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_string_bytes.h" \
-            --ignore="^/node_modules/nan/nan_typedarray_contents.h" \
-            --ignore="^/node_modules/nan/nan_weak.h" \
-            --ignore="^/node_modules/nan/tools/README.md" \
-            --ignore="^/node_modules/once/LICENSE" \
-            --ignore="^/node_modules/once/README.md" \
-            --ignore="^/node_modules/os-tmpdir/license" \
-            --ignore="^/node_modules/os-tmpdir/readme.md" \
-            --ignore="^/node_modules/path-exists/license" \
-            --ignore="^/node_modules/path-exists/readme.md" \
-            --ignore="^/node_modules/path-is-absolute/license" \
-            --ignore="^/node_modules/path-is-absolute/readme.md" \
-            --ignore="^/node_modules/photon/CNAME" \
-            --ignore="^/node_modules/photon/CONTRIBUTING.md" \
-            --ignore="^/node_modules/photon/LICENSE" \
-            --ignore="^/node_modules/photon/README.md" \
-            --ignore="^/node_modules/photon/docs" \
-            --ignore="^/node_modules/photon/sass" \
-            --ignore="^/node_modules/pinkie-promise/license" \
-            --ignore="^/node_modules/pinkie-promise/readme.md" \
-            --ignore="^/node_modules/pinkie/license" \
-            --ignore="^/node_modules/pinkie/readme.md" \
-            --ignore="^/node_modules/pkg-up/license" \
-            --ignore="^/node_modules/pkg-up/readme.md" \
-            --ignore="^/node_modules/readable-stream/LICENSE" \
-            --ignore="^/node_modules/readable-stream/README.md" \
-            --ignore="^/node_modules/ref-struct/History.md" \
-            --ignore="^/node_modules/ref-struct/README.md" \
-            --ignore="^/node_modules/ref/CHANGELOG.md" \
-            --ignore="^/node_modules/ref/README.md" \
-            --ignore="^/node_modules/ref/build/Makefile" \
-            --ignore="^/node_modules/ref/build/Release/.deps/Release/obj.target/binding/src" \
-            --ignore="^/node_modules/ref/build/Release/obj.target/binding/src" \
-            --ignore="^/node_modules/ref/build/binding.Makefile" \
-            --ignore="^/node_modules/ref/build/binding.target.mk" \
-            --ignore="^/node_modules/ref/docs" \
-            --ignore="^/node_modules/ref/src" \
-            --ignore="^/node_modules/ref/test" \
-            --ignore="^/node_modules/rimraf/LICENSE" \
-            --ignore="^/node_modules/rimraf/README.md" \
-            --ignore="^/node_modules/semver/LICENSE" \
-            --ignore="^/node_modules/semver/README.md" \
-            --ignore="^/node_modules/stream-parser/History.md" \
-            --ignore="^/node_modules/stream-parser/LICENSE" \
-            --ignore="^/node_modules/stream-parser/README.md" \
-            --ignore="^/node_modules/stream-parser/node_modules/debug/.npmignore" \
-            --ignore="^/node_modules/stream-parser/node_modules/debug/History.md" \
-            --ignore="^/node_modules/stream-parser/node_modules/debug/Makefile" \
-            --ignore="^/node_modules/stream-parser/node_modules/debug/Readme.md" \
-            --ignore="^/node_modules/stream-parser/node_modules/ms/README.md" \
-            --ignore="^/node_modules/stream-parser/node_modules/ms/license.md" \
-            --ignore="^/node_modules/stream-parser/test" \
-            --ignore="^/node_modules/string_decoder/LICENSE" \
-            --ignore="^/node_modules/string_decoder/README.md" \
-            --ignore="^/node_modules/temp/LICENSE" \
-            --ignore="^/node_modules/temp/README.md" \
-            --ignore="^/node_modules/temp/examples" \
-            --ignore="^/node_modules/temp/node_modules/rimraf/AUTHORS" \
-            --ignore="^/node_modules/temp/node_modules/rimraf/LICENSE" \
-            --ignore="^/node_modules/temp/node_modules/rimraf/README.md" \
-            --ignore="^/node_modules/temp/node_modules/rimraf/test" \
-            --ignore="^/node_modules/temp/test" \
-            --ignore="^/node_modules/tunajs/CONTRIBUTE.md" \
-            --ignore="^/node_modules/tunajs/README.md" \
-            --ignore="^/node_modules/tunajs/tests" \
-            --ignore="^/node_modules/wav/History.md" \
-            --ignore="^/node_modules/wav/README.md" \
-            --ignore="^/node_modules/wav/examples" \
-            --ignore="^/node_modules/wav/test" \
-            --ignore="^/node_modules/wave-recorder/README.md" \
-            --ignore="^/node_modules/wave-recorder/example.js" \
-            --ignore="^/node_modules/wrappy/LICENSE" \
-            --ignore="^/node_modules/wrappy/README.md" \
-            --ignore="^/node_modules/xtend/LICENCE" \
-            --ignore="^/node_modules/xtend/Makefile" \
-            --ignore="^/node_modules/xtend/README.md" \
-            --ignore="^/node_modules/xtend/test.js"`
-          , (err, stdout, stderr) => {
-            cb(err);
-          }
-    );
-  });
+  exec(PACKAGER_CMD+ ` . MYukkuriVoice \
+          --platform=darwin --arch=x64 \
+          --app-version=${APP_VERSION} \
+          --electron-version=${ELECTRON_VERSION} \
+          --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --ignore="^/js/apps.spec.js" \
+          --ignore="^/contents-spec.html" \
+          --ignore="^/MYukkuriVoice-darwin-x64" \
+          --ignore="^/docs" \
+          --ignore="^/icns" \
+          --ignore="^/test" \
+          --ignore="^/vendor/aqk2k_mac" \
+          --ignore="^/vendor/aqtk1-mac" \
+          --ignore="^/vendor/aqtk10-mac" \
+          --ignore="^/vendor/aqtk2-mac" \
+          --ignore="/ffi/deps/" \
+          --ignore="/node_modules/angular/angular-csp\\.css$" \
+          --ignore="/node_modules/angular/angular\\.js$" \
+          --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
+          --ignore="/node_modules/angular/index\\.js$" \
+          --ignore="/node_modules/angular/package\\.json$" \
+          --ignore="/docs/" \
+          --ignore="/example/" \
+          --ignore="/examples/" \
+          --ignore="/man/" \
+          --ignore="/sample/" \
+          --ignore="/test/" \
+          --ignore="/tests/" \
+          --ignore="/.+\\.Makefile$" \
+          --ignore="/.+\\.cc$" \
+          --ignore="/.+\\.coffee$" \
+          --ignore="/.+\\.gyp$" \
+          --ignore="/.+\\.h$" \
+          --ignore="/.+\\.js\\.gzip$" \
+          --ignore="/.+\\.js\\.map$" \
+          --ignore="/.+\\.jst$" \
+          --ignore="/.+\\.less$" \
+          --ignore="/.+\\.markdown$" \
+          --ignore="/.+\\.md$" \
+          --ignore="/.+\\.py$" \
+          --ignore="/.+\\.scss$" \
+          --ignore="/.+\\.swp$" \
+          --ignore="/.+\\.target\\.mk$" \
+          --ignore="/.+\\.tgz$" \
+          --ignore="/.+\\.ts$" \
+          --ignore="/AUTHORS$" \
+          --ignore="/CHANGELOG$" \
+          --ignore="/CHANGES$" \
+          --ignore="/CONTRIBUTE$" \
+          --ignore="/CONTRIBUTING$" \
+          --ignore="/ChangeLog$" \
+          --ignore="/HISTORY$" \
+          --ignore="/History$" \
+          --ignore="/LICENCE$" \
+          --ignore="/LICENSE$" \
+          --ignore="/LICENSE-MIT\\.txt$" \
+          --ignore="/LICENSE-jsbn$" \
+          --ignore="/LICENSE\\.APACHE2$" \
+          --ignore="/LICENSE\\.BSD$" \
+          --ignore="/LICENSE\\.MIT$" \
+          --ignore="/LICENSE\\.html$" \
+          --ignore="/LICENSE\\.txt$" \
+          --ignore="/License$" \
+          --ignore="/MAKEFILE$" \
+          --ignore="/Makefile$" \
+          --ignore="/OWNERS$" \
+          --ignore="/README$" \
+          --ignore="/README\\.hbs$" \
+          --ignore="/README\\.html$" \
+          --ignore="/Readme$" \
+          --ignore="/\\.DS_Store$" \
+          --ignore="/\\.babelrc$" \
+          --ignore="/\\.cache/$" \
+          --ignore="/\\.editorconfig$" \
+          --ignore="/\\.eslintignore$" \
+          --ignore="/\\.eslintrc$" \
+          --ignore="/\\.eslintrc\\.json$" \
+          --ignore="/\\.eslintrc\\.yml$" \
+          --ignore="/\\.git$" \
+          --ignore="/\\.gitignore$" \
+          --ignore="/\\.gitmodules$" \
+          --ignore="/\\.hound.yml$" \
+          --ignore="/\\.jshintrc$" \
+          --ignore="/\\.keep$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.prettierrc$" \
+          --ignore="/\\.prettierrc\\.json$" \
+          --ignore="/\\.prettierrc\\.yaml$" \
+          --ignore="/\\.python-version$" \
+          --ignore="/\\.stylelintrc$" \
+          --ignore="/\\.stylelintrc\\.json$" \
+          --ignore="/\\.travis\\.yml$" \
+          --ignore="/appveyor\\.yml$" \
+          --ignore="/bower\\.json$" \
+          --ignore="/example\\.js$" \
+          --ignore="/favicon\\.ico$" \
+          --ignore="/gulpfile\\.js$" \
+          --ignore="/license$" \
+          --ignore="/package-lock\\.json$" \
+          --ignore="/project\\.pbxproj$" \
+          --ignore="/test\\.js$" \
+          --ignore="/tsconfig\\.json$" \
+          --ignore="/usage\\.txt$" \
+          --ignore="/yarn\\.lock$"`
+        , (err, stdout, stderr) => {
+          cb(err);
+        }
+  );
 });
 
 gulp.task('_package-debug', (cb) => {
-  del(['MYukkuriVoice-darwin-x64']).then(() => {
-    exec(PACKAGER_CMD+ ` . MYukkuriVoice \
-            --platform=darwin --arch=x64 --electronVersion=1.7.9 \
-            --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
-            --ignore="^/MYukkuriVoice-darwin-x64" \
-            --ignore=".DS_Store$" \
-            --ignore=".babelrc$" \
-            --ignore=".editorconfig$" \
-            --ignore=".eslintrc$" \
-            --ignore=".eslintrc.json$" \
-            --ignore=".jshintrc$" \
-            --ignore=".npmignore$" \
-            --ignore=".prettierrc.json$" \
-            --ignore=".stylelintrc.json$" \
-            --ignore=".travis.yml$" \
-            --ignore="^/.+\\.ts$" \
-            --ignore="^/README.md$" \
-            --ignore="^/\\.git$" \
-            --ignore="^/\\.gitignore$" \
-            --ignore="^/\\.gitmodules$" \
-            --ignore="^/css/.+\\.less$" \
-            --ignore="^/docs" \
-            --ignore="^/gulpfile.js$" \
-            --ignore="^/icns" \
-            --ignore="^/js/.+\\.ts$" \
-            --ignore="^/package-lock.json$" \
-            --ignore="^/test" \
-            --ignore="^/tsconfig.json$" \
-            --ignore="^/vendor/.gitignore$" \
-            --ignore="^/vendor/aqk2k_mac" \
-            --ignore="^/vendor/aqtk1-mac" \
-            --ignore="^/vendor/aqtk10-mac" \
-            --ignore="^/vendor/aqtk2-mac" \
-            --ignore="^/node_modules/about-window/LICENSE.txt" \
-            --ignore="^/node_modules/about-window/README.md" \
-            --ignore="^/node_modules/angular-input-highlight/README.md" \
-            --ignore="^/node_modules/angular-input-highlight/angular-input-highlight.coffee" \
-            --ignore="^/node_modules/angular-input-highlight/karma.conf.coffee" \
-            --ignore="^/node_modules/angular-input-highlight/test" \
-            --ignore="^/node_modules/angular/LICENSE.md" \
-            --ignore="^/node_modules/angular/README.md" \
-            --ignore="^/node_modules/async/CHANGELOG.md" \
-            --ignore="^/node_modules/async/LICENSE" \
-            --ignore="^/node_modules/async/README.md" \
-            --ignore="^/node_modules/audio-buffer-stream/README.md" \
-            --ignore="^/node_modules/audio-buffer-stream/test" \
-            --ignore="^/node_modules/balanced-match/LICENSE.md" \
-            --ignore="^/node_modules/balanced-match/README.md" \
-            --ignore="^/node_modules/bindings/README.md" \
-            --ignore="^/node_modules/brace-expansion/README.md" \
-            --ignore="^/node_modules/concat-map/LICENSE" \
-            --ignore="^/node_modules/concat-map/README.markdown" \
-            --ignore="^/node_modules/concat-map/example" \
-            --ignore="^/node_modules/concat-map/test" \
-            --ignore="^/node_modules/conf/license" \
-            --ignore="^/node_modules/conf/readme.md" \
-            --ignore="^/node_modules/core-util-is/LICENSE" \
-            --ignore="^/node_modules/core-util-is/README.md" \
-            --ignore="^/node_modules/core-util-is/test.js" \
-            --ignore="^/node_modules/cryptico.js/README.md" \
-            --ignore="^/node_modules/cryptico.js/sample" \
-            --ignore="^/node_modules/cryptico.js/yarn.lock" \
-            --ignore="^/node_modules/debug/CHANGELOG.md" \
-            --ignore="^/node_modules/debug/LICENSE" \
-            --ignore="^/node_modules/debug/Makefile" \
-            --ignore="^/node_modules/debug/README.md" \
-            --ignore="^/node_modules/dot-prop/license" \
-            --ignore="^/node_modules/dot-prop/readme.md" \
-            --ignore="^/node_modules/electron-config/license" \
-            --ignore="^/node_modules/electron-config/readme.md" \
-            --ignore="^/node_modules/electron-is-accelerator/LICENSE" \
-            --ignore="^/node_modules/electron-is-accelerator/README.md" \
-            --ignore="^/node_modules/electron-is-accelerator/test.js" \
-            --ignore="^/node_modules/electron-json-storage/CHANGELOG.md" \
-            --ignore="^/node_modules/electron-json-storage/README.md" \
-            --ignore="^/node_modules/electron-json-storage/doc" \
-            --ignore="^/node_modules/electron-json-storage/tests" \
-            --ignore="^/node_modules/electron-localshortcut/license" \
-            --ignore="^/node_modules/electron-localshortcut/readme.md" \
-            --ignore="^/node_modules/electron-log/LICENSE" \
-            --ignore="^/node_modules/electron-log/README.md" \
-            --ignore="^/node_modules/env-paths/license" \
-            --ignore="^/node_modules/env-paths/readme.md" \
-            --ignore="^/node_modules/exists-file/CHANGELOG.md" \
-            --ignore="^/node_modules/exists-file/LICENSE.md" \
-            --ignore="^/node_modules/ffi/CHANGELOG.md" \
-            --ignore="^/node_modules/ffi/LICENSE" \
-            --ignore="^/node_modules/ffi/README.md" \
-            --ignore="^/node_modules/ffi/deps" \
-            --ignore="^/node_modules/ffi/example" \
-            --ignore="^/node_modules/ffi/src" \
-            --ignore="^/node_modules/ffi/test" \
-            --ignore="^/node_modules/find-up/license" \
-            --ignore="^/node_modules/find-up/readme.md" \
-            --ignore="^/node_modules/fs.realpath/LICENSE" \
-            --ignore="^/node_modules/fs.realpath/README.md" \
-            --ignore="^/node_modules/github-version-compare/README.md" \
-            --ignore="^/node_modules/github-version-compare/tsconfig.json" \
-            --ignore="^/node_modules/glob/LICENSE" \
-            --ignore="^/node_modules/glob/README.md" \
-            --ignore="^/node_modules/glob/changelog.md" \
-            --ignore="^/node_modules/inflight/LICENSE" \
-            --ignore="^/node_modules/inflight/README.md" \
-            --ignore="^/node_modules/inherits/LICENSE" \
-            --ignore="^/node_modules/inherits/README.md" \
-            --ignore="^/node_modules/intro.js/CODE_OF_CONDUCT.md" \
-            --ignore="^/node_modules/intro.js/CONTRIBUTING.md" \
-            --ignore="^/node_modules/intro.js/Makefile" \
-            --ignore="^/node_modules/intro.js/README.md" \
-            --ignore="^/node_modules/intro.js/changelog.md" \
-            --ignore="^/node_modules/intro.js/docs" \
-            --ignore="^/node_modules/intro.js/example" \
-            --ignore="^/node_modules/intro.js/license.md" \
-            --ignore="^/node_modules/is-obj/license" \
-            --ignore="^/node_modules/is-obj/readme.md" \
-            --ignore="^/node_modules/isarray/README.md" \
-            --ignore="^/node_modules/lodash/LICENSE" \
-            --ignore="^/node_modules/lodash/README.md" \
-            --ignore="^/node_modules/minimatch/LICENSE" \
-            --ignore="^/node_modules/minimatch/README.md" \
-            --ignore="^/node_modules/minimist/LICENSE" \
-            --ignore="^/node_modules/minimist/example" \
-            --ignore="^/node_modules/minimist/readme.markdown" \
-            --ignore="^/node_modules/minimist/test" \
-            --ignore="^/node_modules/mkdirp/LICENSE" \
-            --ignore="^/node_modules/mkdirp/bin/usage.txt" \
-            --ignore="^/node_modules/mkdirp/examples" \
-            --ignore="^/node_modules/mkdirp/readme.markdown" \
-            --ignore="^/node_modules/mkdirp/test" \
-            --ignore="^/node_modules/ms/LICENSE.md" \
-            --ignore="^/node_modules/ms/README.md" \
-            --ignore="^/node_modules/nan/CHANGELOG.md" \
-            --ignore="^/node_modules/nan/LICENSE.md" \
-            --ignore="^/node_modules/nan/README.md" \
-            --ignore="^/node_modules/nan/doc" \
-            --ignore="^/node_modules/nan/nan.h" \
-            --ignore="^/node_modules/nan/nan_callbacks.h" \
-            --ignore="^/node_modules/nan/nan_callbacks_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_callbacks_pre_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_converters.h" \
-            --ignore="^/node_modules/nan/nan_converters_43_inl.h" \
-            --ignore="^/node_modules/nan/nan_converters_pre_43_inl.h" \
-            --ignore="^/node_modules/nan/nan_implementation_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_implementation_pre_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_maybe_43_inl.h" \
-            --ignore="^/node_modules/nan/nan_maybe_pre_43_inl.h" \
-            --ignore="^/node_modules/nan/nan_new.h" \
-            --ignore="^/node_modules/nan/nan_object_wrap.h" \
-            --ignore="^/node_modules/nan/nan_persistent_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_persistent_pre_12_inl.h" \
-            --ignore="^/node_modules/nan/nan_string_bytes.h" \
-            --ignore="^/node_modules/nan/nan_typedarray_contents.h" \
-            --ignore="^/node_modules/nan/nan_weak.h" \
-            --ignore="^/node_modules/nan/tools/README.md" \
-            --ignore="^/node_modules/once/LICENSE" \
-            --ignore="^/node_modules/once/README.md" \
-            --ignore="^/node_modules/os-tmpdir/license" \
-            --ignore="^/node_modules/os-tmpdir/readme.md" \
-            --ignore="^/node_modules/path-exists/license" \
-            --ignore="^/node_modules/path-exists/readme.md" \
-            --ignore="^/node_modules/path-is-absolute/license" \
-            --ignore="^/node_modules/path-is-absolute/readme.md" \
-            --ignore="^/node_modules/photon/CNAME" \
-            --ignore="^/node_modules/photon/CONTRIBUTING.md" \
-            --ignore="^/node_modules/photon/LICENSE" \
-            --ignore="^/node_modules/photon/README.md" \
-            --ignore="^/node_modules/photon/docs" \
-            --ignore="^/node_modules/photon/sass" \
-            --ignore="^/node_modules/pinkie-promise/license" \
-            --ignore="^/node_modules/pinkie-promise/readme.md" \
-            --ignore="^/node_modules/pinkie/license" \
-            --ignore="^/node_modules/pinkie/readme.md" \
-            --ignore="^/node_modules/pkg-up/license" \
-            --ignore="^/node_modules/pkg-up/readme.md" \
-            --ignore="^/node_modules/readable-stream/LICENSE" \
-            --ignore="^/node_modules/readable-stream/README.md" \
-            --ignore="^/node_modules/ref-struct/History.md" \
-            --ignore="^/node_modules/ref-struct/README.md" \
-            --ignore="^/node_modules/ref/CHANGELOG.md" \
-            --ignore="^/node_modules/ref/README.md" \
-            --ignore="^/node_modules/ref/build/Makefile" \
-            --ignore="^/node_modules/ref/build/Release/.deps/Release/obj.target/binding/src" \
-            --ignore="^/node_modules/ref/build/Release/obj.target/binding/src" \
-            --ignore="^/node_modules/ref/build/binding.Makefile" \
-            --ignore="^/node_modules/ref/build/binding.target.mk" \
-            --ignore="^/node_modules/ref/docs" \
-            --ignore="^/node_modules/ref/src" \
-            --ignore="^/node_modules/ref/test" \
-            --ignore="^/node_modules/rimraf/LICENSE" \
-            --ignore="^/node_modules/rimraf/README.md" \
-            --ignore="^/node_modules/semver/LICENSE" \
-            --ignore="^/node_modules/semver/README.md" \
-            --ignore="^/node_modules/stream-parser/History.md" \
-            --ignore="^/node_modules/stream-parser/LICENSE" \
-            --ignore="^/node_modules/stream-parser/README.md" \
-            --ignore="^/node_modules/stream-parser/node_modules/debug/.npmignore" \
-            --ignore="^/node_modules/stream-parser/node_modules/debug/History.md" \
-            --ignore="^/node_modules/stream-parser/node_modules/debug/Makefile" \
-            --ignore="^/node_modules/stream-parser/node_modules/debug/Readme.md" \
-            --ignore="^/node_modules/stream-parser/node_modules/ms/README.md" \
-            --ignore="^/node_modules/stream-parser/node_modules/ms/license.md" \
-            --ignore="^/node_modules/stream-parser/test" \
-            --ignore="^/node_modules/string_decoder/LICENSE" \
-            --ignore="^/node_modules/string_decoder/README.md" \
-            --ignore="^/node_modules/temp/LICENSE" \
-            --ignore="^/node_modules/temp/README.md" \
-            --ignore="^/node_modules/temp/examples" \
-            --ignore="^/node_modules/temp/node_modules/rimraf/AUTHORS" \
-            --ignore="^/node_modules/temp/node_modules/rimraf/LICENSE" \
-            --ignore="^/node_modules/temp/node_modules/rimraf/README.md" \
-            --ignore="^/node_modules/temp/node_modules/rimraf/test" \
-            --ignore="^/node_modules/temp/test" \
-            --ignore="^/node_modules/tunajs/CONTRIBUTE.md" \
-            --ignore="^/node_modules/tunajs/README.md" \
-            --ignore="^/node_modules/tunajs/tests" \
-            --ignore="^/node_modules/wav/History.md" \
-            --ignore="^/node_modules/wav/README.md" \
-            --ignore="^/node_modules/wav/examples" \
-            --ignore="^/node_modules/wav/test" \
-            --ignore="^/node_modules/wave-recorder/README.md" \
-            --ignore="^/node_modules/wave-recorder/example.js" \
-            --ignore="^/node_modules/wrappy/LICENSE" \
-            --ignore="^/node_modules/wrappy/README.md" \
-            --ignore="^/node_modules/xtend/LICENCE" \
-            --ignore="^/node_modules/xtend/Makefile" \
-            --ignore="^/node_modules/xtend/README.md" \
-            --ignore="^/node_modules/xtend/test.js"`
-          , (err, stdout, stderr) => {
-            cb(err);
-          }
-    );
-  });
+  exec(PACKAGER_CMD+ ` . MYukkuriVoice \
+          --platform=darwin --arch=x64 \
+          --app-version=${APP_VERSION} \
+          --electron-version=${ELECTRON_VERSION} \
+          --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --ignore="^/MYukkuriVoice-darwin-x64" \
+          --ignore="^/docs" \
+          --ignore="^/icns" \
+          --ignore="^/test" \
+          --ignore="^/vendor/aqk2k_mac" \
+          --ignore="^/vendor/aqtk1-mac" \
+          --ignore="^/vendor/aqtk10-mac" \
+          --ignore="^/vendor/aqtk2-mac" \
+          --ignore="/ffi/deps/" \
+          --ignore="/node_modules/angular/angular-csp\\.css$" \
+          --ignore="/node_modules/angular/angular\\.js$" \
+          --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
+          --ignore="/node_modules/angular/index\\.js$" \
+          --ignore="/node_modules/angular/package\\.json$" \
+          --ignore="/docs/" \
+          --ignore="/example/" \
+          --ignore="/examples/" \
+          --ignore="/man/" \
+          --ignore="/sample/" \
+          --ignore="/test/" \
+          --ignore="/tests/" \
+          --ignore="/.+\\.Makefile$" \
+          --ignore="/.+\\.cc$" \
+          --ignore="/.+\\.coffee$" \
+          --ignore="/.+\\.gyp$" \
+          --ignore="/.+\\.h$" \
+          --ignore="/.+\\.js\\.gzip$" \
+          --ignore="/.+\\.js\\.map$" \
+          --ignore="/.+\\.jst$" \
+          --ignore="/.+\\.less$" \
+          --ignore="/.+\\.markdown$" \
+          --ignore="/.+\\.md$" \
+          --ignore="/.+\\.py$" \
+          --ignore="/.+\\.scss$" \
+          --ignore="/.+\\.swp$" \
+          --ignore="/.+\\.target\\.mk$" \
+          --ignore="/.+\\.tgz$" \
+          --ignore="/.+\\.ts$" \
+          --ignore="/AUTHORS$" \
+          --ignore="/CHANGELOG$" \
+          --ignore="/CHANGES$" \
+          --ignore="/CONTRIBUTE$" \
+          --ignore="/CONTRIBUTING$" \
+          --ignore="/ChangeLog$" \
+          --ignore="/HISTORY$" \
+          --ignore="/History$" \
+          --ignore="/LICENCE$" \
+          --ignore="/LICENSE$" \
+          --ignore="/LICENSE-MIT\\.txt$" \
+          --ignore="/LICENSE-jsbn$" \
+          --ignore="/LICENSE\\.APACHE2$" \
+          --ignore="/LICENSE\\.BSD$" \
+          --ignore="/LICENSE\\.MIT$" \
+          --ignore="/LICENSE\\.html$" \
+          --ignore="/LICENSE\\.txt$" \
+          --ignore="/License$" \
+          --ignore="/MAKEFILE$" \
+          --ignore="/Makefile$" \
+          --ignore="/OWNERS$" \
+          --ignore="/README$" \
+          --ignore="/README\\.hbs$" \
+          --ignore="/README\\.html$" \
+          --ignore="/Readme$" \
+          --ignore="/\\.DS_Store$" \
+          --ignore="/\\.babelrc$" \
+          --ignore="/\\.cache/$" \
+          --ignore="/\\.editorconfig$" \
+          --ignore="/\\.eslintignore$" \
+          --ignore="/\\.eslintrc$" \
+          --ignore="/\\.eslintrc\\.json$" \
+          --ignore="/\\.eslintrc\\.yml$" \
+          --ignore="/\\.git$" \
+          --ignore="/\\.gitignore$" \
+          --ignore="/\\.gitmodules$" \
+          --ignore="/\\.hound.yml$" \
+          --ignore="/\\.jshintrc$" \
+          --ignore="/\\.keep$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.prettierrc$" \
+          --ignore="/\\.prettierrc\\.json$" \
+          --ignore="/\\.prettierrc\\.yaml$" \
+          --ignore="/\\.python-version$" \
+          --ignore="/\\.stylelintrc$" \
+          --ignore="/\\.stylelintrc\\.json$" \
+          --ignore="/\\.travis\\.yml$" \
+          --ignore="/appveyor\\.yml$" \
+          --ignore="/bower\\.json$" \
+          --ignore="/example\\.js$" \
+          --ignore="/favicon\\.ico$" \
+          --ignore="/gulpfile\\.js$" \
+          --ignore="/license$" \
+          --ignore="/package-lock\\.json$" \
+          --ignore="/project\\.pbxproj$" \
+          --ignore="/test\\.js$" \
+          --ignore="/tsconfig\\.json$" \
+          --ignore="/usage\\.txt$" \
+          --ignore="/yarn\\.lock$"`
+        , (err, stdout, stderr) => {
+          cb(err);
+        }
+  );
 });
 

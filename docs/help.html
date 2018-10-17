@@ -69,6 +69,14 @@
       <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:display == 'help'}" ng-click="$location.hash('help')">
         <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
+
+      <h5 class="nav-group-title">ナビゲーション</h5>
+      <span class="nav-group-item functions-item" id="menu-funclist" ng-click="ctrl.browser('https://taku-o.github.io/myukkurivoice/')">
+        <span class="icon icon-help-circled"></span>トップページに戻る
+      </span>
+      <span class="nav-group-item functions-item" id="menu-funclist" ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">
+        <span class="icon icon-help-circled"></span>GitHubに移動
+      </span>
     </nav>
   </div>
 
@@ -77,7 +85,7 @@
     <div class="content">
       <h4>MYukkuriVoiceについて</h4>
       <p>
-        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">MYukkuriVoice</a>は、AquesTalkを利用したMac OSX向けの<br>
+        <a ng-click="ctrl.browser('https://taku-o.github.io/myukkurivoice/')">MYukkuriVoice</a>は、AquesTalkを利用したMac OSX向けの<br>
         動画制作向け合成音声生成アプリケーションです。<br>
         macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に対応しています。
       </p>
@@ -212,8 +220,9 @@
       <h4>アンインストールするには</h4>
       <p>
         <ul>
-          <li>アプリケーションを削除してください</li>
-          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/</a>を削除してください</li>
+          <li>MYukkuriVoice.app アプリケーションを削除してください</li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice</a> フォルダを削除してください</li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Logs/MYukkuriVoice/')">$HOME/Library/Logs/MYukkuriVoice</a> フォルダを削除してください</li>
         </ul>
       </p>
     </div>

@@ -1,7 +1,7 @@
 'use strict';
 exports.__esModule = true;
 var _crypto, crypto = function () { _crypto = _crypto || require('crypto'); return _crypto; };
-var _Config, Config = function () { _Config = _Config || require('electron-config'); return _Config; };
+var _Config, Config = function () { _Config = _Config || require('electron-store'); return _Config; };
 // load
 function loadAppConfig() {
     var appCfg = {
