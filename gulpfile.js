@@ -88,7 +88,7 @@ gulp.task('less', () => {
 });
 
 // doc
-gulp.task('doc', ['readme', 'manual', 'version', '_package-contents']);
+gulp.task('doc', ['readme', 'manual', 'releases', 'version', '_package-contents']);
 
 // readme
 gulp.task('readme', ['_readme:html']);
@@ -180,9 +180,12 @@ gulp.task('_releases:txt', () => {
 
 // version
 gulp.task('version', (cb) => {
-  fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
-    if (err) { _notifyError(); }
-    cb(err);
+  mkdirp('MYukkuriVoice-darwin-x64', (err) => {
+    if (err) { _notifyError(); cb(err); return; }
+    fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
+      if (err) { _notifyError(); }
+      cb(err);
+    });
   });
 });
 
