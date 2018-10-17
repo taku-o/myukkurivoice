@@ -167,24 +167,12 @@ gulp.task('_manual:assets:photon', () => {
 });
 
 // releases
-gulp.task('releases', ['_releases:html', '_readme:html:css']);
-gulp.task('_releases:html', ['_readme:html:css'], () => {
+gulp.task('releases', ['_releases:txt']);
+gulp.task('_releases:txt', () => {
   return gulp.src('docs/releases.md')
-    .pipe(markdownHtml())
-    .pipe(wrapper({
-       header: `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>MYukkuriVoice</title>
-  <link rel="stylesheet" href="assets/css/readme-html.css">
-</head>
-<body>`,
-       footer: '</body></html>',
-    }))
     .pipe(rename({
       basename: 'releases',
-      extname: '.html'
+      extname: '.txt'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
