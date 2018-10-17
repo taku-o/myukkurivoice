@@ -166,16 +166,15 @@ gulp.task('_manual:assets:photon', () => {
 });
 
 // _package-contents
-gulp.task('_package-contents', ['_version', '_license']);
-gulp.task('_version', () => {
-  //fs.writeFile('MYukkuriVoice-darwin-x64/version', APP_VERSION, (err) => {
-  //  if (err) { _notifyError(); }
-  //  cb(err);
-  //});
-  return del(['MYukkuriVoice-darwin-x64/version']);
+gulp.task('_package-contents', ['_version', '_el_license']);
+gulp.task('_version', (cb) => {
+  fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
+    if (err) { _notifyError(); }
+    cb(err);
+  });
 });
-gulp.task('_license', (cb) => {
-  return del(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html']);
+gulp.task('_el_license', (cb) => {
+  return del(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html', 'MYukkuriVoice-darwin-x64/version']);
 });
 
 // clean
