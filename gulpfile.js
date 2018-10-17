@@ -18,6 +18,7 @@ const replace = require('gulp-replace');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
 const ts = require('gulp-typescript');
+const wrapper = require('gulp-wrapper');
 
 const tsProject = ts.createProject('tsconfig.json');
 
@@ -94,7 +95,7 @@ gulp.task('_readme:pdf', ['less'], () => {
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
     .pipe(markdownPdf({
-      cssPath: 'docs/assets/css/pdf.css'
+      cssPath: 'docs/assets/css/readme-pdf.css'
     }))
     .pipe(rename({
       basename: 'README',
@@ -102,24 +103,39 @@ gulp.task('_readme:pdf', ['less'], () => {
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_readme:html', ['_readme:html:icns', '_readme:html:images'], () => {
+gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:html:images'], () => {
   return gulp.src('docs/README.md')
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="docs/icns/'))
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
+    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/', 'src="assets/images/'))
     .pipe(markdownHtml())
+    .pipe(wrapper({
+       header: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MYukkuriVoice</title>
+  <link rel="stylesheet" href="assets/css/readme-html.css">
+</head>
+<body>`,
+       footer: '</body></html>',
+    }))
     .pipe(rename({
       basename: 'README',
       extname: '.html'
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
+gulp.task('_readme:html:css', ['less'], () => {
+  return gulp.src(['docs/assets/css/readme-html.css'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
+});
 gulp.task('_readme:html:icns', () => {
   return gulp.src(['icns/myukkurivoice.iconset/icon_256x256.png'])
-    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/docs/icns/myukkurivoice.iconset'));
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/icns/myukkurivoice.iconset'));
 });
 gulp.task('_readme:html:images', () => {
-  return gulp.src(['docs/images/*'], { base: '.' })
-    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+  return gulp.src(['docs/images/*'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
 });
 
 // manual
@@ -148,6 +164,13 @@ gulp.task('_manual:assets:photon', () => {
   return gulp.src(['node_modules/photon/dist/css/photon.css', 'node_modules/photon/dist/fonts/photon-entypo.woff'], { base: 'node_modules' })
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
+
+// contact
+// 連絡先
+// 取り扱い種別 フリーソフト
+// 動作環境
+// バージョン
+gulp.task('contact', () => {});
 
 // _package-contents
 gulp.task('_package-contents', ['_version', '_license']);
