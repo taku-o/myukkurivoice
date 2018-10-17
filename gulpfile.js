@@ -45,6 +45,7 @@ usage:
     gulp readme
     gulp manual
     gulp releases
+    gulp version
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
@@ -87,7 +88,7 @@ gulp.task('less', () => {
 });
 
 // doc
-gulp.task('doc', ['readme', 'manual', 'releases', '_package-contents']);
+gulp.task('doc', ['readme', 'manual', 'version', '_package-contents']);
 
 // readme
 gulp.task('readme', ['_readme:html']);
@@ -177,15 +178,16 @@ gulp.task('_releases:txt', () => {
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 
-// _package-contents
-gulp.task('_package-contents', ['_version', '_el_license']);
-gulp.task('_version', (cb) => {
+// version
+gulp.task('version', (cb) => {
   fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
     if (err) { _notifyError(); }
     cb(err);
   });
 });
-gulp.task('_el_license', (cb) => {
+
+// _package-contents
+gulp.task('_package-contents', () => {
   return del(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html', 'MYukkuriVoice-darwin-x64/version']);
 });
 
