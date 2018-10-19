@@ -43,6 +43,11 @@ angular.module('yvoiceAppHelp', [])
         $scope.$location = $location;
         // event url hash changed
         $scope.$on('$locationChangeSuccess', function (event) {
+            // fix broken url
+            if ($location.url().startsWith('/%23')) {
+                window.location.href = $location.absUrl().replace('%23', '#');
+                return;
+            }
             var hash = $location.hash();
             if (menuList.includes(hash)) {
                 $scope.display = hash;
