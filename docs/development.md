@@ -136,3 +136,15 @@
   convert -coalesce readme-dnd.gif readme-dnd-splitted-%03d.png
 ```
 
+* animation GIFのサイズを縮小する
+
+```
+  gifsicle -O2 --colors 256 readme.gif > readme-mini.gif
+  convert readme-mini.gif -coalesce -scale 50% -deconstruct -fuzz 2% -dither none -layers optimize -matte -depth 8 \( -clone 0--1 -background none +append -quantize transparent  -colors 32  -unique-colors -write mpr:cmap +delete \) -map mpr:cmap readme-mini2.gif
+```
+
+* pngファイルのサイズを縮小する
+```
+  convert  -scale 30%  -unsharp 2x1.4+0.5+0 -colors 65 -quality 100 readme-tutorial.png readme-tutorial-mini.png
+```
+
