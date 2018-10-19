@@ -17,8 +17,8 @@ angular.module('yvoiceAppHelp', [])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  .controller('HelpController', ['$scope', '$timeout', '$location',
-  function($scope: yubo.IHelpScope, $timeout, $location) {
+  .controller('HelpController', ['$scope', '$timeout', '$location', '$window',
+  function($scope: yubo.IHelpScope, $timeout, $location, $window) {
 
     const menuList = [
       'about',
@@ -100,7 +100,7 @@ angular.module('yvoiceAppHelp', [])
     // action
     ctrl.browser = function(url): void {
       //shell().openExternal(url);
-      window.location.href = url;
+      $window.open(url);
     };
     ctrl.showItemInFolder = function(path): void {
       //const expanded = path.replace('$HOME', homeDir);
