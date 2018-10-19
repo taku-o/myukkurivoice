@@ -17,6 +17,7 @@ const rename = require("gulp-rename");
 const replace = require('gulp-replace');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
+const toc = require('gulp-markdown-toc');
 const ts = require('gulp-typescript');
 const wrapper = require('gulp-wrapper');
 
@@ -42,6 +43,7 @@ usage:
     gulp lint-js
     gulp lint-q
     gulp less
+    gulp toc
     gulp doc
     gulp clean
     gulp test [--t=test/mainWindow.js]
@@ -82,6 +84,13 @@ gulp.task('less', () => {
   return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
     .pipe(less())
     .pipe(gulp.dest('.'));
+});
+
+// table of contents
+gulp.task('toc', () => {
+  return gulp.src('docs/README.md')
+    .pipe(toc())
+    .pipe(gulp.dest('docs'));
 });
 
 // doc
