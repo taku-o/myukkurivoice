@@ -6,16 +6,11 @@
   "types": "types.d.ts",
   "scripts": {
     "tasks": "gulp --tasks-simple",
-    "tsc": "gulp tsc",
-    "lint": "gulp lint",
-    "lint-js": "gulp lint-js",
-    "lint-q": "gulp lint-q",
     "test": "gulp test",
     "rtest": "gulp test-rebuild",
+    "clean": "gulp clean",
     "app": "gulp app",
-    "package": "gulp package",
     "release": "gulp release",
-    "staging": "gulp staging",
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
   },
   "keywords": [
