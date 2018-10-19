@@ -123,9 +123,16 @@
 ```
 
 ## README用のアニメーションGIFの作成
+* animation GIFの作成
 
 ```
   brew install ffmpeg
   ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
+```
+
+* animation GIFを個別の画像ファイルに分割
+
+```
+  convert -coalesce readme-dnd.gif readme-dnd-splitted-%03d.png
 ```
 
