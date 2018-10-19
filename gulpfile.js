@@ -43,10 +43,6 @@ usage:
     gulp lint-q
     gulp less
     gulp doc
-    gulp readme
-    gulp manual
-    gulp releases
-    gulp version
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
@@ -89,10 +85,10 @@ gulp.task('less', () => {
 });
 
 // doc
-gulp.task('doc', ['readme', 'manual', 'releases', 'version', '_package-contents']);
+gulp.task('doc', ['_readme', '_manual', '_releaseslog', '_version', '_package-contents']);
 
 // readme
-gulp.task('readme', ['_readme:html']);
+gulp.task('_readme', ['_readme:html']);
 gulp.task('_readme:pdf', () => {
   return gulp.src('docs/README.md')
     .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
@@ -142,7 +138,7 @@ gulp.task('_readme:html:images', () => {
 });
 
 // manual
-gulp.task('manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
+gulp.task('_manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
 gulp.task('_manual:html', () => {
   return gulp.src(['docs/help.html'])
     .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'assets/photon/dist/css/photon.css'))
@@ -168,9 +164,20 @@ gulp.task('_manual:assets:photon', () => {
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
 
-// releases
-gulp.task('releases', ['_releases:txt']);
-gulp.task('_releases:txt', () => {
+// releaseslog
+gulp.task('_releaseslog', ['_releaseslog:pdf']);
+gulp.task('_releaseslog:pdf', () => {
+  return gulp.src('docs/releases.md')
+    .pipe(markdownPdf({
+      cssPath: 'docs/assets/css/readme-pdf.css'
+    }))
+    .pipe(rename({
+      basename: 'releases',
+      extname: '.pdf'
+    }))
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
+gulp.task('_releaseslog:txt', () => {
   return gulp.src('docs/releases.md')
     .pipe(rename({
       basename: 'releases',
@@ -180,7 +187,7 @@ gulp.task('_releases:txt', () => {
 });
 
 // version
-gulp.task('version', (cb) => {
+gulp.task('_version', (cb) => {
   mkdirp('MYukkuriVoice-darwin-x64', (err) => {
     if (err) { _notifyError(); cb(err); return; }
     fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
