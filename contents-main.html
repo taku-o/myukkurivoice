@@ -72,10 +72,10 @@
         <div class="media-body" ng-click="ctrl.select($index)">
           <strong>{{ $index }}:{{ yvoiceItem.name }}</strong>
           <div class="btn-group pull-right">
-            <button class="btn btn-default" id="copy" ng-click="ctrl.copy($index)">
+            <button class="btn btn-default" id="copy" ng-click="ctrl.copy($index)" title="設定を複製します">
               <span class="icon icon-plus-circled"></span>
             </button>
-            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="yvoiceList.length > 1">
+            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="yvoiceList.length > 1" title="設定を削除します">
               <span class="icon icon-minus-circled"></span>
             </button>
           </div>
@@ -92,7 +92,7 @@
         </div>
       </li>
       <li class="list-group-footer">
-        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!lastWavFile">
+        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!lastWavFile" title="このボタンをドラッグアンドドロップすると、最後に作成した音声ファイルを取り出せます">
           <span class="icon icon-download"></span>{{lastWavFile.wavFileName||"drag and drop to movie editor"}}
         </button>
       </li>
