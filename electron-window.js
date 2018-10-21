@@ -6,6 +6,13 @@ var _log, log = function () { _log = _log || require('electron-log'); return _lo
 var _path, path = function () { _path = _path || require('path'); return _path; };
 var _openAboutWindow, openAboutWindow = function () { _openAboutWindow = _openAboutWindow || require('about-window')["default"]; return _openAboutWindow; };
 var _Version, Version = function () { _Version = _Version || require('github-version-compare').Version; return _Version; };
+// for test
+var transparent = false;
+var opacity = 1.0;
+if (process.env.NODE_ENV == 'test') {
+    transparent = true;
+    opacity = 0.0;
+}
 // main window
 function showMainWindow() {
     var myApp = this;
@@ -23,6 +30,8 @@ function showMainWindow() {
         y: y,
         acceptFirstMouse: acceptFirstMouse,
         show: false,
+        transparent: transparent,
+        opacity: opacity,
         webPreferences: {
             devTools: this.appCfg.debug
         }
@@ -99,6 +108,8 @@ function showHelpWindow() {
         height: height,
         acceptFirstMouse: acceptFirstMouse,
         show: false,
+        transparent: transparent,
+        opacity: opacity,
         webPreferences: {
             devTools: this.appCfg.debug
         }
@@ -156,6 +167,8 @@ function showSystemWindow() {
         height: height,
         acceptFirstMouse: acceptFirstMouse,
         show: false,
+        transparent: transparent,
+        opacity: opacity,
         webPreferences: {
             devTools: this.appCfg.debug
         }
@@ -244,6 +257,8 @@ function showSpecWindow() {
         width: 800,
         height: 800,
         show: true,
+        transparent: transparent,
+        opacity: opacity,
         webPreferences: {
             devTools: this.appCfg.debug
         }

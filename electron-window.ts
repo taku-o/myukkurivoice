@@ -6,6 +6,14 @@ var _path, path                       = () => { _path = _path || require('path')
 var _openAboutWindow, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('about-window').default; return _openAboutWindow; };
 var _Version, Version                 = () => { _Version = _Version || require('github-version-compare').Version; return _Version; };
 
+// for test
+let transparent:boolean = false;
+let opacity:number = 1.0;
+if (process.env.NODE_ENV == 'test') {
+  transparent = true;
+  opacity = 0.0;
+}
+
 // main window
 function showMainWindow(): void {
   const myApp = this;
@@ -23,6 +31,8 @@ function showMainWindow(): void {
     y: y,
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
+    transparent: transparent,
+    opacity: opacity,
     webPreferences: {
       devTools: this.appCfg.debug,
     },
@@ -100,6 +110,8 @@ function showHelpWindow(): void {
     height: height,
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
+    transparent: transparent,
+    opacity: opacity,
     webPreferences: {
       devTools: this.appCfg.debug,
     },
@@ -152,6 +164,8 @@ function showSystemWindow(): void {
     height: height,
     acceptFirstMouse: acceptFirstMouse,
     show: false, // show at did-finish-load event
+    transparent: transparent,
+    opacity: opacity,
     webPreferences: {
       devTools: this.appCfg.debug,
     },
@@ -239,6 +253,8 @@ function showSpecWindow(): void {
     width: 800,
     height: 800,
     show: true,
+    transparent: transparent,
+    opacity: opacity,
     webPreferences: {
       devTools: this.appCfg.debug,
     },
