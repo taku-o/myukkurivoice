@@ -225,10 +225,10 @@ gulp.task('_package-contents:rm', () => {
 gulp.task('clean', ['_rm-package', '_rm-workdir']);
 
 // test
-gulp.task('test', ['tsc'], (cb) => {
+gulp.task('test', (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('_rm-package', '_package-debug', '_test', '_notify', (err) => {
+      runSequence('tsc', '_rm-package', '_package-debug', '_test', '_notify', (err) => {
         if (err) { _notifyError(); }
         cb(err);
       });
@@ -240,8 +240,8 @@ gulp.task('test', ['tsc'], (cb) => {
     }
   });
 });
-gulp.task('test-rebuild', ['tsc'], (cb) => {
-  runSequence('_rm-package', '_package-debug', '_test', '_notify', (err) => {
+gulp.task('test-rebuild', (cb) => {
+  runSequence('tsc', '_rm-package', '_package-debug', '_test', '_notify', (err) => {
     if (err) { _notifyError(); }
     cb(err);
   });
