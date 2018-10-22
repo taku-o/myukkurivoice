@@ -84,7 +84,7 @@
     <div class="content">
       <h4>MYukkuriVoiceについて</h4>
       <p>
-        <a ng-click="ctrl.browser('https://taku-o.github.io/myukkurivoice/')">MYukkuriVoice</a>は、AquesTalkを利用したMac OSX向けの<br>
+        <a ng-click="ctrl.browser('https://taku-o.github.io/myukkurivoice/')">MYukkuriVoice<span class="icon icon-popup"></span></a>は、AquesTalkを利用したMac OSX向けの<br>
         動画制作向け合成音声生成アプリケーションです。<br>
         macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、それ以降に対応しています。
       </p>
@@ -92,7 +92,7 @@
       <p>
         本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。<br>
         本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。ご注意ください。<br>
-        <a ng-click="ctrl.browser('http://www.a-quest.com/')">http://www.a-quest.com/</a>
+        <a ng-click="ctrl.browser('http://www.a-quest.com/')">http://www.a-quest.com/<span class="icon icon-popup"></span></a>
       </p>
     </div>
   </div>
@@ -107,7 +107,7 @@
         それをAquesTalkのライブラリで再生しています。<br>
         <br>
         音声記号列の詳しい仕様は、<br>
-        <a ng-click="ctrl.browser('http://www.a-quest.com/download.html')">http://www.a-quest.com/download.html</a><br>
+        <a ng-click="ctrl.browser('http://www.a-quest.com/download.html')">http://www.a-quest.com/download.html<span class="icon icon-popup"></span></a><br>
         の「音声記号列仕様書」をご確認ください。<br>
     </div>
   </div>
@@ -175,23 +175,23 @@
       <h4>MYukkuriVoiceで作った音声を使った動画を<br>Youtubeなどに広告付きで投稿してお金を貰うには<br>ライセンスが要る？</h4>
       <p>
         AquesTalkの使用ライセンスが必要です。<br>
-        <a ng-click="ctrl.browser('https://store.a-quest.com/')">アクエストオンラインストア</a>で
+        <a ng-click="ctrl.browser('https://store.a-quest.com/')">アクエストオンラインストア<span class="icon icon-popup"></span></a>で
         使用ライセンスを購入する必要があります。<br>
         <a ng-click="$location.hash('license')">→ ライセンスのまとめ</a>
       </p>
 
       <h4>MYukkuriVoiceが動かない。なんだか挙動がおかしい。</h4>
       <p>
-        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">https://github.com/taku-o/myukkurivoice</a>に
+        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">https://github.com/taku-o/myukkurivoice<span class="icon icon-popup"></span></a>に
         MYukkuriVoiceのソースコードがあります。
         これを見て問題を修正して頂いても良いのですが、<br>
-        サイトの<a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/issues')">課題リスト</a>に
+        サイトの<a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/issues')">課題リスト<span class="icon icon-popup"></span></a>に
         問題を報告して頂けるだけでも助かります。
       </p>
 
       <h4>Chromeで「一般的にダウンロードされておらず、危険を及ぼす可能性があります」と表示される</h4>
       <p>
-        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/releases')">releasesからアプリをダウンロード</a>した際に、
+        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/releases')">releasesからアプリをダウンロード<span class="icon icon-popup"></span></a>した際に、
         Chromeで「一般的にダウンロードされておらず、危険を及ぼす可能性があります」と表示される現象。<br>
         zipファイルのダウンロード件数が少ない時に表示されます。問題はないのでそのままダウンロードを進めてください。
       </p>
@@ -203,7 +203,7 @@
     <div class="content">
       <h4>アプリを更新するには</h4>
       <p>
-        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/releases')">releasesから最新のアプリをダウンロード</a>して
+        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/releases')">releasesから最新のアプリをダウンロード<span class="icon icon-popup"></span></a>して
         現在使用中のアプリと入れ替えてください。<br>
         <span class="warn"><small>
           ※ 入れ替えると、互換性の問題で、現在アプリに設定している情報が消える可能性があります。
@@ -220,8 +220,8 @@
       <p>
         <ul>
           <li>MYukkuriVoice.app アプリケーションを削除してください</li>
-          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice</a> フォルダを削除してください</li>
-          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Logs/MYukkuriVoice/')">$HOME/Library/Logs/MYukkuriVoice</a> フォルダを削除してください</li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a> フォルダを削除してください</li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Logs/MYukkuriVoice/')">$HOME/Library/Logs/MYukkuriVoice<span class="icon icon-folder"></span></a> フォルダを削除してください</li>
         </ul>
       </p>
     </div>
@@ -234,8 +234,8 @@
       <p>
         次のファイルをどこかに逃がしてください。
         <ul>
-          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/data.json</a></li>
-          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/config.json</a></li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/data.json<span class="icon icon-folder"></span></a></li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/myukkurivoice/')">$HOME/Library/Application Support/myukkurivoice/config.json<span class="icon icon-folder"></span></a></li>
         </ul>
       </p>
     </div>
@@ -250,7 +250,7 @@
         個人で動画を作って公開する程度であればライセンスは不要ですが、
         営利での利用であったり、収益が発生する場合は、使用ライセンスが必要となります。<br>
         より正確な情報は
-        <a ng-click="ctrl.browser('http://blog-yama.a-quest.com/?eid=970181')">外部リンク:ゆっくり実況で収益化するときライセンス購入は必要？</a>
+        <a ng-click="ctrl.browser('http://blog-yama.a-quest.com/?eid=970181')">外部リンク:ゆっくり実況で収益化するときライセンス購入は必要？<span class="icon icon-popup"></span></a>
         をご覧ください。
       </p>
       <table class="table-striped param-table">
@@ -320,7 +320,7 @@
       <h4>使用ライセンス(AquesTalk, AquesTalk2)</h4>
       <p>
         AquesTalk、もしくはAquesTalk2の使用ライセンスを
-        <a ng-click="ctrl.browser('https://store.a-quest.com/categories/618932')">アクエストオンラインストア</a>
+        <a ng-click="ctrl.browser('https://store.a-quest.com/categories/618932')">アクエストオンラインストア<span class="icon icon-popup"></span></a>
         で購入します。OSの種類はMacです。<br>
         その際、使用するOS、アプリ名、使用声種を連絡してください。
         <ul>
@@ -333,7 +333,7 @@
       <h4>使用ライセンス(AquesTalk10)</h4>
       <p>
         AquesTalk10の使用ライセンスを
-        <a ng-click="ctrl.browser('https://store.a-quest.com/categories/618932')">アクエストオンラインストア</a>
+        <a ng-click="ctrl.browser('https://store.a-quest.com/categories/618932')">アクエストオンラインストア<span class="icon icon-popup"></span></a>
         で購入します。OSの種類はMacです。<br>
         購入した使用ライセンスキーが届いたら、
         その使用キーを<a class="show-system-window" ng-click="ctrl.showSystemWindow()">環境設定画面で設定</a>してください。<br>
@@ -351,10 +351,10 @@
       <h4>連絡先</h4>
       <p>
         MYukkuriVoiceは、次のURLで開発されています。<br>
-        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">https://github.com/taku-o/myukkurivoice</a>
+        <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice')">https://github.com/taku-o/myukkurivoice<span class="icon icon-popup"></span></a>
       </p>
       <p>
-        バグ報告は<a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/issues')">こちら(課題リスト)</a>に
+        バグ報告は<a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/issues')">こちら(課題リスト)<span class="icon icon-popup"></span></a>に
         お願いします。
       </p>
     </div>

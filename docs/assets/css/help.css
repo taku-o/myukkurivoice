@@ -48,3 +48,9 @@ a.show-system-window {
   text-decoration: none;
   color: #000000;
 }
+span.icon-popup {
+  padding-left: 5px;
+}
+span.icon-folder:before {
+  content: '';
+}
