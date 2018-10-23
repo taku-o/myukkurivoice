@@ -123,6 +123,9 @@
   iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
 ```
 
+## アイコンファイルの入手
+* https://material.io/tools/icons/
+
 ## README用のアニメーションGIFの作成
 * animation GIFの作成
 
