@@ -503,6 +503,7 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         // Web Audio API base AudioService
         // @ts-ignore
         var audioCtx = new window.AudioContext();
+        var offlineCtx = new OfflineAudioContext(2, 8192, 44100);
         var sourceNode = null;
         function toArrayBuffer(bufWav) {
             var aBuffer = new ArrayBuffer(bufWav.length);
@@ -599,16 +600,14 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                     // report duration
                     AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
                     // source
-                    var inSourceNode = audioCtx.createBufferSource();
+                    var inSourceNode = offlineCtx.createBufferSource();
                     inSourceNode.buffer = decodedData;
-                    inSourceNode.onended = function () {
-                        // onendedのタイミングでは出力が終わっていない
-                        $timeout(function () {
-                            recorder.end();
-                            MessageService.record("" + '音声ファイルを保存しました。path: ' + wavFilePath, wavFilePath);
-                            d.resolve('ok');
-                        }, options.writeMarginMs);
-                    };
+                    offlineCtx.startRendering().then(function (renderedBuffer) {
+                        // TODO save AudioBuffer
+                        console.log(renderedBuffer);
+                        MessageService.record("" + '音声ファイルを保存しました。path: ' + wavFilePath, wavFilePath);
+                        d.resolve('ok');
+                    });
                     var nodeList = [];
                     // playbackRate
                     if (options.playbackRate && options.playbackRate != 1.0) {
@@ -619,24 +618,18 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                         inSourceNode.detune.value = options.detune;
                     }
                     // gain
-                    var gainNode = audioCtx.createGain();
+                    var gainNode = offlineCtx.createGain();
                     gainNode.gain.value = options.volume;
                     nodeList.push(gainNode);
-                    // recorder
-                    var recorder = WaveRecorder()(audioCtx, {
-                        channels: 1,
-                        bitDepth: 16
-                    });
-                    recorder.pipe(fs().createWriteStream(wavFilePath));
                     // connect
                     var lastNode = inSourceNode;
                     angular.forEach(nodeList, function (node) {
                         lastNode.connect(node);
                         lastNode = node;
                     });
-                    lastNode.connect(recorder.input);
+                    lastNode.connect(offlineCtx.destination);
                     // and start
-                    inSourceNode.start(0);
+                    inSourceNode.start();
                 })["catch"](function (err) {
                     MessageService.syserror('音源の再生に失敗しました。', err);
                     d.reject(err);
