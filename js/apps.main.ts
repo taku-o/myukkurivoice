@@ -1,3 +1,4 @@
+var remote = require('electron').remote;
 var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _clipboard, clipboard     = () => { _clipboard = _clipboard || require('electron').clipboard; return _clipboard; };
@@ -156,6 +157,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           return;
         }
         if ($scope.yinput) {
+          const win = remote.getCurrentWindow();
+          win.focus();
           $scope.yinput.source = data;
           $timeout(() => { $scope.$apply(); });
         }
