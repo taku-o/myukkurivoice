@@ -43,6 +43,14 @@ process.on('uncaughtException', function (err) {
 electron_1.app.on('window-all-closed', function () {
     electron_1.app.quit();
 });
+// receive drop file event
+electron_1.app.on('will-finish-launching', function () {
+    electron_1.app.on('open-file', function (event, filePath) {
+        event.preventDefault();
+        log().error('call open-file');
+        log().error(filePath);
+    });
+});
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 electron_1.app.on('ready', function () {

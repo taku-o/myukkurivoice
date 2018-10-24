@@ -49,6 +49,15 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
+// receive drop file event
+app.on('will-finish-launching', () => {
+  app.on('open-file', (event, filePath) => {
+    event.preventDefault();
+    //log().error('call open-file');
+    //log().error(filePath);
+  });
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
