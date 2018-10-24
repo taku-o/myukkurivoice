@@ -6,3 +6,4 @@ latest_release_url: https://github.com/taku-o/myukkurivoice/releases/latest
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-feed

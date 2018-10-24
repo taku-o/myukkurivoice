@@ -100,8 +100,8 @@ gulp.task('doc', ['_readme', '_manual', '_releaseslog', '_version', '_package-co
 gulp.task('_readme', ['_readme:html']);
 gulp.task('_readme:pdf', () => {
   return gulp.src('docs/README.md')
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
     .pipe(markdownPdf({
       cssPath: 'docs/assets/css/readme-pdf.css'
     }))
@@ -113,8 +113,8 @@ gulp.task('_readme:pdf', () => {
 });
 gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:html:images'], () => {
   return gulp.src('docs/README.md')
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/', 'src="assets/images/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/', 'src="assets/images/'))
     .pipe(markdownHtml())
     .pipe(wrapper({
        header: `<!DOCTYPE html>

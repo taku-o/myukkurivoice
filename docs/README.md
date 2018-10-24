@@ -5,7 +5,7 @@
 macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、
 macOS High Sierra(10.13)に対応しています。  
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/icns/myukkurivoice.iconset/icon_256x256.png" class="noborder">
+<img src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/myukkurivoice.iconset/icon_256x256.png" class="noborder">
 
 本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。  
 本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。ご注意ください。  
@@ -119,13 +119,13 @@ macOS High Sierra(10.13)に対応しています。
 * MacOSX Sierra以降で動作検証。
 * 設定を用意して切り替えて作業するスタイルで利用します。
 
-<a href="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme.gif"><img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme.gif" width="400"></a>
+<a href="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme.gif"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme.gif" width="400"></a>
 
 <a name="ショートカット"></a>
 ### ショートカット
 * 動画制作向きのショートカットキーがいくつか定義されています
 
-<img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-shortcut-play.png" width="400">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-shortcut-play.png" width="400">
 
 <a name="ファイルの出力オプション"></a>
 ### ファイルの出力オプション
@@ -133,31 +133,31 @@ macOS High Sierra(10.13)に対応しています。
 音声ファイルを連番付きのファイル名で保存したり、  
 音声ファイルの元となったメッセージを保存する機能があります。
 
-<img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-filewriteopt.png" width="400">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-filewriteopt.png" width="400">
 
 <a name="選択した範囲のテキストのみの音声再生・録音"></a>
 ### 選択した範囲のテキストのみの音声再生・録音
 * 選択した範囲のテキストを再生、録音する機能があります。
 * メッセージ入力欄、音記号列入力欄、どちらでも機能します。
 
-<img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-select-encoded.png" width="400">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-select-encoded.png" width="400">
 
 <a name="保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ"></a>
 ### 保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ
 * 最後に保存した音声ファイルのリンクが、アプリの左下に表示されます。
 * ドラッグアンドドロップで動画編集ソフトに渡せます。
 
-<a href="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif"><img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif" width="400"></a>
+<a href="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif" width="400"></a>
 
 <a name="その他"></a>
 ### その他
 * チュートリアル、ヘルプが用意されています
 
-<img src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-tutorial.png" width="400">
+<img src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-tutorial.png" width="400">
 
 * AquesTalk10から導入された音声の調節機能にも対応しています。(AquesTalk10ベースの音声のみ)
 
-<img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/readme-editaq10voice.png" width="400">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-editaq10voice.png" width="400">
 
 <a name="機能一覧"></a>
 ### 機能一覧
@@ -180,10 +180,10 @@ macOS High Sierra(10.13)に対応しています。
 
 <a name="動画リンク"></a>
 ## 動画リンク
-<a href="http://www.nicovideo.jp/watch/sm30435205"><img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm30435205.png" width="400"></a>
+<a href="http://www.nicovideo.jp/watch/sm30435205"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/sm30435205.png" width="400"></a>
 
-<a href="http://www.nicovideo.jp/watch/sm30826557"><img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm30826557.png" width="400"></a>
+<a href="http://www.nicovideo.jp/watch/sm30826557"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/sm30826557.png" width="400"></a>
 
-<a href="http://www.nicovideo.jp/watch/sm32273442"><img class="border" src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/sm32273442.png" width="400"></a>
+<a href="http://www.nicovideo.jp/watch/sm32273442"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/sm32273442.png" width="400"></a>
 
 
