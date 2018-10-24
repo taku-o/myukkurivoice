@@ -55,7 +55,7 @@ declare namespace yubo {
     mainWindow:   Electron.BrowserWindow;
     helpWindow:   Electron.BrowserWindow;
     systemWindow: Electron.BrowserWindow;
-    showMainWindow(): void;
+    showMainWindow(launchArgs: {filePath: string}): void;
     showHelpWindow(): void;
     showSystemWindow(): void;
     showAboutWindow(): void;

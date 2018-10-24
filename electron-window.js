@@ -14,7 +14,7 @@ if (process.env.NODE_ENV == 'test') {
     opacity = 0.0;
 }
 // main window
-function showMainWindow() {
+function showMainWindow(launchArgs) {
     var myApp = this;
     if (this.mainWindow && !this.mainWindow.isDestroyed()) {
         this.mainWindow.show();
@@ -73,6 +73,11 @@ function showMainWindow() {
     });
     // main window event
     this.mainWindow.webContents.on('did-finish-load', function () {
+        // receive drop file to app icon event
+        if (launchArgs && launchArgs.filePath) {
+            myApp.mainWindow.webContents.send('dropTextFile', launchArgs.filePath);
+        }
+        // show
         myApp.mainWindow.show();
         myApp.mainWindow.focus();
     });

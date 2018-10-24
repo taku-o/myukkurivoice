@@ -3,6 +3,7 @@ var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = function () { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _clipboard, clipboard = function () { _clipboard = _clipboard || require('electron').clipboard; return _clipboard; };
 var _path, path = function () { _path = _path || require('path'); return _path; };
+var _fs, fs = function () { _fs = _fs || require('fs'); return _fs; };
 var _log, log = function () { _log = _log || require('electron-log'); return _log; };
 // application settings
 var desktopDir = app.getPath('desktop');
@@ -134,6 +135,18 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     require('devtron').install();
                     break;
             }
+        });
+        // dropTextFile event
+        ipcRenderer().on('dropTextFile', function (event, filePath) {
+            fs().readFile(filePath, 'utf-8', function (err, data) {
+                if (err) {
+                    MessageService.error('テキストファイルを読み込めませんでした。', err);
+                    return;
+                }
+                if ($scope.yinput) {
+                    $scope.yinput.source = data;
+                }
+            });
         });
         // application settings
         var appCfg = require('electron').remote.getGlobal('appCfg');

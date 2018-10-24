@@ -49,12 +49,16 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
-// receive drop file event
+// receive drop file to app icon event
+let launchArgs = null;
 app.on('will-finish-launching', () => {
   app.on('open-file', (event, filePath) => {
     event.preventDefault();
-    //log().error('call open-file');
-    //log().error(filePath);
+    if (myApp.mainWindow) {
+      myApp.mainWindow.webContents.send('dropTextFile', filePath);
+    } else {
+      launchArgs = { filePath: filePath };
+    }
   });
 });
 
@@ -62,7 +66,7 @@ app.on('will-finish-launching', () => {
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
   // open main window.
-  myApp.showMainWindow();
+  myApp.showMainWindow(launchArgs);
 
   // init menu
   myApp.initAppMenu({debug: myApp.appCfg.debug});
