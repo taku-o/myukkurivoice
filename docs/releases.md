@@ -1,3 +1,7 @@
+# 0.7.7
+* 一部ロジックをMYukkuriVoice本体から分離。
+    * https://github.com/taku-o/electron-path
+
 # 0.7.6
 * アプリの修正。
     * アイコンのみボタンに対して、ツールチップの説明文を設定。

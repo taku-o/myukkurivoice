@@ -1,9 +1,8 @@
 "use strict";
 var _exec, exec = function () { _exec = _exec || require('child_process').exec; return _exec; };
 var _cryptico, cryptico = function () { _cryptico = _cryptico || require('cryptico.js'); return _cryptico; };
-var app = require('electron').remote.app;
-var appPath = app.getAppPath();
-var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
+var _epath, epath = function () { _epath = _epath || require('electron-path'); return _epath; };
+var unpackedPath = epath().getUnpackedPath();
 // angular license service
 angular.module('yvoiceLicenseService', [])
     .factory('LicenseService', ['$q', function ($q) {

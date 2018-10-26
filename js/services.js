@@ -9,9 +9,8 @@ var _temp, temp = function () { _temp = _temp || require('temp').track(); return
 var _path, path = function () { _path = _path || require('path'); return _path; };
 var _exec, exec = function () { _exec = _exec || require('child_process').exec; return _exec; };
 var _WaveRecorder, WaveRecorder = function () { _WaveRecorder = _WaveRecorder || require('wave-recorder'); return _WaveRecorder; };
-var app = require('electron').remote.app;
-var appPath = app.getAppPath();
-var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
+var _epath, epath = function () { _epath = _epath || require('electron-path'); return _epath; };
+var unpackedPath = epath().getUnpackedPath();
 // angular service
 angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService', 'yvoiceModel'])
     .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService',
