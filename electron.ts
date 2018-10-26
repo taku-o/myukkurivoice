@@ -49,9 +49,9 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
-// receive drop file to app icon event
 let launchArgs = null;
 app.on('will-finish-launching', () => {
+  // receive drop file to app icon event
   app.on('open-file', (event, filePath) => {
     event.preventDefault();
     if (myApp.mainWindow) {
@@ -59,6 +59,12 @@ app.on('will-finish-launching', () => {
     } else {
       launchArgs = { filePath: filePath };
     }
+  });
+
+  // receive protocol call
+  app.on('open-url', (event, url) => {
+    event.preventDefault();
+    // launch
   });
 });
 
