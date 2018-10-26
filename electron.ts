@@ -9,6 +9,7 @@ import * as AppConfig from './electron-appcfg';
 
 // MYukkuriVoice application
 const MYukkuriVoice = function(): void {
+  this.launchArgs = null;
   this.appCfg = null;
   this.config = null;
 
@@ -49,7 +50,6 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
-let launchArgs = null;
 app.on('will-finish-launching', () => {
   // receive drop file to app icon event
   app.on('open-file', (event, filePath) => {
@@ -57,7 +57,7 @@ app.on('will-finish-launching', () => {
     if (myApp.mainWindow) {
       myApp.mainWindow.webContents.send('dropTextFile', filePath);
     } else {
-      launchArgs = { filePath: filePath };
+      myApp.launchArgs = { filePath: filePath };
     }
   });
 
@@ -72,7 +72,7 @@ app.on('will-finish-launching', () => {
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
   // open main window.
-  myApp.showMainWindow(launchArgs);
+  myApp.showMainWindow();
 
   // init menu
   myApp.initAppMenu({debug: myApp.appCfg.debug});

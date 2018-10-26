@@ -50,12 +50,13 @@ declare namespace yubo {
 
   // electron.ts
   export interface IMYukkuriVoice {
+    launchArgs:   {filePath: string}
     appCfg:       yubo.AppCfg;
     config:       yubo.ElectronConfig;
     mainWindow:   Electron.BrowserWindow;
     helpWindow:   Electron.BrowserWindow;
     systemWindow: Electron.BrowserWindow;
-    showMainWindow(launchArgs: {filePath: string}): void;
+    showMainWindow(): void;
     showHelpWindow(): void;
     showSystemWindow(): void;
     showAboutWindow(): void;

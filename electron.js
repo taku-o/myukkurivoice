@@ -8,6 +8,7 @@ var Pane = require("./electron-window");
 var AppConfig = require("./electron-appcfg");
 // MYukkuriVoice application
 var MYukkuriVoice = function () {
+    this.launchArgs = null;
     this.appCfg = null;
     this.config = null;
     // window reference
@@ -43,7 +44,6 @@ process.on('uncaughtException', function (err) {
 electron_1.app.on('window-all-closed', function () {
     electron_1.app.quit();
 });
-var launchArgs = null;
 electron_1.app.on('will-finish-launching', function () {
     // receive drop file to app icon event
     electron_1.app.on('open-file', function (event, filePath) {
@@ -52,7 +52,7 @@ electron_1.app.on('will-finish-launching', function () {
             myApp.mainWindow.webContents.send('dropTextFile', filePath);
         }
         else {
-            launchArgs = { filePath: filePath };
+            myApp.launchArgs = { filePath: filePath };
         }
     });
     // receive protocol call
@@ -65,7 +65,7 @@ electron_1.app.on('will-finish-launching', function () {
 // initialization and is ready to create browser windows.
 electron_1.app.on('ready', function () {
     // open main window.
-    myApp.showMainWindow(launchArgs);
+    myApp.showMainWindow();
     // init menu
     myApp.initAppMenu({ debug: myApp.appCfg.debug });
     myApp.initDockMenu();

@@ -15,9 +15,8 @@ if (process.env.NODE_ENV == 'test') {
 }
 
 // main window
-function showMainWindow(launchArgs): void {
+function showMainWindow(): void {
   const myApp = this;
-  let _launchArgs = launchArgs;
   if (this.mainWindow && !this.mainWindow.isDestroyed()) {
     this.mainWindow.show(); this.mainWindow.focus();
     return;
@@ -78,8 +77,8 @@ function showMainWindow(launchArgs): void {
   // main window event
   this.mainWindow.webContents.on('did-finish-load', () => {
     // receive drop file to app icon event
-    if (_launchArgs && _launchArgs.filePath) {
-      const filePath = _launchArgs.filePath; _launchArgs = null; // for window reload
+    if (myApp.launchArgs && myApp.launchArgs.filePath) {
+      const filePath = myApp.launchArgs.filePath; myApp.launchArgs = null; // for window reload
       myApp.mainWindow.webContents.send('dropTextFile', filePath);
     }
     // show
