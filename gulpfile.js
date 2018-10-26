@@ -381,6 +381,7 @@ gulp.task('_package-release', (cb) => {
           --app-version=${APP_VERSION} \
           --electron-version=${ELECTRON_VERSION} \
           --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --protocol-name=myukkurivoice --protocol=myukkurivoice \
           --extend-info=extend.plist \
           --ignore="^/js/apps.spec.js" \
           --ignore="^/contents-spec.html" \
@@ -505,6 +506,7 @@ gulp.task('_package-debug', (cb) => {
           --app-version=${APP_VERSION} \
           --electron-version=${ELECTRON_VERSION} \
           --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --protocol-name=myukkurivoice --protocol=myukkurivoice \
           --extend-info=extend.plist \
           --ignore="^/MYukkuriVoice-darwin-x64" \
           --ignore="^/docs" \

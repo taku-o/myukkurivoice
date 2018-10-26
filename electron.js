@@ -43,9 +43,9 @@ process.on('uncaughtException', function (err) {
 electron_1.app.on('window-all-closed', function () {
     electron_1.app.quit();
 });
-// receive drop file to app icon event
 var launchArgs = null;
 electron_1.app.on('will-finish-launching', function () {
+    // receive drop file to app icon event
     electron_1.app.on('open-file', function (event, filePath) {
         event.preventDefault();
         if (myApp.mainWindow) {
@@ -54,6 +54,11 @@ electron_1.app.on('will-finish-launching', function () {
         else {
             launchArgs = { filePath: filePath };
         }
+    });
+    // receive protocol call
+    electron_1.app.on('open-url', function (event, url) {
+        event.preventDefault();
+        // launch
     });
 });
 // This method will be called when Electron has finished
