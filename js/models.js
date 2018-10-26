@@ -1,7 +1,6 @@
 "use strict";
-var app = require('electron').remote.app;
-var appPath = app.getAppPath();
-var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
+var _epath, epath = function () { _epath = _epath || require('electron-path'); return _epath; };
+var unpackedPath = epath().getUnpackedPath();
 // angular model
 angular.module('yvoiceModel', [])
     .factory('YPhontList', function () {
