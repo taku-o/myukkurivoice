@@ -5,6 +5,7 @@ var _log, log = function () { _log = _log || require('electron-log'); return _lo
 var _path, path = function () { _path = _path || require('path'); return _path; };
 var Menu = require("./electron-menu");
 var Pane = require("./electron-window");
+var Launch = require("./electron-launch");
 var AppConfig = require("./electron-appcfg");
 // MYukkuriVoice application
 var MYukkuriVoice = function () {
@@ -25,6 +26,8 @@ MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
 MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
 MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
 MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
+MYukkuriVoice.prototype.handleOpenFile = Launch.handleOpenFile;
+MYukkuriVoice.prototype.handleOpenUrl = Launch.handleOpenUrl;
 MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
 MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
@@ -48,17 +51,12 @@ electron_1.app.on('will-finish-launching', function () {
     // receive drop file to app icon event
     electron_1.app.on('open-file', function (event, filePath) {
         event.preventDefault();
-        if (myApp.mainWindow) {
-            myApp.mainWindow.webContents.send('dropTextFile', filePath);
-        }
-        else {
-            myApp.launchArgs = { filePath: filePath };
-        }
+        myApp.handleOpenFile(filePath);
     });
     // receive protocol call
     electron_1.app.on('open-url', function (event, url) {
         event.preventDefault();
-        // launch
+        myApp.handleOpenUrl(url);
     });
 });
 // This method will be called when Electron has finished

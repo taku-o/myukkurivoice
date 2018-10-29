@@ -5,6 +5,7 @@ var _path, path = () => { _path = _path || require('path'); return _path; };
 
 import * as Menu from './electron-menu';
 import * as Pane from './electron-window';
+import * as Launch from './electron-launch';
 import * as AppConfig from './electron-appcfg';
 
 // MYukkuriVoice application
@@ -27,6 +28,8 @@ MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
 MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
 MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
 MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
+MYukkuriVoice.prototype.handleOpenFile = Launch.handleOpenFile;
+MYukkuriVoice.prototype.handleOpenUrl = Launch.handleOpenUrl;
 MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
 MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
@@ -54,17 +57,12 @@ app.on('will-finish-launching', () => {
   // receive drop file to app icon event
   app.on('open-file', (event, filePath) => {
     event.preventDefault();
-    if (myApp.mainWindow) {
-      myApp.mainWindow.webContents.send('dropTextFile', filePath);
-    } else {
-      myApp.launchArgs = { filePath: filePath };
-    }
+    myApp.handleOpenFile(filePath);
   });
-
   // receive protocol call
   app.on('open-url', (event, url) => {
     event.preventDefault();
-    // launch
+    myApp.handleOpenUrl(url);
   });
 });
 

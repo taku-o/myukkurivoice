@@ -64,6 +64,8 @@ declare namespace yubo {
     showSpecWindow(): void;
     initAppMenu(options: {debug: boolean}): void;
     initDockMenu(): void;
+    handleOpenFile(filePath: string): void;
+    handleOpenUrl(scheme: string): void;
     loadAppConfig(): void;
     updateAppConfig(options: yubo.AppCfg): void;
     resetAppConfig(): void;
