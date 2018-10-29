@@ -1,8 +1,7 @@
 # 0.7.7
+* myukkurivoice://open でMYukkuriVoiceアプリを起動するように。
 * 一部ロジックをMYukkuriVoice本体から分離。
     * https://github.com/taku-o/electron-path
-* myukkurivoice://open でMYukkuriVoiceアプリを起動するように。
-    * ヘルプとテストで利用。
 
 # 0.7.6
 * アプリの修正。
