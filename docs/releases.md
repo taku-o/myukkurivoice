@@ -1,6 +1,12 @@
+# 0.7.7
+* myukkurivoice://open でMYukkuriVoiceアプリを起動するように。
+* 一部ロジックをMYukkuriVoice本体から分離。
+    * https://github.com/taku-o/electron-path
+
 # 0.7.6
 * アプリの修正。
     * アイコンのみボタンに対して、ツールチップの説明文を設定。
+    * アプリアイコンにテキストファイルを落としての読込をサポート。
 * READMEファイルの修正。
     * 目次を追加。
     * 画像のサイズを全体的に軽量化。

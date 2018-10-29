@@ -50,6 +50,7 @@ declare namespace yubo {
 
   // electron.ts
   export interface IMYukkuriVoice {
+    launchArgs:   {filePath: string}
     appCfg:       yubo.AppCfg;
     config:       yubo.ElectronConfig;
     mainWindow:   Electron.BrowserWindow;
@@ -63,6 +64,8 @@ declare namespace yubo {
     showSpecWindow(): void;
     initAppMenu(options: {debug: boolean}): void;
     initDockMenu(): void;
+    handleOpenFile(filePath: string): void;
+    handleOpenUrl(scheme: string): void;
     loadAppConfig(): void;
     updateAppConfig(options: yubo.AppCfg): void;
     resetAppConfig(): void;

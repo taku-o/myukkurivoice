@@ -100,8 +100,8 @@ gulp.task('doc', ['_readme', '_manual', '_releaseslog', '_version', '_package-co
 gulp.task('_readme', ['_readme:html']);
 gulp.task('_readme:pdf', () => {
   return gulp.src('docs/README.md')
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
     .pipe(markdownPdf({
       cssPath: 'docs/assets/css/readme-pdf.css'
     }))
@@ -113,8 +113,8 @@ gulp.task('_readme:pdf', () => {
 });
 gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:html:images'], () => {
   return gulp.src('docs/README.md')
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
-    .pipe(replace('src="https://raw.github.com/taku-o/myukkurivoice/master/docs/images/', 'src="assets/images/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/', 'src="assets/images/'))
     .pipe(markdownHtml())
     .pipe(wrapper({
        header: `<!DOCTYPE html>
@@ -381,6 +381,8 @@ gulp.task('_package-release', (cb) => {
           --app-version=${APP_VERSION} \
           --electron-version=${ELECTRON_VERSION} \
           --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --protocol-name=myukkurivoice --protocol=myukkurivoice \
+          --extend-info=extend.plist \
           --ignore="^/js/apps.spec.js" \
           --ignore="^/contents-spec.html" \
           --ignore="^/MYukkuriVoice-darwin-x64" \
@@ -504,6 +506,8 @@ gulp.task('_package-debug', (cb) => {
           --app-version=${APP_VERSION} \
           --electron-version=${ELECTRON_VERSION} \
           --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --protocol-name=myukkurivoice --protocol=myukkurivoice \
+          --extend-info=extend.plist \
           --ignore="^/MYukkuriVoice-darwin-x64" \
           --ignore="^/docs" \
           --ignore="^/icns" \

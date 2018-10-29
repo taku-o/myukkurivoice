@@ -73,6 +73,13 @@ function showMainWindow() {
     });
     // main window event
     this.mainWindow.webContents.on('did-finish-load', function () {
+        // receive drop file to app icon event
+        if (myApp.launchArgs && myApp.launchArgs.filePath) {
+            var filePath = myApp.launchArgs.filePath;
+            myApp.launchArgs = null; // for window reload
+            myApp.mainWindow.webContents.send('dropTextFile', filePath);
+        }
+        // show
         myApp.mainWindow.show();
         myApp.mainWindow.focus();
     });

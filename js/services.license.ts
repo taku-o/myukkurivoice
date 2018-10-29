@@ -1,9 +1,8 @@
 var _exec, exec         = () => { _exec = _exec || require('child_process').exec; return _exec; };
 var _cryptico, cryptico = () => { _cryptico = _cryptico || require('cryptico.js'); return _cryptico; };
+var _epath, epath       = () => { _epath = _epath || require('electron-path'); return _epath; };
 
-var app = require('electron').remote.app;
-var appPath = app.getAppPath();
-var unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
+var unpackedPath = epath().getUnpackedPath();
 
 // angular license service
 angular.module('yvoiceLicenseService', [])
