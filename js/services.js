@@ -10,6 +10,7 @@ var _path, path = function () { _path = _path || require('path'); return _path; 
 var _exec, exec = function () { _exec = _exec || require('child_process').exec; return _exec; };
 var _WaveRecorder, WaveRecorder = function () { _WaveRecorder = _WaveRecorder || require('wave-recorder'); return _WaveRecorder; };
 var _epath, epath = function () { _epath = _epath || require('electron-path'); return _epath; };
+var _WavEncoder, WavEncoder = function () { _WavEncoder = _WavEncoder || require('wave-encoder'); return _WavEncoder; };
 var unpackedPath = epath().getUnpackedPath();
 // angular service
 angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService', 'yvoiceModel'])
@@ -502,7 +503,6 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
         // Web Audio API base AudioService
         // @ts-ignore
         var audioCtx = new window.AudioContext();
-        var offlineCtx = new OfflineAudioContext(2, 8192, 44100);
         var sourceNode = null;
         function toArrayBuffer(bufWav) {
             var aBuffer = new ArrayBuffer(bufWav.length);
@@ -599,36 +599,59 @@ angular.module('yvoiceService', ['yvoiceMessageService', 'yvoiceLicenseService',
                     // report duration
                     AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
                     // source
+                    var offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
                     var inSourceNode = offlineCtx.createBufferSource();
                     inSourceNode.buffer = decodedData;
-                    offlineCtx.startRendering().then(function (renderedBuffer) {
-                        // TODO save AudioBuffer
-                        console.log(renderedBuffer);
-                        MessageService.record("" + '音声ファイルを保存しました。path: ' + wavFilePath, wavFilePath);
-                        d.resolve('ok');
-                    });
                     var nodeList = [];
-                    // playbackRate
-                    if (options.playbackRate && options.playbackRate != 1.0) {
-                        inSourceNode.playbackRate.value = options.playbackRate;
-                    }
-                    // detune
-                    if (options.detune && options.detune != 0) {
-                        inSourceNode.detune.value = options.detune;
-                    }
-                    // gain
-                    var gainNode = offlineCtx.createGain();
-                    gainNode.gain.value = options.volume;
-                    nodeList.push(gainNode);
+                    //// playbackRate
+                    //if (options.playbackRate && options.playbackRate != 1.0) {
+                    //  inSourceNode.playbackRate.value = options.playbackRate;
+                    //}
+                    //// detune
+                    //if (options.detune && options.detune != 0) {
+                    //  inSourceNode.detune.value = options.detune;
+                    //}
+                    //// gain
+                    //const gainNode = offlineCtx.createGain();
+                    //gainNode.gain.value = options.volume;
+                    //nodeList.push(gainNode);
                     // connect
                     var lastNode = inSourceNode;
-                    angular.forEach(nodeList, function (node) {
-                        lastNode.connect(node);
-                        lastNode = node;
-                    });
+                    //angular.forEach(nodeList, (node) => {
+                    //  lastNode.connect(node); lastNode = node;
+                    //});
                     lastNode.connect(offlineCtx.destination);
                     // and start
                     inSourceNode.start();
+                    offlineCtx.startRendering().then(function (renderedBuffer) {
+                        // TODO save AudioBuffer
+                        console.log(renderedBuffer);
+                        var audioData = {
+                            sampleRate: renderedBuffer.sampleRate,
+                            channelData: []
+                        };
+                        for (var i = 0; i < renderedBuffer.numberOfChannels; i++) {
+                            audioData.channelData[i] = renderedBuffer.getChannelData(i);
+                        }
+                        WavEncoder().encode(audioData).then(function (buffer) {
+                            fs().writeFile(wavFilePath, Buffer.from(buffer), function (e) {
+                                if (e) {
+                                    console.log(e);
+                                }
+                                else {
+                                    console.log("Success");
+                                }
+                                MessageService.record("" + '音声ファイルを保存しました。path: ' + wavFilePath, wavFilePath);
+                                d.resolve('ok');
+                            });
+                        });
+                        //WavEncoder.encode(audioData).then(function(buffer) {
+                        //  var blob = new Blob([buffer], {
+                        //    type: "audio/wav"
+                        //  });
+                        //  fileCallback(URL.createObjectURL(blob));
+                        //});
+                    });
                 })["catch"](function (err) {
                     MessageService.syserror('音源の再生に失敗しました。', err);
                     d.reject(err);
