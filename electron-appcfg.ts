@@ -7,7 +7,7 @@ function loadAppConfig(): void {
   const appCfg: yubo.AppCfg = {
     mainWindow: {width: 800, height: 665, x: null, y: null},
     helpWindow: {width: 700, height: 550},
-    systemWindow: {width: 390, height: 530},
+    systemWindow: {width: 390, height: 560},
     audioServVer: 'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
     acceptFirstMouse: false,
