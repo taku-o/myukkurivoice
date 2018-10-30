@@ -7,7 +7,7 @@ import * as fs from 'fs';
 describe('specWindow-service-SeqFNameService', function() {
   this.timeout(10000);
 
-  let dirPath;
+  let dirPath: string = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
     dirPath = temp.mkdirSync(fsprefix);

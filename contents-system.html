@@ -32,13 +32,13 @@
       音声再生エンジン
       <div class="radio">
         <label>
-          <input type="radio" ng-model="appCfg.audioServVer" value="html5audio">html5audio
+          <input type="radio" id="audio-serv-ver-html5audio" ng-model="appCfg.audioServVer" value="html5audio">html5audio
           <small>音声録音が早い。一部機能に制限がある。</small>
         </label>
       </div>
       <div class="radio">
         <label>
-          <input type="radio" ng-model="appCfg.audioServVer" value="webaudioapi">webaudioapi
+          <input type="radio" id="audio-serv-ver-webaudioapi" ng-model="appCfg.audioServVer" value="webaudioapi">webaudioapi
           <small>音声録音が遅い。全ての機能を利用できる。</small>
         </label>
       </div>
@@ -46,13 +46,13 @@
 
     <div class="box">
       <div class="checkbox">
-        <label><input type="checkbox" ng-model="appCfg.showMsgPane">メッセージリストを表示する</label>
+        <label><input type="checkbox" id="show-msg-pane" ng-model="appCfg.showMsgPane">メッセージリストを表示する</label>
       </div>
     </div>
     <div class="box">
       <div class="checkbox">
         <label>
-          <input type="checkbox" ng-model="appCfg.acceptFirstMouse">
+          <input type="checkbox" id="accept-first-mouse" ng-model="appCfg.acceptFirstMouse">
           <small>ウィンドウがアクティブでない時、最初のクリックを拾う<br>(アプリを再起動しないと変更されません)</small>
         </label>
       </div>
@@ -61,8 +61,8 @@
     <div class="box">
       <div class="form-group">
         <label>AquesTalk10 使用ラインセンスキー</label>
-        <input type="text" class="form-control" id="aq10UseKey" ng-model="aq10UseKey" ng-class="{caution:aq10UseKey==''}" placeholder="XXXX-XXXX-XXXX-XXXX">
-        <small>AquesTalk10の機能を個人かつ非営利以外で使う場合は、AquesTalk10の使用ライセンスキー(Mac用)を設定してください</small>
+        <input type="text" class="form-control" id="aq10-use-key" ng-model="aq10UseKey" ng-class="{caution:aq10UseKey==''}" placeholder="XXXX-XXXX-XXXX-XXXX">
+        <small>AquesTalk10の機能を個人かつ非営利以外の用途で使う場合は、AquesTalk10の使用ライセンスキー(Mac用)、もしくは使用ライセンスキー(商用コンテンツ向け)を設定してください</small>
       </div>
     </div>
   </form>
@@ -70,9 +70,9 @@
 
 <footer class="toolbar toolbar-footer">
   <div class="toolbar-actions">
-    <button class="btn btn-large btn-default" ng-click="ctrl.cancel()">キャンセル・閉じる</button>
-    <button class="btn btn-large btn-default" ng-click="ctrl.save()">更新</button>
-    <button class="btn btn-large btn-default pull-right" ng-click="ctrl.reset()">環境設定リセット</button>
+    <button class="btn btn-large btn-default" id="cancel" ng-click="ctrl.cancel()">キャンセル・閉じる</button>
+    <button class="btn btn-large btn-default" id="save" ng-click="ctrl.save()">更新</button>
+    <button class="btn btn-large btn-default pull-right" id="reset" ng-click="ctrl.reset()">環境設定リセット</button>
   </div>
 </footer>
 

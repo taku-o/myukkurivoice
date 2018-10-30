@@ -7,7 +7,7 @@ temp.track();
 describe('specWindow-service-AudioSourceService', function() {
   this.timeout(10000);
 
-  let dirPath = null;
+  let dirPath: string = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
     dirPath = temp.mkdirSync(fsprefix);

@@ -55,12 +55,12 @@ app.on('window-all-closed', () => {
 
 app.on('will-finish-launching', () => {
   // receive drop file to app icon event
-  app.on('open-file', (event, filePath) => {
+  app.on('open-file', (event, filePath: string) => {
     event.preventDefault();
     myApp.handleOpenFile(filePath);
   });
   // receive protocol call
-  app.on('open-url', (event, url) => {
+  app.on('open-url', (event, url: string) => {
     event.preventDefault();
     myApp.handleOpenUrl(url);
   });
