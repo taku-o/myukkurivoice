@@ -1,5 +1,4 @@
 "use strict";
-var remote = require('electron').remote;
 var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = function () { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _clipboard, clipboard = function () { _clipboard = _clipboard || require('electron').clipboard; return _clipboard; };
@@ -145,7 +144,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     return;
                 }
                 if ($scope.yinput) {
-                    var win = remote.getCurrentWindow();
+                    var win = require('electron').remote.getCurrentWindow();
                     win.focus();
                     $scope.yinput.source = data;
                     $timeout(function () { $scope.$apply(); });
