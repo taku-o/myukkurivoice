@@ -1,7 +1,11 @@
 # 0.7.7
-* myukkurivoice://open でMYukkuriVoiceアプリを起動するように。
-* 一部ロジックをMYukkuriVoice本体から分離。
-    * https://github.com/taku-o/electron-path
+* アプリの修正。
+    * AquesTalk使用ライセンス(商用コンテンツ向け)のライセンスキーが通らない問題を修正。
+    * SafariやChromeで myukkurivoice://open と入れると、アプリが入っていればMYukkuriVoiceアプリが起動するように。
+    * 一部ロジックをライブラリ化して、MYukkuriVoice本体から分離。
+        * https://github.com/taku-o/electron-path
+* ヘルプの修正
+    * AquesTalk使用ライセンス(商用コンテンツ向け)の説明を追加。
 
 # 0.7.6
 * アプリの修正。

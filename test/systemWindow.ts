@@ -6,9 +6,10 @@ temp.track();
 describe('systemWindow', function() {
   this.timeout(10000);
 
+  let dirPath = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    const dirPath = temp.mkdirSync(fsprefix);
+    dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -33,13 +34,28 @@ describe('systemWindow', function() {
     return this.client.close();
   });
 
-  it('systemWindow load config', function() {
+  it('initial settings', function() {
     return this.client
       .getValue('#main-width').then((value: number) => {
-        assert.ok(value);
+        assert.equal(value, 800);
       })
       .getValue('#main-height').then((value: number) => {
-        assert.ok(value);
+        assert.equal(value, 665);
+      })
+      .isSelected('#audio-serv-ver-html5audio').then((selected: boolean) => {
+        assert.ok(! selected);
+      })
+      .isSelected('#audio-serv-ver-webaudioapi').then((selected: boolean) => {
+        assert.ok(selected);
+      })
+      .isSelected('#show-msg-pane').then((selected: boolean) => {
+        assert.ok(selected);
+      })
+      .isSelected('#accept-first-mouse').then((selected: boolean) => {
+        assert.ok(! selected);
+      })
+      .getValue('#aq10-use-key').then((value: string) => {
+        assert.ok(! value);
       })
       // error
       .catch((err: Error) => {
@@ -47,6 +63,6 @@ describe('systemWindow', function() {
       });
   });
 
-  // TODO save config
-  // TODO load config
+  // TODO [CAN NOT TEST] update system config test
+  // TODO [CAN NOT TEST] reset system config test
 });
