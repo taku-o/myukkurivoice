@@ -7,7 +7,7 @@ temp.track();
 var fs = require("fs");
 describe('specWindow-service-SeqFNameService', function () {
     this.timeout(10000);
-    var dirPath;
+    var dirPath = null;
     before(function () {
         var fsprefix = "_myubo_test" + Date.now().toString(36);
         dirPath = temp.mkdirSync(fsprefix);
