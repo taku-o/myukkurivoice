@@ -73,7 +73,7 @@ app.on('ready', () => {
   myApp.showMainWindow();
 
   // init menu
-  myApp.initAppMenu({debug: myApp.appCfg.debug});
+  myApp.initAppMenu({isDebug: myApp.appCfg.isDebug});
   myApp.initDockMenu();
 });
 

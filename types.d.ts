@@ -44,8 +44,8 @@ declare namespace yubo {
     acceptFirstMouse:    boolean;
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
-    debug?:              boolean;
-    isTest?:             boolean;
+    isDebug:             boolean;
+    isTest:              boolean;
   }
 
   // electron.ts
@@ -62,7 +62,7 @@ declare namespace yubo {
     showAboutWindow(): void;
     showVersionDialog(): void;
     showSpecWindow(): void;
-    initAppMenu(options: {debug: boolean}): void;
+    initAppMenu(options: {isDebug: boolean}): void;
     initDockMenu(): void;
     handleOpenFile(filePath: string): void;
     handleOpenUrl(scheme: string): void;

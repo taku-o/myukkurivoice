@@ -11,9 +11,9 @@ function loadAppConfig() {
         audioServVer: 'webaudioapi',
         showMsgPane: true,
         acceptFirstMouse: false,
-        passPhrase: crypto().randomBytes(16).toString('hex'),
+        passPhrase: null,
         aq10UseKeyEncrypted: '',
-        debug: process.env.DEBUG != null,
+        isDebug: process.env.DEBUG != null,
         isTest: process.env.NODE_ENV == 'test'
     };
     var config = new (Config())();
@@ -22,6 +22,11 @@ function loadAppConfig() {
             appCfg[k] = config.get(k);
         }
     });
+    // if passPhrase not exists, record passPhrase.
+    if (!appCfg.passPhrase) {
+        appCfg.passPhrase = crypto().randomBytes(16).toString('hex');
+        config.set('passPhrase', appCfg.passPhrase);
+    }
     this.config = config;
     this.appCfg = appCfg;
     global.appCfg = appCfg;

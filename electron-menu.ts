@@ -2,7 +2,7 @@
 import {app,Menu,shell} from 'electron';
 
 // application menu
-function initAppMenu(options: {debug: boolean}): void {
+function initAppMenu(options: {isDebug: boolean}): void {
   const myApp = this;
   const menuList = [
     {
@@ -214,7 +214,7 @@ function initAppMenu(options: {debug: boolean}): void {
     },
   ];
   // Debugメニューを追加 (Toggle Developer Tools、Install Devtron)
-  if (options.debug) {
+  if (options.isDebug) {
     (menuList as any[]).splice(6, 0,
       {
         label: 'Debug',

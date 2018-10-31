@@ -214,7 +214,7 @@ function initAppMenu(options) {
         },
     ];
     // Debugメニューを追加 (Toggle Developer Tools、Install Devtron)
-    if (options.debug) {
+    if (options.isDebug) {
         menuList.splice(6, 0, {
             label: 'Debug',
             submenu: [

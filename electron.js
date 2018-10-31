@@ -65,7 +65,7 @@ electron_1.app.on('ready', function () {
     // open main window.
     myApp.showMainWindow();
     // init menu
-    myApp.initAppMenu({ debug: myApp.appCfg.debug });
+    myApp.initAppMenu({ isDebug: myApp.appCfg.isDebug });
     myApp.initDockMenu();
 });
 // show window event

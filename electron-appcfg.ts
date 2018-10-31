@@ -11,9 +11,9 @@ function loadAppConfig(): void {
     audioServVer: 'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
     acceptFirstMouse: false,
-    passPhrase: crypto().randomBytes(16).toString('hex'),
+    passPhrase: null,
     aq10UseKeyEncrypted: '',
-    debug: process.env.DEBUG != null,
+    isDebug: process.env.DEBUG != null,
     isTest: process.env.NODE_ENV == 'test',
   };
 
@@ -21,6 +21,11 @@ function loadAppConfig(): void {
   ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (config.has(k)) { appCfg[k] = config.get(k); }
   });
+  // if passPhrase not exists, record passPhrase.
+  if (! appCfg.passPhrase) {
+    appCfg.passPhrase = crypto().randomBytes(16).toString('hex');
+    config.set('passPhrase', appCfg.passPhrase)
+  }
   this.config = config;
   this.appCfg = appCfg;
   global.appCfg = appCfg;

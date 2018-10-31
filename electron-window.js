@@ -29,7 +29,7 @@ function showMainWindow() {
         transparent: transparent,
         opacity: opacity,
         webPreferences: {
-            devTools: this.appCfg.debug
+            devTools: this.appCfg.isDebug
         }
     });
     this.mainWindow.loadURL("file://" + __dirname + "/contents-main.html");
@@ -114,7 +114,7 @@ function showHelpWindow() {
         transparent: transparent,
         opacity: opacity,
         webPreferences: {
-            devTools: this.appCfg.debug
+            devTools: this.appCfg.isDebug
         }
     });
     this.helpWindow.loadURL("file://" + __dirname + "/contents-help.html");
@@ -173,7 +173,7 @@ function showSystemWindow() {
         transparent: transparent,
         opacity: opacity,
         webPreferences: {
-            devTools: this.appCfg.debug
+            devTools: this.appCfg.isDebug
         }
     });
     this.systemWindow.loadURL("file://" + __dirname + "/contents-system.html");
@@ -263,7 +263,7 @@ function showSpecWindow() {
         transparent: transparent,
         opacity: opacity,
         webPreferences: {
-            devTools: this.appCfg.debug
+            devTools: this.appCfg.isDebug
         }
     });
     specWindow.loadURL("file://" + __dirname + "/contents-spec.html");
