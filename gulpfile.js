@@ -102,6 +102,11 @@ gulp.task('_readme:pdf', () => {
   return gulp.src('docs/README.md')
     .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
     .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
+    .pipe(toc({
+      linkify: function(content) {
+        return content;
+      }
+    }))
     .pipe(markdownPdf({
       cssPath: 'docs/assets/css/readme-pdf.css'
     }))
