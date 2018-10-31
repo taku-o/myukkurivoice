@@ -708,6 +708,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       clearSourceSelection();
       clearEncodedSelection();
     };
+    ctrl.quickLook = function(filePath: string): void {
+      fs().stat(filePath, (err: Error, stats) => {
+        if (err) { return; }
+        MessageService.action(`open with Quick Look. file: ${filePath}`);
+        const win = require('electron').remote.getCurrentWindow();
+        win.previewFile(filePath);
+      });
+    };
 
     ctrl.encode = function(): void {
       MessageService.action('encode source text.');
