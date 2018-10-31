@@ -708,7 +708,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       clearSourceSelection();
       clearEncodedSelection();
     };
-    ctrl.quickLook = function(filePath: string): void {
+    ctrl.quickLookMessage = function(message: yubo.IMessage | yubo.IRecordMessage): void {
+      if (message.type != 'record') { return; }
+      const filePath = (message as yubo.IRecordMessage).wavFilePath;
       fs().stat(filePath, (err: Error, stats) => {
         if (err) { return; }
         MessageService.action(`open with Quick Look. file: ${filePath}`);

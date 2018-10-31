@@ -699,7 +699,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             clearSourceSelection();
             clearEncodedSelection();
         };
-        ctrl.quickLook = function (filePath) {
+        ctrl.quickLookMessage = function (message) {
+            if (message.type != 'record') {
+                return;
+            }
+            var filePath = message.wavFilePath;
             fs().stat(filePath, function (err, stats) {
                 if (err) {
                     return;
