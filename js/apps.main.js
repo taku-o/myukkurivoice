@@ -699,6 +699,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             clearSourceSelection();
             clearEncodedSelection();
         };
+        // currently not called.
         ctrl.quickLookMessage = function (message) {
             if (message.type != 'record') {
                 return;

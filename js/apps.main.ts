@@ -708,6 +708,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       clearSourceSelection();
       clearEncodedSelection();
     };
+    // currently not called.
     ctrl.quickLookMessage = function(message: yubo.IMessage | yubo.IRecordMessage): void {
       if (message.type != 'record') { return; }
       const filePath = (message as yubo.IRecordMessage).wavFilePath;
