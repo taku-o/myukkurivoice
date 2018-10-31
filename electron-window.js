@@ -6,13 +6,9 @@ var _log, log = function () { _log = _log || require('electron-log'); return _lo
 var _path, path = function () { _path = _path || require('path'); return _path; };
 var _openAboutWindow, openAboutWindow = function () { _openAboutWindow = _openAboutWindow || require('about-window')["default"]; return _openAboutWindow; };
 var _Version, Version = function () { _Version = _Version || require('github-version-compare').Version; return _Version; };
-// for test
-var transparent = false;
-var opacity = 1.0;
-if (process.env.NODE_ENV == 'test') {
-    transparent = true;
-    opacity = 0.0;
-}
+// window option
+var transparent = (process.env.NODE_ENV == 'test') ? true : false;
+var opacity = (process.env.NODE_ENV == 'test') ? 0.0 : 1.0;
 // main window
 function showMainWindow() {
     var myApp = this;
