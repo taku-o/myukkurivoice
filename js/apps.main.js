@@ -699,6 +699,21 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             clearSourceSelection();
             clearEncodedSelection();
         };
+        // currently not called.
+        ctrl.quickLookMessage = function (message) {
+            if (message.type != 'record') {
+                return;
+            }
+            var filePath = message.wavFilePath;
+            fs().stat(filePath, function (err, stats) {
+                if (err) {
+                    return;
+                }
+                MessageService.action("open with Quick Look. file: " + filePath);
+                var win = require('electron').remote.getCurrentWindow();
+                win.previewFile(filePath);
+            });
+        };
         ctrl.encode = function () {
             MessageService.action('encode source text.');
             var source = $scope.yinput.source;

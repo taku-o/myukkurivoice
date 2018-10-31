@@ -708,6 +708,17 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       clearSourceSelection();
       clearEncodedSelection();
     };
+    // currently not called.
+    ctrl.quickLookMessage = function(message: yubo.IMessage | yubo.IRecordMessage): void {
+      if (message.type != 'record') { return; }
+      const filePath = (message as yubo.IRecordMessage).wavFilePath;
+      fs().stat(filePath, (err: Error, stats) => {
+        if (err) { return; }
+        MessageService.action(`open with Quick Look. file: ${filePath}`);
+        const win = require('electron').remote.getCurrentWindow();
+        win.previewFile(filePath);
+      });
+    };
 
     ctrl.encode = function(): void {
       MessageService.action('encode source text.');
