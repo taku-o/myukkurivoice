@@ -1,5 +1,5 @@
 # 0.7.8
-* カスタムScheme対応。
+* カスタムScheme対応。ユーザー辞書の編集からの起動、再読込想定。
     * myukkurivoice://open でアプリが起動するように。
     * myukkurivoice://reload でアプリのメイン画面が再読み込みされます。
     * myukkurivoice://quit で起動中のアプリを終了します。
