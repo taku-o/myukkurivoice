@@ -1,4 +1,6 @@
 'use strict';
+import {app} from 'electron';
+var _url, url = () => { _url = _url || require('url'); return _url; };
 
 function handleOpenFile(filePath: string): void {
   const myApp = this;
@@ -11,7 +13,21 @@ function handleOpenFile(filePath: string): void {
 
 function handleOpenUrl(scheme: string): void {
   const myApp = this;
-  // open
+  const parsed = url().parse(scheme, true)
+  switch (parsed.host) {
+    case 'quit':
+      app.quit();
+      break;
+    case 'reload':
+      if (myApp.mainWindow) {
+        myApp.mainWindow.webContents.reload();
+      }
+      break;
+    case 'open':
+    default:
+      // open
+      break;
+  }
 }
 
 // exports

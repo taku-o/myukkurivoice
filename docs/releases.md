@@ -1,3 +1,9 @@
+# 0.7.8
+* カスタムScheme対応。
+    * myukkurivoice://open でアプリが起動するように。
+    * myukkurivoice://reload でアプリのメイン画面が再読み込みされます。
+    * myukkurivoice://quit で起動中のアプリを終了します。
+
 # 0.7.7
 * アプリの修正。
     * AquesTalk使用ライセンス(商用コンテンツ向け)のライセンスキーが通らない問題を修正。
