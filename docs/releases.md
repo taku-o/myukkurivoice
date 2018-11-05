@@ -1,8 +1,10 @@
 # 0.7.8
-* カスタムScheme対応。
-    * myukkurivoice://open でアプリが起動するように。
-    * myukkurivoice://reload でアプリのメイン画面を再読み込みします。
-    * myukkurivoice://quit で起動中のアプリを終了します。
+* 音声記号変換ライブラリAqKanji2Koeの更新。および、ユーザー辞書編集機能の対応準備。
+    * AqKanji2Koeライブラリの更新。
+    * カスタムScheme対応。
+        * myukkurivoice://open でアプリが起動します。
+        * myukkurivoice://reload でアプリのメイン画面を再読み込みするように。
+        * myukkurivoice://quit で起動中のアプリを終了します。
 
 # 0.7.7
 * アプリの修正。
