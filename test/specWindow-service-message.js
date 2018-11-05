@@ -55,8 +55,10 @@ describe('specWindow-service-MessageService', function () {
             assert.ok(parsed.created);
             assert.equal('record message', parsed.body);
             assert.equal('record', parsed.type);
-            assert.equal('/tmp/hoge.txt', parsed.wavFilePath);
-            assert.equal('hoge.txt', parsed.wavFileName);
+            assert.equal('/tmp/hoge.wav', parsed.wavFilePath);
+            assert.equal('hoge.wav', parsed.wavFileName);
+            assert.equal('/tmp/hoge.txt', parsed.srcTextPath);
+            assert.equal('/tmp/hoge.wav', parsed.quickLookPath);
         })
             // event on wavGenerated
             .waitForValue('#last-wav-file', 5000)
@@ -65,8 +67,27 @@ describe('specWindow-service-MessageService', function () {
             assert.ok(parsed.created);
             assert.equal('record message', parsed.body);
             assert.equal('record', parsed.type);
-            assert.equal('/tmp/hoge.txt', parsed.wavFilePath);
-            assert.equal('hoge.txt', parsed.wavFileName);
+            assert.equal('/tmp/hoge.wav', parsed.wavFilePath);
+            assert.equal('hoge.wav', parsed.wavFileName);
+            assert.equal('/tmp/hoge.txt', parsed.srcTextPath);
+            assert.equal('/tmp/hoge.wav', parsed.quickLookPath);
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('recordSource', function () {
+        return this.client
+            .setValue('#message-service-post', '')
+            .click('#recordSource')
+            // event on message
+            .waitForValue('#message-service-post', 5000)
+            .getValue('#message-service-post').then(function (value) {
+            var parsed = JSON.parse(value);
+            assert.ok(parsed.created);
+            assert.equal('record source', parsed.body);
+            assert.equal('source', parsed.type);
+            assert.equal('/tmp/hoge.txt', parsed.srcTextPath);
+            assert.equal('/tmp/hoge.txt', parsed.quickLookPath);
         })["catch"](function (err) {
             assert.fail(err.message);
         });

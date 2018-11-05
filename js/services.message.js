@@ -12,17 +12,29 @@ angular.module('yvoiceMessageService', [])
                 };
                 $rootScope.$broadcast('message', post);
             },
-            record: function (message, wavFilePath) {
+            record: function (message, wavFilePath, srcTextPath) {
                 var wavFileName = path().basename(wavFilePath);
                 var post = {
                     created: new Date(),
                     body: message,
                     wavFilePath: wavFilePath,
                     wavFileName: wavFileName,
+                    srcTextPath: srcTextPath,
+                    quickLookPath: wavFilePath,
                     type: 'record'
                 };
                 $rootScope.$broadcast('message', post);
                 $rootScope.$broadcast('wavGenerated', post);
+            },
+            recordSource: function (message, srcTextPath) {
+                var post = {
+                    created: new Date(),
+                    body: message,
+                    srcTextPath: srcTextPath,
+                    quickLookPath: srcTextPath,
+                    type: 'source'
+                };
+                $rootScope.$broadcast('message', post);
             },
             info: function (message) {
                 var post = {

@@ -7,10 +7,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record'}">
+    <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record',source:message.type=='source'}">
       <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
       <td class="message-item-type">{{message.type}}</td>
-      <td class="message-item-body">{{message.body}}</td>
+      <td class="message-item-body" ng-click="ctrl.quickLookMessage(message)">{{message.body}}</td>
     </tr>
   </tbody>
 </table>

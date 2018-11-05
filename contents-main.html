@@ -96,7 +96,7 @@
         </div>
       </li>
       <li class="list-group-footer">
-        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!lastWavFile" title="このボタンをドラッグアンドドロップすると、最後に作成した音声ファイルを取り出せます">
+        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!lastWavFile" title="このボタンをドラッグアンドドロップすると、最後に作成した音声ファイルを取り出せます" ng-click="ctrl.quickLookMessage(lastWavFile)">
           <span class="icon icon-download"></span>{{lastWavFile.wavFileName||"drag and drop to movie editor"}}
         </button>
       </li>

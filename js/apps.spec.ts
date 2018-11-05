@@ -91,8 +91,14 @@ angular.module('yvoiceSpec',
     };
     ctrl.record = function(): void {
       const msg = 'record message';
-      const wavFilePath = '/tmp/hoge.txt';
-      MessageService.record(msg, wavFilePath);
+      const wavFilePath = '/tmp/hoge.wav';
+      const srcTextPath = '/tmp/hoge.txt';
+      MessageService.record(msg, wavFilePath, srcTextPath);
+    };
+    ctrl.recordSource = function(): void {
+      const msg = 'record source';
+      const srcTextPath = '/tmp/hoge.txt';
+      MessageService.recordSource(msg, srcTextPath);
     };
     ctrl.info = function(): void {
       const msg = 'info message';

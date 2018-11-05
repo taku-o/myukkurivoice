@@ -10,7 +10,7 @@ function loadAppConfig(): void {
     systemWindow: {width: 390, height: 560},
     audioServVer: 'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
-    acceptFirstMouse: false,
+    acceptFirstMouse: true,
     passPhrase: null,
     aq10UseKeyEncrypted: '',
     isDebug: process.env.DEBUG != null,
@@ -56,7 +56,7 @@ function resetAppConfig(): void {
   this.config.set('mainWindow',          {width: 800, height: 665, x:null, y:null});
   this.config.set('audioServVer',        'webaudioapi');
   this.config.set('showMsgPane',         true);
-  this.config.set('acceptFirstMouse',    false);
+  this.config.set('acceptFirstMouse',    true);
   this.config.set('passPhrase',          crypto().randomBytes(16).toString('hex'));
   this.config.set('aq10UseKeyEncrypted', '');
 

@@ -444,7 +444,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
         // record
         const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-        let firstWroteFile = null;
+        let sourceFname = null;
         // record wave files
         parsedList.reduce((p, cinput) => {
           if(p.then === undefined) {
@@ -452,16 +452,21 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             p = p.promise;
           }
           return p.then((fp) => {
-            if (!firstWroteFile) { firstWroteFile = fp; }
-            return recordEach(cinput, dir, prefix);
+            return recordEach(cinput, dir, prefix)
+              .then((fp) => {
+                if ($scope.yvoice.sourceWrite && !sourceFname) {
+                  sourceFname = AudioSourceService.sourceFname(fp);
+                }
+                MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                return fp;
+              });
           });
         }, $q.defer())
         // record source message
         .then((fp) => {
-          if (!firstWroteFile) { firstWroteFile = fp; }
-          if (!$scope.yvoice.sourceWrite) { return; }
-          const sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+          if (!sourceFname) { return; }
           AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
+            MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`, sourceFname);
           })
           .catch((err: Error) => {
             MessageService.error('メッセージファイルを作成できませんでした。', err);
@@ -482,7 +487,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           // record
           const containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
           const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-          let firstWroteFile = null;
+          let sourceFname = null;
           // record wave files
           parsedList.reduce((p, cinput) => {
             if(p.then === undefined) {
@@ -490,20 +495,32 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
               p = p.promise;
             }
             return p.then((fp) => {
-              if (!firstWroteFile) { firstWroteFile = fp; }
               if (containsCommand) {
-                return recordEach(cinput, dir, prefix);
+                return recordEach(cinput, dir, prefix)
+                  .then((fp) => {
+                    if ($scope.yvoice.sourceWrite && !sourceFname) {
+                      sourceFname = AudioSourceService.sourceFname(fp);
+                    }
+                    MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                    return fp;
+                  });
               } else {
-                return recordSolo(cinput, filePath);
+                return recordSolo(cinput, filePath)
+                  .then((fp) => {
+                    if ($scope.yvoice.sourceWrite && !sourceFname) {
+                      sourceFname = AudioSourceService.sourceFname(fp);
+                    }
+                    MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                    return fp;
+                  });
               }
             });
           }, $q.defer())
           // record source message
           .then((fp) => {
-            if (!firstWroteFile) { firstWroteFile = fp; }
-            if (!$scope.yvoice.sourceWrite) { return; }
-            const sourceFname = AudioSourceService.sourceFname(firstWroteFile);
+            if (!sourceFname) { return; }
             AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
+              MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`, sourceFname);
             })
             .catch((err: Error) => {
               MessageService.error('メッセージファイルを作成できませんでした。', err);
@@ -708,15 +725,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       clearSourceSelection();
       clearEncodedSelection();
     };
-    // currently not called.
-    ctrl.quickLookMessage = function(message: yubo.IMessage | yubo.IRecordMessage): void {
-      if (message.type != 'record') { return; }
-      const filePath = (message as yubo.IRecordMessage).wavFilePath;
-      fs().stat(filePath, (err: Error, stats) => {
+    ctrl.quickLookMessage = function(message: yubo.IWriteMessage): void {
+      if (message.type != 'record' && message.type != 'source') { return; }
+      const quickLookPath = message.quickLookPath;
+      fs().stat(quickLookPath, (err: Error, stats) => {
         if (err) { return; }
-        MessageService.action(`open with Quick Look. file: ${filePath}`);
+        //MessageService.action(`open with Quick Look. file: ${wavFilePath}`);
         const win = require('electron').remote.getCurrentWindow();
-        win.previewFile(filePath);
+        win.previewFile(quickLookPath);
       });
     };
 
