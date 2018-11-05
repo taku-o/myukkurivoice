@@ -88,7 +88,7 @@ describe('specWindow-service-MessageService', function() {
   it('recordSource', function() {
     return this.client
       .setValue('#message-service-post', '')
-      .click('#recordSource')
+      .click('#record-source')
       // event on message
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
