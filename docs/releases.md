@@ -1,8 +1,9 @@
 # 0.7.8
-* カスタムScheme対応。
-    * myukkurivoice://open でアプリが起動するように。
-    * myukkurivoice://reload でアプリのメイン画面を再読み込みします。
-    * myukkurivoice://quit で起動中のアプリを終了します。
+* ユーザー辞書編集機能への対応用機能の追加。
+    * カスタムScheme対応。
+        * myukkurivoice://open 起動していなければアプリ起動
+        * myukkurivoice://reload メイン画面、ユーザ辞書の再読み込み
+        * myukkurivoice://quit 起動中アプリの終了
 
 # 0.7.7
 * アプリの修正。
