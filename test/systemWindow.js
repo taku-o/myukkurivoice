@@ -48,7 +48,7 @@ describe('systemWindow', function () {
             assert.ok(selected);
         })
             .isSelected('#accept-first-mouse').then(function (selected) {
-            assert.ok(!selected);
+            assert.ok(selected);
         })
             .getValue('#aq10-use-key').then(function (value) {
             assert.ok(!value);

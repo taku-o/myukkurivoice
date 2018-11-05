@@ -426,7 +426,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 }
                 // record
                 var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-                var firstWroteFile_1 = null;
+                var sourceFname_1 = null;
                 // record wave files
                 parsedList.reduce(function (p, cinput) {
                     if (p.then === undefined) {
@@ -434,22 +434,23 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                         p = p.promise;
                     }
                     return p.then(function (fp) {
-                        if (!firstWroteFile_1) {
-                            firstWroteFile_1 = fp;
-                        }
-                        return recordEach(cinput, dir_1, prefix_1);
+                        return recordEach(cinput, dir_1, prefix_1)
+                            .then(function (fp) {
+                            if ($scope.yvoice.sourceWrite && !sourceFname_1) {
+                                sourceFname_1 = AudioSourceService.sourceFname(fp);
+                            }
+                            MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname_1);
+                            return fp;
+                        });
                     });
                 }, $q.defer())
                     // record source message
                     .then(function (fp) {
-                    if (!firstWroteFile_1) {
-                        firstWroteFile_1 = fp;
-                    }
-                    if (!$scope.yvoice.sourceWrite) {
+                    if (!sourceFname_1) {
                         return;
                     }
-                    var sourceFname = AudioSourceService.sourceFname(firstWroteFile_1);
-                    AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () {
+                    AudioSourceService.save(sourceFname_1, $scope.yinput.source).then(function () {
+                        MessageService.recordSource("" + 'メッセージファイルを保存しました。path: ' + sourceFname_1, sourceFname_1);
                     })["catch"](function (err) {
                         MessageService.error('メッセージファイルを作成できませんでした。', err);
                     });
@@ -468,7 +469,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     // record
                     var containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
                     var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-                    var firstWroteFile = null;
+                    var sourceFname = null;
                     // record wave files
                     parsedList.reduce(function (p, cinput) {
                         if (p.then === undefined) {
@@ -476,27 +477,35 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                             p = p.promise;
                         }
                         return p.then(function (fp) {
-                            if (!firstWroteFile) {
-                                firstWroteFile = fp;
-                            }
                             if (containsCommand) {
-                                return recordEach(cinput, dir, prefix);
+                                return recordEach(cinput, dir, prefix)
+                                    .then(function (fp) {
+                                    if ($scope.yvoice.sourceWrite && !sourceFname) {
+                                        sourceFname = AudioSourceService.sourceFname(fp);
+                                    }
+                                    MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname);
+                                    return fp;
+                                });
                             }
                             else {
-                                return recordSolo(cinput, filePath);
+                                return recordSolo(cinput, filePath)
+                                    .then(function (fp) {
+                                    if ($scope.yvoice.sourceWrite && !sourceFname) {
+                                        sourceFname = AudioSourceService.sourceFname(fp);
+                                    }
+                                    MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname);
+                                    return fp;
+                                });
                             }
                         });
                     }, $q.defer())
                         // record source message
                         .then(function (fp) {
-                        if (!firstWroteFile) {
-                            firstWroteFile = fp;
-                        }
-                        if (!$scope.yvoice.sourceWrite) {
+                        if (!sourceFname) {
                             return;
                         }
-                        var sourceFname = AudioSourceService.sourceFname(firstWroteFile);
                         AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () {
+                            MessageService.recordSource("" + 'メッセージファイルを保存しました。path: ' + sourceFname, sourceFname);
                         })["catch"](function (err) {
                             MessageService.error('メッセージファイルを作成できませんでした。', err);
                         });
@@ -699,19 +708,18 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             clearSourceSelection();
             clearEncodedSelection();
         };
-        // currently not called.
         ctrl.quickLookMessage = function (message) {
-            if (message.type != 'record') {
+            if (message.type != 'record' && message.type != 'source') {
                 return;
             }
-            var filePath = message.wavFilePath;
-            fs().stat(filePath, function (err, stats) {
+            var quickLookPath = message.quickLookPath;
+            fs().stat(quickLookPath, function (err, stats) {
                 if (err) {
                     return;
                 }
-                MessageService.action("open with Quick Look. file: " + filePath);
+                //MessageService.action(`open with Quick Look. file: ${wavFilePath}`);
                 var win = require('electron').remote.getCurrentWindow();
-                win.previewFile(filePath);
+                win.previewFile(quickLookPath);
             });
         };
         ctrl.encode = function () {

@@ -69,7 +69,6 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
             d.reject(err); return;
           }
-          MessageService.record(`${'音声ファイルを保存しました。path: '}${wavFilePath}`, wavFilePath);
           d.resolve('ok');
         });
         return d.promise;
@@ -181,7 +180,6 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             // onendedのタイミングでは出力が終わっていない
             $timeout(() => {
               recorder.end();
-              MessageService.record(`${'音声ファイルを保存しました。path: '}${wavFilePath}`, wavFilePath);
               d.resolve('ok');
             }, options.writeMarginMs);
           };

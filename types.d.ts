@@ -23,7 +23,7 @@ declare namespace yubo {
     display:          string;
     alwaysOnTop:      boolean;
     isTest:           boolean;
-    messageList:      (IMessage | IRecordMessage)[];
+    messageList:      (IMessage | IRecordMessage | ISourceMessage)[];
   }
   export interface ISystemScope extends ng.IScope {
     appCfg:     AppCfg;
@@ -117,12 +117,19 @@ declare namespace yubo {
     readonly body: string;
     readonly type: string;
   }
-  export interface IRecordMessage {
+  export interface IWriteMessage {
     readonly created: Date;
     readonly body: string;
+    readonly quickLookPath: string;
+    readonly type: string;
+  }
+  export interface IRecordMessage extends IWriteMessage {
     readonly wavFilePath: string;
     readonly wavFileName: string;
-    readonly type: string;
+    readonly srcTextPath: string;
+  }
+  export interface ISourceMessage extends IWriteMessage {
+    readonly srcTextPath: string;
   }
 
   // js/apps.main.ts
@@ -164,7 +171,8 @@ declare namespace yubo {
   }
   export interface MessageService {
     action(message: string): void;
-    record(message: string, wavFilePath: string): void;
+    record(message: string, wavFilePath: string, srcTextPath: string): void;
+    recordSource(message: string, srcTextPath: string): void;
     info(message: string): void;
     error(message: string, err?: Error): void;
     syserror(message: string, err?: Error): void;

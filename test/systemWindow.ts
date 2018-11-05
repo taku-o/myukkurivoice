@@ -52,7 +52,7 @@ describe('systemWindow', function() {
         assert.ok(selected);
       })
       .isSelected('#accept-first-mouse').then((selected: boolean) => {
-        assert.ok(! selected);
+        assert.ok(selected);
       })
       .getValue('#aq10-use-key').then((value: string) => {
         assert.ok(! value);

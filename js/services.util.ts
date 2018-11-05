@@ -21,7 +21,6 @@ angular.module('yvoiceUtilService', ['yvoiceMessageService'])
             MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
             d.reject(err); return;
           }
-          MessageService.info(`${'メッセージファイルを保存しました。path: '}${filePath}`);
           d.resolve(filePath);
         });
         return d.promise;

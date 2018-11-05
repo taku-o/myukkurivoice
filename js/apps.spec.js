@@ -77,8 +77,14 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
         };
         ctrl.record = function () {
             var msg = 'record message';
-            var wavFilePath = '/tmp/hoge.txt';
-            MessageService.record(msg, wavFilePath);
+            var wavFilePath = '/tmp/hoge.wav';
+            var srcTextPath = '/tmp/hoge.txt';
+            MessageService.record(msg, wavFilePath, srcTextPath);
+        };
+        ctrl.recordSource = function () {
+            var msg = 'record source';
+            var srcTextPath = '/tmp/hoge.txt';
+            MessageService.recordSource(msg, srcTextPath);
         };
         ctrl.info = function () {
             var msg = 'info message';
