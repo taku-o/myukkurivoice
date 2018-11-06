@@ -1,9 +1,6 @@
 "use strict";
-var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = function () { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
-var _shell, shell = function () { _shell = _shell || require('electron').shell; return _shell; };
 var _log, log = function () { _log = _log || require('electron-log'); return _log; };
-var homeDir = app.getPath('home');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
     log().error('system:event:uncaughtException');
@@ -47,9 +44,5 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
         };
         ctrl.reset = function () {
             ipcRenderer().send('resetAppConfig', '');
-        };
-        ctrl.showItemInFolder = function (path) {
-            var expanded = path.replace('$HOME', homeDir);
-            shell().showItemInFolder(expanded);
         };
     }]);

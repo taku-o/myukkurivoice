@@ -1,9 +1,5 @@
-var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
-var _shell, shell             = () => { _shell = _shell || require('electron').shell; return _shell; };
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
-
-var homeDir = app.getPath('home');
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
@@ -51,9 +47,5 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
     };
     ctrl.reset = function(): void {
       ipcRenderer().send('resetAppConfig', '');
-    };
-    ctrl.showItemInFolder = function(path): void {
-      const expanded = path.replace('$HOME', homeDir);
-      shell().showItemInFolder(expanded);
     };
   }]);
