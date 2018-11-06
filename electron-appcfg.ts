@@ -7,20 +7,18 @@ function loadAppConfig(): void {
   const appCfg: yubo.AppCfg = {
     mainWindow: {width: 800, height: 665, x: null, y: null},
     helpWindow: {width: 700, height: 550},
-    systemWindow: {width: 390, height: 650},
+    systemWindow: {width: 390, height: 560},
     audioServVer: 'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
     acceptFirstMouse: true,
     passPhrase: null,
     aq10UseKeyEncrypted: '',
-    useCustomDict: false,
-    customDictPath: null,
     isDebug: process.env.DEBUG != null,
     isTest: process.env.NODE_ENV == 'test',
   };
 
   const config = new (Config())() as yubo.ElectronConfig;
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted', 'useCustomDict', 'customDictPath'].forEach((k: string) => {
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (config.has(k)) { appCfg[k] = config.get(k); }
   });
   // if passPhrase not exists, record passPhrase.
@@ -45,10 +43,8 @@ function updateAppConfig(options: yubo.AppCfg): void {
   this.config.set('acceptFirstMouse',    options.acceptFirstMouse);
   this.config.set('passPhrase',          options.passPhrase);
   this.config.set('aq10UseKeyEncrypted', options.aq10UseKeyEncrypted);
-  this.config.set('useCustomDict',       options.useCustomDict);
-  this.config.set('customDictPath',      options.customDictPath);
 
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted', 'useCustomDict', 'customDictPath'].forEach((k: string) => {
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
   global.appCfg = this.appCfg;
@@ -63,10 +59,8 @@ function resetAppConfig(): void {
   this.config.set('acceptFirstMouse',    true);
   this.config.set('passPhrase',          crypto().randomBytes(16).toString('hex'));
   this.config.set('aq10UseKeyEncrypted', '');
-  this.config.set('useCustomDict',       false);
-  this.config.set('customDictPath',      null);
 
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted', 'useCustomDict', 'customDictPath'].forEach((k: string) => {
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
   global.appCfg = this.appCfg;

@@ -197,12 +197,7 @@ angular.module('yvoiceSpec',
 
     // AquesService
     ctrl.encode = function(): void {
-      const r = AquesService.encode($scope.source, null);
-      $scope.encodeResult = r;
-    };
-    ctrl.encodeWithDict = function(): void {
-      const customDictPath = process.env.customDictPath;
-      const r = AquesService.encode($scope.source, {useCustomDict:true, customDictPath:customDictPath});
+      const r = AquesService.encode($scope.source);
       $scope.encodeResult = r;
     };
     ctrl.waveVer1 = function(): void {

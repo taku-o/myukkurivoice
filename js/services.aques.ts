@@ -1,3 +1,4 @@
+var app = require('electron').remote.app;
 var _log, log                   = () => { _log = _log || require('electron-log'); return _log; };
 var _fs, fs                     = () => { _fs = _fs || require('fs'); return _fs; };
 var _ffi, ffi                   = () => { _ffi = _ffi || require('ffi'); return _ffi; };
@@ -111,20 +112,24 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
       return '';
     }
 
+    // load custom dictionary if exists
+    let aqDictPath = `${unpackedPath}/vendor/aq_dic_large`;
+    const customDictPath = `${app.getPath('userData')}/userdict/aqdic.bin`;
+    fs().stat(customDictPath, (err: Error, stats) => {
+      if (err) { return; }
+      aqDictPath = customDictPath;
+    });
+
     let _isAquesTalk10LicensekeySet = false;
     return {
-      encode: function(source: string, options: {useCustomDict: boolean, customDictPath: string}): string {
+      encode: function(source: string): string {
         if (!source) {
           MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
           return '';
         }
 
-        // use custom dictionary or not.
-        const dictPath = (options && options.useCustomDict)?
-          options.customDictPath: `${unpackedPath}/vendor/aq_dic_large`;
-
         const allocInt = ref().alloc('int');
-        const aqKanji2Koe = fn_AqKanji2Koe_Create(dictPath, allocInt);
+        const aqKanji2Koe = fn_AqKanji2Koe_Create(aqDictPath, allocInt);
         const errorCode = allocInt.deref();
         if (errorCode != 0) {
           MessageService.syserror(errorTable_AqKanji2Koe(errorCode));

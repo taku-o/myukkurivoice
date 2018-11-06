@@ -1,4 +1,5 @@
 "use strict";
+var app = require('electron').remote.app;
 var _log, log = function () { _log = _log || require('electron-log'); return _log; };
 var _fs, fs = function () { _fs = _fs || require('fs'); return _fs; };
 var _ffi, ffi = function () { _ffi = _ffi || require('ffi'); return _ffi; };
@@ -174,18 +175,24 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
             }
             return '';
         }
+        // load custom dictionary if exists
+        var aqDictPath = unpackedPath + "/vendor/aq_dic_large";
+        var customDictPath = app.getPath('userData') + "/userdict/aqdic.bin";
+        fs().stat(customDictPath, function (err, stats) {
+            if (err) {
+                return;
+            }
+            aqDictPath = customDictPath;
+        });
         var _isAquesTalk10LicensekeySet = false;
         return {
-            encode: function (source, options) {
+            encode: function (source) {
                 if (!source) {
                     MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
                     return '';
                 }
-                // use custom dictionary or not.
-                var dictPath = (options && options.useCustomDict) ?
-                    options.customDictPath : unpackedPath + "/vendor/aq_dic_large";
                 var allocInt = ref().alloc('int');
-                var aqKanji2Koe = fn_AqKanji2Koe_Create(dictPath, allocInt);
+                var aqKanji2Koe = fn_AqKanji2Koe_Create(aqDictPath, allocInt);
                 var errorCode = allocInt.deref();
                 if (errorCode != 0) {
                     MessageService.syserror(errorTable_AqKanji2Koe(errorCode));

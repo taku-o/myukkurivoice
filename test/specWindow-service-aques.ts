@@ -1,6 +1,5 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
-import * as path from 'path';
 import * as temp from 'temp';
 temp.track();
 
@@ -8,12 +7,11 @@ describe('specWindow-service-AquesService', function() {
   this.timeout(10000);
 
   before(function() {
-    const customDictPath = `${path.dirname(__dirname)}/vendor/aqk2k_mac/aq_dic_small`;
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
     const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath, customDictPath: customDictPath},
+      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
     });
     return this.app.start();
   });
@@ -56,18 +54,21 @@ describe('specWindow-service-AquesService', function() {
       });
   });
 
+  // TODO use custom dict
   it('encode with custom dictionary', function() {
+    //const customDictPath = `${path.dirname(__dirname)}/vendor/aqk2k_mac/aq_dic_small`;
+
     return this.client
       // encode
       .setValue('#source', 'test')
-      .click('#encode-with-dict')
+      .click('#encode')
       .getValue('#encode-result').then((value: string) => {
         assert.equal(value, "テ'_スト");
       })
       // encode empty string
       .setValue('#source', '')
       .setValue('#encode-result', '')
-      .click('#encode-with-dict')
+      .click('#encode')
       .getValue('#encode-result').then((value: string) => {
         assert.ok(!value);
       })

@@ -35,18 +35,13 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
             var aq10UseKeyEncrypted = $scope.aq10UseKey ?
                 LicenseService.encrypt($scope.appCfg.passPhrase, $scope.aq10UseKey) :
                 '';
-            $scope.appCfg.customDictPath = $scope.appCfg.useCustomDict ?
-                app.getPath('userData') + "/userdict" :
-                null;
             var options = {
                 'mainWindow': $scope.appCfg.mainWindow,
                 'audioServVer': $scope.appCfg.audioServVer,
                 'showMsgPane': $scope.appCfg.showMsgPane,
                 'acceptFirstMouse': $scope.appCfg.acceptFirstMouse,
                 'passPhrase': $scope.appCfg.passPhrase,
-                'aq10UseKeyEncrypted': aq10UseKeyEncrypted,
-                'useCustomDict': $scope.appCfg.useCustomDict,
-                'customDictPath': $scope.appCfg.customDictPath
+                'aq10UseKeyEncrypted': aq10UseKeyEncrypted
             };
             ipcRenderer().send('updateAppConfig', options);
         };
