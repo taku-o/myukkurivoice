@@ -49,4 +49,3 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
       ipcRenderer().send('resetAppConfig', '');
     };
   }]);
-

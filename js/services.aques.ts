@@ -1,3 +1,4 @@
+var app = require('electron').remote.app;
 var _log, log                   = () => { _log = _log || require('electron-log'); return _log; };
 var _fs, fs                     = () => { _fs = _fs || require('fs'); return _fs; };
 var _ffi, ffi                   = () => { _ffi = _ffi || require('ffi'); return _ffi; };
@@ -111,6 +112,14 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
       return '';
     }
 
+    // load custom dictionary if exists
+    let aqDictPath = `${unpackedPath}/vendor/aq_dic_large`;
+    const customDictPath = `${app.getPath('userData')}/userdict`;
+    fs().stat(`${customDictPath}/aqdic.bin`, (err: Error, stats) => {
+      if (err) { return; }
+      aqDictPath = customDictPath;
+    });
+
     let _isAquesTalk10LicensekeySet = false;
     return {
       encode: function(source: string): string {
@@ -120,7 +129,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
         }
 
         const allocInt = ref().alloc('int');
-        const aqKanji2Koe = fn_AqKanji2Koe_Create(`${unpackedPath}/vendor/aq_dic_large`, allocInt);
+        const aqKanji2Koe = fn_AqKanji2Koe_Create(aqDictPath, allocInt);
         const errorCode = allocInt.deref();
         if (errorCode != 0) {
           MessageService.syserror(errorTable_AqKanji2Koe(errorCode));

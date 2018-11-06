@@ -1,4 +1,5 @@
 "use strict";
+var app = require('electron').remote.app;
 var _log, log = function () { _log = _log || require('electron-log'); return _log; };
 var _fs, fs = function () { _fs = _fs || require('fs'); return _fs; };
 var _ffi, ffi = function () { _ffi = _ffi || require('ffi'); return _ffi; };
@@ -174,6 +175,15 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
             }
             return '';
         }
+        // load custom dictionary if exists
+        var aqDictPath = unpackedPath + "/vendor/aq_dic_large";
+        var customDictPath = app.getPath('userData') + "/userdict";
+        fs().stat(customDictPath + "/aqdic.bin", function (err, stats) {
+            if (err) {
+                return;
+            }
+            aqDictPath = customDictPath;
+        });
         var _isAquesTalk10LicensekeySet = false;
         return {
             encode: function (source) {
@@ -182,7 +192,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
                     return '';
                 }
                 var allocInt = ref().alloc('int');
-                var aqKanji2Koe = fn_AqKanji2Koe_Create(unpackedPath + "/vendor/aq_dic_large", allocInt);
+                var aqKanji2Koe = fn_AqKanji2Koe_Create(aqDictPath, allocInt);
                 var errorCode = allocInt.deref();
                 if (errorCode != 0) {
                     MessageService.syserror(errorTable_AqKanji2Koe(errorCode));
