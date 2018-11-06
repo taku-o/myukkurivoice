@@ -47,6 +47,24 @@ describe('specWindow-service-AquesService', function () {
             assert.fail(err.message);
         });
     });
+    it('encode with custom dictionary', function () {
+        return this.client
+            // encode
+            .setValue('#source', 'test')
+            .click('#encode-with-dict')
+            .getValue('#encode-result').then(function (value) {
+            assert.equal(value, "テ'_スト");
+        })
+            // encode empty string
+            .setValue('#source', '')
+            .setValue('#encode-result', '')
+            .click('#encode-with-dict')
+            .getValue('#encode-result').then(function (value) {
+            assert.ok(!value);
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
     it('wave', function () {
         return this.client
             // wave talk1

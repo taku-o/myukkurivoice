@@ -290,7 +290,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
           const parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
           angular.forEach(parsedListForEnc, (cinput) => {
-            cinput.text = AquesService.encode(cinput.text);
+            cinput.text = AquesService.encode(cinput.text, $scope.appCfg);
           });
           for (let i=0; i < parsedListForEnc.length; i++) {
             if (!parsedListForEnc[i].text) {
@@ -301,7 +301,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           encoded = CommandService.toString(parsedListForEnc);
         // encoding, not command
         } else {
-          encoded = AquesService.encode(source);
+          encoded = AquesService.encode(source, $scope.appCfg);
           if (!encoded) {
             MessageService.error('音記号列に変換できませんでした。');
             return;
@@ -415,7 +415,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
           const parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
           angular.forEach(parsedListForEnc, (cinput) => {
-            cinput.text = AquesService.encode(cinput.text);
+            cinput.text = AquesService.encode(cinput.text, $scope.appCfg);
           });
           for (let i=0; i < parsedListForEnc.length; i++) {
             if (!parsedListForEnc[i].text) {
@@ -426,7 +426,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           encoded = CommandService.toString(parsedListForEnc);
         // encoding, not command
         } else {
-          encoded = AquesService.encode(source);
+          encoded = AquesService.encode(source, $scope.appCfg);
           if (!encoded) {
             MessageService.error('音記号列に変換できませんでした。');
             return;
@@ -748,13 +748,13 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       if (CommandService.containsCommand(source, $scope.yvoiceList)) {
         const parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
         angular.forEach(parsedList, function(cinput) {
-          cinput.text = AquesService.encode(cinput.text);
+          cinput.text = AquesService.encode(cinput.text, $scope.appCfg);
         });
         $scope.yinput.encoded = CommandService.toString(parsedList);
         clearEncodedSelection();
       // not command
       } else {
-        const encoded = AquesService.encode(source);
+        const encoded = AquesService.encode(source, $scope.appCfg);
         $scope.yinput.encoded = encoded;
         clearEncodedSelection();
       }

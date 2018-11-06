@@ -54,6 +54,27 @@ describe('specWindow-service-AquesService', function() {
       });
   });
 
+  it('encode with custom dictionary', function() {
+    return this.client
+      // encode
+      .setValue('#source', 'test')
+      .click('#encode-with-dict')
+      .getValue('#encode-result').then((value: string) => {
+        assert.equal(value, "テ'_スト");
+      })
+      // encode empty string
+      .setValue('#source', '')
+      .setValue('#encode-result', '')
+      .click('#encode-with-dict')
+      .getValue('#encode-result').then((value: string) => {
+        assert.ok(!value);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
   it('wave', function() {
     return this.client
       // wave talk1

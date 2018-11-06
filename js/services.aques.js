@@ -176,13 +176,16 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
         }
         var _isAquesTalk10LicensekeySet = false;
         return {
-            encode: function (source) {
+            encode: function (source, options) {
                 if (!source) {
                     MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
                     return '';
                 }
+                // use custom dictionary or not.
+                var dictPath = (options && options.useUserDict) ?
+                    options.customDictPath : unpackedPath + "/vendor/aq_dic_large";
                 var allocInt = ref().alloc('int');
-                var aqKanji2Koe = fn_AqKanji2Koe_Create(unpackedPath + "/vendor/aq_dic_large", allocInt);
+                var aqKanji2Koe = fn_AqKanji2Koe_Create(dictPath, allocInt);
                 var errorCode = allocInt.deref();
                 if (errorCode != 0) {
                     MessageService.syserror(errorTable_AqKanji2Koe(errorCode));
