@@ -113,14 +113,14 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
 
     let _isAquesTalk10LicensekeySet = false;
     return {
-      encode: function(source: string, options: {useUserDict: boolean, customDictPath: string}): string {
+      encode: function(source: string, options: {useCustomDict: boolean, customDictPath: string}): string {
         if (!source) {
           MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
           return '';
         }
 
         // use custom dictionary or not.
-        const dictPath = (options && options.useUserDict)?
+        const dictPath = (options && options.useCustomDict)?
           options.customDictPath: `${unpackedPath}/vendor/aq_dic_large`;
 
         const allocInt = ref().alloc('int');

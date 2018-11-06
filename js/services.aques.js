@@ -182,7 +182,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
                     return '';
                 }
                 // use custom dictionary or not.
-                var dictPath = (options && options.useUserDict) ?
+                var dictPath = (options && options.useCustomDict) ?
                     options.customDictPath : unpackedPath + "/vendor/aq_dic_large";
                 var allocInt = ref().alloc('int');
                 var aqKanji2Koe = fn_AqKanji2Koe_Create(dictPath, allocInt);

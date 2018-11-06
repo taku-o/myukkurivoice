@@ -20,3 +20,7 @@ span.splitter {
 input.caution {
   background: #ffeeee;
 }
+a {
+  color: blue;
+  text-decoration: underline;
+}

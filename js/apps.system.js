@@ -1,6 +1,9 @@
 "use strict";
+var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = function () { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _shell, shell = function () { _shell = _shell || require('electron').shell; return _shell; };
 var _log, log = function () { _log = _log || require('electron-log'); return _log; };
+var homeDir = app.getPath('home');
 // handle uncaughtException
 process.on('uncaughtException', function (err) {
     log().error('system:event:uncaughtException');
@@ -32,17 +35,26 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
             var aq10UseKeyEncrypted = $scope.aq10UseKey ?
                 LicenseService.encrypt($scope.appCfg.passPhrase, $scope.aq10UseKey) :
                 '';
+            $scope.appCfg.customDictPath = $scope.appCfg.useCustomDict ?
+                app.getPath('userData') + "/userdict" :
+                null;
             var options = {
                 'mainWindow': $scope.appCfg.mainWindow,
                 'audioServVer': $scope.appCfg.audioServVer,
                 'showMsgPane': $scope.appCfg.showMsgPane,
                 'acceptFirstMouse': $scope.appCfg.acceptFirstMouse,
                 'passPhrase': $scope.appCfg.passPhrase,
-                'aq10UseKeyEncrypted': aq10UseKeyEncrypted
+                'aq10UseKeyEncrypted': aq10UseKeyEncrypted,
+                'useCustomDict': $scope.appCfg.useCustomDict,
+                'customDictPath': $scope.appCfg.customDictPath
             };
             ipcRenderer().send('updateAppConfig', options);
         };
         ctrl.reset = function () {
             ipcRenderer().send('resetAppConfig', '');
+        };
+        ctrl.showItemInFolder = function (path) {
+            var expanded = path.replace('$HOME', homeDir);
+            shell().showItemInFolder(expanded);
         };
     }]);

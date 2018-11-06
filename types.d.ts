@@ -44,7 +44,7 @@ declare namespace yubo {
     acceptFirstMouse:    boolean;
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
-    useUserDict:         boolean;
+    useCustomDict:       boolean;
     customDictPath:      string;
     isDebug:             boolean;
     isTest:              boolean;
@@ -192,7 +192,7 @@ declare namespace yubo {
     getPhontList(): yubo.YPhont[];
   }
   export interface AquesService {
-    encode(source: string, options:{useUserDict: boolean, customDictPath: string}): string;
+    encode(source: string, options:{useCustomDict: boolean, customDictPath: string}): string;
     wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any>;
   }
   export interface AudioService1 {
