@@ -2,13 +2,16 @@
 exports.__esModule = true;
 var spectron_1 = require("spectron");
 var assert = require("assert");
+var path = require("path");
+var fs = require("fs");
 var temp = require("temp");
 temp.track();
 describe('specWindow-service-AquesService', function () {
     this.timeout(10000);
+    var dirPath = null;
     before(function () {
         var fsprefix = "_myubo_test" + Date.now().toString(36);
-        var dirPath = temp.mkdirSync(fsprefix);
+        dirPath = temp.mkdirSync(fsprefix);
         this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
             env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
@@ -47,9 +50,11 @@ describe('specWindow-service-AquesService', function () {
             assert.fail(err.message);
         });
     });
-    // TODO use custom dict
     it('encode with custom dictionary', function () {
-        //const customDictPath = `${path.dirname(__dirname)}/vendor/aqk2k_mac/aq_dic_small`;
+        fs.mkdirSync(dirPath + "/userdict");
+        var customDictPath = path.dirname(__dirname) + "/vendor/aqk2k_mac/aq_dic_small";
+        fs.writeFileSync(dirPath + "/userdict/aqdic.bin", fs.readFileSync(customDictPath + "/aqdic.bin"));
+        fs.writeFileSync(dirPath + "/userdict/aq_user.dic", fs.readFileSync(customDictPath + "/aq_user.dic"));
         return this.client
             // encode
             .setValue('#source', 'test')

@@ -114,8 +114,8 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
 
     // load custom dictionary if exists
     let aqDictPath = `${unpackedPath}/vendor/aq_dic_large`;
-    const customDictPath = `${app.getPath('userData')}/userdict/aqdic.bin`;
-    fs().stat(customDictPath, (err: Error, stats) => {
+    const customDictPath = `${app.getPath('userData')}/userdict`;
+    fs().stat(`${customDictPath}/aqdic.bin`, (err: Error, stats) => {
       if (err) { return; }
       aqDictPath = customDictPath;
     });
