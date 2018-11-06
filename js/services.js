@@ -3,9 +3,10 @@
 angular.module('yvoiceService', [
     'yvoiceAquesService',
     'yvoiceAudioService',
+    'yvoiceCommandService',
     'yvoiceDataService',
+    'yvoiceIntroService',
     'yvoiceLicenseService',
     'yvoiceMessageService',
     'yvoiceUtilService',
-    'yvoiceModel',
 ]);
