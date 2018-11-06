@@ -201,9 +201,7 @@ angular.module('yvoiceSpec',
       $scope.encodeResult = r;
     };
     ctrl.encodeWithDict = function(): void {
-      // TODO
-      //const customDictPath = `file://${__dirname}/vendor/aqk2k_mac/aq_dic_small`;
-      const customDictPath = null;
+      const customDictPath = process.env.customDictPath;
       const r = AquesService.encode($scope.source, {useUserDict:true, customDictPath:customDictPath});
       $scope.encodeResult = r;
     };

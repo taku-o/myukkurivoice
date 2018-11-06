@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import * as path from 'path';
 import * as temp from 'temp';
 temp.track();
 
@@ -7,11 +8,12 @@ describe('specWindow-service-AquesService', function() {
   this.timeout(10000);
 
   before(function() {
+    const customDictPath = `${path.dirname(__dirname)}/vendor/aqk2k_mac/aq_dic_small`;
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
     const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
+      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath, customDictPath: customDictPath},
     });
     return this.app.start();
   });

@@ -2,16 +2,18 @@
 exports.__esModule = true;
 var spectron_1 = require("spectron");
 var assert = require("assert");
+var path = require("path");
 var temp = require("temp");
 temp.track();
 describe('specWindow-service-AquesService', function () {
     this.timeout(10000);
     before(function () {
+        var customDictPath = path.dirname(__dirname) + "/vendor/aqk2k_mac/aq_dic_small";
         var fsprefix = "_myubo_test" + Date.now().toString(36);
         var dirPath = temp.mkdirSync(fsprefix);
         this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-            env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
+            env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath, customDictPath: customDictPath }
         });
         return this.app.start();
     });
