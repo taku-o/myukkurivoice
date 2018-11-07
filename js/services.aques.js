@@ -30,14 +30,17 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
         // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
         // void AqKanji2Koe_Release (void * hAqKanji2Koe)
         // int AqKanji2Koe_Convert (void * hAqKanji2Koe, const char *kanji, char *koe, int nBufKoe)
+        // int AqKanji2Koe_SetDevKey (const char *key)
         var frameworkPath = null;
         frameworkPath = unpackedPath + "/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe";
         var ptr_AqKanji2Koe_Create = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
         var ptr_AqKanji2Koe_Release = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
         var ptr_AqKanji2Koe_Convert = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
+        var ptr_AqKanji2Koe_SetDevKey = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_SetDevKey');
         var fn_AqKanji2Koe_Create = ffi().ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, ['string', ptr_int]);
         var fn_AqKanji2Koe_Release = ffi().ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ptr_void]);
         var fn_AqKanji2Koe_Convert = ffi().ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
+        var fn_AqKanji2Koe_SetDevKey = ffi().ForeignFunction(ptr_AqKanji2Koe_SetDevKey, 'int', ['string']);
         // unsigned char * AquesTalk2_Synthe_Utf8(const char *koe, int iSpeed, int * size, void *phontDat)
         // void AquesTalk2_FreeWave (unsigned char *wav)
         frameworkPath = unpackedPath + "/vendor/AquesTalk2.framework/Versions/A/AquesTalk2";
@@ -62,8 +65,14 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
             if (code == 101) {
                 return '関数呼び出し時の引数がNULLになっている';
             }
+            if (code == 104) {
+                return '初期化されていない(初期化ルーチンが呼ばれていない)';
+            }
             if (code == 105) {
                 return '入力テキストが長すぎる';
+            }
+            if (code == 106) {
+                return 'システム辞書データが指定されていない';
             }
             if (code == 107) {
                 return '変換できない文字コードが含まれている';
@@ -184,6 +193,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
             }
             aqDictPath = customDictPath;
         });
+        var _isAqKanji2KoeDevkeySet = false;
         var _isAquesTalk10LicensekeySet = false;
         return {
             encode: function (source) {

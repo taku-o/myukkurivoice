@@ -33,14 +33,17 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
     // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
     // void AqKanji2Koe_Release (void * hAqKanji2Koe)
     // int AqKanji2Koe_Convert (void * hAqKanji2Koe, const char *kanji, char *koe, int nBufKoe)
+    // int AqKanji2Koe_SetDevKey (const char *key)
     let frameworkPath = null;
     frameworkPath = `${unpackedPath}/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`;
-    const ptr_AqKanji2Koe_Create  = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
-    const ptr_AqKanji2Koe_Release = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
-    const ptr_AqKanji2Koe_Convert = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
-    const fn_AqKanji2Koe_Create   = ffi().ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, ['string', ptr_int]);
-    const fn_AqKanji2Koe_Release  = ffi().ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ptr_void]);
-    const fn_AqKanji2Koe_Convert  = ffi().ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
+    const ptr_AqKanji2Koe_Create    = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
+    const ptr_AqKanji2Koe_Release   = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
+    const ptr_AqKanji2Koe_Convert   = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
+    const ptr_AqKanji2Koe_SetDevKey = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_SetDevKey');
+    const fn_AqKanji2Koe_Create    = ffi().ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, ['string', ptr_int]);
+    const fn_AqKanji2Koe_Release   = ffi().ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ptr_void]);
+    const fn_AqKanji2Koe_Convert   = ffi().ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
+    const fn_AqKanji2Koe_SetDevKey = ffi().ForeignFunction(ptr_AqKanji2Koe_SetDevKey, 'int', ['string']);
 
     // unsigned char * AquesTalk2_Synthe_Utf8(const char *koe, int iSpeed, int * size, void *phontDat)
     // void AquesTalk2_FreeWave (unsigned char *wav)
@@ -66,7 +69,9 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
 
     function errorTable_AqKanji2Koe(code: number): string {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
+      if (code == 104)               { return '初期化されていない(初期化ルーチンが呼ばれていない)'; }
       if (code == 105)               { return '入力テキストが長すぎる'; }
+      if (code == 106)               { return 'システム辞書データが指定されていない'; }
       if (code == 107)               { return '変換できない文字コードが含まれている'; }
       if (code >= 200 && code < 300) { return 'システム辞書(aqdic.bin)が不正'; }
       if (code >= 300 && code < 400) { return 'ユーザ辞書(aq_user.dic)が不正'; }
@@ -120,36 +125,52 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
       aqDictPath = customDictPath;
     });
 
+    let _isAqKanji2KoeDevkeySet = false;
     let _isAquesTalk10LicensekeySet = false;
     return {
-      encode: function(source: string): string {
+      encode: function(source: string): ng.IPromise<string> {
+        const d = $q.defer();
         if (!source) {
           MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
-          return '';
+          d.reject(null); return d.promise;
         }
 
-        const allocInt = ref().alloc('int');
-        const aqKanji2Koe = fn_AqKanji2Koe_Create(aqDictPath, allocInt);
-        const errorCode = allocInt.deref();
-        if (errorCode != 0) {
-          MessageService.syserror(errorTable_AqKanji2Koe(errorCode));
-          log().warn(`fn_AqKanji2Koe_Create raise error. error_code:${errorTable_AqKanji2Koe(errorCode)}`);
-          return '';
-        }
+        // get and set aqKanji2Koe developer key
+        LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
+          // set developer key if is not set.
+          if (! _isAqKanji2KoeDevkeySet) {
+            const devKey = fn_AqKanji2Koe_SetDevKey(licenseKey);
+            if (devKey != 0) {
+              MessageService.syserror('AqKanji2Koe開発ライセンスキーが正しくありません。');
+              d.reject(null); return;
+            }
+          }
+          _isAqKanji2KoeDevkeySet = true;
 
-        const sourceLength = (new Blob([source], {type: 'text/plain'})).size;
-        const encodedLength = sourceLength >= 512? sourceLength * 4 : 512;
-        const buf = Buffer.alloc(sourceLength >= 512? sourceLength * 4 : 512);
-        const r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encodedLength);
-        if (r != 0) {
-          MessageService.syserror(errorTable_AqKanji2Koe(r));
-          log().info(`fn_AqKanji2Koe_Convert raise error. error_code:${errorTable_AqKanji2Koe(r)}`);
-          return '';
-        }
-        const encoded = ref().readCString(buf, 0);
+          const allocInt = ref().alloc('int');
+          const aqKanji2Koe = fn_AqKanji2Koe_Create(aqDictPath, allocInt);
+          const errorCode = allocInt.deref();
+          if (errorCode != 0) {
+            MessageService.syserror(errorTable_AqKanji2Koe(errorCode));
+            log().warn(`fn_AqKanji2Koe_Create raise error. error_code:${errorTable_AqKanji2Koe(errorCode)}`);
+            d.reject(null); return;
+          }
 
-        fn_AqKanji2Koe_Release(aqKanji2Koe);
-        return encoded;
+          const sourceLength = (new Blob([source], {type: 'text/plain'})).size;
+          const encodedLength = sourceLength >= 512? sourceLength * 4 : 512;
+          const buf = Buffer.alloc(sourceLength >= 512? sourceLength * 4 : 512);
+          const r = fn_AqKanji2Koe_Convert(aqKanji2Koe, source, buf, encodedLength);
+          if (r != 0) {
+            MessageService.syserror(errorTable_AqKanji2Koe(r));
+            log().info(`fn_AqKanji2Koe_Convert raise error. error_code:${errorTable_AqKanji2Koe(r)}`);
+            d.reject(null); return;
+          }
+          const encoded = ref().readCString(buf, 0);
+
+          fn_AqKanji2Koe_Release(aqKanji2Koe);
+          d.resolve(encoded);
+        });
+        return d.promise;
       },
       wave: function(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any> {
         const d = $q.defer();
