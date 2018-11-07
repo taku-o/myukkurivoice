@@ -310,17 +310,24 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       // play
-      const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-      parsedList.reduce((p, cinput) => {
-        if(p.then === undefined) {
-          p.resolve();
-          p = p.promise;
-        }
-        return p.then(() => {
-          return playEach(cinput);
+      return new Promise<boolean>((resolve, reject) => {
+        const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+        parsedList.reduce((p, cinput) => {
+          if(p.then === undefined) {
+            p.resolve();
+            p = p.promise;
+          }
+          return p.then(() => {
+            return playEach(cinput);
+          });
+        }, $q.defer())
+        .then(() => {
+          resolve(true);
+        })
+        .catch((err: Error) => {
+          reject(err);
         });
-      }, $q.defer());
-      return true;
+      });
     };
     function playEach(cinput): ng.IPromise<string> {
       const d = $q.defer();
@@ -444,49 +451,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         }
 
         // record
-        const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-        let sourceFname = null;
-        // record wave files
-        parsedList.reduce((p, cinput) => {
-          if(p.then === undefined) {
-            p.resolve();
-            p = p.promise;
-          }
-          return p.then((fp) => {
-            return recordEach(cinput, dir, prefix)
-              .then((fp) => {
-                if ($scope.yvoice.sourceWrite && !sourceFname) {
-                  sourceFname = AudioSourceService.sourceFname(fp);
-                }
-                MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
-                return fp;
-              });
-          });
-        }, $q.defer())
-        // record source message
-        .then((fp) => {
-          if (!sourceFname) { return; }
-          AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
-            MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`, sourceFname);
-          })
-          .catch((err: Error) => {
-            MessageService.error('メッセージファイルを作成できませんでした。', err);
-          });
-        });
-
-      // 通常保存
-      } else {
-        ipcRenderer().once('showSaveDialog', (event, filePath) => {
-          if (!filePath) {
-            MessageService.error('保存先が指定されませんでした。');
-            return;
-          }
-          const splitted = SeqFNameService.splitFname(filePath);
-          const dir = splitted.dir;
-          const prefix = splitted.basename;
-
-          // record
-          const containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
+        return new Promise<boolean>((resolve, reject) => {
           const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
           let sourceFname = null;
           // record wave files
@@ -496,41 +461,90 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
               p = p.promise;
             }
             return p.then((fp) => {
-              if (containsCommand) {
-                return recordEach(cinput, dir, prefix)
-                  .then((fp) => {
-                    if ($scope.yvoice.sourceWrite && !sourceFname) {
-                      sourceFname = AudioSourceService.sourceFname(fp);
-                    }
-                    MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
-                    return fp;
-                  });
-              } else {
-                return recordSolo(cinput, filePath)
-                  .then((fp) => {
-                    if ($scope.yvoice.sourceWrite && !sourceFname) {
-                      sourceFname = AudioSourceService.sourceFname(fp);
-                    }
-                    MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
-                    return fp;
-                  });
-              }
+              return recordEach(cinput, dir, prefix)
+                .then((fp) => {
+                  if ($scope.yvoice.sourceWrite && !sourceFname) {
+                    sourceFname = AudioSourceService.sourceFname(fp);
+                  }
+                  MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                  return fp;
+                });
             });
           }, $q.defer())
           // record source message
           .then((fp) => {
-            if (!sourceFname) { return; }
+            if (!sourceFname) { resolve(true); return; }
             AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
               MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`, sourceFname);
+              resolve(true);
             })
             .catch((err: Error) => {
               MessageService.error('メッセージファイルを作成できませんでした。', err);
+              reject(err);
             });
           });
         });
-        ipcRenderer().send('showSaveDialog', 'wav');
+
+      // 通常保存
+      } else {
+        return new Promise<boolean>((resolve, reject) => {
+          ipcRenderer().once('showSaveDialog', (event, filePath) => {
+            if (!filePath) {
+              MessageService.error('保存先が指定されませんでした。');
+              reject(false); return;
+            }
+            const splitted = SeqFNameService.splitFname(filePath);
+            const dir = splitted.dir;
+            const prefix = splitted.basename;
+
+            // record
+            const containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
+            const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+            let sourceFname = null;
+            // record wave files
+            parsedList.reduce((p, cinput) => {
+              if(p.then === undefined) {
+                p.resolve();
+                p = p.promise;
+              }
+              return p.then((fp) => {
+                if (containsCommand) {
+                  return recordEach(cinput, dir, prefix)
+                    .then((fp) => {
+                      if ($scope.yvoice.sourceWrite && !sourceFname) {
+                        sourceFname = AudioSourceService.sourceFname(fp);
+                      }
+                      MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                      return fp;
+                    });
+                } else {
+                  return recordSolo(cinput, filePath)
+                    .then((fp) => {
+                      if ($scope.yvoice.sourceWrite && !sourceFname) {
+                        sourceFname = AudioSourceService.sourceFname(fp);
+                      }
+                      MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                      return fp;
+                    });
+                }
+              });
+            }, $q.defer())
+            // record source message
+            .then((fp) => {
+              if (!sourceFname) { resolve(true); return; }
+              AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
+                MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`, sourceFname);
+                resolve(true);
+              })
+              .catch((err: Error) => {
+                MessageService.error('メッセージファイルを作成できませんでした。', err);
+                reject(err);
+              });
+            });
+          });
+          ipcRenderer().send('showSaveDialog', 'wav');
+        });
       }
-      return true;
     };
     function recordSolo(cinput, filePath): ng.IPromise<string> {
       const d = $q.defer();
@@ -754,14 +768,16 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         }
         $scope.yinput.encoded = CommandService.toString(parsedList);
         clearEncodedSelection();
+        $timeout(() => { $scope.$apply(); });
+        return $scope.yinput.encoded;
       // not command
       } else {
         const encoded = await AquesService.encode(source);
         $scope.yinput.encoded = encoded;
         clearEncodedSelection();
+        $timeout(() => { $scope.$apply(); });
+        return $scope.yinput.encoded;
       }
-      $timeout(() => { $scope.$apply(); });
-      return $scope.yinput.encoded;
     };
     ctrl.clear = function(): void {
       MessageService.action('clear input text.');
