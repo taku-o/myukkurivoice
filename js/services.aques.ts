@@ -128,7 +128,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
     let _isAqKanji2KoeDevkeySet = false;
     let _isAquesTalk10LicensekeySet = false;
     return {
-      encode: function(source: string): ng.IPromise<string> {
+      encode: async function(source: string): ng.IPromise<string> {
         const d = $q.defer();
         if (!source) {
           MessageService.syserror('音記号列に変換するメッセージが入力されていません。');

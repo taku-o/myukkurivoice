@@ -275,9 +275,20 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 // encoding, command
                 if (CommandService.containsCommand(source, $scope.yvoiceList)) {
                     var parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-                    angular.forEach(parsedListForEnc, function (cinput) {
-                        cinput.text = AquesService.encode(cinput.text);
-                    });
+                    parsedListForEnc.reduce(function (p, cinput) {
+                        if (p.then === undefined) {
+                            p.resolve();
+                            p = p.promise;
+                        }
+                        return p.then(function () {
+                            return AquesService.encode(cinput.text).then(function (parsed) {
+                                cinput.text = parsed;
+                            });
+                        });
+                    }, $q.defer());
+                    //angular.forEach(parsedListForEnc, (cinput) => {
+                    //  cinput.text = AquesService.encode(cinput.text);
+                    //});
                     for (var i = 0; i < parsedListForEnc.length; i++) {
                         if (!parsedListForEnc[i].text) {
                             MessageService.error('一部テキストを音記号列に変換できませんでした。');
@@ -288,7 +299,18 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     // encoding, not command
                 }
                 else {
-                    encoded = AquesService.encode(source);
+                    [source].reduce(function (p, insource) {
+                        if (p.then === undefined) {
+                            p.resolve();
+                            p = p.promise;
+                        }
+                        return p.then(function () {
+                            return AquesService.encode(insource).then(function (parsed) {
+                                encoded = parsed;
+                            });
+                        });
+                    }, $q.defer());
+                    //encoded = AquesService.encode(source);
                     if (!encoded) {
                         MessageService.error('音記号列に変換できませんでした。');
                         return;
@@ -397,9 +419,20 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 // encoding, command
                 if (CommandService.containsCommand(source, $scope.yvoiceList)) {
                     var parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-                    angular.forEach(parsedListForEnc, function (cinput) {
-                        cinput.text = AquesService.encode(cinput.text);
-                    });
+                    parsedListForEnc.reduce(function (p, cinput) {
+                        if (p.then === undefined) {
+                            p.resolve();
+                            p = p.promise;
+                        }
+                        return p.then(function () {
+                            return AquesService.encode(cinput.text).then(function (parsed) {
+                                cinput.text = parsed;
+                            });
+                        });
+                    }, $q.defer());
+                    //angular.forEach(parsedListForEnc, (cinput) => {
+                    //  cinput.text = AquesService.encode(cinput.text);
+                    //});
                     for (var i = 0; i < parsedListForEnc.length; i++) {
                         if (!parsedListForEnc[i].text) {
                             MessageService.error('一部テキストを音記号列に変換できませんでした。');
@@ -410,7 +443,18 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     // encoding, not command
                 }
                 else {
-                    encoded = AquesService.encode(source);
+                    [source].reduce(function (p, insource) {
+                        if (p.then === undefined) {
+                            p.resolve();
+                            p = p.promise;
+                        }
+                        return p.then(function () {
+                            return AquesService.encode(insource).then(function (parsed) {
+                                encoded = parsed;
+                            });
+                        });
+                    }, $q.defer());
+                    //encoded = AquesService.encode(source);
                     if (!encoded) {
                         MessageService.error('音記号列に変換できませんでした。');
                         return;
@@ -732,16 +776,44 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             // command
             if (CommandService.containsCommand(source, $scope.yvoiceList)) {
                 var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-                angular.forEach(parsedList, function (cinput) {
-                    cinput.text = AquesService.encode(cinput.text);
-                });
+                parsedList.reduce(function (p, cinput) {
+                    if (p.then === undefined) {
+                        p.resolve();
+                        p = p.promise;
+                    }
+                    return p.then(function () {
+                        return AquesService.encode(cinput.text).then(function (parsed) {
+                            cinput.text = parsed;
+                        });
+                    });
+                }, $q.defer());
+                //angular.forEach(parsedList, function(cinput) {
+                //  cinput.text = AquesService.encode(cinput.text);
+                //});
                 $scope.yinput.encoded = CommandService.toString(parsedList);
                 clearEncodedSelection();
                 // not command
             }
             else {
-                var encoded = AquesService.encode(source);
-                $scope.yinput.encoded = encoded;
+                console.log('A');
+                var encoded_1 = null;
+                [source].reduce(function (p, insource) {
+                    console.log('B');
+                    if (p.then === undefined) {
+                        p.resolve();
+                        p = p.promise;
+                    }
+                    console.log('C');
+                    return p.then(function () {
+                        return AquesService.encode(insource).then(function (parsed) {
+                            console.log('D');
+                            encoded_1 = parsed;
+                        });
+                    });
+                }, $q.defer());
+                console.log('E');
+                //const encoded = AquesService.encode(source);
+                $scope.yinput.encoded = encoded_1;
                 clearEncodedSelection();
             }
         };
