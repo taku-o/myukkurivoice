@@ -197,17 +197,14 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
         var _isAquesTalk10LicensekeySet = false;
         return {
             encode: function (source) {
-                console.log('#1');
                 var d = $q.defer();
                 if (!source) {
                     MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
                     d.reject(null);
                     return d.promise;
                 }
-                console.log('#2');
                 // get and set aqKanji2Koe developer key
                 LicenseService.consumerKey('aqKanji2KoeDevKey').then(function (licenseKey) {
-                    console.log('#3');
                     // set developer key if is not set.
                     if (!_isAqKanji2KoeDevkeySet) {
                         var devKey = fn_AqKanji2Koe_SetDevKey(licenseKey);
@@ -218,7 +215,6 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
                         }
                     }
                     _isAqKanji2KoeDevkeySet = true;
-                    console.log('#4');
                     var allocInt = ref().alloc('int');
                     var aqKanji2Koe = fn_AqKanji2Koe_Create(aqDictPath, allocInt);
                     var errorCode = allocInt.deref();
@@ -228,7 +224,6 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
                         d.reject(null);
                         return;
                     }
-                    console.log('#5');
                     var sourceLength = (new Blob([source], { type: 'text/plain' })).size;
                     var encodedLength = sourceLength >= 512 ? sourceLength * 4 : 512;
                     var buf = Buffer.alloc(sourceLength >= 512 ? sourceLength * 4 : 512);
@@ -240,12 +235,9 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
                         return;
                     }
                     var encoded = ref().readCString(buf, 0);
-                    console.log('#6');
                     fn_AqKanji2Koe_Release(aqKanji2Koe);
                     d.resolve(encoded);
-                    console.log('#7');
                 });
-                console.log('#8');
                 return d.promise;
             },
             wave: function (encoded, phont, speed, options) {

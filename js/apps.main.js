@@ -1,4 +1,39 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = function () { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _clipboard, clipboard = function () { _clipboard = _clipboard || require('electron').clipboard; return _clipboard; };
@@ -254,80 +289,75 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         };
         // action
         ctrl.play = function () {
-            MessageService.action('start to play voice.');
-            if (!$scope.yinput.source && !$scope.yinput.encoded) {
-                MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
-                return;
-            }
-            // text converting
-            var encoded = $scope.yinput.encoded;
-            var _selectedEncoded = selectedEncoded();
-            if (_selectedEncoded) {
-                encoded = _selectedEncoded;
-                clearSourceSelection();
-            }
-            if (!encoded) {
-                var source = $scope.yinput.source;
-                var _selectedSource = selectedSource();
-                if (_selectedSource) {
-                    source = _selectedSource;
-                }
-                // encoding, command
-                if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-                    var parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-                    parsedListForEnc.reduce(function (p, cinput) {
-                        if (p.then === undefined) {
-                            p.resolve();
-                            p = p.promise;
-                        }
-                        return p.then(function () {
-                            return AquesService.encode(cinput.text).then(function (parsed) {
-                                cinput.text = parsed;
-                            });
-                        });
-                    }, $q.defer());
-                    //angular.forEach(parsedListForEnc, (cinput) => {
-                    //  cinput.text = AquesService.encode(cinput.text);
-                    //});
-                    for (var i = 0; i < parsedListForEnc.length; i++) {
-                        if (!parsedListForEnc[i].text) {
-                            MessageService.error('一部テキストを音記号列に変換できませんでした。');
-                            return;
-                        }
+            return __awaiter(this, void 0, void 0, function () {
+                var encoded, _selectedEncoded, source, _selectedSource, parsedListForEnc, _i, parsedListForEnc_1, cinput, _a, i, parsedList;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            MessageService.action('start to play voice.');
+                            if (!$scope.yinput.source && !$scope.yinput.encoded) {
+                                MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
+                                return [2 /*return*/, false];
+                            }
+                            encoded = $scope.yinput.encoded;
+                            _selectedEncoded = selectedEncoded();
+                            if (_selectedEncoded) {
+                                encoded = _selectedEncoded;
+                                clearSourceSelection();
+                            }
+                            if (!!encoded) return [3 /*break*/, 7];
+                            source = $scope.yinput.source;
+                            _selectedSource = selectedSource();
+                            if (_selectedSource) {
+                                source = _selectedSource;
+                            }
+                            if (!CommandService.containsCommand(source, $scope.yvoiceList)) return [3 /*break*/, 5];
+                            parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+                            _i = 0, parsedListForEnc_1 = parsedListForEnc;
+                            _b.label = 1;
+                        case 1:
+                            if (!(_i < parsedListForEnc_1.length)) return [3 /*break*/, 4];
+                            cinput = parsedListForEnc_1[_i];
+                            _a = cinput;
+                            return [4 /*yield*/, AquesService.encode(cinput.text)];
+                        case 2:
+                            _a.text = _b.sent();
+                            _b.label = 3;
+                        case 3:
+                            _i++;
+                            return [3 /*break*/, 1];
+                        case 4:
+                            for (i = 0; i < parsedListForEnc.length; i++) {
+                                if (!parsedListForEnc[i].text) {
+                                    MessageService.error('一部テキストを音記号列に変換できませんでした。');
+                                    return [2 /*return*/, false];
+                                }
+                            }
+                            encoded = CommandService.toString(parsedListForEnc);
+                            return [3 /*break*/, 7];
+                        case 5: return [4 /*yield*/, AquesService.encode(source)];
+                        case 6:
+                            encoded = _b.sent();
+                            if (!encoded) {
+                                MessageService.error('音記号列に変換できませんでした。');
+                                return [2 /*return*/, false];
+                            }
+                            _b.label = 7;
+                        case 7:
+                            parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+                            parsedList.reduce(function (p, cinput) {
+                                if (p.then === undefined) {
+                                    p.resolve();
+                                    p = p.promise;
+                                }
+                                return p.then(function () {
+                                    return playEach(cinput);
+                                });
+                            }, $q.defer());
+                            return [2 /*return*/, true];
                     }
-                    encoded = CommandService.toString(parsedListForEnc);
-                    // encoding, not command
-                }
-                else {
-                    [source].reduce(function (p, insource) {
-                        if (p.then === undefined) {
-                            p.resolve();
-                            p = p.promise;
-                        }
-                        return p.then(function () {
-                            return AquesService.encode(insource).then(function (parsed) {
-                                encoded = parsed;
-                            });
-                        });
-                    }, $q.defer());
-                    //encoded = AquesService.encode(source);
-                    if (!encoded) {
-                        MessageService.error('音記号列に変換できませんでした。');
-                        return;
-                    }
-                }
-            }
-            // play
-            var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-            parsedList.reduce(function (p, cinput) {
-                if (p.then === undefined) {
-                    p.resolve();
-                    p = p.promise;
-                }
-                return p.then(function () {
-                    return playEach(cinput);
                 });
-            }, $q.defer());
+            });
         };
         function playEach(cinput) {
             var d = $q.defer();
@@ -388,175 +418,170 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             AudioService.stop();
         };
         ctrl.record = function () {
-            MessageService.action('record voice.');
-            if (!$scope.yinput.source && !$scope.yinput.encoded) {
-                MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
-                return;
-            }
-            var phont = null;
-            angular.forEach($scope.phontList, function (value, key) {
-                if (value.id == $scope.yvoice.phont) {
-                    phont = value;
-                }
-            });
-            if (!phont) {
-                MessageService.error('声の種類が未指定です。');
-                return;
-            }
-            // text converting
-            var encoded = $scope.yinput.encoded;
-            var _selectedEncoded = selectedEncoded();
-            if (_selectedEncoded) {
-                encoded = _selectedEncoded;
-                clearSourceSelection();
-            }
-            if (!encoded) {
-                var source = $scope.yinput.source;
-                var _selectedSource = selectedSource();
-                if (_selectedSource) {
-                    source = _selectedSource;
-                }
-                // encoding, command
-                if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-                    var parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-                    parsedListForEnc.reduce(function (p, cinput) {
-                        if (p.then === undefined) {
-                            p.resolve();
-                            p = p.promise;
-                        }
-                        return p.then(function () {
-                            return AquesService.encode(cinput.text).then(function (parsed) {
-                                cinput.text = parsed;
-                            });
-                        });
-                    }, $q.defer());
-                    //angular.forEach(parsedListForEnc, (cinput) => {
-                    //  cinput.text = AquesService.encode(cinput.text);
-                    //});
-                    for (var i = 0; i < parsedListForEnc.length; i++) {
-                        if (!parsedListForEnc[i].text) {
-                            MessageService.error('一部テキストを音記号列に変換できませんでした。');
-                            return;
-                        }
-                    }
-                    encoded = CommandService.toString(parsedListForEnc);
-                    // encoding, not command
-                }
-                else {
-                    [source].reduce(function (p, insource) {
-                        if (p.then === undefined) {
-                            p.resolve();
-                            p = p.promise;
-                        }
-                        return p.then(function () {
-                            return AquesService.encode(insource).then(function (parsed) {
-                                encoded = parsed;
-                            });
-                        });
-                    }, $q.defer());
-                    //encoded = AquesService.encode(source);
-                    if (!encoded) {
-                        MessageService.error('音記号列に変換できませんでした。');
-                        return;
-                    }
-                }
-            }
-            // 連番保存
-            if ($scope.yvoice.seqWrite) {
-                var dir_1 = $scope.yvoice.seqWriteOptions.dir;
-                var prefix_1 = $scope.yvoice.seqWriteOptions.prefix;
-                if (!dir_1) {
-                    dir_1 = desktopDir;
-                }
-                // record
-                var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-                var sourceFname_1 = null;
-                // record wave files
-                parsedList.reduce(function (p, cinput) {
-                    if (p.then === undefined) {
-                        p.resolve();
-                        p = p.promise;
-                    }
-                    return p.then(function (fp) {
-                        return recordEach(cinput, dir_1, prefix_1)
-                            .then(function (fp) {
-                            if ($scope.yvoice.sourceWrite && !sourceFname_1) {
-                                sourceFname_1 = AudioSourceService.sourceFname(fp);
+            return __awaiter(this, void 0, void 0, function () {
+                var phont, encoded, _selectedEncoded, source, _selectedSource, parsedListForEnc, _i, parsedListForEnc_2, cinput, _a, i, dir_1, prefix_1, parsedList, sourceFname_1;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            MessageService.action('record voice.');
+                            if (!$scope.yinput.source && !$scope.yinput.encoded) {
+                                MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
+                                return [2 /*return*/, false];
                             }
-                            MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname_1);
-                            return fp;
-                        });
-                    });
-                }, $q.defer())
-                    // record source message
-                    .then(function (fp) {
-                    if (!sourceFname_1) {
-                        return;
-                    }
-                    AudioSourceService.save(sourceFname_1, $scope.yinput.source).then(function () {
-                        MessageService.recordSource("" + 'メッセージファイルを保存しました。path: ' + sourceFname_1, sourceFname_1);
-                    })["catch"](function (err) {
-                        MessageService.error('メッセージファイルを作成できませんでした。', err);
-                    });
-                });
-                // 通常保存
-            }
-            else {
-                ipcRenderer().once('showSaveDialog', function (event, filePath) {
-                    if (!filePath) {
-                        MessageService.error('保存先が指定されませんでした。');
-                        return;
-                    }
-                    var splitted = SeqFNameService.splitFname(filePath);
-                    var dir = splitted.dir;
-                    var prefix = splitted.basename;
-                    // record
-                    var containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
-                    var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-                    var sourceFname = null;
-                    // record wave files
-                    parsedList.reduce(function (p, cinput) {
-                        if (p.then === undefined) {
-                            p.resolve();
-                            p = p.promise;
-                        }
-                        return p.then(function (fp) {
-                            if (containsCommand) {
-                                return recordEach(cinput, dir, prefix)
-                                    .then(function (fp) {
-                                    if ($scope.yvoice.sourceWrite && !sourceFname) {
-                                        sourceFname = AudioSourceService.sourceFname(fp);
+                            phont = null;
+                            angular.forEach($scope.phontList, function (value, key) {
+                                if (value.id == $scope.yvoice.phont) {
+                                    phont = value;
+                                }
+                            });
+                            if (!phont) {
+                                MessageService.error('声の種類が未指定です。');
+                                return [2 /*return*/, false];
+                            }
+                            encoded = $scope.yinput.encoded;
+                            _selectedEncoded = selectedEncoded();
+                            if (_selectedEncoded) {
+                                encoded = _selectedEncoded;
+                                clearSourceSelection();
+                            }
+                            if (!!encoded) return [3 /*break*/, 7];
+                            source = $scope.yinput.source;
+                            _selectedSource = selectedSource();
+                            if (_selectedSource) {
+                                source = _selectedSource;
+                            }
+                            if (!CommandService.containsCommand(source, $scope.yvoiceList)) return [3 /*break*/, 5];
+                            parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+                            _i = 0, parsedListForEnc_2 = parsedListForEnc;
+                            _b.label = 1;
+                        case 1:
+                            if (!(_i < parsedListForEnc_2.length)) return [3 /*break*/, 4];
+                            cinput = parsedListForEnc_2[_i];
+                            _a = cinput;
+                            return [4 /*yield*/, AquesService.encode(cinput.text)];
+                        case 2:
+                            _a.text = _b.sent();
+                            _b.label = 3;
+                        case 3:
+                            _i++;
+                            return [3 /*break*/, 1];
+                        case 4:
+                            for (i = 0; i < parsedListForEnc.length; i++) {
+                                if (!parsedListForEnc[i].text) {
+                                    MessageService.error('一部テキストを音記号列に変換できませんでした。');
+                                    return [2 /*return*/, false];
+                                }
+                            }
+                            encoded = CommandService.toString(parsedListForEnc);
+                            return [3 /*break*/, 7];
+                        case 5: return [4 /*yield*/, AquesService.encode(source)];
+                        case 6:
+                            encoded = _b.sent();
+                            if (!encoded) {
+                                MessageService.error('音記号列に変換できませんでした。');
+                                return [2 /*return*/, false];
+                            }
+                            _b.label = 7;
+                        case 7:
+                            // 連番保存
+                            if ($scope.yvoice.seqWrite) {
+                                dir_1 = $scope.yvoice.seqWriteOptions.dir;
+                                prefix_1 = $scope.yvoice.seqWriteOptions.prefix;
+                                if (!dir_1) {
+                                    dir_1 = desktopDir;
+                                }
+                                parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+                                sourceFname_1 = null;
+                                // record wave files
+                                parsedList.reduce(function (p, cinput) {
+                                    if (p.then === undefined) {
+                                        p.resolve();
+                                        p = p.promise;
                                     }
-                                    MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname);
-                                    return fp;
+                                    return p.then(function (fp) {
+                                        return recordEach(cinput, dir_1, prefix_1)
+                                            .then(function (fp) {
+                                            if ($scope.yvoice.sourceWrite && !sourceFname_1) {
+                                                sourceFname_1 = AudioSourceService.sourceFname(fp);
+                                            }
+                                            MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname_1);
+                                            return fp;
+                                        });
+                                    });
+                                }, $q.defer())
+                                    // record source message
+                                    .then(function (fp) {
+                                    if (!sourceFname_1) {
+                                        return;
+                                    }
+                                    AudioSourceService.save(sourceFname_1, $scope.yinput.source).then(function () {
+                                        MessageService.recordSource("" + 'メッセージファイルを保存しました。path: ' + sourceFname_1, sourceFname_1);
+                                    })["catch"](function (err) {
+                                        MessageService.error('メッセージファイルを作成できませんでした。', err);
+                                    });
                                 });
+                                // 通常保存
                             }
                             else {
-                                return recordSolo(cinput, filePath)
-                                    .then(function (fp) {
-                                    if ($scope.yvoice.sourceWrite && !sourceFname) {
-                                        sourceFname = AudioSourceService.sourceFname(fp);
+                                ipcRenderer().once('showSaveDialog', function (event, filePath) {
+                                    if (!filePath) {
+                                        MessageService.error('保存先が指定されませんでした。');
+                                        return;
                                     }
-                                    MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname);
-                                    return fp;
+                                    var splitted = SeqFNameService.splitFname(filePath);
+                                    var dir = splitted.dir;
+                                    var prefix = splitted.basename;
+                                    // record
+                                    var containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
+                                    var parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+                                    var sourceFname = null;
+                                    // record wave files
+                                    parsedList.reduce(function (p, cinput) {
+                                        if (p.then === undefined) {
+                                            p.resolve();
+                                            p = p.promise;
+                                        }
+                                        return p.then(function (fp) {
+                                            if (containsCommand) {
+                                                return recordEach(cinput, dir, prefix)
+                                                    .then(function (fp) {
+                                                    if ($scope.yvoice.sourceWrite && !sourceFname) {
+                                                        sourceFname = AudioSourceService.sourceFname(fp);
+                                                    }
+                                                    MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname);
+                                                    return fp;
+                                                });
+                                            }
+                                            else {
+                                                return recordSolo(cinput, filePath)
+                                                    .then(function (fp) {
+                                                    if ($scope.yvoice.sourceWrite && !sourceFname) {
+                                                        sourceFname = AudioSourceService.sourceFname(fp);
+                                                    }
+                                                    MessageService.record("" + '音声ファイルを保存しました。path: ' + fp, fp, sourceFname);
+                                                    return fp;
+                                                });
+                                            }
+                                        });
+                                    }, $q.defer())
+                                        // record source message
+                                        .then(function (fp) {
+                                        if (!sourceFname) {
+                                            return;
+                                        }
+                                        AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () {
+                                            MessageService.recordSource("" + 'メッセージファイルを保存しました。path: ' + sourceFname, sourceFname);
+                                        })["catch"](function (err) {
+                                            MessageService.error('メッセージファイルを作成できませんでした。', err);
+                                        });
+                                    });
                                 });
+                                ipcRenderer().send('showSaveDialog', 'wav');
                             }
-                        });
-                    }, $q.defer())
-                        // record source message
-                        .then(function (fp) {
-                        if (!sourceFname) {
-                            return;
-                        }
-                        AudioSourceService.save(sourceFname, $scope.yinput.source).then(function () {
-                            MessageService.recordSource("" + 'メッセージファイルを保存しました。path: ' + sourceFname, sourceFname);
-                        })["catch"](function (err) {
-                            MessageService.error('メッセージファイルを作成できませんでした。', err);
-                        });
-                    });
+                            return [2 /*return*/, true];
+                    }
                 });
-                ipcRenderer().send('showSaveDialog', 'wav');
-            }
+            });
         };
         function recordSolo(cinput, filePath) {
             var d = $q.defer();
@@ -767,55 +792,48 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             });
         };
         ctrl.encode = function () {
-            MessageService.action('encode source text.');
-            var source = $scope.yinput.source;
-            var _selectedSource = selectedSource();
-            if (_selectedSource) {
-                source = _selectedSource;
-            }
-            // command
-            if (CommandService.containsCommand(source, $scope.yvoiceList)) {
-                var parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-                parsedList.reduce(function (p, cinput) {
-                    if (p.then === undefined) {
-                        p.resolve();
-                        p = p.promise;
+            return __awaiter(this, void 0, void 0, function () {
+                var source, _selectedSource, parsedList, _i, parsedList_1, cinput, _a, encoded;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            MessageService.action('encode source text.');
+                            source = $scope.yinput.source;
+                            _selectedSource = selectedSource();
+                            if (_selectedSource) {
+                                source = _selectedSource;
+                            }
+                            if (!CommandService.containsCommand(source, $scope.yvoiceList)) return [3 /*break*/, 5];
+                            parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+                            _i = 0, parsedList_1 = parsedList;
+                            _b.label = 1;
+                        case 1:
+                            if (!(_i < parsedList_1.length)) return [3 /*break*/, 4];
+                            cinput = parsedList_1[_i];
+                            _a = cinput;
+                            return [4 /*yield*/, AquesService.encode(cinput.text)];
+                        case 2:
+                            _a.text = _b.sent();
+                            _b.label = 3;
+                        case 3:
+                            _i++;
+                            return [3 /*break*/, 1];
+                        case 4:
+                            $scope.yinput.encoded = CommandService.toString(parsedList);
+                            clearEncodedSelection();
+                            return [3 /*break*/, 7];
+                        case 5: return [4 /*yield*/, AquesService.encode(source)];
+                        case 6:
+                            encoded = _b.sent();
+                            $scope.yinput.encoded = encoded;
+                            clearEncodedSelection();
+                            _b.label = 7;
+                        case 7:
+                            $timeout(function () { $scope.$apply(); });
+                            return [2 /*return*/, $scope.yinput.encoded];
                     }
-                    return p.then(function () {
-                        return AquesService.encode(cinput.text).then(function (parsed) {
-                            cinput.text = parsed;
-                        });
-                    });
-                }, $q.defer());
-                //angular.forEach(parsedList, function(cinput) {
-                //  cinput.text = AquesService.encode(cinput.text);
-                //});
-                $scope.yinput.encoded = CommandService.toString(parsedList);
-                clearEncodedSelection();
-                // not command
-            }
-            else {
-                console.log('A');
-                var encoded_1 = null;
-                [source].reduce(function (p, insource) {
-                    console.log('B');
-                    if (p.then === undefined) {
-                        p.resolve();
-                        p = p.promise;
-                    }
-                    console.log('C');
-                    return p.then(function () {
-                        return AquesService.encode(insource).then(function (parsed) {
-                            console.log('D');
-                            encoded_1 = parsed;
-                        });
-                    });
-                }, $q.defer());
-                console.log('E');
-                //const encoded = AquesService.encode(source);
-                $scope.yinput.encoded = encoded_1;
-                clearEncodedSelection();
-            }
+                });
+            });
         };
         ctrl.clear = function () {
             MessageService.action('clear input text.');

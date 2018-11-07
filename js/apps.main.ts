@@ -266,11 +266,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     };
 
     // action
-    ctrl.play = function(): void {
+    ctrl.play = async function(): Promise<boolean> {
       MessageService.action('start to play voice.');
       if (!$scope.yinput.source && !$scope.yinput.encoded) {
         MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
-        return;
+        return false;
       }
 
       // text converting
@@ -289,22 +289,22 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
           const parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-          angular.forEach(parsedListForEnc, (cinput) => {
-            cinput.text = AquesService.encode(cinput.text);
-          });
+          for (let cinput of parsedListForEnc) {
+            cinput.text = await AquesService.encode(cinput.text);
+          }
           for (let i=0; i < parsedListForEnc.length; i++) {
             if (!parsedListForEnc[i].text) {
               MessageService.error('一部テキストを音記号列に変換できませんでした。');
-              return;
+              return false;
             }
           }
           encoded = CommandService.toString(parsedListForEnc);
         // encoding, not command
         } else {
-          encoded = AquesService.encode(source);
+          encoded = await AquesService.encode(source);
           if (!encoded) {
             MessageService.error('音記号列に変換できませんでした。');
-            return;
+            return false;
           }
         }
       }
@@ -320,6 +320,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           return playEach(cinput);
         });
       }, $q.defer());
+      return true;
     };
     function playEach(cinput): ng.IPromise<string> {
       const d = $q.defer();
@@ -382,11 +383,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       MessageService.action('stop playing voice.');
       AudioService.stop();
     };
-    ctrl.record = function(): void {
+    ctrl.record = async function(): Promise<boolean> {
       MessageService.action('record voice.');
       if (!$scope.yinput.source && !$scope.yinput.encoded) {
         MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
-        return;
+        return false;
       }
 
       let phont = null;
@@ -395,7 +396,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        return;
+        return false;
       }
 
       // text converting
@@ -414,22 +415,22 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
           const parsedListForEnc = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-          angular.forEach(parsedListForEnc, (cinput) => {
-            cinput.text = AquesService.encode(cinput.text);
-          });
+          for (let cinput of parsedListForEnc) {
+            cinput.text = await AquesService.encode(cinput.text);
+          }
           for (let i=0; i < parsedListForEnc.length; i++) {
             if (!parsedListForEnc[i].text) {
               MessageService.error('一部テキストを音記号列に変換できませんでした。');
-              return;
+              return false;
             }
           }
           encoded = CommandService.toString(parsedListForEnc);
         // encoding, not command
         } else {
-          encoded = AquesService.encode(source);
+          encoded = await AquesService.encode(source);
           if (!encoded) {
             MessageService.error('音記号列に変換できませんでした。');
-            return;
+            return false;
           }
         }
       }
@@ -529,6 +530,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         });
         ipcRenderer().send('showSaveDialog', 'wav');
       }
+      return true;
     };
     function recordSolo(cinput, filePath): ng.IPromise<string> {
       const d = $q.defer();
@@ -736,7 +738,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
     };
 
-    ctrl.encode = function(): void {
+    ctrl.encode = async function(): Promise<string> {
       MessageService.action('encode source text.');
       let source = $scope.yinput.source;
       const _selectedSource = selectedSource();
@@ -747,17 +749,19 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       // command
       if (CommandService.containsCommand(source, $scope.yvoiceList)) {
         const parsedList = CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-        angular.forEach(parsedList, function(cinput) {
-          cinput.text = AquesService.encode(cinput.text);
-        });
+        for (let cinput of parsedList) {
+          cinput.text = await AquesService.encode(cinput.text);
+        }
         $scope.yinput.encoded = CommandService.toString(parsedList);
         clearEncodedSelection();
       // not command
       } else {
-        const encoded = AquesService.encode(source);
+        const encoded = await AquesService.encode(source);
         $scope.yinput.encoded = encoded;
         clearEncodedSelection();
       }
+      $timeout(() => { $scope.$apply(); });
+      return $scope.yinput.encoded;
     };
     ctrl.clear = function(): void {
       MessageService.action('clear input text.');
