@@ -245,6 +245,9 @@ angular.module('dictApp',
       });
       return d.promise;
     };
+    ctrl.reload = function(): void {
+      ipcRenderer().send('reloadMainWindow', 'reload');
+    };
     this.validateData = function(): ng.IPromise<boolean> {
       const d = $q.defer();
       $scope.gridApi.rowEdit.flushDirtyRows($scope.gridApi.grid).then(() => {

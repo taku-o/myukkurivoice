@@ -6,7 +6,7 @@ var _Config, Config = () => { _Config = _Config || require('electron-store'); re
 function loadAppConfig(): void {
   const appCfg: yubo.AppCfg = {
     mainWindow: {width: 800, height: 665, x: null, y: null},
-    helpWindow: {width: 700, height: 550},
+    helpWindow: {width: 700, height: 600},
     systemWindow: {width: 390, height: 560},
     dictWindow: {width: 800, height: 600},
     audioServVer: 'webaudioapi', // html5audio or webaudioapi

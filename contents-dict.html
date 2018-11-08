@@ -62,7 +62,7 @@
             <img class="img-circle media-object pull-left" src="img/twotone_save_black_36dp.png" width="32" height="32">
             <div class="media-body">
               <strong>Save</strong>
-              <p>
+              <p class="small">
                 定義データの編集を保存し<br>
                 ます。この操作でユーザー<br>
                 辞書は更新しません。
@@ -74,7 +74,7 @@
             <img class="img-circle media-object pull-left" src="img/twotone_cancel_black_36dp.png" width="32" height="32">
             <div class="media-body">
               <strong>Cancel</strong>
-              <p>
+              <p class="small">
                 定義データの編集を取り消<br>
                 します。この操作でユーザ<br>
                 ー辞書は更新しません。
@@ -86,7 +86,7 @@
             <img class="img-circle media-object pull-left" src="img/twotone_cached_black_36dp.png" width="32" height="32">
             <div class="media-body">
               <strong>Reset</strong>
-              <p>
+              <p class="small">
                 定義データをマスター辞書<br>
                 データでリセットします。<br>
                 この操作でユーザー辞書は<br>
@@ -99,9 +99,24 @@
             <img class="img-circle media-object pull-left" src="img/twotone_import_export_black_36dp.png" width="32" height="32">
             <div class="media-body">
               <strong>Export</strong>
-              <p>
+              <p class="small">
                 定義データを元に、ユーザ<br>
-                ー辞書を書き出しします。
+                ー辞書を書き出しします。<br>
+                編集中のデータがある場合<br>
+                は、Exportする前にSaveし<br>
+                てください。
+              </p>
+            </div>
+          </li>
+          <!-- reload -->
+          <li class="list-group-item" id="reload" ng-click="ctrl.reload()">
+            <img class="img-circle media-object pull-left" src="img/twotone_cached_black_36dp.png" width="32" height="32">
+            <div class="media-body">
+              <strong>Reload</strong>
+              <p class="small">
+                MYukkuriVoiceのメイン画<br>
+                面を読み込み直して、辞書<br>
+                データを反映させます。
               </p>
             </div>
           </li>

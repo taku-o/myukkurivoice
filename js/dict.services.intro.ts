@@ -28,7 +28,7 @@ angular.module('dictIntroService', [])
             },
             {
               element: '#export',
-              intro: 'MYukkuriVoiceアプリのカスタム辞書を更新するにはこのボタンを押します。辞書は表示メニューか、Command + Rで、MYukkuriVoiceアプリのメイン画面をリロードすると読み込まれます。',
+              intro: 'MYukkuriVoiceアプリのカスタム辞書を更新するにはこのボタンを押します。辞書はMYukkuriVoiceアプリのメイン画面をリロードすると読み込まれます。',
             },
             {
               element: '#footer',
@@ -40,7 +40,7 @@ angular.module('dictIntroService', [])
             },
             {
               element: '#tutorial',
-              intro: 'MYukkuriVoiceアプリのヘルプにも、この辞書アプリの説明が書いてあります。',
+              intro: 'MYukkuriVoiceアプリのヘルプにも、この辞書ツールの説明が書いてあります。',
             },
           ],
         });

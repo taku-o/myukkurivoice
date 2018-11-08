@@ -176,6 +176,11 @@ function resetAppConfigOnMain(): void {
 }
 MYukkuriVoice.prototype.resetAppConfigOnMain = resetAppConfigOnMain;
 
+ipcMain.on('reloadMainWindow', (event, message) => {
+  myApp.mainWindow.webContents.reload();
+  event.sender.send('reloadMainWindow', message);
+});
+
 // resetWindowPosition
 function resetWindowPosition(): void {
   myApp.mainWindow.center();
