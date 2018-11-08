@@ -62,12 +62,18 @@ describe('specWindow-service-AquesService', function () {
             .getValue('#encode-result').then(function (value) {
             assert.equal(value, "テ'_スト");
         })
+            .getValue('#encode-err').then(function (value) {
+            assert.ok(!value);
+        })
             // encode empty string
             .setValue('#source', '')
             .setValue('#encode-result', '')
             .click('#encode')
             .getValue('#encode-result').then(function (value) {
             assert.ok(!value);
+        })
+            .getValue('#encode-err').then(function (value) {
+            assert.ok(value);
         })["catch"](function (err) {
             assert.fail(err.message);
         });

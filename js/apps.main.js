@@ -320,7 +320,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             });
             if (!phont) {
                 MessageService.error('声の種類が未指定です。');
-                d.reject(null);
+                d.reject(new Error('声の種類が未指定です。'));
                 return d.promise;
             }
             // disable rhythm if option is on
@@ -527,7 +527,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             });
             if (!phont) {
                 MessageService.error('声の種類が未指定です。');
-                d.reject(null);
+                d.reject(new Error('声の種類が未指定です。'));
                 return d.promise;
             }
             // disable rhythm if option is on
@@ -581,7 +581,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             });
             if (!phont) {
                 MessageService.error('声の種類が未指定です。');
-                d.reject(null);
+                d.reject(new Error('声の種類が未指定です。'));
                 return d.promise;
             }
             // disable rhythm if option is on
