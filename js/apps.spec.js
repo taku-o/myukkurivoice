@@ -178,8 +178,10 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
         };
         // AquesService
         ctrl.encode = function () {
-            var r = AquesService.encode($scope.source);
-            $scope.encodeResult = r;
+            AquesService.encode($scope.source).then(function (encoded) {
+                $scope.encodeResult = encoded;
+                $timeout(function () { $scope.$apply(); });
+            });
         };
         ctrl.waveVer1 = function () {
             var list = MasterService.getPhontList();

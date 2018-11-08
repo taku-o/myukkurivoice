@@ -55,6 +55,7 @@ describe('mainWindow', function() {
       // encode
       .setValue('#source', 'test')
       .click('#encode')
+      .waitForValue('#encoded', 2000)
       .getValue('#encoded').then((encoded: string) => {
         assert.equal(encoded, "テ'_スト");
       })

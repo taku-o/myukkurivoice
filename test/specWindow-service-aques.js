@@ -37,6 +37,7 @@ describe('specWindow-service-AquesService', function () {
             // encode
             .setValue('#source', 'test')
             .click('#encode')
+            .waitForValue('#encode-result', 2000)
             .getValue('#encode-result').then(function (value) {
             assert.equal(value, "テ'_スト");
         })
@@ -44,6 +45,7 @@ describe('specWindow-service-AquesService', function () {
             .setValue('#source', '')
             .setValue('#encode-result', '')
             .click('#encode')
+            .waitForValue('#encode-result', 2000)
             .getValue('#encode-result').then(function (value) {
             assert.ok(!value);
         })["catch"](function (err) {
@@ -59,6 +61,7 @@ describe('specWindow-service-AquesService', function () {
             // encode
             .setValue('#source', 'test')
             .click('#encode')
+            .waitForValue('#encode-result', 2000)
             .getValue('#encode-result').then(function (value) {
             assert.equal(value, "テ'_スト");
         })
@@ -66,6 +69,7 @@ describe('specWindow-service-AquesService', function () {
             .setValue('#source', '')
             .setValue('#encode-result', '')
             .click('#encode')
+            .waitForValue('#encode-result', 2000)
             .getValue('#encode-result').then(function (value) {
             assert.ok(!value);
         })["catch"](function (err) {
