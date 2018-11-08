@@ -136,6 +136,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         case 'reset':
           ctrl.reset();
           break;
+        case 'dictionary':
+          document.getElementById('dictionary').click();
+          break;
         case 'shortcut':
           document.getElementById('shortcut').click();
           break;

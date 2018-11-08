@@ -108,6 +108,11 @@ function initAppMenu(options: {isDebug: boolean}): void {
           accelerator: 'Command+S',
           click() { myApp.mainWindow.webContents.send('shortcut', 'record'); },
         },
+        {type: 'separator'},
+        {
+          label: '辞書ツール',
+          click() { myApp.mainWindow.webContents.send('menu', 'dictionary'); },
+        },
       ],
     },
     {

@@ -134,7 +134,6 @@ ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
     message: '環境設定を更新しました。アプリケーションを更新します。',
     buttons: ['OK'],
     defaultId: 0,
-    cancelId: 0,
   };
   const r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   event.sender.send('updateAppConfig', r);
@@ -152,7 +151,6 @@ ipcMain.on('resetAppConfig', (event, message) => {
     message: '環境設定を初期化しました。アプリケーションを更新します。',
     buttons: ['OK'],
     defaultId: 0,
-    cancelId: 0,
   };
   const r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
   event.sender.send('resetAppConfig', r);
@@ -170,7 +168,6 @@ function resetAppConfigOnMain(): void {
     message: '環境設定を初期化しました。アプリケーションを更新します。',
     buttons: ['OK'],
     defaultId: 0,
-    cancelId: 0,
   };
   const r = dialog.showMessageBox(myApp.mainWindow, dialogOptions);
   myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);

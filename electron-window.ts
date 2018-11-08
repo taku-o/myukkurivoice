@@ -208,6 +208,7 @@ function showDictWindow(): void {
   const {width, height} = this.appCfg.dictWindow;
   const acceptFirstMouse = this.appCfg.acceptFirstMouse;
   this.dictWindow = new BrowserWindow({
+    parent: this.mainWindow,
     width: width,
     height: height,
     acceptFirstMouse: acceptFirstMouse,

@@ -23,9 +23,6 @@ angular.module('dictApp', ['dictModel', 'dictService',
     // controller
     .controller('DictController', ['$scope', '$q', '$timeout', '$interval', 'AquesService', 'IntroService', 'KindList',
     function ($scope, $q, $timeout, $interval, AquesService, IntroService, KindList) {
-        // menu
-        ipcRenderer().on('menu', function (event, action) {
-        });
         // init
         var ctrl = this;
         $scope.message = '';
@@ -46,8 +43,14 @@ angular.module('dictApp', ['dictModel', 'dictService',
                 $scope.gridApi.rowEdit.on.saveRow($scope, function (rowEntity) {
                     var d = $q.defer();
                     $scope.gridApi.rowEdit.setSavePromise(rowEntity, d.promise);
-                    if ((!rowEntity.source) || (!rowEntity.encoded)) {
-                        d.reject(new Error('source or encoded is empty.'));
+                    if (!rowEntity.source) {
+                        rowEntity.error = '表記が入力されていません';
+                        d.reject(new Error('source is empty.'));
+                        return d.promise;
+                    }
+                    if (!rowEntity.encoded) {
+                        rowEntity.error = '読みが入力されていません';
+                        d.reject(new Error('encoded is empty.'));
                         return d.promise;
                     }
                     var r = AquesService.validateInput(rowEntity.source, rowEntity.encoded, rowEntity.kind);
@@ -66,20 +69,24 @@ angular.module('dictApp', ['dictModel', 'dictService',
         $scope.gridOptions.columnDefs = [
             {
                 name: 'source', displayName: '表記', enableCellEdit: true,
-                field: 'source', enableFiltering: true
+                field: 'source', enableFiltering: true,
+                enableHiding: false, enableColumnMenu: true
             },
             {
                 name: 'encoded', displayName: '読み', enableCellEdit: true,
-                field: 'encoded', enableFiltering: true
+                field: 'encoded', enableFiltering: true,
+                enableHiding: false, enableColumnMenu: true
             },
             {
                 name: 'kind', displayName: '品詞', editableCellTemplate: 'ui-grid/dropdownEditor',
                 cellFilter: 'mapKind', editDropdownValueLabel: 'kind', editDropdownOptionsArray: KindList,
-                field: 'kind', enableFiltering: false
+                field: 'kind', enableFiltering: false,
+                enableHiding: false, enableColumnMenu: true
             },
             {
                 name: 'error', displayName: 'Note', enableCellEdit: false,
-                field: 'error', enableFiltering: true
+                field: 'error', enableFiltering: true,
+                enableHiding: true, enableColumnMenu: true
             },
         ];
         $scope.gridOptions.data = [];
@@ -88,9 +95,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
             return this.setup().then(function () {
                 return _this.loadCsv().then(function (records) {
                     $scope.gridOptions.data = records;
-                    $timeout(function () {
-                        $scope.$apply();
-                    });
+                    $timeout(function () { $scope.$apply(); });
                     return true;
                 });
             });
@@ -165,6 +170,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
                     var index = $scope.gridOptions.data.indexOf(row);
                     $scope.gridOptions.data.splice(index, 1);
                 }
+                $scope.gridApi.rowEdit.setRowsClean(rows);
                 $scope.message = 'delete selected records.';
             }
             else {
@@ -183,47 +189,55 @@ angular.module('dictApp', ['dictModel', 'dictService',
                 });
                 fs().writeFileSync(mAppDictDir + "/aq_user.csv", data);
                 $scope.message = 'save records, DONE.';
+                $timeout(function () { $scope.$apply(); });
             })["catch"](function (err) {
                 $scope.message = 'error data are found. can not save data, until fix these.';
+                $timeout(function () { $scope.$apply(); });
             });
         };
         ctrl.cancel = function () {
             return this.loadCsv().then(function (records) {
                 $scope.gridOptions.data = records;
-                $timeout(function () {
-                    $scope.$apply();
-                });
                 $scope.message = 'cancel, and reload working records.';
+                $timeout(function () { $scope.$apply(); });
                 return true;
             });
         };
         ctrl["export"] = function () {
             this.validateData().then(function () {
-                // generate user dict
-                var r = AquesService.generateUserDict(mAppDictDir + "/aq_user.csv", mAppDictDir + "/aq_user.dic");
-                if (!r.success) {
-                    $scope.message = r.message;
-                    return;
-                }
                 // copy resource
-                fs().writeFileSync(mAppDictDir + "/aqdic.bin", fs().readFileSync(rscDictDir + "/aqdic.bin"));
-                $scope.message = 'export user dictionary, DONE.';
+                fs().stat(mAppDictDir + "/aqdic.bin", function (err, stats) {
+                    if (err) {
+                        fs().writeFileSync(mAppDictDir + "/aqdic.bin", fs().readFileSync(rscDictDir + "/aqdic.bin"));
+                    }
+                    // generate user dict
+                    var r = AquesService.generateUserDict(mAppDictDir + "/aq_user.csv", mAppDictDir + "/aq_user.dic");
+                    if (!r.success) {
+                        $scope.message = r.message;
+                        $timeout(function () { $scope.$apply(); });
+                        return;
+                    }
+                    $scope.message = 'export user dictionary, DONE.';
+                    $timeout(function () { $scope.$apply(); });
+                });
             })["catch"](function (err) {
                 $scope.message = 'error data are found. can not export data, until fix these.';
+                $timeout(function () { $scope.$apply(); });
             });
         };
         ctrl.reset = function () {
+            var d = $q.defer();
             // reset csv
             fs().writeFileSync(mAppDictDir + "/aq_user.csv", fs().readFileSync(rscDictDir + "/aq_user.csv"));
             // and load
-            return this.loadCsv().then(function (records) {
+            this.loadCsv().then(function (records) {
+                $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
                 $scope.gridOptions.data = records;
-                $timeout(function () {
-                    $scope.$apply();
-                });
                 $scope.message = 'reset working records with master dictionary data.';
-                return true;
+                $timeout(function () { $scope.$apply(); });
+                d.resolve(true);
             });
+            return d.promise;
         };
         this.validateData = function () {
             var d = $q.defer();

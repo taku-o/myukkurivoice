@@ -213,6 +213,7 @@ function showDictWindow() {
     var _a = this.appCfg.dictWindow, width = _a.width, height = _a.height;
     var acceptFirstMouse = this.appCfg.acceptFirstMouse;
     this.dictWindow = new electron_1.BrowserWindow({
+        parent: this.mainWindow,
         width: width,
         height: height,
         acceptFirstMouse: acceptFirstMouse,

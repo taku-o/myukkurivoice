@@ -28,10 +28,6 @@ angular.module('dictApp',
     ['$scope', '$q', '$timeout', '$interval', 'AquesService', 'IntroService', 'KindList',
     function($scope, $q, $timeout, $interval, AquesService, IntroService, KindList) {
 
-    // menu
-    ipcRenderer().on('menu', (event, action: string) => {
-    });
-
     // init
     const ctrl = this;
     $scope.message = '';
@@ -54,8 +50,13 @@ angular.module('dictApp',
           const d = $q.defer();
           $scope.gridApi.rowEdit.setSavePromise(rowEntity, d.promise);
 
-          if ((!rowEntity.source) || (!rowEntity.encoded)) {
-            d.reject(new Error('source or encoded is empty.')); return d.promise;
+          if (!rowEntity.source) {
+            rowEntity.error = '表記が入力されていません';
+            d.reject(new Error('source is empty.')); return d.promise;
+          }
+          if (!rowEntity.encoded) {
+            rowEntity.error = '読みが入力されていません';
+            d.reject(new Error('encoded is empty.')); return d.promise;
           }
 
           const r = AquesService.validateInput(rowEntity.source, rowEntity.encoded, rowEntity.kind);
@@ -75,19 +76,23 @@ angular.module('dictApp',
       {
         name: 'source', displayName: '表記', enableCellEdit: true,
         field: 'source', enableFiltering: true,
+        enableHiding: false, enableColumnMenu: true,
       },
       {
         name: 'encoded', displayName: '読み', enableCellEdit: true,
         field: 'encoded', enableFiltering: true,
+        enableHiding: false, enableColumnMenu: true,
       },
       {
         name: 'kind', displayName: '品詞', editableCellTemplate: 'ui-grid/dropdownEditor',
         cellFilter: 'mapKind', editDropdownValueLabel: 'kind', editDropdownOptionsArray: KindList,
         field: 'kind', enableFiltering: false,
+        enableHiding: false, enableColumnMenu: true,
       },
       {
         name: 'error', displayName: 'Note', enableCellEdit: false,
         field: 'error', enableFiltering: true,
+        enableHiding: true, enableColumnMenu: true,
       },
     ];
     $scope.gridOptions.data = [];
@@ -96,9 +101,7 @@ angular.module('dictApp',
       return this.setup().then(() => {
       return this.loadCsv().then((records) => {
         $scope.gridOptions.data = records;
-        $timeout(function(){
-          $scope.$apply();
-        });
+        $timeout(() => { $scope.$apply(); });
         return true;
       });
       });
@@ -171,6 +174,7 @@ angular.module('dictApp',
           const index = $scope.gridOptions.data.indexOf(row);
           $scope.gridOptions.data.splice(index, 1);
         }
+        $scope.gridApi.rowEdit.setRowsClean(rows);
         $scope.message = 'delete selected records.';
       } else {
         $scope.message = 'no record are selected. can not delete data.';
@@ -189,48 +193,57 @@ angular.module('dictApp',
         });
         fs().writeFileSync(`${mAppDictDir}/aq_user.csv`, data);
         $scope.message = 'save records, DONE.';
+        $timeout(() => { $scope.$apply(); });
       })
       .catch((err: Error) => {
         $scope.message = 'error data are found. can not save data, until fix these.';
+        $timeout(() => { $scope.$apply(); });
       });
     };
     ctrl.cancel = function(): ng.IPromise<boolean> {
       return this.loadCsv().then((records) => {
         $scope.gridOptions.data = records;
-        $timeout(function(){
-          $scope.$apply();
-        });
         $scope.message = 'cancel, and reload working records.';
+        $timeout(() => { $scope.$apply(); });
         return true;
       });
     };
     ctrl.export = function(): void {
       this.validateData().then(() => {
-        // generate user dict
-        const r = AquesService.generateUserDict(`${mAppDictDir}/aq_user.csv`, `${mAppDictDir}/aq_user.dic`);
-        if (!r.success) {
-          $scope.message = r.message; return;
-        }
         // copy resource
-        fs().writeFileSync(`${mAppDictDir}/aqdic.bin`, fs().readFileSync(`${rscDictDir}/aqdic.bin`));
-        $scope.message = 'export user dictionary, DONE.';
+        fs().stat(`${mAppDictDir}/aqdic.bin`, (err: Error, stats) => {
+          if (err) {
+            fs().writeFileSync(`${mAppDictDir}/aqdic.bin`, fs().readFileSync(`${rscDictDir}/aqdic.bin`));
+          }
+          // generate user dict
+          const r = AquesService.generateUserDict(`${mAppDictDir}/aq_user.csv`, `${mAppDictDir}/aq_user.dic`);
+          if (!r.success) {
+            $scope.message = r.message;
+            $timeout(() => { $scope.$apply(); });
+            return;
+          }
+          $scope.message = 'export user dictionary, DONE.';
+          $timeout(() => { $scope.$apply(); });
+        });
       })
       .catch((err: Error) => {
         $scope.message = 'error data are found. can not export data, until fix these.';
+        $timeout(() => { $scope.$apply(); });
       });
     };
     ctrl.reset = function(): ng.IPromise<boolean> {
+      const d = $q.defer();
       // reset csv
       fs().writeFileSync(`${mAppDictDir}/aq_user.csv`, fs().readFileSync(`${rscDictDir}/aq_user.csv`));
       // and load
-      return this.loadCsv().then((records) => {
+      this.loadCsv().then((records) => {
+        $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
         $scope.gridOptions.data = records;
-        $timeout(function(){
-          $scope.$apply();
-        });
         $scope.message = 'reset working records with master dictionary data.';
-        return true;
+        $timeout(() => { $scope.$apply(); });
+        d.resolve(true);
       });
+      return d.promise;
     };
     this.validateData = function(): ng.IPromise<boolean> {
       const d = $q.defer();

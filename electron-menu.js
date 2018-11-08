@@ -108,6 +108,11 @@ function initAppMenu(options) {
                     accelerator: 'Command+S',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'record'); }
                 },
+                { type: 'separator' },
+                {
+                    label: '辞書ツール',
+                    click: function () { myApp.mainWindow.webContents.send('menu', 'dictionary'); }
+                },
             ]
         },
         {
