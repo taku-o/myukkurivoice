@@ -171,7 +171,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         loadData();
         // util
         function loadData() {
-            DataService.load().then(function (dataList) {
+            DataService.load(function (dataList) {
                 if (dataList.length < 1) {
                     MessageService.info('初期データを読み込みます。');
                     dataList = DataService.initialData();
@@ -179,6 +179,8 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 $scope.yvoiceList = dataList;
                 $scope.yvoice = $scope.yvoiceList[0];
                 $timeout(function () { $scope.$apply(); });
+            }, function (err) {
+                MessageService.error('初期データの読み込みでエラーが起きました。', err);
             });
         }
         function selectedSource() {

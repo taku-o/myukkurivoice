@@ -186,15 +186,20 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
     // util
     function loadData(): void {
-      DataService.load().then((dataList) => {
-        if (dataList.length < 1) {
-          MessageService.info('初期データを読み込みます。');
-          dataList = DataService.initialData();
+      DataService.load(
+        (dataList) => {
+          if (dataList.length < 1) {
+            MessageService.info('初期データを読み込みます。');
+            dataList = DataService.initialData();
+          }
+          $scope.yvoiceList = dataList;
+          $scope.yvoice = $scope.yvoiceList[0];
+          $timeout(() => { $scope.$apply(); });
+        },
+        (err) => {
+          MessageService.error('初期データの読み込みでエラーが起きました。', err);
         }
-        $scope.yvoiceList = dataList;
-        $scope.yvoice = $scope.yvoiceList[0];
-        $timeout(() => { $scope.$apply(); });
-      });
+      );
     }
     function selectedSource(): string {
       const textarea = document.getElementById('source') as HTMLInputElement;

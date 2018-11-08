@@ -8,18 +8,29 @@ angular.module('yvoiceDataService', ['yvoiceMessageService', 'yvoiceModel'])
             return ('0000' + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
         }
         return {
-            load: function () {
+            load: function (ok, ng) {
+                if (ok === void 0) { ok = null; }
+                if (ng === void 0) { ng = null; }
                 var d = $q.defer();
                 storage().get('data', function (error, data) {
                     if (error) {
                         MessageService.syserror('ボイス設定の読込に失敗しました。', error);
+                        if (ng) {
+                            ng(error);
+                        }
                         d.reject(error);
                         return;
                     }
                     if (Object.keys(data).length === 0) {
+                        if (ok) {
+                            ok([]);
+                        }
                         d.resolve([]);
                     }
                     else {
+                        if (ok) {
+                            ok(data);
+                        }
                         d.resolve(data);
                     }
                 });

@@ -10,16 +10,19 @@ angular.module('yvoiceDataService', ['yvoiceMessageService', 'yvoiceModel'])
     }
 
     return {
-      load: function(): ng.IPromise<yubo.YVoice[]> {
+      load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
         const d = $q.defer();
         storage().get('data', function(error: Error, data: yubo.YVoice[]) {
           if (error) {
             MessageService.syserror('ボイス設定の読込に失敗しました。', error);
+            if (ng) { ng(error); }
             d.reject(error); return;
           }
           if (Object.keys(data).length === 0) {
+            if (ok) { ok([]); }
             d.resolve([]);
           } else {
+            if (ok) { ok(data); }
             d.resolve(data);
           }
         });

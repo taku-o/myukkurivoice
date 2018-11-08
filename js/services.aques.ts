@@ -12,8 +12,8 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular aques service
 angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseService'])
-  .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
-  ($q, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
+  .factory('AquesService', ['$q', '$timeout', 'MessageService', 'LicenseService',
+  ($q, $timeout, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
     const ptr_void  = ref().refType(ref().types.void);
     const ptr_int   = ref().refType(ref().types.int);
     const ptr_char  = ref().refType(ref().types.char);
@@ -126,14 +126,17 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
     });
 
     // get developer key in background.
+    // delay loading. UI表示で必要な処理を優先させる。
     let aqKanji2KoeDevKey = null;
     let aquesTalk10DevKey = null;
-    LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
-      aqKanji2KoeDevKey = licenseKey;
-    });
-    LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
-      aquesTalk10DevKey = licenseKey;
-    });
+    $timeout(() => {
+      LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
+        aqKanji2KoeDevKey = licenseKey;
+      });
+      LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
+        aquesTalk10DevKey = licenseKey;
+      });
+    }, 1000);
 
     let _isAqKanji2KoeDevkeySet = false;
     let _isAquesTalk10LicensekeySet = false;
@@ -146,6 +149,10 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
 
         // set developer key if is not set.
         if (! _isAqKanji2KoeDevkeySet) {
+          if (aqKanji2KoeDevKey == null) {
+            MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
+            return '';
+          }
           const devKey = fn_AqKanji2Koe_SetDevKey(aqKanji2KoeDevKey);
           if (devKey != 0) {
             MessageService.syserror('AqKanji2Koe開発ライセンスキーが正しくありません。');
@@ -253,6 +260,10 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
         } else if (phont.version == 'talk10') {
           // set license key if is not set.
           if (! _isAquesTalk10LicensekeySet) {
+            if (aquesTalk10DevKey == null) {
+              MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
+              d.reject(new Error('まだ初期化処理が完了していないので1秒ほど待ってください。')); return d.promise;
+            }
             const devKey = fn_AquesTalk10_SetDevKey(aquesTalk10DevKey);
             if (devKey != 0) {
               MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');

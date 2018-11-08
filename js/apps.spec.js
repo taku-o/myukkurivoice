@@ -141,7 +141,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
         };
         // DataService
         ctrl.load = function () {
-            DataService.load().then(function (list) {
+            DataService.load(null, null).then(function (list) {
                 $scope.loadResult = JSON.stringify(list);
             })["catch"](function (err) {
                 $scope.loadErr = err.message;
