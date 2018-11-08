@@ -27,10 +27,12 @@ const ELECTRON_CMD = 'DEBUG=1 '+ __dirname+ '/node_modules/.bin/electron';
 const PACKAGER_CMD = __dirname+ '/node_modules/.bin/electron-packager';
 const WORK_DIR = __dirname+ '/release';
 const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
+const WORK_DICT_REPO_DIR = __dirname+ '/release/aqdicedit';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
 const ELECTRON_VERSION = '1.8.8';
 const APP_VERSION = require('./package.json').version;
+let DICT_VERSION = '0.1.0';
 
 // default task
 gulp.task('default', () => {
@@ -52,6 +54,7 @@ usage:
     gulp package
     gulp release
     gulp staging [--branch=develop]
+    gulp dict
   `);
 });
 
@@ -307,6 +310,19 @@ gulp.task('staging', (cb) => {
   );
 });
 
+// dict
+gulp.task('dict', (cb) => {
+  runSequence(
+    '_rm-repodir-dict', '_mk-workdir', '_ch-workdir',
+    '_git-clone-dict', '_ch-repodir-dict', '_git-submodule', '_npm-install',
+    '_pull-dict-version', '_package-dict',
+    (err) => {
+      if (err) { _notifyError(); }
+      cb(err);
+    }
+  );
+});
+
 // workdir
 gulp.task('_rm-workdir', (cb) => {
   rimraf(WORK_DIR, (err) => {
@@ -329,11 +345,27 @@ gulp.task('_git-clone', (cb) => {
     cb(err);
   });
 });
+gulp.task('_git-clone-dict', (cb) => {
+  const opts = {args: '-b master'};
+  git.clone('git@github.com:taku-o/aqdicedit.git', opts, (err) => {
+    cb(err);
+  });
+});
 gulp.task('_git-submodule', (cb) => {
   git.updateSubmodule({ args: '--init' }, cb);
 });
+
+// repodir
 gulp.task('_ch-repodir', () => {
   process.chdir(WORK_REPO_DIR);
+});
+gulp.task('_ch-repodir-dict', () => {
+  process.chdir(WORK_DICT_REPO_DIR);
+});
+gulp.task('_rm-repodir-dict', (cb) => {
+  rimraf(WORK_DICT_REPO_DIR, (err) => {
+    cb(err);
+  });
 });
 
 // npm
@@ -378,6 +410,11 @@ function _notifyError() {
 // package
 gulp.task('_rm-package', () => {
   return del(['MYukkuriVoice-darwin-x64']);
+});
+
+// _pull-dict-version
+gulp.task('_pull-dict-version', () => {
+  DICT_VERSION = require('./release/aqdicedit/package.json').version;
 });
 
 gulp.task('_package-release', (cb) => {
@@ -532,6 +569,125 @@ gulp.task('_package-debug', (cb) => {
           --ignore="/node_modules/intro\\.js/introjs\\.css$" \
           --ignore="/node_modules/intro\\.js/minified/introjs-rtl\\.min\\.css$" \
           --ignore="/node_modules/intro\\.js/themes/" \
+          --ignore="/node_modules/photon/CNAME$" \
+          --ignore="/node_modules/photon/_config\\.yml$" \
+          --ignore="/node_modules/photon/dist/template-app/" \
+          --ignore="/node_modules/photon/fonts/" \
+          --ignore="/docs/" \
+          --ignore="/example/" \
+          --ignore="/examples/" \
+          --ignore="/man/" \
+          --ignore="/sample/" \
+          --ignore="/test/" \
+          --ignore="/tests/" \
+          --ignore="/.+\\.Makefile$" \
+          --ignore="/.+\\.cc$" \
+          --ignore="/.+\\.coffee$" \
+          --ignore="/.+\\.gyp$" \
+          --ignore="/.+\\.h$" \
+          --ignore="/.+\\.js\\.gzip$" \
+          --ignore="/.+\\.js\\.map$" \
+          --ignore="/.+\\.jst$" \
+          --ignore="/.+\\.less$" \
+          --ignore="/.+\\.markdown$" \
+          --ignore="/.+\\.md$" \
+          --ignore="/.+\\.py$" \
+          --ignore="/.+\\.scss$" \
+          --ignore="/.+\\.swp$" \
+          --ignore="/.+\\.target\\.mk$" \
+          --ignore="/.+\\.tgz$" \
+          --ignore="/.+\\.ts$" \
+          --ignore="/AUTHORS$" \
+          --ignore="/CHANGELOG$" \
+          --ignore="/CHANGES$" \
+          --ignore="/CONTRIBUTE$" \
+          --ignore="/CONTRIBUTING$" \
+          --ignore="/ChangeLog$" \
+          --ignore="/Gruntfile\\.js$" \
+          --ignore="/HISTORY$" \
+          --ignore="/History$" \
+          --ignore="/LICENCE$" \
+          --ignore="/LICENSE$" \
+          --ignore="/LICENSE-MIT\\.txt$" \
+          --ignore="/LICENSE-jsbn$" \
+          --ignore="/LICENSE\\.APACHE2$" \
+          --ignore="/LICENSE\\.BSD$" \
+          --ignore="/LICENSE\\.MIT$" \
+          --ignore="/LICENSE\\.html$" \
+          --ignore="/LICENSE\\.txt$" \
+          --ignore="/License$" \
+          --ignore="/MAKEFILE$" \
+          --ignore="/Makefile$" \
+          --ignore="/OWNERS$" \
+          --ignore="/README$" \
+          --ignore="/README\\.hbs$" \
+          --ignore="/README\\.html$" \
+          --ignore="/Readme$" \
+          --ignore="/\\.DS_Store$" \
+          --ignore="/\\.babelrc$" \
+          --ignore="/\\.cache/$" \
+          --ignore="/\\.editorconfig$" \
+          --ignore="/\\.eslintignore$" \
+          --ignore="/\\.eslintrc$" \
+          --ignore="/\\.eslintrc\\.json$" \
+          --ignore="/\\.eslintrc\\.yml$" \
+          --ignore="/\\.git$" \
+          --ignore="/\\.gitignore$" \
+          --ignore="/\\.gitmodules$" \
+          --ignore="/\\.hound.yml$" \
+          --ignore="/\\.jshintrc$" \
+          --ignore="/\\.keep$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.prettierrc$" \
+          --ignore="/\\.prettierrc\\.json$" \
+          --ignore="/\\.prettierrc\\.yaml$" \
+          --ignore="/\\.python-version$" \
+          --ignore="/\\.stylelintrc$" \
+          --ignore="/\\.stylelintrc\\.json$" \
+          --ignore="/\\.travis\\.yml$" \
+          --ignore="/appveyor\\.yml$" \
+          --ignore="/bower\\.json$" \
+          --ignore="/component\\.json$" \
+          --ignore="/example\\.js$" \
+          --ignore="/favicon\\.ico$" \
+          --ignore="/gulpfile\\.js$" \
+          --ignore="/license$" \
+          --ignore="/package-lock\\.json$" \
+          --ignore="/project\\.pbxproj$" \
+          --ignore="/test\\.js$" \
+          --ignore="/tsconfig\\.json$" \
+          --ignore="/usage\\.txt$" \
+          --ignore="/yarn\\.lock$"`
+        , (err, stdout, stderr) => {
+          cb(err);
+        }
+  );
+});
+
+gulp.task('_package-dict', (cb) => {
+  exec(PACKAGER_CMD+ ` . AqDicEdit \
+          --platform=darwin --arch=x64 \
+          --app-version=${DICT_VERSION} \
+          --electron-version=${ELECTRON_VERSION} \
+          --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --protocol-name=aqdicedit --protocol=aqdicedit \
+          --ignore="^/AqDicEdit-darwin-x64" \
+          --ignore="^/docs" \
+          --ignore="^/icns" \
+          --ignore="^/test" \
+          --ignore="^/vendor/aqk2k_mac" \
+          --ignore="/ffi/deps/" \
+          --ignore="/node_modules/angular/angular-csp\\.css$" \
+          --ignore="/node_modules/angular/angular\\.js$" \
+          --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
+          --ignore="/node_modules/angular/index\\.js$" \
+          --ignore="/node_modules/angular/package\\.json$" \
+          --ignore="/node_modules/intro\\.js/intro\\.js$" \
+          --ignore="/node_modules/intro\\.js/introjs-rtl\\.css$" \
+          --ignore="/node_modules/intro\\.js/introjs\\.css$" \
+          --ignore="/node_modules/intro\\.js/minified/introjs-rtl\\.min\\.css$" \
+          --ignore="/node_modules/intro\\.js/themes" \
           --ignore="/node_modules/photon/CNAME$" \
           --ignore="/node_modules/photon/_config\\.yml$" \
           --ignore="/node_modules/photon/dist/template-app/" \
