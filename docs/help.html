@@ -64,6 +64,9 @@
       <span class="nav-group-item functions-item" id="menu-multivoice" ng-class="{active:display == 'multivoice'}" ng-click="$location.hash('multivoice')">
         <span class="icon icon-help-circled"></span>マルチボイス機能
       </span>
+      <span class="nav-group-item functions-item" id="menu-dictionary" ng-class="{active:display == 'dictionary'}" ng-click="$location.hash('dictionary')">
+        <span class="icon icon-help-circled"></span>ユーザー辞書機能
+      </span>
       <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="$location.hash('shortcut')">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
@@ -234,10 +237,11 @@
     <div class="content">
       <h4>設定をバックアップするには</h4>
       <p>
-        次のファイルをどこかに逃がしてください。
+        次にあげるファイルとフォルダをどこかに逃がしてください。
         <ul>
           <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice/data.json<span class="icon icon-folder"></span></a></li>
           <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice/config.json<span class="icon icon-folder"></span></a></li>
+          <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict<span class="icon icon-folder"></span></a></li>
         </ul>
       </p>
     </div>
@@ -397,6 +401,7 @@
         <li class="link" ng-click="$location.hash('multivoice')">マルチボイス機能</li>
         <li class="link" ng-click="$location.hash('multivoice')">テキストファイルをドロップしての入力。テキストフィールド、および、アプリアイコンが対応。</li>
         <li>保存メッセージをクリックして、音声ファイル、メッセージファイルをQuickLookで開く。</li>
+        <li class="link" ng-click="$location.hash('dictionary')">ユーザー辞書機能</li>
         <li class="link" ng-click="$location.hash('shortcut')">各種ショートカットキー</li>
         <li class="link" ng-click="$location.hash('help')">チュートリアル・ヘルプ</li>
       </ul>
@@ -746,6 +751,44 @@
         <br>
         また、アプリアイコンにドロップしても入力できます。<br>
         この場合は、メッセージ入力欄に入力されます。
+      </p>
+    </div>
+  </div>
+
+  <!-- dictionary -->
+  <div class="pane" id="dictionary-pane" ng-show="display == 'dictionary'">
+    <div class="content">
+      <h3>ユーザー辞書機能</h3>
+      <h4>概要</h4>
+      <p>
+        MYukkuriVoiceでメッセージを音声記号列に変換する際、
+        このユーザー辞書でワードが定義されていれば、<br>
+        この辞書の定義に従って、メッセージを変換します。
+      </p>
+
+      <h4>ユーザー辞書の書き出し・反映</h4>
+      <p>
+        Exportボタンで、ユーザー辞書を更新します。<br>
+        辞書データはMYukkuriVoiceアプリの画面を更新するまで反映されません。
+      </p>
+
+      <h4>ユーザー辞書の場所</h4>
+      <p>
+        ユーザー辞書は次の場所にあります。<br>
+        <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict<span class="icon icon-folder"></span></a><br>
+        <br>
+        aq_user.dic、aqdic.binが、MYukkuriVoiceで使用している辞書データで、
+        aq_user.csvには編集中の辞書データがCSV形式で入っています。<br>
+        <br>
+        このaq_user.csvをテキストエディタで変更した後、
+        辞書機能でExportすることでも、辞書データは更新できます。
+      </p>
+
+      <h4>ユーザー辞書のクリア</h4>
+      <p>
+        ユーザー辞書が無い場合は、アプリに組み込まれたデフォルトの辞書データを利用するので、
+        辞書の状態がおかしいときは、ユーザー辞書ファイルを消せば元の状態に戻ります。<br>
+        <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict<span class="icon icon-folder"></span></a>
       </p>
     </div>
   </div>
