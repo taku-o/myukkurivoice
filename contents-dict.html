@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html ng-app="dictApp">
+<head>
+  <meta charset="UTF-8">
+  <title>MYukkuriVoice Dictionary Edit</title>
+  <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
+  <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
+  <link rel="stylesheet" href="node_modules/angular-ui-grid/ui-grid.min.css">
+  <link rel="stylesheet" href="css/dict.css">
+  <script src="node_modules/photon/dist/template-app/js/menu.js" charset="utf-8"></script>
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="node_modules/intro.js/minified/intro.min.js"></script>
+  <script src="node_modules/angular-ui-grid/ui-grid.core.min.js"></script>
+  <script src="node_modules/angular-ui-grid/ui-grid.cellnav.min.js"></script>
+  <script src="node_modules/angular-ui-grid/ui-grid.edit.min.js"></script>
+  <script src="node_modules/angular-ui-grid/ui-grid.row-edit.min.js"></script>
+  <script src="node_modules/angular-ui-grid/ui-grid.resize-columns.min.js"></script>
+  <script src="node_modules/angular-ui-grid/ui-grid.move-columns.min.js"></script>
+  <script src="node_modules/angular-ui-grid/ui-grid.selection.min.js"></script>
+  <script src="js/dict.models.js"></script>
+  <script src="js/dict.services.intro.js"></script>
+  <script src="js/dict.services.aques.js"></script>
+  <script src="js/dict.services.js"></script>
+  <script src="js/apps.dict.js"></script>
+  <script type="text/javascript">
+    document.ondragover = document.ondrop = function(e) {
+      e.preventDefault(); return false;
+    };
+  </script>
+</head>
+<body>
+<div class="window" ng-controller="DictController as ctrl">
+
+  <!-- header -->
+  <header class="toolbar toolbar-header">
+    <div class="toolbar-actions">
+      <div class="btn-group">
+        <button class="btn btn-large btn-default" id="tutorial" ng-click="ctrl.tutorial()">
+          <span class="icon icon-help-circled"></span>チュートリアル
+        </button>
+      </div>
+
+      <div class="btn-group pull-right">
+        <button id="append-record" class="btn btn-large btn-default" ng-click="ctrl.add()">
+          <span class="icon icon-plus-circled"></span>Add
+        </button>
+        <button id="delete-record" class="btn btn-large btn-default" ng-click="ctrl.delete()">
+          <span class="icon icon-minus-circled"></span>Delete
+        </button>
+      </div>
+    </div>
+  </header>
+  <!-- // header -->
+
+  <div class="window-content">
+    <div class="pane-group">
+      <!-- sidebar -->
+      <div class="pane-sm sidebar">
+        <ul class="list-group">
+          <!-- save -->
+          <li class="list-group-item" id="save" ng-click="ctrl.save()">
+            <img class="img-circle media-object pull-left" src="img/twotone_save_black_36dp.png" width="32" height="32">
+            <div class="media-body">
+              <strong>Save</strong>
+              <p>
+                定義データの編集を保存し<br>
+                ます。この操作でユーザー<br>
+                辞書は更新しません。
+              </p>
+            </div>
+          </li>
+          <!-- cancel -->
+          <li class="list-group-item" id="cancel" ng-click="ctrl.cancel()">
+            <img class="img-circle media-object pull-left" src="img/twotone_cancel_black_36dp.png" width="32" height="32">
+            <div class="media-body">
+              <strong>Cancel</strong>
+              <p>
+                定義データの編集を取り消<br>
+                します。
+              </p>
+            </div>
+          </li>
+          <!-- reset -->
+          <li class="list-group-item" id="reset" ng-click="ctrl.reset()">
+            <img class="img-circle media-object pull-left" src="img/twotone_cached_black_36dp.png" width="32" height="32">
+            <div class="media-body">
+              <strong>Reset</strong>
+              <p>
+                定義データをマスター辞書<br>
+                データでリセットします。
+              </p>
+            </div>
+          </li>
+          <!-- export -->
+          <li class="list-group-item" id="export" ng-click="ctrl.export()">
+            <img class="img-circle media-object pull-left" src="img/twotone_import_export_black_36dp.png" width="32" height="32">
+            <div class="media-body">
+              <strong>Export</strong>
+              <p>
+                定義データを元に、ユーザ<br>
+                ー辞書を書き出しします。
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- // sidebar -->
+
+      <!-- main -->
+      <div class="pane">
+        <div id="grid" ui-grid="gridOptions"
+          ui-grid-edit ui-grid-row-edit ui-grid-resize-columns ui-grid-selection ui-grid-cellNav
+          class="grid"></div>
+      </div>
+      <!-- // main -->
+
+    </div> <!-- // pane-group -->
+  </div> <!-- // window-content -->
+
+  <!-- footer -->
+  <footer class="toolbar toolbar-footer" id="footer">
+    <h1 class="title">{{message}}</h1>
+  </footer>
+</div> <!-- window -->
+</body>
+</html>

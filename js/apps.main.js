@@ -642,6 +642,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
             MessageService.action('open help window.');
             ipcRenderer().send('showHelpWindow', 'help');
         };
+        ctrl.dictionary = function () {
+            MessageService.action('open dictionary window.');
+            ipcRenderer().send('showDictWindow', 'help');
+        };
         ctrl.tutorial = function () {
             if ($scope.display == 'main') {
                 MessageService.action('run main tutorial.');

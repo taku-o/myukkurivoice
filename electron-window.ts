@@ -197,6 +197,55 @@ function showSystemWindow(): void {
   });
 }
 
+// dict window
+function showDictWindow(): void {
+  const myApp = this;
+  if (this.dictWindow && !this.dictWindow.isDestroyed()) {
+    this.dictWindow.show(); this.dictWindow.focus();
+    return;
+  }
+
+  const {width, height} = this.appCfg.dictWindow;
+  const acceptFirstMouse = this.appCfg.acceptFirstMouse;
+  this.dictWindow = new BrowserWindow({
+    width: width,
+    height: height,
+    acceptFirstMouse: acceptFirstMouse,
+    show: false, // show at did-finish-load event
+    transparent: transparent,
+    opacity: opacity,
+    webPreferences: {
+      devTools: this.appCfg.isDebug,
+    },
+  });
+  this.dictWindow.loadURL(`file://${__dirname}/contents-dict.html`);
+
+  // shortcut
+  localShortcut().register(this.dictWindow, 'Command+Q', () => {
+    app.quit();
+  });
+  localShortcut().register(this.dictWindow, 'Command+W', () => {
+    // disable c+w
+  });
+
+  // window event
+  this.dictWindow.webContents.on('did-finish-load', () => {
+    myApp.dictWindow.show(); myApp.dictWindow.focus();
+  });
+  this.dictWindow.on('close', () => {
+    // do nothing
+  });
+  this.dictWindow.on('closed', () => {
+    myApp.dictWindow = null;
+  });
+  this.dictWindow.on('unresponsive', () => {
+    log().warn('main:event:unresponsive');
+  });
+  this.dictWindow.webContents.on('crashed', () => {
+    log().error('main:event:crashed');
+  });
+}
+
 // about application window
 function showAboutWindow(): void {
   const w = openAboutWindow()({
@@ -269,6 +318,7 @@ export {
   showMainWindow,
   showHelpWindow,
   showSystemWindow,
+  showDictWindow,
   showAboutWindow,
   showVersionDialog,
   showSpecWindow,

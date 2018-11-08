@@ -8,6 +8,7 @@ function loadAppConfig(): void {
     mainWindow: {width: 800, height: 665, x: null, y: null},
     helpWindow: {width: 700, height: 550},
     systemWindow: {width: 390, height: 560},
+    dictWindow: {width: 800, height: 600},
     audioServVer: 'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
     acceptFirstMouse: true,

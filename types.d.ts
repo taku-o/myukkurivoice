@@ -39,6 +39,7 @@ declare namespace yubo {
     mainWindow:    { width: number, height: number, x: number, y: number };
     helpWindow?:   { width: number, height: number };
     systemWindow?: { width: number, height: number };
+    dictWindow?:   { width: number, height: number };
     audioServVer:        'html5audio' | 'webaudioapi';
     showMsgPane:         boolean;
     acceptFirstMouse:    boolean;
@@ -56,9 +57,11 @@ declare namespace yubo {
     mainWindow:   Electron.BrowserWindow;
     helpWindow:   Electron.BrowserWindow;
     systemWindow: Electron.BrowserWindow;
+    dictWindow:   Electron.BrowserWindow;
     showMainWindow(): void;
     showHelpWindow(): void;
     showSystemWindow(): void;
+    showDictWindow(): void;
     showAboutWindow(): void;
     showVersionDialog(): void;
     showSpecWindow(): void;

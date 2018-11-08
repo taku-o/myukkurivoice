@@ -16,11 +16,13 @@ var MYukkuriVoice = function () {
     this.mainWindow = null;
     this.helpWindow = null;
     this.systemWindow = null;
+    this.dictWindow = null;
 };
 var myApp = new MYukkuriVoice();
 MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
+MYukkuriVoice.prototype.showDictWindow = Pane.showDictWindow;
 MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
 MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
 MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
@@ -74,6 +76,9 @@ electron_1.ipcMain.on('showHelpWindow', function (event, message) {
 });
 electron_1.ipcMain.on('showSystemWindow', function (event, message) {
     myApp.showSystemWindow();
+});
+electron_1.ipcMain.on('showDictWindow', function (event, message) {
+    myApp.showDictWindow();
 });
 electron_1.ipcMain.on('showSpecWindow', function (event, message) {
     myApp.showSpecWindow();

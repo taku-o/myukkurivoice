@@ -18,11 +18,13 @@ const MYukkuriVoice = function(): void {
   this.mainWindow = null;
   this.helpWindow = null;
   this.systemWindow = null;
+  this.dictWindow = null;
 };
 const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
+MYukkuriVoice.prototype.showDictWindow = Pane.showDictWindow;
 MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
 MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
 MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
@@ -83,6 +85,9 @@ ipcMain.on('showHelpWindow', (event, message) => {
 });
 ipcMain.on('showSystemWindow', (event, message) => {
   myApp.showSystemWindow();
+});
+ipcMain.on('showDictWindow', (event, message) => {
+  myApp.showDictWindow();
 });
 ipcMain.on('showSpecWindow', (event, message) => {
   myApp.showSpecWindow();
