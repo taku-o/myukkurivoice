@@ -149,8 +149,8 @@ macOS High Sierra(10.13)に対応しています。
 
 <a href="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif" width="400"></a>
 
-<a name="ユーザー辞書"></a>
-### ユーザー辞書
+<a name="ユーザー辞書機能"></a>
+### ユーザー辞書機能
 * ユーザー辞書を編集する機能、利用する機能があります。
 * MYukkuriVoiceでメッセージを音声記号列に変換する際、この辞書の定義が使われます。
 
