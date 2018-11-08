@@ -51,6 +51,7 @@ macOS High Sierra(10.13)に対応しています。
 * 内部構造を大きく変更したので、
   * アプリをバージョンアップする前は、大事な設定はメモを取っておいてください。
   * 動作がおかしい場合はメニューから設定の初期化を実施するか、過去のバージョンを利用してください。
+* (NEW!! 2018/11/09) ユーザー辞書機能の追加。
 
 <a name="myukkurivoiceの導入"></a>
 ## MYukkuriVoiceの導入
@@ -149,6 +150,13 @@ macOS High Sierra(10.13)に対応しています。
 
 <a href="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-dnd.gif" width="400"></a>
 
+<a name="ユーザー辞書"></a>
+### ユーザー辞書
+* ユーザー辞書を編集する機能、利用する機能があります。
+* MYukkuriVoiceでメッセージを音声記号列に変換する際、この辞書の定義が使われます。
+
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-aqdicedit.png" width="400">
+
 <a name="その他"></a>
 ### その他
 * チュートリアル、ヘルプが用意されています
@@ -178,6 +186,7 @@ macOS High Sierra(10.13)に対応しています。
 * 保存メッセージをクリックして、音声ファイル、メッセージファイルをQuickLookで開く。
 * 各種ショートカットキー
 * チュートリアル、ヘルプ
+* ユーザー辞書
 
 <a name="動画リンク"></a>
 ## 動画リンク
