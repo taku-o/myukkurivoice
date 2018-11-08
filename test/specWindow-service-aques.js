@@ -60,10 +60,7 @@ describe('specWindow-service-AquesService', function () {
             .setValue('#source', 'test')
             .click('#encode')
             .getValue('#encode-result').then(function (value) {
-            assert.equal(value, "テ'_スト");
-        })
-            .getValue('#encode-err').then(function (value) {
-            assert.ok(!value);
+            assert.equal(value, "テ_スト");
         })
             // encode empty string
             .setValue('#source', '')
@@ -71,9 +68,6 @@ describe('specWindow-service-AquesService', function () {
             .click('#encode')
             .getValue('#encode-result').then(function (value) {
             assert.ok(!value);
-        })
-            .getValue('#encode-err').then(function (value) {
-            assert.ok(value);
         })["catch"](function (err) {
             assert.fail(err.message);
         });
@@ -101,7 +95,7 @@ describe('specWindow-service-AquesService', function () {
             assert.ok(!value);
         })
             .getValue('#wave-err').then(function (value) {
-            assert.ok(!value);
+            assert.ok(value);
         })
             // wave talk2
             .setValue('#encoded', "テ'_スト")
@@ -124,7 +118,7 @@ describe('specWindow-service-AquesService', function () {
             assert.ok(!value);
         })
             .getValue('#wave-err').then(function (value) {
-            assert.ok(!value);
+            assert.ok(value);
         })
             // wave talk10
             .setValue('#encoded', "テ'_スト")
@@ -147,7 +141,7 @@ describe('specWindow-service-AquesService', function () {
             assert.ok(!value);
         })
             .getValue('#wave-err').then(function (value) {
-            assert.ok(!value);
+            assert.ok(value);
         })["catch"](function (err) {
             assert.fail(err.message);
         });
