@@ -12,6 +12,12 @@ li.list-group-item:hover {
 li.list-group-item:active {
   background-color: #3399ff;
 }
+li.list-group-item#export.disable {
+  color: #CCCCCC;
+}
+li.list-group-item#export.disable img {
+  opacity: 0.2;
+}
 li.list-group-item p.small {
   font-size: 10px;
 }

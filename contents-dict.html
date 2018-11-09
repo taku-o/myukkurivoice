@@ -95,7 +95,7 @@
             </div>
           </li>
           <!-- export -->
-          <li class="list-group-item" id="export" ng-click="ctrl.export()">
+          <li class="list-group-item" id="export" ng-click="ctrl.export()" ng-class="{disable:isEditing}">
             <img class="img-circle media-object pull-left" src="img/twotone_import_export_black_36dp.png" width="32" height="32">
             <div class="media-body">
               <strong>Export</strong>

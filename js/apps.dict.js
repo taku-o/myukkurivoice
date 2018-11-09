@@ -25,6 +25,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
     function ($scope, $q, $timeout, $interval, AquesService, IntroService, KindList) {
         // init
         var ctrl = this;
+        $scope.isEditing = false;
         $scope.message = '';
         $scope.alwaysOnTop = false;
         // AqDicEdit, MYukkuriVoice data dir
@@ -42,6 +43,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
                 });
                 $scope.gridApi.rowEdit.on.saveRow($scope, function (rowEntity) {
                     var d = $q.defer();
+                    $scope.isEditing = true;
                     $scope.gridApi.rowEdit.setSavePromise(rowEntity, d.promise);
                     if (!rowEntity.source) {
                         rowEntity.error = '表記が入力されていません';
@@ -139,6 +141,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
         this.init();
         // action
         ctrl.add = function () {
+            $scope.isEditing = true;
             if ($scope.gridApi.selection.getSelectedRows()) {
                 var row = $scope.gridApi.selection.getSelectedRows()[0];
                 var index = $scope.gridOptions.data.indexOf(row);
@@ -164,6 +167,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
         };
         ctrl["delete"] = function () {
             if ($scope.gridApi.selection.getSelectedRows()) {
+                $scope.isEditing = true;
                 var rows = $scope.gridApi.selection.getSelectedRows();
                 for (var _i = 0, rows_1 = rows; _i < rows_1.length; _i++) {
                     var row = rows_1[_i];
@@ -188,6 +192,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
                     quote: ''
                 });
                 fs().writeFileSync(mAppDictDir + "/aq_user.csv", data);
+                $scope.isEditing = false;
                 $scope.message = 'save records, DONE.';
                 $timeout(function () { $scope.$apply(); });
             })["catch"](function (err) {
@@ -198,12 +203,16 @@ angular.module('dictApp', ['dictModel', 'dictService',
         ctrl.cancel = function () {
             return this.loadCsv().then(function (records) {
                 $scope.gridOptions.data = records;
+                $scope.isEditing = false;
                 $scope.message = 'cancel, and reload working records.';
                 $timeout(function () { $scope.$apply(); });
                 return true;
             });
         };
         ctrl["export"] = function () {
+            if ($scope.isEditing) {
+                return;
+            }
             this.validateData().then(function () {
                 // copy resource
                 fs().stat(mAppDictDir + "/aqdic.bin", function (err, stats) {
@@ -233,6 +242,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
             this.loadCsv().then(function (records) {
                 $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
                 $scope.gridOptions.data = records;
+                $scope.isEditing = false;
                 $scope.message = 'reset working records with master dictionary data.';
                 $timeout(function () { $scope.$apply(); });
                 d.resolve(true);

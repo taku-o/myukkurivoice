@@ -30,6 +30,7 @@ angular.module('dictApp',
 
     // init
     const ctrl = this;
+    $scope.isEditing = false;
     $scope.message = '';
     $scope.alwaysOnTop = false;
     // AqDicEdit, MYukkuriVoice data dir
@@ -48,6 +49,7 @@ angular.module('dictApp',
         });
         $scope.gridApi.rowEdit.on.saveRow($scope, (rowEntity) => {
           const d = $q.defer();
+          $scope.isEditing = true;
           $scope.gridApi.rowEdit.setSavePromise(rowEntity, d.promise);
 
           if (!rowEntity.source) {
@@ -145,6 +147,7 @@ angular.module('dictApp',
 
     // action
     ctrl.add = function(): void {
+      $scope.isEditing = true;
       if ($scope.gridApi.selection.getSelectedRows()) {
         const row = $scope.gridApi.selection.getSelectedRows()[0];
         const index = $scope.gridOptions.data.indexOf(row);
@@ -169,6 +172,7 @@ angular.module('dictApp',
     };
     ctrl.delete = function(): void {
       if ($scope.gridApi.selection.getSelectedRows()) {
+        $scope.isEditing = true;
         const rows = $scope.gridApi.selection.getSelectedRows();
         for (let row of rows) {
           const index = $scope.gridOptions.data.indexOf(row);
@@ -192,6 +196,7 @@ angular.module('dictApp',
           quote: '',
         });
         fs().writeFileSync(`${mAppDictDir}/aq_user.csv`, data);
+        $scope.isEditing = false;
         $scope.message = 'save records, DONE.';
         $timeout(() => { $scope.$apply(); });
       })
@@ -203,12 +208,14 @@ angular.module('dictApp',
     ctrl.cancel = function(): ng.IPromise<boolean> {
       return this.loadCsv().then((records) => {
         $scope.gridOptions.data = records;
+        $scope.isEditing = false;
         $scope.message = 'cancel, and reload working records.';
         $timeout(() => { $scope.$apply(); });
         return true;
       });
     };
     ctrl.export = function(): void {
+      if ($scope.isEditing) { return; }
       this.validateData().then(() => {
         // copy resource
         fs().stat(`${mAppDictDir}/aqdic.bin`, (err: Error, stats) => {
@@ -239,6 +246,7 @@ angular.module('dictApp',
       this.loadCsv().then((records) => {
         $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
         $scope.gridOptions.data = records;
+        $scope.isEditing = false;
         $scope.message = 'reset working records with master dictionary data.';
         $timeout(() => { $scope.$apply(); });
         d.resolve(true);
