@@ -51,7 +51,7 @@ describe('specWindow-service-AquesService', function () {
             assert.fail(err.message);
         });
     });
-    it('encode with custom dictionary', function (done) {
+    it('encode with custom dictionary', function () {
         fs.mkdirSync(dirPath + "/userdict");
         var customDictPath = path.dirname(__dirname) + "/vendor/test/aq_dic_large";
         fs.writeFileSync(dirPath + "/userdict/aqdic.bin", fs.readFileSync(customDictPath + "/aqdic.bin"));
@@ -62,11 +62,6 @@ describe('specWindow-service-AquesService', function () {
             .click('#encode')
             .getValue('#encode-result').then(function (value) {
             assert.equal(value, 'モモナヤマ');
-        })
-            .setValue('#source', '旨味')
-            .click('#encode')
-            .getValue('#encode-result').then(function (value) {
-            assert.equal(value, 'ウマアジ');
         })
             .setValue('#source', '味方さん')
             .click('#encode')
@@ -82,7 +77,6 @@ describe('specWindow-service-AquesService', function () {
         })
             .then(function () {
             rimraf(dirPath + "/userdict", function (err) {
-                done(err);
             });
         })["catch"](function (err) {
             assert.fail(err.message);

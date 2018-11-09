@@ -2,17 +2,13 @@
 exports.__esModule = true;
 var spectron_1 = require("spectron");
 var assert = require("assert");
-var rimraf = require("rimraf");
-var path = require("path");
-var fs = require("fs");
 var temp = require("temp");
 temp.track();
 describe('mainWindow', function () {
     this.timeout(10000);
-    var dirPath = null;
     beforeEach(function () {
         var fsprefix = "_myubo_test" + Date.now().toString(36);
-        dirPath = temp.mkdirSync(fsprefix);
+        var dirPath = temp.mkdirSync(fsprefix);
         this.app = new spectron_1.Application({
             path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
             env: { DEBUG: 1, NODE_ENV: 'test', userData: dirPath }
@@ -80,144 +76,6 @@ describe('mainWindow', function () {
             .setValue('#encoded', "テ'_スト")
             .isEnabled('#play').then(function (isEnabled) {
             assert.ok(isEnabled);
-        })
-            // error check
-            .isExisting('tr.message-item.error').then(function (error) {
-            assert.ok(!error);
-        })
-            .isExisting('tr.message-item.syserror').then(function (error) {
-            assert.ok(!error);
-        })["catch"](function (err) {
-            assert.fail(err.message);
-        });
-    });
-    it('play with embed dictionary word:1', function (done) {
-        this.timeout(3000);
-        return this.app.client
-            .setValue('#source', '百名山')
-            .isEnabled('#play').then(function (isEnabled) {
-            assert.ok(isEnabled);
-        })
-            .then(function () {
-            done();
-        })
-            // error check
-            .isExisting('tr.message-item.error').then(function (error) {
-            assert.ok(!error);
-        })
-            .isExisting('tr.message-item.syserror').then(function (error) {
-            assert.ok(!error);
-        })["catch"](function (err) {
-            assert.fail(err.message);
-        });
-    });
-    it('play with embed dictionary word:2', function (done) {
-        this.timeout(3000);
-        return this.app.client
-            .setValue('#source', '旨味')
-            .isEnabled('#play').then(function (isEnabled) {
-            assert.ok(isEnabled);
-        })
-            .then(function () {
-            done();
-        })
-            // error check
-            .isExisting('tr.message-item.error').then(function (error) {
-            assert.ok(!error);
-        })
-            .isExisting('tr.message-item.syserror').then(function (error) {
-            assert.ok(!error);
-        })["catch"](function (err) {
-            assert.fail(err.message);
-        });
-    });
-    it('play with embed dictionary word:3', function (done) {
-        this.timeout(3000);
-        return this.app.client
-            .setValue('#source', '味方さん')
-            .isEnabled('#play').then(function (isEnabled) {
-            assert.ok(isEnabled);
-        })
-            .then(function () {
-            done();
-        })
-            // error check
-            .isExisting('tr.message-item.error').then(function (error) {
-            assert.ok(!error);
-        })
-            .isExisting('tr.message-item.syserror').then(function (error) {
-            assert.ok(!error);
-        })["catch"](function (err) {
-            assert.fail(err.message);
-        });
-    });
-    it('play with custom dictionary word:1', function (done) {
-        fs.mkdirSync(dirPath + "/userdict");
-        var customDictPath = path.dirname(__dirname) + "/vendor/test/aq_dic_large";
-        fs.writeFileSync(dirPath + "/userdict/aqdic.bin", fs.readFileSync(customDictPath + "/aqdic.bin"));
-        fs.writeFileSync(dirPath + "/userdict/aq_user.dic", fs.readFileSync(customDictPath + "/aq_user.dic"));
-        this.timeout(3000);
-        return this.app.client
-            .setValue('#source', '百名山')
-            .isEnabled('#play').then(function (isEnabled) {
-            assert.ok(isEnabled);
-        })
-            .then(function () {
-            rimraf(dirPath + "/userdict", function (err) {
-                done(err);
-            });
-        })
-            // error check
-            .isExisting('tr.message-item.error').then(function (error) {
-            assert.ok(!error);
-        })
-            .isExisting('tr.message-item.syserror').then(function (error) {
-            assert.ok(!error);
-        })["catch"](function (err) {
-            assert.fail(err.message);
-        });
-    });
-    it('play with custom dictionary word:2', function (done) {
-        fs.mkdirSync(dirPath + "/userdict");
-        var customDictPath = path.dirname(__dirname) + "/vendor/test/aq_dic_large";
-        fs.writeFileSync(dirPath + "/userdict/aqdic.bin", fs.readFileSync(customDictPath + "/aqdic.bin"));
-        fs.writeFileSync(dirPath + "/userdict/aq_user.dic", fs.readFileSync(customDictPath + "/aq_user.dic"));
-        this.timeout(3000);
-        return this.app.client
-            .setValue('#source', '旨味')
-            .isEnabled('#play').then(function (isEnabled) {
-            assert.ok(isEnabled);
-        })
-            .then(function () {
-            rimraf(dirPath + "/userdict", function (err) {
-                done(err);
-            });
-        })
-            // error check
-            .isExisting('tr.message-item.error').then(function (error) {
-            assert.ok(!error);
-        })
-            .isExisting('tr.message-item.syserror').then(function (error) {
-            assert.ok(!error);
-        })["catch"](function (err) {
-            assert.fail(err.message);
-        });
-    });
-    it('play with custom dictionary word:3', function (done) {
-        fs.mkdirSync(dirPath + "/userdict");
-        var customDictPath = path.dirname(__dirname) + "/vendor/test/aq_dic_large";
-        fs.writeFileSync(dirPath + "/userdict/aqdic.bin", fs.readFileSync(customDictPath + "/aqdic.bin"));
-        fs.writeFileSync(dirPath + "/userdict/aq_user.dic", fs.readFileSync(customDictPath + "/aq_user.dic"));
-        this.timeout(3000);
-        return this.app.client
-            .setValue('#source', '味方さん')
-            .isEnabled('#play').then(function (isEnabled) {
-            assert.ok(isEnabled);
-        })
-            .then(function () {
-            rimraf(dirPath + "/userdict", function (err) {
-                done(err);
-            });
         })
             // error check
             .isExisting('tr.message-item.error').then(function (error) {
