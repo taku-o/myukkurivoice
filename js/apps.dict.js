@@ -181,7 +181,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
         // action
         ctrl.add = function () {
             ctrl.toIsInEditing();
-            if ($scope.gridApi.selection.getSelectedRows()) {
+            if ($scope.gridApi.selection.getSelectedRows().length > 0) {
                 var row = $scope.gridApi.selection.getSelectedRows()[0];
                 var index = $scope.gridOptions.data.indexOf(row);
                 var newrow_1 = {
