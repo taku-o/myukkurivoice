@@ -1,4 +1,5 @@
 "use strict";
+var _fs, fs = function () { _fs = _fs || require('fs'); return _fs; };
 var _ffi, ffi = function () { _ffi = _ffi || require('ffi'); return _ffi; };
 var _epath, epath = function () { _epath = _epath || require('electron-path'); return _epath; };
 var unpackedPath = epath().getUnpackedPath();
@@ -20,6 +21,7 @@ angular.module('dictAquesService', [])
         var fn_AqUsrDic_GetLastError = ffi().ForeignFunction(ptr_AqUsrDic_GetLastError, 'string', []);
         return {
             generateUserDict: function (inCsvPath, outUserDicPath) {
+                fs().closeSync(fs().openSync(outUserDicPath, 'a+')); // create with 644 permission.
                 var result = fn_AqUsrDic_Import(outUserDicPath, inCsvPath);
                 if (result == 0) {
                     return { success: true, message: null };

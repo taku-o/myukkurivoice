@@ -1,3 +1,4 @@
+var _fs, fs       = () => { _fs = _fs || require('fs'); return _fs; };
 var _ffi, ffi     = () => { _ffi = _ffi || require('ffi'); return _ffi; };
 var _epath, epath = () => { _epath = _epath || require('electron-path'); return _epath; };
 var unpackedPath  = epath().getUnpackedPath();
@@ -23,6 +24,7 @@ angular.module('dictAquesService', [])
 
     return {
       generateUserDict: function(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string} {
+        fs().closeSync(fs().openSync(outUserDicPath, 'a+')); // create with 644 permission.
         const result = fn_AqUsrDic_Import(outUserDicPath, inCsvPath);
         if (result == 0) {
           return {success:true, message:null};
