@@ -271,10 +271,6 @@ angular.module('dictApp',
   .filter('mapKind', ['KindHash', function(KindHash) {
     const kindHash = KindHash;
     return function(input) {
-      if (!input){
-        return '';
-      } else {
-        return kindHash[input];
-      }
+      return kindHash[input]? kindHash[input]: '';
     };
   }]);

@@ -264,11 +264,6 @@ angular.module('dictApp', ['dictModel', 'dictService',
     .filter('mapKind', ['KindHash', function (KindHash) {
         var kindHash = KindHash;
         return function (input) {
-            if (!input) {
-                return '';
-            }
-            else {
-                return kindHash[input];
-            }
+            return kindHash[input] ? kindHash[input] : '';
         };
     }]);
