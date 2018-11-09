@@ -360,7 +360,7 @@ describe('mainWindow', function () {
         })
             .windowByIndex(1)
             .getTitle().then(function (title) {
-            assert.equal(title, 'MYukkuriVoice Dictionary Edit');
+            assert.equal(title, 'MYukkuriVoice Dictionary Editor');
         })
             // error check
             .windowByIndex(0)

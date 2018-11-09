@@ -405,7 +405,7 @@ describe('mainWindow', function() {
       })
       .windowByIndex(1)
       .getTitle().then((title: string) => {
-        assert.equal(title, 'MYukkuriVoice Dictionary Edit');
+        assert.equal(title, 'MYukkuriVoice Dictionary Editor');
       })
       // error check
       .windowByIndex(0)
