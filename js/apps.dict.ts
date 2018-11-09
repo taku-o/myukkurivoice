@@ -105,7 +105,7 @@ angular.module('dictApp',
         return true;
       });
       });
-    }
+    };
     this.setup = function(): ng.IPromise<string> {
       const d = $q.defer();
       // mkdir

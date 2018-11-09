@@ -1,14 +1,18 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import * as rimraf from 'rimraf';
+import * as path from 'path';
+import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 
 describe('mainWindow', function() {
   this.timeout(10000);
 
+  let dirPath = null;
   beforeEach(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    const dirPath = temp.mkdirSync(fsprefix);
+    dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
@@ -50,7 +54,7 @@ describe('mainWindow', function() {
   });
 
   // TODO multivoice
-  it('mainWindow input', function() {
+  it('input', function() {
     return this.app.client
       // encode
       .setValue('#source', 'test')
@@ -95,7 +99,166 @@ describe('mainWindow', function() {
       });
   });
 
-  it('mainWindow phont selection', function() {
+  it('play with embed dictionary word:1', function(done) {
+    this.timeout(3000);
+    return this.app.client
+      .setValue('#source', '百名山')
+      .isEnabled('#play').then((isEnabled: boolean) => {
+        assert.ok(isEnabled);
+      })
+      .then(() => {
+        done();
+      })
+      // error check
+      .isExisting('tr.message-item.error').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('play with embed dictionary word:2', function(done) {
+    this.timeout(3000);
+    return this.app.client
+      .setValue('#source', '旨味')
+      .isEnabled('#play').then((isEnabled: boolean) => {
+        assert.ok(isEnabled);
+      })
+      .then(() => {
+        done();
+      })
+      // error check
+      .isExisting('tr.message-item.error').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('play with embed dictionary word:3', function(done) {
+    this.timeout(3000);
+    return this.app.client
+      .setValue('#source', '味方さん')
+      .isEnabled('#play').then((isEnabled: boolean) => {
+        assert.ok(isEnabled);
+      })
+      .then(() => {
+        done();
+      })
+      // error check
+      .isExisting('tr.message-item.error').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('play with custom dictionary word:1', function(done) {
+    fs.mkdirSync(`${dirPath}/userdict`);
+    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
+    fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
+    fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
+
+    this.timeout(3000);
+    return this.app.client
+      .setValue('#source', '百名山')
+      .isEnabled('#play').then((isEnabled: boolean) => {
+        assert.ok(isEnabled);
+      })
+      .then(() => {
+        rimraf(`${dirPath}/userdict`, (err) => {
+          done(err);
+        });
+      })
+      // error check
+      .isExisting('tr.message-item.error').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('play with custom dictionary word:2', function(done) {
+    fs.mkdirSync(`${dirPath}/userdict`);
+    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
+    fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
+    fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
+
+    this.timeout(3000);
+    return this.app.client
+      .setValue('#source', '旨味')
+      .isEnabled('#play').then((isEnabled: boolean) => {
+        assert.ok(isEnabled);
+      })
+      .then(() => {
+        rimraf(`${dirPath}/userdict`, (err) => {
+          done(err);
+        });
+      })
+      // error check
+      .isExisting('tr.message-item.error').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('play with custom dictionary word:3', function(done) {
+    fs.mkdirSync(`${dirPath}/userdict`);
+    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
+    fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
+    fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
+
+    this.timeout(3000);
+    return this.app.client
+      .setValue('#source', '味方さん')
+      .isEnabled('#play').then((isEnabled: boolean) => {
+        assert.ok(isEnabled);
+      })
+      .then(() => {
+        rimraf(`${dirPath}/userdict`, (err) => {
+          done(err);
+        });
+      })
+      // error check
+      .isExisting('tr.message-item.error').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('phont selection', function() {
     return this.app.client
       .elements('#phont option').then((response: HTMLInputElement) => {
         assert.equal(response.value.length, 26);
@@ -111,7 +274,7 @@ describe('mainWindow', function() {
   // TODO delete config
   // TODO copy config
   // TODO filter
-  it('mainWindow voice config', function() {
+  it('voice config', function() {
     let voiceConfigLength = 999;
     return this.app.client
       // filter
@@ -148,7 +311,7 @@ describe('mainWindow', function() {
   });
 
   // TODO multivoice
-  it('mainWindow play', function() {
+  it('play', function() {
     return this.app.client
       .setValue('#encoded', "テ'_スト")
       .click('#play')
@@ -174,7 +337,7 @@ describe('mainWindow', function() {
   //it('mainWindow play', () => {
   //});
 
-  it('mainWindow alwaysOnTop', function() {
+  it('alwaysOnTop', function() {
     const app = this.app;
     return this.app.client
       .getAttribute('#always-on-top-btn span.icon', 'class').then((classes: string[]) => {
@@ -210,7 +373,7 @@ describe('mainWindow', function() {
       });
   });
 
-  it('mainWindow help', function() {
+  it('open help', function() {
     return this.app.client
       .click('#help')
       .getWindowCount().then((count: number) => {
@@ -234,7 +397,31 @@ describe('mainWindow', function() {
       });
   });
 
-  it('mainWindow shortcut intro', function() {
+  it('open dictionary', function() {
+    return this.app.client
+      .click('#dictionary')
+      .getWindowCount().then((count: number) => {
+        assert.equal(count, 2);
+      })
+      .windowByIndex(1)
+      .getTitle().then((title: string) => {
+        assert.equal(title, 'MYukkuriVoice Dictionary Edit');
+      })
+      // error check
+      .windowByIndex(0)
+      .isExisting('tr.message-item.error').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      .isExisting('tr.message-item.syserror').then((error: boolean) => {
+        assert.ok(! error);
+      })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      });
+  });
+
+  it('shortcut intro', function() {
     return this.app.client
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
         assert.ok(! isVisible);
@@ -256,7 +443,7 @@ describe('mainWindow', function() {
       });
   });
 
-  it('mainWindow tutorial intro', function() {
+  it('tutorial intro', function() {
     return this.app.client
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
         assert.ok(! isVisible);
@@ -278,7 +465,7 @@ describe('mainWindow', function() {
       });
   });
 
-  it('mainWindow switchSettingsView', function() {
+  it('switchSettingsView', function() {
     return this.app.client
       .click('#switch-settings-view')
       .isVisible('#main-pane').then((isVisible: boolean) => {

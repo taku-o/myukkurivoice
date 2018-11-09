@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var spectron_1 = require("spectron");
 var assert = require("assert");
+var rimraf = require("rimraf");
 var path = require("path");
 var fs = require("fs");
 var temp = require("temp");
@@ -50,17 +51,27 @@ describe('specWindow-service-AquesService', function () {
             assert.fail(err.message);
         });
     });
-    it('encode with custom dictionary', function () {
+    it('encode with custom dictionary', function (done) {
         fs.mkdirSync(dirPath + "/userdict");
-        var customDictPath = path.dirname(__dirname) + "/vendor/aqk2k_mac/aq_dic_small";
+        var customDictPath = path.dirname(__dirname) + "/vendor/test/aq_dic_large";
         fs.writeFileSync(dirPath + "/userdict/aqdic.bin", fs.readFileSync(customDictPath + "/aqdic.bin"));
         fs.writeFileSync(dirPath + "/userdict/aq_user.dic", fs.readFileSync(customDictPath + "/aq_user.dic"));
         return this.client
             // encode
-            .setValue('#source', 'test')
+            .setValue('#source', '百名山')
             .click('#encode')
             .getValue('#encode-result').then(function (value) {
-            assert.equal(value, "テ_スト");
+            assert.equal(value, 'モモナヤマ');
+        })
+            .setValue('#source', '旨味')
+            .click('#encode')
+            .getValue('#encode-result').then(function (value) {
+            assert.equal(value, 'ウマアジ');
+        })
+            .setValue('#source', '味方さん')
+            .click('#encode')
+            .getValue('#encode-result').then(function (value) {
+            assert.equal(value, 'アジカタサン');
         })
             // encode empty string
             .setValue('#source', '')
@@ -68,6 +79,11 @@ describe('specWindow-service-AquesService', function () {
             .click('#encode')
             .getValue('#encode-result').then(function (value) {
             assert.ok(!value);
+        })
+            .then(function () {
+            rimraf(dirPath + "/userdict", function (err) {
+                done(err);
+            });
         })["catch"](function (err) {
             assert.fail(err.message);
         });

@@ -25,7 +25,7 @@ function loadAppConfig(): void {
   // if passPhrase not exists, record passPhrase.
   if (! appCfg.passPhrase) {
     appCfg.passPhrase = crypto().randomBytes(16).toString('hex');
-    config.set('passPhrase', appCfg.passPhrase)
+    config.set('passPhrase', appCfg.passPhrase);
   }
   this.config = config;
   this.appCfg = appCfg;

@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import * as rimraf from 'rimraf';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as temp from 'temp';
@@ -57,18 +58,28 @@ describe('specWindow-service-AquesService', function() {
       });
   });
 
-  it('encode with custom dictionary', function() {
+  it('encode with custom dictionary', function(done) {
     fs.mkdirSync(`${dirPath}/userdict`);
-    const customDictPath = `${path.dirname(__dirname)}/vendor/aqk2k_mac/aq_dic_small`;
+    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
     fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
     fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
 
     return this.client
       // encode
-      .setValue('#source', 'test')
+      .setValue('#source', '百名山')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.equal(value, "テ_スト");
+        assert.equal(value, 'モモナヤマ');
+      })
+      .setValue('#source', '旨味')
+      .click('#encode')
+      .getValue('#encode-result').then((value: string) => {
+        assert.equal(value, 'ウマアジ');
+      })
+      .setValue('#source', '味方さん')
+      .click('#encode')
+      .getValue('#encode-result').then((value: string) => {
+        assert.equal(value, 'アジカタサン');
       })
       // encode empty string
       .setValue('#source', '')
@@ -76,6 +87,11 @@ describe('specWindow-service-AquesService', function() {
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
         assert.ok(!value);
+      })
+      .then(() => {
+        rimraf(`${dirPath}/userdict`, (err) => {
+          done(err);
+        });
       })
       // catch error
       .catch((err: Error) => {
