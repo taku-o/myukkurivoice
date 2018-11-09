@@ -204,7 +204,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
             LicenseService.consumerKey('aquesTalk10DevKey').then(function (licenseKey) {
                 aquesTalk10DevKey = licenseKey;
             });
-        }, 1000);
+        }, (process.env.NODE_ENV == 'test' ? 0 : 1000));
         var _isAqKanji2KoeDevkeySet = false;
         var _isAquesTalk10LicensekeySet = false;
         return {
