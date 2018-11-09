@@ -108,11 +108,6 @@ function initAppMenu(options: {isDebug: boolean}): void {
           accelerator: 'Command+S',
           click() { myApp.mainWindow.webContents.send('shortcut', 'record'); },
         },
-        {type: 'separator'},
-        {
-          label: '辞書ツール',
-          click() { myApp.mainWindow.webContents.send('menu', 'dictionary'); },
-        },
       ],
     },
     {
@@ -154,35 +149,18 @@ function initAppMenu(options: {isDebug: boolean}): void {
       ],
     },
     {
-      label: '表示',
-      submenu: [
-        {role: 'reload'},
-        {type: 'separator'},
-        {role: 'resetzoom'},
-        {role: 'zoomin'},
-        {role: 'zoomout'},
-        {type: 'separator'},
-        {role: 'togglefullscreen'},
-      ],
-    },
-    {
-      label: 'ウインドウ',
+      label: 'ウィンドウ',
       submenu: [
         {
           label: '前面表示固定切替',
           click() { myApp.switchAlwaysOnTop(); },
         },
         {type: 'separator'},
-        {
-          label: 'Minimize',
-          accelerator: 'CmdOrCtrl+M',
-          role: 'minimize',
-        },
-        {
-          label: 'Zoom',
-          role: 'zoom',
-        },
-        {type: 'separator'},
+        {role: 'reload'},
+        {role: 'zoomin'},
+        {role: 'zoomout'},
+        {role: 'resetzoom'},
+        {role: 'togglefullscreen'},
         {
           label: 'Bring All to Front',
           role: 'front',
@@ -193,6 +171,60 @@ function initAppMenu(options: {isDebug: boolean}): void {
           click() { myApp.resetWindowPosition(); },
         },
       ],
+    },
+    {
+      label: '辞書',
+      submenu: [
+        {
+          label: '辞書ツール',
+          click() { myApp.showDictWindow(); },
+        },
+        {
+          id: 'dict-tutorial',
+          enabled: false,
+          label: '辞書チュートリアル',
+          click() { myApp.dictWindow.webContents.send('menu', 'tutorial'); },
+        },
+        {type: 'separator'},
+        {
+          id: 'dict-add',
+          enabled: false,
+          label: '定義データ追加',
+          click() { myApp.dictWindow.webContents.send('menu', 'add'); },
+        },
+        {
+          id: 'dict-delete',
+          enabled: false,
+          label: '定義データ削除',
+          click() { myApp.dictWindow.webContents.send('menu', 'delete'); },
+        },
+        {type: 'separator'},
+        {
+          id: 'dict-save',
+          enabled: false,
+          label: '保存',
+          click() { myApp.dictWindow.webContents.send('menu', 'save'); },
+        },
+        {
+          id: 'dict-cancel',
+          enabled: false,
+          label: 'キャンセル',
+          click() { myApp.dictWindow.webContents.send('menu', 'cancel'); },
+        },
+        {
+          id: 'dict-export',
+          enabled: false,
+          label: 'エクスポート',
+          click() { myApp.dictWindow.webContents.send('menu', 'export'); },
+        },
+        {type: 'separator'},
+        {
+          id: 'dict-reset',
+          enabled: false,
+          label: '辞書オールリセット',
+          click() { myApp.dictWindow.webContents.send('menu', 'reset'); },
+        },
+      ]
     },
     {
       label: 'ヘルプ',
@@ -253,6 +285,10 @@ function initDockMenu(): void {
     {
       label: 'ヘルプ',
       click() { myApp.showHelpWindow(); },
+    },
+    {
+      label: '辞書ツール',
+      click() { myApp.showDictWindow(); },
     },
     {
       label: 'ウインドウ位置リセット',

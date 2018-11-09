@@ -1,5 +1,5 @@
 'use strict';
-import {app,BrowserWindow,dialog,shell} from 'electron';
+import {app,BrowserWindow,dialog,shell,Menu} from 'electron';
 var _localShortcut, localShortcut     = () => { _localShortcut = _localShortcut || require('electron-localshortcut'); return _localShortcut; };
 var _log, log                         = () => { _log = _log || require('electron-log'); return _log; };
 var _path, path                       = () => { _path = _path || require('path'); return _path; };
@@ -202,6 +202,7 @@ function showDictWindow(): void {
   const myApp = this;
   if (this.dictWindow && !this.dictWindow.isDestroyed()) {
     this.dictWindow.show(); this.dictWindow.focus();
+    enableDictMenu();
     return;
   }
 
@@ -232,9 +233,10 @@ function showDictWindow(): void {
   // window event
   this.dictWindow.webContents.on('did-finish-load', () => {
     myApp.dictWindow.show(); myApp.dictWindow.focus();
+    enableDictMenu();
   });
   this.dictWindow.on('close', () => {
-    // do nothing
+    disableDictMenu();
   });
   this.dictWindow.on('closed', () => {
     myApp.dictWindow = null;
@@ -245,6 +247,31 @@ function showDictWindow(): void {
   this.dictWindow.webContents.on('crashed', () => {
     log().error('main:event:crashed');
   });
+}
+const dictMenuItems = [
+  'dict-tutorial',
+  'dict-add',
+  'dict-delete',
+  'dict-save',
+  'dict-cancel',
+  'dict-export',
+  'dict-reset',
+];
+function enableDictMenu(): void {
+  const menu = Menu.getApplicationMenu();
+  if (!menu) { return; }
+  for (let m of dictMenuItems) {
+    const item = menu.getMenuItemById(m);
+    item.enabled = true;
+  }
+}
+function disableDictMenu(): void {
+  const menu = Menu.getApplicationMenu();
+  if (!menu) { return; }
+  for (let m of dictMenuItems) {
+    const item = menu.getMenuItemById(m);
+    item.enabled = false;
+  }
 }
 
 // about application window

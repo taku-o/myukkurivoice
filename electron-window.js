@@ -208,6 +208,7 @@ function showDictWindow() {
     if (this.dictWindow && !this.dictWindow.isDestroyed()) {
         this.dictWindow.show();
         this.dictWindow.focus();
+        enableDictMenu();
         return;
     }
     var _a = this.appCfg.dictWindow, width = _a.width, height = _a.height;
@@ -236,9 +237,10 @@ function showDictWindow() {
     this.dictWindow.webContents.on('did-finish-load', function () {
         myApp.dictWindow.show();
         myApp.dictWindow.focus();
+        enableDictMenu();
     });
     this.dictWindow.on('close', function () {
-        // do nothing
+        disableDictMenu();
     });
     this.dictWindow.on('closed', function () {
         myApp.dictWindow = null;
@@ -251,6 +253,37 @@ function showDictWindow() {
     });
 }
 exports.showDictWindow = showDictWindow;
+var dictMenuItems = [
+    'dict-tutorial',
+    'dict-add',
+    'dict-delete',
+    'dict-save',
+    'dict-cancel',
+    'dict-export',
+    'dict-reset',
+];
+function enableDictMenu() {
+    var menu = electron_1.Menu.getApplicationMenu();
+    if (!menu) {
+        return;
+    }
+    for (var _i = 0, dictMenuItems_1 = dictMenuItems; _i < dictMenuItems_1.length; _i++) {
+        var m = dictMenuItems_1[_i];
+        var item = menu.getMenuItemById(m);
+        item.enabled = true;
+    }
+}
+function disableDictMenu() {
+    var menu = electron_1.Menu.getApplicationMenu();
+    if (!menu) {
+        return;
+    }
+    for (var _i = 0, dictMenuItems_2 = dictMenuItems; _i < dictMenuItems_2.length; _i++) {
+        var m = dictMenuItems_2[_i];
+        var item = menu.getMenuItemById(m);
+        item.enabled = false;
+    }
+}
 // about application window
 function showAboutWindow() {
     var w = openAboutWindow()({

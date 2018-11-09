@@ -28,6 +28,36 @@ angular.module('dictApp',
     ['$scope', '$q', '$timeout', '$interval', 'AquesService', 'IntroService', 'KindList',
     function($scope, $q, $timeout, $interval, AquesService, IntroService, KindList) {
 
+    // menu
+    ipcRenderer().on('menu', (event, action: string) => {
+      switch (action) {
+        case 'add':
+          document.getElementById('append-record').click();
+          $timeout(() => { $scope.$apply(); });
+          break;
+        case 'delete':
+          document.getElementById('delete-record').click();
+          $timeout(() => { $scope.$apply(); });
+          break;
+        case 'save':
+          document.getElementById('save').click();
+          break;
+        case 'cancel':
+          document.getElementById('cancel').click();
+          break;
+        case 'export':
+          document.getElementById('export').click();
+          break;
+        case 'reset':
+          ctrl.reset();
+          break;
+        case 'tutorial':
+          document.getElementById('tutorial').click();
+          $timeout(() => { $scope.$apply(); });
+          break;
+      }
+    });
+
     // init
     const ctrl = this;
     $scope.isInEditing = false;

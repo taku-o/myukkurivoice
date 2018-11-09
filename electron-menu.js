@@ -108,11 +108,6 @@ function initAppMenu(options) {
                     accelerator: 'Command+S',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'record'); }
                 },
-                { type: 'separator' },
-                {
-                    label: '辞書ツール',
-                    click: function () { myApp.mainWindow.webContents.send('menu', 'dictionary'); }
-                },
             ]
         },
         {
@@ -154,35 +149,18 @@ function initAppMenu(options) {
             ]
         },
         {
-            label: '表示',
-            submenu: [
-                { role: 'reload' },
-                { type: 'separator' },
-                { role: 'resetzoom' },
-                { role: 'zoomin' },
-                { role: 'zoomout' },
-                { type: 'separator' },
-                { role: 'togglefullscreen' },
-            ]
-        },
-        {
-            label: 'ウインドウ',
+            label: 'ウィンドウ',
             submenu: [
                 {
                     label: '前面表示固定切替',
                     click: function () { myApp.switchAlwaysOnTop(); }
                 },
                 { type: 'separator' },
-                {
-                    label: 'Minimize',
-                    accelerator: 'CmdOrCtrl+M',
-                    role: 'minimize'
-                },
-                {
-                    label: 'Zoom',
-                    role: 'zoom'
-                },
-                { type: 'separator' },
+                { role: 'reload' },
+                { role: 'zoomin' },
+                { role: 'zoomout' },
+                { role: 'resetzoom' },
+                { role: 'togglefullscreen' },
                 {
                     label: 'Bring All to Front',
                     role: 'front'
@@ -191,6 +169,60 @@ function initAppMenu(options) {
                 {
                     label: 'ウインドウ位置リセット',
                     click: function () { myApp.resetWindowPosition(); }
+                },
+            ]
+        },
+        {
+            label: '辞書',
+            submenu: [
+                {
+                    label: '辞書ツール',
+                    click: function () { myApp.showDictWindow(); }
+                },
+                {
+                    id: 'dict-tutorial',
+                    enabled: false,
+                    label: '辞書チュートリアル',
+                    click: function () { myApp.dictWindow.webContents.send('menu', 'tutorial'); }
+                },
+                { type: 'separator' },
+                {
+                    id: 'dict-add',
+                    enabled: false,
+                    label: '定義データ追加',
+                    click: function () { myApp.dictWindow.webContents.send('menu', 'add'); }
+                },
+                {
+                    id: 'dict-delete',
+                    enabled: false,
+                    label: '定義データ削除',
+                    click: function () { myApp.dictWindow.webContents.send('menu', 'delete'); }
+                },
+                { type: 'separator' },
+                {
+                    id: 'dict-save',
+                    enabled: false,
+                    label: '保存',
+                    click: function () { myApp.dictWindow.webContents.send('menu', 'save'); }
+                },
+                {
+                    id: 'dict-cancel',
+                    enabled: false,
+                    label: 'キャンセル',
+                    click: function () { myApp.dictWindow.webContents.send('menu', 'cancel'); }
+                },
+                {
+                    id: 'dict-export',
+                    enabled: false,
+                    label: 'エクスポート',
+                    click: function () { myApp.dictWindow.webContents.send('menu', 'export'); }
+                },
+                { type: 'separator' },
+                {
+                    id: 'dict-reset',
+                    enabled: false,
+                    label: '辞書オールリセット',
+                    click: function () { myApp.dictWindow.webContents.send('menu', 'reset'); }
                 },
             ]
         },
@@ -251,6 +283,10 @@ function initDockMenu() {
         {
             label: 'ヘルプ',
             click: function () { myApp.showHelpWindow(); }
+        },
+        {
+            label: '辞書ツール',
+            click: function () { myApp.showDictWindow(); }
         },
         {
             label: 'ウインドウ位置リセット',

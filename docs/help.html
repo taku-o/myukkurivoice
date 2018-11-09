@@ -780,15 +780,22 @@
         aq_user.dic、aqdic.binが、MYukkuriVoiceで使用している辞書データで、
         aq_user.csvには編集中の辞書データがCSV形式で入っています。<br>
         <br>
-        このaq_user.csvをテキストエディタで変更した後、
-        辞書機能でExportすることでも、辞書データは更新できます。
+        ユーザー辞書が無い場合は、アプリに組み込まれたデフォルトの辞書データを利用します。
+        よって、辞書の状態がおかしいときは、ユーザー辞書ファイルを消せば元の状態に戻ります。
       </p>
 
-      <h4>ユーザー辞書のクリア</h4>
+      <h4>ユーザー辞書のリセット</h4>
       <p>
-        ユーザー辞書が無い場合は、アプリに組み込まれたデフォルトの辞書データを利用するので、
-        辞書の状態がおかしいときは、ユーザー辞書ファイルを消せば元の状態に戻ります。<br>
-        <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict<span class="icon icon-folder"></span></a>
+        メニューの「辞書オールリセット」を選択すると、
+        マスターの辞書で、編集データを上書きします。<br>
+        この操作をすることでユーザー辞書は更新されませんが、
+        編集中のデータ(aq_user.csv)は初期化されてしまいますので、ご注意ください。
+      </p>
+
+      <h4>一括で辞書データを登録・編集したい場合</h4>
+      <p>
+        次の場所にあるaq_user.csvをテキストエディタで直接編集してください。<br>
+        <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict/aq_user.csv<span class="icon icon-folder"></span></a><br>
       </p>
     </div>
   </div>
