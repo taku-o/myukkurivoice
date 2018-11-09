@@ -21,7 +21,12 @@ angular.module('dictAquesService', [])
         var fn_AqUsrDic_GetLastError = ffi().ForeignFunction(ptr_AqUsrDic_GetLastError, 'string', []);
         return {
             generateUserDict: function (inCsvPath, outUserDicPath) {
-                fs().closeSync(fs().openSync(outUserDicPath, 'a+')); // create with 644 permission.
+                try {
+                    fs().chmodSync(outUserDicPath, 420); // chmod 644 if exists
+                }
+                catch (err) {
+                    fs().closeSync(fs().openSync(outUserDicPath, 'a+')); // create with 644 permission.
+                }
                 var result = fn_AqUsrDic_Import(outUserDicPath, inCsvPath);
                 if (result == 0) {
                     return { success: true, message: null };

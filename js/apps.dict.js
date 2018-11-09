@@ -241,6 +241,7 @@ angular.module('dictApp', ['dictModel', 'dictService',
         };
         ctrl.cancel = function () {
             return this.loadCsv().then(function (records) {
+                $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
                 $scope.gridOptions.data = records;
                 ctrl.clearInEditing();
                 $scope.message = 'cancel, and reload working records.';
@@ -295,12 +296,21 @@ angular.module('dictApp', ['dictModel', 'dictService',
             var d = $q.defer();
             $scope.gridApi.rowEdit.flushDirtyRows($scope.gridApi.grid).then(function () {
                 var errorRows = $scope.gridApi.rowEdit.getErrorRows($scope.gridApi.grid);
-                if (errorRows.length > 0) {
-                    d.reject(new Error('error data found.'));
-                }
-                else {
+                if (errorRows.length < 1) {
                     d.resolve(true);
+                    return;
                 }
+                // check errorRows that is really error ?
+                for (var _i = 0, errorRows_1 = errorRows; _i < errorRows_1.length; _i++) {
+                    var row = errorRows_1[_i];
+                    if (row.error) {
+                        d.reject(new Error('error data found.'));
+                        return;
+                    }
+                }
+                // fix error rows to clean.
+                $scope.gridApi.rowEdit.setRowsClean(errorRows);
+                d.resolve(true);
             })["catch"](function (err) {
                 d.reject(err);
             });

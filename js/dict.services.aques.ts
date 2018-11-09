@@ -24,7 +24,11 @@ angular.module('dictAquesService', [])
 
     return {
       generateUserDict: function(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string} {
-        fs().closeSync(fs().openSync(outUserDicPath, 'a+')); // create with 644 permission.
+        try {
+          fs().chmodSync(outUserDicPath, 0o644); // chmod 644 if exists
+        } catch (err) {
+          fs().closeSync(fs().openSync(outUserDicPath, 'a+')); // create with 644 permission.
+        }
         const result = fn_AqUsrDic_Import(outUserDicPath, inCsvPath);
         if (result == 0) {
           return {success:true, message:null};

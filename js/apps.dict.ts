@@ -248,6 +248,7 @@ angular.module('dictApp',
     };
     ctrl.cancel = function(): ng.IPromise<boolean> {
       return this.loadCsv().then((records) => {
+        $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
         $scope.gridOptions.data = records;
         ctrl.clearInEditing();
         $scope.message = 'cancel, and reload working records.';
@@ -301,11 +302,19 @@ angular.module('dictApp',
       const d = $q.defer();
       $scope.gridApi.rowEdit.flushDirtyRows($scope.gridApi.grid).then(() => {
         const errorRows = $scope.gridApi.rowEdit.getErrorRows($scope.gridApi.grid);
-        if (errorRows.length > 0) {
-          d.reject(new Error('error data found.'));
-        } else {
-          d.resolve(true);
+        if (errorRows.length < 1) {
+          d.resolve(true); return;
         }
+        // check errorRows that is really error ?
+        for (let row of errorRows) {
+          if (row.error) {
+            d.reject(new Error('error data found.'));
+            return;
+          }
+        }
+        // fix error rows to clean.
+        $scope.gridApi.rowEdit.setRowsClean(errorRows);
+        d.resolve(true);
       })
       .catch((err: Error) => {
         d.reject(err);
