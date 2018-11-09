@@ -769,19 +769,19 @@
       <h4>ユーザー辞書の書き出し・反映</h4>
       <p>
         Exportボタンで、ユーザー辞書を更新します。<br>
-        辞書データはMYukkuriVoiceアプリの画面を更新するまで反映されません。
+        ユーザー辞書はMYukkuriVoiceアプリの画面を更新するまで反映されません。
       </p>
 
       <h4>ユーザー辞書の場所</h4>
       <p>
-        ユーザー辞書は次の場所にあります。<br>
+        ユーザー辞書のファイルは次の場所に置いてあります。<br>
         <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict<span class="icon icon-folder"></span></a><br>
         <br>
         aq_user.dic、aqdic.binが、MYukkuriVoiceで使用している辞書データで、
-        aq_user.csvには編集中の辞書データがCSV形式で入っています。<br>
+        aq_user.csvには編集中の辞書のデータがCSV形式で入っています。<br>
         <br>
-        ユーザー辞書が無い場合は、アプリに組み込まれたデフォルトの辞書データを利用します。
-        よって、辞書の状態がおかしいときは、ユーザー辞書ファイルを消せば元の状態に戻ります。
+        ユーザー辞書のファイルが存在しない場合は、アプリに組み込まれたデフォルトの辞書を利用します。
+        よって、辞書の状態がおかしいときは、ユーザー辞書のファイルを消せばクリーンな状態に戻ります。
       </p>
 
       <h4>ユーザー辞書のリセット</h4>
@@ -792,7 +792,7 @@
         編集中のデータ(aq_user.csv)は初期化されてしまいますので、ご注意ください。
       </p>
 
-      <h4>一括で辞書データを登録・編集したい場合</h4>
+      <h4>一括でユーザー辞書のデータを登録・編集したい場合</h4>
       <p>
         次の場所にあるaq_user.csvをテキストエディタで直接編集してください。<br>
         <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict/aq_user.csv<span class="icon icon-folder"></span></a><br>

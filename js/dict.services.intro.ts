@@ -8,19 +8,15 @@ angular.module('dictIntroService', [])
           steps: [
             {
               element: '#grid',
-              intro: 'このツールはMYukkuriVoiceアプリ用のカスタム辞書編集ツールです。',
+              intro: 'このツールはMYukkuriVoiceアプリ用のユーザー辞書編集ツールです。MYukkuriVoiceアプリでのメッセージの変換に利用される辞書を編集できます。',
             },
             {
               element: '#grid',
-              intro: 'この表にはカスタム辞書のデータが表示されます。この辞書データはMYukkuriVoiceアプリでのメッセージの変換で利用されます。',
-            },
-            {
-              element: '#grid',
-              intro: 'この表のデータは、セルをダブルクリックすると編集できます。',
+              intro: 'この表にはユーザー辞書のデータが表示されます。表はセルを選択すると直接データを編集できます。',
             },
             {
               element: '#append-record',
-              intro: 'これらのボタンで辞書のデータを増やしたり、減らしたりできます。',
+              intro: 'これらのボタンでユーザー辞書のデータを増やしたり、減らしたりできます。',
             },
             {
               element: '#save',
@@ -28,11 +24,16 @@ angular.module('dictIntroService', [])
             },
             {
               element: '#export',
-              intro: 'MYukkuriVoiceアプリのカスタム辞書を更新するにはこのボタンを押します。辞書はMYukkuriVoiceアプリのメイン画面をリロードすると読み込まれます。',
+              intro: 'MYukkuriVoiceアプリのユーザー辞書を更新するにはこのボタンを押します。',
             },
             {
+              element: '#reload',
+              intro: 'ユーザー辞書はMYukkuriVoiceアプリを再起動するか、メイン画面をリロードすると読み込まれます。',
+            },
+
+            {
               element: '#footer',
-              intro: 'この辞書アプリで何かしら問題が発生すると、フッターにメッセージが表示されます。',
+              intro: '辞書ツールで何かしら問題が発生すると、フッターにメッセージが表示されます。',
             },
             {
               element: '#tutorial',

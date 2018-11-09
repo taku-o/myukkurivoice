@@ -106,17 +106,17 @@ angular.module('dictApp',
 
     $scope.gridOptions.columnDefs = [
       {
-        name: 'source', displayName: '表記', enableCellEdit: true,
+        name: 'source', displayName: '表記', enableCellEdit: true, enableCellEditOnFocus: true,
         field: 'source', enableFiltering: true,
         enableHiding: false, enableColumnMenu: true,
       },
       {
-        name: 'encoded', displayName: '読み', enableCellEdit: true,
+        name: 'encoded', displayName: '読み', enableCellEdit: true, enableCellEditOnFocus: true,
         field: 'encoded', enableFiltering: true,
         enableHiding: false, enableColumnMenu: true,
       },
       {
-        name: 'kind', displayName: '品詞', editableCellTemplate: 'ui-grid/dropdownEditor',
+        name: 'kind', displayName: '品詞', editableCellTemplate: 'ui-grid/dropdownEditor', enableCellEditOnFocus: true,
         cellFilter: 'mapKind', editDropdownValueLabel: 'kind', editDropdownOptionsArray: KindList,
         field: 'kind', enableFiltering: false,
         enableHiding: false, enableColumnMenu: true,
@@ -198,7 +198,7 @@ angular.module('dictApp',
           kind: '0',
         };
         $scope.gridOptions.data.splice(index, 0, newrow);
-        $scope.message = 'insert new record.';
+        $scope.message = '新規レコードを作業データに挿入しました。';
         $interval(() => { $scope.gridApi.rowEdit.setRowsDirty([newrow]); }, 0, 1);
       } else {
         const newrow = {
@@ -207,12 +207,12 @@ angular.module('dictApp',
           kind: '0',
         };
         $scope.gridOptions.data.unshift(newrow);
-        $scope.message = 'add new record.';
+        $scope.message = '新規レコードを作業データに追加しました。';
         $interval(() => { $scope.gridApi.rowEdit.setRowsDirty([newrow]); }, 0, 1);
       }
     };
     ctrl.delete = function(): void {
-      if ($scope.gridApi.selection.getSelectedRows()) {
+      if ($scope.gridApi.selection.getSelectedRows().length > 0) {
         ctrl.toIsInEditing();
         const rows = $scope.gridApi.selection.getSelectedRows();
         for (let row of rows) {
@@ -220,9 +220,9 @@ angular.module('dictApp',
           $scope.gridOptions.data.splice(index, 1);
         }
         $scope.gridApi.rowEdit.setRowsClean(rows);
-        $scope.message = 'delete selected records.';
+        $scope.message = 'レコードを削除しました。';
       } else {
-        $scope.message = 'no record are selected. can not delete data.';
+        $scope.message = 'エラー。削除対象のレコードが選択されていません。';
       }
     };
 
@@ -238,11 +238,11 @@ angular.module('dictApp',
         });
         fs().writeFileSync(`${mAppDictDir}/aq_user.csv`, data);
         ctrl.clearInEditing();
-        $scope.message = 'save records, DONE.';
+        $scope.message = '作業データを保存しました。';
         $timeout(() => { $scope.$apply(); });
       })
       .catch((err: Error) => {
-        $scope.message = 'error data are found. can not save data, until fix these.';
+        $scope.message = 'エラー。不正な作業データが残っています。修正するまで保存できません。';
         $timeout(() => { $scope.$apply(); });
       });
     };
@@ -251,7 +251,7 @@ angular.module('dictApp',
         $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
         $scope.gridOptions.data = records;
         ctrl.clearInEditing();
-        $scope.message = 'cancel, and reload working records.';
+        $scope.message = '保存していない編集中の作業データを取り消しました。';
         $timeout(() => { $scope.$apply(); });
         return true;
       });
@@ -271,12 +271,12 @@ angular.module('dictApp',
             $timeout(() => { $scope.$apply(); });
             return;
           }
-          $scope.message = 'export user dictionary, DONE.';
+          $scope.message = 'ユーザー辞書を更新しました。';
           $timeout(() => { $scope.$apply(); });
         });
       })
       .catch((err: Error) => {
-        $scope.message = 'error data are found. can not export data, until fix these.';
+        $scope.message = 'エラー。不正な作業データが残っています。修正するまでエクスポートできません。';
         $timeout(() => { $scope.$apply(); });
       });
     };
@@ -289,7 +289,7 @@ angular.module('dictApp',
         $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
         $scope.gridOptions.data = records;
         ctrl.clearInEditing();
-        $scope.message = 'reset working records with master dictionary data.';
+        $scope.message = 'マスター辞書データで作業データをリセットしました。';
         $timeout(() => { $scope.$apply(); });
         d.resolve(true);
       });
@@ -297,6 +297,7 @@ angular.module('dictApp',
     };
     ctrl.reload = function(): void {
       ipcRenderer().send('reloadMainWindow', 'reload');
+      $scope.message = 'MYukkuriVoiceのメイン画面を更新します。';
     };
     this.validateData = function(): ng.IPromise<boolean> {
       const d = $q.defer();
