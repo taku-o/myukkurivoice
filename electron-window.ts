@@ -226,9 +226,6 @@ function showDictWindow(): void {
   localShortcut().register(this.dictWindow, 'Command+Q', () => {
     app.quit();
   });
-  localShortcut().register(this.dictWindow, 'Command+W', () => {
-    // disable c+w
-  });
 
   // window event
   this.dictWindow.webContents.on('did-finish-load', () => {
