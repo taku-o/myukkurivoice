@@ -231,7 +231,19 @@ function showDictWindow() {
         electron_1.app.quit();
     });
     localShortcut().register(this.dictWindow, 'Command+W', function () {
-        // disable c+w
+        if (myApp.dictWindow) {
+            myApp.dictWindow.close();
+        }
+    });
+    localShortcut().register(this.dictWindow, 'Command+S', function () {
+        if (myApp.dictWindow) {
+            myApp.dictWindow.webContents.send('shortcut', 'save');
+        }
+    });
+    localShortcut().register(this.dictWindow, 'Command+N', function () {
+        if (myApp.dictWindow) {
+            myApp.dictWindow.webContents.send('shortcut', 'add');
+        }
     });
     // window event
     this.dictWindow.webContents.on('did-finish-load', function () {
@@ -254,6 +266,7 @@ function showDictWindow() {
 }
 exports.showDictWindow = showDictWindow;
 var dictMenuItems = [
+    'dict-close',
     'dict-tutorial',
     'dict-add',
     'dict-delete',

@@ -52,6 +52,18 @@ angular.module('dictApp', ['dictModel', 'dictService',
                     break;
             }
         });
+        // shortcut
+        ipcRenderer().on('shortcut', function (event, action) {
+            switch (action) {
+                case 'add':
+                    document.getElementById('append-record').click();
+                    $timeout(function () { $scope.$apply(); });
+                    break;
+                case 'save':
+                    document.getElementById('save').click();
+                    break;
+            }
+        });
         // init
         var ctrl = this;
         $scope.isInEditing = false;

@@ -57,6 +57,18 @@ angular.module('dictApp',
           break;
       }
     });
+    // shortcut
+    ipcRenderer().on('shortcut', (event, action: string) => {
+      switch (action) {
+        case 'add':
+          document.getElementById('append-record').click();
+          $timeout(() => { $scope.$apply(); });
+          break;
+        case 'save':
+          document.getElementById('save').click();
+          break;
+      }
+    });
 
     // init
     const ctrl = this;

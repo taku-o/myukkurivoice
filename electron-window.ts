@@ -226,6 +226,15 @@ function showDictWindow(): void {
   localShortcut().register(this.dictWindow, 'Command+Q', () => {
     app.quit();
   });
+  localShortcut().register(this.dictWindow, 'Command+W', () => {
+    if (myApp.dictWindow) { myApp.dictWindow.close(); }
+  });
+  localShortcut().register(this.dictWindow, 'Command+S', () => {
+    if (myApp.dictWindow) { myApp.dictWindow.webContents.send('shortcut', 'save'); }
+  });
+  localShortcut().register(this.dictWindow, 'Command+N', () => {
+    if (myApp.dictWindow) { myApp.dictWindow.webContents.send('shortcut', 'add'); }
+  });
 
   // window event
   this.dictWindow.webContents.on('did-finish-load', () => {
@@ -246,6 +255,7 @@ function showDictWindow(): void {
   });
 }
 const dictMenuItems = [
+  'dict-close',
   'dict-tutorial',
   'dict-add',
   'dict-delete',
