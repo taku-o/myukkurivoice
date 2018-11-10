@@ -202,7 +202,6 @@ function showDictWindow(): void {
   const myApp = this;
   if (this.dictWindow && !this.dictWindow.isDestroyed()) {
     this.dictWindow.show(); this.dictWindow.focus();
-    enableDictMenu();
     return;
   }
 
@@ -239,13 +238,18 @@ function showDictWindow(): void {
   // window event
   this.dictWindow.webContents.on('did-finish-load', () => {
     myApp.dictWindow.show(); myApp.dictWindow.focus();
-    enableDictMenu();
   });
   this.dictWindow.on('close', () => {
     disableDictMenu();
   });
   this.dictWindow.on('closed', () => {
     myApp.dictWindow = null;
+  });
+  this.dictWindow.on('focus', () => {
+    enableDictMenu();
+  });
+  this.dictWindow.on('blur', () => {
+    disableDictMenu();
   });
   this.dictWindow.on('unresponsive', () => {
     log().warn('main:event:unresponsive');

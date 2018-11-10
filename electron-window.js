@@ -208,7 +208,6 @@ function showDictWindow() {
     if (this.dictWindow && !this.dictWindow.isDestroyed()) {
         this.dictWindow.show();
         this.dictWindow.focus();
-        enableDictMenu();
         return;
     }
     var _a = this.appCfg.dictWindow, width = _a.width, height = _a.height;
@@ -249,13 +248,18 @@ function showDictWindow() {
     this.dictWindow.webContents.on('did-finish-load', function () {
         myApp.dictWindow.show();
         myApp.dictWindow.focus();
-        enableDictMenu();
     });
     this.dictWindow.on('close', function () {
         disableDictMenu();
     });
     this.dictWindow.on('closed', function () {
         myApp.dictWindow = null;
+    });
+    this.dictWindow.on('focus', function () {
+        enableDictMenu();
+    });
+    this.dictWindow.on('blur', function () {
+        disableDictMenu();
     });
     this.dictWindow.on('unresponsive', function () {
         log().warn('main:event:unresponsive');
