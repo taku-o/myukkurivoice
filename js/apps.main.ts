@@ -195,9 +195,13 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           $scope.yvoiceList = dataList;
           $scope.yvoice = $scope.yvoiceList[0];
           $timeout(() => { $scope.$apply(); });
+          // initialize AquesService
+          AquesService.init();
         },
         (err) => {
           MessageService.error('初期データの読み込みでエラーが起きました。', err);
+          // initialize AquesService
+          AquesService.init();
         }
       );
     }

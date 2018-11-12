@@ -193,21 +193,23 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
             }
             aqDictPath = customDictPath;
         });
-        // get developer key in background.
-        // delay loading. UI表示で必要な処理を優先させる。
         var aqKanji2KoeDevKey = null;
         var aquesTalk10DevKey = null;
-        $timeout(function () {
-            LicenseService.consumerKey('aqKanji2KoeDevKey').then(function (licenseKey) {
-                aqKanji2KoeDevKey = licenseKey;
-            });
-            LicenseService.consumerKey('aquesTalk10DevKey').then(function (licenseKey) {
-                aquesTalk10DevKey = licenseKey;
-            });
-        }, (process.env.NODE_ENV == 'test' ? 0 : 1000));
         var _isAqKanji2KoeDevkeySet = false;
         var _isAquesTalk10LicensekeySet = false;
         return {
+            // get developer key in background.
+            // delay loading. UI表示で必要な処理の後に呼ぶ
+            init: function () {
+                $timeout(function () {
+                    LicenseService.consumerKey('aqKanji2KoeDevKey').then(function (licenseKey) {
+                        aqKanji2KoeDevKey = licenseKey;
+                    });
+                    LicenseService.consumerKey('aquesTalk10DevKey').then(function (licenseKey) {
+                        aquesTalk10DevKey = licenseKey;
+                    });
+                });
+            },
             encode: function (source) {
                 if (!source) {
                     MessageService.syserror('音記号列に変換するメッセージが入力されていません。');

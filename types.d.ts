@@ -193,6 +193,7 @@ declare namespace yubo {
     getPhontList(): yubo.YPhont[];
   }
   export interface AquesService {
+    init(): void;
     encode(source: string): string;
     wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any>;
   }

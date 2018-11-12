@@ -22,6 +22,7 @@ angular.module('yvoiceSpec',
 
     // init
     const ctrl = this;
+    AquesService.init();
 
     // YPhontList
     ctrl.getYPhontList = function(): void {
