@@ -54,6 +54,8 @@ describe('specWindow-service-AquesService', function () {
     it('encode with custom dictionary', function () {
         fs.mkdirSync(dirPath + "/userdict");
         var customDictPath = path.dirname(__dirname) + "/vendor/test/aq_dic_large";
+        fs.closeSync(fs.openSync(dirPath + "/userdict/aqdic.bin", 'a+')); // create with 644 permission.
+        fs.closeSync(fs.openSync(dirPath + "/userdict/aq_user.dic", 'a+')); // create with 644 permission.
         fs.writeFileSync(dirPath + "/userdict/aqdic.bin", fs.readFileSync(customDictPath + "/aqdic.bin"));
         fs.writeFileSync(dirPath + "/userdict/aq_user.dic", fs.readFileSync(customDictPath + "/aq_user.dic"));
         return this.client
