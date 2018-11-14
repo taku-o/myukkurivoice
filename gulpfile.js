@@ -235,7 +235,7 @@ gulp.task('clean', ['_rm-package', '_rm-workdir']);
 gulp.task('test', (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('tsc', '_rm-package', '_package-debug', '_test', '_notify', (err) => {
+      runSequence('tsc', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
         if (err) { _notifyError(); }
         cb(err);
       });
@@ -248,7 +248,7 @@ gulp.task('test', (cb) => {
   });
 });
 gulp.task('test-rebuild', (cb) => {
-  runSequence('tsc', '_rm-package', '_package-debug', '_test', '_notify', (err) => {
+  runSequence('tsc', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
     if (err) { _notifyError(); }
     cb(err);
   });
@@ -269,7 +269,7 @@ gulp.task('app', ['tsc'], (cb) => {
 // package
 gulp.task('package', (cb) => {
   runSequence(
-    'tsc', '_rm-package', '_package-debug', '_notify',
+    'tsc', '_rm-package', '_package-debug', '_unpacked', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -332,20 +332,22 @@ gulp.task('_unpacked', (cb) => {
   });
 });
 gulp.task('_unpacked:mkdir', (cb) => {
-  mkdirp(`${WORK_UNPACK_DIR}/vendor`, (err) => {
+  const UNPACK_DIR = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
+  mkdirp(`${UNPACK_DIR}/vendor`, (err) => {
     cb(err);
   });
 });
 gulp.task('_unpacked:cp', (cb) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/AqKanji2Koe.framework`, `${WORK_UNPACK_DIR}/vendor/AqKanji2Koe.framework`, (err) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/AqUsrDic.framework`,    `${WORK_UNPACK_DIR}/vendor/AqUsrDic.framework`, (err) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/AquesTalk.framework`,   `${WORK_UNPACK_DIR}/vendor/AquesTalk.framework`, (err) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/AquesTalk2.framework`,  `${WORK_UNPACK_DIR}/vendor/AquesTalk2.framework`, (err) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/AquesTalk10.framework`, `${WORK_UNPACK_DIR}/vendor/AquesTalk10.framework`, (err) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/aq_dic_large`,          `${WORK_UNPACK_DIR}/vendor/aq_dic_large`, (err) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/phont`,                 `${WORK_UNPACK_DIR}/vendor/phont`, (err) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/maquestalk1`,           `${WORK_UNPACK_DIR}/vendor/maquestalk1`, (err) => {
-  fse.copy(`${WORK_REPO_DIR}/vendor/secret`,                `${WORK_UNPACK_DIR}/vendor/secret`, (err) => {
+  const UNPACK_DIR = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
+  fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`, (err) => {
+  fse.copy('vendor/AqUsrDic.framework',    `${UNPACK_DIR}/vendor/AqUsrDic.framework`, (err) => {
+  fse.copy('vendor/AquesTalk.framework',   `${UNPACK_DIR}/vendor/AquesTalk.framework`, (err) => {
+  fse.copy('vendor/AquesTalk2.framework',  `${UNPACK_DIR}/vendor/AquesTalk2.framework`, (err) => {
+  fse.copy('vendor/AquesTalk10.framework', `${UNPACK_DIR}/vendor/AquesTalk10.framework`, (err) => {
+  fse.copy('vendor/aq_dic_large',          `${UNPACK_DIR}/vendor/aq_dic_large`, (err) => {
+  fse.copy('vendor/phont',                 `${UNPACK_DIR}/vendor/phont`, (err) => {
+  fse.copy('vendor/maquestalk1',           `${UNPACK_DIR}/vendor/maquestalk1`, (err) => {
+  fse.copy('vendor/secret',                `${UNPACK_DIR}/vendor/secret`, (err) => {
     cb(err);
   });
   });
@@ -426,9 +428,9 @@ gulp.task('_package-release', (cb) => {
           --icon=icns/myukkurivoice.icns --overwrite --asar \
           --protocol-name=myukkurivoice --protocol=myukkurivoice \
           --extend-info=extend.plist \
-          --ignore="^/vendor" \
           --ignore="^/js/apps.spec.js" \
           --ignore="^/contents-spec.html" \
+          --ignore="^/vendor" \
           --ignore="^/MYukkuriVoice-darwin-x64" \
           --ignore="^/docs" \
           --ignore="^/extend.plist" \
@@ -592,9 +594,10 @@ gulp.task('_package-debug', (cb) => {
           --platform=darwin --arch=x64 \
           --app-version=${APP_VERSION} \
           --electron-version=${ELECTRON_VERSION} \
-          --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --icon=icns/myukkurivoice.icns --overwrite --asar \
           --protocol-name=myukkurivoice --protocol=myukkurivoice \
           --extend-info=extend.plist \
+          --ignore="^/vendor" \
           --ignore="^/MYukkuriVoice-darwin-x64" \
           --ignore="^/docs" \
           --ignore="^/extend.plist" \
