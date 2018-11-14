@@ -1,8 +1,5 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
-import * as rimraf from 'rimraf';
-import * as path from 'path';
-import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 

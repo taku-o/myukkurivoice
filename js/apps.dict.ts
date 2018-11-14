@@ -192,11 +192,11 @@ angular.module('dictApp',
     ctrl.toIsInEditing = function(): void {
       document.title = `* ${title}`;
       $scope.isInEditing = true;
-    }
+    };
     ctrl.clearInEditing = function(): void {
       document.title = `${title}`;
       $scope.isInEditing = false;
-    }
+    };
 
     // action
     ctrl.add = function(): void {

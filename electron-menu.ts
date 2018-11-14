@@ -233,7 +233,7 @@ function initAppMenu(options: {isDebug: boolean}): void {
           label: '辞書オールリセット',
           click() { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'reset'); } },
         },
-      ]
+      ],
     },
     {
       label: 'ヘルプ',
