@@ -63,19 +63,19 @@ function initAppMenu(options) {
             label: '音声',
             submenu: [
                 {
-                    label: 'メッセージ入力欄に移動',
-                    accelerator: 'Command+Up',
+                    label: 'メッセージ入力欄に移動 (⌘↑)',
+                    //accelerator: 'Command+Up',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'moveToSource'); }
                 },
                 {
-                    label: '音記号列入力欄に移動',
-                    accelerator: 'Command+Down',
+                    label: '音記号列入力欄に移動 (⌘↓)',
+                    //accelerator: 'Command+Down',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'moveToEncoded'); }
                 },
                 { type: 'separator' },
                 {
-                    label: '音記号列に変換',
-                    accelerator: 'Command+Right',
+                    label: '音記号列に変換 (⌘→)',
+                    //accelerator: 'Command+Right',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'encode'); }
                 },
                 {
@@ -83,29 +83,29 @@ function initAppMenu(options) {
                     click: function () { myApp.mainWindow.webContents.send('menu', 'clear'); }
                 },
                 {
-                    label: 'クリップボードからコピー',
-                    accelerator: 'Command+D',
+                    label: 'クリップボードからコピー (⌘D)',
+                    //accelerator: 'Command+D',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'fromClipboard'); }
                 },
                 {
-                    label: '選択中の声種プリセットを挿入',
-                    accelerator: 'Command+N',
+                    label: '選択中の声種プリセットを挿入 (⌘N)',
+                    //accelerator: 'Command+N',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'putVoiceName'); }
                 },
                 { type: 'separator' },
                 {
-                    label: '音声の再生',
-                    accelerator: 'Command+P',
+                    label: '音声の再生 (⌘P)',
+                    //accelerator: 'Command+P',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'play'); }
                 },
                 {
-                    label: '再生停止',
-                    accelerator: 'Command+W',
+                    label: '再生停止 (⌘W)',
+                    //accelerator: 'Command+W',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'stop'); }
                 },
                 {
-                    label: '音声の保存',
-                    accelerator: 'Command+S',
+                    label: '音声の保存 (⌘S)',
+                    //accelerator: 'Command+S',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'record'); }
                 },
             ]
@@ -132,13 +132,13 @@ function initAppMenu(options) {
                 },
                 { type: 'separator' },
                 {
-                    label: '次の設定に切り替え',
-                    accelerator: 'Command+Left',
+                    label: '次の設定に切り替え (⌘←)',
+                    //accelerator: 'Command+Left',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig'); }
                 },
                 {
-                    label: '前の設定に切り替え',
-                    accelerator: 'Command+Shift+Left',
+                    label: '前の設定に切り替え (⇧⌘←)',
+                    //accelerator: 'Command+Shift+Left',
                     click: function () { myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig'); }
                 },
                 { type: 'separator' },
@@ -149,35 +149,18 @@ function initAppMenu(options) {
             ]
         },
         {
-            label: '表示',
-            submenu: [
-                { role: 'reload' },
-                { type: 'separator' },
-                { role: 'resetzoom' },
-                { role: 'zoomin' },
-                { role: 'zoomout' },
-                { type: 'separator' },
-                { role: 'togglefullscreen' },
-            ]
-        },
-        {
-            label: 'ウインドウ',
+            label: 'ウィンドウ',
             submenu: [
                 {
                     label: '前面表示固定切替',
                     click: function () { myApp.switchAlwaysOnTop(); }
                 },
                 { type: 'separator' },
-                {
-                    label: 'Minimize',
-                    accelerator: 'CmdOrCtrl+M',
-                    role: 'minimize'
-                },
-                {
-                    label: 'Zoom',
-                    role: 'zoom'
-                },
-                { type: 'separator' },
+                { role: 'reload' },
+                { role: 'zoomin' },
+                { role: 'zoomout' },
+                { role: 'resetzoom' },
+                { role: 'togglefullscreen' },
                 {
                     label: 'Bring All to Front',
                     role: 'front'
@@ -186,6 +169,85 @@ function initAppMenu(options) {
                 {
                     label: 'ウインドウ位置リセット',
                     click: function () { myApp.resetWindowPosition(); }
+                },
+            ]
+        },
+        {
+            label: '辞書',
+            submenu: [
+                {
+                    label: '辞書ツール',
+                    click: function () { myApp.showDictWindow(); }
+                },
+                {
+                    id: 'dict-close',
+                    enabled: false,
+                    label: '辞書を閉じる (⌘W)',
+                    //accelerator: 'Command+W',
+                    click: function () { if (myApp.dictWindow) {
+                        myApp.dictWindow.close();
+                    } }
+                },
+                {
+                    id: 'dict-tutorial',
+                    enabled: false,
+                    label: '辞書チュートリアル',
+                    click: function () { if (myApp.dictWindow) {
+                        myApp.dictWindow.webContents.send('menu', 'tutorial');
+                    } }
+                },
+                { type: 'separator' },
+                {
+                    id: 'dict-add',
+                    enabled: false,
+                    label: '定義データ追加 (⌘N)',
+                    //accelerator: 'Command+N',
+                    click: function () { if (myApp.dictWindow) {
+                        myApp.dictWindow.webContents.send('menu', 'add');
+                    } }
+                },
+                {
+                    id: 'dict-delete',
+                    enabled: false,
+                    label: '定義データ削除',
+                    click: function () { if (myApp.dictWindow) {
+                        myApp.dictWindow.webContents.send('menu', 'delete');
+                    } }
+                },
+                { type: 'separator' },
+                {
+                    id: 'dict-save',
+                    enabled: false,
+                    label: '保存 (⌘S)',
+                    //accelerator: 'Command+S',
+                    click: function () { if (myApp.dictWindow) {
+                        myApp.dictWindow.webContents.send('menu', 'save');
+                    } }
+                },
+                {
+                    id: 'dict-cancel',
+                    enabled: false,
+                    label: 'キャンセル',
+                    click: function () { if (myApp.dictWindow) {
+                        myApp.dictWindow.webContents.send('menu', 'cancel');
+                    } }
+                },
+                {
+                    id: 'dict-export',
+                    enabled: false,
+                    label: 'エクスポート',
+                    click: function () { if (myApp.dictWindow) {
+                        myApp.dictWindow.webContents.send('menu', 'export');
+                    } }
+                },
+                { type: 'separator' },
+                {
+                    id: 'dict-reset',
+                    enabled: false,
+                    label: '辞書オールリセット',
+                    click: function () { if (myApp.dictWindow) {
+                        myApp.dictWindow.webContents.send('menu', 'reset');
+                    } }
                 },
             ]
         },
@@ -246,6 +308,10 @@ function initDockMenu() {
         {
             label: 'ヘルプ',
             click: function () { myApp.showHelpWindow(); }
+        },
+        {
+            label: '辞書ツール',
+            click: function () { myApp.showDictWindow(); }
         },
         {
             label: 'ウインドウ位置リセット',

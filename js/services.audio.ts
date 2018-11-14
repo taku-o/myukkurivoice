@@ -13,7 +13,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
         const d = $q.defer();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
-          d.reject(null); return d.promise;
+          d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
         }
         if (!parallel) {
           if (audio) { audio.pause(); }
@@ -23,7 +23,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
         temp().open(fsprefix, (err: Error, info) => {
           if (err) {
             MessageService.syserror('一時作業ファイルを作れませんでした。', err);
-            d.reject(null); return;
+            d.reject(err); return;
           }
 
           fs().writeFile(info.path, bufWav, (err: Error) => {
@@ -57,11 +57,11 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
         const d = $q.defer();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
-          d.reject(null); return d.promise;
+          d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
         }
         if (!bufWav) {
           MessageService.syserror('保存する音源が渡されませんでした。');
-          d.reject(null); return d.promise;
+          d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
         }
 
         fs().writeFile(wavFilePath, bufWav, (err: Error) => {
@@ -96,7 +96,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
         const d = $q.defer();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
-          d.reject(null); return d.promise;
+          d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
         }
         if (!parallel) {
           if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
@@ -161,11 +161,11 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
         const d = $q.defer();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
-          d.reject(null); return d.promise;
+          d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
         }
         if (!bufWav) {
           MessageService.syserror('保存する音源が渡されませんでした。');
-          d.reject(null); return d.promise;
+          d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
         }
 
         const aBuffer = toArrayBuffer(bufWav);

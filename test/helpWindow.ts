@@ -39,7 +39,7 @@ describe('helpWindow', function() {
         assert.equal(response.value.length, 8);
       })
       .elements('.nav-group-item.functions-item').then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 9);
+        assert.equal(response.value.length, 10);
       });
   });
 
@@ -88,6 +88,9 @@ describe('helpWindow', function() {
         assert.ok(! isVisible);
       })
       .isVisible('#multivoice-pane').then((isVisible: boolean) => {
+        assert.ok(! isVisible);
+      })
+      .isVisible('#dictionary-pane').then((isVisible: boolean) => {
         assert.ok(! isVisible);
       })
       .isVisible('#shortcut-pane').then((isVisible: boolean) => {
@@ -154,6 +157,10 @@ describe('helpWindow', function() {
       })
       .click('#menu-multivoice')
       .isVisible('#multivoice-pane').then((isVisible: boolean) => {
+        assert.ok(isVisible);
+      })
+      .click('#menu-dictionary')
+      .isVisible('#dictionary-pane').then((isVisible: boolean) => {
         assert.ok(isVisible);
       })
       .click('#menu-shortcut')

@@ -4,6 +4,7 @@ const eslint = require('gulp-eslint');
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 const fs = require('fs');
+const fse = require('fs-extra');
 const git = require('gulp-git');
 const gulp = require('gulp');
 const install = require('gulp-install');
@@ -27,6 +28,7 @@ const ELECTRON_CMD = 'DEBUG=1 '+ __dirname+ '/node_modules/.bin/electron';
 const PACKAGER_CMD = __dirname+ '/node_modules/.bin/electron-packager';
 const WORK_DIR = __dirname+ '/release';
 const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
+const WORK_UNPACK_DIR = __dirname+ '/release/myukkurivoice/MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
 const ELECTRON_VERSION = '1.8.8';
@@ -233,7 +235,7 @@ gulp.task('clean', ['_rm-package', '_rm-workdir']);
 gulp.task('test', (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('tsc', '_rm-package', '_package-debug', '_test', '_notify', (err) => {
+      runSequence('tsc', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
         if (err) { _notifyError(); }
         cb(err);
       });
@@ -246,7 +248,7 @@ gulp.task('test', (cb) => {
   });
 });
 gulp.task('test-rebuild', (cb) => {
-  runSequence('tsc', '_rm-package', '_package-debug', '_test', '_notify', (err) => {
+  runSequence('tsc', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
     if (err) { _notifyError(); }
     cb(err);
   });
@@ -267,7 +269,7 @@ gulp.task('app', ['tsc'], (cb) => {
 // package
 gulp.task('package', (cb) => {
   runSequence(
-    'tsc', '_rm-package', '_package-debug', '_notify',
+    'tsc', '_rm-package', '_package-debug', '_unpacked', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -283,7 +285,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', 'doc', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -299,7 +301,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    '_rm-package', '_package-release', 'doc', '_zip-app', '_open-appdir', '_notify',
+    '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -322,6 +324,42 @@ gulp.task('_ch-workdir', () => {
   process.chdir(WORK_DIR);
 });
 
+// app.asar.unpacked
+gulp.task('_unpacked', (cb) => {
+  runSequence('_unpacked:mkdir', '_unpacked:cp', (err) => {
+    if (err) { _notifyError(); }
+    cb(err);
+  });
+});
+gulp.task('_unpacked:mkdir', (cb) => {
+  const UNPACK_DIR = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
+  mkdirp(`${UNPACK_DIR}/vendor`, (err) => {
+    cb(err);
+  });
+});
+gulp.task('_unpacked:cp', (cb) => {
+  const UNPACK_DIR = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
+  fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`, (err) => {
+  fse.copy('vendor/AqUsrDic.framework',    `${UNPACK_DIR}/vendor/AqUsrDic.framework`, (err) => {
+  fse.copy('vendor/AquesTalk.framework',   `${UNPACK_DIR}/vendor/AquesTalk.framework`, (err) => {
+  fse.copy('vendor/AquesTalk2.framework',  `${UNPACK_DIR}/vendor/AquesTalk2.framework`, (err) => {
+  fse.copy('vendor/AquesTalk10.framework', `${UNPACK_DIR}/vendor/AquesTalk10.framework`, (err) => {
+  fse.copy('vendor/aq_dic_large',          `${UNPACK_DIR}/vendor/aq_dic_large`, (err) => {
+  fse.copy('vendor/phont',                 `${UNPACK_DIR}/vendor/phont`, (err) => {
+  fse.copy('vendor/maquestalk1',           `${UNPACK_DIR}/vendor/maquestalk1`, (err) => {
+  fse.copy('vendor/secret',                `${UNPACK_DIR}/vendor/secret`, (err) => {
+    cb(err);
+  });
+  });
+  });
+  });
+  });
+  });
+  });
+  });
+  });
+});
+
 // git
 gulp.task('_git-clone', (cb) => {
   const opts = (argv && argv.branch)? {args: '-b '+argv.branch}: {args: '-b master'};
@@ -332,6 +370,8 @@ gulp.task('_git-clone', (cb) => {
 gulp.task('_git-submodule', (cb) => {
   git.updateSubmodule({ args: '--init' }, cb);
 });
+
+// repodir
 gulp.task('_ch-repodir', () => {
   process.chdir(WORK_REPO_DIR);
 });
@@ -385,14 +425,17 @@ gulp.task('_package-release', (cb) => {
           --platform=darwin --arch=x64 \
           --app-version=${APP_VERSION} \
           --electron-version=${ELECTRON_VERSION} \
-          --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --icon=icns/myukkurivoice.icns --overwrite --asar \
           --protocol-name=myukkurivoice --protocol=myukkurivoice \
           --extend-info=extend.plist \
           --ignore="^/js/apps.spec.js" \
           --ignore="^/contents-spec.html" \
+          --ignore="^/vendor" \
           --ignore="^/MYukkuriVoice-darwin-x64" \
           --ignore="^/docs" \
+          --ignore="^/extend.plist" \
           --ignore="^/icns" \
+          --ignore="^/release" \
           --ignore="^/test" \
           --ignore="^/vendor/aqk2k_mac" \
           --ignore="^/vendor/aqtk1-mac" \
@@ -413,11 +456,52 @@ gulp.task('_package-release', (cb) => {
           --ignore="/node_modules/photon/_config\\.yml$" \
           --ignore="/node_modules/photon/dist/template-app/" \
           --ignore="/node_modules/photon/fonts/" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.expandable.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-view.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.core.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.edit.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.infinite-scroll.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.importer.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.exporter.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pagination.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pagination.js$" \
+          --ignore="/node_modules/angular-ui-grid/less" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.expandable.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.grouping.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.move-columns.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-base.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.exporter.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.css$" \
+          --ignore="/node_modules/angular-ui-grid/index.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.auto-resize.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.cellnav.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.infinite-scroll.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-base.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.empty-base-layer.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.empty-base-layer.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.auto-resize.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.saveState.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.validate.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pinning.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/package.json$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-view.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pinning.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.row-edit.js$" \
+          --ignore="/node_modules/angular-ui-grid/i18n" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.selection.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.grouping.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.resize-columns.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.validate.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.importer.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.saveState.js$" \
           --ignore="/docs/" \
           --ignore="/example/" \
           --ignore="/examples/" \
           --ignore="/man/" \
           --ignore="/sample/" \
+          --ignore="/samples/" \
           --ignore="/test/" \
           --ignore="/tests/" \
           --ignore="/.+\\.Makefile$" \
@@ -510,12 +594,15 @@ gulp.task('_package-debug', (cb) => {
           --platform=darwin --arch=x64 \
           --app-version=${APP_VERSION} \
           --electron-version=${ELECTRON_VERSION} \
-          --icon=icns/myukkurivoice.icns --overwrite --asar.unpackDir=vendor \
+          --icon=icns/myukkurivoice.icns --overwrite --asar \
           --protocol-name=myukkurivoice --protocol=myukkurivoice \
           --extend-info=extend.plist \
+          --ignore="^/vendor" \
           --ignore="^/MYukkuriVoice-darwin-x64" \
           --ignore="^/docs" \
+          --ignore="^/extend.plist" \
           --ignore="^/icns" \
+          --ignore="^/release" \
           --ignore="^/test" \
           --ignore="^/vendor/aqk2k_mac" \
           --ignore="^/vendor/aqtk1-mac" \
@@ -536,11 +623,52 @@ gulp.task('_package-debug', (cb) => {
           --ignore="/node_modules/photon/_config\\.yml$" \
           --ignore="/node_modules/photon/dist/template-app/" \
           --ignore="/node_modules/photon/fonts/" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.expandable.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-view.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.core.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.edit.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.infinite-scroll.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.importer.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.exporter.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pagination.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pagination.js$" \
+          --ignore="/node_modules/angular-ui-grid/less" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.expandable.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.grouping.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-base.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.exporter.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.css$" \
+          --ignore="/node_modules/angular-ui-grid/index.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.auto-resize.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.cellnav.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.infinite-scroll.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-base.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.empty-base-layer.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.move-columns.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.empty-base-layer.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.auto-resize.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.saveState.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.validate.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pinning.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/package.json$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-view.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pinning.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.row-edit.js$" \
+          --ignore="/node_modules/angular-ui-grid/i18n" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.selection.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.grouping.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.resize-columns.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.validate.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.importer.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.saveState.js$" \
           --ignore="/docs/" \
           --ignore="/example/" \
           --ignore="/examples/" \
           --ignore="/man/" \
           --ignore="/sample/" \
+          --ignore="/samples/" \
           --ignore="/test/" \
           --ignore="/tests/" \
           --ignore="/.+\\.Makefile$" \

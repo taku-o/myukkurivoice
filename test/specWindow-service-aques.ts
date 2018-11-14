@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import * as rimraf from 'rimraf';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as temp from 'temp';
@@ -59,16 +60,23 @@ describe('specWindow-service-AquesService', function() {
 
   it('encode with custom dictionary', function() {
     fs.mkdirSync(`${dirPath}/userdict`);
-    const customDictPath = `${path.dirname(__dirname)}/vendor/aqk2k_mac/aq_dic_small`;
+    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
+    fs.closeSync(fs.openSync(`${dirPath}/userdict/aqdic.bin`, 'a+')); // create with 644 permission.
+    fs.closeSync(fs.openSync(`${dirPath}/userdict/aq_user.dic`, 'a+')); // create with 644 permission.
     fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
     fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
 
     return this.client
       // encode
-      .setValue('#source', 'test')
+      .setValue('#source', '百名山')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.equal(value, "テ'_スト");
+        assert.equal(value, 'モモナヤマ');
+      })
+      .setValue('#source', '味方さん')
+      .click('#encode')
+      .getValue('#encode-result').then((value: string) => {
+        assert.equal(value, 'アジカタサン');
       })
       // encode empty string
       .setValue('#source', '')
@@ -76,6 +84,10 @@ describe('specWindow-service-AquesService', function() {
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
         assert.ok(!value);
+      })
+      .then(() => {
+        rimraf(`${dirPath}/userdict`, (err) => {
+        });
       })
       // catch error
       .catch((err: Error) => {
@@ -106,7 +118,7 @@ describe('specWindow-service-AquesService', function() {
         assert.ok(!value);
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(value);
       })
       // wave talk2
       .setValue('#encoded', "テ'_スト")
@@ -129,7 +141,7 @@ describe('specWindow-service-AquesService', function() {
         assert.ok(!value);
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(value);
       })
       // wave talk10
       .setValue('#encoded', "テ'_スト")
@@ -152,7 +164,7 @@ describe('specWindow-service-AquesService', function() {
         assert.ok(!value);
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(value);
       })
       // catch error
       .catch((err: Error) => {

@@ -13,7 +13,7 @@ function handleOpenFile(filePath: string): void {
 
 function handleOpenUrl(scheme: string): void {
   const myApp = this;
-  const parsed = url().parse(scheme, true)
+  const parsed = url().parse(scheme, true);
   switch (parsed.host) {
     case 'quit':
       app.quit();

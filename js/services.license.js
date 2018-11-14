@@ -61,6 +61,7 @@ angular.module('yvoiceLicenseService', [])
                         }
                         var encryptedKey = stdout;
                         var decrypted = decrypt(devPassPhrase, encryptedKey);
+                        consumerKeyCache[licenseType] = decrypted; // set cache
                         d.resolve(decrypted);
                     });
                 });

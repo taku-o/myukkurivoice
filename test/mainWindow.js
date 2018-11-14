@@ -45,7 +45,7 @@ describe('mainWindow', function () {
         });
     });
     // TODO multivoice
-    it('mainWindow input', function () {
+    it('input', function () {
         return this.app.client
             // encode
             .setValue('#source', 'test')
@@ -87,7 +87,7 @@ describe('mainWindow', function () {
             assert.fail(err.message);
         });
     });
-    it('mainWindow phont selection', function () {
+    it('phont selection', function () {
         return this.app.client
             .elements('#phont option').then(function (response) {
             assert.equal(response.value.length, 26);
@@ -100,7 +100,7 @@ describe('mainWindow', function () {
     // TODO delete config
     // TODO copy config
     // TODO filter
-    it('mainWindow voice config', function () {
+    it('voice config', function () {
         var voiceConfigLength = 999;
         return this.app.client
             // filter
@@ -134,7 +134,7 @@ describe('mainWindow', function () {
         });
     });
     // TODO multivoice
-    it('mainWindow play', function () {
+    it('play', function () {
         return this.app.client
             .setValue('#encoded', "テ'_スト")
             .click('#play')
@@ -156,7 +156,7 @@ describe('mainWindow', function () {
     // TODO record
     //it('mainWindow play', () => {
     //});
-    it('mainWindow alwaysOnTop', function () {
+    it('alwaysOnTop', function () {
         var app = this.app;
         return this.app.client
             .getAttribute('#always-on-top-btn span.icon', 'class').then(function (classes) {
@@ -189,7 +189,7 @@ describe('mainWindow', function () {
             assert.fail(err.message);
         });
     });
-    it('mainWindow help', function () {
+    it('open help', function () {
         return this.app.client
             .click('#help')
             .getWindowCount().then(function (count) {
@@ -210,7 +210,28 @@ describe('mainWindow', function () {
             assert.fail(err.message);
         });
     });
-    it('mainWindow shortcut intro', function () {
+    it('open dictionary', function () {
+        return this.app.client
+            .click('#dictionary')
+            .getWindowCount().then(function (count) {
+            assert.equal(count, 2);
+        })
+            .windowByIndex(1)
+            .getTitle().then(function (title) {
+            assert.equal(title, 'MYukkuriVoice Dictionary Editor');
+        })
+            // error check
+            .windowByIndex(0)
+            .isExisting('tr.message-item.error').then(function (error) {
+            assert.ok(!error);
+        })
+            .isExisting('tr.message-item.syserror').then(function (error) {
+            assert.ok(!error);
+        })["catch"](function (err) {
+            assert.fail(err.message);
+        });
+    });
+    it('shortcut intro', function () {
         return this.app.client
             .isVisible('.introjs-tooltip').then(function (isVisible) {
             assert.ok(!isVisible);
@@ -229,7 +250,7 @@ describe('mainWindow', function () {
             assert.fail(err.message);
         });
     });
-    it('mainWindow tutorial intro', function () {
+    it('tutorial intro', function () {
         return this.app.client
             .isVisible('.introjs-tooltip').then(function (isVisible) {
             assert.ok(!isVisible);
@@ -248,7 +269,7 @@ describe('mainWindow', function () {
             assert.fail(err.message);
         });
     });
-    it('mainWindow switchSettingsView', function () {
+    it('switchSettingsView', function () {
         return this.app.client
             .click('#switch-settings-view')
             .isVisible('#main-pane').then(function (isVisible) {

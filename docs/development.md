@@ -6,14 +6,16 @@
 
 ```
   vendor
-    +-- AquesTalk.framework   AquesTalkフレームワーク
-    +-- AquesTalk2.framework  AquesTalkフレームワーク
-    +-- AquesTalk10.framework AquesTalkフレームワーク
-    +-- AqKanji2Koe.framework AquesTalkフレームワーク
-    +-- phont                 AquesTalk音声設定
-    +-- aq_dic_large          AquesTalk辞書
-    +-- maquestalk1           AquesTalk1フレームワークbridge
-    +-- secret                AquesTalk10ライセンスキー取得コード
+    +-- AquesTalk.framework       AquesTalkフレームワーク
+    +-- AquesTalk2.framework      AquesTalkフレームワーク
+    +-- AquesTalk10.framework     AquesTalkフレームワーク
+    +-- AqKanji2Koe.framework     AquesTalkフレームワーク
+    +-- AqUsrDic.framework        AquesTalkフレームワーク
+    +-- phont                     AquesTalk音声設定
+    +-- aq_dic_large              AquesTalk辞書
+    +-- aq_dic_large/aq_user.csv  AquesTalkユーザー辞書のマスターデータCSV
+    +-- maquestalk1               AquesTalk1フレームワークbridge
+    +-- secret                    AquesTalk10ライセンスキー取得コード
 ```
 
 ## library for binary

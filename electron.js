@@ -16,11 +16,13 @@ var MYukkuriVoice = function () {
     this.mainWindow = null;
     this.helpWindow = null;
     this.systemWindow = null;
+    this.dictWindow = null;
 };
 var myApp = new MYukkuriVoice();
 MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
+MYukkuriVoice.prototype.showDictWindow = Pane.showDictWindow;
 MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
 MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
 MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
@@ -75,6 +77,9 @@ electron_1.ipcMain.on('showHelpWindow', function (event, message) {
 electron_1.ipcMain.on('showSystemWindow', function (event, message) {
     myApp.showSystemWindow();
 });
+electron_1.ipcMain.on('showDictWindow', function (event, message) {
+    myApp.showDictWindow();
+});
 electron_1.ipcMain.on('showSpecWindow', function (event, message) {
     myApp.showSpecWindow();
 });
@@ -115,8 +120,7 @@ electron_1.ipcMain.on('updateAppConfig', function (event, options) {
         title: 'application config updated.',
         message: '環境設定を更新しました。アプリケーションを更新します。',
         buttons: ['OK'],
-        defaultId: 0,
-        cancelId: 0
+        defaultId: 0
     };
     var r = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
     event.sender.send('updateAppConfig', r);
@@ -134,8 +138,7 @@ electron_1.ipcMain.on('resetAppConfig', function (event, message) {
         title: 'application config initialized.',
         message: '環境設定を初期化しました。アプリケーションを更新します。',
         buttons: ['OK'],
-        defaultId: 0,
-        cancelId: 0
+        defaultId: 0
     };
     var r = electron_1.dialog.showMessageBox(myApp.systemWindow, dialogOptions);
     event.sender.send('resetAppConfig', r);
@@ -153,8 +156,7 @@ function resetAppConfigOnMain() {
         title: 'application config initialized.',
         message: '環境設定を初期化しました。アプリケーションを更新します。',
         buttons: ['OK'],
-        defaultId: 0,
-        cancelId: 0
+        defaultId: 0
     };
     var r = electron_1.dialog.showMessageBox(myApp.mainWindow, dialogOptions);
     myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
@@ -164,6 +166,10 @@ function resetAppConfigOnMain() {
     }
 }
 MYukkuriVoice.prototype.resetAppConfigOnMain = resetAppConfigOnMain;
+electron_1.ipcMain.on('reloadMainWindow', function (event, message) {
+    myApp.mainWindow.webContents.reload();
+    event.sender.send('reloadMainWindow', message);
+});
 // resetWindowPosition
 function resetWindowPosition() {
     myApp.mainWindow.center();

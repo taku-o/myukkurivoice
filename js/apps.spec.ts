@@ -22,6 +22,7 @@ angular.module('yvoiceSpec',
 
     // init
     const ctrl = this;
+    AquesService.init();
 
     // YPhontList
     ctrl.getYPhontList = function(): void {
@@ -157,7 +158,7 @@ angular.module('yvoiceSpec',
 
     // DataService
     ctrl.load = function(): void {
-      DataService.load().then((list) => {
+      DataService.load(null, null).then((list) => {
         $scope.loadResult = JSON.stringify(list);
       })
       .catch((err: Error) => {

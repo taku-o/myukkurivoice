@@ -202,6 +202,105 @@ function showSystemWindow() {
     });
 }
 exports.showSystemWindow = showSystemWindow;
+// dict window
+function showDictWindow() {
+    var myApp = this;
+    if (this.dictWindow && !this.dictWindow.isDestroyed()) {
+        this.dictWindow.show();
+        this.dictWindow.focus();
+        return;
+    }
+    var _a = this.appCfg.dictWindow, width = _a.width, height = _a.height;
+    var acceptFirstMouse = this.appCfg.acceptFirstMouse;
+    this.dictWindow = new electron_1.BrowserWindow({
+        parent: this.mainWindow,
+        width: width,
+        height: height,
+        acceptFirstMouse: acceptFirstMouse,
+        show: false,
+        transparent: transparent,
+        opacity: opacity,
+        webPreferences: {
+            devTools: this.appCfg.isDebug
+        }
+    });
+    this.dictWindow.loadURL("file://" + __dirname + "/contents-dict.html");
+    // shortcut
+    localShortcut().register(this.dictWindow, 'Command+Q', function () {
+        electron_1.app.quit();
+    });
+    localShortcut().register(this.dictWindow, 'Command+W', function () {
+        if (myApp.dictWindow) {
+            myApp.dictWindow.close();
+        }
+    });
+    localShortcut().register(this.dictWindow, 'Command+S', function () {
+        if (myApp.dictWindow) {
+            myApp.dictWindow.webContents.send('shortcut', 'save');
+        }
+    });
+    localShortcut().register(this.dictWindow, 'Command+N', function () {
+        if (myApp.dictWindow) {
+            myApp.dictWindow.webContents.send('shortcut', 'add');
+        }
+    });
+    // window event
+    this.dictWindow.webContents.on('did-finish-load', function () {
+        myApp.dictWindow.show();
+        myApp.dictWindow.focus();
+    });
+    this.dictWindow.on('close', function () {
+        disableDictMenu();
+    });
+    this.dictWindow.on('closed', function () {
+        myApp.dictWindow = null;
+    });
+    this.dictWindow.on('focus', function () {
+        enableDictMenu();
+    });
+    this.dictWindow.on('blur', function () {
+        disableDictMenu();
+    });
+    this.dictWindow.on('unresponsive', function () {
+        log().warn('main:event:unresponsive');
+    });
+    this.dictWindow.webContents.on('crashed', function () {
+        log().error('main:event:crashed');
+    });
+}
+exports.showDictWindow = showDictWindow;
+var dictMenuItems = [
+    'dict-close',
+    'dict-tutorial',
+    'dict-add',
+    'dict-delete',
+    'dict-save',
+    'dict-cancel',
+    'dict-export',
+    'dict-reset',
+];
+function enableDictMenu() {
+    var menu = electron_1.Menu.getApplicationMenu();
+    if (!menu) {
+        return;
+    }
+    for (var _i = 0, dictMenuItems_1 = dictMenuItems; _i < dictMenuItems_1.length; _i++) {
+        var m = dictMenuItems_1[_i];
+        var item = menu.getMenuItemById(m);
+        item.enabled = true;
+    }
+}
+function disableDictMenu() {
+    var menu = electron_1.Menu.getApplicationMenu();
+    if (!menu) {
+        return;
+    }
+    for (var _i = 0, dictMenuItems_2 = dictMenuItems; _i < dictMenuItems_2.length; _i++) {
+        var m = dictMenuItems_2[_i];
+        var item = menu.getMenuItemById(m);
+        item.enabled = false;
+    }
+}
 // about application window
 function showAboutWindow() {
     var w = openAboutWindow()({

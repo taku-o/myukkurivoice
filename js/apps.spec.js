@@ -13,6 +13,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
     function ($scope, $timeout, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, IntroService, MessageService, CommandService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
         // init
         var ctrl = this;
+        AquesService.init();
         // YPhontList
         ctrl.getYPhontList = function () {
             var r = YPhontList;
@@ -141,7 +142,7 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
         };
         // DataService
         ctrl.load = function () {
-            DataService.load().then(function (list) {
+            DataService.load(null, null).then(function (list) {
                 $scope.loadResult = JSON.stringify(list);
             })["catch"](function (err) {
                 $scope.loadErr = err.message;

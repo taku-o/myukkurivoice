@@ -136,6 +136,9 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         case 'reset':
           ctrl.reset();
           break;
+        case 'dictionary':
+          document.getElementById('dictionary').click();
+          break;
         case 'shortcut':
           document.getElementById('shortcut').click();
           break;
@@ -183,15 +186,24 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
     // util
     function loadData(): void {
-      DataService.load().then((dataList) => {
-        if (dataList.length < 1) {
-          MessageService.info('初期データを読み込みます。');
-          dataList = DataService.initialData();
+      DataService.load(
+        (dataList) => {
+          if (dataList.length < 1) {
+            MessageService.info('初期データを読み込みます。');
+            dataList = DataService.initialData();
+          }
+          $scope.yvoiceList = dataList;
+          $scope.yvoice = $scope.yvoiceList[0];
+          $timeout(() => { $scope.$apply(); });
+          // initialize AquesService
+          AquesService.init();
+        },
+        (err) => {
+          MessageService.error('初期データの読み込みでエラーが起きました。', err);
+          // initialize AquesService
+          AquesService.init();
         }
-        $scope.yvoiceList = dataList;
-        $scope.yvoice = $scope.yvoiceList[0];
-        $timeout(() => { $scope.$apply(); });
-      });
+      );
     }
     function selectedSource(): string {
       const textarea = document.getElementById('source') as HTMLInputElement;
@@ -333,7 +345,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        d.reject(null); return d.promise;
+        d.reject(new Error('声の種類が未指定です。')); return d.promise;
       }
 
       // disable rhythm if option is on
@@ -542,7 +554,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        d.reject(null); return d.promise;
+        d.reject(new Error('声の種類が未指定です。')); return d.promise;
       }
 
       // disable rhythm if option is on
@@ -599,7 +611,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       });
       if (!phont) {
         MessageService.error('声の種類が未指定です。');
-        d.reject(null); return d.promise;
+        d.reject(new Error('声の種類が未指定です。')); return d.promise;
       }
 
       // disable rhythm if option is on
@@ -660,6 +672,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     ctrl.help = function(): void {
       MessageService.action('open help window.');
       ipcRenderer().send('showHelpWindow', 'help');
+    };
+    ctrl.dictionary = function(): void {
+      MessageService.action('open dictionary window.');
+      ipcRenderer().send('showDictWindow', 'help');
     };
     ctrl.tutorial = function(): void {
       if ($scope.display == 'main') {

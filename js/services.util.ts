@@ -76,7 +76,7 @@ angular.module('yvoiceUtilService', ['yvoiceMessageService'])
           const maxNum = Math.max.apply(null, npList);
           if (maxNum >= limit) {
             MessageService.syserror(`${limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`);
-            d.reject(null); return;
+            d.reject(new Error(`${limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`)); return;
           }
           const next = maxNum + 1;
           d.resolve(next);

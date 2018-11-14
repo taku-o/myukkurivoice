@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var spectron_1 = require("spectron");
 var assert = require("assert");
+var rimraf = require("rimraf");
 var path = require("path");
 var fs = require("fs");
 var temp = require("temp");
@@ -52,15 +53,22 @@ describe('specWindow-service-AquesService', function () {
     });
     it('encode with custom dictionary', function () {
         fs.mkdirSync(dirPath + "/userdict");
-        var customDictPath = path.dirname(__dirname) + "/vendor/aqk2k_mac/aq_dic_small";
+        var customDictPath = path.dirname(__dirname) + "/vendor/test/aq_dic_large";
+        fs.closeSync(fs.openSync(dirPath + "/userdict/aqdic.bin", 'a+')); // create with 644 permission.
+        fs.closeSync(fs.openSync(dirPath + "/userdict/aq_user.dic", 'a+')); // create with 644 permission.
         fs.writeFileSync(dirPath + "/userdict/aqdic.bin", fs.readFileSync(customDictPath + "/aqdic.bin"));
         fs.writeFileSync(dirPath + "/userdict/aq_user.dic", fs.readFileSync(customDictPath + "/aq_user.dic"));
         return this.client
             // encode
-            .setValue('#source', 'test')
+            .setValue('#source', '百名山')
             .click('#encode')
             .getValue('#encode-result').then(function (value) {
-            assert.equal(value, "テ'_スト");
+            assert.equal(value, 'モモナヤマ');
+        })
+            .setValue('#source', '味方さん')
+            .click('#encode')
+            .getValue('#encode-result').then(function (value) {
+            assert.equal(value, 'アジカタサン');
         })
             // encode empty string
             .setValue('#source', '')
@@ -68,6 +76,10 @@ describe('specWindow-service-AquesService', function () {
             .click('#encode')
             .getValue('#encode-result').then(function (value) {
             assert.ok(!value);
+        })
+            .then(function () {
+            rimraf(dirPath + "/userdict", function (err) {
+            });
         })["catch"](function (err) {
             assert.fail(err.message);
         });
@@ -95,7 +107,7 @@ describe('specWindow-service-AquesService', function () {
             assert.ok(!value);
         })
             .getValue('#wave-err').then(function (value) {
-            assert.ok(!value);
+            assert.ok(value);
         })
             // wave talk2
             .setValue('#encoded', "テ'_スト")
@@ -118,7 +130,7 @@ describe('specWindow-service-AquesService', function () {
             assert.ok(!value);
         })
             .getValue('#wave-err').then(function (value) {
-            assert.ok(!value);
+            assert.ok(value);
         })
             // wave talk10
             .setValue('#encoded', "テ'_スト")
@@ -141,7 +153,7 @@ describe('specWindow-service-AquesService', function () {
             assert.ok(!value);
         })
             .getValue('#wave-err').then(function (value) {
-            assert.ok(!value);
+            assert.ok(value);
         })["catch"](function (err) {
             assert.fail(err.message);
         });

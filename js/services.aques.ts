@@ -12,8 +12,8 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular aques service
 angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseService'])
-  .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
-  ($q, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
+  .factory('AquesService', ['$q', '$timeout', 'MessageService', 'LicenseService',
+  ($q, $timeout, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
     const ptr_void  = ref().refType(ref().types.void);
     const ptr_int   = ref().refType(ref().types.int);
     const ptr_char  = ref().refType(ref().types.char);
@@ -33,14 +33,17 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
     // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
     // void AqKanji2Koe_Release (void * hAqKanji2Koe)
     // int AqKanji2Koe_Convert (void * hAqKanji2Koe, const char *kanji, char *koe, int nBufKoe)
+    // int AqKanji2Koe_SetDevKey (const char *key)
     let frameworkPath = null;
     frameworkPath = `${unpackedPath}/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`;
-    const ptr_AqKanji2Koe_Create  = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
-    const ptr_AqKanji2Koe_Release = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
-    const ptr_AqKanji2Koe_Convert = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
-    const fn_AqKanji2Koe_Create   = ffi().ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, ['string', ptr_int]);
-    const fn_AqKanji2Koe_Release  = ffi().ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ptr_void]);
-    const fn_AqKanji2Koe_Convert  = ffi().ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
+    const ptr_AqKanji2Koe_Create    = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
+    const ptr_AqKanji2Koe_Release   = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
+    const ptr_AqKanji2Koe_Convert   = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
+    const ptr_AqKanji2Koe_SetDevKey = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_SetDevKey');
+    const fn_AqKanji2Koe_Create    = ffi().ForeignFunction(ptr_AqKanji2Koe_Create, ptr_void, ['string', ptr_int]);
+    const fn_AqKanji2Koe_Release   = ffi().ForeignFunction(ptr_AqKanji2Koe_Release, 'void', [ptr_void]);
+    const fn_AqKanji2Koe_Convert   = ffi().ForeignFunction(ptr_AqKanji2Koe_Convert, 'int', [ptr_void, 'string', ptr_char, 'int']);
+    const fn_AqKanji2Koe_SetDevKey = ffi().ForeignFunction(ptr_AqKanji2Koe_SetDevKey, 'int', ['string']);
 
     // unsigned char * AquesTalk2_Synthe_Utf8(const char *koe, int iSpeed, int * size, void *phontDat)
     // void AquesTalk2_FreeWave (unsigned char *wav)
@@ -66,7 +69,9 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
 
     function errorTable_AqKanji2Koe(code: number): string {
       if (code == 101)               { return '関数呼び出し時の引数がNULLになっている'; }
+      if (code == 104)               { return '初期化されていない(初期化ルーチンが呼ばれていない)'; }
       if (code == 105)               { return '入力テキストが長すぎる'; }
+      if (code == 106)               { return 'システム辞書データが指定されていない'; }
       if (code == 107)               { return '変換できない文字コードが含まれている'; }
       if (code >= 200 && code < 300) { return 'システム辞書(aqdic.bin)が不正'; }
       if (code >= 300 && code < 400) { return 'ユーザ辞書(aq_user.dic)が不正'; }
@@ -120,13 +125,42 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
       aqDictPath = customDictPath;
     });
 
+    let aqKanji2KoeDevKey = null;
+    let aquesTalk10DevKey = null;
+    let _isAqKanji2KoeDevkeySet = false;
     let _isAquesTalk10LicensekeySet = false;
     return {
+      // get developer key in background.
+      // delay loading. UI表示で必要な処理の後に呼ぶ
+      init: function(): void {
+        $timeout(() => {
+          LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
+            aqKanji2KoeDevKey = licenseKey;
+          });
+          LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
+            aquesTalk10DevKey = licenseKey;
+          });
+        });
+      },
       encode: function(source: string): string {
         if (!source) {
           MessageService.syserror('音記号列に変換するメッセージが入力されていません。');
           return '';
         }
+
+        // set developer key if is not set.
+        if (! _isAqKanji2KoeDevkeySet) {
+          if (aqKanji2KoeDevKey == null) {
+            MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
+            return '';
+          }
+          const devKey = fn_AqKanji2Koe_SetDevKey(aqKanji2KoeDevKey);
+          if (devKey != 0) {
+            MessageService.syserror('AqKanji2Koe開発ライセンスキーが正しくありません。');
+            return '';
+          }
+        }
+        _isAqKanji2KoeDevkeySet = true;
 
         const allocInt = ref().alloc('int');
         const aqKanji2Koe = fn_AqKanji2Koe_Create(aqDictPath, allocInt);
@@ -155,7 +189,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
         const d = $q.defer();
         if (!encoded) {
           MessageService.syserror('音記号列が入力されていません。');
-          d.reject(null); return d.promise;
+          d.reject(new Error('音記号列が入力されていません。')); return d.promise;
         }
 
         // version 1
@@ -165,7 +199,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
           temp().open(fsprefix, (err: Error, info) => {
             if (err) {
               MessageService.syserror('一時作業ファイルを作れませんでした。', err);
-              d.reject(null); return;
+              d.reject(err); return;
             }
 
           fs().writeFile(info.path, encoded, (err: Error) => {
@@ -214,7 +248,7 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
               const errorCode = allocInt.deref();
               MessageService.syserror(errorTable_AquesTalk2(errorCode));
               log().info(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk2(errorCode)}`);
-              d.reject(null); return;
+              d.reject(new Error(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk2(errorCode)}`)); return;
             }
 
             const bufWav = ref().reinterpret(r, allocInt.deref(), 0);
@@ -225,68 +259,65 @@ angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseServ
 
         // version 10
         } else if (phont.version == 'talk10') {
-          // get and set aquesTalk10 developer key
-          LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
-            // set license key if is not set.
-            if (! _isAquesTalk10LicensekeySet) {
-              const devKey = fn_AquesTalk10_SetDevKey(licenseKey);
-              if (devKey != 0) {
-                MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');
-                d.reject(null); return;
-              }
-
-              // get and set aquesTalk10 use key
-              const passPhrase = options.passPhrase;
-              const encryptedUseKey = options.aq10UseKeyEncrypted;
-              const aquesTalk10UseKey = encryptedUseKey?
-                LicenseService.decrypt(passPhrase, encryptedUseKey):
-                '';
-              if (encryptedUseKey && !aquesTalk10UseKey) {
-                MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください');
-                d.reject(null); return;
-              }
-
-              if (encryptedUseKey) {
-                const usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
-                if (usrKey != 0) {
-                  MessageService.error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`);
-                  d.reject(null); return;
-                }
-                MessageService.info('AquesTalk10使用ライセンスキーを設定しました。');
-              }
-              _isAquesTalk10LicensekeySet = true;
+          // set license key if is not set.
+          if (! _isAquesTalk10LicensekeySet) {
+            if (aquesTalk10DevKey == null) {
+              MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
+              d.reject(new Error('まだ初期化処理が完了していないので1秒ほど待ってください。')); return d.promise;
+            }
+            const devKey = fn_AquesTalk10_SetDevKey(aquesTalk10DevKey);
+            if (devKey != 0) {
+              MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');
+              d.reject(new Error('AquesTalk10開発ライセンスキーが正しくありません。')); return d.promise;
             }
 
-            // create struct
-            const aqtkVoiceVal = new AQTK_VOICE;
-            aqtkVoiceVal.bas = options.bas? options.bas: phont.struct.bas;
-            aqtkVoiceVal.spd = speed;
-            aqtkVoiceVal.vol = phont.struct.vol;
-            aqtkVoiceVal.pit = options.pit? options.pit: phont.struct.pit;
-            aqtkVoiceVal.acc = options.acc? options.acc: phont.struct.acc;
-            aqtkVoiceVal.lmd = options.lmd? options.lmd: phont.struct.lmd;
-            aqtkVoiceVal.fsc = options.fsc? options.fsc: phont.struct.fsc;
-            const ptr_aqtkVoiceVal = aqtkVoiceVal.ref();
-
-            // create wave buffer
-            const allocInt = ref().alloc('int');
-            const r = fn_AquesTalk10_Synthe_Utf8(ptr_aqtkVoiceVal, encoded, allocInt);
-            if (ref().isNull(r)) {
-              const errorCode = allocInt.deref();
-              MessageService.syserror(errorTable_AquesTalk10(errorCode));
-              log().info(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk10(errorCode)}`);
-              d.reject(null); return;
+            // get and set aquesTalk10 use key
+            const passPhrase = options.passPhrase;
+            const encryptedUseKey = options.aq10UseKeyEncrypted;
+            const aquesTalk10UseKey = encryptedUseKey?
+              LicenseService.decrypt(passPhrase, encryptedUseKey):
+              '';
+            if (encryptedUseKey && !aquesTalk10UseKey) {
+              MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください');
+              d.reject(new Error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください')); return d.promise;
             }
 
-            const bufWav = ref().reinterpret(r, allocInt.deref(), 0);
-            const managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
-            fn_AquesTalk10_FreeWave(r);
-            d.resolve(managedBuf);
-          })
-          .catch((err: Error) => {
-            MessageService.syserror('AquesTalk10開発ライセンスキーの読み込みに失敗しました。', err);
-            d.reject(err);
-          });
+            if (encryptedUseKey) {
+              const usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
+              if (usrKey != 0) {
+                MessageService.error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`);
+                d.reject(new Error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`)); return d.promise;
+              }
+              MessageService.info('AquesTalk10使用ライセンスキーを設定しました。');
+            }
+            _isAquesTalk10LicensekeySet = true;
+          }
+
+          // create struct
+          const aqtkVoiceVal = new AQTK_VOICE;
+          aqtkVoiceVal.bas = options.bas? options.bas: phont.struct.bas;
+          aqtkVoiceVal.spd = speed;
+          aqtkVoiceVal.vol = phont.struct.vol;
+          aqtkVoiceVal.pit = options.pit? options.pit: phont.struct.pit;
+          aqtkVoiceVal.acc = options.acc? options.acc: phont.struct.acc;
+          aqtkVoiceVal.lmd = options.lmd? options.lmd: phont.struct.lmd;
+          aqtkVoiceVal.fsc = options.fsc? options.fsc: phont.struct.fsc;
+          const ptr_aqtkVoiceVal = aqtkVoiceVal.ref();
+
+          // create wave buffer
+          const allocInt = ref().alloc('int');
+          const r = fn_AquesTalk10_Synthe_Utf8(ptr_aqtkVoiceVal, encoded, allocInt);
+          if (ref().isNull(r)) {
+            const errorCode = allocInt.deref();
+            MessageService.syserror(errorTable_AquesTalk10(errorCode));
+            log().info(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk10(errorCode)}`);
+            d.reject(new Error(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk10(errorCode)}`)); return d.promise;
+          }
+
+          const bufWav = ref().reinterpret(r, allocInt.deref(), 0);
+          const managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
+          fn_AquesTalk10_FreeWave(r);
+          d.resolve(managedBuf);
         }
         return d.promise;
       },
