@@ -7,6 +7,7 @@
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/intro.js/minified/intro.min.js"></script>
   <script src="js/models.js"></script>
+  <script src="js/dict.models.js"></script>
   <script src="js/services.aques.js"></script>
   <script src="js/services.audio.js"></script>
   <script src="js/services.command.js"></script>
@@ -51,6 +52,15 @@
     <div>YCommandInput
       <button id="get-ycommand-input" ng-click="ctrl.getYCommandInput()">
       <input id="get-ycommand-input-result" type="text" ng-model="getYCommandInputResult">
+    </div>
+
+    <div>dict.models KindList
+      <button id="get-kind-list" ng-click="ctrl.getKindList()">
+      <input id="get-kind-list-result" type="text" ng-model="getKindListResult">
+    </div>
+    <div>dict.models KindHash
+      <button id="get-kind-hash" ng-click="ctrl.getKindHash()">
+      <input id="get-kind-hash-result" type="text" ng-model="getKindHashResult">
     </div>
 
     <div>LicenseService

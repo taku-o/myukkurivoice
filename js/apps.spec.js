@@ -1,16 +1,17 @@
 "use strict";
 // application spec app
-angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseService', 'yvoiceIntroService', 'yvoiceMessageService', 'yvoiceCommandService'])
+angular.module('yvoiceSpec', ['yvoiceModel', 'dictModel', 'yvoiceService', 'yvoiceLicenseService', 'yvoiceIntroService', 'yvoiceMessageService', 'yvoiceCommandService'])
     .config(['$qProvider', function ($qProvider) {
         $qProvider.errorOnUnhandledRejections(false);
     }])
     .controller('SpecController', ['$scope', '$timeout',
     'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
+    'KindList', 'KindHash',
     'LicenseService', 'IntroService', 'MessageService', 'CommandService',
     'DataService', 'MasterService',
     'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
     'AppUtilService', 'SeqFNameService',
-    function ($scope, $timeout, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, LicenseService, IntroService, MessageService, CommandService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
+    function ($scope, $timeout, YPhontList, YVoice, YVoiceInitialData, YInput, YInputInitialData, YCommandInput, KindList, KindHash, LicenseService, IntroService, MessageService, CommandService, DataService, MasterService, AquesService, AudioService1, AudioService2, AudioSourceService, AppUtilService, SeqFNameService) {
         // init
         var ctrl = this;
         AquesService.init();
@@ -43,6 +44,16 @@ angular.module('yvoiceSpec', ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseServ
         ctrl.getYCommandInput = function () {
             var r = YCommandInput;
             $scope.getYCommandInputResult = JSON.stringify(r);
+        };
+        // dict.models KindList
+        ctrl.getKindList = function () {
+            var r = KindList;
+            $scope.getKindListResult = JSON.stringify(r);
+        };
+        // dict.models KindHash
+        ctrl.getKindHash = function () {
+            var r = KindHash;
+            $scope.getKindHashResult = JSON.stringify(r);
         };
         // LicenseService
         ctrl.encrypt = function () {

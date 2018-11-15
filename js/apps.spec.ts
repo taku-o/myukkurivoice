@@ -1,11 +1,12 @@
 // application spec app
 angular.module('yvoiceSpec',
-  ['yvoiceModel', 'yvoiceService', 'yvoiceLicenseService', 'yvoiceIntroService', 'yvoiceMessageService', 'yvoiceCommandService'])
+  ['yvoiceModel', 'dictModel', 'yvoiceService', 'yvoiceLicenseService', 'yvoiceIntroService', 'yvoiceMessageService', 'yvoiceCommandService'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .controller('SpecController', ['$scope', '$timeout',
       'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
+      'KindList', 'KindHash',
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
       'DataService', 'MasterService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
@@ -13,6 +14,7 @@ angular.module('yvoiceSpec',
     function($scope: any, $timeout,
       YPhontList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
       YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
+      KindList, KindHash,
       LicenseService: yubo.LicenseService, IntroService: yubo.IntroService, MessageService: yubo.MessageService,
       CommandService: yubo.CommandService,
       DataService: yubo.DataService, MasterService: yubo.MasterService,
@@ -53,6 +55,16 @@ angular.module('yvoiceSpec',
     ctrl.getYCommandInput = function(): void {
       const r = YCommandInput;
       $scope.getYCommandInputResult = JSON.stringify(r);
+    };
+    // dict.models KindList
+    ctrl.getKindList = function(): void {
+      const r = KindList;
+      $scope.getKindListResult = JSON.stringify(r);
+    };
+    // dict.models KindHash
+    ctrl.getKindHash = function(): void {
+      const r = KindHash;
+      $scope.getKindHashResult = JSON.stringify(r);
     };
 
     // LicenseService
