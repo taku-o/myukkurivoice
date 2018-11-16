@@ -72,6 +72,9 @@ gulp.task('tsc-release', () => {
     .pipe(tsProject())
     .js.pipe(gulp.dest('.'));
 });
+gulp.task('_rm-js', () => {
+  return del(['*.js','js/*.js','test/*.js', 'docs/assets/js/*.js', '!gulpfile.js']);
+});
 
 // lint
 gulp.task('lint', () => {
@@ -79,12 +82,12 @@ gulp.task('lint', () => {
     .pipe(eslint({ useEslintrc: true }))
     .pipe(eslint.format());
 });
-gulp.task('lint-js', ['tsc'], () => {
+gulp.task('lint-js', () => {
   return gulp.src(['*.js','js/*.js','test/*.js'])
     .pipe(eslint({ useEslintrc: true }))
     .pipe(eslint.format());
 });
-gulp.task('lint-q', ['tsc'], () => {
+gulp.task('lint-q', () => {
   return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts','*.js','js/*.js','test/*.js', 'docs/assets/js/*.js'])
     .pipe(eslint({ useEslintrc: true, quiet: true }))
     .pipe(eslint.format());
@@ -238,7 +241,7 @@ gulp.task('_package-contents:rm', () => {
 });
 
 // clean
-gulp.task('clean', ['_rm-package', '_rm-workdir']);
+gulp.task('clean', ['_rm-js', '_rm-package', '_rm-workdir']);
 
 // test
 gulp.task('test', (cb) => {
