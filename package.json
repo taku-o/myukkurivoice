@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "asar": "^0.14.5",
+    "caller-position": "git+https://github.com/taku-o/caller-position.git#master",
     "devtron": "^1.4.0",
     "electron": "^1.8.8",
     "electron-packager": "^9.1.0",

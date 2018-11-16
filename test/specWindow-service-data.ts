@@ -1,8 +1,9 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
+import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
-import * as fs from 'fs';
 
 require('source-map-support').install();
 
