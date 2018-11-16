@@ -5,15 +5,6 @@ var _log, log                 = () => { _log = _log || require('electron-log'); 
 
 var homeDir = app.getPath('home');
 
-// source-map-support
-if (process.env.DEBUG != null) {
-  try {
-    require('source-map-support').install();
-  } catch(e) {
-    // do nothing
-  }
-}
-
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
   log().error('help:event:uncaughtException');
