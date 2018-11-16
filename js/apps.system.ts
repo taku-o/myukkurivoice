@@ -3,7 +3,11 @@ var _log, log                 = () => { _log = _log || require('electron-log'); 
 
 // source-map-support
 if (process.env.DEBUG != null) {
-  require('source-map-support').install();
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    // do nothing
+  }
 }
 
 // handle uncaughtException

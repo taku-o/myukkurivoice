@@ -10,7 +10,11 @@ import * as AppConfig from './electron-appcfg';
 
 // source-map-support
 if (process.env.DEBUG != null) {
-  require('source-map-support').install();
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
 }
 
 // MYukkuriVoice application

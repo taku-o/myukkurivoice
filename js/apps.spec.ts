@@ -1,6 +1,10 @@
 // source-map-support
 if (process.env.DEBUG != null) {
-  require('source-map-support').install();
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    // do nothing
+  }
 }
 
 // application spec app
