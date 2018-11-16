@@ -41,7 +41,7 @@ describe('specWindow-model-YVoiceInitialData', function() {
       .click('#get-yvoice-initial-data')
       .getValue('#get-yvoice-initial-data-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 4);
+        assert.equal(parsed.length, 4, position());
 
         for (let i=0; i < parsed.length; i++) {
           assert.ok('id' in parsed[i], position());
@@ -56,8 +56,8 @@ describe('specWindow-model-YVoiceInitialData', function() {
           assert.ok('writeMarginMs' in parsed[i], position());
           assert.ok('sourceWrite' in parsed[i], position());
           assert.ok('seqWrite' in parsed[i], position());
-          assert.equal('', parsed[i].seqWriteOptions.dir);
-          assert.equal('', parsed[i].seqWriteOptions.prefix);
+          assert.equal('', parsed[i].seqWriteOptions.dir, position());
+          assert.equal('', parsed[i].seqWriteOptions.prefix, position());
 
           const version = parsed[i].version;
           switch (version) {

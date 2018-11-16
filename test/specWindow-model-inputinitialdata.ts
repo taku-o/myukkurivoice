@@ -41,8 +41,8 @@ describe('specWindow-model-YInputInitialData', function() {
       .click('#get-yinput-initial-data')
       .getValue('#get-yinput-initial-data-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source);
-        assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded);
+        assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source, position());
+        assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded, position());
       })
       // catch error
       .catch((err: Error) => {

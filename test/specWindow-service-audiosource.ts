@@ -43,7 +43,7 @@ describe('specWindow-service-AudioSourceService', function() {
       .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
       .click('#source-fname')
       .getValue('#source-fname-result').then((value: string) => {
-        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt');
+        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt', position());
       })
       // catch error
       .catch((err: Error) => {
@@ -62,7 +62,7 @@ describe('specWindow-service-AudioSourceService', function() {
         assert.ok(value, position());
         fs.readFile(txtfile, 'utf8', (err, text) => {
           assert.ok(!err, position());
-          assert.equal('hogehoge', text);
+          assert.equal('hogehoge', text, position());
         });
       })
       // catch error

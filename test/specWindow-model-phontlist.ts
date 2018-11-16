@@ -41,7 +41,7 @@ describe('specWindow-model-YPhontList', function() {
       .click('#get-yphont-list')
       .getValue('#get-yphont-list-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 26);
+        assert.equal(parsed.length, 26, position());
 
         for (let i=0; i < parsed.length; i++) {
           const version = parsed[i].version;

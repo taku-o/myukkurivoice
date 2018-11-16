@@ -60,7 +60,7 @@ describe('specWindow-service-DataService', function() {
       .getValue('#initial-data-result').then((value: string) => {
         assert.ok(value, position());
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 4);
+        assert.equal(parsed.length, 4, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -99,17 +99,17 @@ describe('specWindow-service-DataService', function() {
   it('save', function() {
     return this.client
       .getValue('#save-data-result').then((value: string) => {
-        assert.equal('', value);
+        assert.equal('', value, position());
         const isExists = fs.existsSync(`${dirPath}/data.json`);
         assert.ok(! isExists, position());
       })
       .click('#save-data')
       .waitForValue('#save-data-result', 2000)
       .getValue('#save-data-result').then((value: string) => {
-        assert.equal('ok', value);
+        assert.equal('ok', value, position());
         const data = fs.readFileSync(`${dirPath}/data.json`);
         const parsed = JSON.parse(data.toString());
-        assert.equal(parsed.length, 4);
+        assert.equal(parsed.length, 4, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -123,21 +123,21 @@ describe('specWindow-service-DataService', function() {
       .click('#save-data')
       .waitForValue('#save-data-result', 2000)
       .getValue('#save-data-result').then((value: string) => {
-        assert.equal('ok', value);
+        assert.equal('ok', value, position());
       })
       // test
       .getValue('#clear-result').then((value: string) => {
-        assert.equal('', value);
+        assert.equal('', value, position());
         const isExists = fs.existsSync(`${dirPath}/data.json`);
         assert.ok(isExists, position());
         const data = fs.readFileSync(`${dirPath}/data.json`);
         const parsed = JSON.parse(data.toString());
-        assert.equal(parsed.length, 4);
+        assert.equal(parsed.length, 4, position());
       })
       .click('#clear')
       .waitForValue('#clear-result', 2000)
       .getValue('#clear-result').then((value: string) => {
-        assert.equal('ok', value);
+        assert.equal('ok', value, position());
         const isExists = fs.existsSync(`${dirPath}/data.json`);
         assert.ok(! isExists, position());
       })

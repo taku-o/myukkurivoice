@@ -41,9 +41,9 @@ describe('specWindow-dict-models', function() {
       .click('#get-kind-list')
       .getValue('#get-kind-list-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 28);
+        assert.equal(parsed.length, 28, position());
         for (let i=0; i < parsed.length; i++) {
-          assert.equal(i, parsed[i].id);
+          assert.equal(i, parsed[i].id, position());
           assert.ok(parsed[i].kind, position());
         }
       })

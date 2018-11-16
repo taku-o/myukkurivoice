@@ -57,7 +57,7 @@ describe('specWindow-service-LicenseService', function() {
       .setValue('#plain-key', '')
       .click('#decrypt')
       .getValue('#plain-key').then((value: string) => {
-        assert.equal(value, 'this is a plain key');
+        assert.equal(value, 'this is a plain key', position());
       })
       // catch error
       .catch((err: Error) => {

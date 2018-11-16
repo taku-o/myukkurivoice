@@ -31,7 +31,7 @@ describe('settingsView', function() {
       .click('#switch-settings-view')
       .isSelected('#seq-write-box .checkbox input').then((isSelected: boolean) => {
         client.isVisible('#seq-write-box .form-group').then((isVisible: boolean) => {
-          assert.equal(isVisible, isSelected);
+          assert.equal(isVisible, isSelected, position());
         });
       })
       // error check

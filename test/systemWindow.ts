@@ -40,10 +40,10 @@ describe('systemWindow', function() {
   it('initial settings', function() {
     return this.client
       .getValue('#main-width').then((value: number) => {
-        assert.equal(value, 800);
+        assert.equal(value, 800, position());
       })
       .getValue('#main-height').then((value: number) => {
-        assert.equal(value, 665);
+        assert.equal(value, 665, position());
       })
       .isSelected('#audio-serv-ver-html5audio').then((selected: boolean) => {
         assert.ok(! selected, position());

@@ -28,7 +28,7 @@ describe('mainWindow', function() {
   it('open mainWindow at startup', function() {
     return this.app.client
       .getWindowCount().then((count: number) => {
-        assert.equal(count, 1);
+        assert.equal(count, 1, position());
       })
       .isVisible('#main-pane').then((isVisible: boolean) => {
         assert.ok(isVisible, position());
@@ -37,7 +37,7 @@ describe('mainWindow', function() {
         assert.ok(! isVisible, position());
       })
       .getTitle().then((title: string) => {
-        assert.equal(title, 'MYukkuriVoice');
+        assert.equal(title, 'MYukkuriVoice', position());
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
@@ -59,15 +59,15 @@ describe('mainWindow', function() {
       .setValue('#source', 'test')
       .click('#encode')
       .getValue('#encoded').then((encoded: string) => {
-        assert.equal(encoded, "テ'_スト");
+        assert.equal(encoded, "テ'_スト", position());
       })
       // clear
       .click('#clear')
       .getValue('#source').then((source: string) => {
-        assert.equal(source, '');
+        assert.equal(source, '', position());
       })
       .getValue('#encoded').then((encoded: string) => {
-        assert.equal(encoded, '');
+        assert.equal(encoded, '', position());
       })
       // play and record is enabled
       .isEnabled('#play').then((isEnabled: boolean) => {
@@ -101,7 +101,7 @@ describe('mainWindow', function() {
   it('phont selection', function() {
     return this.app.client
       .elements('#phont option').then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 26);
+        assert.equal(response.value.length, 26, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -123,7 +123,7 @@ describe('mainWindow', function() {
       })
       .setValue('#filter-text', 'xxxxxxxxxxxxxxxxxx')
       .elements('.voice-config-item').then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 0);
+        assert.equal(response.value.length, 0, position());
       })
       .setValue('#filter-text', '')
       .elements('.voice-config-item').then((response: HTMLInputElement) => {
@@ -135,7 +135,7 @@ describe('mainWindow', function() {
       })
       .click('#plus')
       .elements('.voice-config-item').then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, voiceConfigLength + 1);
+        assert.equal(response.value.length, voiceConfigLength + 1, position());
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
@@ -217,11 +217,11 @@ describe('mainWindow', function() {
     return this.app.client
       .click('#help')
       .getWindowCount().then((count: number) => {
-        assert.equal(count, 2);
+        assert.equal(count, 2, position());
       })
       .windowByIndex(1)
       .getTitle().then((title: string) => {
-        assert.equal(title, 'MYukkuriVoice Help');
+        assert.equal(title, 'MYukkuriVoice Help', position());
       })
       // error check
       .windowByIndex(0)
@@ -241,11 +241,11 @@ describe('mainWindow', function() {
     return this.app.client
       .click('#dictionary')
       .getWindowCount().then((count: number) => {
-        assert.equal(count, 2);
+        assert.equal(count, 2, position());
       })
       .windowByIndex(1)
       .getTitle().then((title: string) => {
-        assert.equal(title, 'MYukkuriVoice Dictionary Editor');
+        assert.equal(title, 'MYukkuriVoice Dictionary Editor', position());
       })
       // error check
       .windowByIndex(0)

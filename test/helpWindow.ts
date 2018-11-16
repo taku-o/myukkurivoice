@@ -39,10 +39,10 @@ describe('helpWindow', function() {
   it('helpWindow menu list', function() {
     return this.client
       .elements('.nav-group-item.help-item').then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 8);
+        assert.equal(response.value.length, 8, position());
       })
       .elements('.nav-group-item.functions-item').then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 10);
+        assert.equal(response.value.length, 10, position());
       });
   });
 

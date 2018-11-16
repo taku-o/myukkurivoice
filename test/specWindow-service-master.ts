@@ -42,7 +42,7 @@ describe('specWindow-service-MasterService', function() {
       .click('#get-phont-list')
       .getValue('#get-phont-list-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 26);
+        assert.equal(parsed.length, 26, position());
       })
       // catch error
       .catch((err: Error) => {

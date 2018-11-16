@@ -46,7 +46,7 @@ describe('specWindow-service-AudioService1', function() {
       .click('#play1-aqver1')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       // play aquestalk2
       .setValue('#play1-encoded', "テ'_スト")
@@ -54,7 +54,7 @@ describe('specWindow-service-AudioService1', function() {
       .click('#play1-aqver2')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       // play aquestalk10
       .setValue('#play1-encoded', "テ'_スト")
@@ -62,7 +62,7 @@ describe('specWindow-service-AudioService1', function() {
       .click('#play1-aqver10')
       .waitForValue('#play-result-1', 5000)
       .getValue('#play-result-1').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       // catch error
       .catch((err: Error) => {
@@ -79,7 +79,7 @@ describe('specWindow-service-AudioService1', function() {
       .click('#record1-aqver1')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_1.wav`, (err, data) => {
             assert.ok(!err, position());
@@ -95,7 +95,7 @@ describe('specWindow-service-AudioService1', function() {
       .click('#record1-aqver2')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_2.wav`, (err, data) => {
             assert.ok(!err, position());
@@ -111,7 +111,7 @@ describe('specWindow-service-AudioService1', function() {
       .click('#record1-aqver10')
       .waitForValue('#record-result-1', 5000)
       .getValue('#record-result-1').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_10.wav`, (err, data) => {
             assert.ok(!err, position());
