@@ -53,7 +53,7 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#encode-result', '')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -86,7 +86,7 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#encode-result', '')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       .then(() => {
         rimraf(`${dirPath}/userdict`, (err) => {
@@ -110,7 +110,7 @@ describe('specWindow-service-AquesService', function() {
         assert.equal(value, 'ok');
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // wave talk1 empty
       .setValue('#encoded', '')
@@ -118,10 +118,10 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#wave-err', '')
       .click('#wave-ver1')
       .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       // wave talk2
       .setValue('#encoded', "テ'_スト")
@@ -133,7 +133,7 @@ describe('specWindow-service-AquesService', function() {
         assert.equal(value, 'ok');
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // wave talk2 empty
       .setValue('#encoded', '')
@@ -141,10 +141,10 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#wave-err', '')
       .click('#wave-ver2')
       .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       // wave talk10
       .setValue('#encoded', "テ'_スト")
@@ -156,7 +156,7 @@ describe('specWindow-service-AquesService', function() {
         assert.equal(value, 'ok');
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // wave talk10 empty
       .setValue('#encoded', '')
@@ -164,10 +164,10 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#wave-err', '')
       .click('#wave-ver10')
       .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       // catch error
       .catch((err: Error) => {

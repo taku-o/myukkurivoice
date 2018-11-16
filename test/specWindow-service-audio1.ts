@@ -82,8 +82,8 @@ describe('specWindow-service-AudioService1', function() {
         assert.equal(value, 'ok');
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_1.wav`, (err, data) => {
-            assert.ok(!err);
-            assert.ok(data);
+            assert.ok(!err, position());
+            assert.ok(data, position());
             resolve();
           });
         });
@@ -98,8 +98,8 @@ describe('specWindow-service-AudioService1', function() {
         assert.equal(value, 'ok');
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_2.wav`, (err, data) => {
-            assert.ok(!err);
-            assert.ok(data);
+            assert.ok(!err, position());
+            assert.ok(data, position());
             resolve();
           });
         });
@@ -114,8 +114,8 @@ describe('specWindow-service-AudioService1', function() {
         assert.equal(value, 'ok');
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_10.wav`, (err, data) => {
-            assert.ok(!err);
-            assert.ok(data);
+            assert.ok(!err, position());
+            assert.ok(data, position());
             resolve();
           });
         });

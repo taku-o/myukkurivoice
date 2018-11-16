@@ -54,7 +54,7 @@ describe('specWindow-service-AppUtilService', function() {
       .setValue('#rhythm-text', '')
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       // catch error
       .catch((err: Error) => {

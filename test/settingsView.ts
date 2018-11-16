@@ -36,10 +36,10 @@ describe('settingsView', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -51,18 +51,18 @@ describe('settingsView', function() {
     return this.app.client
       .click('#switch-settings-view')
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .click('#tutorial')
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {

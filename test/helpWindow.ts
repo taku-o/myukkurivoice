@@ -49,134 +49,134 @@ describe('helpWindow', function() {
   it('helpWindow menu click', function() {
     return this.client
       .isVisible('#about-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .isVisible('#voicecode-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#trouble-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#update-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#uninstall-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#backup-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#license-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#contact-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#funclist-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#play-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#tuna-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#writing-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#dataconfig-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#dragout-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#multivoice-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#dictionary-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#shortcut-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#help-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .click('#menu-about')
       .isVisible('#about-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-voicecode')
       .isVisible('#voicecode-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-trouble')
       .isVisible('#trouble-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-update')
       .isVisible('#update-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-uninstall')
       .isVisible('#uninstall-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-backup')
       .isVisible('#backup-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-license')
       .isVisible('#license-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-contact')
       .isVisible('#contact-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-funclist')
       .isVisible('#funclist-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-play')
       .isVisible('#play-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-tuna')
       .isVisible('#tuna-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-writing')
       .isVisible('#writing-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-dataconfig')
       .isVisible('#dataconfig-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-dragout')
       .isVisible('#dragout-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-multivoice')
       .isVisible('#multivoice-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-dictionary')
       .isVisible('#dictionary-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-shortcut')
       .isVisible('#shortcut-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .click('#menu-help')
       .isVisible('#help-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // finally
       .isVisible('#about-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       // catch error
       .catch((err: Error) => {

@@ -31,20 +31,20 @@ describe('mainWindow', function() {
         assert.equal(count, 1);
       })
       .isVisible('#main-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       .isVisible('#settings-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .getTitle().then((title: string) => {
         assert.equal(title, 'MYukkuriVoice');
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -71,26 +71,26 @@ describe('mainWindow', function() {
       })
       // play and record is enabled
       .isEnabled('#play').then((isEnabled: boolean) => {
-        assert.ok(! isEnabled);
+        assert.ok(! isEnabled, position());
       })
       .setValue('#source', 'test')
       .isEnabled('#play').then((isEnabled: boolean) => {
-        assert.ok(isEnabled);
+        assert.ok(isEnabled, position());
       })
       .click('#clear')
       .isEnabled('#play').then((isEnabled: boolean) => {
-        assert.ok(! isEnabled);
+        assert.ok(! isEnabled, position());
       })
       .setValue('#encoded', "テ'_スト")
       .isEnabled('#play').then((isEnabled: boolean) => {
-        assert.ok(isEnabled);
+        assert.ok(isEnabled, position());
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -119,7 +119,7 @@ describe('mainWindow', function() {
     return this.app.client
       // filter
       .elements('.voice-config-item').then((response: HTMLInputElement) => {
-        assert.ok(response.value.length > 0);
+        assert.ok(response.value.length > 0, position());
       })
       .setValue('#filter-text', 'xxxxxxxxxxxxxxxxxx')
       .elements('.voice-config-item').then((response: HTMLInputElement) => {
@@ -127,7 +127,7 @@ describe('mainWindow', function() {
       })
       .setValue('#filter-text', '')
       .elements('.voice-config-item').then((response: HTMLInputElement) => {
-        assert.ok(response.value.length > 0);
+        assert.ok(response.value.length > 0, position());
       })
       // add config
       .elements('.voice-config-item').then((response: HTMLInputElement) => {
@@ -139,10 +139,10 @@ describe('mainWindow', function() {
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -157,15 +157,15 @@ describe('mainWindow', function() {
       .click('#play')
       .waitForText('#duration', 2000)
       .getValue('#duration').then((duration: string) => {
-        assert.ok(duration != '');
+        assert.ok(duration != '', position());
       })
       .click('#stop')
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -181,31 +181,31 @@ describe('mainWindow', function() {
     const app = this.app;
     return this.app.client
       .getAttribute('#always-on-top-btn span.icon', 'class').then((classes: string[]) => {
-        assert.ok(! classes.includes('active'));
+        assert.ok(! classes.includes('active'), position());
         app.browserWindow.isAlwaysOnTop().then((isAlwaysOnTop: boolean) => {
-          assert.ok(! isAlwaysOnTop);
+          assert.ok(! isAlwaysOnTop, position());
         });
       })
       .click('#always-on-top-btn')
       .getAttribute('#always-on-top-btn span.icon', 'class').then((classes: string[]) => {
-        assert.ok(classes.includes('active'));
+        assert.ok(classes.includes('active'), position());
         app.browserWindow.isAlwaysOnTop().then((isAlwaysOnTop: boolean) => {
-          assert.ok(isAlwaysOnTop);
+          assert.ok(isAlwaysOnTop, position());
         });
       })
       .click('#always-on-top-btn')
       .getAttribute('#always-on-top-btn span.icon', 'class').then((classes: string[]) => {
-        assert.ok(! classes.includes('active'));
+        assert.ok(! classes.includes('active'), position());
         app.browserWindow.isAlwaysOnTop().then((isAlwaysOnTop: boolean) => {
-          assert.ok(! isAlwaysOnTop);
+          assert.ok(! isAlwaysOnTop, position());
         });
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -226,10 +226,10 @@ describe('mainWindow', function() {
       // error check
       .windowByIndex(0)
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -250,10 +250,10 @@ describe('mainWindow', function() {
       // error check
       .windowByIndex(0)
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -264,18 +264,18 @@ describe('mainWindow', function() {
   it('shortcut intro', function() {
     return this.app.client
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .click('#shortcut')
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -286,18 +286,18 @@ describe('mainWindow', function() {
   it('tutorial intro', function() {
     return this.app.client
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .click('#tutorial')
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -309,17 +309,17 @@ describe('mainWindow', function() {
     return this.app.client
       .click('#switch-settings-view')
       .isVisible('#main-pane').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .isVisible('#settings-pane').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {

@@ -59,9 +59,9 @@ describe('specWindow-service-AudioSourceService', function() {
       .click('#save')
       .waitForValue('#save-result', 5000)
       .getValue('#save-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
         fs.readFile(txtfile, 'utf8', (err, text) => {
-          assert.ok(!err);
+          assert.ok(!err, position());
           assert.equal('hogehoge', text);
         });
       })

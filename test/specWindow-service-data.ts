@@ -43,10 +43,10 @@ describe('specWindow-service-DataService', function() {
       .click('#load')
       .waitForValue('#load-result', 2000)
       .getValue('#load-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       .getValue('#load-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -58,7 +58,7 @@ describe('specWindow-service-DataService', function() {
     return this.client
       .click('#initial-data')
       .getValue('#initial-data-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
         const parsed = JSON.parse(value);
         assert.equal(parsed.length, 4);
       })
@@ -72,9 +72,9 @@ describe('specWindow-service-DataService', function() {
     return this.client
       .click('#create')
       .getValue('#create-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
         const parsed = JSON.parse(value);
-        assert.ok(parsed.id);
+        assert.ok(parsed.id, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -86,9 +86,9 @@ describe('specWindow-service-DataService', function() {
     return this.client
       .click('#copy')
       .getValue('#copy-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
         const parsed = JSON.parse(value);
-        assert.ok(parsed.id);
+        assert.ok(parsed.id, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -101,7 +101,7 @@ describe('specWindow-service-DataService', function() {
       .getValue('#save-data-result').then((value: string) => {
         assert.equal('', value);
         const isExists = fs.existsSync(`${dirPath}/data.json`);
-        assert.ok(! isExists);
+        assert.ok(! isExists, position());
       })
       .click('#save-data')
       .waitForValue('#save-data-result', 2000)
@@ -129,7 +129,7 @@ describe('specWindow-service-DataService', function() {
       .getValue('#clear-result').then((value: string) => {
         assert.equal('', value);
         const isExists = fs.existsSync(`${dirPath}/data.json`);
-        assert.ok(isExists);
+        assert.ok(isExists, position());
         const data = fs.readFileSync(`${dirPath}/data.json`);
         const parsed = JSON.parse(data.toString());
         assert.equal(parsed.length, 4);
@@ -139,7 +139,7 @@ describe('specWindow-service-DataService', function() {
       .getValue('#clear-result').then((value: string) => {
         assert.equal('ok', value);
         const isExists = fs.existsSync(`${dirPath}/data.json`);
-        assert.ok(! isExists);
+        assert.ok(! isExists, position());
       })
       // catch error
       .catch((err: Error) => {

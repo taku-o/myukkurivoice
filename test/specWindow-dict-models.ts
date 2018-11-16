@@ -44,7 +44,7 @@ describe('specWindow-dict-models', function() {
         assert.equal(parsed.length, 28);
         for (let i=0; i < parsed.length; i++) {
           assert.equal(i, parsed[i].id);
-          assert.ok(parsed[i].kind);
+          assert.ok(parsed[i].kind, position());
         }
       })
       // catch error
@@ -59,7 +59,7 @@ describe('specWindow-dict-models', function() {
       .getValue('#get-kind-hash-result').then((value: string) => {
         const parsed = JSON.parse(value);
         for (let i=0; i < 28; i++) {
-          assert.ok(parsed[i]);
+          assert.ok(parsed[i], position());
         }
       })
       // catch error

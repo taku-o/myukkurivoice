@@ -46,19 +46,19 @@ describe('systemWindow', function() {
         assert.equal(value, 665);
       })
       .isSelected('#audio-serv-ver-html5audio').then((selected: boolean) => {
-        assert.ok(! selected);
+        assert.ok(! selected, position());
       })
       .isSelected('#audio-serv-ver-webaudioapi').then((selected: boolean) => {
-        assert.ok(selected);
+        assert.ok(selected, position());
       })
       .isSelected('#show-msg-pane').then((selected: boolean) => {
-        assert.ok(selected);
+        assert.ok(selected, position());
       })
       .isSelected('#accept-first-mouse').then((selected: boolean) => {
-        assert.ok(selected);
+        assert.ok(selected, position());
       })
       .getValue('#aq10-use-key').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // error
       .catch((err: Error) => {
