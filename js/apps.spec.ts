@@ -1,3 +1,8 @@
+// source-map-support
+if (process.env.DEBUG != null) {
+  require('source-map-support').install();
+}
+
 // application spec app
 angular.module('yvoiceSpec',
   ['yvoiceModel', 'dictModel', 'yvoiceService', 'yvoiceLicenseService', 'yvoiceIntroService', 'yvoiceMessageService', 'yvoiceCommandService'])

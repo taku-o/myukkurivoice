@@ -8,6 +8,11 @@ import * as Pane from './electron-window';
 import * as Launch from './electron-launch';
 import * as AppConfig from './electron-appcfg';
 
+// source-map-support
+if (process.env.DEBUG != null) {
+  require('source-map-support').install();
+}
+
 // MYukkuriVoice application
 const MYukkuriVoice = function(): void {
   this.launchArgs = null;

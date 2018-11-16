@@ -8,6 +8,11 @@ var _epath, epath             = () => { _epath = _epath || require('electron-pat
 
 var unpackedPath = epath().getUnpackedPath();
 
+// source-map-support
+if (process.env.DEBUG != null) {
+  require('source-map-support').install();
+}
+
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
   log().error('main:event:uncaughtException');

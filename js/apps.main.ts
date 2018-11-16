@@ -8,6 +8,11 @@ var _log, log                 = () => { _log = _log || require('electron-log'); 
 // application settings
 var desktopDir = app.getPath('desktop');
 
+// source-map-support
+if (process.env.DEBUG != null) {
+  require('source-map-support').install();
+}
+
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
   log().error('main:event:uncaughtException');

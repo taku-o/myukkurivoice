@@ -18,6 +18,7 @@ const rename = require("gulp-rename");
 const replace = require('gulp-replace');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
+const sourcemaps = require('gulp-sourcemaps');
 const toc = require('gulp-markdown-toc');
 const ts = require('gulp-typescript');
 const wrapper = require('gulp-wrapper');
@@ -41,6 +42,7 @@ gulp.task('default', () => {
 usage:
     gulp --tasks-simple
     gulp tsc
+    gulp tsc-release
     gulp lint
     gulp lint-js
     gulp lint-q
@@ -59,6 +61,13 @@ usage:
 
 // tsc
 gulp.task('tsc', () => {
+  return tsProject.src()
+    .pipe(sourcemaps.init())
+    .pipe(tsProject())
+    .js.pipe(sourcemaps.write())
+    .pipe(gulp.dest('.'));
+});
+gulp.task('tsc-release', () => {
   return tsProject.src()
     .pipe(tsProject())
     .js.pipe(gulp.dest('.'));
@@ -240,7 +249,7 @@ gulp.task('test', (cb) => {
         cb(err);
       });
     } else {
-      runSequence('_test', '_notify', (err) => {
+      runSequence('tsc', '_test', '_notify', (err) => {
         if (err) { _notifyError(); }
         cb(err);
       });
@@ -285,6 +294,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
+    'tsc-release',
     '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
@@ -301,6 +311,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
+    'tsc-release',
     '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }

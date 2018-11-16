@@ -4,6 +4,8 @@ import * as temp from 'temp';
 temp.track();
 import * as fs from 'fs';
 
+require('source-map-support').install();
+
 describe('specWindow-service-SeqFNameService', function() {
   this.timeout(10000);
 

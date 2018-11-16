@@ -3,6 +3,8 @@ import * as assert from 'assert';
 import * as temp from 'temp';
 temp.track();
 
+require('source-map-support').install();
+
 describe('mainWindow', function() {
   this.timeout(10000);
 

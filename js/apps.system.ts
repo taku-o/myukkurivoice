@@ -1,6 +1,11 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 
+// source-map-support
+if (process.env.DEBUG != null) {
+  require('source-map-support').install();
+}
+
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
   log().error('system:event:uncaughtException');
