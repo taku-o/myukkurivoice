@@ -4,6 +4,8 @@ import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 
+require('source-map-support').install();
+
 describe('specWindow-service-AudioSourceService', function() {
   this.timeout(10000);
 

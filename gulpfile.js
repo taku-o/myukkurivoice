@@ -18,6 +18,7 @@ const rename = require("gulp-rename");
 const replace = require('gulp-replace');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
+const sourcemaps = require('gulp-sourcemaps');
 const toc = require('gulp-markdown-toc');
 const ts = require('gulp-typescript');
 const wrapper = require('gulp-wrapper');
@@ -41,6 +42,7 @@ gulp.task('default', () => {
 usage:
     gulp --tasks-simple
     gulp tsc
+    gulp tsc-release
     gulp lint
     gulp lint-js
     gulp lint-q
@@ -60,8 +62,18 @@ usage:
 // tsc
 gulp.task('tsc', () => {
   return tsProject.src()
+    .pipe(sourcemaps.init())
+    .pipe(tsProject())
+    .js.pipe(sourcemaps.write())
+    .pipe(gulp.dest('.'));
+});
+gulp.task('tsc-release', () => {
+  return tsProject.src()
     .pipe(tsProject())
     .js.pipe(gulp.dest('.'));
+});
+gulp.task('_rm-js', () => {
+  return del(['*.js','js/*.js','test/*.js', 'docs/assets/js/*.js', '!gulpfile.js']);
 });
 
 // lint
@@ -70,12 +82,12 @@ gulp.task('lint', () => {
     .pipe(eslint({ useEslintrc: true }))
     .pipe(eslint.format());
 });
-gulp.task('lint-js', ['tsc'], () => {
+gulp.task('lint-js', () => {
   return gulp.src(['*.js','js/*.js','test/*.js'])
     .pipe(eslint({ useEslintrc: true }))
     .pipe(eslint.format());
 });
-gulp.task('lint-q', ['tsc'], () => {
+gulp.task('lint-q', () => {
   return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts','*.js','js/*.js','test/*.js', 'docs/assets/js/*.js'])
     .pipe(eslint({ useEslintrc: true, quiet: true }))
     .pipe(eslint.format());
@@ -229,7 +241,7 @@ gulp.task('_package-contents:rm', () => {
 });
 
 // clean
-gulp.task('clean', ['_rm-package', '_rm-workdir']);
+gulp.task('clean', ['_rm-js', '_rm-package', '_rm-workdir']);
 
 // test
 gulp.task('test', (cb) => {
@@ -240,7 +252,7 @@ gulp.task('test', (cb) => {
         cb(err);
       });
     } else {
-      runSequence('_test', '_notify', (err) => {
+      runSequence('tsc', '_test', '_notify', (err) => {
         if (err) { _notifyError(); }
         cb(err);
       });
@@ -285,6 +297,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
+    'tsc-release',
     '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
@@ -301,6 +314,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
+    'tsc-release',
     '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
@@ -442,6 +456,7 @@ gulp.task('_package-release', (cb) => {
           --ignore="^/vendor/aqtk10-mac" \
           --ignore="^/vendor/aqtk2-mac" \
           --ignore="/ffi/deps/" \
+          --ignore="/node_modules/@types" \
           --ignore="/node_modules/angular/angular-csp\\.css$" \
           --ignore="/node_modules/angular/angular\\.js$" \
           --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
@@ -609,6 +624,7 @@ gulp.task('_package-debug', (cb) => {
           --ignore="^/vendor/aqtk10-mac" \
           --ignore="^/vendor/aqtk2-mac" \
           --ignore="/ffi/deps/" \
+          --ignore="/node_modules/@types" \
           --ignore="/node_modules/angular/angular-csp\\.css$" \
           --ignore="/node_modules/angular/angular\\.js$" \
           --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
