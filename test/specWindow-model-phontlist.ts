@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -40,31 +41,31 @@ describe('specWindow-model-YPhontList', function() {
       .click('#get-yphont-list')
       .getValue('#get-yphont-list-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 26);
+        assert.equal(parsed.length, 26, position());
 
         for (let i=0; i < parsed.length; i++) {
           const version = parsed[i].version;
           switch (version) {
             case 'talk1':
-              assert.ok(parsed[i].id);
-              assert.ok(parsed[i].name);
-              assert.ok('idVoice' in parsed[i]);
+              assert.ok(parsed[i].id, position());
+              assert.ok(parsed[i].name, position());
+              assert.ok('idVoice' in parsed[i], position());
               break;
             case 'talk2':
-              assert.ok(parsed[i].id);
-              assert.ok(parsed[i].name);
-              assert.ok(parsed[i].path);
+              assert.ok(parsed[i].id, position());
+              assert.ok(parsed[i].name, position());
+              assert.ok(parsed[i].path, position());
               break;
             case 'talk10':
-              assert.ok(parsed[i].id);
-              assert.ok(parsed[i].name);
-              assert.ok('bas' in parsed[i].struct);
-              assert.ok('spd' in parsed[i].struct);
-              assert.ok('vol' in parsed[i].struct);
-              assert.ok('pit' in parsed[i].struct);
-              assert.ok('acc' in parsed[i].struct);
-              assert.ok('lmd' in parsed[i].struct);
-              assert.ok('fsc' in parsed[i].struct);
+              assert.ok(parsed[i].id, position());
+              assert.ok(parsed[i].name, position());
+              assert.ok('bas' in parsed[i].struct, position());
+              assert.ok('spd' in parsed[i].struct, position());
+              assert.ok('vol' in parsed[i].struct, position());
+              assert.ok('pit' in parsed[i].struct, position());
+              assert.ok('acc' in parsed[i].struct, position());
+              assert.ok('lmd' in parsed[i].struct, position());
+              assert.ok('fsc' in parsed[i].struct, position());
               break;
             default:
               assert.fail('unknown version');

@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -40,23 +41,23 @@ describe('specWindow-model-YVoiceInitialData', function() {
       .click('#get-yvoice-initial-data')
       .getValue('#get-yvoice-initial-data-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 4);
+        assert.equal(parsed.length, 4, position());
 
         for (let i=0; i < parsed.length; i++) {
-          assert.ok('id' in parsed[i]);
-          assert.ok('name' in parsed[i]);
-          assert.ok('phont' in parsed[i]);
-          assert.ok('version' in parsed[i]);
-          assert.ok('speed' in parsed[i]);
-          assert.ok('playbackRate' in parsed[i]);
-          assert.ok('detune' in parsed[i]);
-          assert.ok('volume' in parsed[i]);
-          assert.ok('rhythmOn' in parsed[i]);
-          assert.ok('writeMarginMs' in parsed[i]);
-          assert.ok('sourceWrite' in parsed[i]);
-          assert.ok('seqWrite' in parsed[i]);
-          assert.equal('', parsed[i].seqWriteOptions.dir);
-          assert.equal('', parsed[i].seqWriteOptions.prefix);
+          assert.ok('id' in parsed[i], position());
+          assert.ok('name' in parsed[i], position());
+          assert.ok('phont' in parsed[i], position());
+          assert.ok('version' in parsed[i], position());
+          assert.ok('speed' in parsed[i], position());
+          assert.ok('playbackRate' in parsed[i], position());
+          assert.ok('detune' in parsed[i], position());
+          assert.ok('volume' in parsed[i], position());
+          assert.ok('rhythmOn' in parsed[i], position());
+          assert.ok('writeMarginMs' in parsed[i], position());
+          assert.ok('sourceWrite' in parsed[i], position());
+          assert.ok('seqWrite' in parsed[i], position());
+          assert.equal('', parsed[i].seqWriteOptions.dir, position());
+          assert.equal('', parsed[i].seqWriteOptions.prefix, position());
 
           const version = parsed[i].version;
           switch (version) {
@@ -64,13 +65,13 @@ describe('specWindow-model-YVoiceInitialData', function() {
             case 'talk2':
               break;
             case 'talk10':
-              assert.ok('bas' in parsed[i]);
-              assert.ok('spd' in parsed[i]);
-              assert.ok('vol' in parsed[i]);
-              assert.ok('pit' in parsed[i]);
-              assert.ok('acc' in parsed[i]);
-              assert.ok('lmd' in parsed[i]);
-              assert.ok('fsc' in parsed[i]);
+              assert.ok('bas' in parsed[i], position());
+              assert.ok('spd' in parsed[i], position());
+              assert.ok('vol' in parsed[i], position());
+              assert.ok('pit' in parsed[i], position());
+              assert.ok('acc' in parsed[i], position());
+              assert.ok('lmd' in parsed[i], position());
+              assert.ok('fsc' in parsed[i], position());
               break;
             default:
               assert.fail('unknown version');

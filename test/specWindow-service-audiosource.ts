@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
@@ -42,7 +43,7 @@ describe('specWindow-service-AudioSourceService', function() {
       .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
       .click('#source-fname')
       .getValue('#source-fname-result').then((value: string) => {
-        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt');
+        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt', position());
       })
       // catch error
       .catch((err: Error) => {
@@ -58,10 +59,10 @@ describe('specWindow-service-AudioSourceService', function() {
       .click('#save')
       .waitForValue('#save-result', 5000)
       .getValue('#save-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
         fs.readFile(txtfile, 'utf8', (err, text) => {
-          assert.ok(!err);
-          assert.equal('hogehoge', text);
+          assert.ok(!err, position());
+          assert.equal('hogehoge', text, position());
         });
       })
       // catch error

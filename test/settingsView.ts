@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -30,15 +31,15 @@ describe('settingsView', function() {
       .click('#switch-settings-view')
       .isSelected('#seq-write-box .checkbox input').then((isSelected: boolean) => {
         client.isVisible('#seq-write-box .form-group').then((isVisible: boolean) => {
-          assert.equal(isVisible, isSelected);
+          assert.equal(isVisible, isSelected, position());
         });
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -50,18 +51,18 @@ describe('settingsView', function() {
     return this.app.client
       .click('#switch-settings-view')
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(! isVisible);
+        assert.ok(! isVisible, position());
       })
       .click('#tutorial')
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // error check
       .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error);
+        assert.ok(! error, position());
       })
       // catch error
       .catch((err: Error) => {

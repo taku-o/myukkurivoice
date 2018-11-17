@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
@@ -45,7 +46,7 @@ describe('specWindow-service-AudioService2', function() {
       .click('#play2-aqver1')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       // play aquestalk2
       .setValue('#play2-encoded', "テ'_スト")
@@ -53,7 +54,7 @@ describe('specWindow-service-AudioService2', function() {
       .click('#play2-aqver2')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       // play aquestalk10
       .setValue('#play2-encoded', "テ'_スト")
@@ -61,7 +62,7 @@ describe('specWindow-service-AudioService2', function() {
       .click('#play2-aqver10')
       .waitForValue('#play-result-2', 5000)
       .getValue('#play-result-2').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       // catch error
       .catch((err: Error) => {
@@ -78,11 +79,11 @@ describe('specWindow-service-AudioService2', function() {
       .click('#record2-aqver1')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_1.wav`, (err, data) => {
-            assert.ok(!err);
-            assert.ok(data);
+            assert.ok(!err, position());
+            assert.ok(data, position());
             resolve();
           });
         });
@@ -94,11 +95,11 @@ describe('specWindow-service-AudioService2', function() {
       .click('#record2-aqver2')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_2.wav`, (err, data) => {
-            assert.ok(!err);
-            assert.ok(data);
+            assert.ok(!err, position());
+            assert.ok(data, position());
             resolve();
           });
         });
@@ -110,11 +111,11 @@ describe('specWindow-service-AudioService2', function() {
       .click('#record2-aqver10')
       .waitForValue('#record-result-2', 5000)
       .getValue('#record-result-2').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
         return new Promise((resolve, reject) => {
           fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_10.wav`, (err, data) => {
-            assert.ok(!err);
-            assert.ok(data);
+            assert.ok(!err, position());
+            assert.ok(data, position());
             resolve();
           });
         });

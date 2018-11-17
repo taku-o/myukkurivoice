@@ -1,8 +1,9 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
+import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
-import * as fs from 'fs';
 
 require('source-map-support').install();
 
@@ -43,7 +44,7 @@ describe('specWindow-service-SeqFNameService', function() {
       .setValue('#num', '200')
       .click('#next-fname')
       .getValue('#next-fname-result').then((value: string) => {
-        assert.equal(value, 'foo0200.wav');
+        assert.equal(value, 'foo0200.wav', position());
       })
       // catch error
       .catch((err: Error) => {
@@ -57,8 +58,8 @@ describe('specWindow-service-SeqFNameService', function() {
       .click('#split-fname')
       .getValue('#split-fname-result').then((value: string) => {
         const r = JSON.parse(value);
-        assert.equal('/tmp/hoge', r.dir);
-        assert.equal('foo.txt', r.basename);
+        assert.equal('/tmp/hoge', r.dir, position());
+        assert.equal('foo.txt', r.basename, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -85,7 +86,7 @@ describe('specWindow-service-SeqFNameService', function() {
       .click('#next-number')
       .waitForValue('#next-number-result', 5000)
       .getValue('#next-number-result').then((value: number) => {
-        assert.equal(102, value);
+        assert.equal(102, value, position());
       })
       // count up
       .setValue('#next-number-dir', dirPath)
@@ -93,7 +94,7 @@ describe('specWindow-service-SeqFNameService', function() {
       .click('#next-number')
       .waitForValue('#next-number-result', 5000)
       .getValue('#next-number-result').then((value: number) => {
-        assert.equal(1, value);
+        assert.equal(1, value, position());
       })
       // newly
       .setValue('#next-number-dir', dirPath)
@@ -101,7 +102,7 @@ describe('specWindow-service-SeqFNameService', function() {
       .click('#next-number')
       .waitForValue('#next-number-result', 5000)
       .getValue('#next-number-result').then((value: number) => {
-        assert.equal(0, value);
+        assert.equal(0, value, position());
       })
       // not exists
       .setValue('#next-number-dir', dirPath)
@@ -109,7 +110,7 @@ describe('specWindow-service-SeqFNameService', function() {
       .click('#next-number')
       .waitForValue('#next-number-result', 5000)
       .getValue('#next-number-result').then((value: number) => {
-        assert.equal(0, value);
+        assert.equal(0, value, position());
       })
       // catch error
       .catch((err: Error) => {

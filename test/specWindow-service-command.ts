@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -46,27 +47,27 @@ describe('specWindow-service-CommandService', function() {
       .setValue('#contains-command-input', isCmd)
       .click('#contains-command')
       .getValue('#contains-command-result').then((value: string) => {
-        assert.equal('true', value, 'isCmd');
+        assert.equal('true', value, 'isCmd '+ position());
       })
       .setValue('#contains-command-input', isNotCmd)
       .click('#contains-command')
       .getValue('#contains-command-result').then((value: string) => {
-        assert.equal('false', value, 'isNotCmd');
+        assert.equal('false', value, 'isNotCmd '+ position());
       })
       .setValue('#contains-command-input', isCmdML1)
       .click('#contains-command')
       .getValue('#contains-command-result').then((value: string) => {
-        assert.equal('true', value, 'isCmdML1');
+        assert.equal('true', value, 'isCmdML1 '+ position());
       })
       .setValue('#contains-command-input', isCmdML2)
       .click('#contains-command')
       .getValue('#contains-command-result').then((value: string) => {
-        assert.equal('true', value, 'isCmdML2');
+        assert.equal('true', value, 'isCmdML2 '+ position());
       })
       .setValue('#contains-command-input', isCmdML3)
       .click('#contains-command')
       .getValue('#contains-command-result').then((value: string) => {
-        assert.equal('true', value, 'isCmdML3');
+        assert.equal('true', value, 'isCmdML3 '+ position());
       })
       // catch error
       .catch((err: Error) => {
@@ -84,27 +85,27 @@ describe('specWindow-service-CommandService', function() {
       .click('#parse-input')
       .getValue('#parse-input-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(1, parsed.length);
-        assert.equal('aq_yukkuri(サンプル設定2)', parsed[0].name);
-        assert.equal('test', parsed[0].text);
+        assert.equal(1, parsed.length, position());
+        assert.equal('aq_yukkuri(サンプル設定2)', parsed[0].name, position());
+        assert.equal('test', parsed[0].text, position());
       })
       .setValue('#parse-input-input', empty)
       .click('#parse-input')
       .getValue('#parse-input-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(1, parsed.length);
-        assert.equal('f1 女声1(ゆっくり)', parsed[0].name);
-        assert.equal('test', parsed[0].text);
+        assert.equal(1, parsed.length, position());
+        assert.equal('f1 女声1(ゆっくり)', parsed[0].name, position());
+        assert.equal('test', parsed[0].text, position());
       })
       .setValue('#parse-input-input', defaultAnd)
       .click('#parse-input')
       .getValue('#parse-input-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(2, parsed.length);
-        assert.equal('f1 女声1(ゆっくり)', parsed[0].name);
-        assert.equal('test', parsed[0].text);
-        assert.equal('aq_yukkuri(サンプル設定2)', parsed[1].name);
-        assert.equal('test2', parsed[1].text);
+        assert.equal(2, parsed.length, position());
+        assert.equal('f1 女声1(ゆっくり)', parsed[0].name, position());
+        assert.equal('test', parsed[0].text, position());
+        assert.equal('aq_yukkuri(サンプル設定2)', parsed[1].name, position());
+        assert.equal('test2', parsed[1].text, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -122,10 +123,10 @@ describe('specWindow-service-CommandService', function() {
       .click('#detect-voice-config')
       .getValue('#detect-voice-config-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal('sample_2', parsed.id);
-        assert.equal('aq_yukkuri(サンプル設定2)', parsed.name);
-        assert.equal('talk2', parsed.version);
-        assert.equal(150, parsed.writeMarginMs);
+        assert.equal('sample_2', parsed.id, position());
+        assert.equal('aq_yukkuri(サンプル設定2)', parsed.name, position());
+        assert.equal('talk2', parsed.version, position());
+        assert.equal(150, parsed.writeMarginMs, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -157,7 +158,7 @@ describe('specWindow-service-CommandService', function() {
       .setValue('#command-input-list', JSON.stringify(cmdInputList))
       .click('#to-string')
       .getValue('#to-string-result').then((value: string) => {
-        assert.equal(cmdInputListToString, value);
+        assert.equal(cmdInputListToString, value, position());
       })
       // catch error
       .catch((err: Error) => {

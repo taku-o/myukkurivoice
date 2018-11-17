@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -41,7 +42,7 @@ describe('specWindow-service-LicenseService', function() {
       .setValue('#plain-key', 'this is a plain key')
       .click('#encrypt')
       .getValue('#encrypted-key').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -56,7 +57,7 @@ describe('specWindow-service-LicenseService', function() {
       .setValue('#plain-key', '')
       .click('#decrypt')
       .getValue('#plain-key').then((value: string) => {
-        assert.equal(value, 'this is a plain key');
+        assert.equal(value, 'this is a plain key', position());
       })
       // catch error
       .catch((err: Error) => {
@@ -73,10 +74,10 @@ describe('specWindow-service-LicenseService', function() {
       .click('#consumer-key')
       .waitForValue('#consumer-key-result', 5000)
       .getValue('#consumer-key-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       .getValue('#consumer-key-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // consumerKey unknown key
       .setValue('#license-type', 'unknown')
@@ -85,10 +86,10 @@ describe('specWindow-service-LicenseService', function() {
       .click('#consumer-key')
       .waitForValue('#consumer-key-done', 5000)
       .getValue('#consumer-key-result').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       .getValue('#consumer-key-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // catch error
       .catch((err: Error) => {

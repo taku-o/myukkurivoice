@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -41,19 +42,19 @@ describe('specWindow-service-AppUtilService', function() {
       .setValue('#rhythm-text', 'test\' val/ue')
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then((value: string) => {
-        assert.equal(value, 'test value');
+        assert.equal(value, 'test value', position());
       })
       // disableRhythm not contains
       .setValue('#rhythm-text', 'this is not a rhythm text')
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then((value: string) => {
-        assert.equal(value, 'this is not a rhythm text');
+        assert.equal(value, 'this is not a rhythm text', position());
       })
       // disableRhythm empty
       .setValue('#rhythm-text', '')
       .click('#disable-rhythm')
       .getValue('#disable-rhythm-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -67,7 +68,7 @@ describe('specWindow-service-AppUtilService', function() {
       .click('#report-duration')
       .waitForValue('#report-duration-result', 5000)
       .getValue('#report-duration-result').then((value: number) => {
-        assert.equal(340, value);
+        assert.equal(340, value, position());
       })
       // catch error
       .catch((err: Error) => {

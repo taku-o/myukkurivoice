@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -40,8 +41,8 @@ describe('specWindow-model-YCommandInput', function() {
       .click('#get-ycommand-input')
       .getValue('#get-ycommand-input-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal('', parsed.name);
-        assert.equal('', parsed.text);
+        assert.equal('', parsed.name, position());
+        assert.equal('', parsed.text, position());
       })
       // catch error
       .catch((err: Error) => {

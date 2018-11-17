@@ -1,8 +1,9 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
+import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
-import * as fs from 'fs';
 
 require('source-map-support').install();
 
@@ -42,10 +43,10 @@ describe('specWindow-service-DataService', function() {
       .click('#load')
       .waitForValue('#load-result', 2000)
       .getValue('#load-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       .getValue('#load-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -57,9 +58,9 @@ describe('specWindow-service-DataService', function() {
     return this.client
       .click('#initial-data')
       .getValue('#initial-data-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 4);
+        assert.equal(parsed.length, 4, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -71,9 +72,9 @@ describe('specWindow-service-DataService', function() {
     return this.client
       .click('#create')
       .getValue('#create-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
         const parsed = JSON.parse(value);
-        assert.ok(parsed.id);
+        assert.ok(parsed.id, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -85,9 +86,9 @@ describe('specWindow-service-DataService', function() {
     return this.client
       .click('#copy')
       .getValue('#copy-result').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
         const parsed = JSON.parse(value);
-        assert.ok(parsed.id);
+        assert.ok(parsed.id, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -98,17 +99,17 @@ describe('specWindow-service-DataService', function() {
   it('save', function() {
     return this.client
       .getValue('#save-data-result').then((value: string) => {
-        assert.equal('', value);
+        assert.equal('', value, position());
         const isExists = fs.existsSync(`${dirPath}/data.json`);
-        assert.ok(! isExists);
+        assert.ok(! isExists, position());
       })
       .click('#save-data')
       .waitForValue('#save-data-result', 2000)
       .getValue('#save-data-result').then((value: string) => {
-        assert.equal('ok', value);
+        assert.equal('ok', value, position());
         const data = fs.readFileSync(`${dirPath}/data.json`);
         const parsed = JSON.parse(data.toString());
-        assert.equal(parsed.length, 4);
+        assert.equal(parsed.length, 4, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -122,23 +123,23 @@ describe('specWindow-service-DataService', function() {
       .click('#save-data')
       .waitForValue('#save-data-result', 2000)
       .getValue('#save-data-result').then((value: string) => {
-        assert.equal('ok', value);
+        assert.equal('ok', value, position());
       })
       // test
       .getValue('#clear-result').then((value: string) => {
-        assert.equal('', value);
+        assert.equal('', value, position());
         const isExists = fs.existsSync(`${dirPath}/data.json`);
-        assert.ok(isExists);
+        assert.ok(isExists, position());
         const data = fs.readFileSync(`${dirPath}/data.json`);
         const parsed = JSON.parse(data.toString());
-        assert.equal(parsed.length, 4);
+        assert.equal(parsed.length, 4, position());
       })
       .click('#clear')
       .waitForValue('#clear-result', 2000)
       .getValue('#clear-result').then((value: string) => {
-        assert.equal('ok', value);
+        assert.equal('ok', value, position());
         const isExists = fs.existsSync(`${dirPath}/data.json`);
-        assert.ok(! isExists);
+        assert.ok(! isExists, position());
       })
       // catch error
       .catch((err: Error) => {

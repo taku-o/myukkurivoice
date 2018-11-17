@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -42,9 +43,9 @@ describe('specWindow-service-MessageService', function() {
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('action message', parsed.body);
-        assert.equal('action', parsed.type);
+        assert.ok(parsed.created, position());
+        assert.equal('action message', parsed.body, position());
+        assert.equal('action', parsed.type, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -61,25 +62,25 @@ describe('specWindow-service-MessageService', function() {
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('record message', parsed.body);
-        assert.equal('record', parsed.type);
-        assert.equal('/tmp/hoge.wav', parsed.wavFilePath);
-        assert.equal('hoge.wav', parsed.wavFileName);
-        assert.equal('/tmp/hoge.txt', parsed.srcTextPath);
-        assert.equal('/tmp/hoge.wav', parsed.quickLookPath);
+        assert.ok(parsed.created, position());
+        assert.equal('record message', parsed.body, position());
+        assert.equal('record', parsed.type, position());
+        assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
+        assert.equal('hoge.wav', parsed.wavFileName, position());
+        assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+        assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
       })
       // event on wavGenerated
       .waitForValue('#last-wav-file', 5000)
       .getValue('#last-wav-file').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('record message', parsed.body);
-        assert.equal('record', parsed.type);
-        assert.equal('/tmp/hoge.wav', parsed.wavFilePath);
-        assert.equal('hoge.wav', parsed.wavFileName);
-        assert.equal('/tmp/hoge.txt', parsed.srcTextPath);
-        assert.equal('/tmp/hoge.wav', parsed.quickLookPath);
+        assert.ok(parsed.created, position());
+        assert.equal('record message', parsed.body, position());
+        assert.equal('record', parsed.type, position());
+        assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
+        assert.equal('hoge.wav', parsed.wavFileName, position());
+        assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+        assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -95,11 +96,11 @@ describe('specWindow-service-MessageService', function() {
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('record source', parsed.body);
-        assert.equal('source', parsed.type);
-        assert.equal('/tmp/hoge.txt', parsed.srcTextPath);
-        assert.equal('/tmp/hoge.txt', parsed.quickLookPath);
+        assert.ok(parsed.created, position());
+        assert.equal('record source', parsed.body, position());
+        assert.equal('source', parsed.type, position());
+        assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+        assert.equal('/tmp/hoge.txt', parsed.quickLookPath, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -114,9 +115,9 @@ describe('specWindow-service-MessageService', function() {
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('info message', parsed.body);
-        assert.equal('info', parsed.type);
+        assert.ok(parsed.created, position());
+        assert.equal('info message', parsed.body, position());
+        assert.equal('info', parsed.type, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -132,9 +133,9 @@ describe('specWindow-service-MessageService', function() {
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('error message' + 'err', parsed.body);
-        assert.equal('error', parsed.type);
+        assert.ok(parsed.created, position());
+        assert.equal('error message' + 'err', parsed.body, position());
+        assert.equal('error', parsed.type, position());
       })
       // with no error
       .setValue('#message-service-post', '')
@@ -142,9 +143,9 @@ describe('specWindow-service-MessageService', function() {
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('error message', parsed.body);
-        assert.equal('error', parsed.type);
+        assert.ok(parsed.created, position());
+        assert.equal('error message', parsed.body, position());
+        assert.equal('error', parsed.type, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -160,9 +161,9 @@ describe('specWindow-service-MessageService', function() {
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('syserror message' + 'err', parsed.body);
-        assert.equal('syserror', parsed.type);
+        assert.ok(parsed.created, position());
+        assert.equal('syserror message' + 'err', parsed.body, position());
+        assert.equal('syserror', parsed.type, position());
       })
       // with no error
       .setValue('#message-service-post', '')
@@ -170,9 +171,9 @@ describe('specWindow-service-MessageService', function() {
       .waitForValue('#message-service-post', 5000)
       .getValue('#message-service-post').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.ok(parsed.created);
-        assert.equal('syserror message', parsed.body);
-        assert.equal('syserror', parsed.type);
+        assert.ok(parsed.created, position());
+        assert.equal('syserror message', parsed.body, position());
+        assert.equal('syserror', parsed.type, position());
       })
       // catch error
       .catch((err: Error) => {

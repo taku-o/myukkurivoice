@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -41,7 +42,7 @@ describe('specWindow-service-MasterService', function() {
       .click('#get-phont-list')
       .getValue('#get-phont-list-result').then((value: string) => {
         const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 26);
+        assert.equal(parsed.length, 26, position());
       })
       // catch error
       .catch((err: Error) => {

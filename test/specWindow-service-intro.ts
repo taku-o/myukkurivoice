@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
@@ -40,7 +41,7 @@ describe('specWindow-service-IntroService', function() {
       .click('#main-tutorial')
       .waitForVisible('.introjs-tooltip', 5000)
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // error
       .catch((err: Error) => {
@@ -53,7 +54,7 @@ describe('specWindow-service-IntroService', function() {
       .click('#settings-tutorial')
       .waitForVisible('.introjs-tooltip', 5000)
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // error
       .catch((err: Error) => {
@@ -66,7 +67,7 @@ describe('specWindow-service-IntroService', function() {
       .click('#shortcut')
       .waitForVisible('.introjs-tooltip', 5000)
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible);
+        assert.ok(isVisible, position());
       })
       // error
       .catch((err: Error) => {

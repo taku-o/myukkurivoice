@@ -1,5 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
+import {position} from 'caller-position';
 import * as rimraf from 'rimraf';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -45,14 +46,14 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#source', 'test')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.equal(value, "テ'_スト");
+        assert.equal(value, "テ'_スト", position());
       })
       // encode empty string
       .setValue('#source', '')
       .setValue('#encode-result', '')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       // catch error
       .catch((err: Error) => {
@@ -73,19 +74,19 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#source', '百名山')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.equal(value, 'モモナヤマ');
+        assert.equal(value, 'モモナヤマ', position());
       })
       .setValue('#source', '味方さん')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.equal(value, 'アジカタサン');
+        assert.equal(value, 'アジカタサン', position());
       })
       // encode empty string
       .setValue('#source', '')
       .setValue('#encode-result', '')
       .click('#encode')
       .getValue('#encode-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       .then(() => {
         rimraf(`${dirPath}/userdict`, (err) => {
@@ -106,10 +107,10 @@ describe('specWindow-service-AquesService', function() {
       .click('#wave-ver1')
       .waitForValue('#wave-result', 5000)
       .getValue('#wave-result').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // wave talk1 empty
       .setValue('#encoded', '')
@@ -117,10 +118,10 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#wave-err', '')
       .click('#wave-ver1')
       .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       // wave talk2
       .setValue('#encoded', "テ'_スト")
@@ -129,10 +130,10 @@ describe('specWindow-service-AquesService', function() {
       .click('#wave-ver2')
       .waitForValue('#wave-result', 5000)
       .getValue('#wave-result').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // wave talk2 empty
       .setValue('#encoded', '')
@@ -140,10 +141,10 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#wave-err', '')
       .click('#wave-ver2')
       .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       // wave talk10
       .setValue('#encoded', "テ'_スト")
@@ -152,10 +153,10 @@ describe('specWindow-service-AquesService', function() {
       .click('#wave-ver10')
       .waitForValue('#wave-result', 5000)
       .getValue('#wave-result').then((value: string) => {
-        assert.equal(value, 'ok');
+        assert.equal(value, 'ok', position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value);
+        assert.ok(! value, position());
       })
       // wave talk10 empty
       .setValue('#encoded', '')
@@ -163,10 +164,10 @@ describe('specWindow-service-AquesService', function() {
       .setValue('#wave-err', '')
       .click('#wave-ver10')
       .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value);
+        assert.ok(!value, position());
       })
       .getValue('#wave-err').then((value: string) => {
-        assert.ok(value);
+        assert.ok(value, position());
       })
       // catch error
       .catch((err: Error) => {
