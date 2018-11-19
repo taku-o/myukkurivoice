@@ -208,7 +208,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
 
           // replace filesize header with correct size.
           recorder.on('header', (header) => {
-            fs().open(header, 'a+', (err, fd) => {
+            fs().open(wavFilePath, 'a+', (err, fd) => {
               if (err) {
                 MessageService.syserror('音声ファイルの作成に失敗しました。', err);
                 d.reject(err); return;
