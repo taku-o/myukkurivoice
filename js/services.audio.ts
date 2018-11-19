@@ -180,7 +180,22 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             // onendedのタイミングでは出力が終わっていない
             $timeout(() => {
               recorder.end();
-              d.resolve('ok');
+
+              // replace filesize header with correct size.
+              fs().open(wavFilePath, 'a+', (err, fd) => {
+                if (err) {
+                  MessageService.syserror('音声ファイルの作成に失敗しました。', err);
+                  d.reject(err); return;
+                }
+                fs().write(fd, correctWavHeader, 0, correctWavHeader.length, 0, (err) => {
+                  if (err) {
+                    MessageService.syserror('音声ファイルの作成に失敗しました。', err);
+                    d.reject(err); return;
+                  }
+                  d.resolve('ok');
+                });
+              });
+
             }, options.writeMarginMs);
           };
 
@@ -205,6 +220,12 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             bitDepth: 16, // 16 or 32
           });
           recorder.pipe(fs().createWriteStream(wavFilePath));
+
+          // get corrent wave header
+          let correctWavHeader = null;
+          recorder.on('header', (header) => {
+            correctWavHeader = header;
+          });
 
           // connect
           let lastNode = inSourceNode;
