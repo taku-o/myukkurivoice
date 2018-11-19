@@ -181,21 +181,6 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             $timeout(() => {
               recorder.end();
 
-              // replace filesize header with correct size.
-              fs().open(wavFilePath, 'a+', (err, fd) => {
-                if (err) {
-                  MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-                  d.reject(err); return;
-                }
-                fs().write(fd, correctWavHeader, 0, correctWavHeader.length, 0, (err) => {
-                  if (err) {
-                    MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-                    d.reject(err); return;
-                  }
-                  d.resolve('ok');
-                });
-              });
-
             }, options.writeMarginMs);
           };
 
@@ -221,10 +206,21 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
           });
           recorder.pipe(fs().createWriteStream(wavFilePath));
 
-          // get corrent wave header
-          let correctWavHeader = null;
+          // replace filesize header with correct size.
           recorder.on('header', (header) => {
-            correctWavHeader = header;
+            fs().open(header, 'a+', (err, fd) => {
+              if (err) {
+                MessageService.syserror('音声ファイルの作成に失敗しました。', err);
+                d.reject(err); return;
+              }
+              fs().write(fd, header, 0, header.length, 0, (err) => {
+                if (err) {
+                  MessageService.syserror('音声ファイルの作成に失敗しました。', err);
+                  d.reject(err); return;
+                }
+                d.resolve('ok');
+              });
+            });
           });
 
           // connect
