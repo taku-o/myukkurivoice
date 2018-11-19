@@ -180,7 +180,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             // onendedのタイミングでは出力が終わっていない
             $timeout(() => {
               recorder.end();
-              d.resolve('ok');
+
             }, options.writeMarginMs);
           };
 
@@ -205,6 +205,23 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             bitDepth: 16, // 16 or 32
           });
           recorder.pipe(fs().createWriteStream(wavFilePath));
+
+          // replace filesize header with correct size.
+          recorder.on('header', (header) => {
+            fs().open(wavFilePath, 'a+', (err, fd) => {
+              if (err) {
+                MessageService.syserror('音声ファイルの作成に失敗しました。', err);
+                d.reject(err); return;
+              }
+              fs().write(fd, header, 0, header.length, 0, (err) => {
+                if (err) {
+                  MessageService.syserror('音声ファイルの作成に失敗しました。', err);
+                  d.reject(err); return;
+                }
+                d.resolve('ok');
+              });
+            });
+          });
 
           // connect
           let lastNode = inSourceNode;
