@@ -10,20 +10,22 @@ declare namespace yubo {
   }
 
   export interface IMainScope extends ng.IScope {
-    yinput:           yubo.YInput;
-    yvoice:           yubo.YVoice;
-    yvoiceList:       yubo.YVoice[];
-    phontList:        YPhont[];
-    appCfg:           AppCfg;
-    duration:         number;
-    lastWavFile:      yubo.IRecordMessage;
-    encodedHighlight: any;
-    sourceHighlight:  any;
-    aq10BasList:      { name: string, id: number}[];
-    display:          string;
-    alwaysOnTop:      boolean;
-    isTest:           boolean;
-    messageList:      (IMessage | IRecordMessage | ISourceMessage)[];
+    yinput:              yubo.YInput;
+    yvoice:              yubo.YVoice;
+    yvoiceList:          yubo.YVoice[];
+    phontList:           YPhont[];
+    appCfg:              AppCfg;
+    duration:            number;
+    lastWavFile:         yubo.IRecordMessage;
+    encodedHighlight:    any;
+    sourceHighlight:     any;
+    aq10BasList:         { name: string, id: number}[];
+    display:             string;
+    alwaysOnTop:         boolean;
+    showTypeMessageList: boolean;
+    isTest:              boolean;
+    messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
+    generatedList:       IRecordMessage[];
   }
   export interface ISystemScope extends ng.IScope {
     appCfg:     AppCfg;
@@ -130,9 +132,12 @@ declare namespace yubo {
     readonly wavFilePath: string;
     readonly wavFileName: string;
     readonly srcTextPath: string;
+    readonly source: string;
+    readonly encoded: string;
   }
   export interface ISourceMessage extends IWriteMessage {
     readonly srcTextPath: string;
+    readonly source: string;
   }
 
   // js/apps.main.ts
@@ -174,8 +179,8 @@ declare namespace yubo {
   }
   export interface MessageService {
     action(message: string): void;
-    record(message: string, wavFilePath: string, srcTextPath: string): void;
-    recordSource(message: string, srcTextPath: string): void;
+    record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string}): void;
+    recordSource(message: string, opts: {srcTextPath: string, source: string}): void;
     info(message: string): void;
     error(message: string, err?: Error): void;
     syserror(message: string, err?: Error): void;

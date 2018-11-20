@@ -12,26 +12,29 @@ angular.module('yvoiceMessageService', [])
         };
         $rootScope.$broadcast('message', post);
       },
-      record: function(message: string, wavFilePath: string, srcTextPath: string): void {
-        const wavFileName = path().basename(wavFilePath);
+      record: function(message: string, opts:{wavFilePath: string, srcTextPath: string, source: string, encoded: string}): void {
+        const wavFileName = path().basename(opts.wavFilePath);
         const post: yubo.IRecordMessage = {
           created: new Date(),
           body: message,
-          wavFilePath: wavFilePath,
+          wavFilePath: opts.wavFilePath,
           wavFileName: wavFileName,
-          srcTextPath: srcTextPath,
-          quickLookPath: wavFilePath,
+          srcTextPath: opts.srcTextPath,
+          quickLookPath: opts.wavFilePath,
+          source: opts.source,
+          encoded: opts.encoded,
           type: 'record',
         };
         $rootScope.$broadcast('message', post);
         $rootScope.$broadcast('wavGenerated', post);
       },
-      recordSource: function(message: string, srcTextPath: string): void {
+      recordSource: function(message: string, opts: {srcTextPath: string, source: string}): void {
         const post: yubo.ISourceMessage = {
           created: new Date(),
           body: message,
-          srcTextPath: srcTextPath,
-          quickLookPath: srcTextPath,
+          srcTextPath: opts.srcTextPath,
+          quickLookPath: opts.srcTextPath,
+          source: opts.source,
           type: 'source',
         };
         $rootScope.$broadcast('message', post);

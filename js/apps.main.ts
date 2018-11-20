@@ -44,6 +44,10 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     });
     $scope.$on('wavGenerated', (event, wavFileInfo: yubo.IRecordMessage) => {
       $scope.lastWavFile = wavFileInfo;
+      $scope.generatedList.unshift(wavFileInfo);
+      while ($scope.generatedList.length > 10) {
+        $scope.generatedList.pop();
+      }
       $timeout(() => { $scope.$apply(); });
     });
     $scope.$on('duration', (event, duration: number) => {
@@ -175,10 +179,12 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     // init
     const ctrl = this;
     $scope.display = 'main';
+    $scope.showTypeMessageList = true;
     $scope.phontList = MasterService.getPhontList();
     $scope.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
     $scope.yinput = angular.copy(YInput);
     $scope.messageList = [];
+    $scope.generatedList = [];
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
     $scope.isTest = appCfg.isTest;
@@ -412,6 +418,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
 
       // text converting
       let encoded = $scope.yinput.encoded;
+      let loggingSourceText = $scope.yinput.source;
       const _selectedEncoded = selectedEncoded();
       if (_selectedEncoded) {
         encoded = _selectedEncoded;
@@ -422,6 +429,7 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         const _selectedSource = selectedSource();
         if (_selectedSource) {
           source = _selectedSource;
+          loggingSourceText = _selectedSource;
         }
         // encoding, command
         if (CommandService.containsCommand(source, $scope.yvoiceList)) {
@@ -469,7 +477,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                 if ($scope.yvoice.sourceWrite && !sourceFname) {
                   sourceFname = AudioSourceService.sourceFname(fp);
                 }
-                MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
+                  {
+                    wavFilePath: fp,
+                    srcTextPath: sourceFname,
+                    source: loggingSourceText,
+                    encoded: cinput.text,
+                  }
+                );
                 return fp;
               });
           });
@@ -477,8 +492,13 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         // record source message
         .then((fp) => {
           if (!sourceFname) { return; }
-          AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
-            MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`, sourceFname);
+          AudioSourceService.save(sourceFname, loggingSourceText).then(() => {
+            MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
+              {
+                srcTextPath: sourceFname,
+                source: loggingSourceText,
+              }
+            );
           })
           .catch((err: Error) => {
             MessageService.error('メッセージファイルを作成できませんでした。', err);
@@ -513,7 +533,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     if ($scope.yvoice.sourceWrite && !sourceFname) {
                       sourceFname = AudioSourceService.sourceFname(fp);
                     }
-                    MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                    MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
+                      {
+                        wavFilePath: fp,
+                        srcTextPath: sourceFname,
+                        source: loggingSourceText,
+                        encoded: cinput.text,
+                      }
+                    );
                     return fp;
                   });
               } else {
@@ -522,7 +549,14 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
                     if ($scope.yvoice.sourceWrite && !sourceFname) {
                       sourceFname = AudioSourceService.sourceFname(fp);
                     }
-                    MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`, fp, sourceFname);
+                    MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
+                      {
+                        wavFilePath: fp,
+                        srcTextPath: sourceFname,
+                        source: loggingSourceText,
+                        encoded: cinput.text,
+                      }
+                    );
                     return fp;
                   });
               }
@@ -531,8 +565,13 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
           // record source message
           .then((fp) => {
             if (!sourceFname) { return; }
-            AudioSourceService.save(sourceFname, $scope.yinput.source).then(() => {
-              MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`, sourceFname);
+            AudioSourceService.save(sourceFname, loggingSourceText).then(() => {
+              MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
+                {
+                  srcTextPath: sourceFname,
+                  source: loggingSourceText,
+                }
+              );
             })
             .catch((err: Error) => {
               MessageService.error('メッセージファイルを作成できませんでした。', err);
@@ -857,6 +896,11 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
     ctrl.switchMainView = function(): void {
       MessageService.action('switch to main view.');
       $scope.display = 'main';
+    };
+
+    ctrl.switchMessageListType = function(): void {
+      MessageService.action('switch message list type.');
+      $scope.showTypeMessageList = !$scope.showTypeMessageList;
     };
 
     ctrl.switchAlwaysOnTop = function(): void {

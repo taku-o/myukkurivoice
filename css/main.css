@@ -68,6 +68,9 @@ div.seq-write-box {
 table.message-list {
   padding-top: 20px;
 }
+table.message-list thead {
+  border-top: 1px solid #c0c0c0;
+}
 table.message-list th.message-item-created {
   width: 130px;
 }
@@ -79,4 +82,7 @@ table.message-list tr.error td {
 }
 table.message-list tr.syserror td {
   color: red;
+}
+table.message-list th.message-item-wavFileName {
+  width: 150px;
 }
