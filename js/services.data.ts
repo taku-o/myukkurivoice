@@ -1,4 +1,4 @@
-var _storage, storage           = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
+var _storage, storage = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 
 // angular data service
 angular.module('yvoiceDataService', ['yvoiceMessageService', 'yvoiceModel'])

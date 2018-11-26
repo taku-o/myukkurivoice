@@ -1,12 +1,12 @@
 var app = require('electron').remote.app;
-var _log, log                   = () => { _log = _log || require('electron-log'); return _log; };
-var _fs, fs                     = () => { _fs = _fs || require('fs'); return _fs; };
-var _ffi, ffi                   = () => { _ffi = _ffi || require('ffi'); return _ffi; };
-var _ref, ref                   = () => { _ref = _ref || require('ref'); return _ref; };
-var _StructType, StructType     = () => { _StructType = _StructType || require('ref-struct'); return _StructType; };
-var _temp, temp                 = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _exec, exec                 = () => { _exec = _exec || require('child_process').exec; return _exec; };
-var _epath, epath               = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _log, log               = () => { _log = _log || require('electron-log'); return _log; };
+var _fs, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
+var _ffi, ffi               = () => { _ffi = _ffi || require('ffi'); return _ffi; };
+var _ref, ref               = () => { _ref = _ref || require('ref'); return _ref; };
+var _StructType, StructType = () => { _StructType = _StructType || require('ref-struct'); return _StructType; };
+var _temp, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _exec, exec             = () => { _exec = _exec || require('child_process').exec; return _exec; };
+var _epath, epath           = () => { _epath = _epath || require('electron-path'); return _epath; };
 
 var unpackedPath = epath().getUnpackedPath();
 
