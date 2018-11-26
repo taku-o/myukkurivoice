@@ -173,16 +173,11 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
           // report duration
           AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
 
-          // source
-          const inSourceNode = audioCtx.createBufferSource();
-          inSourceNode.buffer = decodedData;
-          inSourceNode.onended = () => {
-            // onendedのタイミングでは出力が終わっていない
-            $timeout(() => {
-              recorder.end();
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
 
-            }, options.writeMarginMs);
-          };
+          // source
+          const inSourceNode = offlineCtx.createBufferSource();
+          inSourceNode.buffer = decodedData;
 
           const nodeList = [];
 
@@ -195,43 +190,70 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             inSourceNode.detune.value = options.detune;
           }
           // gain
-          const gainNode = audioCtx.createGain();
+          const gainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
           nodeList.push(gainNode);
-
-          // recorder
-          const recorder = WaveRecorder()(audioCtx, {
-            channels: 1,  // 1 or 2
-            bitDepth: 16, // 16 or 32
-          });
-          recorder.pipe(fs().createWriteStream(wavFilePath));
-
-          // replace filesize header with correct size.
-          recorder.on('header', (header) => {
-            fs().open(wavFilePath, 'a+', (err, fd) => {
-              if (err) {
-                MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-                d.reject(err); return;
-              }
-              fs().write(fd, header, 0, header.length, 0, (err) => {
-                if (err) {
-                  MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-                  d.reject(err); return;
-                }
-                d.resolve('ok');
-              });
-            });
-          });
 
           // connect
           let lastNode = inSourceNode;
           angular.forEach(nodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
-          lastNode.connect(recorder.input);
+          lastNode.connect(offlineCtx.destination);
 
           // and start
           inSourceNode.start(0);
+
+          offlineCtx.startRendering().then((renderedBuffer) => {
+              var audioBuffer = renderedBuffer.getChannelData(0);
+
+              let wbuffer = Buffer.alloc(decodedData.length + 44);
+              // 1-4 Chunk ID "RIFF"
+              Buffer.from('RIFF').copy(wbuffer, 0, 0, 4)
+              // 5-8 Chunk Size
+              wbuffer.writeUIntLE(decodedData.length + 36, 4, 4);
+              // 9-12  Format "WAVE"
+              Buffer.from('WAV').copy(wbuffer, 8, 0, 4)
+
+              // 1-4 Subchunk1 ID "fmt"
+              Buffer.from('fmt ').copy(wbuffer, 12, 0, 4)
+              // 5-8 Subchunk1 Size "16"
+              wbuffer.writeUIntLE(16, 16, 4);
+              // 9-10 Audio Format "1"
+              wbuffer.writeUIntLE(1, 20, 2);
+              // 11-12 Num Channels
+              wbuffer.writeUIntLE(decodedData.numberOfChannels, 22, 2);
+              // 13-16 Sample Rate
+              wbuffer.writeUIntLE(decodedData.sampleRate, 24, 4);
+              // 17-20 Byte Rate
+              wbuffer.writeUIntLE(88200, 28, 4);
+              // 21-22 Block Align
+              wbuffer.writeUIntLE(2, 32, 2);
+              // 23-24 Bits Per Sample
+              wbuffer.writeUIntLE(16, 34, 2);
+
+              // 1-4 Subchunk2 ID "data"
+              Buffer.from('data').copy(wbuffer, 36, 0, 4)
+              // 5-8 Subchunk2 Size
+              wbuffer.writeUIntLE(decodedData.length - 44, 40, 4);
+              // 9-   Subchunk2 data
+              const aBuffer = toArrayBuffer(audioBuffer);
+              const b = new Buffer(aBuffer);
+              b.copy(wbuffer, 44, 0, decodedData.length);
+
+              // write
+              fs().writeFile('/Users/taku.omi/Desktop/sample-out.wav', wbuffer, 'binary', (err) => {
+                if (err) {
+                  console.error(err); return;
+                }
+                console.log('write done.');
+              });
+
+
+
+
+          });
+
         })
         .catch((err: Error) => {
           MessageService.syserror('音源の再生に失敗しました。', err);
