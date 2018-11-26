@@ -173,7 +173,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
           // report duration
           AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
 
-          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, 44 + decodedData.length * 4, decodedData.sampleRate);
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, 44 + decodedData.length, decodedData.sampleRate);
 
           // source
           const inSourceNode = offlineCtx.createBufferSource();
@@ -207,11 +207,15 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
           offlineCtx.startRendering().then((renderedBuffer) => {
               var audioBuffer = renderedBuffer.getChannelData(0);
 
-              let wbuffer = Buffer.alloc(44 + decodedData.length * 4);
+              const a = 44 + decodedData.length * 4;
+              const b = 44 + audioBuffer.length * 4;
+              const fileLength = a > b? a: b;
+              let wbuffer = Buffer.alloc(fileLength);
+
               // 1-4 Chunk ID "RIFF"
               Buffer.from('RIFF').copy(wbuffer, 0, 0, 4)
               // 5-8 Chunk Size
-              wbuffer.writeUIntLE(36 + decodedData.length * 4, 4, 4);
+              wbuffer.writeUIntLE(fileLength - 8, 4, 4);
               // 9-12  Format "WAVE"
               Buffer.from('WAV').copy(wbuffer, 8, 0, 4)
 
@@ -235,16 +239,16 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
               // 1-4 Subchunk2 ID "data"
               Buffer.from('data').copy(wbuffer, 36, 0, 4)
               // 5-8 Subchunk2 Size
-              wbuffer.writeUIntLE(decodedData.length * 4, 40, 4);
+              wbuffer.writeUIntLE(fileLength - 44, 40, 4);
               // 9-   Subchunk2 data
-              //const aBuffer = new Buffer(new Uint32Array(audioBuffer).buffer);
-              const aBuffer = new Buffer(audioBuffer.length * 4);
-              for(let i = 0; i < audioBuffer.length; i++) {
-                  console.log(audioBuffer[i]);
-                aBuffer.writeFloatLE(audioBuffer[i], i * 4);
+console.log(wbuffer.length);
+console.log(decodedData.length);
+console.log(decodedData.length * 4);
+console.log(44 + audioBuffer.length);
+console.log(audioBuffer.length * 4);
+              for (let i = 0; i < audioBuffer.length; i++) {
+                wbuffer.writeFloatLE(audioBuffer[i], 44 + i * 4);
               }
-              aBuffer.copy(wbuffer, 44, 0, decodedData.length * 4);
-
 
               // write
               fs().writeFile('/Users/taku.omi/Desktop/sample-out.wav', wbuffer, 'binary', (err) => {
