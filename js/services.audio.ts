@@ -139,7 +139,6 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
           offlineCtx.startRendering().then((renderedBuffer) => {
             // report duration
             AppUtilService.reportDuration(renderedBuffer.duration);
-console.log('renderedBuffer');
 
             // play voice
             let audioNode = null;
@@ -149,12 +148,11 @@ console.log('renderedBuffer');
               sourceNode = audioCtx.createBufferSource();
               audioNode = sourceNode;
             }
+            audioNode.buffer = renderedBuffer;
+            audioNode.connect(audioCtx.destination);
             audioNode.onended = () => {
-console.log('onended');
               d.resolve('ok');
             };
-console.log('audioNode play');
-            audioNode.connect(audioCtx.destination);
             audioNode.start(0);
           }); // offlineCtx.startRendering
         })
