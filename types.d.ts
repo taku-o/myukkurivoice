@@ -1,5 +1,6 @@
 declare namespace yubo {
 
+  // external
   export interface Global extends NodeJS.Global {
     appCfg: AppCfg;
   }
@@ -7,33 +8,6 @@ declare namespace yubo {
 	get(key: string): any;
 	set(key: string, val: any): void;
 	has(key: string): boolean
-  }
-
-  export interface IMainScope extends ng.IScope {
-    yinput:              yubo.YInput;
-    yvoice:              yubo.YVoice;
-    yvoiceList:          yubo.YVoice[];
-    phontList:           YPhont[];
-    appCfg:              AppCfg;
-    duration:            number;
-    lastWavFile:         yubo.IRecordMessage;
-    encodedHighlight:    any;
-    sourceHighlight:     any;
-    aq10BasList:         { name: string, id: number}[];
-    display:             string;
-    alwaysOnTop:         boolean;
-    showTypeMessageList: boolean;
-    isTest:              boolean;
-    messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
-    generatedList:       IRecordMessage[];
-  }
-  export interface ISystemScope extends ng.IScope {
-    appCfg:     AppCfg;
-    aq10UseKey: string;
-  }
-  export interface IHelpScope extends ng.IScope {
-    display:   string;
-    $location: ng.ILocaleService;
   }
 
   // electron-appcfg.ts
@@ -76,7 +50,7 @@ declare namespace yubo {
     resetAppConfig(): void;
   }
 
-  // js/models.ts
+  // models.ts
   export interface YPhont {
     readonly id:       string;
     readonly name:     string;
@@ -116,7 +90,34 @@ declare namespace yubo {
     text: string;
   }
 
-  // js/services.message.ts
+  // services.intro.ts
+  export interface IntroService {
+    mainTutorial(): void;
+    settingsTutorial(): void;
+    shortcut(): void;
+  }
+  // services.command.ts
+  export interface CommandService {
+    containsCommand(input: string, yvoiceList: yubo.YVoice[]): boolean;
+    parseInput(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): yubo.YCommandInput[];
+    detectVoiceConfig(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): yubo.YVoice | null;
+    toString(commandInputList: yubo.YCommandInput[]): string;
+  }
+  // services.license.ts
+  export interface LicenseService {
+    encrypt(passPhrase: string, plainKey: string): string;
+    decrypt(passPhrase: string, encryptedKey: string): string;
+    consumerKey(licenseType: string): ng.IPromise<string>;
+  }
+  // services.message.ts
+  export interface MessageService {
+    action(message: string): void;
+    record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string}): void;
+    recordSource(message: string, opts: {srcTextPath: string, source: string}): void;
+    info(message: string): void;
+    error(message: string, err?: Error): void;
+    syserror(message: string, err?: Error): void;
+  }
   export interface IMessage {
     readonly created: Date;
     readonly body: string;
@@ -139,8 +140,96 @@ declare namespace yubo {
     readonly srcTextPath: string;
     readonly source: string;
   }
+  // services.data.ts
+  export interface DataService {
+    load(ok: (dataList: yubo.YVoice[]) => void, ng: (err: Error) => void): ng.IPromise<yubo.YVoice[]>;
+    initialData(): yubo.YVoice[];
+    create(): yubo.YVoice;
+    copy(original: yubo.YVoice): yubo.YVoice;
+    save(dataList: yubo.YVoice[]): ng.IPromise<boolean>;
+    clear(): ng.IPromise<boolean>;
+  }
+  export interface MasterService {
+    getPhontList(): yubo.YPhont[];
+  }
+  // services.aques.ts
+  export interface AquesService {
+    init(): void;
+    encode(source: string): string;
+    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any>;
+  }
+  // services.audio.ts
+  export interface AudioService1 {
+    play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
+    stop(): void;
+    record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
+  }
+  export interface AudioService2 {
+    play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
+    stop(): void;
+    record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
+  }
+  // services.util.ts
+  export interface AudioSourceService {
+    sourceFname(wavFilePath: string): string;
+    save(filePath: string, sourceText: string): ng.IPromise<string>;
+  }
+  export interface SeqFNameService {
+    splitFname(filePath: string): {dir: string, basename: string};
+    nextFname(prefix: string, num: number): string;
+    nextNumber(dir: string, prefix: string): ng.IPromise<number>;
+  }
+  export interface AppUtilService {
+    disableRhythm(encoded: string): string;
+    reportDuration(duration: number): void;
+  }
 
-  // js/apps.main.ts
+  // dict.models.ts
+  export interface KindEntry {
+    readonly id:   number;
+    readonly kind: string;
+  }
+  // dict.services.intro.ts
+  export interface DIntroService {
+    tutorial(): void;
+  }
+  // dict.services.aques.ts
+  export interface DAquesService {
+    generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string};
+    generateCSV(inUserDicPath: string, outCsvPath: string): {success:boolean, message:string};
+    validateInput(surface: string, yomi: string, posCode: number): {success:boolean, message:string};
+    getLastError(): string;
+  }
+
+  // scope
+  export interface IMainScope extends ng.IScope {
+    yinput:              yubo.YInput;
+    yvoice:              yubo.YVoice;
+    yvoiceList:          yubo.YVoice[];
+    phontList:           YPhont[];
+    appCfg:              AppCfg;
+    duration:            number;
+    lastWavFile:         yubo.IRecordMessage;
+    encodedHighlight:    any;
+    sourceHighlight:     any;
+    aq10BasList:         { name: string, id: number}[];
+    display:             string;
+    alwaysOnTop:         boolean;
+    showTypeMessageList: boolean;
+    isTest:              boolean;
+    messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
+    generatedList:       IRecordMessage[];
+  }
+  export interface ISystemScope extends ng.IScope {
+    appCfg:     AppCfg;
+    aq10UseKey: string;
+  }
+  export interface IHelpScope extends ng.IScope {
+    display:   string;
+    $location: ng.ILocaleService;
+  }
+
+  // apps.main.ts
   export interface WaveOptions {
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
@@ -159,70 +248,5 @@ declare namespace yubo {
   export interface CmdOptions {
     env:      { VOICE: number, SPEED: number };
     encoding: string;
-  }
-
-  export interface IntroService {
-    mainTutorial(): void;
-    settingsTutorial(): void;
-    shortcut(): void;
-  }
-  export interface CommandService {
-    containsCommand(input: string, yvoiceList: yubo.YVoice[]): boolean;
-    parseInput(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): yubo.YCommandInput[];
-    detectVoiceConfig(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): yubo.YVoice | null;
-    toString(commandInputList: yubo.YCommandInput[]): string;
-  }
-  export interface LicenseService {
-    encrypt(passPhrase: string, plainKey: string): string;
-    decrypt(passPhrase: string, encryptedKey: string): string;
-    consumerKey(licenseType: string): ng.IPromise<string>;
-  }
-  export interface MessageService {
-    action(message: string): void;
-    record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string}): void;
-    recordSource(message: string, opts: {srcTextPath: string, source: string}): void;
-    info(message: string): void;
-    error(message: string, err?: Error): void;
-    syserror(message: string, err?: Error): void;
-  }
-
-  export interface DataService {
-    load(ok, ng): ng.IPromise<yubo.YVoice[]>;
-    initialData(): yubo.YVoice[];
-    create(): yubo.YVoice;
-    copy(original: yubo.YVoice): yubo.YVoice;
-    save(dataList: yubo.YVoice[]): ng.IPromise<boolean>;
-    clear(): ng.IPromise<boolean>;
-  }
-  export interface MasterService {
-    getPhontList(): yubo.YPhont[];
-  }
-  export interface AquesService {
-    init(): void;
-    encode(source: string): string;
-    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any>;
-  }
-  export interface AudioService1 {
-    play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
-    stop(): void;
-    record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
-  }
-  export interface AudioService2 {
-    play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
-    stop(): void;
-    record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
-  }
-  export interface AudioSourceService {
-    sourceFname(wavFilePath: string): string;
-    save(filePath: string, sourceText: string): ng.IPromise<string>;
-  }
-  export interface SeqFNameService {
-    splitFname(filePath: string): {dir: string, basename: string};
-    nextFname(prefix: string, num: number): string;
-    nextNumber(dir: string, prefix: string): ng.IPromise<number>;
-  }
-  export interface AppUtilService {
-    disableRhythm(encoded: string): string;
-    reportDuration(duration: number): void;
   }
 }

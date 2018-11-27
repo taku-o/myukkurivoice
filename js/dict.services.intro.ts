@@ -1,5 +1,5 @@
 angular.module('dictIntroService', [])
-  .factory('IntroService', () => {
+  .factory('DIntroService', (): yubo.DIntroService => {
     return {
       tutorial: function(): void {
         const intro = introJs();

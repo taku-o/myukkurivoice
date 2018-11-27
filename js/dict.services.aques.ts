@@ -4,7 +4,7 @@ var _epath, epath = () => { _epath = _epath || require('electron-path'); return 
 var unpackedPath  = epath().getUnpackedPath();
 
 angular.module('dictAquesService', [])
-  .factory('AquesService', [() => {
+  .factory('DAquesService', [(): yubo.DAquesService => {
 
     // int AqUsrDic_Import(const char * pathUserDic, const char * pathDicCsv)
     // int AqUsrDic_Export(const char * pathUserDic, const char * pathDicCsv)
