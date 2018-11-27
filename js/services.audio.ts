@@ -1,6 +1,6 @@
-var _fs, fs                     = () => { _fs = _fs || require('fs'); return _fs; };
-var _temp, temp                 = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _WaveRecorder, WaveRecorder = () => { _WaveRecorder = _WaveRecorder || require('wave-recorder'); return _WaveRecorder; };
+var _fs, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
+var _temp, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _WavEncoder, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
 
 // angular audio service
 angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService'])
@@ -204,65 +204,27 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
           // and start
           inSourceNode.start(0);
 
+          // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
-              var audioBuffer = renderedBuffer.getChannelData(0);
-
-              const a = 44 + decodedData.length * 4;
-              const b = 44 + audioBuffer.length * 4;
-              const fileLength = a > b? a: b;
-              let wbuffer = Buffer.alloc(fileLength);
-
-              // 1-4 Chunk ID "RIFF"
-              Buffer.from('RIFF').copy(wbuffer, 0, 0, 4)
-              // 5-8 Chunk Size
-              wbuffer.writeUIntLE(fileLength - 8, 4, 4);
-              // 9-12  Format "WAVE"
-              Buffer.from('WAV').copy(wbuffer, 8, 0, 4)
-
-              // 1-4 Subchunk1 ID "fmt"
-              Buffer.from('fmt ').copy(wbuffer, 12, 0, 4)
-              // 5-8 Subchunk1 Size "16"
-              wbuffer.writeUIntLE(16, 16, 4);
-              // 9-10 Audio Format "1"
-              wbuffer.writeUIntLE(1, 20, 2);
-              // 11-12 Num Channels
-              wbuffer.writeUIntLE(decodedData.numberOfChannels, 22, 2);
-              // 13-16 Sample Rate
-              wbuffer.writeUIntLE(decodedData.sampleRate, 24, 4);
-              // 17-20 Byte Rate
-              wbuffer.writeUIntLE(88200, 28, 4);
-              // 21-22 Block Align
-              wbuffer.writeUIntLE(2, 32, 2);
-              // 23-24 Bits Per Sample
-              wbuffer.writeUIntLE(16, 34, 2);
-
-              // 1-4 Subchunk2 ID "data"
-              Buffer.from('data').copy(wbuffer, 36, 0, 4)
-              // 5-8 Subchunk2 Size
-              wbuffer.writeUIntLE(fileLength - 44, 40, 4);
-              // 9-   Subchunk2 data
-console.log(wbuffer.length);
-console.log(decodedData.length);
-console.log(decodedData.length * 4);
-console.log(44 + audioBuffer.length);
-console.log(audioBuffer.length * 4);
-              for (let i = 0; i < audioBuffer.length; i++) {
-                wbuffer.writeFloatLE(audioBuffer[i], 44 + i * 4);
-              }
-
-              // write
-              fs().writeFile('/Users/taku.omi/Desktop/sample-out.wav', wbuffer, 'binary', (err) => {
+            // create audioData parameter for wav-encoder
+            const audioData = {
+              sampleRate: decodedData.sampleRate,
+              channelData: [],
+            };
+            for (let i = 0; i < decodedData.numberOfChannels; i++) {
+              audioData.channelData[i] = renderedBuffer.getChannelData(i);
+            }
+            // create wav file.
+            WavEncoder().encode(audioData).then((buffer) => {
+              fs().writeFile(wavFilePath, new Buffer(buffer), 'binary', (err) => {
                 if (err) {
-                  console.error(err); return;
+                  MessageService.syserror('音声ファイルの作成に失敗しました。', err);
+                  d.reject(err); return;
                 }
-                console.log('write done.');
+                d.resolve('ok');
               });
-
-
-
-
-          });
-
+            });
+          }); // offlineCtx.startRendering
         })
         .catch((err: Error) => {
           MessageService.syserror('音源の再生に失敗しました。', err);
