@@ -60,25 +60,24 @@ declare namespace yubo {
     readonly struct?:  { bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number };
   }
   export interface YVoice {
-    id?:           string;
-    name:          string;
-    phont:         string;
-    version:       'talk1' | 'talk2' | 'talk10';
-    bas?:          number;
-    spd?:          number;
-    vol?:          number;
-    pit?:          number;
-    acc?:          number;
-    lmd?:          number;
-    fsc?:          number;
-    speed:         number;
-    playbackRate:  number;
-    detune:        number;
-    volume:        number;
-    rhythmOn:      boolean,
-    writeMarginMs: number;
-    sourceWrite:   boolean;
-    seqWrite:      boolean;
+    id?:          string;
+    name:         string;
+    phont:        string;
+    version:      'talk1' | 'talk2' | 'talk10';
+    bas?:         number;
+    spd?:         number;
+    vol?:         number;
+    pit?:         number;
+    acc?:         number;
+    lmd?:         number;
+    fsc?:         number;
+    speed:        number;
+    playbackRate: number;
+    detune:       number;
+    volume:       number;
+    rhythmOn:     boolean,
+    sourceWrite:  boolean;
+    seqWrite:     boolean;
     seqWriteOptions: { dir: string, prefix: string };
   }
   export interface YInput {
@@ -240,10 +239,9 @@ declare namespace yubo {
     fsc?:                number;
   }
   export interface PlayOptions {
-    volume:        number;
-    playbackRate:  number;
-    detune:        number;
-    writeMarginMs: number;
+    volume:       number;
+    playbackRate: number;
+    detune:       number;
   }
   export interface CmdOptions {
     env:      { VOICE: number, SPEED: number };

@@ -104,75 +104,6 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          // report duration
-          AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
-
-          // source
-          let inSourceNode = null;
-          if (parallel) {
-            inSourceNode = audioCtx.createBufferSource();
-          } else {
-            sourceNode = audioCtx.createBufferSource();
-            inSourceNode = sourceNode;
-          }
-          inSourceNode.buffer = decodedData;
-          inSourceNode.onended = () => {
-            // onendedのタイミングでは出力が終わっていない
-            $timeout(() => {
-              d.resolve('ok');
-            }, options.writeMarginMs);
-          };
-
-          const nodeList = [];
-
-          // playbackRate
-          if (options.playbackRate && options.playbackRate != 1.0) {
-            inSourceNode.playbackRate.value = options.playbackRate;
-          }
-          // detune
-          if (options.detune && options.detune != 0) {
-            inSourceNode.detune.value = options.detune;
-          }
-          // gain
-          const gainNode = audioCtx.createGain();
-          gainNode.gain.value = options.volume;
-          nodeList.push(gainNode);
-
-          // connect
-          let lastNode = inSourceNode;
-          angular.forEach(nodeList, (node) => {
-            lastNode.connect(node); lastNode = node;
-          });
-          lastNode.connect(audioCtx.destination);
-
-          // and start
-          inSourceNode.start(0);
-        })
-        .catch((err: Error) => {
-          MessageService.syserror('音源の再生に失敗しました。', err);
-          d.reject(err); return;
-        });
-        return d.promise;
-      },
-      stop: function(): void {
-        if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
-      },
-      record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
-        const d = $q.defer();
-        if (!wavFilePath) {
-          MessageService.syserror('音声ファイルの保存先が指定されていません。');
-          d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
-        }
-        if (!bufWav) {
-          MessageService.syserror('保存する音源が渡されませんでした。');
-          d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
-        }
-
-        const aBuffer = toArrayBuffer(bufWav);
-        audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          // report duration
-          AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
-
           const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, 44 + decodedData.length, decodedData.sampleRate);
 
           // source
@@ -206,6 +137,85 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            // report duration
+            AppUtilService.reportDuration(renderedBuffer.duration);
+console.log('renderedBuffer');
+
+            // play voice
+            let audioNode = null;
+            if (parallel) {
+              audioNode = audioCtx.createBufferSource();
+            } else {
+              sourceNode = audioCtx.createBufferSource();
+              audioNode = sourceNode;
+            }
+            audioNode.onended = () => {
+console.log('onended');
+              d.resolve('ok');
+            };
+console.log('audioNode play');
+            audioNode.connect(audioCtx.destination);
+            audioNode.start(0);
+          }); // offlineCtx.startRendering
+        })
+        .catch((err: Error) => {
+          MessageService.syserror('音源の再生に失敗しました。', err);
+          d.reject(err); return;
+        });
+        return d.promise;
+      },
+      stop: function(): void {
+        if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
+      },
+      record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
+        const d = $q.defer();
+        if (!wavFilePath) {
+          MessageService.syserror('音声ファイルの保存先が指定されていません。');
+          d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
+        }
+        if (!bufWav) {
+          MessageService.syserror('保存する音源が渡されませんでした。');
+          d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
+        }
+
+        const aBuffer = toArrayBuffer(bufWav);
+        audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, 44 + decodedData.length, decodedData.sampleRate);
+
+          // source
+          const inSourceNode = offlineCtx.createBufferSource();
+          inSourceNode.buffer = decodedData;
+
+          const nodeList = [];
+
+          // playbackRate
+          if (options.playbackRate && options.playbackRate != 1.0) {
+            inSourceNode.playbackRate.value = options.playbackRate;
+          }
+          // detune
+          if (options.detune && options.detune != 0) {
+            inSourceNode.detune.value = options.detune;
+          }
+          // gain
+          const gainNode = offlineCtx.createGain();
+          gainNode.gain.value = options.volume;
+          nodeList.push(gainNode);
+
+          // connect
+          let lastNode = inSourceNode;
+          angular.forEach(nodeList, (node) => {
+            lastNode.connect(node); lastNode = node;
+          });
+          lastNode.connect(offlineCtx.destination);
+
+          // and start
+          inSourceNode.start(0);
+
+          // rendering
+          offlineCtx.startRendering().then((renderedBuffer) => {
+            // report duration
+            AppUtilService.reportDuration(renderedBuffer.duration);
+
             // create audioData parameter for wav-encoder
             const audioData = {
               sampleRate: decodedData.sampleRate,

@@ -302,7 +302,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
@@ -336,7 +335,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
@@ -370,7 +368,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
@@ -405,7 +402,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
@@ -439,7 +435,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
@@ -473,7 +468,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
@@ -509,7 +503,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
@@ -543,7 +536,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
@@ -577,7 +569,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
@@ -612,7 +603,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
@@ -646,7 +636,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
@@ -680,7 +669,6 @@ angular.module('yvoiceSpec',
         volume: 1.0,
         playbackRate: 1.0,
         detune: 0,
-        writeMarginMs: 150,
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {

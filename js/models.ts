@@ -44,7 +44,6 @@ angular.module('yvoiceModel', [])
       detune: 0,
       volume: 1.0,
       rhythmOn: true,
-      writeMarginMs: 150,
       sourceWrite: false,
       seqWrite: false,
       seqWriteOptions: {
@@ -65,7 +64,6 @@ angular.module('yvoiceModel', [])
         detune: 0,
         volume: 1.0,
         rhythmOn: true,
-        writeMarginMs: 150,
         sourceWrite: false,
         seqWrite: false,
         seqWriteOptions: {
@@ -83,7 +81,6 @@ angular.module('yvoiceModel', [])
         detune: 0,
         volume: 1.0,
         rhythmOn: true,
-        writeMarginMs: 150,
         sourceWrite: false,
         seqWrite: false,
         seqWriteOptions: {
@@ -101,7 +98,6 @@ angular.module('yvoiceModel', [])
         detune: 0,
         volume: 1.0,
         rhythmOn: true,
-        writeMarginMs: 150,
         sourceWrite: false,
         seqWrite: false,
         seqWriteOptions: {
@@ -126,7 +122,6 @@ angular.module('yvoiceModel', [])
         detune: 0,
         volume: 1.0,
         rhythmOn: true,
-        writeMarginMs: 150,
         sourceWrite: false,
         seqWrite: false,
         seqWriteOptions: {

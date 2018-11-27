@@ -53,7 +53,6 @@ describe('specWindow-model-YVoiceInitialData', function() {
           assert.ok('detune' in parsed[i], position());
           assert.ok('volume' in parsed[i], position());
           assert.ok('rhythmOn' in parsed[i], position());
-          assert.ok('writeMarginMs' in parsed[i], position());
           assert.ok('sourceWrite' in parsed[i], position());
           assert.ok('seqWrite' in parsed[i], position());
           assert.equal('', parsed[i].seqWriteOptions.dir, position());

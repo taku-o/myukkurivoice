@@ -126,7 +126,6 @@ describe('specWindow-service-CommandService', function() {
         assert.equal('sample_2', parsed.id, position());
         assert.equal('aq_yukkuri(サンプル設定2)', parsed.name, position());
         assert.equal('talk2', parsed.version, position());
-        assert.equal(150, parsed.writeMarginMs, position());
       })
       // catch error
       .catch((err: Error) => {
