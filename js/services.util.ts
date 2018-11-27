@@ -1,5 +1,5 @@
-var _fs, fs                     = () => { _fs = _fs || require('fs'); return _fs; };
-var _path, path                 = () => { _path = _path || require('path'); return _path; };
+var _fs, fs     = () => { _fs = _fs || require('fs'); return _fs; };
+var _path, path = () => { _path = _path || require('path'); return _path; };
 
 // angular util service
 angular.module('yvoiceUtilService', ['yvoiceMessageService'])
