@@ -104,7 +104,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, 44 + decodedData.length, decodedData.sampleRate);
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
 
           // source
           const inSourceNode = offlineCtx.createBufferSource();
@@ -178,7 +178,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, 44 + decodedData.length, decodedData.sampleRate);
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
 
           // source
           const inSourceNode = offlineCtx.createBufferSource();
