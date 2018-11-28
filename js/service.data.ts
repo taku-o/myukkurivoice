@@ -1,7 +1,7 @@
 var _storage, storage = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 
 // angular data service
-angular.module('yvoiceDataService', ['yvoiceMessageService', 'yvoiceModel'])
+angular.module('DataServices', ['MessageServices', 'mainModels'])
   .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', 
   ($q, YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[], MessageService: yubo.MessageService): yubo.DataService => {
 

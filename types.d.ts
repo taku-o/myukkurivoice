@@ -49,7 +49,7 @@ declare namespace yubo {
     resetAppConfig(): void;
   }
 
-  // models.ts
+  // models.main.ts
   export interface YPhont {
     readonly id:       string;
     readonly name:     string;
@@ -87,27 +87,33 @@ declare namespace yubo {
     name: string;
     text: string;
   }
+  // models.dict.ts
+  export interface KindEntry {
+    readonly id:   number;
+    readonly kind: string;
+  }
 
-  // services.intro.ts
+  // service.intro.ts
   export interface IntroService {
     mainTutorial(): void;
     settingsTutorial(): void;
     shortcut(): void;
+    dictTutorial(): void;
   }
-  // services.command.ts
+  // service.command.ts
   export interface CommandService {
     containsCommand(input: string, yvoiceList: yubo.YVoice[]): boolean;
     parseInput(input: string, yvoiceList: yubo.YVoice[], currentYvoice: yubo.YVoice): yubo.YCommandInput[];
     detectVoiceConfig(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): yubo.YVoice | null;
     toString(commandInputList: yubo.YCommandInput[]): string;
   }
-  // services.license.ts
+  // service.license.ts
   export interface LicenseService {
     encrypt(passPhrase: string, plainKey: string): string;
     decrypt(passPhrase: string, encryptedKey: string): string;
     consumerKey(licenseType: string): ng.IPromise<string>;
   }
-  // services.message.ts
+  // service.message.ts
   export interface MessageService {
     action(message: string): void;
     record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string}): void;
@@ -138,7 +144,7 @@ declare namespace yubo {
     readonly srcTextPath: string;
     readonly source: string;
   }
-  // services.data.ts
+  // service.data.ts
   export interface DataService {
     load(ok: (dataList: yubo.YVoice[]) => void, ng: (err: Error) => void): ng.IPromise<yubo.YVoice[]>;
     initialData(): yubo.YVoice[];
@@ -150,13 +156,13 @@ declare namespace yubo {
   export interface MasterService {
     getPhontList(): yubo.YPhont[];
   }
-  // services.aques.ts
+  // service.aques.ts
   export interface AquesService {
     init(): void;
     encode(source: string): string;
     wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any>;
   }
-  // services.audio.ts
+  // service.audio.ts
   export interface AudioService1 {
     play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
     stop(): void;
@@ -167,7 +173,7 @@ declare namespace yubo {
     stop(): void;
     record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
   }
-  // services.util.ts
+  // service.util.ts
   export interface AudioSourceService {
     sourceFname(wavFilePath: string): string;
     save(filePath: string, sourceText: string): ng.IPromise<string>;
@@ -181,18 +187,8 @@ declare namespace yubo {
     disableRhythm(encoded: string): string;
     reportDuration(duration: number): void;
   }
-
-  // dict.models.ts
-  export interface KindEntry {
-    readonly id:   number;
-    readonly kind: string;
-  }
-  // dict.services.intro.ts
-  export interface DIntroService {
-    tutorial(): void;
-  }
-  // dict.services.aques.ts
-  export interface DAquesService {
+  // service.aqusrdic.ts
+  export interface AqUsrDicService {
     generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string};
     generateCSV(inUserDicPath: string, outCsvPath: string): {success:boolean, message:string};
     validateInput(surface: string, yomi: string, posCode: number): {success:boolean, message:string};

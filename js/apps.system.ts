@@ -9,7 +9,7 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 // application config app
-angular.module('yvoiceSystem', ['yvoiceLicenseService'])
+angular.module('systemApp', ['LicenseServices'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])

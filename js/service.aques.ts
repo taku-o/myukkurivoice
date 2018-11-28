@@ -11,7 +11,7 @@ var _epath, epath           = () => { _epath = _epath || require('electron-path'
 var unpackedPath = epath().getUnpackedPath();
 
 // angular aques service
-angular.module('yvoiceAquesService', ['yvoiceMessageService', 'yvoiceLicenseService'])
+angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
   .factory('AquesService', ['$q', '$timeout', 'MessageService', 'LicenseService',
   ($q, $timeout, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
     const ptr_void  = ref().refType(ref().types.void);

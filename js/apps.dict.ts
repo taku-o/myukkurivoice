@@ -17,7 +17,7 @@ process.on('uncaughtException', (err: Error) => {
 
 // angular app
 angular.module('dictApp',
-  ['dictModel', 'dictService',
+  ['dictModels', 'dictServices',
    'ui.grid', 'ui.grid.edit', 'ui.grid.rowEdit', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ui.grid.cellNav',
   ])
   .config(['$qProvider', ($qProvider) => {
@@ -26,9 +26,9 @@ angular.module('dictApp',
   // controller
   .controller('DictController',
     ['$scope', '$q', '$timeout', '$interval',
-      'DAquesService', 'DIntroService', 'KindList',
+     'AqUsrDicService', 'IntroService', 'KindList',
     function($scope, $q, $timeout, $interval,
-      DAquesService: yubo.DAquesService, DIntroService: yubo.DIntroService, KindList: yubo.KindEntry[]) {
+      AqUsrDicService: yubo.AqUsrDicService, IntroService: yubo.IntroService, KindList: yubo.KindEntry[]) {
 
     // menu
     ipcRenderer().on('menu', (event, action: string) => {
@@ -105,7 +105,7 @@ angular.module('dictApp',
             d.reject(new Error('encoded is empty.')); return d.promise;
           }
 
-          const r = DAquesService.validateInput(rowEntity.source, rowEntity.encoded, rowEntity.kind);
+          const r = AqUsrDicService.validateInput(rowEntity.source, rowEntity.encoded, rowEntity.kind);
           if (!r.success) {
             rowEntity.error = r.message;
             d.reject(new Error(r.message));
@@ -279,7 +279,7 @@ angular.module('dictApp',
             fs().writeFileSync(`${mAppDictDir}/aqdic.bin`, fs().readFileSync(`${rscDictDir}/aqdic.bin`));
           }
           // generate user dict
-          const r = DAquesService.generateUserDict(`${mAppDictDir}/aq_user.csv`, `${mAppDictDir}/aq_user.dic`);
+          const r = AqUsrDicService.generateUserDict(`${mAppDictDir}/aq_user.csv`, `${mAppDictDir}/aq_user.dic`);
           if (!r.success) {
             $scope.message = r.message;
             $timeout(() => { $scope.$apply(); });
@@ -338,7 +338,7 @@ angular.module('dictApp',
     };
 
     ctrl.tutorial = function(): void {
-      DIntroService.tutorial();
+      IntroService.dictTutorial();
     };
   }])
   .filter('mapKind', ['KindHash', function(KindHash) {

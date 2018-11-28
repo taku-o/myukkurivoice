@@ -3,7 +3,7 @@ var _temp, temp             = () => { _temp = _temp || require('temp').track(); 
 var _WavEncoder, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
 
 // angular audio service
-angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService'])
+angular.module('AudioServices', ['MessageServices', 'UtilServices'])
   .factory('AudioService1', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.AudioService1 => {
     // Audio base AudioService
     let audio = null;
