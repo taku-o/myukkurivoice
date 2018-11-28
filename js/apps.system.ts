@@ -9,7 +9,7 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 // application config app
-angular.module('yvoiceSystem', ['yvoiceLicenseService'])
+angular.module('systemApp', ['LicenseServices'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
@@ -39,7 +39,6 @@ angular.module('yvoiceSystem', ['yvoiceLicenseService'])
         'mainWindow':$scope.appCfg.mainWindow,
         'audioServVer':$scope.appCfg.audioServVer,
         'showMsgPane':$scope.appCfg.showMsgPane,
-        'acceptFirstMouse':$scope.appCfg.acceptFirstMouse,
         'passPhrase':$scope.appCfg.passPhrase,
         'aq10UseKeyEncrypted':aq10UseKeyEncrypted,
       };

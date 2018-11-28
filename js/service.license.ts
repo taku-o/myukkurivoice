@@ -5,7 +5,7 @@ var _epath, epath       = () => { _epath = _epath || require('electron-path'); r
 var unpackedPath = epath().getUnpackedPath();
 
 // angular license service
-angular.module('yvoiceLicenseService', [])
+angular.module('LicenseServices', [])
   .factory('LicenseService', ['$q', ($q): yubo.LicenseService => {
     const consumerKeyCache = {};
 

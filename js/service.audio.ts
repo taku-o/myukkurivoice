@@ -1,9 +1,9 @@
-var _fs, fs                     = () => { _fs = _fs || require('fs'); return _fs; };
-var _temp, temp                 = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _WaveRecorder, WaveRecorder = () => { _WaveRecorder = _WaveRecorder || require('wave-recorder'); return _WaveRecorder; };
+var _fs, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
+var _temp, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _WavEncoder, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
 
 // angular audio service
-angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService'])
+angular.module('AudioServices', ['MessageServices', 'UtilServices'])
   .factory('AudioService1', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.AudioService1 => {
     // Audio base AudioService
     let audio = null;
@@ -104,24 +104,11 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          // report duration
-          AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
 
           // source
-          let inSourceNode = null;
-          if (parallel) {
-            inSourceNode = audioCtx.createBufferSource();
-          } else {
-            sourceNode = audioCtx.createBufferSource();
-            inSourceNode = sourceNode;
-          }
+          const inSourceNode = offlineCtx.createBufferSource();
           inSourceNode.buffer = decodedData;
-          inSourceNode.onended = () => {
-            // onendedのタイミングでは出力が終わっていない
-            $timeout(() => {
-              d.resolve('ok');
-            }, options.writeMarginMs);
-          };
 
           const nodeList = [];
 
@@ -134,7 +121,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             inSourceNode.detune.value = options.detune;
           }
           // gain
-          const gainNode = audioCtx.createGain();
+          const gainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
           nodeList.push(gainNode);
 
@@ -143,10 +130,31 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
           angular.forEach(nodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
-          lastNode.connect(audioCtx.destination);
+          lastNode.connect(offlineCtx.destination);
 
           // and start
           inSourceNode.start(0);
+
+          // rendering
+          offlineCtx.startRendering().then((renderedBuffer) => {
+            // report duration
+            AppUtilService.reportDuration(renderedBuffer.duration);
+
+            // play voice
+            let audioNode = null;
+            if (parallel) {
+              audioNode = audioCtx.createBufferSource();
+            } else {
+              sourceNode = audioCtx.createBufferSource();
+              audioNode = sourceNode;
+            }
+            audioNode.buffer = renderedBuffer;
+            audioNode.connect(audioCtx.destination);
+            audioNode.onended = () => {
+              d.resolve('ok');
+            };
+            audioNode.start(0);
+          }); // offlineCtx.startRendering
         })
         .catch((err: Error) => {
           MessageService.syserror('音源の再生に失敗しました。', err);
@@ -170,19 +178,11 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          // report duration
-          AppUtilService.reportDuration(decodedData.duration + (options.writeMarginMs / 1000.0));
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
 
           // source
-          const inSourceNode = audioCtx.createBufferSource();
+          const inSourceNode = offlineCtx.createBufferSource();
           inSourceNode.buffer = decodedData;
-          inSourceNode.onended = () => {
-            // onendedのタイミングでは出力が終わっていない
-            $timeout(() => {
-              recorder.end();
-
-            }, options.writeMarginMs);
-          };
 
           const nodeList = [];
 
@@ -195,25 +195,36 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
             inSourceNode.detune.value = options.detune;
           }
           // gain
-          const gainNode = audioCtx.createGain();
+          const gainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
           nodeList.push(gainNode);
 
-          // recorder
-          const recorder = WaveRecorder()(audioCtx, {
-            channels: 1,  // 1 or 2
-            bitDepth: 16, // 16 or 32
+          // connect
+          let lastNode = inSourceNode;
+          angular.forEach(nodeList, (node) => {
+            lastNode.connect(node); lastNode = node;
           });
-          recorder.pipe(fs().createWriteStream(wavFilePath));
+          lastNode.connect(offlineCtx.destination);
 
-          // replace filesize header with correct size.
-          recorder.on('header', (header) => {
-            fs().open(wavFilePath, 'a+', (err, fd) => {
-              if (err) {
-                MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-                d.reject(err); return;
-              }
-              fs().write(fd, header, 0, header.length, 0, (err) => {
+          // and start
+          inSourceNode.start(0);
+
+          // rendering
+          offlineCtx.startRendering().then((renderedBuffer) => {
+            // report duration
+            AppUtilService.reportDuration(renderedBuffer.duration);
+
+            // create audioData parameter for wav-encoder
+            const audioData = {
+              sampleRate: decodedData.sampleRate,
+              channelData: [],
+            };
+            for (let i = 0; i < decodedData.numberOfChannels; i++) {
+              audioData.channelData[i] = renderedBuffer.getChannelData(i);
+            }
+            // create wav file.
+            WavEncoder().encode(audioData).then((buffer) => {
+              fs().writeFile(wavFilePath, new Buffer(buffer), 'binary', (err) => {
                 if (err) {
                   MessageService.syserror('音声ファイルの作成に失敗しました。', err);
                   d.reject(err); return;
@@ -221,17 +232,7 @@ angular.module('yvoiceAudioService', ['yvoiceMessageService', 'yvoiceUtilService
                 d.resolve('ok');
               });
             });
-          });
-
-          // connect
-          let lastNode = inSourceNode;
-          angular.forEach(nodeList, (node) => {
-            lastNode.connect(node); lastNode = node;
-          });
-          lastNode.connect(recorder.input);
-
-          // and start
-          inSourceNode.start(0);
+          }); // offlineCtx.startRendering
         })
         .catch((err: Error) => {
           MessageService.syserror('音源の再生に失敗しました。', err);

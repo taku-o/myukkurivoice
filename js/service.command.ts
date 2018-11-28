@@ -1,5 +1,5 @@
 // angular command service
-angular.module('yvoiceCommandService', ['yvoiceMessageService', 'yvoiceModel'])
+angular.module('CommandServices', ['MessageServices', 'mainModels'])
   .factory('CommandService', ['MessageService', 'YCommandInput',
                               (MessageService: yubo.MessageService, YCommandInput: yubo.YCommandInput): yubo.CommandService => {
     return {

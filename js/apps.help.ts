@@ -13,7 +13,7 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 // help app
-angular.module('yvoiceAppHelp', [])
+angular.module('helpApp', [])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
@@ -49,7 +49,7 @@ angular.module('yvoiceAppHelp', [])
     $scope.$on('$locationChangeSuccess', (event) => {
       // fix broken url
       if ($location.url().startsWith('/%23')) {
-        window.location.href = $location.absUrl().replace('%23', '#');
+        $window.location.href = $location.absUrl().replace('%23', '#');
         return;
       }
 

@@ -2,7 +2,7 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // angular directive
-angular.module('yvoiceDirective', [])
+angular.module('Directives', [])
   // static-include
   .directive('staticInclude', () => {
     return {

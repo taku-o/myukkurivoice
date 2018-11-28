@@ -50,7 +50,6 @@ describe('specWindow-model-YVoice', function() {
         assert.equal(0, parsed.detune, position());
         assert.equal(1.0, parsed.volume, position());
         assert.equal(true, parsed.rhythmOn, position());
-        assert.equal(150, parsed.writeMarginMs, position());
         assert.equal(false, parsed.sourceWrite, position());
         assert.equal(false, parsed.seqWrite, position());
         assert.equal('', parsed.seqWriteOptions.dir, position());

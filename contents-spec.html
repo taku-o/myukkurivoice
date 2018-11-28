@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html ng-app="yvoiceSpec">
+<html ng-app="specApp">
 <head>
   <meta charset="UTF-8">
   <title>MYukkuriVoice Test</title>
   <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/intro.js/minified/intro.min.js"></script>
-  <script src="js/models.js"></script>
-  <script src="js/dict.models.js"></script>
-  <script src="js/services.aques.js"></script>
-  <script src="js/services.audio.js"></script>
-  <script src="js/services.command.js"></script>
-  <script src="js/services.data.js"></script>
-  <script src="js/services.intro.js"></script>
-  <script src="js/services.license.js"></script>
-  <script src="js/services.message.js"></script>
-  <script src="js/services.util.js"></script>
-  <script src="js/services.js"></script>
+  <script src="js/models.main.js"></script>
+  <script src="js/models.dict.js"></script>
+  <script src="js/service.aques.js"></script>
+  <script src="js/service.audio.js"></script>
+  <script src="js/service.command.js"></script>
+  <script src="js/service.data.js"></script>
+  <script src="js/service.intro.js"></script>
+  <script src="js/service.license.js"></script>
+  <script src="js/service.message.js"></script>
+  <script src="js/service.util.js"></script>
+  <script src="js/services.main.js"></script>
   <script src="js/apps.spec.js"></script>
   <script type="text/javascript">
     document.ondragover = document.ondrop = function(e) {
@@ -54,11 +54,11 @@
       <input id="get-ycommand-input-result" type="text" ng-model="getYCommandInputResult">
     </div>
 
-    <div>dict.models KindList
+    <div>models-dict KindList
       <button id="get-kind-list" ng-click="ctrl.getKindList()">
       <input id="get-kind-list-result" type="text" ng-model="getKindListResult">
     </div>
-    <div>dict.models KindHash
+    <div>models-dict KindHash
       <button id="get-kind-hash" ng-click="ctrl.getKindHash()">
       <input id="get-kind-hash-result" type="text" ng-model="getKindHashResult">
     </div>
@@ -81,6 +81,7 @@
       <button id="main-tutorial" ng-click="ctrl.mainTutorial()">
       <button id="settings-tutorial" ng-click="ctrl.settingsTutorial()">
       <button id="shortcut" ng-click="ctrl.shortcut()">
+      <button id="dict-tutorial" ng-click="ctrl.dictTutorial()">
     </div>
 
     <div>MessageService

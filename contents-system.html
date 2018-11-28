@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html ng-app="yvoiceSystem">
+<html ng-app="systemApp">
 <head>
   <meta charset="UTF-8">
   <title>MYukkuriVoice Application Config</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="css/system.css">
   <script src="node_modules/angular/angular.min.js"></script>
-  <script src="js/services.license.js"></script>
+  <script src="js/service.license.js"></script>
   <script src="js/apps.system.js"></script>
   <script type="text/javascript">
     document.ondragover = document.ondrop = function(e) {
@@ -32,13 +32,13 @@
       <div class="radio">
         <label>
           <input type="radio" id="audio-serv-ver-html5audio" ng-model="appCfg.audioServVer" value="html5audio">html5audio
-          <small>音声録音が早い。一部機能に制限がある。</small>
+          <small>安定確実エンジン。一部機能に制限がある。</small>
         </label>
       </div>
       <div class="radio">
         <label>
           <input type="radio" id="audio-serv-ver-webaudioapi" ng-model="appCfg.audioServVer" value="webaudioapi">webaudioapi
-          <small>音声録音が遅い。全ての機能を利用できる。</small>
+          <small>実験的エンジン。全ての機能を利用できる。</small>
         </label>
       </div>
     </div>
@@ -46,14 +46,6 @@
     <div class="box">
       <div class="checkbox">
         <label><input type="checkbox" id="show-msg-pane" ng-model="appCfg.showMsgPane">メッセージリストを表示する</label>
-      </div>
-    </div>
-    <div class="box">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" id="accept-first-mouse" ng-model="appCfg.acceptFirstMouse">
-          <small>ウィンドウがアクティブでない時、最初のクリックを拾う<br>(アプリを再起動しないと変更されません)</small>
-        </label>
       </div>
     </div>
 

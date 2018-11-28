@@ -1,5 +1,5 @@
 // angular intro service
-angular.module('yvoiceIntroService', [])
+angular.module('IntroServices', [])
   .factory('IntroService', (): yubo.IntroService => {
     return {
       mainTutorial: function(): void {
@@ -179,6 +179,52 @@ angular.module('yvoiceIntroService', [])
               element: '#sidebar-items',
               position: 'right',
               intro: 'Command + ← で次(下)の設定に切り替え<br>Command + Shift + ← で前(上)の設定に切り替え',
+            },
+          ],
+        });
+        intro.start();
+      },
+      dictTutorial: function(): void {
+        const intro = introJs();
+        intro.setOption('showProgress', true);
+        intro.setOptions({
+          steps: [
+            {
+              element: '#grid',
+              intro: 'このツールはMYukkuriVoiceアプリ用のユーザー辞書編集ツールです。MYukkuriVoiceアプリでのメッセージの変換に利用される辞書を編集できます。',
+            },
+            {
+              element: '#grid',
+              intro: 'この表にはユーザー辞書のデータが表示されます。表はセルを選択すると直接データを編集できます。',
+            },
+            {
+              element: '#append-record',
+              intro: 'これらのボタンでユーザー辞書のデータを増やしたり、減らしたりできます。',
+            },
+            {
+              element: '#save',
+              intro: '編集したデータはこのボタンで保存しましょう。不正なデータがあると保存できません。',
+            },
+            {
+              element: '#export',
+              intro: 'MYukkuriVoiceアプリのユーザー辞書を更新するにはこのボタンを押します。',
+            },
+            {
+              element: '#reload',
+              intro: 'ユーザー辞書はMYukkuriVoiceアプリを再起動するか、メイン画面をリロードすると読み込まれます。',
+            },
+
+            {
+              element: '#footer',
+              intro: '辞書ツールで何かしら問題が発生すると、フッターにメッセージが表示されます。',
+            },
+            {
+              element: '#tutorial',
+              intro: 'チュートリアルは以上です。またチュートリアルをまた確認したくなったら、このボタンを押してください。',
+            },
+            {
+              element: '#tutorial',
+              intro: 'MYukkuriVoiceアプリのヘルプにも、この辞書ツールの説明が書いてあります。',
             },
           ],
         });

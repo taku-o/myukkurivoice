@@ -16,7 +16,7 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 // angular app
-angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceService', 'yvoiceModel'])
+angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mainModels'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
@@ -360,9 +360,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       const speed = yvoice.speed;
-      if (! (Number(yvoice.writeMarginMs)===parseInt(`${yvoice.writeMarginMs}`))) {
-        yvoice.writeMarginMs = 150;
-      }
       const waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
@@ -378,7 +375,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,
-        writeMarginMs:yvoice.writeMarginMs,
       };
 
       AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
@@ -602,9 +598,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       const speed = yvoice.speed;
-      if (! (Number(yvoice.writeMarginMs)===parseInt(`${yvoice.writeMarginMs}`))) {
-        yvoice.writeMarginMs = 150;
-      }
       const waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
@@ -620,7 +613,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,
-        writeMarginMs:yvoice.writeMarginMs,
       };
 
       AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
@@ -659,9 +651,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
       }
 
       const speed = yvoice.speed;
-      if (! (Number(yvoice.writeMarginMs)===parseInt(`${yvoice.writeMarginMs}`))) {
-        yvoice.writeMarginMs = 150;
-      }
       const waveOptions: yubo.WaveOptions = {
         passPhrase:appCfg.passPhrase,
         aq10UseKeyEncrypted:appCfg.aq10UseKeyEncrypted,
@@ -677,7 +666,6 @@ angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceServic
         volume:yvoice.volume,
         playbackRate:yvoice.playbackRate,
         detune:yvoice.detune,
-        writeMarginMs:yvoice.writeMarginMs,
       };
 
       SeqFNameService.nextNumber(dir, fnameprefix).then((nextNum) => {
