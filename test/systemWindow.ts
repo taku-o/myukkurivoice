@@ -54,9 +54,6 @@ describe('systemWindow', function() {
       .isSelected('#show-msg-pane').then((selected: boolean) => {
         assert.ok(selected, position());
       })
-      .isSelected('#accept-first-mouse').then((selected: boolean) => {
-        assert.ok(selected, position());
-      })
       .getValue('#aq10-use-key').then((value: string) => {
         assert.ok(! value, position());
       })
