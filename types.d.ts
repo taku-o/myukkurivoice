@@ -18,7 +18,6 @@ declare namespace yubo {
     dictWindow?:   { width: number, height: number };
     audioServVer:        'html5audio' | 'webaudioapi';
     showMsgPane:         boolean;
-    acceptFirstMouse:    boolean;
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
     isDebug:             boolean;

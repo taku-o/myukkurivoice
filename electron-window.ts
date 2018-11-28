@@ -19,13 +19,12 @@ function showMainWindow(): void {
   }
 
   const {width, height, x, y} = this.appCfg.mainWindow;
-  const acceptFirstMouse = this.appCfg.acceptFirstMouse;
   this.mainWindow = new BrowserWindow({
     width: width,
     height: height,
     x: x,
     y: y,
-    acceptFirstMouse: acceptFirstMouse,
+    acceptFirstMouse: true,
     show: false, // show at did-finish-load event
     transparent: transparent,
     opacity: opacity,
@@ -104,13 +103,12 @@ function showHelpWindow(): void {
   }
 
   const {width, height} = this.appCfg.helpWindow;
-  const acceptFirstMouse = this.appCfg.acceptFirstMouse;
   this.helpWindow = new BrowserWindow({
     parent: this.mainWindow,
     modal: false,
     width: width,
     height: height,
-    acceptFirstMouse: acceptFirstMouse,
+    acceptFirstMouse: true,
     show: false, // show at did-finish-load event
     transparent: transparent,
     opacity: opacity,
@@ -158,13 +156,12 @@ function showSystemWindow(): void {
   }
 
   const {width, height} = this.appCfg.systemWindow;
-  const acceptFirstMouse = this.appCfg.acceptFirstMouse;
   this.systemWindow = new BrowserWindow({
     parent: this.mainWindow,
     modal: false,
     width: width,
     height: height,
-    acceptFirstMouse: acceptFirstMouse,
+    acceptFirstMouse: true,
     show: false, // show at did-finish-load event
     transparent: transparent,
     opacity: opacity,
@@ -206,12 +203,11 @@ function showDictWindow(): void {
   }
 
   const {width, height} = this.appCfg.dictWindow;
-  const acceptFirstMouse = this.appCfg.acceptFirstMouse;
   this.dictWindow = new BrowserWindow({
     parent: this.mainWindow,
     width: width,
     height: height,
-    acceptFirstMouse: acceptFirstMouse,
+    acceptFirstMouse: true,
     show: false, // show at did-finish-load event
     transparent: transparent,
     opacity: opacity,

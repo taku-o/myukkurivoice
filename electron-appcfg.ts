@@ -7,11 +7,10 @@ function loadAppConfig(): void {
   const appCfg: yubo.AppCfg = {
     mainWindow: {width: 800, height: 665, x: null, y: null},
     helpWindow: {width: 700, height: 600},
-    systemWindow: {width: 390, height: 560},
+    systemWindow: {width: 390, height: 480},
     dictWindow: {width: 800, height: 600},
     audioServVer: 'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
-    acceptFirstMouse: true,
     passPhrase: null,
     aq10UseKeyEncrypted: '',
     isDebug: process.env.DEBUG != null,
@@ -19,7 +18,7 @@ function loadAppConfig(): void {
   };
 
   const config = new (Config())() as yubo.ElectronConfig;
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (config.has(k)) { appCfg[k] = config.get(k); }
   });
   // if passPhrase not exists, record passPhrase.
@@ -41,11 +40,10 @@ function updateAppConfig(options: yubo.AppCfg): void {
   this.config.set('mainWindow',          options.mainWindow);
   this.config.set('audioServVer',        options.audioServVer);
   this.config.set('showMsgPane',         options.showMsgPane);
-  this.config.set('acceptFirstMouse',    options.acceptFirstMouse);
   this.config.set('passPhrase',          options.passPhrase);
   this.config.set('aq10UseKeyEncrypted', options.aq10UseKeyEncrypted);
 
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
   global.appCfg = this.appCfg;
@@ -57,11 +55,10 @@ function resetAppConfig(): void {
   this.config.set('mainWindow',          {width: 800, height: 665, x:null, y:null});
   this.config.set('audioServVer',        'webaudioapi');
   this.config.set('showMsgPane',         true);
-  this.config.set('acceptFirstMouse',    true);
   this.config.set('passPhrase',          crypto().randomBytes(16).toString('hex'));
   this.config.set('aq10UseKeyEncrypted', '');
 
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'acceptFirstMouse', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
+  ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
   global.appCfg = this.appCfg;

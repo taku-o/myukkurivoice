@@ -1,5 +1,5 @@
 .DS_Store
-.swp
+*.swp
 Thumbs.db
 /release/
 /MYukkuriVoice-darwin-x64/
