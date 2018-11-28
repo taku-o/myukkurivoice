@@ -3,8 +3,8 @@ var _ffi, ffi     = () => { _ffi = _ffi || require('ffi'); return _ffi; };
 var _epath, epath = () => { _epath = _epath || require('electron-path'); return _epath; };
 var unpackedPath  = epath().getUnpackedPath();
 
-angular.module('dictAquesService', [])
-  .factory('DAquesService', [(): yubo.DAquesService => {
+angular.module('AqUsrDicServices', [])
+  .factory('AqUsrDicService', [(): yubo.AqUsrDicService => {
 
     // int AqUsrDic_Import(const char * pathUserDic, const char * pathDicCsv)
     // int AqUsrDic_Export(const char * pathUserDic, const char * pathDicCsv)

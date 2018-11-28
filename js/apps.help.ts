@@ -13,7 +13,7 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 // help app
-angular.module('yvoiceAppHelp', [])
+angular.module('helpApp', [])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])

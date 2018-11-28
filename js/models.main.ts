@@ -2,7 +2,7 @@ var _epath, epath = () => { _epath = _epath || require('electron-path'); return 
 var unpackedPath = epath().getUnpackedPath();
 
 // angular model
-angular.module('yvoiceModel', [])
+angular.module('mainModels', [])
   .factory('YPhontList', (): yubo.YPhont[] => {
     return [
       {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0},

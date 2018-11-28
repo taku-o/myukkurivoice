@@ -2,7 +2,7 @@ var _fs, fs     = () => { _fs = _fs || require('fs'); return _fs; };
 var _path, path = () => { _path = _path || require('path'); return _path; };
 
 // angular util service
-angular.module('yvoiceUtilService', ['yvoiceMessageService'])
+angular.module('UtilServices', ['MessageServices'])
   .factory('AudioSourceService', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.AudioSourceService => {
     const waveExt = '.wav';
     const sourceExt = '.txt';

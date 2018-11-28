@@ -1,4 +1,4 @@
-angular.module('dictModel', [])
+angular.module('dictModels', [])
   .factory('KindList', (): yubo.KindEntry[] => {
     return [
       {id: 0,  kind: '名詞'},

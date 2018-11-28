@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-dict-models', function() {
+describe('specWindow-models-dict', function() {
   this.timeout(10000);
 
   before(function() {

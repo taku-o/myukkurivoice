@@ -16,7 +16,7 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 // angular app
-angular.module('yvoiceApp', ['input-highlight', 'yvoiceDirective', 'yvoiceService', 'yvoiceModel'])
+angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mainModels'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])

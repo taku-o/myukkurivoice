@@ -1,7 +1,7 @@
 var _path, path = () => { _path = _path || require('path'); return _path; };
 
 // angular message service
-angular.module('yvoiceMessageService', [])
+angular.module('MessageServices', [])
   .factory('MessageService', ['$rootScope', ($rootScope): yubo.MessageService => {
     return {
       action: function(message: string): void {

@@ -18,7 +18,7 @@
 //});
 
 // help app
-angular.module('yvoiceAppHelp', [])
+angular.module('helpApp', [])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])

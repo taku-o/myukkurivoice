@@ -1,6 +1,6 @@
 // application spec app
-angular.module('yvoiceSpec',
-  ['yvoiceModel', 'dictModel', 'yvoiceService', 'yvoiceLicenseService', 'yvoiceIntroService', 'yvoiceMessageService', 'yvoiceCommandService'])
+angular.module('specApp',
+  ['mainModels', 'dictModels', 'mainServices', 'LicenseServices', 'IntroServices', 'MessageServices', 'CommandServices'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
@@ -56,12 +56,12 @@ angular.module('yvoiceSpec',
       const r = YCommandInput;
       $scope.getYCommandInputResult = JSON.stringify(r);
     };
-    // dict.models KindList
+    // models-dict KindList
     ctrl.getKindList = function(): void {
       const r = KindList;
       $scope.getKindListResult = JSON.stringify(r);
     };
-    // dict.models KindHash
+    // models-dict KindHash
     ctrl.getKindHash = function(): void {
       const r = KindHash;
       $scope.getKindHashResult = JSON.stringify(r);
@@ -95,6 +95,9 @@ angular.module('yvoiceSpec',
     };
     ctrl.shortcut = function(): void {
       IntroService.shortcut();
+    };
+    ctrl.dictTutorial = function(): void {
+      IntroService.dictTutorial();
     };
 
     // MessageService
