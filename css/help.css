@@ -13,6 +13,10 @@ span.nav-group-item span.icon {
 span.nav-group-item.active {
   background: #dddddd;
 }
+span.nav-group-item:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 div.content {
   margin-left: 20px;
   margin-right: 20px;
@@ -29,9 +33,17 @@ a {
   color: blue;
   text-decoration: underline;
 }
+a:hover {
+  cursor: pointer;
+  color: #444444;
+}
 li.link {
   color: blue;
   text-decoration: underline;
+}
+li.link:hover {
+  cursor: pointer;
+  color: #444444;
 }
 table.param-table td {
   border-bottom: 1px solid #ddd;

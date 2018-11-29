@@ -15,6 +15,10 @@ span.nav-group-item span.icon {
 span.nav-group-item.active {
   background: #dddddd;
 }
+span.nav-group-item:hover {
+  cursor:pointer;
+  text-decoration: underline;
+}
 
 div.content {
   margin-left: 20px;
@@ -34,9 +38,17 @@ a {
   color: blue;
   text-decoration: underline;
 }
+a:hover {
+  cursor:pointer;
+  color: #444444;
+}
 li.link {
   color: blue;
   text-decoration: underline;
+}
+li.link:hover {
+  cursor:pointer;
+  color: #444444;
 }
 
 table.param-table td {
@@ -51,11 +63,13 @@ pre.code {
   padding-bottom: 5px;
 }
 
+/* disable unfunctional link decoration */
 a.show-item-in-folder, a.show-system-window {
+  cursor: auto;
   text-decoration: none;
   color: #000000;
 }
-
+/* hide unfunctional popup icon */
 span.navs-item span.icon-popup {
   padding-left: 0px;
 }
