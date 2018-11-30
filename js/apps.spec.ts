@@ -1,6 +1,6 @@
 // application spec app
 angular.module('specApp',
-  ['mainModels', 'dictModels', 'mainServices', 'LicenseServices', 'IntroServices', 'MessageServices', 'CommandServices'])
+  ['mainModels', 'dictModels', 'mainServices', 'dictServices'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
@@ -11,6 +11,7 @@ angular.module('specApp',
       'DataService', 'MasterService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
+      'AqUsrDicService',
     function($scope: any, $timeout,
       YPhontList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
       YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
@@ -20,7 +21,9 @@ angular.module('specApp',
       DataService: yubo.DataService, MasterService: yubo.MasterService,
       AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
       AudioSourceService: yubo.AudioSourceService,
-      AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService) {
+      AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService,
+      AqUsrDicService: yubo.AqUsrDicService
+    ) {
 
     // init
     const ctrl = this;
@@ -686,6 +689,36 @@ angular.module('specApp',
       .catch((err: Error) => {
         $scope.recordResult2 = err.message;
       });
+    };
+
+    // AqUsrDicService
+    ctrl.generateUserDict = function(): void {
+      const r = AqUsrDicService.generateUserDict($scope.csvPath, $scope.userDicPath)
+      if (r.success) {
+        $scope.generateUserDictResult = 'ok';
+      } else {
+        $scope.generateUserDictResult = r.message;
+      }
+    };
+    ctrl.generateCSV = function(): void {
+      const r = AqUsrDicService.generateCSV($scope.userDicPath, $scope.csvPath)
+      if (r.success) {
+        $scope.generateCsvResult = 'ok';
+      } else {
+        $scope.generateCsvResult = r.message;
+      }
+    };
+    ctrl.validateInput = function(): void {
+      const r = AqUsrDicService.validateInput($scope.surface, $scope.yomi, $scope.posCode)
+      if (r.success) {
+        $scope.validateInputResult = 'ok';
+      } else {
+        $scope.validateInputResult = r.message;
+      }
+    };
+    ctrl.getLastError = function(): void {
+      const r = AqUsrDicService.getLastError()
+      $scope.getLastErrorResult = r;
     };
 
     // AudioSourceService
