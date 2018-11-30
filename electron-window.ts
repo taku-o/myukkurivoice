@@ -215,10 +215,10 @@ function showDictWindow(): void {
   localShortcut().register(this.dictWindow, 'Command+Q', app.quit);
   localShortcut().register(this.dictWindow, 'Command+W', myApp.dictWindow.close);
   localShortcut().register(this.dictWindow, 'Command+S', () => {
-    if (myApp.dictWindow) { myApp.dictWindow.webContents.send('shortcut', 'save'); }
+    myApp.dictWindow.webContents.send('shortcut', 'save');
   });
   localShortcut().register(this.dictWindow, 'Command+N', () => {
-    if (myApp.dictWindow) { myApp.dictWindow.webContents.send('shortcut', 'add'); }
+    myApp.dictWindow.webContents.send('shortcut', 'add');
   });
 
   // window event
