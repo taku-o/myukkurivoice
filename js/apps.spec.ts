@@ -152,11 +152,11 @@ angular.module('specApp',
     };
     $scope.$on('message', (event, message: yubo.IMessage | yubo.IRecordMessage) => {
       $scope.messageServicePost = JSON.stringify(message);
-      $timeout(() => { $scope.$apply(); });
+      $timeout($scope.$apply);
     });
     $scope.$on('wavGenerated', (event, wavFileInfo) => {
       $scope.lastWavFile = JSON.stringify(wavFileInfo);
-      $timeout(() => { $scope.$apply(); });
+      $timeout($scope.$apply);
     });
 
     // CommandService
@@ -729,7 +729,7 @@ angular.module('specApp',
     };
     $scope.$on('duration', (event, duration: number) => {
       $scope.reportDurationResult = duration;
-      $timeout(() => { $scope.$apply(); });
+      $timeout($scope.$apply);
     });
   }]);
 

@@ -18,7 +18,6 @@ angular.module('systemApp', ['LicenseServices'])
 
     // init
     const ctrl = this;
-    $timeout(() => { $scope.$apply(); });
     let appCfg = require('electron').remote.getGlobal('appCfg');
     $scope.appCfg = appCfg;
     $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted?

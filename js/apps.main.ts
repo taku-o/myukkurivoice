@@ -48,7 +48,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
       while ($scope.messageList.length > 5) {
         $scope.messageList.pop();
       }
-      $timeout(() => { $scope.$apply(); });
+      $timeout($scope.$apply);
     });
     $scope.$on('wavGenerated', (event, wavFileInfo: yubo.IRecordMessage) => {
       $scope.lastWavFile = wavFileInfo;
@@ -56,11 +56,11 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
       while ($scope.generatedList.length > 10) {
         $scope.generatedList.pop();
       }
-      $timeout(() => { $scope.$apply(); });
+      $timeout($scope.$apply);
     });
     $scope.$on('duration', (event, duration: number) => {
       $scope.duration = duration;
-      $timeout(() => { $scope.$apply(); });
+      $timeout($scope.$apply);
     });
 
     // shortcut
@@ -96,7 +96,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
               $scope.yvoice = $scope.yvoiceList[0];
             }
             $scope.display = 'main';
-            $timeout(() => { $scope.$apply(); });
+            $timeout($scope.$apply);
           }
           break;
         case 'swichPreviousConfig':
@@ -108,7 +108,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
               $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
             }
             $scope.display = 'main';
-            $timeout(() => { $scope.$apply(); });
+            $timeout($scope.$apply);
           }
           break;
         case 'encode':
@@ -122,24 +122,24 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
       switch (action) {
         case 'clear':
           document.getElementById('clear').click();
-          $timeout(() => { $scope.$apply(); });
+          $timeout($scope.$apply);
           break;
         case 'plus':
           document.getElementById('plus').click();
-          $timeout(() => { $scope.$apply(); });
+          $timeout($scope.$apply);
           break;
         case 'minus':
           {
             const indexForM = $scope.yvoiceList.indexOf($scope.yvoice);
             ctrl.minus(indexForM);
-            $timeout(() => { $scope.$apply(); });
+            $timeout($scope.$apply);
           }
           break;
         case 'copy':
           {
             const indexForCP = $scope.yvoiceList.indexOf($scope.yvoice);
             ctrl.copy(indexForCP);
-            $timeout(() => { $scope.$apply(); });
+            $timeout($scope.$apply);
           }
           break;
         case 'save':
@@ -174,7 +174,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           const win = require('electron').remote.getCurrentWindow();
           win.focus();
           $scope.yinput.source = data;
-          $timeout(() => { $scope.$apply(); });
+          $timeout($scope.$apply);
         }
       });
     });
@@ -208,7 +208,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           }
           $scope.yvoiceList = dataList;
           $scope.yvoice = $scope.yvoiceList[0];
-          $timeout(() => { $scope.$apply(); });
+          $timeout($scope.$apply);
           // initialize AquesService
           AquesService.init();
           if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('main display: '+ t[0]+ ','+ t[1]); }
@@ -865,7 +865,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           field.selectionEnd = (`${field.value.substring(0, pos)}\n${$scope.yvoice.name}${'＞'}`).length;
         }
       }
-      $timeout(() => { $scope.$apply(); });
+      $timeout($scope.$apply);
     };
     ctrl.directory = function(): void {
       MessageService.action('select directory.');
@@ -879,7 +879,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           return;
         }
         $scope.yvoice.seqWriteOptions.dir = dirs[0];
-        $timeout(() => { $scope.$apply(); });
+        $timeout($scope.$apply);
       });
       let optDir = $scope.yvoice.seqWriteOptions.dir;
       if (!optDir) { optDir = desktopDir; }
@@ -907,6 +907,6 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     ipcRenderer().on('switchAlwaysOnTop', (event, newflg) => {
       $scope.alwaysOnTop = newflg;
       MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
-      $timeout(() => { $scope.$apply(); });
+      $timeout($scope.$apply);
     });
   }]);
