@@ -17,6 +17,8 @@
   <script src="js/service.message.js"></script>
   <script src="js/service.util.js"></script>
   <script src="js/services.main.js"></script>
+  <script src="js/service.aqusrdic.js"></script>
+  <script src="js/services.dict.js"></script>
   <script src="js/apps.spec.js"></script>
   <script type="text/javascript">
     document.ondragover = document.ondrop = function(e) {
@@ -153,6 +155,25 @@
       <button id="wave-ver10" ng-click="ctrl.waveVer10()">
       <input id="wave-result" type="text" ng-model="waveResult">
       <input id="wave-err" type="text" ng-model="waveErr">
+    </div>
+
+    <div>AqUsrDicService
+      <input id="csv-path" type="text" ng-model="csvPath">
+      <input id="user-dic-path" type="text" ng-model="userDicPath">
+      <button id="generate-user-dict" ng-click="ctrl.generateUserDict()">
+      <input id="generate-user-dict-result" type="text" ng-model="generateUserDictResult">
+
+      <button id="generate-csv" ng-click="ctrl.generateCSV()">
+      <input id="generate-csv-result" type="text" ng-model="generateCsvResult">
+
+      <input id="surface" type="text" ng-model="surface">
+      <input id="yomi" type="text" ng-model="yomi">
+      <input id="pos-code" type="text" ng-model="posCode">
+      <button id="validate-input" ng-click="ctrl.validateInput()">
+      <input id="validate-input-result" type="text" ng-model="validateInputResult">
+
+      <button id="get-last-error" ng-click="ctrl.getLastError()">
+      <input id="get-last-error-result" type="text" ng-model="getLastErrorResult">
     </div>
 
     <div>AudioService1
