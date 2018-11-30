@@ -6,9 +6,13 @@ var _path, path                       = () => { _path = _path || require('path')
 var _openAboutWindow, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('about-window').default; return _openAboutWindow; };
 var _Version, Version                 = () => { _Version = _Version || require('github-version-compare').Version; return _Version; };
 
+// env
+const DEBUG = process.env.DEBUG != null;
+const TEST = process.env.NODE_ENV == 'test';
+
 // window option
-const transparent: boolean = (process.env.NODE_ENV == 'test')? true: false;
-const opacity: number = (process.env.NODE_ENV == 'test')? 0.0: 1.0;
+const transparent: boolean = TEST? true: false;
+const opacity: number = TEST? 0.0: 1.0;
 
 // main window
 function showMainWindow(): void {
@@ -29,7 +33,7 @@ function showMainWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   this.mainWindow.loadURL(`file://${__dirname}/contents-main.html`);
@@ -113,7 +117,7 @@ function showHelpWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   this.helpWindow.loadURL(`file://${__dirname}/contents-help.html`);
@@ -166,7 +170,7 @@ function showSystemWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   this.systemWindow.loadURL(`file://${__dirname}/contents-system.html`);
@@ -212,7 +216,7 @@ function showDictWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   this.dictWindow.loadURL(`file://${__dirname}/contents-dict.html`);
@@ -342,7 +346,7 @@ function showSpecWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   specWindow.loadURL(`file://${__dirname}/contents-spec.html`);

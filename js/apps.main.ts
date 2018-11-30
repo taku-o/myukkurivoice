@@ -5,6 +5,14 @@ var _path, path               = () => { _path = _path || require('path'); return
 var _fs, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 
+// env
+const TEST = process.env.NODE_ENV == 'test';
+const MONITOR = process.env.MONITOR != null;
+
+// perfomance monitoring
+let MONITOR_display = null;
+if (MONITOR) { MONITOR_display = process.hrtime(); }
+
 // application settings
 var desktopDir = app.getPath('desktop');
 
@@ -187,7 +195,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     $scope.generatedList = [];
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
-    $scope.isTest = appCfg.isTest;
+    $scope.isTest = TEST;
     loadData();
 
     // util
@@ -203,6 +211,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           $timeout(() => { $scope.$apply(); });
           // initialize AquesService
           AquesService.init();
+          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('main display: '+ t[0]+ ','+ t[1]); }
         },
         (err) => {
           MessageService.error('初期データの読み込みでエラーが起きました。', err);
@@ -689,11 +698,11 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
       return d.promise;
     }
     ctrl.showSystemWindow = function(): void {
-      if (!appCfg.isTest) { return; }
+      if (!TEST) { return; }
       ipcRenderer().send('showSystemWindow', 'system');
     };
     ctrl.showSpecWindow = function(): void {
-      if (!appCfg.isTest) { return; }
+      if (!TEST) { return; }
       ipcRenderer().send('showSpecWindow', 'spec');
     };
     ctrl.help = function(): void {

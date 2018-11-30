@@ -20,8 +20,6 @@ declare namespace yubo {
     showMsgPane:         boolean;
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
-    isDebug:             boolean;
-    isTest:              boolean;
   }
 
   // electron.ts
@@ -40,10 +38,11 @@ declare namespace yubo {
     showAboutWindow(): void;
     showVersionDialog(): void;
     showSpecWindow(): void;
-    initAppMenu(options: {isDebug: boolean}): void;
+    initAppMenu(): void;
     initDockMenu(): void;
     handleOpenFile(filePath: string): void;
     handleOpenUrl(scheme: string): void;
+    readyConfig(): boolean;
     loadAppConfig(): void;
     updateAppConfig(options: yubo.AppCfg): void;
     resetAppConfig(): void;

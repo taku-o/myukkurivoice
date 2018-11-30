@@ -1,21 +1,35 @@
 'use strict';
 import {app,dialog,ipcMain} from 'electron';
-var _log, log   = () => { _log = _log || require('electron-log'); return _log; };
-var _path, path = () => { _path = _path || require('path'); return _path; };
+var _log, log             = () => { _log = _log || require('electron-log'); return _log; };
+var _path, path           = () => { _path = _path || require('path'); return _path; };
+var _waitUntil, waitUntil = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 import * as Menu from './electron-menu';
 import * as Pane from './electron-window';
 import * as Launch from './electron-launch';
 import * as AppConfig from './electron-appcfg';
 
+// env
+const DEBUG = process.env.DEBUG != null;
+const TEST = process.env.NODE_ENV == 'test';
+const MONITOR = process.env.MONITOR != null;
+
 // source-map-support
-if (process.env.DEBUG != null) {
+if (DEBUG) {
   try {
     require('source-map-support').install();
   } catch(e) {
     log().error('source-map-support or devtron is not installed.');
   }
 }
+// change userData for test
+if (TEST && process.env.userData) {
+  app.setPath('userData', process.env.userData);
+}
+// perfomance monitoring
+let MONITOR_ready = null;
+let MONITOR_loadAppConfig = null;
+if (MONITOR) { MONITOR_ready = process.hrtime(); }
 
 // MYukkuriVoice application
 const MYukkuriVoice = function(): void {
@@ -41,15 +55,15 @@ MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
 MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
 MYukkuriVoice.prototype.handleOpenFile = Launch.handleOpenFile;
 MYukkuriVoice.prototype.handleOpenUrl = Launch.handleOpenUrl;
+MYukkuriVoice.prototype.readyConfig = AppConfig.readyConfig;
 MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
 MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
 
 // load application settings
-if (process.env.NODE_ENV == 'test' && process.env.userData) {
-  app.setPath('userData', process.env.userData);
-}
-myApp.loadAppConfig();
+if (MONITOR) { MONITOR_loadAppConfig = process.hrtime(); }
+setTimeout(() => { myApp.loadAppConfig(); }, 0); // background loading config.
+if (MONITOR) { let t = process.hrtime(MONITOR_loadAppConfig); log().warn('loadAppConfig: '+ t[0]+ ','+ t[1]); }
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
@@ -80,12 +94,20 @@ app.on('will-finish-launching', () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
+  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('ready: '+ t[0]+ ','+ t[1]); }
   // open main window.
-  myApp.showMainWindow();
-
   // init menu
-  myApp.initAppMenu({isDebug: myApp.appCfg.isDebug});
-  myApp.initDockMenu();
+  if (myApp.readyConfig()) {
+    myApp.showMainWindow();
+    myApp.initAppMenu();
+    myApp.initDockMenu();
+  } else {
+    waitUntil()(100, 10, myApp.readyConfig, () => {
+      myApp.showMainWindow();
+      myApp.initAppMenu();
+      myApp.initDockMenu();
+    });
+  }
 });
 
 // show window event

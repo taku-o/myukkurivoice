@@ -25,7 +25,7 @@ const wrapper = require('gulp-wrapper');
 
 const tsProject = ts.createProject('tsconfig.json');
 
-const ELECTRON_CMD = 'DEBUG=1 '+ __dirname+ '/node_modules/.bin/electron';
+const ELECTRON_CMD = 'DEBUG=1 MONITOR=1 '+ __dirname+ '/node_modules/.bin/electron';
 const PACKAGER_CMD = __dirname+ '/node_modules/.bin/electron-packager';
 const WORK_DIR = __dirname+ '/release';
 const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
