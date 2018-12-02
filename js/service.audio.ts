@@ -75,8 +75,8 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       },
     };
   }])
-  .factory('AudioService2', ['$q', '$timeout', 'MessageService', 'AppUtilService',
-  ($q, $timeout, MessageService: yubo.MessageService, AppUtilService: yubo.AppUtilService): yubo.AudioService2 => {
+  .factory('AudioService2', ['$q', 'MessageService', 'AppUtilService',
+  ($q, MessageService: yubo.MessageService, AppUtilService: yubo.AppUtilService): yubo.AudioService2 => {
     // Web Audio API base AudioService
     // @ts-ignore
     const audioCtx = new window.AudioContext();

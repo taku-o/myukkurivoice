@@ -2,6 +2,15 @@
 var _crypto, crypto = () => { _crypto = _crypto || require('crypto'); return _crypto; };
 var _Config, Config = () => { _Config = _Config || require('electron-store'); return _Config; };
 
+// env
+const DEBUG = process.env.DEBUG != null;
+const TEST = process.env.NODE_ENV == 'test';
+
+// readyConfig
+function readyConfig(): boolean {
+  return this.config != null && this.appCfg != null;
+}
+
 // load
 function loadAppConfig(): void {
   const appCfg: yubo.AppCfg = {
@@ -13,8 +22,6 @@ function loadAppConfig(): void {
     showMsgPane: true,
     passPhrase: null,
     aq10UseKeyEncrypted: '',
-    isDebug: process.env.DEBUG != null,
-    isTest: process.env.NODE_ENV == 'test',
   };
 
   const config = new (Config())() as yubo.ElectronConfig;
@@ -37,12 +44,13 @@ function updateAppConfig(options: yubo.AppCfg): void {
   const {x, y} = this.mainWindow.getBounds();
   options.mainWindow.x = x;
   options.mainWindow.y = y;
-  this.config.set('mainWindow',          options.mainWindow);
-  this.config.set('audioServVer',        options.audioServVer);
-  this.config.set('showMsgPane',         options.showMsgPane);
-  this.config.set('passPhrase',          options.passPhrase);
-  this.config.set('aq10UseKeyEncrypted', options.aq10UseKeyEncrypted);
-
+  this.config.set({
+    mainWindow:          options.mainWindow,
+    audioServVer:        options.audioServVer,
+    showMsgPane:         options.showMsgPane,
+    passPhrase:          options.passPhrase,
+    aq10UseKeyEncrypted: options.aq10UseKeyEncrypted,
+  });
   ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
@@ -52,12 +60,13 @@ function updateAppConfig(options: yubo.AppCfg): void {
 // reset
 function resetAppConfig(): void {
   const myApp = this;
-  this.config.set('mainWindow',          {width: 800, height: 665, x:null, y:null});
-  this.config.set('audioServVer',        'webaudioapi');
-  this.config.set('showMsgPane',         true);
-  this.config.set('passPhrase',          crypto().randomBytes(16).toString('hex'));
-  this.config.set('aq10UseKeyEncrypted', '');
-
+  this.config.set({
+    mainWindow:          {width: 800, height: 665, x:null, y:null},
+    audioServVer:        'webaudioapi',
+    showMsgPane:         true,
+    passPhrase:          crypto().randomBytes(16).toString('hex'),
+    aq10UseKeyEncrypted: '',
+  });
   ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
     if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
   });
@@ -66,6 +75,7 @@ function resetAppConfig(): void {
 
 // exports
 export {
+  readyConfig,
   loadAppConfig,
   updateAppConfig,
   resetAppConfig,

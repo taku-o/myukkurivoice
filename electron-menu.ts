@@ -1,8 +1,11 @@
 'use strict';
 import {app,Menu,shell} from 'electron';
 
+// env
+const DEBUG = process.env.DEBUG != null;
+
 // application menu
-function initAppMenu(options: {isDebug: boolean}): void {
+function initAppMenu(): void {
   const myApp = this;
   const menuList = [
     {
@@ -260,7 +263,7 @@ function initAppMenu(options: {isDebug: boolean}): void {
     },
   ];
   // Debugメニューを追加 (Toggle Developer Tools、Install Devtron)
-  if (options.isDebug) {
+  if (DEBUG) {
     (menuList as any[]).splice(6, 0,
       {
         label: 'Debug',

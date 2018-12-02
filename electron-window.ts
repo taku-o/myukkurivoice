@@ -6,9 +6,13 @@ var _path, path                       = () => { _path = _path || require('path')
 var _openAboutWindow, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('about-window').default; return _openAboutWindow; };
 var _Version, Version                 = () => { _Version = _Version || require('github-version-compare').Version; return _Version; };
 
+// env
+const DEBUG = process.env.DEBUG != null;
+const TEST = process.env.NODE_ENV == 'test';
+
 // window option
-const transparent: boolean = (process.env.NODE_ENV == 'test')? true: false;
-const opacity: number = (process.env.NODE_ENV == 'test')? 0.0: 1.0;
+const transparent: boolean = TEST? true: false;
+const opacity: number = TEST? 0.0: 1.0;
 
 // main window
 function showMainWindow(): void {
@@ -29,15 +33,13 @@ function showMainWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   this.mainWindow.loadURL(`file://${__dirname}/contents-main.html`);
 
   // shortcut
-  localShortcut().register(this.mainWindow, 'Command+Q', () => {
-    app.quit();
-  });
+  localShortcut().register(this.mainWindow, 'Command+Q', app.quit);
   localShortcut().register(this.mainWindow, 'Command+P', () => {
     myApp.mainWindow.webContents.send('shortcut', 'play');
   });
@@ -113,23 +115,21 @@ function showHelpWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   this.helpWindow.loadURL(`file://${__dirname}/contents-help.html`);
 
   // shortcut
-  localShortcut().register(this.helpWindow, 'Command+Q', () => {
-    app.quit();
-  });
+  localShortcut().register(this.helpWindow, 'Command+Q', app.quit);
   localShortcut().register(this.helpWindow, 'Command+W', () => {
     if (myApp.helpWindow) { myApp.helpWindow.close(); }
   });
   localShortcut().register(this.helpWindow, 'Up', () => {
-    if (myApp.helpWindow) { myApp.helpWindow.webContents.send('shortcut', 'moveToPreviousHelp'); }
+    myApp.helpWindow.webContents.send('shortcut', 'moveToPreviousHelp');
   });
   localShortcut().register(this.helpWindow, 'Down', () => {
-    if (myApp.helpWindow) { myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp'); }
+    myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp');
   });
 
   // event
@@ -166,15 +166,13 @@ function showSystemWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   this.systemWindow.loadURL(`file://${__dirname}/contents-system.html`);
 
   // shortcut
-  localShortcut().register(this.systemWindow, 'Command+Q', () => {
-    app.quit();
-  });
+  localShortcut().register(this.systemWindow, 'Command+Q', app.quit);
   localShortcut().register(this.systemWindow, 'Command+W', () => {
     if (myApp.systemWindow) { myApp.systemWindow.close(); }
   });
@@ -212,41 +210,33 @@ function showDictWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   this.dictWindow.loadURL(`file://${__dirname}/contents-dict.html`);
 
   // shortcut
-  localShortcut().register(this.dictWindow, 'Command+Q', () => {
-    app.quit();
-  });
+  localShortcut().register(this.dictWindow, 'Command+Q', app.quit);
   localShortcut().register(this.dictWindow, 'Command+W', () => {
     if (myApp.dictWindow) { myApp.dictWindow.close(); }
   });
   localShortcut().register(this.dictWindow, 'Command+S', () => {
-    if (myApp.dictWindow) { myApp.dictWindow.webContents.send('shortcut', 'save'); }
+    myApp.dictWindow.webContents.send('shortcut', 'save');
   });
   localShortcut().register(this.dictWindow, 'Command+N', () => {
-    if (myApp.dictWindow) { myApp.dictWindow.webContents.send('shortcut', 'add'); }
+    myApp.dictWindow.webContents.send('shortcut', 'add');
   });
 
   // window event
   this.dictWindow.webContents.on('did-finish-load', () => {
     myApp.dictWindow.show(); myApp.dictWindow.focus();
   });
-  this.dictWindow.on('close', () => {
-    disableDictMenu();
-  });
+  this.dictWindow.on('close', disableDictMenu);
   this.dictWindow.on('closed', () => {
     myApp.dictWindow = null;
   });
-  this.dictWindow.on('focus', () => {
-    enableDictMenu();
-  });
-  this.dictWindow.on('blur', () => {
-    disableDictMenu();
-  });
+  this.dictWindow.on('focus', enableDictMenu);
+  this.dictWindow.on('blur', disableDictMenu);
   this.dictWindow.on('unresponsive', () => {
     log().warn('main:event:unresponsive');
   });
@@ -290,8 +280,10 @@ function showAboutWindow(): void {
     open_devtools: false,
   });
   if (this.mainWindow) { w.setParentWindow(this.mainWindow); }
-  localShortcut().register(w, 'Command+Q', () => { app.quit(); });
-  localShortcut().register(w, 'Command+W', () => { w.close(); });
+  localShortcut().register(w, 'Command+Q', app.quit);
+  localShortcut().register(w, 'Command+W', () => {
+    if (w) { w.close(); }
+  });
 }
 
 // showVersionDialog
@@ -342,7 +334,7 @@ function showSpecWindow(): void {
     transparent: transparent,
     opacity: opacity,
     webPreferences: {
-      devTools: this.appCfg.isDebug,
+      devTools: DEBUG,
     },
   });
   specWindow.loadURL(`file://${__dirname}/contents-spec.html`);
