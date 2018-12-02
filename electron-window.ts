@@ -122,7 +122,9 @@ function showHelpWindow(): void {
 
   // shortcut
   localShortcut().register(this.helpWindow, 'Command+Q', app.quit);
-  localShortcut().register(this.helpWindow, 'Command+W', myApp.helpWindow.close);
+  localShortcut().register(this.helpWindow, 'Command+W', () => {
+    if (myApp.helpWindow) { myApp.helpWindow.close(); }
+  });
   localShortcut().register(this.helpWindow, 'Up', () => {
     myApp.helpWindow.webContents.send('shortcut', 'moveToPreviousHelp');
   });
@@ -171,7 +173,9 @@ function showSystemWindow(): void {
 
   // shortcut
   localShortcut().register(this.systemWindow, 'Command+Q', app.quit);
-  localShortcut().register(this.systemWindow, 'Command+W', myApp.systemWindow.close);
+  localShortcut().register(this.systemWindow, 'Command+W', () => {
+    if (myApp.systemWindow) { myApp.systemWindow.close(); }
+  });
 
   // event
   this.systemWindow.webContents.on('did-finish-load', () => {
@@ -213,7 +217,9 @@ function showDictWindow(): void {
 
   // shortcut
   localShortcut().register(this.dictWindow, 'Command+Q', app.quit);
-  localShortcut().register(this.dictWindow, 'Command+W', myApp.dictWindow.close);
+  localShortcut().register(this.dictWindow, 'Command+W', () => {
+    if (myApp.dictWindow) { myApp.dictWindow.close(); }
+  });
   localShortcut().register(this.dictWindow, 'Command+S', () => {
     myApp.dictWindow.webContents.send('shortcut', 'save');
   });
@@ -275,7 +281,9 @@ function showAboutWindow(): void {
   });
   if (this.mainWindow) { w.setParentWindow(this.mainWindow); }
   localShortcut().register(w, 'Command+Q', app.quit);
-  localShortcut().register(w, 'Command+W', w.close);
+  localShortcut().register(w, 'Command+W', () => {
+    if (w) { w.close(); }
+  });
 }
 
 // showVersionDialog
