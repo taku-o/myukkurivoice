@@ -59,9 +59,8 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
         $scope.generatedList.pop();
       }
       $timeout($scope.$apply);
-      // recentDocumentMap
+      // recentDocumentList
       app.addRecentDocument(wavFileInfo.wavFilePath);
-      ctrl.recentDocumentMap[wavFileInfo.wavFilePath] = wavFileInfo;
     });
     $scope.$on('duration', (event, duration: number) => {
       $scope.duration = duration;
@@ -162,6 +161,9 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
         case 'tutorial':
           document.getElementById('tutorial').click();
           break;
+        case 'clearRecentDocuments':
+          app.clearRecentDocuments();
+          break;
         case 'devtron':
           require('devtron').install();
           break;
@@ -187,14 +189,15 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     // recentDocument event
     ipcRenderer().on('recentDocument', (event, filePath: string) => {
       MessageService.action('select from Recent Document List.');
-      if (! ctrl.recentDocumentMap[filePath]) {
-        MessageService.error('履歴データは見つかりませんでした');
-        return;
+      for (let f of $scope.generatedList) {
+        if (f.wavFilePath == filePath) {
+          $scope.yinput.source = f.source;
+          $scope.yinput.encoded = f.encoded;
+          $timeout($scope.$apply);
+          return;
+        }
       }
-      const wavFileInfo = ctrl.recentDocumentMap[filePath];
-      $scope.yinput.source = wavFileInfo.source;
-      $scope.yinput.encoded = wavFileInfo.encoded;
-      $timeout($scope.$apply);
+      MessageService.error('履歴データは見つかりませんでした');
     });
 
     // application settings
@@ -206,15 +209,14 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     const ctrl = this;
     $scope.display = 'main';
     $scope.showTypeMessageList = true;
-    $scope.phontList = MasterService.getPhontList();
+    ctrl.phontList = MasterService.getPhontList();
     $scope.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
     $scope.yinput = angular.copy(YInput);
     $scope.messageList = [];
     $scope.generatedList = [];
-    this.recentDocumentMap = {};
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
-    $scope.isTest = TEST;
+    ctrl.isTest = TEST;
     loadData();
 
     // util
@@ -292,7 +294,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     // list box selection changed
     ctrl.onChangePhont = function(): void {
       let phont = null;
-      angular.forEach($scope.phontList, (value, key) => {
+      angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) { return; }
@@ -375,7 +377,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
 
       // phont
       let phont = null;
-      angular.forEach($scope.phontList, (value, key) => {
+      angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
       if (!phont) {
@@ -433,7 +435,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
       }
 
       let phont = null;
-      angular.forEach($scope.phontList, (value, key) => {
+      angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
       if (!phont) {
@@ -613,7 +615,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
 
       // phont
       let phont = null;
-      angular.forEach($scope.phontList, (value, key) => {
+      angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
       if (!phont) {
@@ -666,7 +668,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
 
       // phont
       let phont = null;
-      angular.forEach($scope.phontList, (value, key) => {
+      angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
       if (!phont) {

@@ -65,6 +65,10 @@ function initAppMenu(): void {
     {
       label: '音声',
       submenu: [
+        {
+          label: 'Clear Recent',
+          click() { myApp.mainWindow.webContents.send('menu', 'clearRecentDocuments'); },
+        },
         // currently not supported.
         //{
         //  label: 'Open Recent',
@@ -76,7 +80,7 @@ function initAppMenu(): void {
         //    }
         //  ]
         //},
-        //{type: 'separator'},
+        {type: 'separator'},
         {
           label: 'メッセージ入力欄に移動 (⌘↑)',
           //accelerator: 'Command+Up',

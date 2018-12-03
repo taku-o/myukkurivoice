@@ -199,7 +199,6 @@ declare namespace yubo {
     yinput:              yubo.YInput;
     yvoice:              yubo.YVoice;
     yvoiceList:          yubo.YVoice[];
-    phontList:           YPhont[];
     appCfg:              AppCfg;
     duration:            number;
     lastWavFile:         yubo.IRecordMessage;
@@ -209,7 +208,6 @@ declare namespace yubo {
     display:             string;
     alwaysOnTop:         boolean;
     showTypeMessageList: boolean;
-    isTest:              boolean;
     messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
     generatedList:       IRecordMessage[];
   }
