@@ -72,6 +72,16 @@ describe('specWindow-service-CommandService', function() {
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
       });
   });
 
@@ -110,6 +120,16 @@ describe('specWindow-service-CommandService', function() {
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
       });
   });
 
@@ -130,6 +150,16 @@ describe('specWindow-service-CommandService', function() {
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
       });
   });
 
@@ -163,5 +193,16 @@ describe('specWindow-service-CommandService', function() {
       .catch((err: Error) => {
         assert.fail(err.message);
       });
+      // TODO what's happen? JSON string parse error.
+      //.getMainProcessLogs().then((logs) => {
+      //  logs.forEach((log) => {
+      //    assert.ok(! log.match(/error/i), position());
+      //  });
+      //})
+      //.getRenderProcessLogs().then((logs) => {
+      //  logs.forEach((log) => {
+      //    assert.ok(! log.message.match(/error/i), position());
+      //  });
+      //});
   });
 });

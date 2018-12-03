@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-model-YCommandInput', function() {
+describe('specWindow-service-IntroService-dict', function() {
   this.timeout(10000);
 
   before(function() {
@@ -36,15 +36,14 @@ describe('specWindow-model-YCommandInput', function() {
     return this.client.close();
   });
 
-  it('YCommandInput', function() {
+  it('dictTutorial', function() {
     return this.client
-      .click('#get-ycommand-input')
-      .getValue('#get-ycommand-input-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal('', parsed.name, position());
-        assert.equal('', parsed.text, position());
+      .click('#dict-tutorial')
+      .waitForVisible('.introjs-tooltip', 5000)
+      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
+        assert.ok(isVisible, position());
       })
-      // catch error
+      // error
       .catch((err: Error) => {
         assert.fail(err.message);
       })

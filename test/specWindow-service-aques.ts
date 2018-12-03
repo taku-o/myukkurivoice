@@ -58,6 +58,16 @@ describe('specWindow-service-AquesService', function() {
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
       });
   });
 
@@ -95,6 +105,16 @@ describe('specWindow-service-AquesService', function() {
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
       });
   });
 
@@ -172,6 +192,16 @@ describe('specWindow-service-AquesService', function() {
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
       });
   });
 });

@@ -613,6 +613,7 @@ gulp.task('_package-debug', (cb) => {
           --icon=icns/myukkurivoice.icns --overwrite --asar \
           --protocol-name=myukkurivoice --protocol=myukkurivoice \
           --extend-info=extend.plist \
+          --no-prune \
           --ignore="^/vendor" \
           --ignore="^/MYukkuriVoice-darwin-x64" \
           --ignore="^/docs" \
