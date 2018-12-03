@@ -8,6 +8,10 @@ var _epath, epath             = () => { _epath = _epath || require('electron-pat
 
 var unpackedPath = epath().getUnpackedPath();
 
+// perfomance monitoring
+var MONITOR_display = null;
+if (MONITOR) { MONITOR_display = process.hrtime(); }
+
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
   log().error('main:event:uncaughtException');
@@ -148,6 +152,7 @@ angular.module('dictApp',
       return this.loadCsv().then((records) => {
         $scope.gridOptions.data = records;
         $timeout($scope.$apply);
+        if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('[time] view dict : '+ t[0]+ ','+ t[1]); }
         return true;
       });
       });

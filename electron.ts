@@ -61,9 +61,10 @@ MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
 
 // load application settings
-if (MONITOR) { MONITOR_loadAppConfig = process.hrtime(); }
-setTimeout(() => { myApp.loadAppConfig(); }, 0); // background loading config.
-if (MONITOR) { let t = process.hrtime(MONITOR_loadAppConfig); log().warn('loadAppConfig: '+ t[0]+ ','+ t[1]); }
+setTimeout(() => {
+  myApp.loadAppConfig();
+  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] loadConfig: '+ t[0]+ ','+ t[1]); }
+}, 0); // background loading config.
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
@@ -94,18 +95,21 @@ app.on('will-finish-launching', () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
-  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('ready: '+ t[0]+ ','+ t[1]); }
+  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] ready     : '+ t[0]+ ','+ t[1]); }
   // open main window.
   // init menu
   if (myApp.readyConfig()) {
     myApp.showMainWindow();
     myApp.initAppMenu();
     myApp.initDockMenu();
+    if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t[0]+ ','+ t[1]); }
   } else {
+    if (MONITOR) { log().warn('[warn] AppCfg is not initialized, still now.'); }
     waitUntil()(100, 10, myApp.readyConfig, () => {
       myApp.showMainWindow();
       myApp.initAppMenu();
       myApp.initDockMenu();
+      if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t[0]+ ','+ t[1]); }
     });
   }
 });
