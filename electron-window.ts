@@ -39,7 +39,9 @@ function showMainWindow(): void {
   this.mainWindow.loadURL(`file://${__dirname}/contents-main.html`);
 
   // shortcut
-  localShortcut().register(this.mainWindow, 'Command+Q', app.quit);
+  localShortcut().register(this.mainWindow, 'Command+Q', () => {
+    app.quit();
+  });
   localShortcut().register(this.mainWindow, 'Command+P', () => {
     myApp.mainWindow.webContents.send('shortcut', 'play');
   });
@@ -129,7 +131,9 @@ function showHelpWindow(): void {
   this.helpWindow.loadURL(`file://${__dirname}/contents-help.html`);
 
   // shortcut
-  localShortcut().register(this.helpWindow, 'Command+Q', app.quit);
+  localShortcut().register(this.helpWindow, 'Command+Q', () => {
+    app.quit();
+  });
   localShortcut().register(this.helpWindow, 'Command+W', () => {
     if (myApp.helpWindow) { myApp.helpWindow.close(); }
   });
@@ -180,7 +184,9 @@ function showSystemWindow(): void {
   this.systemWindow.loadURL(`file://${__dirname}/contents-system.html`);
 
   // shortcut
-  localShortcut().register(this.systemWindow, 'Command+Q', app.quit);
+  localShortcut().register(this.systemWindow, 'Command+Q', () => {
+    app.quit();
+  });
   localShortcut().register(this.systemWindow, 'Command+W', () => {
     if (myApp.systemWindow) { myApp.systemWindow.close(); }
   });
@@ -224,7 +230,9 @@ function showDictWindow(): void {
   this.dictWindow.loadURL(`file://${__dirname}/contents-dict.html`);
 
   // shortcut
-  localShortcut().register(this.dictWindow, 'Command+Q', app.quit);
+  localShortcut().register(this.dictWindow, 'Command+Q', () => {
+    app.quit();
+  });
   localShortcut().register(this.dictWindow, 'Command+W', () => {
     if (myApp.dictWindow) { myApp.dictWindow.close(); }
   });
@@ -239,12 +247,18 @@ function showDictWindow(): void {
   this.dictWindow.webContents.on('did-finish-load', () => {
     myApp.dictWindow.show(); myApp.dictWindow.focus();
   });
-  this.dictWindow.on('close', disableDictMenu);
+  this.dictWindow.on('close', () => {
+    disableDictMenu();
+  });
   this.dictWindow.on('closed', () => {
     myApp.dictWindow = null;
   });
-  this.dictWindow.on('focus', enableDictMenu);
-  this.dictWindow.on('blur', disableDictMenu);
+  this.dictWindow.on('focus', () => {
+    enableDictMenu();
+  });
+  this.dictWindow.on('blur', () => {
+    disableDictMenu();
+  });
   this.dictWindow.on('unresponsive', () => {
     log().warn('main:event:unresponsive');
   });
@@ -288,7 +302,9 @@ function showAboutWindow(): void {
     open_devtools: false,
   });
   if (this.mainWindow) { w.setParentWindow(this.mainWindow); }
-  localShortcut().register(w, 'Command+Q', app.quit);
+  localShortcut().register(w, 'Command+Q', () => {
+    app.quit();
+  });
   localShortcut().register(w, 'Command+W', () => {
     if (w) { w.close(); }
   });
