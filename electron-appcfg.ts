@@ -2,10 +2,6 @@
 var _crypto, crypto = () => { _crypto = _crypto || require('crypto'); return _crypto; };
 var _Config, Config = () => { _Config = _Config || require('electron-store'); return _Config; };
 
-// env
-const DEBUG = process.env.DEBUG != null;
-const TEST = process.env.NODE_ENV == 'test';
-
 // readyConfig
 function readyConfig(): boolean {
   return this.config != null && this.appCfg != null;

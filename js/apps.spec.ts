@@ -693,7 +693,7 @@ angular.module('specApp',
 
     // AqUsrDicService
     ctrl.generateUserDict = function(): void {
-      const r = AqUsrDicService.generateUserDict($scope.csvPath, $scope.userDicPath)
+      const r = AqUsrDicService.generateUserDict($scope.csvPath, $scope.userDicPath);
       if (r.success) {
         $scope.generateUserDictResult = 'ok';
       } else {
@@ -701,7 +701,7 @@ angular.module('specApp',
       }
     };
     ctrl.generateCSV = function(): void {
-      const r = AqUsrDicService.generateCSV($scope.userDicPath, $scope.csvPath)
+      const r = AqUsrDicService.generateCSV($scope.userDicPath, $scope.csvPath);
       if (r.success) {
         $scope.generateCsvResult = 'ok';
       } else {
@@ -709,7 +709,7 @@ angular.module('specApp',
       }
     };
     ctrl.validateInput = function(): void {
-      const r = AqUsrDicService.validateInput($scope.surface, $scope.yomi, $scope.posCode)
+      const r = AqUsrDicService.validateInput($scope.surface, $scope.yomi, $scope.posCode);
       if (r.success) {
         $scope.validateInputResult = 'ok';
       } else {
@@ -717,7 +717,7 @@ angular.module('specApp',
       }
     };
     ctrl.getLastError = function(): void {
-      const r = AqUsrDicService.getLastError()
+      const r = AqUsrDicService.getLastError();
       $scope.getLastErrorResult = r;
     };
 
