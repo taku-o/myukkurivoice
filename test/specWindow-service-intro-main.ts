@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-IntroService', function() {
+describe('specWindow-service-IntroService-main', function() {
   this.timeout(10000);
 
   before(function() {
@@ -39,52 +39,6 @@ describe('specWindow-service-IntroService', function() {
   it('mainTutorial', function() {
     return this.client
       .click('#main-tutorial')
-      .waitForVisible('.introjs-tooltip', 5000)
-      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible, position());
-      })
-      // error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
-  });
-
-  it('settingsTutorial', function() {
-    return this.client
-      .click('#settings-tutorial')
-      .waitForVisible('.introjs-tooltip', 5000)
-      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible, position());
-      })
-      // error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
-  });
-
-  it('shortcut', function() {
-    return this.client
-      .click('#shortcut')
       .waitForVisible('.introjs-tooltip', 5000)
       .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
         assert.ok(isVisible, position());
