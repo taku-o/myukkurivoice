@@ -10,7 +10,7 @@ const TEST = process.env.NODE_ENV == 'test';
 const MONITOR = process.env.MONITOR != null;
 
 // perfomance monitoring
-let MONITOR_display = null;
+var MONITOR_display = null;
 if (MONITOR) { MONITOR_display = process.hrtime(); }
 
 // application settings
@@ -211,12 +211,13 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           $timeout($scope.$apply);
           // initialize AquesService
           AquesService.init();
-          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('main display: '+ t[0]+ ','+ t[1]); }
+          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('[time] view main : '+ t[0]+ ','+ t[1]); }
         },
         (err) => {
           MessageService.error('初期データの読み込みでエラーが起きました。', err);
           // initialize AquesService
           AquesService.init();
+          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('[time] view main : '+ t[0]+ ','+ t[1]); }
         }
       );
     }
