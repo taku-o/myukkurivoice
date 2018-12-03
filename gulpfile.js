@@ -42,7 +42,7 @@ gulp.task('default', () => {
 usage:
     gulp --tasks-simple
     gulp tsc
-    gulp tsc-release
+    gulp tsc-debug
     gulp lint
     gulp lint-js
     gulp lint-q
@@ -62,15 +62,15 @@ usage:
 // tsc
 gulp.task('tsc', () => {
   return tsProject.src()
+    .pipe(tsProject())
+    .js.pipe(gulp.dest('.'));
+});
+gulp.task('tsc-debug', () => {
+  return tsProject.src()
     .pipe(sourcemaps.init())
     .pipe(tsProject())
     .js.pipe(sourcemaps.write())
     .pipe(gulp.dest('.'));
-});
-gulp.task('tsc-release', () => {
-  return tsProject.src()
-    .pipe(tsProject())
-    .js.pipe(gulp.dest('.'));
 });
 gulp.task('_rm-js', () => {
   return del(['*.js','js/*.js','test/*.js', 'docs/assets/js/*.js', '!gulpfile.js']);
@@ -247,12 +247,12 @@ gulp.task('clean', ['_rm-js', '_rm-package', '_rm-workdir']);
 gulp.task('test', (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('tsc', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
+      runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
         if (err) { _notifyError(); }
         cb(err);
       });
     } else {
-      runSequence('tsc', '_test', '_notify', (err) => {
+      runSequence('tsc-debug', '_test', '_notify', (err) => {
         if (err) { _notifyError(); }
         cb(err);
       });
@@ -260,7 +260,7 @@ gulp.task('test', (cb) => {
   });
 });
 gulp.task('test-rebuild', (cb) => {
-  runSequence('tsc', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
+  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
     if (err) { _notifyError(); }
     cb(err);
   });
@@ -272,7 +272,7 @@ gulp.task('_test', () => {
 });
 
 // run app
-gulp.task('app', ['tsc'], (cb) => {
+gulp.task('app', ['tsc-debug'], (cb) => {
   exec(ELECTRON_CMD+ ' .', (err, stdout, stderr) => {
     cb(err);
   });
@@ -281,7 +281,7 @@ gulp.task('app', ['tsc'], (cb) => {
 // package
 gulp.task('package', (cb) => {
   runSequence(
-    'tsc', '_rm-package', '_package-debug', '_unpacked', '_notify',
+    'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify',
     (err) => {
       if (err) { _notifyError(); }
       cb(err);
@@ -297,7 +297,7 @@ gulp.task('release', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    'tsc-release',
+    'tsc',
     '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
@@ -314,7 +314,7 @@ gulp.task('staging', (cb) => {
   runSequence(
     '_rm-workdir', '_mk-workdir', '_ch-workdir',
     '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install',
-    'tsc-release',
+    'tsc',
     '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify',
     (err) => {
       if (err) { _notifyError(); }
