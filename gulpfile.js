@@ -73,7 +73,7 @@ gulp.task('tsc-debug', () => {
     .pipe(gulp.dest('.'));
 });
 gulp.task('_rm-js', () => {
-  return del(['*.js','js/*.js','test/*.js', 'docs/assets/js/*.js', '!gulpfile.js']);
+  return del(['*.js','js/*.js','test/*.js', '!gulpfile.js']);
 });
 
 // lint
