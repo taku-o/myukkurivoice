@@ -68,11 +68,11 @@ angular.module('helpApp', [])
         //  switch (action) {
         //    case 'moveToPreviousHelp':
         //      moveToPreviousHelp();
-        //      $timeout(() => {$scope.$apply();});
+        //      $timeout(() => { $scope.$apply(); });
         //      break;
         //    case 'moveToNextHelp':
         //      moveToNextHelp();
-        //      $timeout(() => {$scope.$apply();});
+        //      $timeout(() => { $scope.$apply(); });
         //      break;
         //  }
         //});
