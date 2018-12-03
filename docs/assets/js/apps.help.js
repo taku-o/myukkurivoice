@@ -61,18 +61,18 @@ angular.module('helpApp', [])
             else {
                 $scope.display = 'about';
             }
-            $timeout($scope.$apply);
+            $timeout(function () { $scope.$apply(); });
         });
         //// shortcut
         //ipcRenderer().on('shortcut', (event, action) => {
         //  switch (action) {
         //    case 'moveToPreviousHelp':
         //      moveToPreviousHelp();
-        //      $timeout($scope.$apply);
+        //      $timeout(() => {$scope.$apply();});
         //      break;
         //    case 'moveToNextHelp':
         //      moveToNextHelp();
-        //      $timeout($scope.$apply);
+        //      $timeout(() => {$scope.$apply();});
         //      break;
         //  }
         //});

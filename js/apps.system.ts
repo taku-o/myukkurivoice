@@ -13,8 +13,8 @@ angular.module('systemApp', ['LicenseServices'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
-  .controller('SystemController', ['$scope', '$timeout', 'LicenseService',
-  function($scope: yubo.ISystemScope, $timeout, LicenseService: yubo.LicenseService) {
+  .controller('SystemController', ['$scope', 'LicenseService',
+  function($scope: yubo.ISystemScope, LicenseService: yubo.LicenseService) {
 
     // init
     const ctrl = this;
