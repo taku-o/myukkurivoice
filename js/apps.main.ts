@@ -170,7 +170,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
 
     // dropTextFile event
     ipcRenderer().on('dropTextFile', (event, filePath: string) => {
-      MessageService.action('drop textfile to app icon Recent Document List.');
+      MessageService.action('drop textfile to app icon.');
       fs().readFile(filePath, 'utf-8', (err: Error, data: string) => {
         if (err) {
           MessageService.error('テキストファイルを読み込めませんでした。', err);

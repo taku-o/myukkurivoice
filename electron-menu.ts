@@ -65,6 +65,18 @@ function initAppMenu(): void {
     {
       label: '音声',
       submenu: [
+        // currently not supported.
+        //{
+        //  label: 'Open Recent',
+        //  role: 'recentdocuments',
+        //  submenu: [
+        //    {
+        //      label: 'Clear Recent',
+        //      role: 'clearrecentdocuments'
+        //    }
+        //  ]
+        //},
+        //{type: 'separator'},
         {
           label: 'メッセージ入力欄に移動 (⌘↑)',
           //accelerator: 'Command+Up',
