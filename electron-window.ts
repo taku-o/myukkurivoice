@@ -76,14 +76,22 @@ function showMainWindow(): void {
     // receive drop file to app icon event
     if (myApp.launchArgs && myApp.launchArgs.filePath) {
       const filePath = myApp.launchArgs.filePath; myApp.launchArgs = null; // for window reload
-      myApp.mainWindow.webContents.send('dropTextFile', filePath);
+      const ext = path().extname(filePath);
+      if (ext == '.wav') {
+        // not supported.
+      } else {
+        myApp.mainWindow.webContents.send('dropTextFile', filePath);
+      }
     }
     // show
     myApp.mainWindow.show(); myApp.mainWindow.focus();
   });
   this.mainWindow.on('close', () => {
+    // save bounds
     const bounds = myApp.mainWindow.getBounds();
     myApp.config.set('mainWindow', bounds);
+    // reset recentDocument
+    app.clearRecentDocuments();
   });
   this.mainWindow.on('closed', () => {
     myApp.mainWindow = null;

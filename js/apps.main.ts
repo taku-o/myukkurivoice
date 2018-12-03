@@ -51,12 +51,17 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
       $timeout($scope.$apply);
     });
     $scope.$on('wavGenerated', (event, wavFileInfo: yubo.IRecordMessage) => {
+      // lastWavFile
       $scope.lastWavFile = wavFileInfo;
+      // generatedList
       $scope.generatedList.unshift(wavFileInfo);
       while ($scope.generatedList.length > 10) {
         $scope.generatedList.pop();
       }
       $timeout($scope.$apply);
+      // recentDocumentMap
+      app.addRecentDocument(wavFileInfo.wavFilePath);
+      ctrl.recentDocumentMap[wavFileInfo.wavFilePath] = wavFileInfo;
     });
     $scope.$on('duration', (event, duration: number) => {
       $scope.duration = duration;
@@ -165,6 +170,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
 
     // dropTextFile event
     ipcRenderer().on('dropTextFile', (event, filePath: string) => {
+      MessageService.action('drop textfile to app icon Recent Document List.');
       fs().readFile(filePath, 'utf-8', (err: Error, data: string) => {
         if (err) {
           MessageService.error('テキストファイルを読み込めませんでした。', err);
@@ -177,6 +183,18 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           $timeout($scope.$apply);
         }
       });
+    });
+    // recentDocument event
+    ipcRenderer().on('recentDocument', (event, filePath: string) => {
+      MessageService.action('select from Recent Document List.');
+      if (! ctrl.recentDocumentMap[filePath]) {
+        MessageService.error('履歴データは見つかりませんでした');
+        return;
+      }
+      const wavFileInfo = ctrl.recentDocumentMap[filePath];
+      $scope.yinput.source = wavFileInfo.source;
+      $scope.yinput.encoded = wavFileInfo.encoded;
+      $timeout($scope.$apply);
     });
 
     // application settings
@@ -193,6 +211,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     $scope.yinput = angular.copy(YInput);
     $scope.messageList = [];
     $scope.generatedList = [];
+    this.recentDocumentMap = {};
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
     $scope.isTest = TEST;
