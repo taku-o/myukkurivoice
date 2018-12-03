@@ -43,6 +43,16 @@ describe('helpWindow', function() {
       })
       .elements('.nav-group-item.functions-item').then((response: HTMLInputElement) => {
         assert.equal(response.value.length, 10, position());
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
       });
   });
 
@@ -181,6 +191,16 @@ describe('helpWindow', function() {
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
       });
   });
 });
