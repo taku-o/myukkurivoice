@@ -1,9 +1,16 @@
+var _log, log = () => { _log = _log || require('electron-log'); return _log; };
+
 // application spec app
 angular.module('specApp',
   ['mainModels', 'dictModels', 'mainServices', 'dictServices'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  .factory('$exceptionHandler', () => {
+    return (exception, cause) => {
+      log().warn('spec:catch angularjs exception: %s, cause:%s', exception, cause);
+    };
+  })
   .controller('SpecController', ['$scope', '$timeout',
       'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
       'KindList', 'KindHash',

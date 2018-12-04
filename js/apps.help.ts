@@ -5,18 +5,16 @@ var _log, log                 = () => { _log = _log || require('electron-log'); 
 
 var homeDir = app.getPath('home');
 
-// handle uncaughtException
-process.on('uncaughtException', (err: Error) => {
-  log().error('help:event:uncaughtException');
-  log().error(err);
-  log().error(err.stack);
-});
-
 // help app
 angular.module('helpApp', [])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  .factory('$exceptionHandler', () => {
+    return (exception, cause) => {
+      log().warn('help:catch angularjs exception: %s, cause:%s', exception, cause);
+    };
+  })
   .controller('HelpController', ['$scope', '$timeout', '$location', '$window',
   function($scope: yubo.IHelpScope, $timeout, $location, $window) {
 

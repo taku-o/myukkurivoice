@@ -113,7 +113,7 @@ app.on('ready', () => {
       myApp.showMainWindow();
       myApp.initAppMenu();
       myApp.initDockMenu();
-      if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t[0]+ ','+ t[1]); }
+      if (MONITOR) { let twait = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ twait[0]+ ','+ twait[1]); }
     });
   }
 });

@@ -16,18 +16,16 @@ if (MONITOR) { MONITOR_display = process.hrtime(); }
 // application settings
 var desktopDir = app.getPath('desktop');
 
-// handle uncaughtException
-process.on('uncaughtException', (err: Error) => {
-  log().error('main:event:uncaughtException');
-  log().error(err);
-  log().error(err.stack);
-});
-
 // angular app
 angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mainModels'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  .factory('$exceptionHandler', () => {
+    return (exception, cause) => {
+      log().warn('main:catch angularjs exception: %s, cause:%s', exception, cause);
+    };
+  })
   // controller
   .controller('MainController',
     ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'AquesService',

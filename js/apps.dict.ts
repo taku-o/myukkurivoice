@@ -15,13 +15,6 @@ var MONITOR = process.env.MONITOR != null;
 var MONITOR_display = null;
 if (MONITOR) { MONITOR_display = process.hrtime(); }
 
-// handle uncaughtException
-process.on('uncaughtException', (err: Error) => {
-  log().error('main:event:uncaughtException');
-  log().error(err);
-  log().error(err.stack);
-});
-
 // angular app
 angular.module('dictApp',
   ['dictModels', 'dictServices',
@@ -30,6 +23,11 @@ angular.module('dictApp',
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  .factory('$exceptionHandler', () => {
+    return (exception, cause) => {
+      log().warn('dict:catch angularjs exception: %s, cause:%s', exception, cause);
+    };
+  })
   // controller
   .controller('DictController',
     ['$scope', '$q', '$timeout', '$interval',
