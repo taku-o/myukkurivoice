@@ -155,6 +155,14 @@ declare namespace yubo {
   export interface MasterService {
     getPhontList(): yubo.YPhont[];
   }
+  export interface HistoryService {
+    load(ok: (cache) => void, ng: (err: Error) => void): ng.IPromise<any>;
+    save(): ng.IPromise<boolean>;
+    clear(): ng.IPromise<boolean>;
+    get(wavFilePath: string): yubo.IRecordMessage;
+    add(record: yubo.IRecordMessage): void;
+    getList(): yubo.IRecordMessage[];
+  }
   // service.aques.ts
   export interface AquesService {
     init(): void;
