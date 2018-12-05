@@ -6,9 +6,18 @@ var _fs, fs                   = () => { _fs = _fs || require('fs'); return _fs; 
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 
 // env
+var DEBUG = process.env.DEBUG != null;
 const TEST = process.env.NODE_ENV == 'test';
 var MONITOR = process.env.MONITOR != null;
 
+// source-map-support
+if (DEBUG) {
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
+}
 // perfomance monitoring
 var MONITOR_display = null;
 if (MONITOR) { MONITOR_display = process.hrtime(); }
@@ -28,13 +37,13 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
   })
   // controller
   .controller('MainController',
-    ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'AquesService',
+    ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'HistoryService', 'AquesService',
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
     function(
       $scope: yubo.IMainScope, $timeout, $q,
       MessageService: yubo.MessageService, DataService: yubo.DataService, MasterService: yubo.MasterService,
-      AquesService: yubo.AquesService,
+      HistoryService: yubo.HistoryService, AquesService: yubo.AquesService,
       audioServVer1: yubo.AudioService1, audioServVer2: yubo.AudioService2, AudioSourceService: yubo.AudioSourceService,
       SeqFNameService: yubo.SeqFNameService, AppUtilService: yubo.AppUtilService, CommandService: yubo.CommandService,
       IntroService: yubo.IntroService,
@@ -59,6 +68,8 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
       $timeout(() => { $scope.$apply(); });
       // recentDocumentList
       app.addRecentDocument(wavFileInfo.wavFilePath);
+      HistoryService.add(wavFileInfo);
+      HistoryService.save();
     });
     $scope.$on('duration', (event, duration: number) => {
       $scope.duration = duration;
@@ -160,7 +171,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           document.getElementById('tutorial').click();
           break;
         case 'clearRecentDocuments':
-          app.clearRecentDocuments();
+          ctrl.clearRecentDocuments();
           break;
         case 'devtron':
           require('devtron').install();
@@ -187,15 +198,14 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     // recentDocument event
     ipcRenderer().on('recentDocument', (event, filePath: string) => {
       MessageService.action('select from Recent Document List.');
-      for (let f of $scope.generatedList) {
-        if (f.wavFilePath == filePath) {
-          $scope.yinput.source = f.source;
-          $scope.yinput.encoded = f.encoded;
-          $timeout(() => { $scope.$apply(); });
-          return;
-        }
+      const r = HistoryService.get(filePath);
+      if (r) {
+        $scope.yinput.source = r.source;
+        $scope.yinput.encoded = r.encoded;
+        $timeout(() => { $scope.$apply(); });
+      } else {
+        MessageService.info('履歴データは見つかりませんでした。');
       }
-      MessageService.error('履歴データは見つかりませんでした');
     });
 
     // application settings
@@ -216,6 +226,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     $scope.alwaysOnTop = false;
     ctrl.isTest = TEST;
     loadData();
+    loadHistory();
 
     // util
     function loadData(): void {
@@ -239,6 +250,15 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('[time] view main : '+ t[0]+ ','+ t[1]); }
         }
       );
+    }
+    function loadHistory(): void {
+      HistoryService.load().then((cache) => {
+        $scope.generatedList = HistoryService.getList();
+        while ($scope.generatedList.length > 10) {
+          $scope.generatedList.pop();
+        }
+      });
+      $timeout(() => { $scope.$apply(); });
     }
     function selectedSource(): string {
       const textarea = document.getElementById('source') as HTMLInputElement;
@@ -806,6 +826,22 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
         const win = require('electron').remote.getCurrentWindow();
         win.previewFile(quickLookPath);
       });
+    };
+    ctrl.recentDocument = function(message: yubo.IRecordMessage): void {
+      const r = HistoryService.get(message.wavFilePath);
+      if (r) {
+        $scope.yinput.source = r.source;
+        $scope.yinput.encoded = r.encoded;
+        $timeout(() => { $scope.$apply(); });
+      } else {
+        MessageService.info('履歴データは見つかりませんでした。');
+      }
+    };
+    ctrl.clearRecentDocuments = function(): void {
+      app.clearRecentDocuments();
+      HistoryService.clear();
+      $scope.generatedList = [];
+      $timeout(() => { $scope.$apply(); });
     };
 
     ctrl.encode = function(): void {

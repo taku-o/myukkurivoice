@@ -9,8 +9,17 @@ var _epath, epath             = () => { _epath = _epath || require('electron-pat
 var unpackedPath = epath().getUnpackedPath();
 
 // env
+var DEBUG = process.env.DEBUG != null;
 var MONITOR = process.env.MONITOR != null;
 
+// source-map-support
+if (DEBUG) {
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
+}
 // perfomance monitoring
 var MONITOR_display = null;
 if (MONITOR) { MONITOR_display = process.hrtime(); }

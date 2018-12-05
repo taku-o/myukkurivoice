@@ -5,6 +5,17 @@ var _log, log                 = () => { _log = _log || require('electron-log'); 
 
 var homeDir = app.getPath('home');
 
+// env
+var DEBUG = process.env.DEBUG != null;
+
+// source-map-support
+if (DEBUG) {
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
+}
 // help app
 angular.module('helpApp', [])
   .config(['$qProvider', ($qProvider) => {
