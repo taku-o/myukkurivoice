@@ -102,7 +102,7 @@ app.on('ready', () => {
     myApp.showMainWindow();
     myApp.initAppMenu();
     myApp.initDockMenu();
-    if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t[0]+ ','+ t[1]); }
+    if (MONITOR) { let t2 = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t2[0]+ ','+ t2[1]); }
   } else {
     if (MONITOR) { log().warn('[warn] AppCfg is not initialized, still now.'); }
     waitUntil()(100, 10,

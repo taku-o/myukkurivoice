@@ -82,7 +82,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
     let _cache;
     function cache(): any {
       if (! _cache) {
-        _cache = new (lruCache())({ max: 20 });
+        _cache = new (lruCache())({max: 20});
       }
       return _cache;
     }
@@ -126,7 +126,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
         return r;
       },
       add: function(record: yubo.IRecordMessage): void {
-        cache().set(record.wavFilePath, record, MS_MAX_AGE)
+        cache().set(record.wavFilePath, record, MS_MAX_AGE);
       },
       getList: function(): yubo.IRecordMessage[] {
         const historyList = cache().values();
