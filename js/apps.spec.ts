@@ -193,12 +193,13 @@ angular.module('specApp',
       const r = CommandService.parseInput($scope.parseInputInput, yvoiceList, currentYvoice);
       $scope.parseInputResult = JSON.stringify(r);
     };
-    ctrl.detectVoiceConfig = function(): void {
-      const commandInput = JSON.parse($scope.commandInputSource);
-      const yvoiceList = YVoiceInitialData;
-      const r = CommandService.detectVoiceConfig(commandInput, yvoiceList);
-      $scope.detectVoiceConfigResult = JSON.stringify(r);
-    };
+    // TODO what's? this code is not correct.
+    //ctrl.detectVoiceConfig = function(): void {
+    //  const commandInput = JSON.parse($scope.commandInputSource);
+    //  const yvoiceList = YVoiceInitialData;
+    //  const r = CommandService.detectVoiceConfig(commandInput, yvoiceList);
+    //  $scope.detectVoiceConfigResult = JSON.stringify(r);
+    //};
     ctrl.toString = function(): void {
       const commandInputList = JSON.parse($scope.commandInputList);
       const r = CommandService.toString(commandInputList);
@@ -207,14 +208,12 @@ angular.module('specApp',
 
     // DataService
     ctrl.load = function(): void {
-      DataService.load(
-        (list) => {
-          $scope.loadResult = JSON.stringify(list);
-        },
-        (err: Error) => {
-          $scope.loadErr = err.message;
-        }
-      );
+      DataService.load(null, null).then((list) => {
+        $scope.loadResult = JSON.stringify(list);
+      })
+      .catch((err: Error) => {
+        $scope.loadErr = err.message;
+      });
     };
     ctrl.initialData = function(): void {
       const r = DataService.initialData();

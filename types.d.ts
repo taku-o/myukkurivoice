@@ -145,7 +145,7 @@ declare namespace yubo {
   }
   // service.data.ts
   export interface DataService {
-    load(ok: (dataList: yubo.YVoice[]) => void, ng: (err: Error) => void): void;
+    load(ok: (dataList: yubo.YVoice[]) => void, ng: (err: Error) => void): ng.IPromise<yubo.YVoice[]>;
     initialData(): yubo.YVoice[];
     create(): yubo.YVoice;
     copy(original: yubo.YVoice): yubo.YVoice;

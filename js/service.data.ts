@@ -11,7 +11,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
     }
 
     return {
-      load: function(ok = null, ng = null): void {
+      load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
         const d = $q.defer();
         storage().get('data', function(error: Error, data: yubo.YVoice[]) {
           if (error) {
