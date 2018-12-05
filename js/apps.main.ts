@@ -162,7 +162,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           document.getElementById('tutorial').click();
           break;
         case 'clearRecentDocuments':
-          app.clearRecentDocuments();
+          ctrl.clearRecentDocuments();
           break;
         case 'devtron':
           require('devtron').install();
@@ -244,8 +244,12 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     }
     function loadHistory(): void {
       HistoryService.load().then((cache) => {
-        $scope.generatedList = cache.getList();
+        $scope.generatedList = HistoryService.getList();
+        while ($scope.generatedList.length > 10) {
+          $scope.generatedList.pop();
+        }
       });
+      $timeout(() => { $scope.$apply(); });
     }
     function selectedSource(): string {
       const textarea = document.getElementById('source') as HTMLInputElement;
@@ -813,6 +817,22 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
         const win = require('electron').remote.getCurrentWindow();
         win.previewFile(quickLookPath);
       });
+    };
+    ctrl.recentDocument = function(message: yubo.IRecordMessage): void {
+      const r = HistoryService.get(message.wavFilePath);
+      if (r) {
+        $scope.yinput.source = r.source;
+        $scope.yinput.encoded = r.encoded;
+        $timeout(() => { $scope.$apply(); });
+      } else {
+        MessageService.info('履歴データは見つかりませんでした。');
+      }
+    };
+    ctrl.clearRecentDocuments = function(): void {
+      app.clearRecentDocuments();
+      HistoryService.clear();
+      $scope.generatedList = [];
+      $timeout(() => { $scope.$apply(); });
     };
 
     ctrl.encode = function(): void {
