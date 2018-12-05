@@ -156,7 +156,7 @@ declare namespace yubo {
     getPhontList(): yubo.YPhont[];
   }
   export interface HistoryService {
-    load(ok: (cache) => void, ng: (err: Error) => void): ng.IPromise<any>;
+    load(): ng.IPromise<any>;
     save(): ng.IPromise<boolean>;
     clear(): ng.IPromise<boolean>;
     get(wavFilePath: string): yubo.IRecordMessage;

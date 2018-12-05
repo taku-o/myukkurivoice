@@ -29,11 +29,13 @@
       <th class="message-item-created">time</th>
       <th class="message-item-wavFileName">generated</th>
       <th class="message-item-body">message</th>
+      <th class="message-item-encoded">encoded</th>
     </tr>
     <tr class="message-item" ng-repeat="message in generatedList track by $index" ng-click="ctrl.quickLookMessage(message)" title="{{message.wavFilePath}}">
       <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
       <td class="message-item-wavFileName">{{message.wavFileName}}</td>
       <td class="message-item-source">{{message.source}}</td>
+      <td class="message-item-encoded">{{message.encoded}}</td>
     </tr>
   </tbody>
 </table>

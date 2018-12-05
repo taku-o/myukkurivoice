@@ -78,24 +78,24 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
     };
   }])
   .factory('HistoryService', ['$q', ($q): yubo.HistoryService => {
-    const MS_MAX_AGE = 1000 * 60 * 60 * 24 * 60; // 60 days
+    const MS_MAX_AGE = 1000 * 60 * 60 * 24 * 30; // 30 days
     let _cache;
     function cache(): any {
-      if (! this._cache) {
-        this._cache = new (lruCache())({ max: 20 });
+      if (! _cache) {
+        _cache = new (lruCache())({ max: 20 });
       }
-      return this._cache;
+      return _cache;
     }
 
     return {
-      load: function(ok: (cache) => void, ng: (err: Error) => void): ng.IPromise<any> {
+      load: function(): ng.IPromise<any> {
         const d = $q.defer();
         storage().get('history', function(err: Error, data) {
           if (err) {
-            ng(err); d.reject(err); return;
+            d.reject(err); return;
           }
           cache().load(data);
-          ok(cache()); d.resolve(cache());
+          d.resolve(cache());
         });
         return d.promise;
       },
@@ -126,7 +126,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
         return r;
       },
       add: function(record: yubo.IRecordMessage): void {
-        cache().set(record.wavFilePath, record, this.MAX_AGE)
+        cache().set(record.wavFilePath, record, MS_MAX_AGE)
       },
       getList: function(): yubo.IRecordMessage[] {
         const historyList = cache().values();

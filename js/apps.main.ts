@@ -28,13 +28,13 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
   })
   // controller
   .controller('MainController',
-    ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'AquesService',
+    ['$scope', '$timeout', '$q', 'MessageService', 'DataService', 'MasterService', 'HistoryService', 'AquesService',
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
     function(
       $scope: yubo.IMainScope, $timeout, $q,
       MessageService: yubo.MessageService, DataService: yubo.DataService, MasterService: yubo.MasterService,
-      AquesService: yubo.AquesService,
+      HistoryService: yubo.HistoryService, AquesService: yubo.AquesService,
       audioServVer1: yubo.AudioService1, audioServVer2: yubo.AudioService2, AudioSourceService: yubo.AudioSourceService,
       SeqFNameService: yubo.SeqFNameService, AppUtilService: yubo.AppUtilService, CommandService: yubo.CommandService,
       IntroService: yubo.IntroService,
@@ -59,6 +59,8 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
       $timeout(() => { $scope.$apply(); });
       // recentDocumentList
       app.addRecentDocument(wavFileInfo.wavFilePath);
+      HistoryService.add(wavFileInfo);
+      HistoryService.save();
     });
     $scope.$on('duration', (event, duration: number) => {
       $scope.duration = duration;
@@ -187,15 +189,14 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     // recentDocument event
     ipcRenderer().on('recentDocument', (event, filePath: string) => {
       MessageService.action('select from Recent Document List.');
-      for (let f of $scope.generatedList) {
-        if (f.wavFilePath == filePath) {
-          $scope.yinput.source = f.source;
-          $scope.yinput.encoded = f.encoded;
-          $timeout(() => { $scope.$apply(); });
-          return;
-        }
+      const r = HistoryService.get(filePath);
+      if (r) {
+        $scope.yinput.source = r.source;
+        $scope.yinput.encoded = r.encoded;
+        $timeout(() => { $scope.$apply(); });
+      } else {
+        MessageService.info('履歴データは見つかりませんでした。');
       }
-      MessageService.error('履歴データは見つかりませんでした');
     });
 
     // application settings
@@ -216,6 +217,7 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
     $scope.alwaysOnTop = false;
     ctrl.isTest = TEST;
     loadData();
+    loadHistory();
 
     // util
     function loadData(): void {
@@ -239,6 +241,11 @@ angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mai
           if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('[time] view main : '+ t[0]+ ','+ t[1]); }
         }
       );
+    }
+    function loadHistory(): void {
+      HistoryService.load().then((cache) => {
+        $scope.generatedList = cache.getList();
+      });
     }
     function selectedSource(): string {
       const textarea = document.getElementById('source') as HTMLInputElement;

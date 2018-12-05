@@ -92,8 +92,6 @@ function showMainWindow(): void {
     // save bounds
     const bounds = myApp.mainWindow.getBounds();
     myApp.config.set('mainWindow', bounds);
-    // reset recentDocument
-    app.clearRecentDocuments();
   });
   this.mainWindow.on('closed', () => {
     myApp.mainWindow = null;
