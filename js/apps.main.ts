@@ -6,9 +6,18 @@ var _fs, fs                   = () => { _fs = _fs || require('fs'); return _fs; 
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 
 // env
+var DEBUG = process.env.DEBUG != null;
 const TEST = process.env.NODE_ENV == 'test';
 var MONITOR = process.env.MONITOR != null;
 
+// source-map-support
+if (DEBUG) {
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
+}
 // perfomance monitoring
 var MONITOR_display = null;
 if (MONITOR) { MONITOR_display = process.hrtime(); }
