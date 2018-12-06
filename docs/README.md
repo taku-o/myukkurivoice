@@ -33,6 +33,7 @@ macOS High Sierra(10.13)に対応しています。
   * [選択した範囲のテキストのみの音声再生・録音](#%E9%81%B8%E6%8A%9E%E3%81%97%E3%81%9F%E7%AF%84%E5%9B%B2%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%81%AE%E3%81%BF%E3%81%AE%E9%9F%B3%E5%A3%B0%E5%86%8D%E7%94%9F%E3%83%BB%E9%8C%B2%E9%9F%B3)
   * [保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ](#%E4%BF%9D%E5%AD%98%E3%81%97%E3%81%9F%E9%9F%B3%E5%A3%B0%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E3%82%A2%E3%83%97%E3%83%AA%E3%81%8B%E3%82%89%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%82%BD%E3%83%95%E3%83%88%E3%81%AB%E7%9B%B4%E6%8E%A5%E3%83%89%E3%83%A9%E3%83%83%E3%82%B0%E3%82%A2%E3%83%B3%E3%83%89%E3%83%89%E3%83%AD%E3%83%83%E3%83%97)
   * [ユーザー辞書機能](#%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E8%BE%9E%E6%9B%B8%E6%A9%9F%E8%83%BD)
+  * [最近録音したファイルの一覧と入力の復元](#%E6%9C%80%E8%BF%91%E9%8C%B2%E9%9F%B3%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E4%B8%80%E8%A6%A7%E3%81%A8%E5%85%A5%E5%8A%9B%E3%81%AE%E5%BE%A9%E5%85%83)
   * [その他](#%E3%81%9D%E3%81%AE%E4%BB%96)
   * [機能一覧](#%E6%A9%9F%E8%83%BD%E4%B8%80%E8%A6%A7)
 - [動画リンク](#%E5%8B%95%E7%94%BB%E3%83%AA%E3%83%B3%E3%82%AF)
@@ -159,6 +160,17 @@ macOS High Sierra(10.13)に対応しています。
 * またメッセージを音声記号列に変換する際、この辞書の定義が使われます。
 
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-aqdicedit.png" width="400">
+
+<a name="最近録音したファイルの一覧と入力の復元"></a>
+### 最近録音したファイルの一覧と入力の復元
+* 録音したファイルの一覧を記録しています。
+* 一覧には、アプリの下部と、Dockのアプリアイコンからアクセス出来ます。
+
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-app-recent-line.png" width="400">
+
+* 選択すると、音声を録音した当時の入力を、アプリの入力欄に復元します。
+
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-app-recent-edit.png" width="400">
 
 <a name="その他"></a>
 ### その他
