@@ -63,24 +63,25 @@ function initAppMenu(): void {
       ],
     },
     {
-      label: '音声',
+      label: '履歴',
       submenu: [
-        {
-          label: 'Clear Recent',
-          click() { myApp.mainWindow.webContents.send('menu', 'clearRecentDocuments'); },
-        },
-        // currently not supported.
         //{
         //  label: 'Open Recent',
+        //  // currently not supported.
         //  role: 'recentdocuments',
-        //  submenu: [
-        //    {
-        //      label: 'Clear Recent',
-        //      role: 'clearrecentdocuments'
-        //    }
-        //  ]
         //},
-        {type: 'separator'},
+        //{type: 'separator'},
+        {
+          label: 'Clear Recent',
+          // currently not supported.
+          //role: 'clearrecentdocuments'
+          click() { myApp.mainWindow.webContents.send('menu', 'clearRecentDocuments'); },
+        },
+      ],
+    },
+    {
+      label: '音声',
+      submenu: [
         {
           label: 'メッセージ入力欄に移動 (⌘↑)',
           //accelerator: 'Command+Up',
@@ -168,30 +169,6 @@ function initAppMenu(): void {
       ],
     },
     {
-      label: 'ウィンドウ',
-      submenu: [
-        {
-          label: '前面表示固定切替',
-          click() { myApp.switchAlwaysOnTop(); },
-        },
-        {type: 'separator'},
-        {role: 'reload'},
-        {role: 'zoomin'},
-        {role: 'zoomout'},
-        {role: 'resetzoom'},
-        {role: 'togglefullscreen'},
-        {
-          label: 'Bring All to Front',
-          role: 'front',
-        },
-        {type: 'separator'},
-        {
-          label: 'ウインドウ位置リセット',
-          click() { myApp.resetWindowPosition(); },
-        },
-      ],
-    },
-    {
       label: '辞書',
       submenu: [
         {
@@ -251,6 +228,30 @@ function initAppMenu(): void {
           enabled: false,
           label: '辞書オールリセット',
           click() { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'reset'); } },
+        },
+      ],
+    },
+    {
+      label: 'ウィンドウ',
+      submenu: [
+        {
+          label: '前面表示固定切替',
+          click() { myApp.switchAlwaysOnTop(); },
+        },
+        {type: 'separator'},
+        {role: 'reload'},
+        {role: 'zoomin'},
+        {role: 'zoomout'},
+        {role: 'resetzoom'},
+        {role: 'togglefullscreen'},
+        {
+          label: 'Bring All to Front',
+          role: 'front',
+        },
+        {type: 'separator'},
+        {
+          label: 'ウインドウ位置リセット',
+          click() { myApp.resetWindowPosition(); },
         },
       ],
     },
@@ -327,8 +328,37 @@ function initDockMenu(): void {
   app.dock.setMenu(dockMenu);
 }
 
+const dictMenuItems = [
+  'dict-close',
+  'dict-tutorial',
+  'dict-add',
+  'dict-delete',
+  'dict-save',
+  'dict-cancel',
+  'dict-export',
+  'dict-reset',
+];
+function enableDictMenu(): void {
+  const menu = Menu.getApplicationMenu();
+  if (!menu) { return; }
+  for (let m of dictMenuItems) {
+    const item = menu.getMenuItemById(m);
+    item.enabled = true;
+  }
+}
+function disableDictMenu(): void {
+  const menu = Menu.getApplicationMenu();
+  if (!menu) { return; }
+  for (let m of dictMenuItems) {
+    const item = menu.getMenuItemById(m);
+    item.enabled = false;
+  }
+}
+
 // exports
 export {
   initAppMenu,
   initDockMenu,
+  enableDictMenu,
+  disableDictMenu,
 };
