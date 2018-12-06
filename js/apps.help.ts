@@ -46,6 +46,7 @@ angular.module('helpApp', [])
       'dragout',
       'multivoice',
       'dictionary',
+      'history',
       'shortcut',
       'help',
     ];
