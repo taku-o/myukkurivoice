@@ -164,11 +164,11 @@ macOS High Sierra(10.13)に対応しています。
 <a name="最近録音したファイルの一覧と入力の復元"></a>
 ### 最近録音したファイルの一覧と入力の復元
 * 録音したファイルの一覧を記録しています。
-* 一覧には、アプリの下部と、Dockのアプリアイコンからアクセス出来ます。
+* 一覧には、アプリの下部と、Dockのアプリアイコンからアクセスします。
 
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-app-recent-line.png" width="400">
 
-* 選択すると、音声を録音した当時の入力を、アプリの入力欄に復元します。
+* 一覧から選択すると、音声を録音した当時の入力情報を、アプリの入力欄に復元できます。
 
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-app-recent-edit.png" width="400">
 
