@@ -164,9 +164,9 @@ macOS High Sierra(10.13)に対応しています。
 <a name="最近録音したファイルの一覧と入力の復元"></a>
 ### 最近録音したファイルの一覧と入力の復元
 * 録音したファイルの一覧を記録しています。
+* アプリの下部と、Dockのアプリアイコンからアクセス出来ます。
 
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-app-recent-line.png" width="400">
-<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/images/readme-doc-recent.png" width="400">
 
 * 選択すると、音声を録音した当時の設定を、アプリの入力欄に復元します。
 
