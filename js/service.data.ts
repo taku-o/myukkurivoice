@@ -1,4 +1,5 @@
-var _storage, storage = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
+var _storage, storage   = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
+var _lruCache, lruCache = () => { _lruCache = _lruCache || require('lru-cache'); return _lruCache; };
 
 // angular data service
 angular.module('DataServices', ['MessageServices', 'mainModels'])
@@ -73,6 +74,72 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
     return {
       getPhontList: function(): yubo.YPhont[] {
         return phontList;
+      },
+    };
+  }])
+  .factory('HistoryService', ['$q', ($q): yubo.HistoryService => {
+    const MS_MAX_AGE = 1000 * 60 * 60 * 24 * 30; // 30 days
+    let _cache;
+    function cache(): any {
+      if (! _cache) {
+        _cache = new (lruCache())({max: 20});
+      }
+      return _cache;
+    }
+
+    return {
+      load: function(): ng.IPromise<any> {
+        const d = $q.defer();
+        storage().get('history', function(err: Error, data) {
+          if (err) {
+            d.reject(err); return;
+          }
+          cache().load(data);
+          d.resolve(cache());
+        });
+        return d.promise;
+      },
+      save: function(): ng.IPromise<boolean> {
+        const d = $q.defer();
+        const data = cache().dump();
+        storage().set('history', data, function(err: Error) {
+          if (err) {
+            d.reject(err); return;
+          }
+          d.resolve(true);
+        });
+        return d.promise;
+      },
+      clear: function(): ng.IPromise<boolean> {
+        const d = $q.defer();
+        cache().reset();
+        storage().remove('history', function(err: Error) {
+          if (err) {
+            d.reject(err); return;
+          }
+          d.resolve(true);
+        });
+        return d.promise;
+      },
+      get: function(wavFilePath: string): yubo.IRecordMessage {
+        const r = cache().get(wavFilePath);
+        return r;
+      },
+      add: function(record: yubo.IRecordMessage): void {
+        cache().set(record.wavFilePath, record, MS_MAX_AGE);
+      },
+      getList: function(): yubo.IRecordMessage[] {
+        const historyList = cache().values();
+        historyList.sort((a, b) => {
+          if (a.created > b.created) {
+              return -1;
+          } else if (a.created < b.created) {
+              return 1;
+          } else {
+              return 0;
+          }
+        });
+        return historyList;
       },
     };
   }]);

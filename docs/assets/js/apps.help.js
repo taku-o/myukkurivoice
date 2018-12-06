@@ -6,22 +6,27 @@
 //
 //var homeDir = app.getPath('home');
 //
-//// source-map-support
-//if (process.env.DEBUG != null) {
-//  require('source-map-support').install();
-//}
+//// env
+//var DEBUG = process.env.DEBUG != null;
 //
-//// handle uncaughtException
-//process.on('uncaughtException', (err: Error) => {
-//  log().error('help:event:uncaughtException');
-//  log().error(err);
-//  log().error(err.stack);
-//});
+//// source-map-support
+//if (DEBUG) {
+//  try {
+//    require('source-map-support').install();
+//  } catch(e) {
+//    log().error('source-map-support or devtron is not installed.');
+//  }
+//}
 // help app
 angular.module('helpApp', [])
     .config(['$qProvider', function ($qProvider) {
         $qProvider.errorOnUnhandledRejections(false);
     }])
+    //.factory('$exceptionHandler', () => {
+    //  return (exception, cause) => {
+    //    log().warn('help:catch angularjs exception: %s, cause:%s', exception, cause);
+    //  };
+    //})
     .controller('HelpController', ['$scope', '$timeout', '$location', '$window',
     function ($scope, $timeout, $location, $window) {
         var menuList = [
@@ -41,6 +46,7 @@ angular.module('helpApp', [])
             'dragout',
             'multivoice',
             'dictionary',
+            'history',
             'shortcut',
             'help',
         ];

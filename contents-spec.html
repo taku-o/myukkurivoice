@@ -143,6 +143,19 @@
       <input id="get-phont-list-result" type="text" ng-model="getPhontListResult">
     </div>
 
+    <div>HistoryService
+      <button id="history-load" ng-click="ctrl.historyLoad()">
+      <button id="history-save" ng-click="ctrl.historySave()">
+      <button id="history-clear" ng-click="ctrl.historyClear()">
+      <button id="history-get" ng-click="ctrl.historyGet()">
+      <button id="history-add" ng-click="ctrl.historyAdd()">
+      <button id="history-get-list" ng-click="ctrl.historyGetList()">
+      <input id="history-key" type="text" ng-model="historyKey">
+      <input id="history-entry" type="text" ng-model="historyEntry">
+      <input id="history-result" type="text" ng-model="historyResult">
+      <input id="history-err" type="text" ng-model="historyErr">
+    </div>
+
     <div>AquesService
       <input id="source" type="text" ng-model="source">
       <button id="encode" ng-click="ctrl.encode()">

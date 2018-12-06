@@ -1,14 +1,33 @@
+var _log, log = () => { _log = _log || require('electron-log'); return _log; };
+
+// env
+var DEBUG = process.env.DEBUG != null;
+
+// source-map-support
+if (DEBUG) {
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
+}
+
 // application spec app
 angular.module('specApp',
   ['mainModels', 'dictModels', 'mainServices', 'dictServices'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  .factory('$exceptionHandler', () => {
+    return (exception, cause) => {
+      log().warn('spec:catch angularjs exception: %s, cause:%s', exception, cause);
+    };
+  })
   .controller('SpecController', ['$scope', '$timeout',
       'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
       'KindList', 'KindHash',
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
-      'DataService', 'MasterService',
+      'DataService', 'MasterService', 'HistoryService',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
       'AqUsrDicService',
@@ -18,7 +37,7 @@ angular.module('specApp',
       KindList, KindHash,
       LicenseService: yubo.LicenseService, IntroService: yubo.IntroService, MessageService: yubo.MessageService,
       CommandService: yubo.CommandService,
-      DataService: yubo.DataService, MasterService: yubo.MasterService,
+      DataService: yubo.DataService, MasterService: yubo.MasterService, HistoryService: yubo.HistoryService,
       AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
       AudioSourceService: yubo.AudioSourceService,
       AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService,
@@ -174,12 +193,13 @@ angular.module('specApp',
       const r = CommandService.parseInput($scope.parseInputInput, yvoiceList, currentYvoice);
       $scope.parseInputResult = JSON.stringify(r);
     };
-    ctrl.detectVoiceConfig = function(): void {
-      const commandInput = JSON.parse($scope.commandInputSource);
-      const yvoiceList = YVoiceInitialData;
-      const r = CommandService.detectVoiceConfig(commandInput, yvoiceList);
-      $scope.detectVoiceConfigResult = JSON.stringify(r);
-    };
+    // TODO what's? this code is not correct.
+    //ctrl.detectVoiceConfig = function(): void {
+    //  const commandInput = JSON.parse($scope.commandInputSource);
+    //  const yvoiceList = YVoiceInitialData;
+    //  const r = CommandService.detectVoiceConfig(commandInput, yvoiceList);
+    //  $scope.detectVoiceConfigResult = JSON.stringify(r);
+    //};
     ctrl.toString = function(): void {
       const commandInputList = JSON.parse($scope.commandInputList);
       const r = CommandService.toString(commandInputList);
@@ -224,6 +244,36 @@ angular.module('specApp',
     ctrl.getPhontList = function(): void {
       const list = MasterService.getPhontList();
       $scope.getPhontListResult = JSON.stringify(list);
+    };
+
+    // HistoryService
+    ctrl.historyLoad = function(): void {
+      HistoryService.load().then((cache) => {
+        $scope.historyResult = 'ok';
+      });
+    };
+    ctrl.historySave = function(): void {
+      HistoryService.save().then((ok: boolean) => {
+        $scope.historyResult = 'ok';
+      });
+    };
+    ctrl.historyClear = function(): void {
+      HistoryService.clear().then((ok: boolean) => {
+        $scope.historyResult = 'ok';
+      });
+    };
+    ctrl.historyGet = function(): void {
+      const r = HistoryService.get($scope.historyKey);
+      $scope.historyResult = JSON.stringify(r);
+    };
+    ctrl.historyAdd = function(): void {
+      const entry = JSON.parse($scope.historyEntry);
+      HistoryService.add(entry);
+      $scope.historyResult = 'ok';
+    };
+    ctrl.historyGetList = function(): void {
+      const r = HistoryService.getList();
+      $scope.historyResult = JSON.stringify(r);
     };
 
     // AquesService

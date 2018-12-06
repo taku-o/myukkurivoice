@@ -9,18 +9,20 @@ var _epath, epath             = () => { _epath = _epath || require('electron-pat
 var unpackedPath = epath().getUnpackedPath();
 
 // env
+var DEBUG = process.env.DEBUG != null;
 var MONITOR = process.env.MONITOR != null;
 
+// source-map-support
+if (DEBUG) {
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
+}
 // perfomance monitoring
 var MONITOR_display = null;
 if (MONITOR) { MONITOR_display = process.hrtime(); }
-
-// handle uncaughtException
-process.on('uncaughtException', (err: Error) => {
-  log().error('main:event:uncaughtException');
-  log().error(err);
-  log().error(err.stack);
-});
 
 // angular app
 angular.module('dictApp',
@@ -30,6 +32,11 @@ angular.module('dictApp',
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  .factory('$exceptionHandler', () => {
+    return (exception, cause) => {
+      log().warn('dict:catch angularjs exception: %s, cause:%s', exception, cause);
+    };
+  })
   // controller
   .controller('DictController',
     ['$scope', '$q', '$timeout', '$interval',

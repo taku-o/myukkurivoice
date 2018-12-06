@@ -1,18 +1,28 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 
-// handle uncaughtException
-process.on('uncaughtException', (err: Error) => {
-  log().error('system:event:uncaughtException');
-  log().error(err);
-  log().error(err.stack);
-});
+// env
+var DEBUG = process.env.DEBUG != null;
+
+// source-map-support
+if (DEBUG) {
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
+}
 
 // application config app
 angular.module('systemApp', ['LicenseServices'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  .factory('$exceptionHandler', () => {
+    return (exception, cause) => {
+      log().warn('system:catch angularjs exception: %s, cause:%s', exception, cause);
+    };
+  })
   .controller('SystemController', ['$scope', 'LicenseService',
   function($scope: yubo.ISystemScope, LicenseService: yubo.LicenseService) {
 

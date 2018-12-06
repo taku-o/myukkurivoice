@@ -5,18 +5,27 @@ var _log, log                 = () => { _log = _log || require('electron-log'); 
 
 var homeDir = app.getPath('home');
 
-// handle uncaughtException
-process.on('uncaughtException', (err: Error) => {
-  log().error('help:event:uncaughtException');
-  log().error(err);
-  log().error(err.stack);
-});
+// env
+var DEBUG = process.env.DEBUG != null;
 
+// source-map-support
+if (DEBUG) {
+  try {
+    require('source-map-support').install();
+  } catch(e) {
+    log().error('source-map-support or devtron is not installed.');
+  }
+}
 // help app
 angular.module('helpApp', [])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
+  .factory('$exceptionHandler', () => {
+    return (exception, cause) => {
+      log().warn('help:catch angularjs exception: %s, cause:%s', exception, cause);
+    };
+  })
   .controller('HelpController', ['$scope', '$timeout', '$location', '$window',
   function($scope: yubo.IHelpScope, $timeout, $location, $window) {
 
@@ -37,6 +46,7 @@ angular.module('helpApp', [])
       'dragout',
       'multivoice',
       'dictionary',
+      'history',
       'shortcut',
       'help',
     ];

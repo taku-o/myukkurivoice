@@ -40,6 +40,8 @@ declare namespace yubo {
     showSpecWindow(): void;
     initAppMenu(): void;
     initDockMenu(): void;
+    enableDictMenu(): void;
+    disableDictMenu(): void;
     handleOpenFile(filePath: string): void;
     handleOpenUrl(scheme: string): void;
     readyConfig(): boolean;
@@ -154,6 +156,14 @@ declare namespace yubo {
   }
   export interface MasterService {
     getPhontList(): yubo.YPhont[];
+  }
+  export interface HistoryService {
+    load(): ng.IPromise<any>;
+    save(): ng.IPromise<boolean>;
+    clear(): ng.IPromise<boolean>;
+    get(wavFilePath: string): yubo.IRecordMessage;
+    add(record: yubo.IRecordMessage): void;
+    getList(): yubo.IRecordMessage[];
   }
   // service.aques.ts
   export interface AquesService {

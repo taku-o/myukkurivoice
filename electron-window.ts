@@ -92,8 +92,6 @@ function showMainWindow(): void {
     // save bounds
     const bounds = myApp.mainWindow.getBounds();
     myApp.config.set('mainWindow', bounds);
-    // reset recentDocument
-    app.clearRecentDocuments();
   });
   this.mainWindow.on('closed', () => {
     myApp.mainWindow = null;
@@ -211,6 +209,7 @@ function showDictWindow(): void {
   const myApp = this;
   if (this.dictWindow && !this.dictWindow.isDestroyed()) {
     this.dictWindow.show(); this.dictWindow.focus();
+    myApp.enableDictMenu();
     return;
   }
 
@@ -246,18 +245,13 @@ function showDictWindow(): void {
   // window event
   this.dictWindow.webContents.on('did-finish-load', () => {
     myApp.dictWindow.show(); myApp.dictWindow.focus();
+    myApp.enableDictMenu();
   });
   this.dictWindow.on('close', () => {
-    disableDictMenu();
+    myApp.disableDictMenu();
   });
   this.dictWindow.on('closed', () => {
     myApp.dictWindow = null;
-  });
-  this.dictWindow.on('focus', () => {
-    enableDictMenu();
-  });
-  this.dictWindow.on('blur', () => {
-    disableDictMenu();
   });
   this.dictWindow.on('unresponsive', () => {
     log().warn('main:event:unresponsive');
@@ -265,32 +259,6 @@ function showDictWindow(): void {
   this.dictWindow.webContents.on('crashed', () => {
     log().error('main:event:crashed');
   });
-}
-const dictMenuItems = [
-  'dict-close',
-  'dict-tutorial',
-  'dict-add',
-  'dict-delete',
-  'dict-save',
-  'dict-cancel',
-  'dict-export',
-  'dict-reset',
-];
-function enableDictMenu(): void {
-  const menu = Menu.getApplicationMenu();
-  if (!menu) { return; }
-  for (let m of dictMenuItems) {
-    const item = menu.getMenuItemById(m);
-    item.enabled = true;
-  }
-}
-function disableDictMenu(): void {
-  const menu = Menu.getApplicationMenu();
-  if (!menu) { return; }
-  for (let m of dictMenuItems) {
-    const item = menu.getMenuItemById(m);
-    item.enabled = false;
-  }
 }
 
 // about application window

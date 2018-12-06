@@ -10,10 +10,10 @@
       <th class="message-item-type">type</th>
       <th class="message-item-body">message</th>
     </tr>
-    <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record',source:message.type=='source'}" ng-click="ctrl.quickLookMessage(message)" title="{{message.source}}">
+    <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record',source:message.type=='source'}">
       <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
       <td class="message-item-type">{{message.type}}</td>
-      <td class="message-item-body">{{message.body}}</td>
+      <td class="message-item-body" ng-click="ctrl.quickLookMessage(message)"><span ng-show="message.type=='record'" class="icon icon-music"></span>{{message.body}}</td>
     </tr>
   </tbody>
 </table>
@@ -21,7 +21,7 @@
 <table class="table-striped message-list" ng-if="!showTypeMessageList">
   <thead ng-click="ctrl.switchMessageListType()">
     <tr>
-      <th colspan="3">generated wav list (click to display message list) <span class="icon icon-shuffle"></span></th>
+      <th colspan="4">generated wav list (click to display message list) <span class="icon icon-shuffle"></span></th>
     </tr>
   </thead>
   <tbody>
@@ -29,11 +29,13 @@
       <th class="message-item-created">time</th>
       <th class="message-item-wavFileName">generated</th>
       <th class="message-item-body">message</th>
+      <th class="message-item-encoded">encoded</th>
     </tr>
-    <tr class="message-item" ng-repeat="message in generatedList track by $index" ng-click="ctrl.quickLookMessage(message)" title="{{message.wavFilePath}}">
+    <tr class="message-item" ng-repeat="message in generatedList track by $index">
       <td class="message-item-created">{{message.created | date: 'yyyy/M/d HH:mm:ss'}}</td>
-      <td class="message-item-wavFileName">{{message.wavFileName}}</td>
-      <td class="message-item-source">{{message.source}}</td>
+      <td class="message-item-wavFileName" title="{{message.wavFilePath}}" ng-click="ctrl.quickLookMessage(message)"><span class="icon icon-music"></span> {{message.wavFileName}}</td>
+      <td class="message-item-source" ng-click="ctrl.recentDocument(message)"><span class="icon icon-publish"></span> {{message.source}}</td>
+      <td class="message-item-encoded">{{message.encoded}}</td>
     </tr>
   </tbody>
 </table>

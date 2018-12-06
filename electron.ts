@@ -53,6 +53,8 @@ MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
 MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
 MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
 MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
+MYukkuriVoice.prototype.enableDictMenu = Menu.enableDictMenu;
+MYukkuriVoice.prototype.disableDictMenu = Menu.disableDictMenu;
 MYukkuriVoice.prototype.handleOpenFile = Launch.handleOpenFile;
 MYukkuriVoice.prototype.handleOpenUrl = Launch.handleOpenUrl;
 MYukkuriVoice.prototype.readyConfig = AppConfig.readyConfig;
@@ -102,7 +104,7 @@ app.on('ready', () => {
     myApp.showMainWindow();
     myApp.initAppMenu();
     myApp.initDockMenu();
-    if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t[0]+ ','+ t[1]); }
+    if (MONITOR) { let t2 = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t2[0]+ ','+ t2[1]); }
   } else {
     if (MONITOR) { log().warn('[warn] AppCfg is not initialized, still now.'); }
     waitUntil()(100, 10,
@@ -113,7 +115,7 @@ app.on('ready', () => {
       myApp.showMainWindow();
       myApp.initAppMenu();
       myApp.initDockMenu();
-      if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t[0]+ ','+ t[1]); }
+      if (MONITOR) { let twait = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ twait[0]+ ','+ twait[1]); }
     });
   }
 });
