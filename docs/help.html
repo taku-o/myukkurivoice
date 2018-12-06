@@ -67,6 +67,9 @@
       <span class="nav-group-item functions-item" id="menu-dictionary" ng-class="{active:display == 'dictionary'}" ng-click="$location.hash('dictionary')">
         <span class="icon icon-help-circled"></span>ユーザー辞書機能
       </span>
+      <span class="nav-group-item functions-item" id="menu-history" ng-class="{active:display == 'history'}" ng-click="$location.hash('history')">
+        <span class="icon icon-help-circled"></span>最近録音したファイルの一覧
+      </span>
       <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="$location.hash('shortcut')">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
@@ -411,7 +414,7 @@
         <li class="link" ng-click="$location.hash('multivoice')">テキストファイルをドロップしての入力。テキストフィールド、および、アプリアイコンが対応。</li>
         <li>保存メッセージをクリックして、音声ファイル、メッセージファイルをQuickLookで開く。</li>
         <li class="link" ng-click="$location.hash('dictionary')">ユーザー辞書機能</li>
-        <li>最近録音したファイルの一覧。選択すると録音時の入力メッセージ、音声記号列を復元します。</li>
+        <li class="link" ng-click="$location.hash('history')">最近録音したファイルの一覧。選択すると録音時の入力メッセージ、音声記号列を復元します。</li>
         <li class="link" ng-click="$location.hash('shortcut')">各種ショートカットキー</li>
         <li class="link" ng-click="$location.hash('help')">チュートリアル・ヘルプ</li>
       </ul>
@@ -807,6 +810,37 @@
       <p>
         aq_user.csvをテキストエディタで直接編集してください。<br>
         <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict/aq_user.csv<span class="icon icon-folder"></span></a><br>
+      </p>
+    </div>
+  </div>
+
+  <!-- history -->
+  <div class="pane" id="history-pane" ng-show="display == 'history'">
+    <div class="content">
+      <h3>最近録音したファイルの一覧</h3>
+      <h4>概要</h4>
+      <p>
+        MYukkuriVoiceで音声を録音すると、
+        「最近録音したファイルの一覧」に登録されます。<br>
+        ファイルの一覧は、Dockのアイコンからか、メイン画面下のアプリの録音履歴から確認できます。
+      </p>
+
+      <h4>最近録音したファイルを利用した復元・再編集</h4>
+      <p>
+        「最近録音したファイルの一覧」から音声ファイルを選択すると、
+        その音声を録音する際に入力していたメッセージを、入力欄に復元できます。<br>
+        設定を微修正して再録音したい時に、便利に使えると思います。
+      </p>
+
+      <h4>履歴のリセット</h4>
+      <p>
+        「最近録音したファイルの一覧」は、
+        メニューの「履歴」から「Clear Recent」を選択するとクリアされます。
+      </p>
+
+      <h4>履歴の制限</h4>
+      <p>
+        履歴は最大30日間、最新の20件が保存されます。
       </p>
     </div>
   </div>
