@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>ja</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.electron.myukkurivoice.help</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>MYukkuriVoice</string>
+    <key>CFBundlePackageType</key>
+    <string>BNDL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.9.3</string>
+    <key>CFBundleSignature</key>
+    <string>hbwr</string>
+    <key>CFBundleVersion</key>
+    <string>0.9.3</string>
+    <key>HPDBookAccessPath</key>
+    <string>help/index.html</string>
+    <key>HPDBookIconPath</key>
+    <string>shrd/icon_128x128.png</string>
+    <key>HPDBookIndexPath</key>
+    <string>search.helpindex</string>
+    <key>HPDBookKBProduct</key>
+    <string>myukkurivoice</string>
+    <key>HPDBookKBURL</key>
+    <string>https://taku-o.github.io/myukkurivoice/help</string>
+    <key>HPDBookRemoteURL</key>
+    <string>https://taku-o.github.io/myukkurivoice/help</string>
+    <key>HPDBookTitle</key>
+    <string>MYukkuriVoice Help</string>
+    <key>HPDBookType</key>
+    <string>3</string>
+  </dict>
+</plist>
