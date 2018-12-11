@@ -159,7 +159,7 @@ ipcMain.on('showDirDialog', (event, defaultPath) => {
 
 // drag out wav file
 ipcMain.on('ondragstartwav', (event, filePath) => {
-  const imgPath = path().join(__dirname, '/img/ic_music_video_black_24dp_1x.png');
+  const imgPath = path().join(__dirname, '/images/ic_music_video_black_24dp_1x.png');
   event.sender.startDrag({
     file: filePath,
     icon: imgPath,
