@@ -166,7 +166,7 @@ gulp.task('_readme:html:images', () => {
 });
 
 // manual
-gulp.task('_manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
+gulp.task('_manual', ['_manual:html', '_manual:html:contents', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
 gulp.task('_manual:html', () => {
   return gulp.src(['docs/help.html'])
     .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'assets/photon/dist/css/photon.css'))
@@ -179,8 +179,12 @@ gulp.task('_manual:html', () => {
     }))
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
+gulp.task('_manual:html:contents', () => {
+  return gulp.src(['docs/_help/*.html'], { base: 'docs' })
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+});
 gulp.task('_manual:assets:docs', () => {
-  return gulp.src(['docs/assets/js/apps.help.js', 'docs/assets/css/help.css'], { base: 'docs' })
+  return gulp.src(['docs/assets/js/*.js', 'docs/assets/css/*.css'], { base: 'docs' })
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:angular', () => {
