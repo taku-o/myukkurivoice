@@ -264,7 +264,7 @@ function showDictWindow(): void {
 // about application window
 function showAboutWindow(): void {
   const w = openAboutWindow()({
-    icon_path: path().join(__dirname, 'img/icon_128x128.png'),
+    icon_path: path().join(__dirname, 'images/icon_128x128.png'),
     css_path: path().join(__dirname, 'css/about.css'),
     package_json_dir: __dirname,
     open_devtools: false,
