@@ -28,7 +28,6 @@ if (TEST && process.env.userData) {
 }
 // perfomance monitoring
 let MONITOR_ready = null;
-let MONITOR_loadAppConfig = null;
 if (MONITOR) { MONITOR_ready = process.hrtime(); }
 
 // MYukkuriVoice application

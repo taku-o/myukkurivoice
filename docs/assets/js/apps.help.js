@@ -18,7 +18,7 @@
 //  }
 //}
 // help app
-angular.module('helpApp', [])
+angular.module('helpApp', ['IncludeDirectives'])
     .config(['$qProvider', function ($qProvider) {
         $qProvider.errorOnUnhandledRejections(false);
     }])

@@ -26,7 +26,7 @@ if (MONITOR) { MONITOR_display = process.hrtime(); }
 var desktopDir = app.getPath('desktop');
 
 // angular app
-angular.module('mainApp', ['input-highlight', 'Directives', 'mainServices', 'mainModels'])
+angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 'mainModels'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
