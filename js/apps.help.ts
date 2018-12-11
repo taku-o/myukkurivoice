@@ -17,7 +17,7 @@ if (DEBUG) {
   }
 }
 // help app
-angular.module('helpApp', [])
+angular.module('helpApp', ['IncludeDirectives'])
   .config(['$qProvider', ($qProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
