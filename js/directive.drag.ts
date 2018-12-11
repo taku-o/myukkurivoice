@@ -2,16 +2,7 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // angular directive
-angular.module('Directives', [])
-  // static-include
-  .directive('staticInclude', () => {
-    return {
-      restrict: 'AE',
-      templateUrl: (element, attrs) => {
-        return attrs.templatePath;
-      },
-    };
-  })
+angular.module('DragDirectives', [])
   // wav-draggable
   .directive('wavDraggable', ($parse) => {
     return (scope: ng.IScope, element, attr) => {
