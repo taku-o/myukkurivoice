@@ -152,7 +152,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
         // set developer key if is not set.
         if (! _isAqKanji2KoeDevkeySet) {
           if (aqKanji2KoeDevKey == null) {
-            waitUntil()(100, 10, () => {
+            waitUntil()(300, 5, () => {
               return aqKanji2KoeDevKey != null;
             },
             () => {
@@ -271,7 +271,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
           // set license key if is not set.
           if (! _isAquesTalk10LicensekeySet) {
             if (aquesTalk10DevKey == null) {
-              waitUntil()(100, 10, () => {
+              waitUntil()(300, 5, () => {
                 return aquesTalk10DevKey != null;
               },
               () => {
