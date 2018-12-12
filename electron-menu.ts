@@ -283,7 +283,6 @@ function initAppMenu(): void {
   if (!app.isInApplicationsFolder()) {
     (menuList as any[])[0].submenu.splice(2, 0, 
       {
-        id: 'move-to-applications',
         label: 'アプリケーションフォルダに移動する',
         click() { app.moveToApplicationsFolder(); },
       }
