@@ -279,6 +279,16 @@ function initAppMenu(): void {
       ],
     },
   ];
+  // アプリケーションフォルダに移動するメニューを追加
+  if (!app.isInApplicationsFolder()) {
+    (menuList as any[])[0].submenu.splice(2, 0, 
+      {
+        id: 'move-to-applications',
+        label: 'アプリケーションフォルダに移動する',
+        click() { app.moveToApplicationsFolder(); },
+      }
+    );
+  }
   // Debugメニューを追加 (Toggle Developer Tools、Install Devtron)
   if (DEBUG) {
     (menuList as any[]).splice(6, 0,
