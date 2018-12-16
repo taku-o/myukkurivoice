@@ -20,7 +20,9 @@
   <script src="js/service.message.js"></script>
   <script src="js/service.util.js"></script>
   <script src="js/services.main.js"></script>
-  <script src="js/directives.js"></script>
+  <script src="js/directive.include.js"></script>
+  <script src="js/directive.drag.js"></script>
+  <script src="js/directives.main.js"></script>
   <script src="js/apps.main.js"></script>
   <script type="text/javascript">
     document.ondragover = document.ondrop = function(e) {
@@ -51,11 +53,11 @@
     </button>
 
     <div class="btn-group pull-right">
-      <button class="btn btn-large btn-default" id="help" ng-click="ctrl.help()">
-        <span class="icon icon-help-circled"></span>ヘルプ
-      </button>
       <button class="btn btn-large btn-default" id="dictionary" ng-click="ctrl.dictionary()">
         <span class="icon icon-book"></span>辞書
+      </button>
+      <button class="btn btn-large btn-default" id="help" ng-click="ctrl.help()">
+        <span class="icon icon-help-circled"></span>ヘルプ
       </button>
       <button class="btn btn-large btn-default" id="shortcut" ng-click="ctrl.shortcut()">
         <span class="icon icon-help-circled"></span>ショートカット

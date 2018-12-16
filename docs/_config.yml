@@ -4,7 +4,8 @@ title: MYukkuriVoice
 show_downloads: true
 help_url: https://taku-o.github.io/myukkurivoice/help
 latest_release_url: https://github.com/taku-o/myukkurivoice/releases/latest
+include:
+  - _help
 plugins:
   - jekyll-seo-tag
-  - jekyll-sitemap
   - jekyll-feed

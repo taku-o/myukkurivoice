@@ -1,5 +1,5 @@
 'use strict';
-import {app,BrowserWindow,dialog,shell,Menu} from 'electron';
+import {app,BrowserWindow,dialog,shell} from 'electron';
 var _localShortcut, localShortcut     = () => { _localShortcut = _localShortcut || require('electron-localshortcut'); return _localShortcut; };
 var _log, log                         = () => { _log = _log || require('electron-log'); return _log; };
 var _path, path                       = () => { _path = _path || require('path'); return _path; };
@@ -264,7 +264,7 @@ function showDictWindow(): void {
 // about application window
 function showAboutWindow(): void {
   const w = openAboutWindow()({
-    icon_path: path().join(__dirname, 'img/icon_128x128.png'),
+    icon_path: path().join(__dirname, 'images/icon_128x128.png'),
     css_path: path().join(__dirname, 'css/about.css'),
     package_json_dir: __dirname,
     open_devtools: false,

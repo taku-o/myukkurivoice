@@ -3,6 +3,7 @@ const del = require('del');
 const eslint = require('gulp-eslint');
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
+const finclude = require('gulp-file-include');
 const fs = require('fs');
 const fse = require('fs-extra');
 const git = require('gulp-git');
@@ -171,8 +172,8 @@ gulp.task('_manual:html', () => {
   return gulp.src(['docs/help.html'])
     .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'assets/photon/dist/css/photon.css'))
     .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'assets/angular/angular.min.js'))
-    //.pipe(replace('assets/css/help.css', 'docs/assets/css/help.css'))
-    //.pipe(replace('assets/js/apps.help.js', 'docs/assets/js/apps.help.js'))
+    .pipe(replace(/(static-include template-path="(.*?)"(.*>))<\/div>/g, '$3@@include("$2")</div>'))
+    .pipe(finclude())
     .pipe(rename({
       basename: 'help',
       extname: '.html'
@@ -180,7 +181,7 @@ gulp.task('_manual:html', () => {
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:docs', () => {
-  return gulp.src(['docs/assets/js/apps.help.js', 'docs/assets/css/help.css'], { base: 'docs' })
+  return gulp.src(['docs/assets/js/*.js', 'docs/assets/css/*.css'], { base: 'docs' })
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:angular', () => {

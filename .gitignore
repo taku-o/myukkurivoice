@@ -6,7 +6,7 @@ Thumbs.db
 MYukkuriVoice-darwin-x64.zip
 !gulpfile.js
 *.js
-!/docs/assets/js/apps.help.js
+!/docs/assets/js/*.js
 !/node_modules/bindings/
 !/node_modules/debug/
 !/node_modules/ffi/

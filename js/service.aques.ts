@@ -7,6 +7,7 @@ var _StructType, StructType = () => { _StructType = _StructType || require('ref-
 var _temp, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
 var _exec, exec             = () => { _exec = _exec || require('child_process').exec; return _exec; };
 var _epath, epath           = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _waitUntil, waitUntil   = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 var unpackedPath = epath().getUnpackedPath();
 
@@ -151,6 +152,14 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
         // set developer key if is not set.
         if (! _isAqKanji2KoeDevkeySet) {
           if (aqKanji2KoeDevKey == null) {
+            waitUntil()(300, 5, () => {
+              return aqKanji2KoeDevKey != null;
+            },
+            () => {
+              // wait
+            });
+          }
+          if (aqKanji2KoeDevKey == null) {
             MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
             return '';
           }
@@ -261,6 +270,14 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
         } else if (phont.version == 'talk10') {
           // set license key if is not set.
           if (! _isAquesTalk10LicensekeySet) {
+            if (aquesTalk10DevKey == null) {
+              waitUntil()(300, 5, () => {
+                return aquesTalk10DevKey != null;
+              },
+              () => {
+                // wait
+              });
+            }
             if (aquesTalk10DevKey == null) {
               MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
               d.reject(new Error('まだ初期化処理が完了していないので1秒ほど待ってください。')); return d.promise;
