@@ -91,6 +91,42 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       return aBuffer;
     }
 
+    function correctFrameCount(audioBuffer): number {
+      let max = 0;
+      for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+        let buffer = audioBuffer.getChannelData(i);
+        let count = correctBufferLength(buffer);
+        if (max < count) {
+          max = count;
+        }
+      }
+      return max;
+    }
+    function correctBufferLength(buffer): number {
+      let pos = 0
+      for (let i = buffer.length - 1; i >= 0; i--) {
+        if (buffer[i] !== 0x00) {
+          pos = i
+          break
+        }
+      }
+      if (pos % 2 != 0) {
+        pos += 1;
+      }
+      return pos;
+    }
+    function buildCorrectAudioBuffer(audioCtx, audioBuffer): any {
+      let frameCount = correctFrameCount(audioBuffer);
+      let nAudioBuffer = audioCtx.createBuffer(audioBuffer.numberOfChannels, frameCount, audioBuffer.sampleRate);
+
+      for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+        let buffer = audioBuffer.getChannelData(i);
+        let trimmed = buffer.slice(0, frameCount);
+        nAudioBuffer.copyToChannel(trimmed, i, 0);
+      }
+      return nAudioBuffer;
+    }
+
     return {
       play: function(bufWav: any, options: yubo.PlayOptions, parallel: boolean = false): ng.IPromise<string> {
         const d = $q.defer();
@@ -104,7 +140,8 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
+          // create 4 times length OfflineAudioContext. trim this buffer length lator.
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length * 4, decodedData.sampleRate);
 
           // source
           const inSourceNode = offlineCtx.createBufferSource();
@@ -137,8 +174,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            // trim unused empty buffer.
+            const nAudioBuffer = buildCorrectAudioBuffer(audioCtx, renderedBuffer);
+
             // report duration
-            AppUtilService.reportDuration(renderedBuffer.duration);
+            AppUtilService.reportDuration(nAudioBuffer.duration);
 
             // play voice
             let audioNode = null;
@@ -148,7 +188,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
               sourceNode = audioCtx.createBufferSource();
               audioNode = sourceNode;
             }
-            audioNode.buffer = renderedBuffer;
+            audioNode.buffer = nAudioBuffer;
             audioNode.connect(audioCtx.destination);
             audioNode.onended = () => {
               d.resolve('ok');
@@ -178,7 +218,8 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
+          // create 4 times length OfflineAudioContext. trim this buffer length lator.
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length * 4, decodedData.sampleRate);
 
           // source
           const inSourceNode = offlineCtx.createBufferSource();
@@ -211,17 +252,21 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            // trim unused empty buffer.
+            const nAudioBuffer = buildCorrectAudioBuffer(audioCtx, renderedBuffer);
+
             // report duration
-            AppUtilService.reportDuration(renderedBuffer.duration);
+            AppUtilService.reportDuration(nAudioBuffer.duration);
 
             // create audioData parameter for wav-encoder
             const audioData = {
-              sampleRate: decodedData.sampleRate,
+              sampleRate: nAudioBuffer.sampleRate,
               channelData: [],
             };
-            for (let i = 0; i < decodedData.numberOfChannels; i++) {
-              audioData.channelData[i] = renderedBuffer.getChannelData(i);
+            for (let i = 0; i < nAudioBuffer.numberOfChannels; i++) {
+              audioData.channelData[i] = nAudioBuffer.getChannelData(i);
             }
+
             // create wav file.
             WavEncoder().encode(audioData).then((buffer) => {
               fs().writeFile(wavFilePath, new Buffer(buffer), 'binary', (err) => {
