@@ -80,7 +80,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     // Web Audio API base AudioService
     // @ts-ignore
     const audioCtx = new window.AudioContext();
-    let sourceNode = null;
+    let runningNode = null;
 
     function toArrayBuffer(bufWav): any {
       const aBuffer = new ArrayBuffer(bufWav.length);
@@ -99,7 +99,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
         }
         if (!parallel) {
-          if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
+          if (runningNode) { runningNode.stop(0); runningNode = null; }
         }
 
         const aBuffer = toArrayBuffer(bufWav);
@@ -145,8 +145,8 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             if (parallel) {
               audioNode = audioCtx.createBufferSource();
             } else {
-              sourceNode = audioCtx.createBufferSource();
-              audioNode = sourceNode;
+              runningNode = audioCtx.createBufferSource();
+              audioNode = runningNode;
             }
             audioNode.buffer = renderedBuffer;
             audioNode.connect(audioCtx.destination);
@@ -163,7 +163,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         return d.promise;
       },
       stop: function(): void {
-        if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
+        if (runningNode) { runningNode.stop(0); runningNode = null; }
       },
       record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer();

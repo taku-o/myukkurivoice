@@ -22,6 +22,10 @@ if (DEBUG) {
     log().error('source-map-support or devtron is not installed.');
   }
 }
+// global.gc support
+if (DEBUG) {
+  app.commandLine.appendSwitch('js-flags', '--expose-gc');
+}
 // change userData for test
 if (TEST && process.env.userData) {
   app.setPath('userData', process.env.userData);
