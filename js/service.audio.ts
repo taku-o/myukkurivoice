@@ -80,7 +80,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     // Web Audio API base AudioService
     // @ts-ignore
     const audioCtx = new window.AudioContext();
-    let sourceNode = null;
+    let runningNode = null;
 
     function toArrayBuffer(bufWav): any {
       const aBuffer = new ArrayBuffer(bufWav.length);
@@ -135,13 +135,16 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
         }
         if (!parallel) {
-          if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
+          if (runningNode) { runningNode.stop(0); runningNode.disconnect(); runningNode = null; }
         }
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          // create 4 times length OfflineAudioContext. trim this buffer length lator.
-          const bufFrameCount = (options.playbackRate < 0.3)? decodedData.length * 11: decodedData.length * 4;
+          // create long size OfflineAudioContext. trim this buffer length lator.
+          const bufFrameCount =
+            (options.playbackRate >= 0.9)? decodedData.length * 2:
+            (options.playbackRate <= 0.3)? decodedData.length * 11:
+            decodedData.length * 4;
           const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, bufFrameCount, decodedData.sampleRate);
 
           // source
@@ -175,6 +178,8 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            inSourceNode.disconnect();
+
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(audioCtx, renderedBuffer);
 
@@ -186,12 +191,13 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             if (parallel) {
               audioNode = audioCtx.createBufferSource();
             } else {
-              sourceNode = audioCtx.createBufferSource();
-              audioNode = sourceNode;
+              runningNode = audioCtx.createBufferSource();
+              audioNode = runningNode;
             }
             audioNode.buffer = nAudioBuffer;
             audioNode.connect(audioCtx.destination);
             audioNode.onended = () => {
+              audioNode.disconnect();
               d.resolve('ok');
             };
             audioNode.start(0);
@@ -204,7 +210,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         return d.promise;
       },
       stop: function(): void {
-        if (sourceNode) { sourceNode.stop(0); sourceNode = null; }
+        if (runningNode) { runningNode.stop(0); runningNode.disconnect(); runningNode = null; }
       },
       record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer();
@@ -219,8 +225,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          // create 4 times length OfflineAudioContext (default). trim this buffer length lator.
-          const bufFrameCount = (options.playbackRate < 0.3)? decodedData.length * 11: decodedData.length * 4;
+          // create long size OfflineAudioContext. trim this buffer length lator.
+          const bufFrameCount =
+            (options.playbackRate >= 0.9)? decodedData.length * 2:
+            (options.playbackRate <= 0.3)? decodedData.length * 11:
+            decodedData.length * 4;
           const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, bufFrameCount, decodedData.sampleRate);
 
           // source
@@ -254,6 +263,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            inSourceNode.disconnect();
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(audioCtx, renderedBuffer);
 
