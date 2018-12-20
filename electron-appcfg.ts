@@ -77,4 +77,4 @@ export {
   resetAppConfig,
 };
 
-declare const global: yubo.Global;
+declare var global: yubo.Global;

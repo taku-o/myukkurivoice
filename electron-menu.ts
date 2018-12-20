@@ -299,6 +299,11 @@ function initAppMenu(): void {
             label: 'Install Devtron',
             click() { myApp.mainWindow.webContents.send('menu', 'devtron'); },
           },
+          {type: 'separator'},
+          {
+            label: 'garbage collection',
+            click() { myApp.mainWindow.webContents.send('menu', 'gc'); },
+          },
         ],
       }
     );
