@@ -115,9 +115,13 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       }
       return pos;
     }
-    function buildCorrectAudioBuffer(audioCtx, audioBuffer): any {
+    function buildCorrectAudioBuffer(audioBuffer): any {
       const frameCount = correctFrameCount(audioBuffer);
-      const nAudioBuffer = audioCtx.createBuffer(audioBuffer.numberOfChannels, frameCount, audioBuffer.sampleRate);
+      const nAudioBuffer = new AudioBuffer({
+          numberOfChannels: audioBuffer.numberOfChannels,
+          length: frameCount,
+          sampleRate: audioBuffer.sampleRate,
+      });
 
       for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
         const buffer = audioBuffer.getChannelData(i);
@@ -181,7 +185,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             inSourceNode.disconnect();
 
             // trim unused empty buffer.
-            const nAudioBuffer = buildCorrectAudioBuffer(audioCtx, renderedBuffer);
+            const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
             // report duration
             AppUtilService.reportDuration(nAudioBuffer.duration);
@@ -265,7 +269,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           offlineCtx.startRendering().then((renderedBuffer) => {
             inSourceNode.disconnect();
             // trim unused empty buffer.
-            const nAudioBuffer = buildCorrectAudioBuffer(audioCtx, renderedBuffer);
+            const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
             // report duration
             AppUtilService.reportDuration(nAudioBuffer.duration);
