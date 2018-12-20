@@ -243,4 +243,3 @@ ipcMain.on('switchAlwaysOnTop', (event, message) => {
   event.sender.send('switchAlwaysOnTop', newflg);
 });
 MYukkuriVoice.prototype.switchAlwaysOnTop = switchAlwaysOnTop;
-

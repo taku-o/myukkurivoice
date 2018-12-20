@@ -91,6 +91,46 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       return aBuffer;
     }
 
+    function correctFrameCount(audioBuffer): number {
+      let max = 0;
+      for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+        const buffer = audioBuffer.getChannelData(i);
+        const count = correctBufferLength(buffer);
+        if (max < count) {
+          max = count;
+        }
+      }
+      return max;
+    }
+    function correctBufferLength(buffer): number {
+      let pos = 0
+      for (let i = buffer.length - 1; i >= 0; i--) {
+        if (buffer[i] !== 0x00) {
+          pos = i
+          break
+        }
+      }
+      if (pos % 2 != 0) {
+        pos += 1;
+      }
+      return pos;
+    }
+    function buildCorrectAudioBuffer(audioBuffer): any {
+      const frameCount = correctFrameCount(audioBuffer);
+      const nAudioBuffer = new AudioBuffer({
+          numberOfChannels: audioBuffer.numberOfChannels,
+          length: frameCount,
+          sampleRate: audioBuffer.sampleRate,
+      });
+
+      for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+        const buffer = audioBuffer.getChannelData(i);
+        const trimmed = buffer.slice(0, frameCount);
+        nAudioBuffer.copyToChannel(trimmed, i, 0);
+      }
+      return nAudioBuffer;
+    }
+
     return {
       play: function(bufWav: any, options: yubo.PlayOptions, parallel: boolean = false): ng.IPromise<string> {
         const d = $q.defer();
@@ -104,7 +144,18 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
+          // create long size OfflineAudioContext. trim this buffer length lator.
+          const prate =
+            (!options.playbackRate)? 1:
+            (options.playbackRate >= 1.0)? 1:
+            (options.playbackRate >= 0.5)? 2:
+            2.5; // 0.4
+          const drate =
+            (!options.detune)? 1:
+            (options.detune >= 0)? 1:
+            2; // -1200
+          const bufFrameCount = decodedData.length * prate * drate;
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, bufFrameCount, decodedData.sampleRate);
 
           // source
           const inSourceNode = offlineCtx.createBufferSource();
@@ -137,8 +188,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            // trim unused empty buffer.
+            const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
+
             // report duration
-            AppUtilService.reportDuration(renderedBuffer.duration);
+            AppUtilService.reportDuration(nAudioBuffer.duration);
 
             // play voice
             let audioNode = null;
@@ -148,7 +202,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
               runningNode = audioCtx.createBufferSource();
               audioNode = runningNode;
             }
-            audioNode.buffer = renderedBuffer;
+            audioNode.buffer = nAudioBuffer;
             audioNode.connect(audioCtx.destination);
             audioNode.onended = () => {
               d.resolve('ok');
@@ -178,7 +232,18 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, decodedData.length, decodedData.sampleRate);
+          // create long size OfflineAudioContext. trim this buffer length lator.
+          const prate =
+            (!options.playbackRate)? 1:
+            (options.playbackRate >= 1.0)? 1:
+            (options.playbackRate >= 0.5)? 2:
+            2.5; // 0.4
+          const drate =
+            (!options.detune)? 1:
+            (options.detune >= 0)? 1:
+            2; // -1200
+          const bufFrameCount = decodedData.length * prate * drate;
+          const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, bufFrameCount, decodedData.sampleRate);
 
           // source
           const inSourceNode = offlineCtx.createBufferSource();
@@ -211,16 +276,19 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            // trim unused empty buffer.
+            const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer)
+
             // report duration
-            AppUtilService.reportDuration(renderedBuffer.duration);
+            AppUtilService.reportDuration(nAudioBuffer.duration);
 
             // create audioData parameter for wav-encoder
             const audioData = {
-              sampleRate: decodedData.sampleRate,
+              sampleRate: nAudioBuffer.sampleRate,
               channelData: [],
             };
-            for (let i = 0; i < decodedData.numberOfChannels; i++) {
-              audioData.channelData[i] = renderedBuffer.getChannelData(i);
+            for (let i = 0; i < nAudioBuffer.numberOfChannels; i++) {
+              audioData.channelData[i] = nAudioBuffer.getChannelData(i);
             }
             // create wav file.
             WavEncoder().encode(audioData).then((buffer) => {

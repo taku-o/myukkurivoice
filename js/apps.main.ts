@@ -176,6 +176,9 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         case 'devtron':
           require('devtron').install();
           break;
+        case 'gc':
+          global.gc();
+          break;
       }
     });
 
@@ -966,3 +969,5 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       $timeout(() => { $scope.$apply(); });
     });
   }]);
+
+declare var global: NodeJS.Global;
