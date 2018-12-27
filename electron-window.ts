@@ -141,6 +141,12 @@ function showHelpWindow(): void {
   localShortcut().register(this.helpWindow, 'Down', () => {
     myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp');
   });
+  localShortcut().register(this.helpWindow, 'Command+Left', () => {
+    myApp.helpWindow.webContents.send('shortcut', 'historyBack');
+  });
+  localShortcut().register(this.helpWindow, 'Command+Right', () => {
+    myApp.helpWindow.webContents.send('shortcut', 'historyForward');
+  });
 
   // event
   this.helpWindow.webContents.on('did-finish-load', () => {
