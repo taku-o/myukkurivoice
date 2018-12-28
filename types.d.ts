@@ -42,6 +42,8 @@ declare namespace yubo {
     initDockMenu(): void;
     enableDictMenu(): void;
     disableDictMenu(): void;
+    enableHelpMenu(): void;
+    disableHelpMenu(): void;
     handleOpenFile(filePath: string): void;
     handleOpenUrl(scheme: string): void;
     readyConfig(): boolean;
