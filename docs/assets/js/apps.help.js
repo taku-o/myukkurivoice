@@ -80,12 +80,6 @@ angular.module('helpApp', ['IncludeDirectives'])
         //      moveToNextHelp();
         //      $timeout(() => { $scope.$apply(); });
         //      break;
-        //    case 'historyBack':
-        //      $window.history.back();
-        //      break;
-        //    case 'historyForward':
-        //      $window.history.forward();
-        //      break;
         //  }
         //});
         //function moveToPreviousHelp(): void {
