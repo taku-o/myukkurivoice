@@ -82,6 +82,11 @@
       <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:display == 'help'}" ng-click="$location.hash('help')">
         <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
+
+      <h5 class="nav-group-title">ナビゲーション</h5>
+      <span class="nav-group-item navs-item" id="menu-expand" ng-class="{active:display == 'expand'}" ng-click="$location.hash('expand')">
+        <span class="icon icon-help-circled"></span>ヘルプを全て展開
+      </span>
     </nav>
   </div>
 
@@ -105,6 +110,29 @@
   <div class="pane" id="history-pane"    static-include template-path="_help/history.html"    ng-if="display == 'history'"></div>
   <div class="pane" id="shortcut-pane"   static-include template-path="_help/shortcut.html"   ng-if="display == 'shortcut'"></div>
   <div class="pane" id="help-pane"       static-include template-path="_help/help.html"       ng-if="display == 'help'"></div>
+
+  <div class="pane" id="expand-pane" ng-if="display == 'expand'">
+    <div class="box" static-include template-path="_help/about.html"></div>
+    <div class="box" static-include template-path="_help/voicecode.html"></div>
+    <div class="box" static-include template-path="_help/trouble.html"></div>
+    <div class="box" static-include template-path="_help/update.html"></div>
+    <div class="box" static-include template-path="_help/uninstall.html"></div>
+    <div class="box" static-include template-path="_help/backup.html"></div>
+    <div class="box" static-include template-path="_help/license.html"></div>
+    <div class="box" static-include template-path="_help/contact.html"></div>
+
+    <div class="box" static-include template-path="_help/funclist.html"></div>
+    <div class="box" static-include template-path="_help/play.html"></div>
+    <div class="box" static-include template-path="_help/tuna.html"></div>
+    <div class="box" static-include template-path="_help/writing.html"></div>
+    <div class="box" static-include template-path="_help/dataconfig.html"></div>
+    <div class="box" static-include template-path="_help/dragout.html"></div>
+    <div class="box" static-include template-path="_help/multivoice.html"></div>
+    <div class="box" static-include template-path="_help/dictionary.html"></div>
+    <div class="box" static-include template-path="_help/history.html"></div>
+    <div class="box" static-include template-path="_help/shortcut.html"></div>
+    <div class="box" static-include template-path="_help/help.html"></div>
+  </div>
 
 </div><!-- page-group -->
 </div><!-- window-content -->

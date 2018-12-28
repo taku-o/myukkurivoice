@@ -49,6 +49,7 @@ angular.module('helpApp', ['IncludeDirectives'])
             'history',
             'shortcut',
             'help',
+            'expand',
         ];
         // init
         var ctrl = this;

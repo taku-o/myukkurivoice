@@ -23,6 +23,12 @@ div.content {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+div.box {
+  margin-top: 1px;
+  margin-bottom: 3px;
+  border-top: 1px solid #c0c0c0;
+  border-bottom: 1px solid #c0c0c0;
+}
 h4 {
   text-decoration: underline;
 }
