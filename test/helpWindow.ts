@@ -44,6 +44,9 @@ describe('helpWindow', function() {
       .elements('.nav-group-item.functions-item').then((response: HTMLInputElement) => {
         assert.equal(response.value.length, 11, position());
       })
+      .elements('.nav-group-item.navs-item').then((response: HTMLInputElement) => {
+        assert.equal(response.value.length, 1, position());
+      })
       .getMainProcessLogs().then((logs) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
@@ -182,6 +185,10 @@ describe('helpWindow', function() {
       })
       .click('#menu-help')
       .isVisible('#help-pane').then((isVisible: boolean) => {
+        assert.ok(isVisible, position());
+      })
+      .click('#menu-expand')
+      .isVisible('#expand-pane').then((isVisible: boolean) => {
         assert.ok(isVisible, position());
       })
       // finally
