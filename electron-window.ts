@@ -142,10 +142,10 @@ function showHelpWindow(): void {
     myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp');
   });
   localShortcut().register(this.helpWindow, 'Command+Left', () => {
-    this.helpWindow.webContents.goBack();
+    myApp.helpWindow.webContents.goBack();
   });
   localShortcut().register(this.helpWindow, 'Command+Right', () => {
-    this.helpWindow.webContents.goForward();
+    myApp.helpWindow.webContents.goForward();
   });
 
   // event
