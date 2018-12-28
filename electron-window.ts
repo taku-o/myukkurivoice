@@ -147,6 +147,9 @@ function showHelpWindow(): void {
   localShortcut().register(this.helpWindow, 'Command+Right', () => {
     myApp.helpWindow.webContents.goForward();
   });
+  localShortcut().register(this.helpWindow, 'Command+F', () => {
+    myApp.helpWindow.webContents.send('shortcut', 'openSearchForm');
+  });
 
   // event
   this.helpWindow.webContents.on('did-finish-load', () => {

@@ -226,8 +226,10 @@ declare namespace yubo {
     aq10UseKey: string;
   }
   export interface IHelpScope extends ng.IScope {
-    display:   string;
-    $location: ng.ILocaleService;
+    display:        string;
+    searchVisibled: boolean;
+    searchText:     string;
+    $location:      ng.ILocaleService;
   }
 
   // apps.main.ts

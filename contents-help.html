@@ -17,6 +17,21 @@
 </head>
 <body>
 <div class="window" ng-controller="HelpController as ctrl">
+<header class="toolbar toolbar-header" ng-show="searchVisibled">
+  <input id="search-text" class="form-control" type="text" ng-model="searchText" placeholder="Search Words">
+  <div class="btn-group pull-right">
+    <button class="btn btn-default" ng-click="ctrl.searchInPage()">
+      <span class="icon icon-search"></span>ページ内検索
+    </button>
+    <button class="btn btn-default" ng-click="ctrl.searchInHelp()">
+      <span class="icon icon-search"></span>全ヘルプ検索
+    </button>
+    <button class="btn btn-default" ng-click="ctrl.closeSearchForm()">
+      <span class="icon icon-cancel"></span>
+    </button>
+  </div>
+</header>
+
 <div class="window-content">
 <div class="pane-group">
 
@@ -85,7 +100,10 @@
 
       <h5 class="nav-group-title">ナビゲーション</h5>
       <span class="nav-group-item navs-item" id="menu-expand" ng-class="{active:display == 'expand'}" ng-click="$location.hash('expand')">
-        <span class="icon icon-help-circled"></span>ヘルプを全て展開
+        <span class="icon icon-map"></span>ヘルプを全て展開
+      </span>
+      <span class="nav-group-item navs-item" id="menu-search" ng-click="ctrl.openSearchForm()">
+        <span class="icon icon-search"></span>ヘルプ検索
       </span>
     </nav>
   </div>
