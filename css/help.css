@@ -7,6 +7,15 @@
 .warn {
   color: red;
 }
+header input.form-control {
+  width: 63%;
+  margin-left: 5px;
+}
+header div.btn-group {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
 span.nav-group-item span.icon {
   color: blue;
 }

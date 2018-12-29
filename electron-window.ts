@@ -109,6 +109,7 @@ function showHelpWindow(): void {
   const myApp = this;
   if (this.helpWindow && !this.helpWindow.isDestroyed()) {
     this.helpWindow.show(); this.helpWindow.focus();
+    myApp.enableHelpMenu();
     return;
   }
 
@@ -147,10 +148,17 @@ function showHelpWindow(): void {
   localShortcut().register(this.helpWindow, 'Command+Right', () => {
     myApp.helpWindow.webContents.goForward();
   });
+  localShortcut().register(this.helpWindow, 'Command+F', () => {
+    myApp.helpWindow.webContents.send('shortcut', 'openSearchForm');
+  });
 
   // event
   this.helpWindow.webContents.on('did-finish-load', () => {
     myApp.helpWindow.show(); myApp.helpWindow.focus();
+    myApp.enableHelpMenu();
+  });
+  this.helpWindow.on('close', () => {
+    myApp.disableHelpMenu();
   });
   this.helpWindow.on('closed', () => {
     myApp.helpWindow = null;

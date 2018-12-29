@@ -262,6 +262,12 @@ function initAppMenu(): void {
           label: 'ヘルプ',
           click() { myApp.showHelpWindow(); },
         },
+        {
+          id: 'open-help-search',
+          enabled: false,
+          label: 'ヘルプ検索 (⌘F)',
+          click() { myApp.helpWindow.webContents.send('shortcut', 'openSearchForm'); },
+        },
         {type: 'separator'},
         {
           label: 'ショートカットキー',
@@ -369,10 +375,32 @@ function disableDictMenu(): void {
   }
 }
 
+const helpMenuItems = [
+  'open-help-search',
+];
+function enableHelpMenu(): void {
+  const menu = Menu.getApplicationMenu();
+  if (!menu) { return; }
+  for (let m of helpMenuItems) {
+    const item = menu.getMenuItemById(m);
+    item.enabled = true;
+  }
+}
+function disableHelpMenu(): void {
+  const menu = Menu.getApplicationMenu();
+  if (!menu) { return; }
+  for (let m of helpMenuItems) {
+    const item = menu.getMenuItemById(m);
+    item.enabled = false;
+  }
+}
+
 // exports
 export {
   initAppMenu,
   initDockMenu,
   enableDictMenu,
   disableDictMenu,
+  enableHelpMenu,
+  disableHelpMenu,
 };
