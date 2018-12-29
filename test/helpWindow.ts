@@ -45,7 +45,7 @@ describe('helpWindow', function() {
         assert.equal(response.value.length, 11, position());
       })
       .elements('.nav-group-item.navs-item').then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 1, position());
+        assert.equal(response.value.length, 2, position());
       })
       .getMainProcessLogs().then((logs) => {
         logs.forEach((log) => {
