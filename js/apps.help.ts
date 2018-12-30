@@ -1,3 +1,4 @@
+var remote = require('electron').remote;
 var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _shell, shell             = () => { _shell = _shell || require('electron').shell; return _shell; };
@@ -49,11 +50,14 @@ angular.module('helpApp', ['IncludeDirectives'])
       'history',
       'shortcut',
       'help',
+      'expand',
     ];
 
     // init
     const ctrl = this;
     $scope.$location = $location;
+    $scope.searchVisibled = false;
+    $scope.searchText = '';
 
     // event url hash changed
     $scope.$on('$locationChangeSuccess', (event) => {
@@ -83,6 +87,14 @@ angular.module('helpApp', ['IncludeDirectives'])
           moveToNextHelp();
           $timeout(() => { $scope.$apply(); });
           break;
+        case 'openSearchForm':
+          ctrl.openSearchForm();
+          $timeout(() => { $scope.$apply(); });
+          break;
+        case 'closeSearchForm':
+          ctrl.closeSearchForm();
+          $timeout(() => { $scope.$apply(); });
+          break;
       }
     });
     function moveToPreviousHelp(): void {
@@ -109,6 +121,38 @@ angular.module('helpApp', ['IncludeDirectives'])
     }
 
     // action
+    ctrl.searchInPage = function(): void {
+      if ($scope.searchText) {
+        remote.getCurrentWebContents().findInPage($scope.searchText);
+      } else {
+        remote.getCurrentWebContents().stopFindInPage('clearSelection');
+      }
+    };
+    ctrl.searchInHelp = function(): void {
+      if ($scope.searchText) {
+        $location.hash('expand');
+        remote.getCurrentWebContents().findInPage($scope.searchText);
+      } else {
+        remote.getCurrentWebContents().stopFindInPage('clearSelection');
+      }
+    };
+    ctrl.openSearchForm = function(): void {
+      $scope.searchVisibled = !$scope.searchVisibled;
+      if ($scope.searchVisibled) {
+        $timeout(() => {
+          $scope.$apply();
+          document.getElementById('search-text').focus();
+        });
+      } else {
+        $scope.searchText = '';
+        remote.getCurrentWebContents().stopFindInPage('clearSelection');
+      }
+    };
+    ctrl.closeSearchForm = function(): void {
+      $scope.searchVisibled = false;
+      $scope.searchText = '';
+      remote.getCurrentWebContents().stopFindInPage('clearSelection');
+    };
     ctrl.browser = function(url): void {
       shell().openExternal(url);
     };

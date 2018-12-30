@@ -42,6 +42,8 @@ declare namespace yubo {
     initDockMenu(): void;
     enableDictMenu(): void;
     disableDictMenu(): void;
+    enableHelpMenu(): void;
+    disableHelpMenu(): void;
     handleOpenFile(filePath: string): void;
     handleOpenUrl(scheme: string): void;
     readyConfig(): boolean;
@@ -226,8 +228,10 @@ declare namespace yubo {
     aq10UseKey: string;
   }
   export interface IHelpScope extends ng.IScope {
-    display:   string;
-    $location: ng.ILocaleService;
+    display:        string;
+    searchVisibled: boolean;
+    searchText:     string;
+    $location:      ng.ILocaleService;
   }
 
   // apps.main.ts
