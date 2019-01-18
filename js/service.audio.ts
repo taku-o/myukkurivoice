@@ -103,11 +103,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       return max;
     }
     function correctBufferLength(buffer): number {
-      let pos = 0
+      let pos = 0;
       for (let i = buffer.length - 1; i >= 0; i--) {
         if (buffer[i] !== 0x00) {
-          pos = i
-          break
+          pos = i;
+          break;
         }
       }
       if (pos % 2 != 0) {
@@ -277,7 +277,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
             // trim unused empty buffer.
-            const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer)
+            const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
             // report duration
             AppUtilService.reportDuration(nAudioBuffer.duration);
