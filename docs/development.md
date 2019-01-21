@@ -22,9 +22,14 @@
 * native関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
 
 ```
-  - ref
-  - ref-struct
-  - ffi
+    - bindings 1.2.1
+    - debug 2.4.4
+    - ffi 2.2.0
+    - ms 0.7.2
+    - nan 2.4.0
+    - natives 1.1.6
+    - ref 1.3.5
+    - ref-struct 1.1.0
 ```
 
 ## 開発の進め方
@@ -103,26 +108,16 @@
 ```
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
   nvm ls-remote
-  nvm install v8.2.1
-  nvm use v8.2.1
+  nvm install v11.7.0
+  nvm use v11.7.0
 ```
 
 ### Module version mismatch. Expected 50, got 51
 * もし、この類のエラーに遭遇したら、次のようなコマンドを実行してrebuildする
 
 ```
-  npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
+  npm rebuild --runtime=electron --target=3.1.1
 ```
-
-### 厳しいバージョン管理の必要なライブラリの使用バージョン
-* bindings 1.2.1
-* debug 2.4.4
-* ffi 2.2.0
-* ms 0.7.2
-* nan 2.4.0
-* ref 1.3.5
-* ref-struct 1.1.0
-
 
 # その他
 ## アプリアイコンの作成
