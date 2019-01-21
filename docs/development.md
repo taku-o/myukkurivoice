@@ -114,6 +114,16 @@
   npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
 ```
 
+### 厳しいバージョン管理の必要なライブラリの使用バージョン
+* bindings 1.2.1
+* debug 2.4.4
+* ffi 2.2.0
+* ms 0.7.2
+* nan 2.4.0
+* ref 1.3.5
+* ref-struct 1.1.0
+
+
 # その他
 ## アプリアイコンの作成
 * iconutilで作成します。
