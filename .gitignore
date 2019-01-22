@@ -12,6 +12,7 @@ MYukkuriVoice-darwin-x64.zip
 !/node_modules/ffi/
 !/node_modules/ms/
 !/node_modules/nan/
+!/node_modules/natives/
 !/node_modules/ref/
 !/node_modules/ref-struct/
 /node_modules/
