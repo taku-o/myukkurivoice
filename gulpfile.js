@@ -33,7 +33,7 @@ const WORK_REPO_DIR = __dirname+ '/release/myukkurivoice';
 const WORK_UNPACK_DIR = __dirname+ '/release/myukkurivoice/MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
-const ELECTRON_VERSION = '1.8.8';
+const ELECTRON_VERSION = '3.1.1';
 const APP_VERSION = require('./package.json').version;
 
 // default task
