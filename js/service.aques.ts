@@ -231,7 +231,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
               d.reject(err); return;
             }
             // @ts-ignore
-            const bufWav = new Buffer(stdout, 'binary');
+            const bufWav = Buffer.from(stdout, 'binary');
             d.resolve(bufWav);
           }).on('close', (statusCode) => {
             if (statusCode < 0) {

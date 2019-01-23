@@ -292,7 +292,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             }
             // create wav file.
             WavEncoder().encode(audioData).then((buffer) => {
-              fs().writeFile(wavFilePath, new Buffer(buffer), 'binary', (err) => {
+              fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err) => {
                 if (err) {
                   MessageService.syserror('音声ファイルの作成に失敗しました。', err);
                   d.reject(err); return;
