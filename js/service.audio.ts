@@ -9,15 +9,14 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     let audio = null;
 
     return {
-      play: function(bufWav: any, options: yubo.PlayOptions, parallel: boolean = false): ng.IPromise<string> {
+      play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
           d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
         }
-        if (!parallel) {
-          if (audio) { audio.pause(); }
-        }
+        // if audio playing, stop current playing
+        if (audio) { audio.pause(); }
 
         const fsprefix = `_myubop${Date.now().toString(36)}`;
         temp().open(fsprefix, (err: Error, info) => {
@@ -32,19 +31,13 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
               d.reject(err); return;
             }
 
-            let inAudio = null;
-            if (parallel) {
-              inAudio = new Audio('');
-            } else {
-              audio = new Audio('');
-              inAudio = audio;
-            }
-            inAudio.autoplay = false;
-            inAudio.src = info.path;
-            inAudio.onended = () => {
+            audio = new Audio('');
+            audio.autoplay = false;
+            audio.src = info.path;
+            audio.onended = () => {
               d.resolve('ok');
             };
-            inAudio.play();
+            audio.play();
           });
         });
         return d.promise;
@@ -132,15 +125,14 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     }
 
     return {
-      play: function(bufWav: any, options: yubo.PlayOptions, parallel: boolean = false): ng.IPromise<string> {
+      play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
           d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
         }
-        if (!parallel) {
-          if (runningNode) { runningNode.stop(0); runningNode = null; }
-        }
+        // if audio playing, stop current playing
+        if (runningNode) { runningNode.stop(0); runningNode = null; }
 
         const aBuffer = toArrayBuffer(bufWav);
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
@@ -195,19 +187,13 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             AppUtilService.reportDuration(nAudioBuffer.duration);
 
             // play voice
-            let audioNode = null;
-            if (parallel) {
-              audioNode = audioCtx.createBufferSource();
-            } else {
-              runningNode = audioCtx.createBufferSource();
-              audioNode = runningNode;
-            }
-            audioNode.buffer = nAudioBuffer;
-            audioNode.connect(audioCtx.destination);
-            audioNode.onended = () => {
+            runningNode = audioCtx.createBufferSource();
+            runningNode.buffer = nAudioBuffer;
+            runningNode.connect(audioCtx.destination);
+            runningNode.onended = () => {
               d.resolve('ok');
             };
-            audioNode.start(0);
+            runningNode.start(0);
           }); // offlineCtx.startRendering
         })
         .catch((err: Error) => {
