@@ -65,17 +65,13 @@ function initAppMenu(): void {
     {
       label: '履歴',
       submenu: [
-        //{
-        //  label: 'Open Recent',
-        //  // currently not supported.
-        //  role: 'recentdocuments',
-        //},
-        //{type: 'separator'},
         {
-          label: 'Clear Recent',
-          // currently not supported.
-          //role: 'clearrecentdocuments'
-          click() { myApp.mainWindow.webContents.send('menu', 'clearRecentDocuments'); },
+          role: 'recentDocuments',
+          submenu: [
+            {
+              role: "clearRecentDocuments",
+            },
+          ],
         },
       ],
     },
