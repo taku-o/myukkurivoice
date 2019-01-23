@@ -69,7 +69,7 @@ function initAppMenu(): void {
           role: 'recentDocuments',
           submenu: [
             {
-              role: "clearRecentDocuments",
+              role: 'clearRecentDocuments',
             },
           ],
         },
