@@ -303,7 +303,7 @@ function initAppMenu(): void {
           },
           {type: 'separator'},
           {
-            label: 'garbage collection',
+            label: 'Garbage Collection',
             click() { myApp.mainWindow.webContents.send('menu', 'gc'); },
           },
         ],

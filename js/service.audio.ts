@@ -71,8 +71,6 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
   .factory('AudioService2', ['$q', 'MessageService', 'AppUtilService',
   ($q, MessageService: yubo.MessageService, AppUtilService: yubo.AppUtilService): yubo.AudioService2 => {
     // Web Audio API base AudioService
-    // @ts-ignore
-    const audioCtx = new window.AudioContext();
     let runningNode = null;
 
     function toArrayBuffer(bufWav): any {
@@ -135,7 +133,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         if (runningNode) { runningNode.stop(0); runningNode = null; }
 
         const aBuffer = toArrayBuffer(bufWav);
+        // @ts-ignore
+        const audioCtx = new window.AudioContext();
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
+          audioCtx.close();
+
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
             (!options.playbackRate)? 1:
@@ -180,6 +182,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            // close offline audio context
+            angular.forEach(nodeList, (node) => {
+              node.disconnect();
+            });
+
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
@@ -187,13 +194,18 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             AppUtilService.reportDuration(nAudioBuffer.duration);
 
             // play voice
-            runningNode = audioCtx.createBufferSource();
-            runningNode.buffer = nAudioBuffer;
-            runningNode.connect(audioCtx.destination);
-            runningNode.onended = () => {
+            // @ts-ignore
+            const inAudioCtx = new window.AudioContext();
+            const audioNode = inAudioCtx.createBufferSource();
+            audioNode.buffer = nAudioBuffer;
+            audioNode.connect(inAudioCtx.destination);
+            audioNode.onended = () => {
+              audioNode.disconnect();
+              inAudioCtx.close();
               d.resolve('ok');
             };
-            runningNode.start(0);
+            audioNode.start(0);
+            runningNode = audioNode;
           }); // offlineCtx.startRendering
         })
         .catch((err: Error) => {
@@ -217,7 +229,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         }
 
         const aBuffer = toArrayBuffer(bufWav);
+        // @ts-ignore
+        const audioCtx = new window.AudioContext();
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
+          audioCtx.close();
+
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
             (!options.playbackRate)? 1:
@@ -262,6 +278,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
           // rendering
           offlineCtx.startRendering().then((renderedBuffer) => {
+            // close offline audio context
+            angular.forEach(nodeList, (node) => {
+              node.disconnect();
+            });
+
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
