@@ -133,11 +133,12 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         if (runningNode) { runningNode.stop(0); runningNode = null; }
 
         const aBuffer = toArrayBuffer(bufWav);
+
         // @ts-ignore
         const audioCtx = new window.AudioContext();
+        const processNodeList = [];
+        let audioPlayNode = null;
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          audioCtx.close();
-
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
             (!options.playbackRate)? 1:
@@ -155,8 +156,6 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           const inSourceNode = offlineCtx.createBufferSource();
           inSourceNode.buffer = decodedData;
 
-          const nodeList = [];
-
           // playbackRate
           if (options.playbackRate && options.playbackRate != 1.0) {
             inSourceNode.playbackRate.value = options.playbackRate;
@@ -168,11 +167,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           // gain
           const gainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
-          nodeList.push(gainNode);
+          processNodeList.push(gainNode);
 
           // connect
           let lastNode = inSourceNode;
-          angular.forEach(nodeList, (node) => {
+          angular.forEach(processNodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
           lastNode.connect(offlineCtx.destination);
@@ -181,11 +180,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           inSourceNode.start(0);
 
           // rendering
-          offlineCtx.startRendering().then((renderedBuffer) => {
-            // close offline audio context
-            angular.forEach(nodeList, (node) => {
-              node.disconnect();
-            });
+          return offlineCtx.startRendering().then((renderedBuffer) => {
 
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
@@ -193,24 +188,35 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             // report duration
             AppUtilService.reportDuration(nAudioBuffer.duration);
 
+            const dInPlay = $q.defer();
             // play voice
-            // @ts-ignore
-            const inAudioCtx = new window.AudioContext();
-            const audioNode = inAudioCtx.createBufferSource();
-            audioNode.buffer = nAudioBuffer;
-            audioNode.connect(inAudioCtx.destination);
-            audioNode.onended = () => {
-              audioNode.disconnect();
-              inAudioCtx.close();
-              d.resolve('ok');
+            audioPlayNode = audioCtx.createBufferSource();
+            audioPlayNode.buffer = nAudioBuffer;
+            audioPlayNode.connect(audioCtx.destination);
+            audioPlayNode.onended = () => {
+              dInPlay.resolve('ok');
             };
-            audioNode.start(0);
-            runningNode = audioNode;
+            audioPlayNode.start(0);
+
+            runningNode = audioPlayNode;
+            return dInPlay.promise;
           }); // offlineCtx.startRendering
+        })
+        .then(() => {
+          runningNode = null;
+          d.resolve('ok');
         })
         .catch((err: Error) => {
           MessageService.syserror('音源の再生に失敗しました。', err);
           d.reject(err); return;
+        })
+        .finally(() => {
+          // close audio context
+          angular.forEach(processNodeList, (node) => {
+            node.disconnect();
+          });
+          if (audioPlayNode) { audioPlayNode.disconnect(); }
+          audioCtx.close();
         });
         return d.promise;
       },
@@ -229,11 +235,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         }
 
         const aBuffer = toArrayBuffer(bufWav);
+
         // @ts-ignore
         const audioCtx = new window.AudioContext();
+        const processNodeList = [];
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
-          audioCtx.close();
-
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
             (!options.playbackRate)? 1:
@@ -251,8 +257,6 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           const inSourceNode = offlineCtx.createBufferSource();
           inSourceNode.buffer = decodedData;
 
-          const nodeList = [];
-
           // playbackRate
           if (options.playbackRate && options.playbackRate != 1.0) {
             inSourceNode.playbackRate.value = options.playbackRate;
@@ -264,11 +268,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           // gain
           const gainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
-          nodeList.push(gainNode);
+          processNodeList.push(gainNode);
 
           // connect
           let lastNode = inSourceNode;
-          angular.forEach(nodeList, (node) => {
+          angular.forEach(processNodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
           lastNode.connect(offlineCtx.destination);
@@ -277,12 +281,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           inSourceNode.start(0);
 
           // rendering
-          offlineCtx.startRendering().then((renderedBuffer) => {
-            // close offline audio context
-            angular.forEach(nodeList, (node) => {
-              node.disconnect();
-            });
-
+          return offlineCtx.startRendering().then((renderedBuffer) => {
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
@@ -298,20 +297,31 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
               audioData.channelData[i] = nAudioBuffer.getChannelData(i);
             }
             // create wav file.
+            const dInEncode = $q.defer();
             WavEncoder().encode(audioData).then((buffer) => {
               fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err) => {
                 if (err) {
-                  MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-                  d.reject(err); return;
+                  dInEncode.reject(err); return;
                 }
-                d.resolve('ok');
+                dInEncode.resolve('ok');
               });
             });
+            return dInEncode.promise;
           }); // offlineCtx.startRendering
         })
+        .then(() => {
+          d.resolve('ok');
+        })
         .catch((err: Error) => {
-          MessageService.syserror('音源の再生に失敗しました。', err);
+          MessageService.syserror('音声ファイルの作成に失敗しました。', err);
           d.reject(err); return;
+        })
+        .finally(() => {
+          // close audio context
+          angular.forEach(processNodeList, (node) => {
+            node.disconnect();
+          });
+          audioCtx.close();
         });
         return d.promise;
       },
