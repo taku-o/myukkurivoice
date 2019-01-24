@@ -14,8 +14,7 @@
         <key>LSItemContentTypes</key>
         <array>
           <string>public.text</string>
-          <string>public.data</string>
-          <string>public.content</string>
+          <string>public.audio</string>
         </array>
       </dict>
     </array>
