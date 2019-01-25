@@ -64,6 +64,7 @@ function initAppMenu(): void {
       role: 'recentDocuments',
       submenu: [
         {
+          label: '履歴のクリア',
           role: 'clearRecentDocuments',
         },
       ],
