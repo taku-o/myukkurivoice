@@ -323,7 +323,7 @@ function initDockMenu(): void {
       click() { myApp.showSystemWindow(); },
     },
     {
-      label: 'ヘルプ',
+      label: 'ヘルプビューワ',
       click() { myApp.showHelpWindow(); },
     },
     {
