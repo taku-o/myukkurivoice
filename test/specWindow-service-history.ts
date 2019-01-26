@@ -1,7 +1,6 @@
 import {Application} from 'spectron';
 import * as assert from 'assert';
 import {position} from 'caller-position';
-import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 
@@ -38,9 +37,31 @@ describe('specWindow-service-HistoryService', function() {
     return this.client.close();
   });
 
-  // TODO data check
-  it('load', function() {
+  // load
+  // getList
+  // add
+  // save
+  // get
+  // load
+  // getList
+  // clear
+  // load
+  // getList
+  it('history scenario test', function() {
+    const dummyData = {
+        wavFilePath: '/tmp/aa0001.wav',
+        wavFileName: 'aa0001.wav',
+        srcTextPath: '/tmp/aa0001.txt',
+        source: 'test',
+        encoded: "テ'_スト",
+        created: '2018-12-17T00:50:19.163Z',
+        body: '音声ファイルを保存しました',
+        quickLookPath: '/tmp/aa0001.wav',
+        type: 'record',
+    };
+
     return this.client
+      // load
       .click('#history-load')
       .waitForValue('#history-result', 2000)
       .getValue('#history-result').then((value: string) => {
@@ -49,25 +70,26 @@ describe('specWindow-service-HistoryService', function() {
       .getValue('#history-err').then((value: string) => {
         assert.ok(! value, position());
       })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
+      // getList
+      .click('#history-get-list')
+      .waitForValue('#history-result', 2000)
+      .getValue('#history-result').then((value: string) => {
+        assert.equal('[]', value, position());
       })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
+      .getValue('#history-err').then((value: string) => {
+        assert.ok(! value, position());
       })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
-  });
-
-  // TODO data check
-  it('save', function() {
-    return this.client
+      // add
+      .setValue('#history-entry', JSON.stringify(dummyData))
+      .click('#history-add')
+      .waitForValue('#history-result', 2000)
+      .getValue('#history-result').then((value: string) => {
+        assert.ok(value, position());
+      })
+      .getValue('#history-err').then((value: string) => {
+        assert.ok(! value, position());
+      })
+      // save
       .click('#history-save')
       .waitForValue('#history-result', 2000)
       .getValue('#history-result').then((value: string) => {
@@ -76,25 +98,28 @@ describe('specWindow-service-HistoryService', function() {
       .getValue('#history-err').then((value: string) => {
         assert.ok(! value, position());
       })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
+      // get
+      .setValue('#history-key', '/tmp/aa0001.wav')
+      .click('#history-get')
+      .waitForValue('#history-result', 2000)
+      .getValue('#history-result').then((value: string) => {
+        const parsed = JSON.parse(value);
+        assert.equal(parsed.srcTextPath, '/tmp/aa0001.txt', position());
       })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
+      .getValue('#history-err').then((value: string) => {
+        assert.ok(! value, position());
       })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
-  });
-
-  // TODO data check
-  it('clear', function() {
-    return this.client
+      // getList
+      .click('#history-get-list')
+      .waitForValue('#history-result', 2000)
+      .getValue('#history-result').then((value: string) => {
+        const parsed = JSON.parse(value);
+        assert.equal(parsed.length, 1, position());
+      })
+      .getValue('#history-err').then((value: string) => {
+        assert.ok(! value, position());
+      })
+      // clear
       .click('#history-clear')
       .waitForValue('#history-result', 2000)
       .getValue('#history-result').then((value: string) => {
@@ -103,84 +128,20 @@ describe('specWindow-service-HistoryService', function() {
       .getValue('#history-err').then((value: string) => {
         assert.ok(! value, position());
       })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
+      // load
+      .click('#history-load')
+      .waitForValue('#history-result', 2000)
+      .getValue('#history-result').then((value: string) => {
+        assert.ok(value, position());
       })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
+      .getValue('#history-err').then((value: string) => {
+        assert.ok(! value, position());
       })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
-  });
-
-  // TODO
-  //it('get', function() {
-  //  return this.client
-  //    .setValue('#history-key', '')
-  //    .click('#history-get')
-  //    .waitForValue('#history-result', 2000)
-  //    .getValue('#history-result').then((value: string) => {
-  //      assert.ok(value, position());
-  //    })
-  //    .getValue('#history-err').then((value: string) => {
-  //      assert.ok(! value, position());
-  //    })
-  //    // catch error
-  //    .catch((err: Error) => {
-  //      assert.fail(err.message);
-  //    })
-  //    .getMainProcessLogs().then((logs) => {
-  //      logs.forEach((log) => {
-  //        assert.ok(! log.match(/error/i), position());
-  //      });
-  //    })
-  //    .getRenderProcessLogs().then((logs) => {
-  //      logs.forEach((log) => {
-  //        assert.ok(! log.message.match(/error/i), position());
-  //      });
-  //    });
-  //});
-
-  // TODO
-  //it('add', function() {
-  //  return this.client
-  //    .click('#history-add')
-  //    .waitForValue('#history-result', 2000)
-  //    .getValue('#history-result').then((value: string) => {
-  //      assert.ok(value, position());
-  //    })
-  //    .getValue('#history-err').then((value: string) => {
-  //      assert.ok(! value, position());
-  //    })
-  //    // catch error
-  //    .catch((err: Error) => {
-  //      assert.fail(err.message);
-  //    })
-  //    .getMainProcessLogs().then((logs) => {
-  //      logs.forEach((log) => {
-  //        assert.ok(! log.match(/error/i), position());
-  //      });
-  //    })
-  //    .getRenderProcessLogs().then((logs) => {
-  //      logs.forEach((log) => {
-  //        assert.ok(! log.message.match(/error/i), position());
-  //      });
-  //    });
-  //});
-
-  // TODO test pattern
-  it('getList', function() {
-    return this.client
+      // getList
       .click('#history-get-list')
       .waitForValue('#history-result', 2000)
       .getValue('#history-result').then((value: string) => {
-        assert.equal('[]', value, position());
+        assert.equal(value, '[]', position());
       })
       .getValue('#history-err').then((value: string) => {
         assert.ok(! value, position());

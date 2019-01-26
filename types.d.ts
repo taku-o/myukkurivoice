@@ -175,12 +175,12 @@ declare namespace yubo {
   }
   // service.audio.ts
   export interface AudioService1 {
-    play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
+    play(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
     stop(): void;
     record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
   }
   export interface AudioService2 {
-    play(bufWav: any, options: yubo.PlayOptions, parallel?: boolean): ng.IPromise<string>;
+    play(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
     stop(): void;
     record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
   }

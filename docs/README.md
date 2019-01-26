@@ -62,7 +62,7 @@ macOS High Sierra(10.13)に対応しています。
 
 | バージョン | ステータス     | リンク                                                              |
 | ---------- | -------------- | ------------------------------------------------------------------- |
-| 0.9.*      | 開発版         | [最新](https://github.com/taku-o/myukkurivoice/releases/latest)     |
+| 0.10.*     | 開発版         | [最新](https://github.com/taku-o/myukkurivoice/releases/latest)     |
 | 0.8.*      | テスト済・安定 | [0.8.1](https://github.com/taku-o/myukkurivoice/releases/tag/0.8.1) |
 
 <a name="myukkurivoiceの導入"></a>
