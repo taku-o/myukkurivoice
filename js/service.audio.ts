@@ -9,15 +9,14 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     let audio = null;
 
     return {
-      play: function(bufWav: any, options: yubo.PlayOptions, parallel: boolean = false): ng.IPromise<string> {
+      play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
           d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
         }
-        if (!parallel) {
-          if (audio) { audio.pause(); }
-        }
+        // if audio playing, stop current playing
+        if (audio) { audio.pause(); }
 
         const fsprefix = `_myubop${Date.now().toString(36)}`;
         temp().open(fsprefix, (err: Error, info) => {
@@ -32,19 +31,13 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
               d.reject(err); return;
             }
 
-            let inAudio = null;
-            if (parallel) {
-              inAudio = new Audio('');
-            } else {
-              audio = new Audio('');
-              inAudio = audio;
-            }
-            inAudio.autoplay = false;
-            inAudio.src = info.path;
-            inAudio.onended = () => {
+            audio = new Audio('');
+            audio.autoplay = false;
+            audio.src = info.path;
+            audio.onended = () => {
               d.resolve('ok');
             };
-            inAudio.play();
+            audio.play();
           });
         });
         return d.promise;
@@ -78,8 +71,6 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
   .factory('AudioService2', ['$q', 'MessageService', 'AppUtilService',
   ($q, MessageService: yubo.MessageService, AppUtilService: yubo.AppUtilService): yubo.AudioService2 => {
     // Web Audio API base AudioService
-    // @ts-ignore
-    const audioCtx = new window.AudioContext();
     let runningNode = null;
 
     function toArrayBuffer(bufWav): any {
@@ -132,17 +123,21 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     }
 
     return {
-      play: function(bufWav: any, options: yubo.PlayOptions, parallel: boolean = false): ng.IPromise<string> {
+      play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
           d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
         }
-        if (!parallel) {
-          if (runningNode) { runningNode.stop(0); runningNode = null; }
-        }
+        // if audio playing, stop current playing
+        if (runningNode) { runningNode.stop(0); runningNode = null; }
 
         const aBuffer = toArrayBuffer(bufWav);
+
+        // @ts-ignore
+        const audioCtx = new window.AudioContext();
+        const processNodeList = [];
+        let audioPlayNode = null;
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
@@ -161,8 +156,6 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           const inSourceNode = offlineCtx.createBufferSource();
           inSourceNode.buffer = decodedData;
 
-          const nodeList = [];
-
           // playbackRate
           if (options.playbackRate && options.playbackRate != 1.0) {
             inSourceNode.playbackRate.value = options.playbackRate;
@@ -174,11 +167,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           // gain
           const gainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
-          nodeList.push(gainNode);
+          processNodeList.push(gainNode);
 
           // connect
           let lastNode = inSourceNode;
-          angular.forEach(nodeList, (node) => {
+          angular.forEach(processNodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
           lastNode.connect(offlineCtx.destination);
@@ -187,32 +180,43 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           inSourceNode.start(0);
 
           // rendering
-          offlineCtx.startRendering().then((renderedBuffer) => {
+          return offlineCtx.startRendering().then((renderedBuffer) => {
+
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
             // report duration
             AppUtilService.reportDuration(nAudioBuffer.duration);
 
+            const dInPlay = $q.defer();
             // play voice
-            let audioNode = null;
-            if (parallel) {
-              audioNode = audioCtx.createBufferSource();
-            } else {
-              runningNode = audioCtx.createBufferSource();
-              audioNode = runningNode;
-            }
-            audioNode.buffer = nAudioBuffer;
-            audioNode.connect(audioCtx.destination);
-            audioNode.onended = () => {
-              d.resolve('ok');
+            audioPlayNode = audioCtx.createBufferSource();
+            audioPlayNode.buffer = nAudioBuffer;
+            audioPlayNode.connect(audioCtx.destination);
+            audioPlayNode.onended = () => {
+              dInPlay.resolve('ok');
             };
-            audioNode.start(0);
+            audioPlayNode.start(0);
+
+            runningNode = audioPlayNode;
+            return dInPlay.promise;
           }); // offlineCtx.startRendering
+        })
+        .then(() => {
+          runningNode = null;
+          d.resolve('ok');
         })
         .catch((err: Error) => {
           MessageService.syserror('音源の再生に失敗しました。', err);
           d.reject(err); return;
+        })
+        .finally(() => {
+          // close audio context
+          angular.forEach(processNodeList, (node) => {
+            node.disconnect();
+          });
+          if (audioPlayNode) { audioPlayNode.disconnect(); }
+          audioCtx.close();
         });
         return d.promise;
       },
@@ -231,6 +235,10 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         }
 
         const aBuffer = toArrayBuffer(bufWav);
+
+        // @ts-ignore
+        const audioCtx = new window.AudioContext();
+        const processNodeList = [];
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
@@ -249,8 +257,6 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           const inSourceNode = offlineCtx.createBufferSource();
           inSourceNode.buffer = decodedData;
 
-          const nodeList = [];
-
           // playbackRate
           if (options.playbackRate && options.playbackRate != 1.0) {
             inSourceNode.playbackRate.value = options.playbackRate;
@@ -262,11 +268,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           // gain
           const gainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
-          nodeList.push(gainNode);
+          processNodeList.push(gainNode);
 
           // connect
           let lastNode = inSourceNode;
-          angular.forEach(nodeList, (node) => {
+          angular.forEach(processNodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
           lastNode.connect(offlineCtx.destination);
@@ -275,7 +281,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           inSourceNode.start(0);
 
           // rendering
-          offlineCtx.startRendering().then((renderedBuffer) => {
+          return offlineCtx.startRendering().then((renderedBuffer) => {
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
@@ -291,20 +297,31 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
               audioData.channelData[i] = nAudioBuffer.getChannelData(i);
             }
             // create wav file.
+            const dInEncode = $q.defer();
             WavEncoder().encode(audioData).then((buffer) => {
-              fs().writeFile(wavFilePath, new Buffer(buffer), 'binary', (err) => {
+              fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err) => {
                 if (err) {
-                  MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-                  d.reject(err); return;
+                  dInEncode.reject(err); return;
                 }
-                d.resolve('ok');
+                dInEncode.resolve('ok');
               });
             });
+            return dInEncode.promise;
           }); // offlineCtx.startRendering
         })
+        .then(() => {
+          d.resolve('ok');
+        })
         .catch((err: Error) => {
-          MessageService.syserror('音源の再生に失敗しました。', err);
+          MessageService.syserror('音声ファイルの作成に失敗しました。', err);
           d.reject(err); return;
+        })
+        .finally(() => {
+          // close audio context
+          angular.forEach(processNodeList, (node) => {
+            node.disconnect();
+          });
+          audioCtx.close();
         });
         return d.promise;
       },

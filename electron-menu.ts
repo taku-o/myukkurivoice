@@ -30,10 +30,7 @@ function initAppMenu(): void {
           click() { myApp.resetAppConfigOnMain(); },
         },
         {type: 'separator'},
-        {
-          role: 'services',
-          submenu: [],
-        },
+        {role: 'services'},
         {type: 'separator'},
         {
           role: 'quit',
@@ -64,18 +61,11 @@ function initAppMenu(): void {
     },
     {
       label: '履歴',
+      role: 'recentDocuments',
       submenu: [
-        //{
-        //  label: 'Open Recent',
-        //  // currently not supported.
-        //  role: 'recentdocuments',
-        //},
-        //{type: 'separator'},
         {
-          label: 'Clear Recent',
-          // currently not supported.
-          //role: 'clearrecentdocuments'
-          click() { myApp.mainWindow.webContents.send('menu', 'clearRecentDocuments'); },
+          label: '履歴のクリア',
+          role: 'clearRecentDocuments',
         },
       ],
     },
@@ -233,6 +223,7 @@ function initAppMenu(): void {
     },
     {
       label: 'ウィンドウ',
+      role: 'window',
       submenu: [
         {
           label: '前面表示固定切替',
@@ -259,7 +250,7 @@ function initAppMenu(): void {
       label: 'ヘルプ',
       submenu: [
         {
-          label: 'ヘルプ',
+          label: 'ヘルプビューワ',
           click() { myApp.showHelpWindow(); },
         },
         {
@@ -307,7 +298,7 @@ function initAppMenu(): void {
           },
           {type: 'separator'},
           {
-            label: 'garbage collection',
+            label: 'Garbage Collection',
             click() { myApp.mainWindow.webContents.send('menu', 'gc'); },
           },
         ],
@@ -332,7 +323,7 @@ function initDockMenu(): void {
       click() { myApp.showSystemWindow(); },
     },
     {
-      label: 'ヘルプ',
+      label: 'ヘルプビューワ',
       click() { myApp.showHelpWindow(); },
     },
     {

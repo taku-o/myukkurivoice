@@ -36,7 +36,7 @@ function showMainWindow(): void {
       devTools: DEBUG,
     },
   });
-  this.mainWindow.loadURL(`file://${__dirname}/contents-main.html`);
+  this.mainWindow.loadFile('./contents-main.html');
 
   // shortcut
   localShortcut().register(this.mainWindow, 'Command+Q', () => {
@@ -127,7 +127,7 @@ function showHelpWindow(): void {
       devTools: DEBUG,
     },
   });
-  this.helpWindow.loadURL(`file://${__dirname}/contents-help.html`);
+  this.helpWindow.loadFile('./contents-help.html');
 
   // shortcut
   localShortcut().register(this.helpWindow, 'Command+Q', () => {
@@ -193,7 +193,7 @@ function showSystemWindow(): void {
       devTools: DEBUG,
     },
   });
-  this.systemWindow.loadURL(`file://${__dirname}/contents-system.html`);
+  this.systemWindow.loadFile('./contents-system.html');
 
   // shortcut
   localShortcut().register(this.systemWindow, 'Command+Q', () => {
@@ -240,7 +240,7 @@ function showDictWindow(): void {
       devTools: DEBUG,
     },
   });
-  this.dictWindow.loadURL(`file://${__dirname}/contents-dict.html`);
+  this.dictWindow.loadFile('./contents-dict.html');
 
   // shortcut
   localShortcut().register(this.dictWindow, 'Command+Q', () => {
@@ -343,7 +343,7 @@ function showSpecWindow(): void {
       devTools: DEBUG,
     },
   });
-  specWindow.loadURL(`file://${__dirname}/contents-spec.html`);
+  specWindow.loadFile('./contents-spec.html');
 }
 
 // exports

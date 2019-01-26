@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.video</string>
     <key>CFBundleDocumentTypes</key>
     <array>
       <dict>
@@ -14,8 +16,7 @@
         <key>LSItemContentTypes</key>
         <array>
           <string>public.text</string>
-          <string>public.data</string>
-          <string>public.content</string>
+          <string>public.audio</string>
         </array>
       </dict>
     </array>
