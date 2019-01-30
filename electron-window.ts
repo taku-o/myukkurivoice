@@ -171,6 +171,65 @@ function showHelpWindow(): void {
   });
 }
 
+// help search dialog
+function showHelpSearchDialog(): void {
+  const myApp = this;
+  if (this.helpSearchDialog && !this.helpSearchDialog.isDestroyed()) {
+    this.helpSearchDialog.show(); this.helpSearchDialog.focus();
+    return;
+  }
+
+  const {width, height} = this.appCfg.helpSearchDialog;
+  const bounds = myApp.helpWindow.getBounds();
+  const x = bounds.x + bounds.width / 2;
+  const y = bounds.y + bounds.height / 2;
+  this.helpSearchDialog = new BrowserWindow({
+    parent: this.helpWindow,
+    modal: false,
+    width: width,
+    height: height,
+    x: x,
+    y: y,
+    acceptFirstMouse: true,
+    show: false, // show at did-finish-load event
+    minimizable: false,
+    maximizable: false,
+    fullscreenable: false,
+    transparent: transparent,
+    opacity: opacity,
+    webPreferences: {
+      devTools: DEBUG,
+    },
+  });
+  this.helpSearchDialog.loadFile('./contents-helpsearch.html');
+
+  // shortcut
+  localShortcut().register(this.helpSearchDialog, 'Command+Q', () => {
+    app.quit();
+  });
+  localShortcut().register(this.helpSearchDialog, 'Command+W', () => {
+    if (myApp.helpSearchDialog) { myApp.helpSearchDialog.hide(); }
+  });
+
+  // event
+  this.helpSearchDialog.webContents.on('did-finish-load', () => {
+    myApp.helpSearchDialog.show(); myApp.helpSearchDialog.focus();
+  });
+  this.helpSearchDialog.on('close', (event) => {
+    event.preventDefault();
+    myApp.helpSearchDialog.hide();
+  });
+  this.helpSearchDialog.on('closed', () => {
+    myApp.helpSearchDialog = null;
+  });
+  this.helpSearchDialog.on('unresponsive', () => {
+    log().warn('helpsearch:event:unresponsive');
+  });
+  this.helpSearchDialog.webContents.on('crashed', () => {
+    log().error('helpsearch:event:crashed');
+  });
+}
+
 // application config window
 function showSystemWindow(): void {
   const myApp = this;
@@ -350,6 +409,7 @@ function showSpecWindow(): void {
 export {
   showMainWindow,
   showHelpWindow,
+  showHelpSearchDialog,
   showSystemWindow,
   showDictWindow,
   showAboutWindow,

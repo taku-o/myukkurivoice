@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="helpSearchApp">
+<head>
+  <meta charset="UTF-8">
+  <title>検索</title>
+  <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
+  <link rel="stylesheet" href="css/helpsearch.css">
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="js/apps.helpsearch.js"></script>
+  <script type="text/javascript">
+    document.ondragover = document.ondrop = function(e) {
+      e.preventDefault(); return false;
+    };
+  </script>
+</head>
+<body>
+<div class="window" ng-controller="HelpSearchController as ctrl">
+<div class="window-content">
+  <div class="pane-group">
+
+    <div class="pane pane-left">
+      <form ng-submit="ctrl.searchInPage()">
+        <label>検索する文字列：</label>
+        <input id="search-text" class="form-control" type="text" ng-model="searchText" autofocus>
+      </form>
+    </div> <!-- pane-left -->
+
+    <div class="pane pane-right">
+      <button class="btn btn-primary form-control" ng-click="ctrl.searchInPage()">
+        <span class="icon icon-search"></span>ページ内検索
+      </button>
+      <button class="btn btn-primary form-control" ng-click="ctrl.searchInHelp()">
+        <span class="icon icon-search"></span>全ヘルプ検索
+      </button>
+      <button class="btn btn-default form-control" ng-click="ctrl.closeSearchForm()">
+        <span class="icon icon-cancel"></span>閉じる
+      </button>
+    </div> <!-- pane-right -->
+
+  </div> <!-- pane-group -->
+</div> <!-- window-content -->
+
+</body>
+</html>

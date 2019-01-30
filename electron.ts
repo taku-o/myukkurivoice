@@ -43,12 +43,14 @@ const MYukkuriVoice = function(): void {
   // window reference
   this.mainWindow = null;
   this.helpWindow = null;
+  this.helpSearchDialog = null;
   this.systemWindow = null;
   this.dictWindow = null;
 };
 const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
+MYukkuriVoice.prototype.showHelpSearchDialog = Pane.showHelpSearchDialog;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
 MYukkuriVoice.prototype.showDictWindow = Pane.showDictWindow;
 MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
@@ -129,6 +131,9 @@ app.on('ready', () => {
 ipcMain.on('showHelpWindow', (event, message) => {
   myApp.showHelpWindow();
 });
+ipcMain.on('showHelpSearchDialog', (event, message) => {
+  myApp.showHelpSearchDialog();
+});
 ipcMain.on('showSystemWindow', (event, message) => {
   myApp.showSystemWindow();
 });
@@ -169,6 +174,17 @@ ipcMain.on('ondragstartwav', (event, filePath) => {
     file: filePath,
     icon: imgPath,
   });
+});
+
+// helpSearchDialog
+ipcMain.on('searchInPage', (event, searchText: string) => {
+  myApp.helpWindow.webContents.send('helpsearch', {task: 'searchInPage', searchText: searchText});
+});
+ipcMain.on('searchInHelp', (event, searchText: string) => {
+  myApp.helpWindow.webContents.send('helpsearch', {task: 'searchInHelp', searchText: searchText});
+});
+ipcMain.on('clearSearch', (event, searchText: string) => {
+  myApp.helpWindow.webContents.send('helpsearch', {task: 'clearSelection'});
 });
 
 // updateAppConfig
