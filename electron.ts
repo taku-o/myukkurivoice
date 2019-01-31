@@ -68,6 +68,8 @@ MYukkuriVoice.prototype.readyConfig = AppConfig.readyConfig;
 MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
 MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
+MYukkuriVoice.prototype.resetWindowSize = AppConfig.resetWindowSize;
+MYukkuriVoice.prototype.resetWindowPosition = AppConfig.resetWindowPosition;
 
 // load application settings
 setTimeout(() => {
@@ -242,12 +244,6 @@ ipcMain.on('reloadMainWindow', (event, message) => {
   myApp.mainWindow.webContents.reload();
   event.sender.send('reloadMainWindow', message);
 });
-
-// resetWindowPosition
-function resetWindowPosition(): void {
-  myApp.mainWindow.center();
-}
-MYukkuriVoice.prototype.resetWindowPosition = resetWindowPosition;
 
 // switchAlwaysOnTop
 function switchAlwaysOnTop(): void {

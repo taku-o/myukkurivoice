@@ -121,10 +121,11 @@ angular.module('helpApp', ['IncludeDirectives'])
         //      remote.getCurrentWebContents().findInPage(action.searchText);
         //      $timeout(() => { $scope.$apply(); });
         //      break;
-        //    case 'searchInHelp':
-        //      const hash = $location.hash();
-        //      if (hash != 'expand') {
-        //        $location.hash('expand');
+        //      {
+        //        const hash = $location.hash();
+        //        if (hash != 'expand') {
+        //          $location.hash('expand');
+        //        }
         //      }
         //      remote.getCurrentWebContents().findInPage(action.searchText);
         //      $timeout(() => { $scope.$apply(); });
