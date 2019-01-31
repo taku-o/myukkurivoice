@@ -69,6 +69,15 @@ function resetAppConfig(): void {
   });
   global.appCfg = this.appCfg;
 }
+function resetWindowSize(): void {
+  const myApp = this;
+  const {width, height} = {width: 800, height: 665};
+  myApp.mainWindow.setSize(width, height);
+}
+function resetWindowPosition(): void {
+  const myApp = this;
+  myApp.mainWindow.center();
+}
 
 // exports
 export {
@@ -76,6 +85,8 @@ export {
   loadAppConfig,
   updateAppConfig,
   resetAppConfig,
+  resetWindowSize,
+  resetWindowPosition,
 };
 
 declare var global: yubo.Global;

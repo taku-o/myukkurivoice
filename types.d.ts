@@ -53,6 +53,8 @@ declare namespace yubo {
     loadAppConfig(): void;
     updateAppConfig(options: yubo.AppCfg): void;
     resetAppConfig(): void;
+    resetWindowSize(): void;
+    resetWindowPosition(): void;
   }
 
   // models.main.ts

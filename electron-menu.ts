@@ -241,6 +241,10 @@ function initAppMenu(): void {
         },
         {type: 'separator'},
         {
+          label: 'ウインドウサイズリセット',
+          click() { myApp.resetWindowSize(); },
+        },
+        {
           label: 'ウインドウ位置リセット',
           click() { myApp.resetWindowPosition(); },
         },
