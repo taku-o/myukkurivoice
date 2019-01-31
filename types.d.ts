@@ -12,10 +12,11 @@ declare namespace yubo {
 
   // electron-appcfg.ts
   export interface AppCfg {
-    mainWindow:    { width: number, height: number, x: number, y: number };
-    helpWindow?:   { width: number, height: number };
-    systemWindow?: { width: number, height: number };
-    dictWindow?:   { width: number, height: number };
+    mainWindow:        { width: number, height: number, x: number, y: number };
+    helpWindow?:       { width: number, height: number };
+    helpSearchDialog?: { width: number, height: number };
+    systemWindow?:     { width: number, height: number };
+    dictWindow?:       { width: number, height: number };
     audioServVer:        'html5audio' | 'webaudioapi';
     showMsgPane:         boolean;
     passPhrase:          string;
@@ -24,15 +25,17 @@ declare namespace yubo {
 
   // electron.ts
   export interface IMYukkuriVoice {
-    launchArgs:   {filePath: string}
-    appCfg:       yubo.AppCfg;
-    config:       yubo.ElectronConfig;
-    mainWindow:   Electron.BrowserWindow;
-    helpWindow:   Electron.BrowserWindow;
-    systemWindow: Electron.BrowserWindow;
-    dictWindow:   Electron.BrowserWindow;
+    launchArgs:       {filePath: string}
+    appCfg:           yubo.AppCfg;
+    config:           yubo.ElectronConfig;
+    mainWindow:       Electron.BrowserWindow;
+    helpWindow:       Electron.BrowserWindow;
+    helpSearchDialog: Electron.BrowserWindow;
+    systemWindow:     Electron.BrowserWindow;
+    dictWindow:       Electron.BrowserWindow;
     showMainWindow(): void;
     showHelpWindow(): void;
+    showHelpSearchDialog(): void;
     showSystemWindow(): void;
     showDictWindow(): void;
     showAboutWindow(): void;
@@ -50,6 +53,8 @@ declare namespace yubo {
     loadAppConfig(): void;
     updateAppConfig(options: yubo.AppCfg): void;
     resetAppConfig(): void;
+    resetWindowSize(): void;
+    resetWindowPosition(): void;
   }
 
   // models.main.ts

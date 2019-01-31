@@ -55,8 +55,6 @@ angular.module('helpApp', ['IncludeDirectives'])
         // init
         var ctrl = this;
         $scope.$location = $location;
-        $scope.searchVisibled = false;
-        $scope.searchText = '';
         // event url hash changed
         $scope.$on('$locationChangeSuccess', function (event) {
             // fix broken url
@@ -116,38 +114,31 @@ angular.module('helpApp', ['IncludeDirectives'])
         //    $location.hash(menuList[moved]);
         //  }
         //}
+        //// helpsearch
+        //ipcRenderer().on('helpsearch', (event, action) => {
+        //  switch (action.task) {
+        //    case 'searchInPage':
+        //      remote.getCurrentWebContents().findInPage(action.searchText);
+        //      $timeout(() => { $scope.$apply(); });
+        //      break;
+        //      {
+        //        const hash = $location.hash();
+        //        if (hash != 'expand') {
+        //          $location.hash('expand');
+        //        }
+        //      }
+        //      remote.getCurrentWebContents().findInPage(action.searchText);
+        //      $timeout(() => { $scope.$apply(); });
+        //      break;
+        //    case 'clearSelection':
+        //      remote.getCurrentWebContents().stopFindInPage('clearSelection');
+        //      $timeout(() => { $scope.$apply(); });
+        //      break;
+        //  }
+        //});
         // action
-        //ctrl.searchInPage = function(): void {
-        //  if ($scope.searchText) {
-        //    remote.getCurrentWebContents().findInPage($scope.searchText);
-        //  } else {
-        //    remote.getCurrentWebContents().stopFindInPage('clearSelection');
-        //  }
-        //};
-        //ctrl.searchInHelp = function(): void {
-        //  if ($scope.searchText) {
-        //    $location.hash('expand');
-        //    remote.getCurrentWebContents().findInPage($scope.searchText);
-        //  } else {
-        //    remote.getCurrentWebContents().stopFindInPage('clearSelection');
-        //  }
-        //};
         //ctrl.openSearchForm = function(): void {
-        //  $scope.searchVisibled = !$scope.searchVisibled;
-        //  if ($scope.searchVisibled) {
-        //    $timeout(() => {
-        //      $scope.$apply();
-        //      document.getElementById('search-text').focus();
-        //    });
-        //  } else {
-        //    $scope.searchText = '';
-        //    remote.getCurrentWebContents().stopFindInPage('clearSelection');
-        //  }
-        //};
-        //ctrl.closeSearchForm = function(): void {
-        //  $scope.searchVisibled = false;
-        //  $scope.searchText = '';
-        //  remote.getCurrentWebContents().stopFindInPage('clearSelection');
+        //  ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
         //};
         ctrl.browser = function (url) {
             //shell().openExternal(url);

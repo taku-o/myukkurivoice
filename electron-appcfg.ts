@@ -10,11 +10,12 @@ function readyConfig(): boolean {
 // load
 function loadAppConfig(): void {
   const appCfg: yubo.AppCfg = {
-    mainWindow:   {width: 800, height: 665, x: null, y: null},
-    helpWindow:   {width: 700, height: 700},
-    systemWindow: {width: 390, height: 480},
-    dictWindow:   {width: 800, height: 600},
-    audioServVer: 'webaudioapi', // html5audio or webaudioapi
+    mainWindow:       {width: 800, height: 665, x: null, y: null},
+    helpWindow:       {width: 700, height: 700},
+    helpSearchDialog: {width: 430, height: 120},
+    systemWindow:     {width: 390, height: 480},
+    dictWindow:       {width: 800, height: 600},
+    audioServVer:     'webaudioapi', // html5audio or webaudioapi
     showMsgPane: true,
     passPhrase: null,
     aq10UseKeyEncrypted: '',
@@ -68,6 +69,15 @@ function resetAppConfig(): void {
   });
   global.appCfg = this.appCfg;
 }
+function resetWindowSize(): void {
+  const myApp = this;
+  const {width, height} = {width: 800, height: 665};
+  myApp.mainWindow.setSize(width, height);
+}
+function resetWindowPosition(): void {
+  const myApp = this;
+  myApp.mainWindow.center();
+}
 
 // exports
 export {
@@ -75,6 +85,8 @@ export {
   loadAppConfig,
   updateAppConfig,
   resetAppConfig,
+  resetWindowSize,
+  resetWindowPosition,
 };
 
 declare var global: yubo.Global;

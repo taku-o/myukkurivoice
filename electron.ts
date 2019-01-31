@@ -43,12 +43,14 @@ const MYukkuriVoice = function(): void {
   // window reference
   this.mainWindow = null;
   this.helpWindow = null;
+  this.helpSearchDialog = null;
   this.systemWindow = null;
   this.dictWindow = null;
 };
 const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
 MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
+MYukkuriVoice.prototype.showHelpSearchDialog = Pane.showHelpSearchDialog;
 MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
 MYukkuriVoice.prototype.showDictWindow = Pane.showDictWindow;
 MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
@@ -66,6 +68,8 @@ MYukkuriVoice.prototype.readyConfig = AppConfig.readyConfig;
 MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
 MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
+MYukkuriVoice.prototype.resetWindowSize = AppConfig.resetWindowSize;
+MYukkuriVoice.prototype.resetWindowPosition = AppConfig.resetWindowPosition;
 
 // load application settings
 setTimeout(() => {
@@ -128,6 +132,9 @@ app.on('ready', () => {
 // show window event
 ipcMain.on('showHelpWindow', (event, message) => {
   myApp.showHelpWindow();
+});
+ipcMain.on('showHelpSearchDialog', (event, message) => {
+  myApp.showHelpSearchDialog();
 });
 ipcMain.on('showSystemWindow', (event, message) => {
   myApp.showSystemWindow();
@@ -226,12 +233,6 @@ ipcMain.on('reloadMainWindow', (event, message) => {
   myApp.mainWindow.webContents.reload();
   event.sender.send('reloadMainWindow', message);
 });
-
-// resetWindowPosition
-function resetWindowPosition(): void {
-  myApp.mainWindow.center();
-}
-MYukkuriVoice.prototype.resetWindowPosition = resetWindowPosition;
 
 // switchAlwaysOnTop
 function switchAlwaysOnTop(): void {
