@@ -1,5 +1,4 @@
-var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
-var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
+var _log, log = () => { _log = _log || require('electron-log'); return _log; };
 
 // env
 var DEBUG = process.env.DEBUG != null;
