@@ -37,6 +37,11 @@ angular.module('helpSearchApp', [])
         win.getParentWindow().webContents.stopFindInPage('clearSelection');
       }
     };
+    ctrl.clearSearchForm = function(): void {
+      $scope.searchText = '';
+      const win = require('electron').remote.getCurrentWindow();
+      win.getParentWindow().webContents.stopFindInPage('clearSelection');
+    };
     ctrl.closeSearchForm = function(): void {
       const window = require('electron').remote.getCurrentWindow();
       window.hide();
