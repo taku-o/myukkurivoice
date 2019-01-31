@@ -178,17 +178,6 @@ ipcMain.on('ondragstartwav', (event, filePath) => {
   });
 });
 
-// helpSearchDialog
-ipcMain.on('searchInPage', (event, searchText: string) => {
-  myApp.helpWindow.webContents.send('helpsearch', {task: 'searchInPage', searchText: searchText});
-});
-ipcMain.on('searchInHelp', (event, searchText: string) => {
-  myApp.helpWindow.webContents.send('helpsearch', {task: 'searchInHelp', searchText: searchText});
-});
-ipcMain.on('clearSearch', (event, searchText: string) => {
-  myApp.helpWindow.webContents.send('helpsearch', {task: 'clearSelection'});
-});
-
 // updateAppConfig
 ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
   myApp.updateAppConfig(options);

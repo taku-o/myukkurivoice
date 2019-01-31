@@ -118,30 +118,6 @@ angular.module('helpApp', ['IncludeDirectives'])
       }
     }
 
-    // helpsearch
-    ipcRenderer().on('helpsearch', (event, action) => {
-      switch (action.task) {
-        case 'searchInPage':
-          remote.getCurrentWebContents().findInPage(action.searchText);
-          $timeout(() => { $scope.$apply(); });
-          break;
-        case 'searchInHelp':
-          {
-            const hash = $location.hash();
-            if (hash != 'expand') {
-              $location.hash('expand');
-            }
-          }
-          remote.getCurrentWebContents().findInPage(action.searchText);
-          $timeout(() => { $scope.$apply(); });
-          break;
-        case 'clearSelection':
-          remote.getCurrentWebContents().stopFindInPage('clearSelection');
-          $timeout(() => { $scope.$apply(); });
-          break;
-      }
-    });
-
     // action
     ctrl.openSearchForm = function(): void {
       ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');

@@ -30,17 +30,11 @@ angular.module('helpSearchApp', [])
 
     // action
     ctrl.searchInPage = function(): void {
+      const win = require('electron').remote.getCurrentWindow();
       if ($scope.searchText) {
-        ipcRenderer().send('searchInPage', $scope.searchText);
+        win.getParentWindow().webContents.findInPage($scope.searchText);
       } else {
-        ipcRenderer().send('clearSearch', 'stop');
-      }
-    };
-    ctrl.searchInHelp = function(): void {
-      if ($scope.searchText) {
-        ipcRenderer().send('searchInHelp', $scope.searchText);
-      } else {
-        ipcRenderer().send('clearSearch', 'stop');
+        win.getParentWindow().webContents.stopFindInPage('clearSelection');
       }
     };
     ctrl.closeSearchForm = function(): void {
