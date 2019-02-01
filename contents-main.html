@@ -74,7 +74,7 @@
   <div class="pane-sm sidebar">
     <ul class="list-group" id="sidebar-items">
       <li class="list-group-header">
-        <input class="form-control" id="filter-text" type="text" ng-model='filterText.name' placeholder="設定一覧絞り込み">
+        <input class="form-control" id="filter-text" type="search" ng-model='filterText.name' placeholder="設定一覧絞り込み">
       </li>
       <li class="list-group-item voice-config-item" ng-repeat="yvoiceItem in yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == yvoice.id}" ng-attr-id="{{yvoiceItem.id}}">
         <div class="media-body" ng-click="ctrl.select($index)">

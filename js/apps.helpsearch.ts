@@ -21,11 +21,16 @@ angular.module('helpSearchApp', [])
       log().warn('helpsearch:catch angularjs exception: %s, cause:%s', exception, cause);
     };
   })
-  .controller('HelpSearchController', ['$scope', function($scope) {
+  .controller('HelpSearchController', ['$scope', '$window', function($scope, $window) {
 
     // init
     const ctrl = this;
     $scope.searchText = '';
+
+    // event
+    $window.onfocus = function(){
+      document.getElementById('search-text').focus();
+    }
 
     // action
     ctrl.searchInPage = function(): void {
