@@ -1,5 +1,4 @@
 "use strict";
-//var remote = require('electron').remote;
 //var app = require('electron').remote.app;
 //var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 //var _shell, shell             = () => { _shell = _shell || require('electron').shell; return _shell; };
@@ -114,28 +113,6 @@ angular.module('helpApp', ['IncludeDirectives'])
         //    $location.hash(menuList[moved]);
         //  }
         //}
-        //// helpsearch
-        //ipcRenderer().on('helpsearch', (event, action) => {
-        //  switch (action.task) {
-        //    case 'searchInPage':
-        //      remote.getCurrentWebContents().findInPage(action.searchText);
-        //      $timeout(() => { $scope.$apply(); });
-        //      break;
-        //      {
-        //        const hash = $location.hash();
-        //        if (hash != 'expand') {
-        //          $location.hash('expand');
-        //        }
-        //      }
-        //      remote.getCurrentWebContents().findInPage(action.searchText);
-        //      $timeout(() => { $scope.$apply(); });
-        //      break;
-        //    case 'clearSelection':
-        //      remote.getCurrentWebContents().stopFindInPage('clearSelection');
-        //      $timeout(() => { $scope.$apply(); });
-        //      break;
-        //  }
-        //});
         // action
         //ctrl.openSearchForm = function(): void {
         //  ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
