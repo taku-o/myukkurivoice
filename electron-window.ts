@@ -181,8 +181,8 @@ function showHelpSearchDialog(): void {
 
   const {width, height} = this.appCfg.helpSearchDialog;
   const bounds = myApp.helpWindow.getBounds();
-  const x = bounds.x + bounds.width / 2;
-  const y = bounds.y + bounds.height / 2;
+  const x = bounds.x + bounds.width / 2 - width / 2;
+  const y = bounds.y + bounds.height / 2 - height / 2;
   this.helpSearchDialog = new BrowserWindow({
     parent: this.helpWindow,
     modal: false,
