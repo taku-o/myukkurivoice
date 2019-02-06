@@ -38,7 +38,7 @@ describe('helpSearchDialog', function() {
     return this.client.close();
   });
 
-  it('search dialog', function() {
+  it('dialog ui', function() {
     return this.client
       .isVisible('#search-text').then((isVisible: boolean) => {
         assert.ok(isVisible, position());
@@ -77,7 +77,35 @@ describe('helpSearchDialog', function() {
       .getValue('#search-text').then((input: string) => {
         assert.equal(input, '', position());
       })
+      // catch error
+      .catch((err: Error) => {
+        assert.fail(err.message);
+      })
+      .getMainProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.match(/error/i), position());
+        });
+      })
+      .getRenderProcessLogs().then((logs) => {
+        logs.forEach((log) => {
+          assert.ok(! log.message.match(/error/i), position());
+        });
+      });
+  });
+
+  it('reopen dialog', function() {
+    return this.client
+      .setValue('#search-text', 'MYuk')
+      .getValue('#search-text').then((input: string) => {
+        assert.equal(input, 'MYuk', position());
+      })
       .click('#btn-close')
+      .windowByIndex(1)
+      .click('#menu-search')
+      .windowByIndex(2)
+      .getValue('#search-text').then((input: string) => {
+        assert.equal(input, 'MYuk', position());
+      })
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
