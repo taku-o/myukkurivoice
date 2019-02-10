@@ -30,7 +30,7 @@ angular.module('helpSearchApp', [])
     // event
     $window.onfocus = function(){
       document.getElementById('search-text').focus();
-    }
+    };
 
     // action
     ctrl.searchInPage = function(): void {

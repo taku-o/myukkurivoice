@@ -3,7 +3,7 @@
 動画制作向けに調整された合成音声生成アプリケーションです。  
 入力した日本語メッセージから音声ファイルを作成できます。  
 macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、
-macOS High Sierra(10.13)に対応しています。  
+macOS High Sierra(10.13)以降に対応しています。  
 
 <img src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/myukkurivoice.iconset/icon_256x256.png" class="noborder">
 

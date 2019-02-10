@@ -281,7 +281,7 @@ describe('mainWindow', function() {
       })
       .windowByIndex(1)
       .getTitle().then((title: string) => {
-        assert.equal(title, 'MYukkuriVoice Help', position());
+        assert.equal(title, 'ヘルプビューワ', position());
       })
       // error check
       .windowByIndex(0)
@@ -315,7 +315,7 @@ describe('mainWindow', function() {
       })
       .windowByIndex(1)
       .getTitle().then((title: string) => {
-        assert.equal(title, 'MYukkuriVoice Dictionary Editor', position());
+        assert.equal(title, '辞書ツール', position());
       })
       // error check
       .windowByIndex(0)
