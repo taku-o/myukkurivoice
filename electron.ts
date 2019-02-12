@@ -31,8 +31,15 @@ if (TEST && process.env.userData) {
   app.setPath('userData', process.env.userData);
 }
 // perfomance monitoring
+// [time][electron ] -----------------
+// [time][electron ] loadConfig done :
+// [time][electron ] read called     :
+// [time][electron ] read done       :
 let MONITOR_ready = null;
-if (MONITOR) { MONITOR_ready = process.hrtime(); }
+if (MONITOR) {
+  log().warn('[time][electron ] ----------------');
+  MONITOR_ready = process.hrtime();
+}
 
 // MYukkuriVoice application
 const MYukkuriVoice = function(): void {
@@ -74,7 +81,7 @@ MYukkuriVoice.prototype.resetWindowPosition = AppConfig.resetWindowPosition;
 // load application settings
 setTimeout(() => {
   myApp.loadAppConfig();
-  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] loadConfig: '+ t[0]+ ','+ t[1]); }
+  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn(`[time][electron ] loadConfig done : ${t[0]},${t[1]}`); }
 }, 0); // background loading config.
 
 // handle uncaughtException
@@ -106,14 +113,14 @@ app.on('will-finish-launching', () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
-  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn('[time] ready     : '+ t[0]+ ','+ t[1]); }
+  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn(`[time][electron ] read called     : ${t[0]},${t[1]}`); }
   // open main window.
   // init menu
   if (myApp.readyConfig()) {
     myApp.showMainWindow();
     myApp.initAppMenu();
     myApp.initDockMenu();
-    if (MONITOR) { let t2 = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ t2[0]+ ','+ t2[1]); }
+    if (MONITOR) { let t2 = process.hrtime(MONITOR_ready); log().warn(`[time][electron ] read done       : ${t2[0]},${t2[1]}`); }
   } else {
     if (MONITOR) { log().warn('[warn] AppCfg is not initialized, still now.'); }
     waitUntil()(100, 10,
@@ -124,7 +131,7 @@ app.on('ready', () => {
       myApp.showMainWindow();
       myApp.initAppMenu();
       myApp.initDockMenu();
-      if (MONITOR) { let twait = process.hrtime(MONITOR_ready); log().warn('[time] ready done: '+ twait[0]+ ','+ twait[1]); }
+      if (MONITOR) { let t3 = process.hrtime(MONITOR_ready); log().warn(`[time][electron ] read done       : ${t3[0]},${t3[1]}`); }
     });
   }
 });

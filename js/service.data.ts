@@ -1,6 +1,14 @@
 var _storage, storage   = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 var _lruCache, lruCache = () => { _lruCache = _lruCache || require('lru-cache'); return _lruCache; };
 
+var MONITOR = process.env.MONITOR != null;
+
+// perfomance monitoring
+// [time][srv.data ] load called     :
+// [time][srv.data ] load done       :
+var MONITOR_sdata = null;
+if (MONITOR) { MONITOR_sdata = process.hrtime(); }
+
 // angular data service
 angular.module('DataServices', ['MessageServices', 'mainModels'])
   .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', 
@@ -12,6 +20,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
 
     return {
       load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
+        if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] load called     : ${t[0]},${t[1]}`); }
         const d = $q.defer();
         storage().get('data', function(error: Error, data: yubo.YVoice[]) {
           if (error) {
@@ -19,6 +28,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
             if (ng) { ng(error); }
             d.reject(error); return;
           }
+          if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] load done       : ${t[0]},${t[1]}`); }
           if (Object.keys(data).length === 0) {
             if (ok) { ok([]); }
             d.resolve([]);

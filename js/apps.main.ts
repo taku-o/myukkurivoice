@@ -19,6 +19,8 @@ if (DEBUG) {
   }
 }
 // perfomance monitoring
+// [time][apps.main] loadData called :
+// [time][apps.main] loadData done   :
 var MONITOR_display = null;
 if (MONITOR) { MONITOR_display = process.hrtime(); }
 
@@ -233,6 +235,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
 
     // util
     function loadData(): void {
+      if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData called : ${t[0]},${t[1]}`); }
       DataService.load(
         (dataList) => {
           if (dataList.length < 1) {
@@ -244,13 +247,13 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
           $timeout(() => { $scope.$apply(); });
           // initialize AquesService
           AquesService.init();
-          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('[time] view main : '+ t[0]+ ','+ t[1]); }
+          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData done   : ${t[0]},${t[1]}`); }
         },
         (err) => {
           MessageService.error('初期データの読み込みでエラーが起きました。', err);
           // initialize AquesService
           AquesService.init();
-          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('[time] view main : '+ t[0]+ ','+ t[1]); }
+          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData done   : ${t[0]},${t[1]}`); }
         }
       );
     }
