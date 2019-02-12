@@ -31,7 +31,7 @@ describe('helpSearchDialog', function() {
       .click('#help')
       .windowByIndex(1)
       .click('#menu-search')
-      .windowByIndex(2)
+      .windowByIndex(2);
   });
 
   afterEach(function() {
