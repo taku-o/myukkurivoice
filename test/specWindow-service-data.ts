@@ -10,7 +10,7 @@ require('source-map-support').install();
 describe('specWindow-service-DataService', function() {
   this.timeout(10000);
 
-  let dirPath: string = null;
+  let dirPath: string | null = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
     dirPath = temp.mkdirSync(fsprefix);

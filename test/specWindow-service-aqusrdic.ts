@@ -12,7 +12,7 @@ require('source-map-support').install();
 describe('specWindow-service-AqUsrDicService', function() {
   this.timeout(10000);
 
-  let dirPath = null;
+  let dirPath: string | null = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
     dirPath = temp.mkdirSync(fsprefix);
