@@ -47,7 +47,7 @@ angular.module('MessageServices', [])
         };
         $rootScope.$broadcast('message', post);
       },
-      error: function(message: string, err: Error = null): void {
+      error: function(message: string, err: Error | null = null): void {
         if (err) {
           message = message + err.message;
         }
@@ -58,7 +58,7 @@ angular.module('MessageServices', [])
         };
         $rootScope.$broadcast('message', post);
       },
-      syserror: function(message: string, err: Error = null): void {
+      syserror: function(message: string, err: Error | null = null): void {
         if (err) {
           message = message + err.message;
         }

@@ -90,7 +90,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-typescript": "^5.0.0-alpha.3",
+    "gulp-typescript": "^5.0.0",
     "gulp-wrapper": "^1.0.0",
     "mocha": "^4.1.0",
     "node-notifier": "^5.2.1",
