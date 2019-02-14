@@ -5,8 +5,10 @@ var _log, log           = () => { _log = _log || require('electron-log'); return
 var MONITOR = process.env.MONITOR != null;
 
 // perfomance monitoring
-// [time][srv.data ] load called     :
-// [time][srv.data ] load done       :
+// [time][srv.data ] data load called:
+// [time][srv.data ] data load done  :
+// [time][srv.data ] hist load called:
+// [time][srv.data ] hist load done  :
 var MONITOR_sdata = null;
 if (MONITOR) { MONITOR_sdata = process.hrtime(); }
 
@@ -21,7 +23,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
 
     return {
       load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
-        if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] load called     : ${t[0]},${t[1]}`); }
+        if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] data load called: ${t[0]},${t[1]}`); }
         const d = $q.defer();
         storage().get('data', function(error: Error, data: yubo.YVoice[]) {
           if (error) {
@@ -29,7 +31,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
             if (ng) { ng(error); }
             d.reject(error); return;
           }
-          if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] load done       : ${t[0]},${t[1]}`); }
+          if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] data load done  : ${t[0]},${t[1]}`); }
           if (Object.keys(data).length === 0) {
             if (ok) { ok([]); }
             d.resolve([]);
@@ -100,11 +102,13 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
 
     return {
       load: function(): ng.IPromise<any> {
+        if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] hist load called: ${t[0]},${t[1]}`); }
         const d = $q.defer();
         storage().get('history', function(err: Error, data) {
           if (err) {
             d.reject(err); return;
           }
+          if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] hist load done  : ${t[0]},${t[1]}`); }
           cache().load(data);
           d.resolve(cache());
         });
