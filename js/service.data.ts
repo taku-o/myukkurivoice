@@ -1,5 +1,6 @@
 var _storage, storage   = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 var _lruCache, lruCache = () => { _lruCache = _lruCache || require('lru-cache'); return _lruCache; };
+var _log, log           = () => { _log = _log || require('electron-log'); return _log; };
 
 var MONITOR = process.env.MONITOR != null;
 
