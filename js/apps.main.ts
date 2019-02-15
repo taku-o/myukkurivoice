@@ -231,9 +231,8 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     // util
     function sequentialLoadData(): void {
       loadData(() => {
-        loadHistory(() => {
-          AquesService.init(); // initialize AquesService
-        });
+        loadHistory();
+        AquesService.init(); // initialize AquesService
       });
     }
     function loadData(nextTask: () => void): void {
@@ -257,17 +256,13 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         }
       );
     }
-    function loadHistory(nextTask: () => void): void {
+    function loadHistory(): void {
       HistoryService.load().then((cache) => {
         $scope.generatedList = HistoryService.getList();
         while ($scope.generatedList.length > 10) {
           $scope.generatedList.pop();
         }
         $timeout(() => { $scope.$apply(); });
-        nextTask();
-      })
-      .catch((err: Error) => {
-        nextTask();
       });
     }
 
