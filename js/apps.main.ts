@@ -243,9 +243,10 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
             MessageService.info('初期データを読み込みます。');
             dataList = DataService.initialData();
           }
-          $scope.yvoiceList = dataList;
-          $scope.yvoice = $scope.yvoiceList[0];
-          $timeout(() => { $scope.$apply(); });
+          $timeout(() => { // $scope.$apply
+            $scope.yvoiceList = dataList;
+            $scope.yvoice = $scope.yvoiceList[0];
+          });
           if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
           nextTask();
         },
@@ -258,11 +259,13 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     }
     function loadHistory(): void {
       HistoryService.load().then((cache) => {
-        $scope.generatedList = HistoryService.getList();
-        while ($scope.generatedList.length > 10) {
-          $scope.generatedList.pop();
+        const list = HistoryService.getList();
+        while (list.length > 10) {
+          list.pop();
         }
-        $timeout(() => { $scope.$apply(); });
+        $timeout(() => { // $scope.$apply
+          $scope.generatedList = list;
+        });
       });
     }
 
