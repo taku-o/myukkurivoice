@@ -72,8 +72,9 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       HistoryService.save();
     });
     $scope.$on('duration', (event, duration: number) => {
-      $scope.duration = duration;
-      $timeout(() => { $scope.$apply(); });
+      $timeout(() => { // $scope.$apply
+        $scope.duration = duration;
+      });
     });
 
     // shortcut
@@ -779,7 +780,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       } else {
         $scope.display = 'main';
         MessageService.info('標準の画面に切り替えます。');
-        $timeout(function(){
+        $timeout(() => {
           $scope.$apply();
           IntroService.shortcut();
         });
@@ -840,9 +841,10 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     ctrl.recentDocument = function(message: yubo.IRecordMessage): void {
       const r = HistoryService.get(message.wavFilePath);
       if (r) {
-        $scope.yinput.source = r.source;
-        $scope.yinput.encoded = r.encoded;
-        $timeout(() => { $scope.$apply(); });
+        $timeout(() => { // $scope.$apply
+          $scope.yinput.source = r.source;
+          $scope.yinput.encoded = r.encoded;
+        });
       } else {
         MessageService.info('履歴データは見つかりませんでした。');
       }
@@ -850,8 +852,9 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     ctrl.clearRecentDocuments = function(): void {
       app.clearRecentDocuments();
       HistoryService.clear();
-      $scope.generatedList = [];
-      $timeout(() => { $scope.$apply(); });
+      $timeout(() => { // $scope.$apply
+        $scope.generatedList = [];
+      });
     };
 
     ctrl.encode = function(): void {
