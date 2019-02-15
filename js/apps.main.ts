@@ -261,12 +261,11 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     }
     function loadHistory(): void {
       HistoryService.load().then((cache) => {
-        const list = HistoryService.getList();
-        while (list.length > 10) {
-          list.pop();
-        }
         $timeout(() => { // $scope.$apply
-          $scope.generatedList = list;
+          $scope.generatedList = HistoryService.getList();
+          while ($scope.generatedList.length > 10) {
+            $scope.generatedList.pop();
+          }
         });
       });
     }
