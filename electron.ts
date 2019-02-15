@@ -1,9 +1,8 @@
 'use strict';
 import {app,dialog,ipcMain} from 'electron';
-var _log, log             = () => { _log = _log || require('electron-log'); return _log; };
-var _path, path           = () => { _path = _path || require('path'); return _path; };
-var _waitUntil, waitUntil = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
-var _monitor, monitor     = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _log, log         = () => { _log = _log || require('electron-log'); return _log; };
+var _path, path       = () => { _path = _path || require('path'); return _path; };
+var _monitor, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 import * as Menu from './electron-menu';
 import * as Pane from './electron-window';
@@ -64,16 +63,11 @@ MYukkuriVoice.prototype.enableHelpMenu = Menu.enableHelpMenu;
 MYukkuriVoice.prototype.disableHelpMenu = Menu.disableHelpMenu;
 MYukkuriVoice.prototype.handleOpenFile = Launch.handleOpenFile;
 MYukkuriVoice.prototype.handleOpenUrl = Launch.handleOpenUrl;
-MYukkuriVoice.prototype.readyConfig = AppConfig.readyConfig;
 MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
 MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
 MYukkuriVoice.prototype.resetWindowSize = AppConfig.resetWindowSize;
 MYukkuriVoice.prototype.resetWindowPosition = AppConfig.resetWindowPosition;
-
-// load application settings
-// background loading config.
-myApp.loadAppConfig();
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
@@ -105,26 +99,14 @@ app.on('will-finish-launching', () => {
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
   if (MONITOR) { log().warn(monitor().format('electron', 'ready called')); }
-  // open main window.
-  // init menu
-  if (myApp.readyConfig()) {
+  myApp.loadAppConfig(() => {
+    // open main window.
+    // init menu
     myApp.showMainWindow();
     myApp.initAppMenu();
     myApp.initDockMenu();
     if (MONITOR) { log().warn(monitor().format('electron', 'ready done')); }
-  } else {
-    if (MONITOR) { log().warn('[warn] AppCfg is not initialized, still now.'); }
-    waitUntil()(100, 10,
-    () => {
-      return myApp.readyConfig();
-    },
-    () => {
-      myApp.showMainWindow();
-      myApp.initAppMenu();
-      myApp.initDockMenu();
-      if (MONITOR) { log().warn(monitor().format('electron', 'ready done')); }
-    });
-  }
+  });
 });
 
 // show window event
