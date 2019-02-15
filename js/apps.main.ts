@@ -4,6 +4,7 @@ var _clipboard, clipboard     = () => { _clipboard = _clipboard || require('elec
 var _path, path               = () => { _path = _path || require('path'); return _path; };
 var _fs, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
+var _monitor, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 // env
 var DEBUG = process.env.DEBUG != null;
@@ -18,11 +19,6 @@ if (DEBUG) {
     log().error('source-map-support or devtron is not installed.');
   }
 }
-// perfomance monitoring
-// [time][apps.main] loadData called :
-// [time][apps.main] loadData done   :
-var MONITOR_display = null;
-if (MONITOR) { MONITOR_display = process.hrtime(); }
 
 // application settings
 var desktopDir = app.getPath('desktop');
@@ -235,7 +231,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
 
     // util
     function loadData(): void {
-      if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData called : ${t[0]},${t[1]}`); }
+      if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData called')); }
       DataService.load(
         (dataList) => {
           if (dataList.length < 1) {
@@ -247,13 +243,13 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
           $timeout(() => { $scope.$apply(); });
           // initialize AquesService
           AquesService.init();
-          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData done   : ${t[0]},${t[1]}`); }
+          if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
         },
         (err) => {
           MessageService.error('初期データの読み込みでエラーが起きました。', err);
           // initialize AquesService
           AquesService.init();
-          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData done   : ${t[0]},${t[1]}`); }
+          if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
         }
       );
     }
