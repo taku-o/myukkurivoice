@@ -33,7 +33,7 @@ function loadAppConfig(nextTask: () => void): void {
       stored = data;
     }
 
-    const config = new (Config())({ defaults: stored }) as yubo.ElectronConfig;
+    const config = new (Config())({defaults: stored}) as yubo.ElectronConfig;
     ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
       if (config.has(k)) { appCfg[k] = config.get(k); }
     });
