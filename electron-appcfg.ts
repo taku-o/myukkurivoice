@@ -9,7 +9,7 @@ var _monitor, monitor = () => { _monitor = _monitor || require('electron-perform
 const MONITOR = process.env.MONITOR != null;
 
 // load
-function loadAppConfig(cb: () => void): void {
+function loadAppConfig(nextTask: () => void): void {
   if (MONITOR) { log().warn(monitor().format('appcfg', 'loadConfig start')); }
   const myApp = this;
   const appCfg: yubo.AppCfg = {
@@ -49,7 +49,7 @@ function loadAppConfig(cb: () => void): void {
     global.appCfg = appCfg;
 
     // finish, call next task.
-    cb();
+    nextTask();
   });
 }
 

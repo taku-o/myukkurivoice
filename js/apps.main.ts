@@ -226,11 +226,17 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
     ctrl.isTest = TEST;
-    loadData();
-    loadHistory();
+    sequentialLoadData();
 
     // util
-    function loadData(): void {
+    function sequentialLoadData(): void {
+      loadData(() => {
+        loadHistory(() => {
+          AquesService.init(); // initialize AquesService
+        });
+      });
+    }
+    function loadData(nextTask: () => void): void {
       if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData called')); }
       DataService.load(
         (dataList) => {
@@ -241,27 +247,30 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
           $scope.yvoiceList = dataList;
           $scope.yvoice = $scope.yvoiceList[0];
           $timeout(() => { $scope.$apply(); });
-          // initialize AquesService
-          AquesService.init();
           if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+          nextTask();
         },
         (err) => {
           MessageService.error('初期データの読み込みでエラーが起きました。', err);
-          // initialize AquesService
-          AquesService.init();
           if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+          nextTask();
         }
       );
     }
-    function loadHistory(): void {
+    function loadHistory(nextTask: () => void): void {
       HistoryService.load().then((cache) => {
         $scope.generatedList = HistoryService.getList();
         while ($scope.generatedList.length > 10) {
           $scope.generatedList.pop();
         }
+        $timeout(() => { $scope.$apply(); });
+        nextTask();
+      })
+      .catch((err: Error) => {
+        nextTask();
       });
-      $timeout(() => { $scope.$apply(); });
     }
+
     function selectedSource(): string {
       const textarea = document.getElementById('source') as HTMLInputElement;
       const start = textarea.selectionStart;
