@@ -4,6 +4,7 @@ var _clipboard, clipboard     = () => { _clipboard = _clipboard || require('elec
 var _path, path               = () => { _path = _path || require('path'); return _path; };
 var _fs, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
+var _monitor, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 // env
 var DEBUG = process.env.DEBUG != null;
@@ -19,10 +20,7 @@ if (DEBUG) {
   }
 }
 // perfomance monitoring
-// [time][apps.main] loadData called :
-// [time][apps.main] loadData done   :
-var MONITOR_display = null;
-if (MONITOR) { MONITOR_display = process.hrtime(); }
+if (MONITOR) { log().warn(monitor().format('apps.main', '----')); }
 
 // application settings
 var desktopDir = app.getPath('desktop');
@@ -74,8 +72,9 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       HistoryService.save();
     });
     $scope.$on('duration', (event, duration: number) => {
-      $scope.duration = duration;
-      $timeout(() => { $scope.$apply(); });
+      $timeout(() => { // $scope.$apply
+        $scope.duration = duration;
+      });
     });
 
     // shortcut
@@ -230,42 +229,48 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
     ctrl.isTest = TEST;
-    loadData();
-    loadHistory();
+    sequentialLoadData();
 
     // util
-    function loadData(): void {
-      if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData called : ${t[0]},${t[1]}`); }
+    function sequentialLoadData(): void {
+      loadData(() => {
+        loadHistory();
+        AquesService.init(); // initialize AquesService
+      });
+    }
+    function loadData(nextTask: () => void): void {
+      if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData called')); }
       DataService.load(
         (dataList) => {
           if (dataList.length < 1) {
             MessageService.info('初期データを読み込みます。');
             dataList = DataService.initialData();
           }
-          $scope.yvoiceList = dataList;
-          $scope.yvoice = $scope.yvoiceList[0];
-          $timeout(() => { $scope.$apply(); });
-          // initialize AquesService
-          AquesService.init();
-          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData done   : ${t[0]},${t[1]}`); }
+          $timeout(() => { // $scope.$apply
+            $scope.yvoiceList = dataList;
+            $scope.yvoice = $scope.yvoiceList[0];
+          });
+          if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+          nextTask();
         },
         (err) => {
           MessageService.error('初期データの読み込みでエラーが起きました。', err);
-          // initialize AquesService
-          AquesService.init();
-          if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn(`[time][apps.main] loadData done   : ${t[0]},${t[1]}`); }
+          if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+          nextTask();
         }
       );
     }
     function loadHistory(): void {
       HistoryService.load().then((cache) => {
-        $scope.generatedList = HistoryService.getList();
-        while ($scope.generatedList.length > 10) {
-          $scope.generatedList.pop();
-        }
+        $timeout(() => { // $scope.$apply
+          $scope.generatedList = HistoryService.getList();
+          while ($scope.generatedList.length > 10) {
+            $scope.generatedList.pop();
+          }
+        });
       });
-      $timeout(() => { $scope.$apply(); });
     }
+
     function selectedSource(): string {
       const textarea = document.getElementById('source') as HTMLInputElement;
       const start = textarea.selectionStart;
@@ -775,7 +780,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       } else {
         $scope.display = 'main';
         MessageService.info('標準の画面に切り替えます。');
-        $timeout(function(){
+        $timeout(() => {
           $scope.$apply();
           IntroService.shortcut();
         });
@@ -836,9 +841,10 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     ctrl.recentDocument = function(message: yubo.IRecordMessage): void {
       const r = HistoryService.get(message.wavFilePath);
       if (r) {
-        $scope.yinput.source = r.source;
-        $scope.yinput.encoded = r.encoded;
-        $timeout(() => { $scope.$apply(); });
+        $timeout(() => { // $scope.$apply
+          $scope.yinput.source = r.source;
+          $scope.yinput.encoded = r.encoded;
+        });
       } else {
         MessageService.info('履歴データは見つかりませんでした。');
       }
@@ -846,8 +852,9 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     ctrl.clearRecentDocuments = function(): void {
       app.clearRecentDocuments();
       HistoryService.clear();
-      $scope.generatedList = [];
-      $timeout(() => { $scope.$apply(); });
+      $timeout(() => { // $scope.$apply
+        $scope.generatedList = [];
+      });
     };
 
     ctrl.encode = function(): void {

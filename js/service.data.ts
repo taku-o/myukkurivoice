@@ -1,14 +1,9 @@
 var _storage, storage   = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 var _lruCache, lruCache = () => { _lruCache = _lruCache || require('lru-cache'); return _lruCache; };
 var _log, log           = () => { _log = _log || require('electron-log'); return _log; };
+var _monitor, monitor   = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 var MONITOR = process.env.MONITOR != null;
-
-// perfomance monitoring
-// [time][srv.data ] load called     :
-// [time][srv.data ] load done       :
-var MONITOR_sdata = null;
-if (MONITOR) { MONITOR_sdata = process.hrtime(); }
 
 // angular data service
 angular.module('DataServices', ['MessageServices', 'mainModels'])
@@ -21,7 +16,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
 
     return {
       load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
-        if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] load called     : ${t[0]},${t[1]}`); }
+        if (MONITOR) { log().warn(monitor().format('srv.data', 'data load called')); }
         const d = $q.defer();
         storage().get('data', function(error: Error, data: yubo.YVoice[]) {
           if (error) {
@@ -29,7 +24,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
             if (ng) { ng(error); }
             d.reject(error); return;
           }
-          if (MONITOR) { let t = process.hrtime(MONITOR_sdata); log().warn(`[time][srv.data ] load done       : ${t[0]},${t[1]}`); }
+          if (MONITOR) { log().warn(monitor().format('srv.data', 'data load done')); }
           if (Object.keys(data).length === 0) {
             if (ok) { ok([]); }
             d.resolve([]);
@@ -100,11 +95,13 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
 
     return {
       load: function(): ng.IPromise<any> {
+        if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load called')); }
         const d = $q.defer();
         storage().get('history', function(err: Error, data) {
           if (err) {
             d.reject(err); return;
           }
+          if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load done')); }
           cache().load(data);
           d.resolve(cache());
         });

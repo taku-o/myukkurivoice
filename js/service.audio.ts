@@ -137,6 +137,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         // @ts-ignore
         const audioCtx = new window.AudioContext();
         const processNodeList = [];
+        let sourceNode = null;
         let audioPlayNode = null;
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
           // create long size OfflineAudioContext. trim this buffer length lator.
@@ -153,16 +154,16 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, bufFrameCount, decodedData.sampleRate);
 
           // source
-          const inSourceNode = offlineCtx.createBufferSource();
-          inSourceNode.buffer = decodedData;
+          sourceNode = offlineCtx.createBufferSource();
+          sourceNode.buffer = decodedData;
 
           // playbackRate
           if (options.playbackRate && options.playbackRate != 1.0) {
-            inSourceNode.playbackRate.value = options.playbackRate;
+            sourceNode.playbackRate.value = options.playbackRate;
           }
           // detune
           if (options.detune && options.detune != 0) {
-            inSourceNode.detune.value = options.detune;
+            sourceNode.detune.value = options.detune;
           }
           // gain
           const gainNode = offlineCtx.createGain();
@@ -170,14 +171,14 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           processNodeList.push(gainNode);
 
           // connect
-          let lastNode = inSourceNode;
+          let lastNode = sourceNode;
           angular.forEach(processNodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
           lastNode.connect(offlineCtx.destination);
 
           // and start
-          inSourceNode.start(0);
+          sourceNode.start(0);
 
           // rendering
           return offlineCtx.startRendering().then((renderedBuffer) => {
@@ -212,10 +213,17 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         })
         .finally(() => {
           // close audio context
+          if (sourceNode) {
+            sourceNode.buffer = null;
+            sourceNode.disconnect();
+          }
           angular.forEach(processNodeList, (node) => {
             node.disconnect();
           });
-          if (audioPlayNode) { audioPlayNode.disconnect(); }
+          if (audioPlayNode) {
+            audioPlayNode.buffer = null;
+            audioPlayNode.disconnect();
+          }
           audioCtx.close();
         });
         return d.promise;
@@ -239,6 +247,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         // @ts-ignore
         const audioCtx = new window.AudioContext();
         const processNodeList = [];
+        let sourceNode = null;
         audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
@@ -254,16 +263,16 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, bufFrameCount, decodedData.sampleRate);
 
           // source
-          const inSourceNode = offlineCtx.createBufferSource();
-          inSourceNode.buffer = decodedData;
+          sourceNode = offlineCtx.createBufferSource();
+          sourceNode.buffer = decodedData;
 
           // playbackRate
           if (options.playbackRate && options.playbackRate != 1.0) {
-            inSourceNode.playbackRate.value = options.playbackRate;
+            sourceNode.playbackRate.value = options.playbackRate;
           }
           // detune
           if (options.detune && options.detune != 0) {
-            inSourceNode.detune.value = options.detune;
+            sourceNode.detune.value = options.detune;
           }
           // gain
           const gainNode = offlineCtx.createGain();
@@ -271,14 +280,14 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           processNodeList.push(gainNode);
 
           // connect
-          let lastNode = inSourceNode;
+          let lastNode = sourceNode;
           angular.forEach(processNodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
           lastNode.connect(offlineCtx.destination);
 
           // and start
-          inSourceNode.start(0);
+          sourceNode.start(0);
 
           // rendering
           return offlineCtx.startRendering().then((renderedBuffer) => {
@@ -318,6 +327,10 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         })
         .finally(() => {
           // close audio context
+          if (sourceNode) {
+            sourceNode.buffer = null;
+            sourceNode.disconnect();
+          }
           angular.forEach(processNodeList, (node) => {
             node.disconnect();
           });

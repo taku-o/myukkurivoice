@@ -49,8 +49,7 @@ declare namespace yubo {
     disableHelpMenu(): void;
     handleOpenFile(filePath: string): void;
     handleOpenUrl(scheme: string): void;
-    readyConfig(): boolean;
-    loadAppConfig(): void;
+    loadAppConfig(nextTask: () => void): void;
     updateAppConfig(options: yubo.AppCfg): void;
     resetAppConfig(): void;
     resetWindowSize(): void;

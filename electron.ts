@@ -1,8 +1,8 @@
 'use strict';
 import {app,dialog,ipcMain} from 'electron';
-var _log, log             = () => { _log = _log || require('electron-log'); return _log; };
-var _path, path           = () => { _path = _path || require('path'); return _path; };
-var _waitUntil, waitUntil = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
+var _log, log         = () => { _log = _log || require('electron-log'); return _log; };
+var _path, path       = () => { _path = _path || require('path'); return _path; };
+var _monitor, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 import * as Menu from './electron-menu';
 import * as Pane from './electron-window';
@@ -31,15 +31,7 @@ if (TEST && process.env.userData) {
   app.setPath('userData', process.env.userData);
 }
 // perfomance monitoring
-// [time][electron ] -----------------
-// [time][electron ] loadConfig done :
-// [time][electron ] read called     :
-// [time][electron ] read done       :
-let MONITOR_ready = null;
-if (MONITOR) {
-  log().warn('[time][electron ] ----------------');
-  MONITOR_ready = process.hrtime();
-}
+if (MONITOR) { log().warn(monitor().format('electron', '----------------')); }
 
 // MYukkuriVoice application
 const MYukkuriVoice = function(): void {
@@ -71,18 +63,11 @@ MYukkuriVoice.prototype.enableHelpMenu = Menu.enableHelpMenu;
 MYukkuriVoice.prototype.disableHelpMenu = Menu.disableHelpMenu;
 MYukkuriVoice.prototype.handleOpenFile = Launch.handleOpenFile;
 MYukkuriVoice.prototype.handleOpenUrl = Launch.handleOpenUrl;
-MYukkuriVoice.prototype.readyConfig = AppConfig.readyConfig;
 MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
 MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
 MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
 MYukkuriVoice.prototype.resetWindowSize = AppConfig.resetWindowSize;
 MYukkuriVoice.prototype.resetWindowPosition = AppConfig.resetWindowPosition;
-
-// load application settings
-setTimeout(() => {
-  myApp.loadAppConfig();
-  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn(`[time][electron ] loadConfig done : ${t[0]},${t[1]}`); }
-}, 0); // background loading config.
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
@@ -113,27 +98,15 @@ app.on('will-finish-launching', () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
-  if (MONITOR) { let t = process.hrtime(MONITOR_ready); log().warn(`[time][electron ] read called     : ${t[0]},${t[1]}`); }
-  // open main window.
-  // init menu
-  if (myApp.readyConfig()) {
+  if (MONITOR) { log().warn(monitor().format('electron', 'ready called')); }
+  myApp.loadAppConfig(() => {
+    // open main window.
+    // init menu
     myApp.showMainWindow();
     myApp.initAppMenu();
     myApp.initDockMenu();
-    if (MONITOR) { let t2 = process.hrtime(MONITOR_ready); log().warn(`[time][electron ] read done       : ${t2[0]},${t2[1]}`); }
-  } else {
-    if (MONITOR) { log().warn('[warn] AppCfg is not initialized, still now.'); }
-    waitUntil()(100, 10,
-    () => {
-      return myApp.readyConfig();
-    },
-    () => {
-      myApp.showMainWindow();
-      myApp.initAppMenu();
-      myApp.initDockMenu();
-      if (MONITOR) { let t3 = process.hrtime(MONITOR_ready); log().warn(`[time][electron ] read done       : ${t3[0]},${t3[1]}`); }
-    });
-  }
+    if (MONITOR) { log().warn(monitor().format('electron', 'ready done')); }
+  });
 });
 
 // show window event
