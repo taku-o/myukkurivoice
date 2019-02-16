@@ -55,12 +55,12 @@ angular.module('UtilServices', ['MessageServices'])
 
           const pattern = new RegExp(`^${prefix}(${numPattern})${ext}$`);
 
-          const npList = [];
+          const npList: number[] = [];
           files.forEach((file) => {
             try {
               if (pattern.test(file)) {
                 const matched = pattern.exec(file);
-                npList.push(Number(matched[1]));
+                npList.push(Number(matched![1]));
               }
             } catch(err) {
               if (err.code != 'ENOENT') {

@@ -1,14 +1,17 @@
 'use strict';
-var _crypto, crypto = () => { _crypto = _crypto || require('crypto'); return _crypto; };
-var _Config, Config = () => { _Config = _Config || require('electron-store'); return _Config; };
+var _crypto, crypto   = () => { _crypto = _crypto || require('crypto'); return _crypto; };
+var _Config, Config   = () => { _Config = _Config || require('electron-store'); return _Config; };
+var _storage, storage = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
+var _log, log         = () => { _log = _log || require('electron-log'); return _log; };
+var _monitor, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
-// readyConfig
-function readyConfig(): boolean {
-  return this.config != null && this.appCfg != null;
-}
+// env
+const MONITOR = process.env.MONITOR != null;
 
 // load
-function loadAppConfig(): void {
+function loadAppConfig(nextTask: () => void): void {
+  if (MONITOR) { log().warn(monitor().format('appcfg', 'loadConfig start')); }
+  const myApp = this;
   const appCfg: yubo.AppCfg = {
     mainWindow:       {width: 800, height: 665, x: null, y: null},
     helpWindow:       {width: 700, height: 700},
@@ -21,18 +24,33 @@ function loadAppConfig(): void {
     aq10UseKeyEncrypted: '',
   };
 
-  const config = new (Config())() as yubo.ElectronConfig;
-  ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
-    if (config.has(k)) { appCfg[k] = config.get(k); }
+  // get from storage
+  storage().get('config', function(error: Error, data: yubo.ElectronConfig) {
+    let stored = null;
+    if (error) {
+      stored = {};
+    } else {
+      stored = data;
+    }
+
+    const config = new (Config())({defaults: stored}) as yubo.ElectronConfig;
+    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
+      if (config.has(k)) { appCfg[k] = config.get(k); }
+    });
+    // if passPhrase not exists, record passPhrase.
+    if (! appCfg.passPhrase) {
+      appCfg.passPhrase = crypto().randomBytes(16).toString('hex');
+      config.set('passPhrase', appCfg.passPhrase);
+    }
+
+    if (MONITOR) { log().warn(monitor().format('appcfg', 'loadConfig done')); }
+    myApp.config = config;
+    myApp.appCfg = appCfg;
+    global.appCfg = appCfg;
+
+    // finish, call next task.
+    nextTask();
   });
-  // if passPhrase not exists, record passPhrase.
-  if (! appCfg.passPhrase) {
-    appCfg.passPhrase = crypto().randomBytes(16).toString('hex');
-    config.set('passPhrase', appCfg.passPhrase);
-  }
-  this.config = config;
-  this.appCfg = appCfg;
-  global.appCfg = appCfg;
 }
 
 // update
@@ -81,7 +99,6 @@ function resetWindowPosition(): void {
 
 // exports
 export {
-  readyConfig,
   loadAppConfig,
   updateAppConfig,
   resetAppConfig,

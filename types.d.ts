@@ -12,14 +12,14 @@ declare namespace yubo {
 
   // electron-appcfg.ts
   export interface AppCfg {
-    mainWindow:        { width: number, height: number, x: number, y: number };
+    mainWindow:        { width: number, height: number, x: number | null, y: number | null };
     helpWindow?:       { width: number, height: number };
     helpSearchDialog?: { width: number, height: number };
     systemWindow?:     { width: number, height: number };
     dictWindow?:       { width: number, height: number };
     audioServVer:        'html5audio' | 'webaudioapi';
     showMsgPane:         boolean;
-    passPhrase:          string;
+    passPhrase:          string | null;
     aq10UseKeyEncrypted: string;
   }
 
@@ -49,8 +49,7 @@ declare namespace yubo {
     disableHelpMenu(): void;
     handleOpenFile(filePath: string): void;
     handleOpenUrl(scheme: string): void;
-    readyConfig(): boolean;
-    loadAppConfig(): void;
+    loadAppConfig(nextTask: () => void): void;
     updateAppConfig(options: yubo.AppCfg): void;
     resetAppConfig(): void;
     resetWindowSize(): void;
