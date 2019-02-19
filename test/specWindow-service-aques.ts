@@ -99,7 +99,7 @@ describe('specWindow-service-AquesService', function() {
         assert.ok(!value, position());
       })
       .then(() => {
-        rimraf(`${dirPath}/userdict`, (err) => {
+        rimraf(`${dirPath}/userdict`, (err: Error) => {
         });
       })
       // catch error

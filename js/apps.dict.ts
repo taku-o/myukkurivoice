@@ -5,6 +5,7 @@ var _fs, fs                   = () => { _fs = _fs || require('fs'); return _fs; 
 var _parse, parse             = () => { _parse = _parse || require('csv-parse/lib/sync'); return _parse; };
 var _stringify, stringify     = () => { _stringify = _stringify || require('csv-stringify/lib/sync'); return _stringify; };
 var _epath, epath             = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _monitor, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 var unpackedPath = epath().getUnpackedPath();
 
@@ -21,8 +22,7 @@ if (DEBUG) {
   }
 }
 // perfomance monitoring
-var MONITOR_display = null;
-if (MONITOR) { MONITOR_display = process.hrtime(); }
+if (MONITOR) { log().warn(monitor().format('apps.dict', '----')); }
 
 // angular app
 angular.module('dictApp',
@@ -162,7 +162,7 @@ angular.module('dictApp',
       return this.loadCsv().then((records) => {
         $scope.gridOptions.data = records;
         $timeout(() => { $scope.$apply(); });
-        if (MONITOR) { let t = process.hrtime(MONITOR_display); log().warn('[time] view dict : '+ t[0]+ ','+ t[1]); }
+        if (MONITOR) { log().warn(monitor().format('apps.dict', 'record loaded')); }
         return true;
       });
       });

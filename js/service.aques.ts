@@ -126,8 +126,8 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
       aqDictPath = customDictPath;
     });
 
-    let aqKanji2KoeDevKey = null;
-    let aquesTalk10DevKey = null;
+    let aqKanji2KoeDevKey: string = null;
+    let aquesTalk10DevKey: string = null;
     let _isAqKanji2KoeDevkeySet = false;
     let _isAquesTalk10LicensekeySet = false;
     return {
