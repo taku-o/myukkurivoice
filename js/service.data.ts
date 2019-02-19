@@ -16,43 +16,33 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
     }
 
     return {
-      load: function(ok = null, ng = null): void {
+      load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'data load called')); }
-        const data = dataJson;
-        if (MONITOR) { log().warn(monitor().format('srv.data', 'data load done')); }
-        if (Object.keys(data).length === 0) {
-          if (ok) { ok([]); }
-        } else {
-          if (ok) { ok(data); }
-        }
+        const d = $q.defer();
+        setTimeout(() => {
+          const configPath = `${app.getPath('userData')}/data.json`;
+          let data: yubo.YVoice[] = null;
+          try {
+            data = require(configPath);
+            delete require.cache[configPath];
+          } catch(error) {
+            delete require.cache[configPath];
+            MessageService.syserror('ボイス設定の読込に失敗しました。', error);
+            if (ng) { ng(error); }
+            d.reject(error); return;
+          }
+
+          if (MONITOR) { log().warn(monitor().format('srv.data', 'data load done')); }
+          if (Object.keys(data).length === 0) {
+            if (ok) { ok([]); }
+            d.resolve([]);
+          } else {
+            if (ok) { ok(data); }
+            d.resolve(data);
+          }
+        }, 0);
+        return d.promise;
       },
-//      load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
-//        if (MONITOR) { log().warn(monitor().format('srv.data', 'data load called')); }
-//        const d = $q.defer();
-//        setTimeout(() => {
-//          const configPath = `${app.getPath('userData')}/data.json`;
-//          let data: yubo.YVoice[] = null;
-//          try {
-//            data = require(configPath);
-//            delete require.cache[configPath];
-//          } catch(error) {
-//            delete require.cache[configPath];
-//            MessageService.syserror('ボイス設定の読込に失敗しました。', error);
-//            if (ng) { ng(error); }
-//            d.reject(error); return;
-//          }
-//
-//          if (MONITOR) { log().warn(monitor().format('srv.data', 'data load done')); }
-//          if (Object.keys(data).length === 0) {
-//            if (ok) { ok([]); }
-//            d.resolve([]);
-//          } else {
-//            if (ok) { ok(data); }
-//            d.resolve(data);
-//          }
-//        }, 0);
-//        return d.promise;
-//      },
       initialData: function(): yubo.YVoice[] {
         const dataList = angular.copy(YVoiceInitialData);
         return dataList;
@@ -176,4 +166,3 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
     };
   }]);
 
-declare var dataJson: yubo.YVoice[];

@@ -208,13 +208,12 @@ angular.module('specApp',
 
     // DataService
     ctrl.load = function(): void {
-      DataService.load(
-        (list) => {
-          $scope.loadResult = JSON.stringify(list);
-        },
-        (err: Error) => {
-          $scope.loadErr = err.message;
-        });
+      DataService.load(null, null).then((list) => {
+        $scope.loadResult = JSON.stringify(list);
+      })
+      .catch((err: Error) => {
+        $scope.loadErr = err.message;
+      });
     };
     ctrl.initialData = function(): void {
       const r = DataService.initialData();

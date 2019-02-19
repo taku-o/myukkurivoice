@@ -229,6 +229,8 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
     ctrl.isTest = TEST;
+    $scope.yvoiceList = dataJson;
+    $scope.yvoice = dataJson.length > 0? dataJson[0]: null;
     sequentialLoadData();
 
     // util
@@ -240,25 +242,36 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     }
     function loadData(nextTask: () => void): void {
       if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData called')); }
-      DataService.load(
-        (dataList) => {
-          if (dataList.length < 1) {
-            MessageService.info('初期データを読み込みます。');
-            dataList = DataService.initialData();
-          }
-          $timeout(() => { // $scope.$apply
-            $scope.yvoiceList = dataList;
-            $scope.yvoice = $scope.yvoiceList[0];
-          });
-          if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
-          nextTask();
-        },
-        (err) => {
-          MessageService.error('初期データの読み込みでエラーが起きました。', err);
-          if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
-          nextTask();
-        }
-      );
+      let dataList = dataJson;
+      if (dataList.length < 1) {
+        MessageService.info('初期データを読み込みます。');
+        dataList = DataService.initialData();
+        $timeout(() => { // $scope.$apply
+          $scope.yvoiceList = dataList;
+          $scope.yvoice = $scope.yvoiceList[0];
+        });
+      }
+      if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+      nextTask();
+      //DataService.load(
+      //  (dataList) => {
+      //    if (dataList.length < 1) {
+      //      MessageService.info('初期データを読み込みます。');
+      //      dataList = DataService.initialData();
+      //    }
+      //    $timeout(() => { // $scope.$apply
+      //      $scope.yvoiceList = dataList;
+      //      $scope.yvoice = $scope.yvoiceList[0];
+      //    });
+      //    if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+      //    nextTask();
+      //  },
+      //  (err) => {
+      //    MessageService.error('初期データの読み込みでエラーが起きました。', err);
+      //    if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+      //    nextTask();
+      //  }
+      //);
     }
     function loadHistory(): void {
       HistoryService.load().then((cache) => {
@@ -981,3 +994,4 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
   }]);
 
 declare var global: NodeJS.Global;
+declare var dataJson: yubo.YVoice[];
