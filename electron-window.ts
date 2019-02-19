@@ -80,7 +80,7 @@ function showMainWindow(): void {
       const filePath = myApp.launchArgs.filePath; myApp.launchArgs = null; // for window reload
       const ext = path().extname(filePath);
       if (ext == '.wav') {
-        // not supported.
+        myApp.mainWindow.webContents.send('recentDocument', filePath);
       } else {
         myApp.mainWindow.webContents.send('dropTextFile', filePath);
       }

@@ -101,6 +101,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
       return _cache;
     }
 
+    let _loaded = false;
     return {
       load: function(): ng.IPromise<any> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load called')); }
@@ -113,13 +114,18 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
             delete require.cache[configPath];
           } catch(error) {
             delete require.cache[configPath];
+            _loaded = true;
             d.reject(error); return;
           }
           if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load done')); }
           cache().load(data);
+          _loaded = true;
           d.resolve(cache());
         }, 0);
         return d.promise;
+      },
+      loaded: function(): boolean {
+        return _loaded;
       },
       save: function(): ng.IPromise<boolean> {
         const d = $q.defer();

@@ -5,6 +5,7 @@ var _path, path               = () => { _path = _path || require('path'); return
 var _fs, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 var _monitor, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _waitUntil, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 // env
 var DEBUG = process.env.DEBUG != null;
@@ -202,13 +203,24 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     // recentDocument event
     ipcRenderer().on('recentDocument', (event, filePath: string) => {
       MessageService.action('select from Recent Document List.');
-      const r = HistoryService.get(filePath);
-      if (r) {
-        $scope.yinput.source = r.source;
-        $scope.yinput.encoded = r.encoded;
-        $timeout(() => { $scope.$apply(); });
+
+      const f = (filePath: string) => {
+        const r = HistoryService.get(filePath);
+        if (r) {
+          $scope.yinput.source = r.source;
+          $scope.yinput.encoded = r.encoded;
+          $timeout(() => { $scope.$apply(); });
+        } else {
+          MessageService.info('履歴データは見つかりませんでした。');
+        }
+      };
+
+      if (HistoryService.loaded()) {
+        f(filePath);
       } else {
-        MessageService.info('履歴データは見つかりませんでした。');
+        waitUntil()(300, 10, HistoryService.loaded, () => {
+          f(filePath);
+        });
       }
     });
 
