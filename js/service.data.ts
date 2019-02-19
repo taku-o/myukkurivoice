@@ -21,7 +21,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
         const d = $q.defer();
         setTimeout(() => {
           const configPath = `${app.getPath('userData')}/data.json`;
-          let data = null;
+          let data: yubo.YVoice[] = null;
           try {
             data = require(configPath);
             delete require.cache[configPath];
@@ -107,7 +107,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
         const d = $q.defer();
         setTimeout(() => {
           const configPath = `${app.getPath('userData')}/history.json`;
-          let data = null;
+          let data: yubo.IRecordMessage[] = null;
           try {
             data = require(configPath);
             delete require.cache[configPath];
