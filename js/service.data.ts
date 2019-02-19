@@ -1,3 +1,4 @@
+var app = require('electron').remote.app;
 var _storage, storage   = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 var _lruCache, lruCache = () => { _lruCache = _lruCache || require('lru-cache'); return _lruCache; };
 var _log, log           = () => { _log = _log || require('electron-log'); return _log; };
@@ -18,8 +19,12 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
       load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'data load called')); }
         const d = $q.defer();
-        storage().get('data', function(error: Error, data: yubo.YVoice[]) {
-          if (error) {
+        setTimeout(() => {
+          const configPath = `${app.getPath('userData')}/data.json`;
+          let data = null;
+          try {
+            data = require(configPath);
+          } catch(error) {
             MessageService.syserror('ボイス設定の読込に失敗しました。', error);
             if (ng) { ng(error); }
             d.reject(error); return;
@@ -32,7 +37,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
             if (ok) { ok(data); }
             d.resolve(data);
           }
-        });
+        }, 0);
         return d.promise;
       },
       initialData: function(): yubo.YVoice[] {
@@ -97,14 +102,18 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
       load: function(): ng.IPromise<any> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load called')); }
         const d = $q.defer();
-        storage().get('history', function(err: Error, data) {
-          if (err) {
-            d.reject(err); return;
+        setTimeout(() => {
+          const configPath = `${app.getPath('userData')}/history.json`;
+          let data = null;
+          try {
+            data = require(configPath);
+          } catch(error) {
+            d.reject(error); return;
           }
           if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load done')); }
           cache().load(data);
           d.resolve(cache());
-        });
+        }, 0);
         return d.promise;
       },
       save: function(): ng.IPromise<boolean> {

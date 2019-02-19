@@ -13,8 +13,8 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular aques service
 angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
-  .factory('AquesService', ['$q', '$timeout', 'MessageService', 'LicenseService',
-  ($q, $timeout, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
+  .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
+  ($q, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
     const ptr_void  = ref().refType(ref().types.void);
     const ptr_int   = ref().refType(ref().types.int);
     const ptr_char  = ref().refType(ref().types.char);
@@ -134,14 +134,14 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
       // get developer key in background.
       // delay loading. UI表示で必要な処理の後に呼ぶ
       init: function(): void {
-        $timeout(() => {
+        setTimeout(() => {
           LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
             aqKanji2KoeDevKey = licenseKey;
           });
           LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
             aquesTalk10DevKey = licenseKey;
           });
-        });
+        }, 0);
       },
       encode: function(source: string): string {
         if (!source) {
