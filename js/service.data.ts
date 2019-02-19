@@ -24,11 +24,14 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
           let data = null;
           try {
             data = require(configPath);
+            delete require.cache[configPath];
           } catch(error) {
+            delete require.cache[configPath];
             MessageService.syserror('ボイス設定の読込に失敗しました。', error);
             if (ng) { ng(error); }
             d.reject(error); return;
           }
+
           if (MONITOR) { log().warn(monitor().format('srv.data', 'data load done')); }
           if (Object.keys(data).length === 0) {
             if (ok) { ok([]); }
@@ -107,7 +110,9 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
           let data = null;
           try {
             data = require(configPath);
+            delete require.cache[configPath];
           } catch(error) {
+            delete require.cache[configPath];
             d.reject(error); return;
           }
           if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load done')); }
