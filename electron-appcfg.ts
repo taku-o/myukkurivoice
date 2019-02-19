@@ -1,7 +1,7 @@
 'use strict';
+import {app} from 'electron';
 var _crypto, crypto   = () => { _crypto = _crypto || require('crypto'); return _crypto; };
 var _Config, Config   = () => { _Config = _Config || require('electron-store'); return _Config; };
-var _storage, storage = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 var _log, log         = () => { _log = _log || require('electron-log'); return _log; };
 var _monitor, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
@@ -24,13 +24,13 @@ function loadAppConfig(nextTask: () => void): void {
     aq10UseKeyEncrypted: '',
   };
 
-  // get from storage
-  storage().get('config', function(error: Error, data: yubo.ElectronConfig) {
+  setTimeout(() => {
+    const configPath = `${app.getPath('userData')}/config.json`;
     let stored = null;
-    if (error) {
+    try {
+      stored = require(configPath);
+    } catch(e) {
       stored = {};
-    } else {
-      stored = data;
     }
 
     const config = new (Config())({defaults: stored}) as yubo.ElectronConfig;
@@ -50,7 +50,7 @@ function loadAppConfig(nextTask: () => void): void {
 
     // finish, call next task.
     nextTask();
-  });
+  }, 0);
 }
 
 // update
