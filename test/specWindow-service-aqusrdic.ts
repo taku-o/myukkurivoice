@@ -65,19 +65,19 @@ describe('specWindow-service-AqUsrDicService', function() {
         });
       })
       .then(() => {
-        rimraf(`${dirPath}/userdict`, (err) => {
+        rimraf(`${dirPath}/userdict`, (err: Error) => {
         });
       })
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
       })
-      .getMainProcessLogs().then((logs) => {
+      .getMainProcessLogs().then((logs: string[]) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
         });
       })
-      .getRenderProcessLogs().then((logs) => {
+      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
           assert.ok(! log.message.match(/error/i), position());
         });
@@ -109,19 +109,19 @@ describe('specWindow-service-AqUsrDicService', function() {
         });
       })
       .then(() => {
-        rimraf(`${dirPath}/userdict`, (err) => {
+        rimraf(`${dirPath}/userdict`, (err: Error) => {
         });
       })
       // catch error
       .catch((err: Error) => {
         assert.fail(err.message);
       })
-      .getMainProcessLogs().then((logs) => {
+      .getMainProcessLogs().then((logs: string[]) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
         });
       })
-      .getRenderProcessLogs().then((logs) => {
+      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
           assert.ok(! log.message.match(/error/i), position());
         });
@@ -152,12 +152,12 @@ describe('specWindow-service-AqUsrDicService', function() {
       .catch((err: Error) => {
         assert.fail(err.message);
       })
-      .getMainProcessLogs().then((logs) => {
+      .getMainProcessLogs().then((logs: string[]) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
         });
       })
-      .getRenderProcessLogs().then((logs) => {
+      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
           assert.ok(! log.message.match(/error/i), position());
         });
@@ -184,12 +184,12 @@ describe('specWindow-service-AqUsrDicService', function() {
       .catch((err: Error) => {
         assert.fail(err.message);
       })
-      .getMainProcessLogs().then((logs) => {
+      .getMainProcessLogs().then((logs: string[]) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
         });
       })
-      .getRenderProcessLogs().then((logs) => {
+      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
           assert.ok(! log.message.match(/error/i), position());
         });
