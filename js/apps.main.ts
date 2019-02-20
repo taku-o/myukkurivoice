@@ -28,7 +28,7 @@ var desktopDir = app.getPath('desktop');
 
 // angular app
 angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 'mainModels'])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {

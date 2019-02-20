@@ -13,7 +13,7 @@ if (DEBUG) {
 }
 // help search app
 angular.module('helpSearchApp', [])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {

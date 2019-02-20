@@ -29,7 +29,7 @@ angular.module('dictApp',
   ['dictModels', 'dictServices',
    'ui.grid', 'ui.grid.edit', 'ui.grid.rowEdit', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ui.grid.cellNav',
   ])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {

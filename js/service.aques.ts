@@ -14,7 +14,7 @@ var unpackedPath = epath().getUnpackedPath();
 // angular aques service
 angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
   .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
-  ($q, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
+  ($q: ng.IQService, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
     const ptr_void  = ref().refType(ref().types.void);
     const ptr_int   = ref().refType(ref().types.int);
     const ptr_char  = ref().refType(ref().types.char);

@@ -9,7 +9,7 @@ var MONITOR = process.env.MONITOR != null;
 // angular data service
 angular.module('DataServices', ['MessageServices', 'mainModels'])
   .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', 
-  ($q, YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[], MessageService: yubo.MessageService): yubo.DataService => {
+  ($q: ng.IQService, YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[], MessageService: yubo.MessageService): yubo.DataService => {
 
     function uniqId(): string {
       return ('0000' + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
@@ -18,7 +18,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
     return {
       load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'data load called')); }
-        const d = $q.defer();
+        const d = $q.defer<yubo.YVoice[]>();
         setTimeout(() => {
           const configPath = `${app.getPath('userData')}/data.json`;
           let data: yubo.YVoice[] = null;
@@ -55,7 +55,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
         return cloned;
       },
       save: function(dataList: yubo.YVoice[]): ng.IPromise<boolean> {
-        const d = $q.defer();
+        const d = $q.defer<boolean>();
         storage().set('data', dataList, function(error: Error) {
           if (error) {
             MessageService.syserror('ボイス設定の保存に失敗しました。', error);
@@ -67,7 +67,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
         return d.promise;
       },
       clear: function(): ng.IPromise<boolean> {
-        const d = $q.defer();
+        const d = $q.defer<boolean>();
         storage().remove('data', function(error: Error) {
           if (error) {
             MessageService.syserror('ボイス設定の削除に失敗しました。', error);
@@ -88,7 +88,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
       },
     };
   }])
-  .factory('HistoryService', ['$q', ($q): yubo.HistoryService => {
+  .factory('HistoryService', ['$q', ($q: ng.IQService): yubo.HistoryService => {
     const MS_MAX_AGE = 1000 * 60 * 60 * 24 * 30; // 30 days
     let _cache;
     function cache(): any {
@@ -102,7 +102,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
     return {
       load: function(): ng.IPromise<any> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load called')); }
-        const d = $q.defer();
+        const d = $q.defer<any>();
         setTimeout(() => {
           const configPath = `${app.getPath('userData')}/history.json`;
           let data: yubo.IRecordMessage[] = null;
@@ -124,7 +124,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
         return _loaded;
       },
       save: function(): ng.IPromise<boolean> {
-        const d = $q.defer();
+        const d = $q.defer<boolean>();
         const data = cache().dump();
         storage().set('history', data, function(err: Error) {
           if (err) {
@@ -135,7 +135,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
         return d.promise;
       },
       clear: function(): ng.IPromise<boolean> {
-        const d = $q.defer();
+        const d = $q.defer<boolean>();
         cache().reset();
         storage().remove('history', function(err: Error) {
           if (err) {

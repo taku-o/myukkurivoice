@@ -6,7 +6,7 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular license service
 angular.module('LicenseServices', [])
-  .factory('LicenseService', ['$q', ($q): yubo.LicenseService => {
+  .factory('LicenseService', ['$q', ($q: ng.IQService): yubo.LicenseService => {
     const consumerKeyCache = {};
 
     // encrypt decrypt
@@ -41,7 +41,7 @@ angular.module('LicenseServices', [])
         return decrypt(passPhrase, encryptedKey);
       },
       consumerKey: function(licenseType: string): ng.IPromise<string> {
-        const d = $q.defer();
+        const d = $q.defer<string>();
 
         // get key from cache if exists
         if (consumerKeyCache[licenseType]) {

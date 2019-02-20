@@ -18,7 +18,7 @@
 //}
 // help app
 angular.module('helpApp', ['IncludeDirectives'])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   //.factory('$exceptionHandler', () => {

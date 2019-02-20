@@ -15,7 +15,7 @@ if (DEBUG) {
 // application spec app
 angular.module('specApp',
   ['mainModels', 'dictModels', 'mainServices', 'dictServices'])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {

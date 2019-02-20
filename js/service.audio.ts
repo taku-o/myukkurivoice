@@ -4,13 +4,13 @@ var _WavEncoder, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-
 
 // angular audio service
 angular.module('AudioServices', ['MessageServices', 'UtilServices'])
-  .factory('AudioService1', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.AudioService1 => {
+  .factory('AudioService1', ['$q', 'MessageService', ($q: ng.IQService, MessageService: yubo.MessageService): yubo.AudioService1 => {
     // Audio base AudioService
     let audio = null;
 
     return {
       play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
-        const d = $q.defer();
+        const d = $q.defer<string>();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
           d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
@@ -47,7 +47,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         audio.pause();
       },
       record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
-        const d = $q.defer();
+        const d = $q.defer<string>();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
           d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
@@ -69,7 +69,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     };
   }])
   .factory('AudioService2', ['$q', 'MessageService', 'AppUtilService',
-  ($q, MessageService: yubo.MessageService, AppUtilService: yubo.AppUtilService): yubo.AudioService2 => {
+  ($q: ng.IQService, MessageService: yubo.MessageService, AppUtilService: yubo.AppUtilService): yubo.AudioService2 => {
     // Web Audio API base AudioService
     let runningNode = null;
 
@@ -124,7 +124,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
     return {
       play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
-        const d = $q.defer();
+        const d = $q.defer<string>();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
           d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
@@ -189,7 +189,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             // report duration
             AppUtilService.reportDuration(nAudioBuffer.duration);
 
-            const dInPlay = $q.defer();
+            const dInPlay = $q.defer<string>();
             // play voice
             audioPlayNode = audioCtx.createBufferSource();
             audioPlayNode.buffer = nAudioBuffer;
@@ -232,7 +232,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         if (runningNode) { runningNode.stop(0); runningNode = null; }
       },
       record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
-        const d = $q.defer();
+        const d = $q.defer<string>();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
           d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
@@ -306,7 +306,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
               audioData.channelData[i] = nAudioBuffer.getChannelData(i);
             }
             // create wav file.
-            const dInEncode = $q.defer();
+            const dInEncode = $q.defer<string>();
             WavEncoder().encode(audioData).then((buffer) => {
               fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err) => {
                 if (err) {
