@@ -10,10 +10,9 @@ var dataJson: yubo.YVoice[] = null;
 try {
   if (MONITOR) { log().warn(monitor().format('main.pre', 'load json called')); }
   dataJson = require(dataJsonFile);
-  delete require.cache[dataJsonFile];
   if (MONITOR) { log().warn(monitor().format('main.pre', 'load json done')); }
 } catch (e) {
   dataJson = [];
-  delete require.cache[dataJsonFile];
 }
+delete require.cache[dataJsonFile];
 
