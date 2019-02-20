@@ -23,11 +23,7 @@
     "semi": ["error", "always"]
   },
   "overrides": {
-    "files": [
-      "*.ts",
-      "js/*.ts",
-      "test/*.ts"
-    ],
+    "files": ["*.ts", "js/*.ts", "test/*.ts"],
     "parser": "typescript-eslint-parser",
     "rules": {
       "comma-dangle": ["error", "always-multiline"],

@@ -68,12 +68,12 @@ describe('specWindow-service-AudioService2', function() {
       .catch((err: Error) => {
         assert.fail(err.message);
       })
-      .getMainProcessLogs().then((logs) => {
+      .getMainProcessLogs().then((logs: string[]) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
         });
       })
-      .getRenderProcessLogs().then((logs) => {
+      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
           assert.ok(! log.message.match(/error/i), position());
         });
@@ -134,12 +134,12 @@ describe('specWindow-service-AudioService2', function() {
       .catch((err: Error) => {
         assert.fail(err.message);
       })
-      .getMainProcessLogs().then((logs) => {
+      .getMainProcessLogs().then((logs: string[]) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
         });
       })
-      .getRenderProcessLogs().then((logs) => {
+      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
           assert.ok(! log.message.match(/error/i), position());
         });

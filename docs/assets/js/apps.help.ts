@@ -18,7 +18,7 @@
 //}
 // help app
 angular.module('helpApp', ['IncludeDirectives'])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   //.factory('$exceptionHandler', () => {
@@ -57,7 +57,7 @@ angular.module('helpApp', ['IncludeDirectives'])
     $scope.$location = $location;
 
     // event url hash changed
-    $scope.$on('$locationChangeSuccess', (event) => {
+    $scope.$on('$locationChangeSuccess', (event: ng.IAngularEvent) => {
       // fix broken url
       if ($location.url().startsWith('/%23')) {
         $window.location.href = $location.absUrl().replace('%23', '#');
@@ -74,7 +74,7 @@ angular.module('helpApp', ['IncludeDirectives'])
     });
 
     //// shortcut
-    //ipcRenderer().on('shortcut', (event, action) => {
+    //ipcRenderer().on('shortcut', (event: ng.IAngularEvent, action: string) => {
     //  switch (action) {
     //    case 'moveToPreviousHelp':
     //      moveToPreviousHelp();
@@ -121,11 +121,11 @@ angular.module('helpApp', ['IncludeDirectives'])
     //ctrl.openSearchForm = function(): void {
     //  ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
     //};
-    ctrl.browser = function(url): void {
+    ctrl.browser = function(url: string): void {
       //shell().openExternal(url);
       $window.open(url);
     };
-    ctrl.showItemInFolder = function(path): void {
+    ctrl.showItemInFolder = function(path: string): void {
       //const expanded = path.replace('$HOME', homeDir);
       //shell().showItemInFolder(expanded);
     };

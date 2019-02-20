@@ -6,8 +6,8 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular license service
 angular.module('LicenseServices', [])
-  .factory('LicenseService', ['$q', ($q): yubo.LicenseService => {
-    const consumerKeyCache = {};
+  .factory('LicenseService', ['$q', ($q: ng.IQService): yubo.LicenseService => {
+    const consumerKeyCache: { [index: string]: string; } = {};
 
     // encrypt decrypt
     const encrypt = function(passPhrase: string, plainKey: string): string {
@@ -41,7 +41,7 @@ angular.module('LicenseServices', [])
         return decrypt(passPhrase, encryptedKey);
       },
       consumerKey: function(licenseType: string): ng.IPromise<string> {
-        const d = $q.defer();
+        const d = $q.defer<string>();
 
         // get key from cache if exists
         if (consumerKeyCache[licenseType]) {
@@ -53,13 +53,13 @@ angular.module('LicenseServices', [])
         const cmdOptions = {};
         const secretCmd = `${unpackedPath}/vendor/secret`;
         // passPhrase
-        exec()(`${secretCmd} -key=passPhrase`, cmdOptions, (err: Error, stdout, stderr) => {
+        exec()(`${secretCmd} -key=passPhrase`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
           if (err) {
             d.reject(err); return;
           }
           const devPassPhrase = stdout;
         // licenseKey
-        exec()(`${secretCmd} -key=${licenseType}`, cmdOptions, (err: Error, stdout, stderr) => {
+        exec()(`${secretCmd} -key=${licenseType}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
           if (err) {
             d.reject(err); return;
           }

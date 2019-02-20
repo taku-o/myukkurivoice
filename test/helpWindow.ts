@@ -47,12 +47,12 @@ describe('helpWindow', function() {
       .elements('.nav-group-item.navs-item').then((response: HTMLInputElement) => {
         assert.equal(response.value.length, 2, position());
       })
-      .getMainProcessLogs().then((logs) => {
+      .getMainProcessLogs().then((logs: string[]) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
         });
       })
-      .getRenderProcessLogs().then((logs) => {
+      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
           assert.ok(! log.message.match(/error/i), position());
         });
@@ -199,12 +199,12 @@ describe('helpWindow', function() {
       .catch((err: Error) => {
         assert.fail(err.message);
       })
-      .getMainProcessLogs().then((logs) => {
+      .getMainProcessLogs().then((logs: string[]) => {
         logs.forEach((log) => {
           assert.ok(! log.match(/error/i), position());
         });
       })
-      .getRenderProcessLogs().then((logs) => {
+      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
           assert.ok(! log.message.match(/error/i), position());
         });
