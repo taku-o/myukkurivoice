@@ -49,10 +49,7 @@ usage:
     gulp lint-js
     gulp lint-q
     gulp less
-    gulp format-ts
-    gulp format-less
-    gulp format-md
-    gulp format-json
+    gulp format
     gulp toc
     gulp doc
     gulp clean
@@ -106,8 +103,10 @@ gulp.task('less', () => {
     .pipe(gulp.dest('.'));
 });
 
+// format
+gulp.task('format', []);
 // format-ts
-gulp.task('format-ts', () => {
+gulp.task('_format-ts', () => {
   return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts'], { base: '.' })
     .pipe(prettier({
       parser: 'typescript',
@@ -125,7 +124,7 @@ gulp.task('format-ts', () => {
     .pipe(gulp.dest('.'));
 });
 // format-js
-gulp.task('format-js', () => {
+gulp.task('_format-js', () => {
   return gulp.src(['gulpfile.js'], { base: '.' })
     .pipe(prettier({
       arrowParens: 'always',
@@ -142,7 +141,7 @@ gulp.task('format-js', () => {
     .pipe(gulp.dest('.'));
 });
 // format-less
-gulp.task('format-less', () => {
+gulp.task('_format-less', () => {
   return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
     .pipe(prettier({
       parser: 'less',
@@ -152,7 +151,7 @@ gulp.task('format-less', () => {
     .pipe(gulp.dest('.'));
 });
 // format-md
-gulp.task('format-md', () => {
+gulp.task('_format-md', () => {
   return gulp.src(['docs/*.md'], { base: '.' })
     .pipe(prettier({
       parser: 'markdown',
@@ -162,9 +161,8 @@ gulp.task('format-md', () => {
     }))
     .pipe(gulp.dest('.'));
 });
-
 // format-json
-gulp.task('format-json', () => {
+gulp.task('_format-json', () => {
   return gulp.src(['.eslintrc.json', 'tsconfig.json'], { base: '.' })
     .pipe(prettier({
       parser: 'json',
