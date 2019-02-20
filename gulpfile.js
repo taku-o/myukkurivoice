@@ -124,6 +124,23 @@ gulp.task('format-ts', () => {
     }))
     .pipe(gulp.dest('.'));
 });
+// format-js
+gulp.task('format-js', () => {
+  return gulp.src(['gulpfile.js'], { base: '.' })
+    .pipe(prettier({
+      arrowParens: 'always',
+      bracketSpacing: false,
+      insertPragma: false,
+      proseWrap: 'never',
+      requirePragma: false,
+      semi: true,
+      singleQuote: true,
+      tabWidth: 2,
+      trailingComma: 'all',
+      useTabs: false,
+    }))
+    .pipe(gulp.dest('.'));
+});
 // format-less
 gulp.task('format-less', () => {
   return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
@@ -145,6 +162,7 @@ gulp.task('format-md', () => {
     }))
     .pipe(gulp.dest('.'));
 });
+
 // format-json
 gulp.task('format-json', () => {
   return gulp.src(['.eslintrc.json', 'tsconfig.json'], { base: '.' })
