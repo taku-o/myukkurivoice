@@ -51,14 +51,14 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       YInput: yubo.YInput, YInputInitialData: yubo.YInput) {
 
     // event listener
-    $scope.$on('message', (event, message: yubo.IMessage | yubo.IRecordMessage) => {
+    $scope.$on('message', (event: ng.IAngularEvent, message: yubo.IMessage | yubo.IRecordMessage) => {
       $scope.messageList.unshift(message);
       while ($scope.messageList.length > 5) {
         $scope.messageList.pop();
       }
       $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('wavGenerated', (event, wavFileInfo: yubo.IRecordMessage) => {
+    $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo: yubo.IRecordMessage) => {
       // lastWavFile
       $scope.lastWavFile = wavFileInfo;
       // generatedList
@@ -72,14 +72,14 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       HistoryService.add(wavFileInfo);
       HistoryService.save();
     });
-    $scope.$on('duration', (event, duration: number) => {
+    $scope.$on('duration', (event: ng.IAngularEvent, duration: number) => {
       $timeout(() => { // $scope.$apply
         $scope.duration = duration;
       });
     });
 
     // shortcut
-    ipcRenderer().on('shortcut', (event, action: string) => {
+    ipcRenderer().on('shortcut', (event: Electron.Event, action: string) => {
       switch (action) {
         case 'play':
           document.getElementById('play').click();
@@ -133,7 +133,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     });
 
     // menu
-    ipcRenderer().on('menu', (event, action: string) => {
+    ipcRenderer().on('menu', (event: Electron.Event, action: string) => {
       switch (action) {
         case 'clear':
           document.getElementById('clear').click();
@@ -185,7 +185,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     });
 
     // dropTextFile event
-    ipcRenderer().on('dropTextFile', (event, filePath: string) => {
+    ipcRenderer().on('dropTextFile', (event: Electron.Event, filePath: string) => {
       MessageService.action('drop textfile to app icon.');
       fs().readFile(filePath, 'utf-8', (err: Error, data: string) => {
         if (err) {
@@ -201,7 +201,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       });
     });
     // recentDocument event
-    ipcRenderer().on('recentDocument', (event, filePath: string) => {
+    ipcRenderer().on('recentDocument', (event: Electron.Event, filePath: string) => {
       MessageService.action('select from Recent Document List.');
 
       const f = (filePath: string) => {
@@ -588,7 +588,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
 
       // 通常保存
       } else {
-        ipcRenderer().once('showSaveDialog', (event, filePath) => {
+        ipcRenderer().once('showSaveDialog', (event: Electron.Event, filePath) => {
           if (!filePath) {
             MessageService.error('保存先が指定されませんでした。');
             return;
@@ -968,7 +968,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         return;
       }
 
-      ipcRenderer().once('showDirDialog', (event, dirs) => {
+      ipcRenderer().once('showDirDialog', (event: Electron.Event, dirs) => {
         if (!dirs || dirs.length < 1) {
           return;
         }
@@ -998,7 +998,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       MessageService.action('switch alwaysOnTop option.');
       ipcRenderer().send('switchAlwaysOnTop', 'mainWindow');
     };
-    ipcRenderer().on('switchAlwaysOnTop', (event, newflg) => {
+    ipcRenderer().on('switchAlwaysOnTop', (event: Electron.Event, newflg: boolean) => {
       $scope.alwaysOnTop = newflg;
       MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
       $timeout(() => { $scope.$apply(); });

@@ -57,7 +57,7 @@ angular.module('helpApp', ['IncludeDirectives'])
     $scope.$location = $location;
 
     // event url hash changed
-    $scope.$on('$locationChangeSuccess', (event) => {
+    $scope.$on('$locationChangeSuccess', (event: ng.IAngularEvent) => {
       // fix broken url
       if ($location.url().startsWith('/%23')) {
         $window.location.href = $location.absUrl().replace('%23', '#');
@@ -74,7 +74,7 @@ angular.module('helpApp', ['IncludeDirectives'])
     });
 
     //// shortcut
-    //ipcRenderer().on('shortcut', (event, action) => {
+    //ipcRenderer().on('shortcut', (event: ng.IAngularEvent, action: string) => {
     //  switch (action) {
     //    case 'moveToPreviousHelp':
     //      moveToPreviousHelp();
