@@ -15,6 +15,7 @@ const markdownHtml = require('gulp-markdown');
 const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
 const notifier = require('node-notifier');
+const prettier = require('gulp-prettier');
 const rename = require("gulp-rename");
 const replace = require('gulp-replace');
 const rimraf = require('rimraf');
@@ -48,6 +49,8 @@ usage:
     gulp lint-js
     gulp lint-q
     gulp less
+    gulp format-ts
+    gulp format-md
     gulp toc
     gulp doc
     gulp clean
@@ -98,6 +101,36 @@ gulp.task('lint-q', () => {
 gulp.task('less', () => {
   return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
     .pipe(less())
+    .pipe(gulp.dest('.'));
+});
+
+// format-ts
+gulp.task('format-ts', () => {
+  return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts'], { base: '.' })
+    .pipe(prettier({
+      parser: 'typescript',
+      arrowParens: 'always',
+      bracketSpacing: false,
+      insertPragma: false,
+      proseWrap: 'never',
+      requirePragma: false,
+      semi: true,
+      singleQuote: true,
+      tabWidth: 2,
+      trailingComma: 'all',
+      useTabs: false,
+    }))
+    .pipe(gulp.dest('.'));
+});
+// format-md
+gulp.task('format-md', () => {
+  return gulp.src(['docs/*.md'], { base: '.' })
+    .pipe(prettier({
+      parser: 'markdown',
+      proseWrap: 'preserve',
+      tabWidth: 2,
+      useTabs: false,
+    }))
     .pipe(gulp.dest('.'));
 });
 

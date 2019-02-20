@@ -88,6 +88,7 @@
     "gulp-markdown-pdf": "^6.0.0",
     "gulp-markdown-toc": "^1.1.0",
     "gulp-mocha": "^6.0.0",
+    "gulp-prettier": "^2.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
     "gulp-sourcemaps": "^2.6.4",
