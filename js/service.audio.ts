@@ -6,7 +6,7 @@ var _WavEncoder, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-
 angular.module('AudioServices', ['MessageServices', 'UtilServices'])
   .factory('AudioService1', ['$q', 'MessageService', ($q: ng.IQService, MessageService: yubo.MessageService): yubo.AudioService1 => {
     // Audio base AudioService
-    let audio = null;
+    let audio: HTMLAudioElement = null;
 
     return {
       play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
@@ -71,7 +71,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
   .factory('AudioService2', ['$q', 'MessageService', 'AppUtilService',
   ($q: ng.IQService, MessageService: yubo.MessageService, AppUtilService: yubo.AppUtilService): yubo.AudioService2 => {
     // Web Audio API base AudioService
-    let runningNode = null;
+    let runningNode: AudioBufferSourceNode = null;
 
     function toArrayBuffer(bufWav): any {
       const aBuffer = new ArrayBuffer(bufWav.length);
@@ -82,10 +82,10 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       return aBuffer;
     }
 
-    function correctFrameCount(audioBuffer): number {
+    function correctFrameCount(audioBuffer: AudioBuffer): number {
       let max = 0;
       for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
-        const buffer = audioBuffer.getChannelData(i);
+        const buffer: Float32Array = audioBuffer.getChannelData(i);
         const count = correctBufferLength(buffer);
         if (max < count) {
           max = count;
@@ -93,7 +93,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       }
       return max;
     }
-    function correctBufferLength(buffer): number {
+    function correctBufferLength(buffer: Float32Array): number {
       let pos = 0;
       for (let i = buffer.length - 1; i >= 0; i--) {
         if (buffer[i] !== 0x00) {
@@ -106,7 +106,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       }
       return pos;
     }
-    function buildCorrectAudioBuffer(audioBuffer): any {
+    function buildCorrectAudioBuffer(audioBuffer: AudioBuffer): any {
       const frameCount = correctFrameCount(audioBuffer);
       const nAudioBuffer = new AudioBuffer({
           numberOfChannels: audioBuffer.numberOfChannels,
@@ -136,10 +136,10 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
         // @ts-ignore
         const audioCtx = new window.AudioContext();
-        const processNodeList = [];
-        let sourceNode = null;
-        let audioPlayNode = null;
-        audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
+        const processNodeList: AudioNode[] = [];
+        let sourceNode: AudioBufferSourceNode = null;
+        let audioPlayNode: AudioBufferSourceNode = null;
+        audioCtx.decodeAudioData(aBuffer).then((decodedData: AudioBuffer) => {
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
             (!options.playbackRate)? 1:
@@ -166,12 +166,12 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             sourceNode.detune.value = options.detune;
           }
           // gain
-          const gainNode = offlineCtx.createGain();
+          const gainNode: GainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
           processNodeList.push(gainNode);
 
           // connect
-          let lastNode = sourceNode;
+          let lastNode: AudioNode = sourceNode;
           angular.forEach(processNodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
@@ -181,7 +181,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           sourceNode.start(0);
 
           // rendering
-          return offlineCtx.startRendering().then((renderedBuffer) => {
+          return offlineCtx.startRendering().then((renderedBuffer: AudioBuffer) => {
 
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
@@ -246,9 +246,9 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
 
         // @ts-ignore
         const audioCtx = new window.AudioContext();
-        const processNodeList = [];
-        let sourceNode = null;
-        audioCtx.decodeAudioData(aBuffer).then((decodedData) => {
+        const processNodeList: AudioNode[] = [];
+        let sourceNode: AudioBufferSourceNode = null;
+        audioCtx.decodeAudioData(aBuffer).then((decodedData: AudioBuffer) => {
           // create long size OfflineAudioContext. trim this buffer length lator.
           const prate =
             (!options.playbackRate)? 1:
@@ -275,12 +275,12 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             sourceNode.detune.value = options.detune;
           }
           // gain
-          const gainNode = offlineCtx.createGain();
+          const gainNode: GainNode = offlineCtx.createGain();
           gainNode.gain.value = options.volume;
           processNodeList.push(gainNode);
 
           // connect
-          let lastNode = sourceNode;
+          let lastNode: AudioNode = sourceNode;
           angular.forEach(processNodeList, (node) => {
             lastNode.connect(node); lastNode = node;
           });
@@ -290,7 +290,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
           sourceNode.start(0);
 
           // rendering
-          return offlineCtx.startRendering().then((renderedBuffer) => {
+          return offlineCtx.startRendering().then((renderedBuffer: AudioBuffer) => {
             // trim unused empty buffer.
             const nAudioBuffer = buildCorrectAudioBuffer(renderedBuffer);
 
@@ -308,7 +308,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             // create wav file.
             const dInEncode = $q.defer<string>();
             WavEncoder().encode(audioData).then((buffer) => {
-              fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err) => {
+              fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err: Error) => {
                 if (err) {
                   dInEncode.reject(err); return;
                 }
