@@ -108,12 +108,11 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
           let data: yubo.IRecordMessage[] = null;
           try {
             data = require(configPath);
-            delete require.cache[configPath];
           } catch(error) {
-            delete require.cache[configPath];
-            _loaded = true;
-            d.reject(error); return;
+            data = [];
           }
+          delete require.cache[configPath];
+
           if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load done')); }
           cache().load(data);
           _loaded = true;
