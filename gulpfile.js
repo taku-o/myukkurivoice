@@ -15,6 +15,7 @@ const markdownHtml = require('gulp-markdown');
 const mkdirp = require('mkdirp');
 const mocha = require('gulp-mocha');
 const notifier = require('node-notifier');
+const prettier = require('gulp-prettier');
 const rename = require("gulp-rename");
 const replace = require('gulp-replace');
 const rimraf = require('rimraf');
@@ -48,6 +49,7 @@ usage:
     gulp lint-js
     gulp lint-q
     gulp less
+    gulp format
     gulp toc
     gulp doc
     gulp clean
@@ -98,6 +100,75 @@ gulp.task('lint-q', () => {
 gulp.task('less', () => {
   return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
     .pipe(less())
+    .pipe(gulp.dest('.'));
+});
+
+// format
+gulp.task('format', []);
+// format-ts
+gulp.task('_format-ts', () => {
+  return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts'], { base: '.' })
+    .pipe(prettier({
+      parser: 'typescript',
+      arrowParens: 'always',
+      bracketSpacing: false,
+      insertPragma: false,
+      proseWrap: 'never',
+      requirePragma: false,
+      semi: true,
+      singleQuote: true,
+      tabWidth: 2,
+      trailingComma: 'all',
+      useTabs: false,
+    }))
+    .pipe(gulp.dest('.'));
+});
+// format-js
+gulp.task('_format-js', () => {
+  return gulp.src(['gulpfile.js'], { base: '.' })
+    .pipe(prettier({
+      arrowParens: 'always',
+      bracketSpacing: false,
+      insertPragma: false,
+      proseWrap: 'never',
+      requirePragma: false,
+      semi: true,
+      singleQuote: true,
+      tabWidth: 2,
+      trailingComma: 'all',
+      useTabs: false,
+    }))
+    .pipe(gulp.dest('.'));
+});
+// format-less
+gulp.task('_format-less', () => {
+  return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
+    .pipe(prettier({
+      parser: 'less',
+      tabWidth: 4,
+      useTabs: false,
+    }))
+    .pipe(gulp.dest('.'));
+});
+// format-md
+gulp.task('_format-md', () => {
+  return gulp.src(['docs/*.md'], { base: '.' })
+    .pipe(prettier({
+      parser: 'markdown',
+      proseWrap: 'preserve',
+      tabWidth: 2,
+      useTabs: false,
+    }))
+    .pipe(gulp.dest('.'));
+});
+// format-json
+gulp.task('_format-json', () => {
+  return gulp.src(['.eslintrc.json', 'tsconfig.json'], { base: '.' })
+    .pipe(prettier({
+      parser: 'json',
+      tabWidth: 2,
+      useTabs: false,
+    }))
     .pipe(gulp.dest('.'));
 });
 

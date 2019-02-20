@@ -29,7 +29,7 @@ angular.module('dictApp',
   ['dictModels', 'dictServices',
    'ui.grid', 'ui.grid.edit', 'ui.grid.rowEdit', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ui.grid.cellNav',
   ])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {
@@ -45,7 +45,7 @@ angular.module('dictApp',
       AqUsrDicService: yubo.AqUsrDicService, IntroService: yubo.IntroService, KindList: yubo.KindEntry[]) {
 
     // menu
-    ipcRenderer().on('menu', (event, action: string) => {
+    ipcRenderer().on('menu', (event: Electron.Event, action: string) => {
       switch (action) {
         case 'add':
           document.getElementById('append-record').click();
@@ -74,7 +74,7 @@ angular.module('dictApp',
       }
     });
     // shortcut
-    ipcRenderer().on('shortcut', (event, action: string) => {
+    ipcRenderer().on('shortcut', (event: Electron.Event, action: string) => {
       switch (action) {
         case 'add':
           document.getElementById('append-record').click();

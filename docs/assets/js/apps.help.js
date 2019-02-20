@@ -71,7 +71,7 @@ angular.module('helpApp', ['IncludeDirectives'])
             $timeout(function () { $scope.$apply(); });
         });
         //// shortcut
-        //ipcRenderer().on('shortcut', (event, action) => {
+        //ipcRenderer().on('shortcut', (event: ng.IAngularEvent, action: string) => {
         //  switch (action) {
         //    case 'moveToPreviousHelp':
         //      moveToPreviousHelp();

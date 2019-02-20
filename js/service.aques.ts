@@ -14,7 +14,7 @@ var unpackedPath = epath().getUnpackedPath();
 // angular aques service
 angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
   .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
-  ($q, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
+  ($q: ng.IQService, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
     const ptr_void  = ref().refType(ref().types.void);
     const ptr_int   = ref().refType(ref().types.int);
     const ptr_char  = ref().refType(ref().types.char);
@@ -225,7 +225,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
             encoding: 'binary',
           };
           const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
-          exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout, stderr) => {
+          exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
             if (err) {
               log().info(`maquestalk1 failed. ${err}`);
               d.reject(err); return;

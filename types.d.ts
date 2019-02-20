@@ -165,6 +165,7 @@ declare namespace yubo {
   }
   export interface HistoryService {
     load(): ng.IPromise<any>;
+    loaded(): boolean;
     save(): ng.IPromise<boolean>;
     clear(): ng.IPromise<boolean>;
     get(wavFilePath: string): yubo.IRecordMessage;

@@ -23,20 +23,10 @@
     "sourceMap": false,
     "strictNullChecks": false, // temporary
     "traceResolution": false,
-    "lib": [
-      "dom",
-      "es7",
-    ],
+    "lib": ["dom", "es7"]
   },
-  "include": [
-    "*.ts",
-    "js/*.ts",
-    "test/*.ts",
-    "docs/assets/js/*.ts",
-  ],
-  "exclude": [
-    "node_modules",
-  ],
+  "include": ["*.ts", "js/*.ts", "test/*.ts", "docs/assets/js/*.ts"],
+  "exclude": ["node_modules"],
   "formatCodeOptions": {
     "indentSize": 2,
     "tabSize": 2
