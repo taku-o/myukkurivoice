@@ -2,7 +2,7 @@ var _path, path = () => { _path = _path || require('path'); return _path; };
 
 // angular message service
 angular.module('MessageServices', [])
-  .factory('MessageService', ['$rootScope', ($rootScope): yubo.MessageService => {
+  .factory('MessageService', ['$rootScope', ($rootScope: ng.IRootScopeService): yubo.MessageService => {
     return {
       action: function(message: string): void {
         const post: yubo.IMessage = {

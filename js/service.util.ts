@@ -47,7 +47,7 @@ angular.module('UtilServices', ['MessageServices'])
       },
       nextNumber: function(dir: string, prefix: string): ng.IPromise<number> {
         const d = $q.defer<number>();
-        fs().readdir(dir, (err: Error, files) => {
+        fs().readdir(dir, (err: Error, files: string[]) => {
           if (err) {
             MessageService.syserror('ディレクトリを参照できませんでした。', err);
             d.reject(err); return;
@@ -85,7 +85,7 @@ angular.module('UtilServices', ['MessageServices'])
       },
     };
   }])
-  .factory('AppUtilService', ['$rootScope', ($rootScope): yubo.AppUtilService => {
+  .factory('AppUtilService', ['$rootScope', ($rootScope: ng.IRootScopeService): yubo.AppUtilService => {
     return {
       disableRhythm: function(encoded: string): string {
         return encoded.replace(/['/]/g, '');

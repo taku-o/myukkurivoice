@@ -225,7 +225,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
             encoding: 'binary',
           };
           const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
-          exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout, stderr) => {
+          exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
             if (err) {
               log().info(`maquestalk1 failed. ${err}`);
               d.reject(err); return;

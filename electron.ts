@@ -84,12 +84,12 @@ app.on('window-all-closed', () => {
 
 app.on('will-finish-launching', () => {
   // receive drop file to app icon event
-  app.on('open-file', (event, filePath: string) => {
+  app.on('open-file', (event: Electron.Event, filePath: string) => {
     event.preventDefault();
     myApp.handleOpenFile(filePath);
   });
   // receive protocol call
-  app.on('open-url', (event, url: string) => {
+  app.on('open-url', (event: Electron.Event, url: string) => {
     event.preventDefault();
     myApp.handleOpenUrl(url);
   });
@@ -110,24 +110,24 @@ app.on('ready', () => {
 });
 
 // show window event
-ipcMain.on('showHelpWindow', (event, message) => {
+ipcMain.on('showHelpWindow', (event: Electron.Event, message: string) => {
   myApp.showHelpWindow();
 });
-ipcMain.on('showHelpSearchDialog', (event, message) => {
+ipcMain.on('showHelpSearchDialog', (event: Electron.Event, message: string) => {
   myApp.showHelpSearchDialog();
 });
-ipcMain.on('showSystemWindow', (event, message) => {
+ipcMain.on('showSystemWindow', (event: Electron.Event, message: string) => {
   myApp.showSystemWindow();
 });
-ipcMain.on('showDictWindow', (event, message) => {
+ipcMain.on('showDictWindow', (event: Electron.Event, message: string) => {
   myApp.showDictWindow();
 });
-ipcMain.on('showSpecWindow', (event, message) => {
+ipcMain.on('showSpecWindow', (event: Electron.Event, message: string) => {
   myApp.showSpecWindow();
 });
 
 // showSaveDialog
-ipcMain.on('showSaveDialog', (event, message) => {
+ipcMain.on('showSaveDialog', (event: Electron.Event, message: string) => {
   const options = {
     title: 'wav save dialog',
     filters: [
@@ -139,7 +139,7 @@ ipcMain.on('showSaveDialog', (event, message) => {
 });
 
 // showDirDialog
-ipcMain.on('showDirDialog', (event, defaultPath) => {
+ipcMain.on('showDirDialog', (event: Electron.Event, defaultPath: string) => {
   const options = {
     title: 'select wav save directory',
     properties: ['openDirectory' as 'openDirectory', 'createDirectory' as 'createDirectory'],
@@ -150,7 +150,7 @@ ipcMain.on('showDirDialog', (event, defaultPath) => {
 });
 
 // drag out wav file
-ipcMain.on('ondragstartwav', (event, filePath) => {
+ipcMain.on('ondragstartwav', (event: Electron.Event, filePath: string) => {
   const imgPath = path().join(__dirname, '/images/ic_music_video_black_24dp_1x.png');
   event.sender.startDrag({
     file: filePath,
@@ -159,7 +159,7 @@ ipcMain.on('ondragstartwav', (event, filePath) => {
 });
 
 // updateAppConfig
-ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
+ipcMain.on('updateAppConfig', (event: Electron.Event, options: yubo.AppCfg) => {
   myApp.updateAppConfig(options);
   const dialogOptions = {
     type: 'info',
@@ -176,7 +176,7 @@ ipcMain.on('updateAppConfig', (event, options: yubo.AppCfg) => {
 });
 
 // resetAppConfig
-ipcMain.on('resetAppConfig', (event, message) => {
+ipcMain.on('resetAppConfig', (event: Electron.Event, message: string) => {
   myApp.resetAppConfig();
   const dialogOptions = {
     type: 'info',
@@ -209,7 +209,7 @@ function resetAppConfigOnMain(): void {
 }
 MYukkuriVoice.prototype.resetAppConfigOnMain = resetAppConfigOnMain;
 
-ipcMain.on('reloadMainWindow', (event, message) => {
+ipcMain.on('reloadMainWindow', (event: Electron.Event, message: string) => {
   myApp.mainWindow.webContents.reload();
   event.sender.send('reloadMainWindow', message);
 });
@@ -220,7 +220,7 @@ function switchAlwaysOnTop(): void {
   myApp.mainWindow.setAlwaysOnTop(newflg);
   myApp.mainWindow.webContents.send('switchAlwaysOnTop', newflg);
 }
-ipcMain.on('switchAlwaysOnTop', (event, message) => {
+ipcMain.on('switchAlwaysOnTop', (event: Electron.Event, message: string) => {
   const newflg = !myApp.mainWindow.isAlwaysOnTop();
   myApp.mainWindow.setAlwaysOnTop(newflg);
   event.sender.send('switchAlwaysOnTop', newflg);

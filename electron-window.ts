@@ -215,7 +215,7 @@ function showHelpSearchDialog(): void {
   this.helpSearchDialog.webContents.on('did-finish-load', () => {
     myApp.helpSearchDialog.show(); myApp.helpSearchDialog.focus();
   });
-  this.helpSearchDialog.on('close', (event) => {
+  this.helpSearchDialog.on('close', (event: Electron.Event) => {
     event.preventDefault();
     myApp.helpSearchDialog.hide();
   });

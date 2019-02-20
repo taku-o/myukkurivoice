@@ -121,11 +121,11 @@ angular.module('helpApp', ['IncludeDirectives'])
     //ctrl.openSearchForm = function(): void {
     //  ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
     //};
-    ctrl.browser = function(url): void {
+    ctrl.browser = function(url: string): void {
       //shell().openExternal(url);
       $window.open(url);
     };
-    ctrl.showItemInFolder = function(path): void {
+    ctrl.showItemInFolder = function(path: string): void {
       //const expanded = path.replace('$HOME', homeDir);
       //shell().showItemInFolder(expanded);
     };

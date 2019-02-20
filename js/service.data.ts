@@ -154,7 +154,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
       },
       getList: function(): yubo.IRecordMessage[] {
         const historyList = cache().values();
-        historyList.sort((a, b) => {
+        historyList.sort((a: yubo.IRecordMessage, b: yubo.IRecordMessage) => {
           if (a.created > b.created) {
               return -1;
           } else if (a.created < b.created) {
