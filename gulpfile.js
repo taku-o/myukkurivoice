@@ -50,7 +50,9 @@ usage:
     gulp lint-q
     gulp less
     gulp format-ts
+    gulp format-less
     gulp format-md
+    gulp format-json
     gulp toc
     gulp doc
     gulp clean
@@ -122,12 +124,32 @@ gulp.task('format-ts', () => {
     }))
     .pipe(gulp.dest('.'));
 });
+// format-less
+gulp.task('format-less', () => {
+  return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
+    .pipe(prettier({
+      parser: 'less',
+      tabWidth: 4,
+      useTabs: false,
+    }))
+    .pipe(gulp.dest('.'));
+});
 // format-md
 gulp.task('format-md', () => {
   return gulp.src(['docs/*.md'], { base: '.' })
     .pipe(prettier({
       parser: 'markdown',
       proseWrap: 'preserve',
+      tabWidth: 2,
+      useTabs: false,
+    }))
+    .pipe(gulp.dest('.'));
+});
+// format-json
+gulp.task('format-json', () => {
+  return gulp.src(['.eslintrc.json', 'tsconfig.json'], { base: '.' })
+    .pipe(prettier({
+      parser: 'json',
       tabWidth: 2,
       useTabs: false,
     }))
