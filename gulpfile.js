@@ -131,7 +131,7 @@ gulp.task('_format-ts', () => {
           tabWidth: 2,
           trailingComma: 'all',
           useTabs: false,
-        }),
+        })
       )
       .pipe(gulp.dest('.'))
   );
@@ -151,9 +151,9 @@ gulp.task('_format-js', () => {
         semi: true,
         singleQuote: true,
         tabWidth: 2,
-        trailingComma: 'all',
+        trailingComma: 'es5',
         useTabs: false,
-      }),
+      })
     )
     .pipe(gulp.dest('.'));
 });
@@ -168,7 +168,7 @@ gulp.task('_format-json', () => {
         proseWrap: 'preserve',
         tabWidth: 2,
         useTabs: false,
-      }),
+      })
     )
     .pipe(gulp.dest('.'));
 });
@@ -183,7 +183,7 @@ gulp.task('_format-less', () => {
         proseWrap: 'preserve',
         tabWidth: 4,
         useTabs: false,
-      }),
+      })
     )
     .pipe(gulp.dest('.'));
 });
@@ -197,7 +197,7 @@ gulp.task('_format-md', () => {
         proseWrap: 'preserve',
         tabWidth: 2,
         useTabs: false,
-      }),
+      })
     )
     .pipe(gulp.dest('.'));
 });
@@ -225,18 +225,18 @@ gulp.task('_readme:pdf', () => {
         linkify: function(content) {
           return content;
         },
-      }),
+      })
     )
     .pipe(
       markdownPdf({
         cssPath: 'docs/assets/css/readme-pdf.css',
-      }),
+      })
     )
     .pipe(
       rename({
         basename: 'README',
         extname: '.pdf',
-      }),
+      })
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
@@ -257,13 +257,13 @@ gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:htm
 </head>
 <body>`,
         footer: '</body></html>',
-      }),
+      })
     )
     .pipe(
       rename({
         basename: 'README',
         extname: '.html',
-      }),
+      })
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
@@ -290,7 +290,7 @@ gulp.task('_manual:html', () => {
       rename({
         basename: 'help',
         extname: '.html',
-      }),
+      })
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
@@ -312,13 +312,13 @@ gulp.task('_releaseslog:pdf', () => {
     .pipe(
       markdownPdf({
         cssPath: 'docs/assets/css/readme-pdf.css',
-      }),
+      })
     )
     .pipe(
       rename({
         basename: 'releases',
         extname: '.pdf',
-      }),
+      })
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
@@ -329,7 +329,7 @@ gulp.task('_releaseslog:txt', () => {
       rename({
         basename: 'releases',
         extname: '.txt',
-      }),
+      })
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
@@ -526,8 +526,8 @@ gulp.task('_npm-install', (cb) => {
         {
           npm: '--production',
         },
-        cb,
-      ),
+        cb
+      )
     );
 });
 
@@ -739,7 +739,7 @@ gulp.task('_package-release', (cb) => {
           --ignore="/yarn\\.lock$"`,
     (err, stdout, stderr) => {
       cb(err);
-    },
+    }
   );
 });
 
@@ -914,6 +914,6 @@ gulp.task('_package-debug', (cb) => {
           --ignore="/yarn\\.lock$"`,
     (err, stdout, stderr) => {
       cb(err);
-    },
+    }
   );
 });
