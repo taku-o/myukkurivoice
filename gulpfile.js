@@ -432,24 +432,22 @@ gulp.task('_unpacked:mkdir', (cb) => {
 });
 gulp.task('_unpacked:cp', (cb) => {
   const UNPACK_DIR = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
-  fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`, (err) => {
-  fse.copy('vendor/AqUsrDic.framework',    `${UNPACK_DIR}/vendor/AqUsrDic.framework`, (err) => {
-  fse.copy('vendor/AquesTalk.framework',   `${UNPACK_DIR}/vendor/AquesTalk.framework`, (err) => {
-  fse.copy('vendor/AquesTalk2.framework',  `${UNPACK_DIR}/vendor/AquesTalk2.framework`, (err) => {
-  fse.copy('vendor/AquesTalk10.framework', `${UNPACK_DIR}/vendor/AquesTalk10.framework`, (err) => {
-  fse.copy('vendor/aq_dic_large',          `${UNPACK_DIR}/vendor/aq_dic_large`, (err) => {
-  fse.copy('vendor/phont',                 `${UNPACK_DIR}/vendor/phont`, (err) => {
-  fse.copy('vendor/maquestalk1',           `${UNPACK_DIR}/vendor/maquestalk1`, (err) => {
-  fse.copy('vendor/secret',                `${UNPACK_DIR}/vendor/secret`, (err) => {
+  Promise.all([
+    fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`),
+    fse.copy('vendor/AqUsrDic.framework',    `${UNPACK_DIR}/vendor/AqUsrDic.framework`),
+    fse.copy('vendor/AquesTalk.framework',   `${UNPACK_DIR}/vendor/AquesTalk.framework`),
+    fse.copy('vendor/AquesTalk2.framework',  `${UNPACK_DIR}/vendor/AquesTalk2.framework`),
+    fse.copy('vendor/AquesTalk10.framework', `${UNPACK_DIR}/vendor/AquesTalk10.framework`),
+    fse.copy('vendor/aq_dic_large',          `${UNPACK_DIR}/vendor/aq_dic_large`),
+    fse.copy('vendor/phont',                 `${UNPACK_DIR}/vendor/phont`),
+    fse.copy('vendor/maquestalk1',           `${UNPACK_DIR}/vendor/maquestalk1`),
+    fse.copy('vendor/secret',                `${UNPACK_DIR}/vendor/secret`),
+  ])
+  .then(() => {
+    cb();
+  })
+  .catch((err) => {
     cb(err);
-  });
-  });
-  });
-  });
-  });
-  });
-  });
-  });
   });
 });
 
