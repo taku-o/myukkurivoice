@@ -115,7 +115,7 @@ gulp.task('_format-ts', () => {
       bracketSpacing: false,
       insertPragma: false,
       printWidth: 300,
-      proseWrap: 'never',
+      proseWrap: 'preserve',
       requirePragma: false,
       semi: true,
       singleQuote: true,
