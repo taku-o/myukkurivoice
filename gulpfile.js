@@ -104,15 +104,17 @@ gulp.task('less', () => {
 });
 
 // format
-gulp.task('format', ['_format-json', '_format-md']);
+gulp.task('format', ['_format-json', '_format-md', '_format-less']);
 // format-ts
 gulp.task('_format-ts', () => {
-  return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts'], { base: '.' })
+  return gulp.src(['test/*.ts'], { base: '.' })
+  //return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts'], { base: '.' })
     .pipe(prettier({
       parser: 'typescript',
       arrowParens: 'always',
       bracketSpacing: false,
       insertPragma: false,
+      printWidth: 300,
       proseWrap: 'never',
       requirePragma: false,
       semi: true,
@@ -130,7 +132,8 @@ gulp.task('_format-js', () => {
       arrowParens: 'always',
       bracketSpacing: false,
       insertPragma: false,
-      proseWrap: 'never',
+      printWidth: 300,
+      proseWrap: 'preserve',
       requirePragma: false,
       semi: true,
       singleQuote: true,
@@ -145,6 +148,8 @@ gulp.task('_format-less', () => {
   return gulp.src(['css/*.less', 'docs/assets/css/*.less'], { base: '.' })
     .pipe(prettier({
       parser: 'less',
+      printWidth: 300,
+      proseWrap: 'preserve',
       tabWidth: 4,
       useTabs: false,
     }))
@@ -166,6 +171,8 @@ gulp.task('_format-json', () => {
   return gulp.src(['.eslintrc.json', 'tsconfig.json'], { base: '.' })
     .pipe(prettier({
       parser: 'json',
+      printWidth: 300,
+      proseWrap: 'preserve',
       tabWidth: 2,
       useTabs: false,
     }))
