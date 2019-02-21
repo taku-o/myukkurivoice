@@ -47,6 +47,7 @@ usage:
     gulp tsc
     gulp tsc-debug
     gulp lint
+    gulp lint-ts
     gulp lint-js
     gulp lint-q
     gulp lint-html
@@ -84,7 +85,8 @@ gulp.task('_rm-js', () => {
 });
 
 // lint
-gulp.task('lint', () => {
+gulp.task('lint', ['lint-q', 'lint-html']);
+gulp.task('lint-ts', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts'])
     .pipe(eslint({useEslintrc: true}))
