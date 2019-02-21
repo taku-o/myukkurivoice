@@ -23,6 +23,7 @@ const runSequence = require('run-sequence');
 const sourcemaps = require('gulp-sourcemaps');
 const toc = require('gulp-markdown-toc');
 const ts = require('gulp-typescript');
+const using = require('gulp-using');
 const wrapper = require('gulp-wrapper');
 
 const tsProject = ts.createProject('tsconfig.json');
@@ -48,6 +49,7 @@ usage:
     gulp lint
     gulp lint-js
     gulp lint-q
+    gulp lint-html
     gulp less
     gulp format
     gulp toc
@@ -99,6 +101,21 @@ gulp.task('lint-q', () => {
     .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '*.js', 'js/*.js', 'test/*.js', 'docs/assets/js/*.js'])
     .pipe(eslint({useEslintrc: true, quiet: true}))
     .pipe(eslint.format());
+});
+// lint-html
+gulp.task('lint-html', () => {
+  return gulp
+    .src(['*.html', 'docs/*.html', 'docs/_help/*.html'], {base: '.'})
+    .pipe(using({}))
+    .pipe(
+      prettier({
+        parser: 'angular',
+        printWidth: 300,
+        proseWrap: 'preserve',
+        tabWidth: 2,
+        useTabs: false,
+      })
+    );
 });
 
 // less
@@ -164,7 +181,7 @@ gulp.task('_format-js', () => {
 // format-html
 gulp.task('_format-html', () => {
   return gulp
-    .src(['*.html'], {base: '.'})
+    .src(['*.html', 'docs/*.html', 'docs/_help/*.html'], {base: '.'})
     .pipe(
       prettier({
         parser: 'angular',
