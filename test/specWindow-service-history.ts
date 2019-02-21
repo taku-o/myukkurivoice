@@ -28,9 +28,7 @@ describe('specWindow-service-HistoryService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -49,117 +47,138 @@ describe('specWindow-service-HistoryService', function() {
   // getList
   it('history scenario test', function() {
     const dummyData = {
-        wavFilePath: '/tmp/aa0001.wav',
-        wavFileName: 'aa0001.wav',
-        srcTextPath: '/tmp/aa0001.txt',
-        source: 'test',
-        encoded: "テ'_スト",
-        created: '2018-12-17T00:50:19.163Z',
-        body: '音声ファイルを保存しました',
-        quickLookPath: '/tmp/aa0001.wav',
-        type: 'record',
+      wavFilePath: '/tmp/aa0001.wav',
+      wavFileName: 'aa0001.wav',
+      srcTextPath: '/tmp/aa0001.txt',
+      source: 'test',
+      encoded: "テ'_スト",
+      created: '2018-12-17T00:50:19.163Z',
+      body: '音声ファイルを保存しました',
+      quickLookPath: '/tmp/aa0001.wav',
+      type: 'record',
     };
 
-    return this.client
-      // load
-      .click('#history-load')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        assert.ok(value, position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // getList
-      .click('#history-get-list')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        assert.equal('[]', value, position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // add
-      .setValue('#history-entry', JSON.stringify(dummyData))
-      .click('#history-add')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        assert.ok(value, position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // save
-      .click('#history-save')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        assert.ok(value, position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // get
-      .setValue('#history-key', '/tmp/aa0001.wav')
-      .click('#history-get')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal(parsed.srcTextPath, '/tmp/aa0001.txt', position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // getList
-      .click('#history-get-list')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 1, position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // clear
-      .click('#history-clear')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        assert.ok(value, position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // load
-      .click('#history-load')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        assert.ok(value, position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // getList
-      .click('#history-get-list')
-      .waitForValue('#history-result', 2000)
-      .getValue('#history-result').then((value: string) => {
-        assert.equal(value, '[]', position());
-      })
-      .getValue('#history-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // load
+        .click('#history-load')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // getList
+        .click('#history-get-list')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          assert.equal('[]', value, position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // add
+        .setValue('#history-entry', JSON.stringify(dummyData))
+        .click('#history-add')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // save
+        .click('#history-save')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // get
+        .setValue('#history-key', '/tmp/aa0001.wav')
+        .click('#history-get')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal(parsed.srcTextPath, '/tmp/aa0001.txt', position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // getList
+        .click('#history-get-list')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal(parsed.length, 1, position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // clear
+        .click('#history-clear')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // load
+        .click('#history-load')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // getList
+        .click('#history-get-list')
+        .waitForValue('#history-result', 2000)
+        .getValue('#history-result')
+        .then((value: string) => {
+          assert.equal(value, '[]', position());
+        })
+        .getValue('#history-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
-
 });

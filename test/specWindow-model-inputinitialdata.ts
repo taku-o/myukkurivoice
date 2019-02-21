@@ -27,9 +27,7 @@ describe('specWindow-model-YInputInitialData', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,26 +35,31 @@ describe('specWindow-model-YInputInitialData', function() {
   });
 
   it('YInputInitialData', function() {
-    return this.client
-      .click('#get-yinput-initial-data')
-      .getValue('#get-yinput-initial-data-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source, position());
-        assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .click('#get-yinput-initial-data')
+        .getValue('#get-yinput-initial-data-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source, position());
+          assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

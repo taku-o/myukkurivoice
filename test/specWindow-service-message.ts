@@ -27,9 +27,7 @@ describe('specWindow-service-MessageService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,207 +35,240 @@ describe('specWindow-service-MessageService', function() {
   });
 
   it('action', function() {
-    return this.client
-      .setValue('#message-service-post', '')
-      .click('#action')
-      .waitForValue('#message-service-post', 5000)
-      .getValue('#message-service-post').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('action message', parsed.body, position());
-        assert.equal('action', parsed.type, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#message-service-post', '')
+        .click('#action')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('action message', parsed.body, position());
+          assert.equal('action', parsed.type, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('record', function() {
-    return this.client
-      .setValue('#message-service-post', '')
-      .setValue('#last-wav-file', '')
-      .click('#record')
-      // event on message
-      .waitForValue('#message-service-post', 5000)
-      .getValue('#message-service-post').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('record message', parsed.body, position());
-        assert.equal('record', parsed.type, position());
-        assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
-        assert.equal('hoge.wav', parsed.wavFileName, position());
-        assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
-        assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
-      })
-      // event on wavGenerated
-      .waitForValue('#last-wav-file', 5000)
-      .getValue('#last-wav-file').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('record message', parsed.body, position());
-        assert.equal('record', parsed.type, position());
-        assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
-        assert.equal('hoge.wav', parsed.wavFileName, position());
-        assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
-        assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#message-service-post', '')
+        .setValue('#last-wav-file', '')
+        .click('#record')
+        // event on message
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('record message', parsed.body, position());
+          assert.equal('record', parsed.type, position());
+          assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
+          assert.equal('hoge.wav', parsed.wavFileName, position());
+          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+          assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
+        })
+        // event on wavGenerated
+        .waitForValue('#last-wav-file', 5000)
+        .getValue('#last-wav-file')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('record message', parsed.body, position());
+          assert.equal('record', parsed.type, position());
+          assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
+          assert.equal('hoge.wav', parsed.wavFileName, position());
+          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+          assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('recordSource', function() {
-    return this.client
-      .setValue('#message-service-post', '')
-      .click('#record-source')
-      // event on message
-      .waitForValue('#message-service-post', 5000)
-      .getValue('#message-service-post').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('record source', parsed.body, position());
-        assert.equal('source', parsed.type, position());
-        assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
-        assert.equal('/tmp/hoge.txt', parsed.quickLookPath, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#message-service-post', '')
+        .click('#record-source')
+        // event on message
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('record source', parsed.body, position());
+          assert.equal('source', parsed.type, position());
+          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+          assert.equal('/tmp/hoge.txt', parsed.quickLookPath, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('info', function() {
-    return this.client
-      .setValue('#message-service-post', '')
-      .click('#info')
-      .waitForValue('#message-service-post', 5000)
-      .getValue('#message-service-post').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('info message', parsed.body, position());
-        assert.equal('info', parsed.type, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#message-service-post', '')
+        .click('#info')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('info message', parsed.body, position());
+          assert.equal('info', parsed.type, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('error', function() {
-    return this.client
-      // with error
-      .setValue('#message-service-post', '')
-      .click('#error')
-      .waitForValue('#message-service-post', 5000)
-      .getValue('#message-service-post').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('error message' + 'err', parsed.body, position());
-        assert.equal('error', parsed.type, position());
-      })
-      // with no error
-      .setValue('#message-service-post', '')
-      .click('#error-null')
-      .waitForValue('#message-service-post', 5000)
-      .getValue('#message-service-post').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('error message', parsed.body, position());
-        assert.equal('error', parsed.type, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // with error
+        .setValue('#message-service-post', '')
+        .click('#error')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('error message' + 'err', parsed.body, position());
+          assert.equal('error', parsed.type, position());
+        })
+        // with no error
+        .setValue('#message-service-post', '')
+        .click('#error-null')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('error message', parsed.body, position());
+          assert.equal('error', parsed.type, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('syserror', function() {
-    return this.client
-      // with error
-      .setValue('#message-service-post', '')
-      .click('#syserror')
-      .waitForValue('#message-service-post', 5000)
-      .getValue('#message-service-post').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('syserror message' + 'err', parsed.body, position());
-        assert.equal('syserror', parsed.type, position());
-      })
-      // with no error
-      .setValue('#message-service-post', '')
-      .click('#syserror-null')
-      .waitForValue('#message-service-post', 5000)
-      .getValue('#message-service-post').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.ok(parsed.created, position());
-        assert.equal('syserror message', parsed.body, position());
-        assert.equal('syserror', parsed.type, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // with error
+        .setValue('#message-service-post', '')
+        .click('#syserror')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('syserror message' + 'err', parsed.body, position());
+          assert.equal('syserror', parsed.type, position());
+        })
+        // with no error
+        .setValue('#message-service-post', '')
+        .click('#syserror-null')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('syserror message', parsed.body, position());
+          assert.equal('syserror', parsed.type, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

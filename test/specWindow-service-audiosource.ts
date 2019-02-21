@@ -29,9 +29,7 @@ describe('specWindow-service-AudioSourceService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -39,55 +37,65 @@ describe('specWindow-service-AudioSourceService', function() {
   });
 
   it('sourceFname', function() {
-    return this.client
-      .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
-      .click('#source-fname')
-      .getValue('#source-fname-result').then((value: string) => {
-        assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt', position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
+        .click('#source-fname')
+        .getValue('#source-fname-result')
+        .then((value: string) => {
+          assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt', position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('save', function() {
     const txtfile = `${dirPath}/_myukkurivoice_hogehoge.txt`;
-    return this.client
-      .setValue('#file-path', txtfile)
-      .setValue('#source-text', 'hogehoge')
-      .click('#save')
-      .waitForValue('#save-result', 5000)
-      .getValue('#save-result').then((value: string) => {
-        assert.ok(value, position());
-        fs.readFile(txtfile, 'utf8', (err, text) => {
-          assert.ok(!err, position());
-          assert.equal('hogehoge', text, position());
-        });
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#file-path', txtfile)
+        .setValue('#source-text', 'hogehoge')
+        .click('#save')
+        .waitForValue('#save-result', 5000)
+        .getValue('#save-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+          fs.readFile(txtfile, 'utf8', (err, text) => {
+            assert.ok(!err, position());
+            assert.equal('hogehoge', text, position());
+          });
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

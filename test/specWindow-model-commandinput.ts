@@ -27,9 +27,7 @@ describe('specWindow-model-YCommandInput', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,26 +35,31 @@ describe('specWindow-model-YCommandInput', function() {
   });
 
   it('YCommandInput', function() {
-    return this.client
-      .click('#get-ycommand-input')
-      .getValue('#get-ycommand-input-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal('', parsed.name, position());
-        assert.equal('', parsed.text, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .click('#get-ycommand-input')
+        .getValue('#get-ycommand-input-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal('', parsed.name, position());
+          assert.equal('', parsed.text, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

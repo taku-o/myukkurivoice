@@ -27,9 +27,7 @@ describe('specWindow-model-YVoice', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,37 +35,42 @@ describe('specWindow-model-YVoice', function() {
   });
 
   it('YVoice', function() {
-    return this.client
-      .click('#get-yvoice')
-      .getValue('#get-yvoice-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal(null, parsed.id, position());
-        assert.equal('f1 女声1(ゆっくり)', parsed.name, position());
-        assert.equal('at1_f1', parsed.phont, position());
-        assert.equal('talk1', parsed.version, position());
-        assert.equal(100, parsed.speed, position());
-        assert.equal(1.0, parsed.playbackRate, position());
-        assert.equal(0, parsed.detune, position());
-        assert.equal(1.0, parsed.volume, position());
-        assert.equal(true, parsed.rhythmOn, position());
-        assert.equal(false, parsed.sourceWrite, position());
-        assert.equal(false, parsed.seqWrite, position());
-        assert.equal('', parsed.seqWriteOptions.dir, position());
-        assert.equal('', parsed.seqWriteOptions.prefix, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .click('#get-yvoice')
+        .getValue('#get-yvoice-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal(null, parsed.id, position());
+          assert.equal('f1 女声1(ゆっくり)', parsed.name, position());
+          assert.equal('at1_f1', parsed.phont, position());
+          assert.equal('talk1', parsed.version, position());
+          assert.equal(100, parsed.speed, position());
+          assert.equal(1.0, parsed.playbackRate, position());
+          assert.equal(0, parsed.detune, position());
+          assert.equal(1.0, parsed.volume, position());
+          assert.equal(true, parsed.rhythmOn, position());
+          assert.equal(false, parsed.sourceWrite, position());
+          assert.equal(false, parsed.seqWrite, position());
+          assert.equal('', parsed.seqWriteOptions.dir, position());
+          assert.equal('', parsed.seqWriteOptions.prefix, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

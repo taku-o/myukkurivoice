@@ -27,9 +27,7 @@ describe('specWindow-service-IntroService-dict', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,25 +35,30 @@ describe('specWindow-service-IntroService-dict', function() {
   });
 
   it('dictTutorial', function() {
-    return this.client
-      .click('#dict-tutorial')
-      .waitForVisible('.introjs-tooltip', 5000)
-      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible, position());
-      })
-      // error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .click('#dict-tutorial')
+        .waitForVisible('.introjs-tooltip', 5000)
+        .isVisible('.introjs-tooltip')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        // error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

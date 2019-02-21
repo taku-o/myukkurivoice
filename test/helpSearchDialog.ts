@@ -39,86 +39,105 @@ describe('helpSearchDialog', function() {
   });
 
   it('dialog ui', function() {
-    return this.client
-      .isVisible('#search-text').then((isVisible: boolean) => {
-        assert.ok(isVisible, position());
-      })
-      .isVisible('#btn-search').then((isVisible: boolean) => {
-        assert.ok(isVisible, position());
-      })
-      .isVisible('#btn-clear').then((isVisible: boolean) => {
-        assert.ok(isVisible, position());
-      })
-      .isVisible('#btn-close').then((isVisible: boolean) => {
-        assert.ok(isVisible, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .isVisible('#search-text')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        .isVisible('#btn-search')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        .isVisible('#btn-clear')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        .isVisible('#btn-close')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('search text', function() {
-    return this.client
-      .click('#btn-search')
-      .setValue('#search-text', 'MYu')
-      .click('#btn-search')
-      .click('#btn-clear')
-      .getValue('#search-text').then((input: string) => {
-        assert.equal(input, '', position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .click('#btn-search')
+        .setValue('#search-text', 'MYu')
+        .click('#btn-search')
+        .click('#btn-clear')
+        .getValue('#search-text')
+        .then((input: string) => {
+          assert.equal(input, '', position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('reopen dialog', function() {
-    return this.client
-      .setValue('#search-text', 'MYuk')
-      .getValue('#search-text').then((input: string) => {
-        assert.equal(input, 'MYuk', position());
-      })
-      .click('#btn-close')
-      .windowByIndex(1)
-      .click('#menu-search')
-      .windowByIndex(2)
-      .getValue('#search-text').then((input: string) => {
-        assert.equal(input, 'MYuk', position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#search-text', 'MYuk')
+        .getValue('#search-text')
+        .then((input: string) => {
+          assert.equal(input, 'MYuk', position());
+        })
+        .click('#btn-close')
+        .windowByIndex(1)
+        .click('#menu-search')
+        .windowByIndex(2)
+        .getValue('#search-text')
+        .then((input: string) => {
+          assert.equal(input, 'MYuk', position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

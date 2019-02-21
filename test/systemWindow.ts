@@ -28,9 +28,7 @@ describe('systemWindow', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-system-window')
-      .windowByIndex(1);
+    return this.client.click('#show-system-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -38,39 +36,49 @@ describe('systemWindow', function() {
   });
 
   it('initial settings', function() {
-    return this.client
-      .getValue('#main-width').then((value: number) => {
-        assert.equal(value, 800, position());
-      })
-      .getValue('#main-height').then((value: number) => {
-        assert.equal(value, 665, position());
-      })
-      .isSelected('#audio-serv-ver-html5audio').then((selected: boolean) => {
-        assert.ok(! selected, position());
-      })
-      .isSelected('#audio-serv-ver-webaudioapi').then((selected: boolean) => {
-        assert.ok(selected, position());
-      })
-      .isSelected('#show-msg-pane').then((selected: boolean) => {
-        assert.ok(selected, position());
-      })
-      .getValue('#aq10-use-key').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .getValue('#main-width')
+        .then((value: number) => {
+          assert.equal(value, 800, position());
+        })
+        .getValue('#main-height')
+        .then((value: number) => {
+          assert.equal(value, 665, position());
+        })
+        .isSelected('#audio-serv-ver-html5audio')
+        .then((selected: boolean) => {
+          assert.ok(!selected, position());
+        })
+        .isSelected('#audio-serv-ver-webaudioapi')
+        .then((selected: boolean) => {
+          assert.ok(selected, position());
+        })
+        .isSelected('#show-msg-pane')
+        .then((selected: boolean) => {
+          assert.ok(selected, position());
+        })
+        .getValue('#aq10-use-key')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   // TODO [CAN NOT TEST] update system config test

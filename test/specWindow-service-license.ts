@@ -27,9 +27,7 @@ describe('specWindow-service-LicenseService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,93 +35,111 @@ describe('specWindow-service-LicenseService', function() {
   });
 
   it('encrypt', function() {
-    return this.client
-      .setValue('#pass-phrase', 'hogehoge')
-      .setValue('#plain-key', 'this is a plain key')
-      .click('#encrypt')
-      .getValue('#encrypted-key').then((value: string) => {
-        assert.ok(value, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#pass-phrase', 'hogehoge')
+        .setValue('#plain-key', 'this is a plain key')
+        .click('#encrypt')
+        .getValue('#encrypted-key')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('decrypt', function() {
-    return this.client
-      .setValue('#encrypted-key', 'LF7ZJec+SPvmUhhpzPDEJ0ubiVt42NR62WoVW1vJKtaCQR2ActwuiO7vVAs893tIICMBniWOqDmY29hK1YUNAP6EWydrrBFzIU5GBxWtNqj36R5VjR0iJ7j2BhAZWp7lK2lMm2HJxoz9ZmNA2WMBxy/aKloM3KiW5A+cZBNjf6w=?IDFnCDZ/lAmXjxFfV5YSiXc6oFcGkFRBWWou13O5osRA5pVneS52yOEzqVrl56wq')
-      .setValue('#pass-phrase', 'hogehoge')
-      .setValue('#plain-key', '')
-      .click('#decrypt')
-      .getValue('#plain-key').then((value: string) => {
-        assert.equal(value, 'this is a plain key', position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#encrypted-key', 'LF7ZJec+SPvmUhhpzPDEJ0ubiVt42NR62WoVW1vJKtaCQR2ActwuiO7vVAs893tIICMBniWOqDmY29hK1YUNAP6EWydrrBFzIU5GBxWtNqj36R5VjR0iJ7j2BhAZWp7lK2lMm2HJxoz9ZmNA2WMBxy/aKloM3KiW5A+cZBNjf6w=?IDFnCDZ/lAmXjxFfV5YSiXc6oFcGkFRBWWou13O5osRA5pVneS52yOEzqVrl56wq')
+        .setValue('#pass-phrase', 'hogehoge')
+        .setValue('#plain-key', '')
+        .click('#decrypt')
+        .getValue('#plain-key')
+        .then((value: string) => {
+          assert.equal(value, 'this is a plain key', position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('consumerKey', function() {
-    return this.client
-      // consumerKey aquesTalk10DevKey
-      .setValue('#license-type', 'aquesTalk10DevKey')
-      .setValue('#consumer-key-result', '')
-      .setValue('#consumer-key-err', '')
-      .click('#consumer-key')
-      .waitForValue('#consumer-key-result', 5000)
-      .getValue('#consumer-key-result').then((value: string) => {
-        assert.ok(value, position());
-      })
-      .getValue('#consumer-key-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // consumerKey unknown key
-      .setValue('#license-type', 'unknown')
-      .setValue('#consumer-key-result', 'initial value')
-      .setValue('#consumer-key-err', '')
-      .click('#consumer-key')
-      .waitForValue('#consumer-key-done', 5000)
-      .getValue('#consumer-key-result').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      .getValue('#consumer-key-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // consumerKey aquesTalk10DevKey
+        .setValue('#license-type', 'aquesTalk10DevKey')
+        .setValue('#consumer-key-result', '')
+        .setValue('#consumer-key-err', '')
+        .click('#consumer-key')
+        .waitForValue('#consumer-key-result', 5000)
+        .getValue('#consumer-key-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        .getValue('#consumer-key-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // consumerKey unknown key
+        .setValue('#license-type', 'unknown')
+        .setValue('#consumer-key-result', 'initial value')
+        .setValue('#consumer-key-err', '')
+        .click('#consumer-key')
+        .waitForValue('#consumer-key-done', 5000)
+        .getValue('#consumer-key-result')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        .getValue('#consumer-key-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

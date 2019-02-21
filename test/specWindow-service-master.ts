@@ -27,9 +27,7 @@ describe('specWindow-service-MasterService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,26 +35,31 @@ describe('specWindow-service-MasterService', function() {
   });
 
   it('MasterService', function() {
-    return this.client
-      // getPhontList
-      .click('#get-phont-list')
-      .getValue('#get-phont-list-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 26, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs: string[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // getPhontList
+        .click('#get-phont-list')
+        .getValue('#get-phont-list-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal(parsed.length, 26, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });
