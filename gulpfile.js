@@ -104,7 +104,7 @@ gulp.task('less', () => {
 });
 
 // format
-gulp.task('format', []);
+gulp.task('format', ['_format-json', '_format-md']);
 // format-ts
 gulp.task('_format-ts', () => {
   return gulp.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts'], { base: '.' })

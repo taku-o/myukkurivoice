@@ -1,8 +1,10 @@
 # 開発用の情報
+
 ## vendor
-* ライセンスの関係上、公開されているソースコードにAquesTalkのライブラリは含まれていません。
-* レポジトリで公開されているコードを動作させるには、vendorディレクトリにAquesTalkのライブラリを入れる必要があります。
-* ディレクトリ構成
+
+- ライセンスの関係上、公開されているソースコードに AquesTalk のライブラリは含まれていません。
+- レポジトリで公開されているコードを動作させるには、vendor ディレクトリに AquesTalk のライブラリを入れる必要があります。
+- ディレクトリ構成
 
 ```
   vendor
@@ -19,7 +21,8 @@
 ```
 
 ## library for binary
-* native関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
+
+- native 関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
 
 ```
   - bindings 1.3.1
@@ -33,8 +36,9 @@
 ```
 
 ## 開発の進め方
-* セットアップ
-** 最初に動作に必要なモジュールを取り込んでください。
+
+- セットアップ
+  - 最初に動作に必要なモジュールを取り込んでください。
 
 ```
   npm install
@@ -42,61 +46,67 @@
   npm install -g gulp-cli
 ```
 
-* ソースコードを修正します。ソースコードはtypescriptで記載されています。
-* tscコマンドでtypescriptをビルドします。
+- ソースコードを修正します。ソースコードは typescript で記載されています。
+- tsc コマンドで typescript をビルドします。
 
 ```
   gulp tsc
 ```
 
-* 次のコマンドでElectronアプリをビルドします。
+- 次のコマンドで Electron アプリをビルドします。
 
 ```
   gulp package
 ```
 
-* デバッグモードで動かして、動作を確認しましょう。
+- デバッグモードで動かして、動作を確認しましょう。
 
 ```
   gulp app
 ```
 
 ## リリース
-* リリース用のアプリケーションを作成するにはリリース用のコマンドを実行します。
+
+- リリース用のアプリケーションを作成するにはリリース用のコマンドを実行します。
 
 ```
   gulp release
 ```
 
 ## 開発テスト
+
 ### 特定バージョンのアプリのビルド
-* stagingコマンドで特定のブランチを指定して、ビルドできます。
+
+- staging コマンドで特定のブランチを指定して、ビルドできます。
 
 ```
   gulp staging --branch=develop
 ```
 
 ### 単体テスト
-* 単体テストを実行するには、次のコマンドを実行します。
-* テストコードはtestディレクトリ以下にあります。
-* テストは透明な画面で実行されます。画面が描画されません。
+
+- 単体テストを実行するには、次のコマンドを実行します。
+- テストコードは test ディレクトリ以下にあります。
+- テストは透明な画面で実行されます。画面が描画されません。
 
 ```
   # build app, and run test
   gulp test-rebuild
-  
+
   # run test already built app
   gulp test
 ```
 
 ### Lint
-* Lintツールは次のコマンドで実行できます。
+
+- Lint ツールは次のコマンドで実行できます。
 
 ```
   gulp lint
 ```
 
 # 環境設定まわりの情報
+
 ## install xcode
 
 ```
@@ -114,17 +124,20 @@
 ```
 
 ### Module version mismatch. Expected 50, got 51
-* もし、この類のエラーに遭遇したら、次のようなコマンドを実行してrebuildする
+
+- もし、この類のエラーに遭遇したら、次のようなコマンドを実行して rebuild する
 
 ```
   npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
 ```
 
 # その他
+
 ## アプリアイコンの作成
-* iconutilで作成します。
-* icns/myukkurivoice.iconset にアイコン画像を入れてコマンド実行してください
-* myukkurivoice.icns がアプリケーションアイコンです。
+
+- iconutil で作成します。
+- icns/myukkurivoice.iconset にアイコン画像を入れてコマンド実行してください
+- myukkurivoice.icns がアプリケーションアイコンです。
 
 ```
   cd icns
@@ -132,31 +145,33 @@
 ```
 
 ## アイコンファイルの入手
-* https://material.io/tools/icons/
 
-## README用のアニメーションGIFの作成
-* animation GIFの作成
+- https://material.io/tools/icons/
+
+## README 用のアニメーション GIF の作成
+
+- animation GIF の作成
 
 ```
   brew install ffmpeg
   ffmpeg -i readme-dnd.mov -r 10 -s 692x443 -an readme-dnd.gif
 ```
 
-* animation GIFを個別の画像ファイルに分割
+- animation GIF を個別の画像ファイルに分割
 
 ```
   convert -coalesce readme-dnd.gif readme-dnd-splitted-%03d.png
 ```
 
-* animation GIFのサイズを縮小する
+- animation GIF のサイズを縮小する
 
 ```
   gifsicle -O2 --colors 256 readme.gif > readme-mini.gif
   convert readme-mini.gif -coalesce -scale 50% -deconstruct -fuzz 2% -dither none -layers optimize -matte -depth 8 \( -clone 0--1 -background none +append -quantize transparent  -colors 32  -unique-colors -write mpr:cmap +delete \) -map mpr:cmap readme-mini2.gif
 ```
 
-* pngファイルのサイズを縮小する
+- png ファイルのサイズを縮小する
+
 ```
   convert  -scale 30%  -unsharp 2x1.4+0.5+0 -colors 65 -quality 100 readme-tutorial.png readme-tutorial-mini.png
 ```
-
