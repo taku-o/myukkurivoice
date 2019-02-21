@@ -110,31 +110,35 @@ gulp.task('less', () => {
 });
 
 // format
-gulp.task('format', ['_format-json', '_format-js', '_format-md', '_format-less']);
+gulp.task('format', ['_format-json', '_format-js', '_format-ts', '_format-md', '_format-less']);
 // format-ts
-gulp.task('_format-ts', () => {
-  return (
-    gulp
-      .src(['test/*.ts'], {base: '.'})
-      //.src(['*.ts','js/*.ts','test/*.ts', 'docs/assets/js/*.ts'], { base: '.' })
-      .pipe(
-        prettier({
-          parser: 'typescript',
-          arrowParens: 'always',
-          bracketSpacing: false,
-          insertPragma: false,
-          printWidth: 300,
-          proseWrap: 'preserve',
-          requirePragma: false,
-          semi: true,
-          singleQuote: true,
-          tabWidth: 2,
-          trailingComma: 'all',
-          useTabs: false,
-        })
-      )
-      .pipe(gulp.dest('.'))
-  );
+gulp.task('_format-ts', ['_format-ts-fix', '_format-ts-test']);
+gulp.task('_format-ts-fix', () => {
+  return gulp
+    .src(['*.ts', 'js/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
+    .pipe(eslint({useEslintrc: true, fix: true}))
+    .pipe(gulp.dest('.'));
+});
+gulp.task('_format-ts-test', () => {
+  return gulp
+    .src(['test/*.ts'], {base: '.'})
+    .pipe(
+      prettier({
+        parser: 'typescript',
+        arrowParens: 'always',
+        bracketSpacing: false,
+        insertPragma: false,
+        printWidth: 300,
+        proseWrap: 'preserve',
+        requirePragma: false,
+        semi: true,
+        singleQuote: true,
+        tabWidth: 2,
+        trailingComma: 'all',
+        useTabs: false,
+      })
+    )
+    .pipe(gulp.dest('.'));
 });
 // format-js
 gulp.task('_format-js', () => {
