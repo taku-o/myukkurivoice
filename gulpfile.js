@@ -157,6 +157,21 @@ gulp.task('_format-js', () => {
     )
     .pipe(gulp.dest('.'));
 });
+// format-html
+gulp.task('_format-html', () => {
+  return gulp
+    .src(['*.html'], {base: '.'})
+    .pipe(
+      prettier({
+        parser: 'angular',
+        printWidth: 300,
+        proseWrap: 'preserve',
+        tabWidth: 2,
+        useTabs: false,
+      })
+    )
+    .pipe(gulp.dest('.'));
+});
 // format-json
 gulp.task('_format-json', () => {
   return gulp
