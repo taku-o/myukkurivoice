@@ -20,6 +20,7 @@
     "array-bracket-spacing": ["error", "never"],
     "indent": 0,
     "linebreak-style": ["error", "unix"],
+    "no-empty": "off",
     "no-unused-vars": "warn",
     "semi": ["error", "always"]
   },
@@ -28,6 +29,7 @@
     "parser": "typescript-eslint-parser",
     "rules": {
       "comma-dangle": ["error", "always-multiline"],
+      "no-empty": "error",
       "no-undef": "off",
       "quotes": ["error", "single", { "avoidEscape": true }],
       "object-curly-spacing": ["error", "never"]
