@@ -6,11 +6,7 @@
   "types": "types.d.ts",
   "scripts": {
     "tasks": "gulp --tasks-simple",
-    "test": "gulp test",
-    "rtest": "gulp test-rebuild",
-    "clean": "gulp clean",
-    "app": "gulp app",
-    "release": "gulp release",
+    "clean": "git checkout -- . && git clean -fd",
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
   },
   "keywords": [
