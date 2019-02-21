@@ -7,8 +7,9 @@
     "mocha": true
   },
   "globals": {
-    "angular": 1,
-    "introJs": 1
+    "angular": true,
+    "introJs": true,
+    "dataJson": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
