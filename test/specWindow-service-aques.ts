@@ -31,9 +31,7 @@ describe('specWindow-service-AquesService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -41,34 +39,40 @@ describe('specWindow-service-AquesService', function() {
   });
 
   it('encode', function() {
-    return this.client
-      // encode
-      .setValue('#source', 'test')
-      .click('#encode')
-      .getValue('#encode-result').then((value: string) => {
-        assert.equal(value, "テ'_スト", position());
-      })
-      // encode empty string
-      .setValue('#source', '')
-      .setValue('#encode-result', '')
-      .click('#encode')
-      .getValue('#encode-result').then((value: string) => {
-        assert.ok(!value, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // encode
+        .setValue('#source', 'test')
+        .click('#encode')
+        .getValue('#encode-result')
+        .then((value: string) => {
+          assert.equal(value, "テ'_スト", position());
+        })
+        // encode empty string
+        .setValue('#source', '')
+        .setValue('#encode-result', '')
+        .click('#encode')
+        .getValue('#encode-result')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('encode with custom dictionary', function() {
@@ -79,129 +83,151 @@ describe('specWindow-service-AquesService', function() {
     fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
     fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
 
-    return this.client
-      // encode
-      .setValue('#source', '百名山')
-      .click('#encode')
-      .getValue('#encode-result').then((value: string) => {
-        assert.equal(value, 'モモナヤマ', position());
-      })
-      .setValue('#source', '味方さん')
-      .click('#encode')
-      .getValue('#encode-result').then((value: string) => {
-        assert.equal(value, 'アジカタサン', position());
-      })
-      // encode empty string
-      .setValue('#source', '')
-      .setValue('#encode-result', '')
-      .click('#encode')
-      .getValue('#encode-result').then((value: string) => {
-        assert.ok(!value, position());
-      })
-      .then(() => {
-        rimraf(`${dirPath}/userdict`, (err) => {
-        });
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // encode
+        .setValue('#source', '百名山')
+        .click('#encode')
+        .getValue('#encode-result')
+        .then((value: string) => {
+          assert.equal(value, 'モモナヤマ', position());
+        })
+        .setValue('#source', '味方さん')
+        .click('#encode')
+        .getValue('#encode-result')
+        .then((value: string) => {
+          assert.equal(value, 'アジカタサン', position());
+        })
+        // encode empty string
+        .setValue('#source', '')
+        .setValue('#encode-result', '')
+        .click('#encode')
+        .getValue('#encode-result')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        .then(() => {
+          rimraf(`${dirPath}/userdict`, (err: Error) => {});
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('wave', function() {
-    return this.client
-      // wave talk1
-      .setValue('#encoded', "テ'_スト")
-      .setValue('#wave-result', '')
-      .setValue('#wave-err', '')
-      .click('#wave-ver1')
-      .waitForValue('#wave-result', 5000)
-      .getValue('#wave-result').then((value: string) => {
-        assert.equal(value, 'ok', position());
-      })
-      .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // wave talk1 empty
-      .setValue('#encoded', '')
-      .setValue('#wave-result', '')
-      .setValue('#wave-err', '')
-      .click('#wave-ver1')
-      .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value, position());
-      })
-      .getValue('#wave-err').then((value: string) => {
-        assert.ok(value, position());
-      })
-      // wave talk2
-      .setValue('#encoded', "テ'_スト")
-      .setValue('#wave-result', '')
-      .setValue('#wave-err', '')
-      .click('#wave-ver2')
-      .waitForValue('#wave-result', 5000)
-      .getValue('#wave-result').then((value: string) => {
-        assert.equal(value, 'ok', position());
-      })
-      .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // wave talk2 empty
-      .setValue('#encoded', '')
-      .setValue('#wave-result', '')
-      .setValue('#wave-err', '')
-      .click('#wave-ver2')
-      .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value, position());
-      })
-      .getValue('#wave-err').then((value: string) => {
-        assert.ok(value, position());
-      })
-      // wave talk10
-      .setValue('#encoded', "テ'_スト")
-      .setValue('#wave-result', '')
-      .setValue('#wave-err', '')
-      .click('#wave-ver10')
-      .waitForValue('#wave-result', 5000)
-      .getValue('#wave-result').then((value: string) => {
-        assert.equal(value, 'ok', position());
-      })
-      .getValue('#wave-err').then((value: string) => {
-        assert.ok(! value, position());
-      })
-      // wave talk10 empty
-      .setValue('#encoded', '')
-      .setValue('#wave-result', '')
-      .setValue('#wave-err', '')
-      .click('#wave-ver10')
-      .getValue('#wave-result').then((value: string) => {
-        assert.ok(!value, position());
-      })
-      .getValue('#wave-err').then((value: string) => {
-        assert.ok(value, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // wave talk1
+        .setValue('#encoded', "テ'_スト")
+        .setValue('#wave-result', '')
+        .setValue('#wave-err', '')
+        .click('#wave-ver1')
+        .waitForValue('#wave-result', 5000)
+        .getValue('#wave-result')
+        .then((value: string) => {
+          assert.equal(value, 'ok', position());
+        })
+        .getValue('#wave-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // wave talk1 empty
+        .setValue('#encoded', '')
+        .setValue('#wave-result', '')
+        .setValue('#wave-err', '')
+        .click('#wave-ver1')
+        .getValue('#wave-result')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        .getValue('#wave-err')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        // wave talk2
+        .setValue('#encoded', "テ'_スト")
+        .setValue('#wave-result', '')
+        .setValue('#wave-err', '')
+        .click('#wave-ver2')
+        .waitForValue('#wave-result', 5000)
+        .getValue('#wave-result')
+        .then((value: string) => {
+          assert.equal(value, 'ok', position());
+        })
+        .getValue('#wave-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // wave talk2 empty
+        .setValue('#encoded', '')
+        .setValue('#wave-result', '')
+        .setValue('#wave-err', '')
+        .click('#wave-ver2')
+        .getValue('#wave-result')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        .getValue('#wave-err')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        // wave talk10
+        .setValue('#encoded', "テ'_スト")
+        .setValue('#wave-result', '')
+        .setValue('#wave-err', '')
+        .click('#wave-ver10')
+        .waitForValue('#wave-result', 5000)
+        .getValue('#wave-result')
+        .then((value: string) => {
+          assert.equal(value, 'ok', position());
+        })
+        .getValue('#wave-err')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // wave talk10 empty
+        .setValue('#encoded', '')
+        .setValue('#wave-result', '')
+        .setValue('#wave-err', '')
+        .click('#wave-ver10')
+        .getValue('#wave-result')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        .getValue('#wave-err')
+        .then((value: string) => {
+          assert.ok(value, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

@@ -13,8 +13,8 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular aques service
 angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
-  .factory('AquesService', ['$q', '$timeout', 'MessageService', 'LicenseService',
-  ($q, $timeout, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
+  .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
+  ($q: ng.IQService, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
     const ptr_void  = ref().refType(ref().types.void);
     const ptr_int   = ref().refType(ref().types.int);
     const ptr_char  = ref().refType(ref().types.char);
@@ -126,22 +126,22 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
       aqDictPath = customDictPath;
     });
 
-    let aqKanji2KoeDevKey = null;
-    let aquesTalk10DevKey = null;
+    let aqKanji2KoeDevKey: string = null;
+    let aquesTalk10DevKey: string = null;
     let _isAqKanji2KoeDevkeySet = false;
     let _isAquesTalk10LicensekeySet = false;
     return {
       // get developer key in background.
       // delay loading. UI表示で必要な処理の後に呼ぶ
       init: function(): void {
-        $timeout(() => {
+        setTimeout(() => {
           LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
             aqKanji2KoeDevKey = licenseKey;
           });
           LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
             aquesTalk10DevKey = licenseKey;
           });
-        });
+        }, 0);
       },
       encode: function(source: string): string {
         if (!source) {
@@ -225,7 +225,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
             encoding: 'binary',
           };
           const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
-          exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout, stderr) => {
+          exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
             if (err) {
               log().info(`maquestalk1 failed. ${err}`);
               d.reject(err); return;

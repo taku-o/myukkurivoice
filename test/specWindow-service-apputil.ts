@@ -27,9 +27,7 @@ describe('specWindow-service-AppUtilService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,62 +35,74 @@ describe('specWindow-service-AppUtilService', function() {
   });
 
   it('disableRhythm', function() {
-    return this.client
-      // disableRhythm
-      .setValue('#rhythm-text', 'test\' val/ue')
-      .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then((value: string) => {
-        assert.equal(value, 'test value', position());
-      })
-      // disableRhythm not contains
-      .setValue('#rhythm-text', 'this is not a rhythm text')
-      .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then((value: string) => {
-        assert.equal(value, 'this is not a rhythm text', position());
-      })
-      // disableRhythm empty
-      .setValue('#rhythm-text', '')
-      .click('#disable-rhythm')
-      .getValue('#disable-rhythm-result').then((value: string) => {
-        assert.ok(!value, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // disableRhythm
+        .setValue('#rhythm-text', "test' val/ue")
+        .click('#disable-rhythm')
+        .getValue('#disable-rhythm-result')
+        .then((value: string) => {
+          assert.equal(value, 'test value', position());
+        })
+        // disableRhythm not contains
+        .setValue('#rhythm-text', 'this is not a rhythm text')
+        .click('#disable-rhythm')
+        .getValue('#disable-rhythm-result')
+        .then((value: string) => {
+          assert.equal(value, 'this is not a rhythm text', position());
+        })
+        // disableRhythm empty
+        .setValue('#rhythm-text', '')
+        .click('#disable-rhythm')
+        .getValue('#disable-rhythm-result')
+        .then((value: string) => {
+          assert.ok(!value, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('reportDuration', function() {
-    return this.client
-      .setValue('#duration', 340)
-      .click('#report-duration')
-      .waitForValue('#report-duration-result', 5000)
-      .getValue('#report-duration-result').then((value: number) => {
-        assert.equal(340, value, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#duration', 340)
+        .click('#report-duration')
+        .waitForValue('#report-duration-result', 5000)
+        .getValue('#report-duration-result')
+        .then((value: number) => {
+          assert.equal(340, value, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

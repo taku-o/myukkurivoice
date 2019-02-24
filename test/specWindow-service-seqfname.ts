@@ -29,9 +29,7 @@ describe('specWindow-service-SeqFNameService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -39,52 +37,62 @@ describe('specWindow-service-SeqFNameService', function() {
   });
 
   it('nextFname', function() {
-    return this.client
-      .setValue('#prefix', 'foo')
-      .setValue('#num', '200')
-      .click('#next-fname')
-      .getValue('#next-fname-result').then((value: string) => {
-        assert.equal(value, 'foo0200.wav', position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#prefix', 'foo')
+        .setValue('#num', '200')
+        .click('#next-fname')
+        .getValue('#next-fname-result')
+        .then((value: string) => {
+          assert.equal(value, 'foo0200.wav', position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('splitFname', function() {
-    return this.client
-      .setValue('#split-fname-filepath', '/tmp/hoge/foo.txt')
-      .click('#split-fname')
-      .getValue('#split-fname-result').then((value: string) => {
-        const r = JSON.parse(value);
-        assert.equal('/tmp/hoge', r.dir, position());
-        assert.equal('foo.txt', r.basename, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#split-fname-filepath', '/tmp/hoge/foo.txt')
+        .click('#split-fname')
+        .getValue('#split-fname-result')
+        .then((value: string) => {
+          const r = JSON.parse(value);
+          assert.equal('/tmp/hoge', r.dir, position());
+          assert.equal('foo.txt', r.basename, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('nextNumber', function() {
@@ -99,52 +107,60 @@ describe('specWindow-service-SeqFNameService', function() {
     fs.closeSync(fs.openSync(fileP2, 'w'));
     fs.closeSync(fs.openSync(fileP3, 'w'));
 
-    return this.client
-      // get simply next number
-      .setValue('#next-number-dir', dirPath)
-      .setValue('#next-number-prefix', prefixP1)
-      .click('#next-number')
-      .waitForValue('#next-number-result', 5000)
-      .getValue('#next-number-result').then((value: number) => {
-        assert.equal(102, value, position());
-      })
-      // count up
-      .setValue('#next-number-dir', dirPath)
-      .setValue('#next-number-prefix', prefixP2)
-      .click('#next-number')
-      .waitForValue('#next-number-result', 5000)
-      .getValue('#next-number-result').then((value: number) => {
-        assert.equal(1, value, position());
-      })
-      // newly
-      .setValue('#next-number-dir', dirPath)
-      .setValue('#next-number-prefix', prefixP3)
-      .click('#next-number')
-      .waitForValue('#next-number-result', 5000)
-      .getValue('#next-number-result').then((value: number) => {
-        assert.equal(0, value, position());
-      })
-      // not exists
-      .setValue('#next-number-dir', dirPath)
-      .setValue('#next-number-prefix', prefixP4)
-      .click('#next-number')
-      .waitForValue('#next-number-result', 5000)
-      .getValue('#next-number-result').then((value: number) => {
-        assert.equal(0, value, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        // get simply next number
+        .setValue('#next-number-dir', dirPath)
+        .setValue('#next-number-prefix', prefixP1)
+        .click('#next-number')
+        .waitForValue('#next-number-result', 5000)
+        .getValue('#next-number-result')
+        .then((value: number) => {
+          assert.equal(102, value, position());
+        })
+        // count up
+        .setValue('#next-number-dir', dirPath)
+        .setValue('#next-number-prefix', prefixP2)
+        .click('#next-number')
+        .waitForValue('#next-number-result', 5000)
+        .getValue('#next-number-result')
+        .then((value: number) => {
+          assert.equal(1, value, position());
+        })
+        // newly
+        .setValue('#next-number-dir', dirPath)
+        .setValue('#next-number-prefix', prefixP3)
+        .click('#next-number')
+        .waitForValue('#next-number-result', 5000)
+        .getValue('#next-number-result')
+        .then((value: number) => {
+          assert.equal(0, value, position());
+        })
+        // not exists
+        .setValue('#next-number-dir', dirPath)
+        .setValue('#next-number-prefix', prefixP4)
+        .click('#next-number')
+        .waitForValue('#next-number-result', 5000)
+        .getValue('#next-number-result')
+        .then((value: number) => {
+          assert.equal(0, value, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

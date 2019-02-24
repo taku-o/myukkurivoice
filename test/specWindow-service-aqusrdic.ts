@@ -31,9 +31,7 @@ describe('specWindow-service-AqUsrDicService', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -48,40 +46,44 @@ describe('specWindow-service-AqUsrDicService', function() {
     fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
     fs.writeFileSync(`${dirPath}/userdict/aq_user.csv`, fs.readFileSync(`${customDictPath}/aq_user.csv`));
 
-    return this.client
-      .setValue('#csv-path', `${dirPath}/userdict/aq_user.csv`)
-      .setValue('#user-dic-path', `${dirPath}/userdict/aq_user.dic`)
-      .setValue('#generate-user-dict-result', '')
-      .click('#generate-user-dict')
-      .waitForValue('#generate-user-dict-result', 5000)
-      .getValue('#generate-user-dict-result').then((value: string) => {
-        assert.equal(value, 'ok', position());
-        return new Promise((resolve, reject) => {
-          fs.readFile(`${dirPath}/userdict/aq_user.dic`, 'binary', (err, data) => {
-            assert.ok(!err, position());
-            assert.ok(data, position());
-            resolve();
+    return (
+      this.client
+        .setValue('#csv-path', `${dirPath}/userdict/aq_user.csv`)
+        .setValue('#user-dic-path', `${dirPath}/userdict/aq_user.dic`)
+        .setValue('#generate-user-dict-result', '')
+        .click('#generate-user-dict')
+        .waitForValue('#generate-user-dict-result', 5000)
+        .getValue('#generate-user-dict-result')
+        .then((value: string) => {
+          assert.equal(value, 'ok', position());
+          return new Promise((resolve, reject) => {
+            fs.readFile(`${dirPath}/userdict/aq_user.dic`, 'binary', (err, data) => {
+              assert.ok(!err, position());
+              assert.ok(data, position());
+              resolve();
+            });
           });
-        });
-      })
-      .then(() => {
-        rimraf(`${dirPath}/userdict`, (err) => {
-        });
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+        })
+        .then(() => {
+          rimraf(`${dirPath}/userdict`, (err: Error) => {});
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('generateCSV', function() {
@@ -92,108 +94,123 @@ describe('specWindow-service-AqUsrDicService', function() {
     fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
     fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
 
-    return this.client
-      .setValue('#csv-path', `${dirPath}/userdict/aq_user.csv`)
-      .setValue('#user-dic-path', `${dirPath}/userdict/aq_user.dic`)
-      .setValue('#generate-user-dict-result', '')
-      .click('#generate-csv')
-      .waitForValue('#generate-csv-result', 5000)
-      .getValue('#generate-csv-result').then((value: string) => {
-        assert.equal(value, 'ok', position());
-        return new Promise((resolve, reject) => {
-          fs.readFile(`${dirPath}/userdict/aq_user.csv`, 'binary', (err, data) => {
-            assert.ok(!err, position());
-            assert.ok(data, position());
-            resolve();
+    return (
+      this.client
+        .setValue('#csv-path', `${dirPath}/userdict/aq_user.csv`)
+        .setValue('#user-dic-path', `${dirPath}/userdict/aq_user.dic`)
+        .setValue('#generate-user-dict-result', '')
+        .click('#generate-csv')
+        .waitForValue('#generate-csv-result', 5000)
+        .getValue('#generate-csv-result')
+        .then((value: string) => {
+          assert.equal(value, 'ok', position());
+          return new Promise((resolve, reject) => {
+            fs.readFile(`${dirPath}/userdict/aq_user.csv`, 'binary', (err, data) => {
+              assert.ok(!err, position());
+              assert.ok(data, position());
+              resolve();
+            });
           });
-        });
-      })
-      .then(() => {
-        rimraf(`${dirPath}/userdict`, (err) => {
-        });
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+        })
+        .then(() => {
+          rimraf(`${dirPath}/userdict`, (err: Error) => {});
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('validateInput', function() {
-    return this.client
-      .setValue('#surface', '日本')
-      .setValue('#yomi', 'ニホン')
-      .setValue('#pos-code', '1')
-      .setValue('#validate-input-result', '')
-      .click('#validate-input')
-      .waitForValue('#validate-input-result', 5000)
-      .getValue('#validate-input-result').then((value: string) => {
-        assert.equal(value, 'ok', position());
-      })
-      .setValue('#surface', '日本')
-      .setValue('#yomi', 'xxxx')
-      .setValue('#pos-code', '1')
-      .setValue('#validate-input-result', '')
-      .click('#validate-input')
-      .waitForValue('#validate-input-result', 5000)
-      .getValue('#validate-input-result').then((value: string) => {
-        assert.notEqual(value, 'ok', position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#surface', '日本')
+        .setValue('#yomi', 'ニホン')
+        .setValue('#pos-code', '1')
+        .setValue('#validate-input-result', '')
+        .click('#validate-input')
+        .waitForValue('#validate-input-result', 5000)
+        .getValue('#validate-input-result')
+        .then((value: string) => {
+          assert.equal(value, 'ok', position());
+        })
+        .setValue('#surface', '日本')
+        .setValue('#yomi', 'xxxx')
+        .setValue('#pos-code', '1')
+        .setValue('#validate-input-result', '')
+        .click('#validate-input')
+        .waitForValue('#validate-input-result', 5000)
+        .getValue('#validate-input-result')
+        .then((value: string) => {
+          assert.notEqual(value, 'ok', position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('getLastError', function() {
-    return this.client
-      .setValue('#surface', '日本')
-      .setValue('#yomi', 'xxxx')
-      .setValue('#pos-code', '1')
-      .setValue('#validate-input-result', '')
-      .click('#validate-input')
-      .waitForValue('#validate-input-result', 5000)
-      .getValue('#validate-input-result').then((value: string) => {
-        assert.notEqual(value, 'ok', position());
-      })
-      .click('#get-last-error')
-      .waitForValue('#get-last-error-result', 5000)
-      .getValue('#get-last-error-result').then((value: string) => {
-        assert.equal(value, '0:読みに定義外の文字が指定されている', position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.client
+        .setValue('#surface', '日本')
+        .setValue('#yomi', 'xxxx')
+        .setValue('#pos-code', '1')
+        .setValue('#validate-input-result', '')
+        .click('#validate-input')
+        .waitForValue('#validate-input-result', 5000)
+        .getValue('#validate-input-result')
+        .then((value: string) => {
+          assert.notEqual(value, 'ok', position());
+        })
+        .click('#get-last-error')
+        .waitForValue('#get-last-error-result', 5000)
+        .getValue('#get-last-error-result')
+        .then((value: string) => {
+          assert.equal(value, '0:読みに定義外の文字が指定されている', position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
-
 });

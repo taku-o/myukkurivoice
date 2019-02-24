@@ -27,66 +27,81 @@ describe('settingsView', function() {
 
   it('settingsView seq-write-box option', function() {
     const client = this.app.client;
-    return this.app.client
-      .click('#switch-settings-view')
-      .isSelected('#seq-write-box .checkbox input').then((isSelected: boolean) => {
-        client.isVisible('#seq-write-box .form-group').then((isVisible: boolean) => {
-          assert.equal(isVisible, isSelected, position());
-        });
-      })
-      // error check
-      .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error, position());
-      })
-      .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.app.client
+        .click('#switch-settings-view')
+        .isSelected('#seq-write-box .checkbox input')
+        .then((isSelected: boolean) => {
+          client.isVisible('#seq-write-box .form-group').then((isVisible: boolean) => {
+            assert.equal(isVisible, isSelected, position());
+          });
+        })
+        // error check
+        .isExisting('tr.message-item.error')
+        .then((error: boolean) => {
+          assert.ok(!error, position());
+        })
+        .isExisting('tr.message-item.syserror')
+        .then((error: boolean) => {
+          assert.ok(!error, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 
   it('settingsView tutorial intro', function() {
-    return this.app.client
-      .click('#switch-settings-view')
-      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(! isVisible, position());
-      })
-      .click('#tutorial')
-      .isVisible('.introjs-tooltip').then((isVisible: boolean) => {
-        assert.ok(isVisible, position());
-      })
-      // error check
-      .isExisting('tr.message-item.error').then((error: boolean) => {
-        assert.ok(! error, position());
-      })
-      .isExisting('tr.message-item.syserror').then((error: boolean) => {
-        assert.ok(! error, position());
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+    return (
+      this.app.client
+        .click('#switch-settings-view')
+        .isVisible('.introjs-tooltip')
+        .then((isVisible: boolean) => {
+          assert.ok(!isVisible, position());
+        })
+        .click('#tutorial')
+        .isVisible('.introjs-tooltip')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        // error check
+        .isExisting('tr.message-item.error')
+        .then((error: boolean) => {
+          assert.ok(!error, position());
+        })
+        .isExisting('tr.message-item.syserror')
+        .then((error: boolean) => {
+          assert.ok(!error, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

@@ -27,9 +27,7 @@ describe('specWindow-model-YVoiceInitialData', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,59 +35,64 @@ describe('specWindow-model-YVoiceInitialData', function() {
   });
 
   it('YVoiceInitialData', function() {
-    return this.client
-      .click('#get-yvoice-initial-data')
-      .getValue('#get-yvoice-initial-data-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 4, position());
+    return (
+      this.client
+        .click('#get-yvoice-initial-data')
+        .getValue('#get-yvoice-initial-data-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal(parsed.length, 4, position());
 
-        for (let i=0; i < parsed.length; i++) {
-          assert.ok('id' in parsed[i], position());
-          assert.ok('name' in parsed[i], position());
-          assert.ok('phont' in parsed[i], position());
-          assert.ok('version' in parsed[i], position());
-          assert.ok('speed' in parsed[i], position());
-          assert.ok('playbackRate' in parsed[i], position());
-          assert.ok('detune' in parsed[i], position());
-          assert.ok('volume' in parsed[i], position());
-          assert.ok('rhythmOn' in parsed[i], position());
-          assert.ok('sourceWrite' in parsed[i], position());
-          assert.ok('seqWrite' in parsed[i], position());
-          assert.equal('', parsed[i].seqWriteOptions.dir, position());
-          assert.equal('', parsed[i].seqWriteOptions.prefix, position());
+          for (let i = 0; i < parsed.length; i++) {
+            assert.ok('id' in parsed[i], position());
+            assert.ok('name' in parsed[i], position());
+            assert.ok('phont' in parsed[i], position());
+            assert.ok('version' in parsed[i], position());
+            assert.ok('speed' in parsed[i], position());
+            assert.ok('playbackRate' in parsed[i], position());
+            assert.ok('detune' in parsed[i], position());
+            assert.ok('volume' in parsed[i], position());
+            assert.ok('rhythmOn' in parsed[i], position());
+            assert.ok('sourceWrite' in parsed[i], position());
+            assert.ok('seqWrite' in parsed[i], position());
+            assert.equal('', parsed[i].seqWriteOptions.dir, position());
+            assert.equal('', parsed[i].seqWriteOptions.prefix, position());
 
-          const version = parsed[i].version;
-          switch (version) {
-            case 'talk1':
-            case 'talk2':
-              break;
-            case 'talk10':
-              assert.ok('bas' in parsed[i], position());
-              assert.ok('spd' in parsed[i], position());
-              assert.ok('vol' in parsed[i], position());
-              assert.ok('pit' in parsed[i], position());
-              assert.ok('acc' in parsed[i], position());
-              assert.ok('lmd' in parsed[i], position());
-              assert.ok('fsc' in parsed[i], position());
-              break;
-            default:
-              assert.fail('unknown version');
+            const version = parsed[i].version;
+            switch (version) {
+              case 'talk1':
+              case 'talk2':
+                break;
+              case 'talk10':
+                assert.ok('bas' in parsed[i], position());
+                assert.ok('spd' in parsed[i], position());
+                assert.ok('vol' in parsed[i], position());
+                assert.ok('pit' in parsed[i], position());
+                assert.ok('acc' in parsed[i], position());
+                assert.ok('lmd' in parsed[i], position());
+                assert.ok('fsc' in parsed[i], position());
+                break;
+              default:
+                assert.fail('unknown version');
+            }
           }
-        }
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

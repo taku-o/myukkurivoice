@@ -27,9 +27,7 @@ describe('specWindow-model-YPhontList', function() {
 
   beforeEach(function() {
     this.client = this.app.client;
-    return this.client
-      .click('#show-spec-window')
-      .windowByIndex(1);
+    return this.client.click('#show-spec-window').windowByIndex(1);
   });
 
   afterEach(function() {
@@ -37,54 +35,59 @@ describe('specWindow-model-YPhontList', function() {
   });
 
   it('YPhontList', function() {
-    return this.client
-      .click('#get-yphont-list')
-      .getValue('#get-yphont-list-result').then((value: string) => {
-        const parsed = JSON.parse(value);
-        assert.equal(parsed.length, 26, position());
+    return (
+      this.client
+        .click('#get-yphont-list')
+        .getValue('#get-yphont-list-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal(parsed.length, 26, position());
 
-        for (let i=0; i < parsed.length; i++) {
-          const version = parsed[i].version;
-          switch (version) {
-            case 'talk1':
-              assert.ok(parsed[i].id, position());
-              assert.ok(parsed[i].name, position());
-              assert.ok('idVoice' in parsed[i], position());
-              break;
-            case 'talk2':
-              assert.ok(parsed[i].id, position());
-              assert.ok(parsed[i].name, position());
-              assert.ok(parsed[i].path, position());
-              break;
-            case 'talk10':
-              assert.ok(parsed[i].id, position());
-              assert.ok(parsed[i].name, position());
-              assert.ok('bas' in parsed[i].struct, position());
-              assert.ok('spd' in parsed[i].struct, position());
-              assert.ok('vol' in parsed[i].struct, position());
-              assert.ok('pit' in parsed[i].struct, position());
-              assert.ok('acc' in parsed[i].struct, position());
-              assert.ok('lmd' in parsed[i].struct, position());
-              assert.ok('fsc' in parsed[i].struct, position());
-              break;
-            default:
-              assert.fail('unknown version');
+          for (let i = 0; i < parsed.length; i++) {
+            const version = parsed[i].version;
+            switch (version) {
+              case 'talk1':
+                assert.ok(parsed[i].id, position());
+                assert.ok(parsed[i].name, position());
+                assert.ok('idVoice' in parsed[i], position());
+                break;
+              case 'talk2':
+                assert.ok(parsed[i].id, position());
+                assert.ok(parsed[i].name, position());
+                assert.ok(parsed[i].path, position());
+                break;
+              case 'talk10':
+                assert.ok(parsed[i].id, position());
+                assert.ok(parsed[i].name, position());
+                assert.ok('bas' in parsed[i].struct, position());
+                assert.ok('spd' in parsed[i].struct, position());
+                assert.ok('vol' in parsed[i].struct, position());
+                assert.ok('pit' in parsed[i].struct, position());
+                assert.ok('acc' in parsed[i].struct, position());
+                assert.ok('lmd' in parsed[i].struct, position());
+                assert.ok('fsc' in parsed[i].struct, position());
+                break;
+              default:
+                assert.fail('unknown version');
+            }
           }
-        }
-      })
-      // catch error
-      .catch((err: Error) => {
-        assert.fail(err.message);
-      })
-      .getMainProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.match(/error/i), position());
-        });
-      })
-      .getRenderProcessLogs().then((logs) => {
-        logs.forEach((log) => {
-          assert.ok(! log.message.match(/error/i), position());
-        });
-      });
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
   });
 });

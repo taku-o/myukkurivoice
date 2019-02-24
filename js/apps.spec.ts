@@ -15,7 +15,7 @@ if (DEBUG) {
 // application spec app
 angular.module('specApp',
   ['mainModels', 'dictModels', 'mainServices', 'dictServices'])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {
@@ -172,11 +172,11 @@ angular.module('specApp',
       const msg = 'syserror message';
       MessageService.syserror(msg);
     };
-    $scope.$on('message', (event, message: yubo.IMessage | yubo.IRecordMessage) => {
+    $scope.$on('message', (event: ng.IAngularEvent, message: yubo.IMessage | yubo.IRecordMessage) => {
       $scope.messageServicePost = JSON.stringify(message);
       $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('wavGenerated', (event, wavFileInfo) => {
+    $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo) => {
       $scope.lastWavFile = JSON.stringify(wavFileInfo);
       $timeout(() => { $scope.$apply(); });
     });
@@ -810,7 +810,7 @@ angular.module('specApp',
     ctrl.reportDuration = function(): void {
       AppUtilService.reportDuration($scope.duration);
     };
-    $scope.$on('duration', (event, duration: number) => {
+    $scope.$on('duration', (event: ng.IAngularEvent, duration: number) => {
       $scope.reportDurationResult = duration;
       $timeout(() => { $scope.$apply(); });
     });

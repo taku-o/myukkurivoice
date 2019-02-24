@@ -5,6 +5,7 @@ var _path, path               = () => { _path = _path || require('path'); return
 var _fs, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
 var _monitor, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _waitUntil, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 // env
 var DEBUG = process.env.DEBUG != null;
@@ -27,7 +28,7 @@ var desktopDir = app.getPath('desktop');
 
 // angular app
 angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 'mainModels'])
-  .config(['$qProvider', ($qProvider) => {
+  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {
@@ -50,14 +51,14 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       YInput: yubo.YInput, YInputInitialData: yubo.YInput) {
 
     // event listener
-    $scope.$on('message', (event, message: yubo.IMessage | yubo.IRecordMessage) => {
+    $scope.$on('message', (event: ng.IAngularEvent, message: yubo.IMessage | yubo.IRecordMessage) => {
       $scope.messageList.unshift(message);
       while ($scope.messageList.length > 5) {
         $scope.messageList.pop();
       }
       $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('wavGenerated', (event, wavFileInfo: yubo.IRecordMessage) => {
+    $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo: yubo.IRecordMessage) => {
       // lastWavFile
       $scope.lastWavFile = wavFileInfo;
       // generatedList
@@ -71,14 +72,14 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       HistoryService.add(wavFileInfo);
       HistoryService.save();
     });
-    $scope.$on('duration', (event, duration: number) => {
+    $scope.$on('duration', (event: ng.IAngularEvent, duration: number) => {
       $timeout(() => { // $scope.$apply
         $scope.duration = duration;
       });
     });
 
     // shortcut
-    ipcRenderer().on('shortcut', (event, action: string) => {
+    ipcRenderer().on('shortcut', (event: Electron.Event, action: string) => {
       switch (action) {
         case 'play':
           document.getElementById('play').click();
@@ -132,7 +133,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     });
 
     // menu
-    ipcRenderer().on('menu', (event, action: string) => {
+    ipcRenderer().on('menu', (event: Electron.Event, action: string) => {
       switch (action) {
         case 'clear':
           document.getElementById('clear').click();
@@ -184,7 +185,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     });
 
     // dropTextFile event
-    ipcRenderer().on('dropTextFile', (event, filePath: string) => {
+    ipcRenderer().on('dropTextFile', (event: Electron.Event, filePath: string) => {
       MessageService.action('drop textfile to app icon.');
       fs().readFile(filePath, 'utf-8', (err: Error, data: string) => {
         if (err) {
@@ -200,15 +201,26 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       });
     });
     // recentDocument event
-    ipcRenderer().on('recentDocument', (event, filePath: string) => {
+    ipcRenderer().on('recentDocument', (event: Electron.Event, filePath: string) => {
       MessageService.action('select from Recent Document List.');
-      const r = HistoryService.get(filePath);
-      if (r) {
-        $scope.yinput.source = r.source;
-        $scope.yinput.encoded = r.encoded;
-        $timeout(() => { $scope.$apply(); });
+
+      const f = (filePath: string) => {
+        const r = HistoryService.get(filePath);
+        if (r) {
+          $scope.yinput.source = r.source;
+          $scope.yinput.encoded = r.encoded;
+          $timeout(() => { $scope.$apply(); });
+        } else {
+          MessageService.info('履歴データは見つかりませんでした。');
+        }
+      };
+
+      if (HistoryService.loaded()) {
+        f(filePath);
       } else {
-        MessageService.info('履歴データは見つかりませんでした。');
+        waitUntil()(300, 10, HistoryService.loaded, () => {
+          f(filePath);
+        });
       }
     });
 
@@ -229,6 +241,8 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     $scope.lastWavFile = null;
     $scope.alwaysOnTop = false;
     ctrl.isTest = TEST;
+    $scope.yvoiceList = dataJson;
+    $scope.yvoice = dataJson.length > 0? dataJson[0]: null;
     sequentialLoadData();
 
     // util
@@ -240,25 +254,36 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     }
     function loadData(nextTask: () => void): void {
       if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData called')); }
-      DataService.load(
-        (dataList) => {
-          if (dataList.length < 1) {
-            MessageService.info('初期データを読み込みます。');
-            dataList = DataService.initialData();
-          }
-          $timeout(() => { // $scope.$apply
-            $scope.yvoiceList = dataList;
-            $scope.yvoice = $scope.yvoiceList[0];
-          });
-          if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
-          nextTask();
-        },
-        (err) => {
-          MessageService.error('初期データの読み込みでエラーが起きました。', err);
-          if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
-          nextTask();
-        }
-      );
+      let dataList = dataJson;
+      if (dataList.length < 1) {
+        MessageService.info('初期データを読み込みます。');
+        dataList = DataService.initialData();
+        $timeout(() => { // $scope.$apply
+          $scope.yvoiceList = dataList;
+          $scope.yvoice = $scope.yvoiceList[0];
+        });
+      }
+      if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+      nextTask();
+      //DataService.load(
+      //  (dataList) => {
+      //    if (dataList.length < 1) {
+      //      MessageService.info('初期データを読み込みます。');
+      //      dataList = DataService.initialData();
+      //    }
+      //    $timeout(() => { // $scope.$apply
+      //      $scope.yvoiceList = dataList;
+      //      $scope.yvoice = $scope.yvoiceList[0];
+      //    });
+      //    if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+      //    nextTask();
+      //  },
+      //  (err) => {
+      //    MessageService.error('初期データの読み込みでエラーが起きました。', err);
+      //    if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
+      //    nextTask();
+      //  }
+      //);
     }
     function loadHistory(): void {
       HistoryService.load().then((cache) => {
@@ -563,7 +588,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
 
       // 通常保存
       } else {
-        ipcRenderer().once('showSaveDialog', (event, filePath) => {
+        ipcRenderer().once('showSaveDialog', (event: Electron.Event, filePath) => {
           if (!filePath) {
             MessageService.error('保存先が指定されませんでした。');
             return;
@@ -943,7 +968,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         return;
       }
 
-      ipcRenderer().once('showDirDialog', (event, dirs) => {
+      ipcRenderer().once('showDirDialog', (event: Electron.Event, dirs) => {
         if (!dirs || dirs.length < 1) {
           return;
         }
@@ -973,7 +998,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       MessageService.action('switch alwaysOnTop option.');
       ipcRenderer().send('switchAlwaysOnTop', 'mainWindow');
     };
-    ipcRenderer().on('switchAlwaysOnTop', (event, newflg) => {
+    ipcRenderer().on('switchAlwaysOnTop', (event: Electron.Event, newflg: boolean) => {
       $scope.alwaysOnTop = newflg;
       MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
       $timeout(() => { $scope.$apply(); });
@@ -981,3 +1006,4 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
   }]);
 
 declare var global: NodeJS.Global;
+declare var dataJson: yubo.YVoice[];

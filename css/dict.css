@@ -13,7 +13,7 @@ li.list-group-item:active {
   background-color: #3399ff;
 }
 li.list-group-item#export.disable {
-  color: #CCCCCC;
+  color: #cccccc;
 }
 li.list-group-item#export.disable img {
   opacity: 0.2;

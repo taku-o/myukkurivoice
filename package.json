@@ -1,16 +1,12 @@
 {
   "name": "MYukkuriVoice",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
   "types": "types.d.ts",
   "scripts": {
     "tasks": "gulp --tasks-simple",
-    "test": "gulp test",
-    "rtest": "gulp test-rebuild",
-    "clean": "gulp clean",
-    "app": "gulp app",
-    "release": "gulp release",
+    "clean": "git checkout -- . && git clean -fd",
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
   },
   "keywords": [
@@ -88,10 +84,12 @@
     "gulp-markdown-pdf": "^6.0.0",
     "gulp-markdown-toc": "^1.1.0",
     "gulp-mocha": "^6.0.0",
+    "gulp-prettier": "^2.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-typescript": "^5.0.0",
+    "gulp-using": "^0.1.1",
     "gulp-wrapper": "^1.0.0",
     "mocha": "^4.1.0",
     "node-notifier": "^5.2.1",

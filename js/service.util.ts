@@ -3,7 +3,7 @@ var _path, path = () => { _path = _path || require('path'); return _path; };
 
 // angular util service
 angular.module('UtilServices', ['MessageServices'])
-  .factory('AudioSourceService', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.AudioSourceService => {
+  .factory('AudioSourceService', ['$q', 'MessageService', ($q: ng.IQService, MessageService: yubo.MessageService): yubo.AudioSourceService => {
     const waveExt = '.wav';
     const sourceExt = '.txt';
 
@@ -15,7 +15,7 @@ angular.module('UtilServices', ['MessageServices'])
         return path().join(dir, filename);
       },
       save: function(filePath: string, sourceText: string): ng.IPromise<string> {
-        const d = $q.defer();
+        const d = $q.defer<string>();
         fs().writeFile(filePath, sourceText, 'utf-8', function(err: Error) {
           if (err) {
             MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
@@ -27,7 +27,7 @@ angular.module('UtilServices', ['MessageServices'])
       },
     };
   }])
-  .factory('SeqFNameService', ['$q', 'MessageService', ($q, MessageService: yubo.MessageService): yubo.SeqFNameService => {
+  .factory('SeqFNameService', ['$q', 'MessageService', ($q: ng.IQService, MessageService: yubo.MessageService): yubo.SeqFNameService => {
     const ext = '.wav';
     const numPattern = '[0-9]{4}';
     const limit = 9999;
@@ -46,8 +46,8 @@ angular.module('UtilServices', ['MessageServices'])
         return prefix + formatted + ext;
       },
       nextNumber: function(dir: string, prefix: string): ng.IPromise<number> {
-        const d = $q.defer();
-        fs().readdir(dir, (err: Error, files) => {
+        const d = $q.defer<number>();
+        fs().readdir(dir, (err: Error, files: string[]) => {
           if (err) {
             MessageService.syserror('ディレクトリを参照できませんでした。', err);
             d.reject(err); return;
@@ -85,7 +85,7 @@ angular.module('UtilServices', ['MessageServices'])
       },
     };
   }])
-  .factory('AppUtilService', ['$rootScope', ($rootScope): yubo.AppUtilService => {
+  .factory('AppUtilService', ['$rootScope', ($rootScope: ng.IRootScopeService): yubo.AppUtilService => {
     return {
       disableRhythm: function(encoded: string): string {
         return encoded.replace(/['/]/g, '');
