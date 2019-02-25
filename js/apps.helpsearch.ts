@@ -17,7 +17,7 @@ angular.module('helpSearchApp', [])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {
-    return (exception, cause) => {
+    return (exception: Error, cause: string) => {
       log().warn('helpsearch:catch angularjs exception: %s, cause:%s', exception, cause);
     };
   })

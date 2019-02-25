@@ -19,7 +19,7 @@ angular.module('specApp',
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {
-    return (exception, cause) => {
+    return (exception: Error, cause: string) => {
       log().warn('spec:catch angularjs exception: %s, cause:%s', exception, cause);
     };
   })

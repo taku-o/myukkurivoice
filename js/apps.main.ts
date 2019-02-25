@@ -32,7 +32,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {
-    return (exception, cause) => {
+    return (exception: Error, cause: string) => {
       log().warn('main:catch angularjs exception: %s, cause:%s', exception, cause);
     };
   })
@@ -347,7 +347,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
 
     // list box selection changed
     ctrl.onChangePhont = function(): void {
-      let phont = null;
+      let phont: yubo.YPhont = null;
       angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
@@ -424,13 +424,13 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         });
       }, $q.defer());
     };
-    function playEach(cinput): ng.IPromise<string> {
+    function playEach(cinput: yubo.YCommandInput): ng.IPromise<string> {
       const d = $q.defer();
       let encoded = cinput.text;
       const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
-      let phont = null;
+      let phont: yubo.YPhont = null;
       angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
@@ -488,7 +488,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         return;
       }
 
-      let phont = null;
+      let phont: yubo.YPhont = null;
       angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == $scope.yvoice.phont) { phont = value; }
       });
@@ -545,14 +545,14 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
 
         // record
         const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-        let sourceFname = null;
+        let sourceFname: string = null;
         // record wave files
         parsedList.reduce((p, cinput) => {
           if(p.then === undefined) {
             p.resolve();
             p = p.promise;
           }
-          return p.then((fp) => {
+          return p.then((fp: string) => {
             return recordEach(cinput, dir, prefix)
               .then((fp) => {
                 if ($scope.yvoice.sourceWrite && !sourceFname) {
@@ -571,7 +571,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
           });
         }, $q.defer())
         // record source message
-        .then((fp) => {
+        .then((fp: string) => {
           if (!sourceFname) { return; }
           AudioSourceService.save(sourceFname, loggingSourceText).then(() => {
             MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
@@ -588,7 +588,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
 
       // 通常保存
       } else {
-        ipcRenderer().once('showSaveDialog', (event: Electron.Event, filePath) => {
+        ipcRenderer().once('showSaveDialog', (event: Electron.Event, filePath: string) => {
           if (!filePath) {
             MessageService.error('保存先が指定されませんでした。');
             return;
@@ -600,14 +600,14 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
           // record
           const containsCommand = CommandService.containsCommand(encoded, $scope.yvoiceList);
           const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-          let sourceFname = null;
+          let sourceFname: string = null;
           // record wave files
           parsedList.reduce((p, cinput) => {
             if(p.then === undefined) {
               p.resolve();
               p = p.promise;
             }
-            return p.then((fp) => {
+            return p.then((fp: string) => {
               if (containsCommand) {
                 return recordEach(cinput, dir, prefix)
                   .then((fp) => {
@@ -644,7 +644,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
             });
           }, $q.defer())
           // record source message
-          .then((fp) => {
+          .then((fp: string) => {
             if (!sourceFname) { return; }
             AudioSourceService.save(sourceFname, loggingSourceText).then(() => {
               MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
@@ -662,13 +662,13 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         ipcRenderer().send('showSaveDialog', 'wav');
       }
     };
-    function recordSolo(cinput, filePath): ng.IPromise<string> {
+    function recordSolo(cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string> {
       const d = $q.defer();
       let encoded = cinput.text;
       const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
-      let phont = null;
+      let phont: yubo.YPhont = null;
       angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
@@ -715,13 +715,13 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       });
       return d.promise;
     }
-    function recordEach(cinput, dir, fnameprefix): ng.IPromise<string> {
+    function recordEach(cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string> {
       const d = $q.defer();
       let encoded = cinput.text;
       const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
       // phont
-      let phont = null;
+      let phont: yubo.YPhont = null;
       angular.forEach(ctrl.phontList, (value, key) => {
         if (value.id == yvoice.phont) { phont = value; }
       });
@@ -811,7 +811,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         });
       }
     };
-    ctrl.select = function(index): void {
+    ctrl.select = function(index: number): void {
       MessageService.action('switch voice config.');
       $scope.yvoice = $scope.yvoiceList[index];
       $scope.display = 'main';
@@ -821,7 +821,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       const newYvoice = DataService.create();
       $scope.yvoiceList.push(newYvoice);
     };
-    ctrl.minus = function(index): void {
+    ctrl.minus = function(index: number): void {
       MessageService.action('delete voice config.');
       if ($scope.yvoiceList.length < 2) {
         MessageService.error('ボイス設定は1件以上必要です。');
@@ -831,7 +831,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       $scope.yvoice = $scope.yvoiceList[0];
       $scope.display = 'main';
     };
-    ctrl.copy = function(index): void {
+    ctrl.copy = function(index: number): void {
       MessageService.action('copy and create new voice config.');
       const original = $scope.yvoiceList[index];
       const newYvoice = DataService.copy(original);
@@ -856,7 +856,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     ctrl.quickLookMessage = function(message: yubo.IWriteMessage): void {
       if (message.type != 'record' && message.type != 'source') { return; }
       const quickLookPath = message.quickLookPath;
-      fs().stat(quickLookPath, (err: Error, stats) => {
+      fs().stat(quickLookPath, (err: Error, stats: any/*fs.Stats*/) => {
         if (err) { return; }
         //MessageService.action(`open with Quick Look. file: ${wavFilePath}`);
         const win = require('electron').remote.getCurrentWindow();
@@ -968,7 +968,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         return;
       }
 
-      ipcRenderer().once('showDirDialog', (event: Electron.Event, dirs) => {
+      ipcRenderer().once('showDirDialog', (event: Electron.Event, dirs: string[]) => {
         if (!dirs || dirs.length < 1) {
           return;
         }

@@ -19,7 +19,7 @@ angular.module('systemApp', ['LicenseServices'])
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {
-    return (exception, cause) => {
+    return (exception: Error, cause: string) => {
       log().warn('system:catch angularjs exception: %s, cause:%s', exception, cause);
     };
   })

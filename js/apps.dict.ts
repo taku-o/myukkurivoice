@@ -33,7 +33,7 @@ angular.module('dictApp',
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .factory('$exceptionHandler', () => {
-    return (exception, cause) => {
+    return (exception: Error, cause: string) => {
       log().warn('dict:catch angularjs exception: %s, cause:%s', exception, cause);
     };
   })
