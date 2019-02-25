@@ -194,8 +194,8 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
         fn_AqKanji2Koe_Release(aqKanji2Koe);
         return encoded;
       },
-      wave: function(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any> {
-        const d = $q.defer();
+      wave: function(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<Buffer> {
+        const d = $q.defer<Buffer>();
         if (!encoded) {
           MessageService.syserror('音記号列が入力されていません。');
           d.reject(new Error('音記号列が入力されていません。')); return d.promise;
@@ -205,7 +205,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
         if (phont.version == 'talk1') {
           // write encoded to tempory file
           const fsprefix = `_myubow${Date.now().toString(36)}`;
-          temp().open(fsprefix, (err: Error, info) => {
+          temp().open(fsprefix, (err: Error, info: yubo.TempFd) => {
             if (err) {
               MessageService.syserror('一時作業ファイルを作れませんでした。', err);
               d.reject(err); return;

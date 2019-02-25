@@ -5,8 +5,8 @@ var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('
 angular.module('DragDirectives', [])
   // wav-draggable
   .directive('wavDraggable', ($parse) => {
-    return (scope: ng.IScope, element, attr) => {
-      let f;
+    return (scope: ng.IScope, element: ng.IDocumentService, attr: ng.IAttributes) => {
+      let f: (e: Event) => boolean;
       scope.$watch('lastWavFile', (value: yubo.IRecordMessage) => {
         const message = value;
         if (!message || !message.wavFilePath) {
@@ -21,7 +21,7 @@ angular.module('DragDirectives', [])
         if (f) {
           el.removeEventListener('dragstart', f, false);
         }
-        f = (e) => {
+        f = (e: Event) => {
           e.preventDefault();
           ipcRenderer().send('ondragstartwav', wavFilePath);
           return false;
@@ -32,10 +32,10 @@ angular.module('DragDirectives', [])
   })
   // txt-droppable
   .directive('txtDroppable', ($parse) => {
-    return (scope: yubo.IMainScope, element, attr) => {
-      const el = element[0];
+    return (scope: yubo.IMainScope, element: ng.IDocumentService, attr: ng.IAttributes) => {
+      const el: HTMLElement = element[0];
 
-      el.addEventListener('drop', (e) => {
+      el.addEventListener('drop', (e: DragEvent) => {
         e.preventDefault();
 
         // read dropped file and set.

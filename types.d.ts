@@ -1,13 +1,25 @@
 declare namespace yubo {
 
   // external
+  // node.js
   export interface Global extends NodeJS.Global {
     appCfg: AppCfg;
   }
+  // electron-config
   export interface ElectronConfig {
 	get(key: string): any;
 	set(key: string, val: any): void;
 	has(key: string): boolean
+  }
+  // wav-encoder
+  export interface WavEncoderAudioData {
+    sampleRate: number;
+    channelData: Float32Array[];
+  }
+  // temp
+  export interface TempFd {
+    path: string;
+    fd: number;
   }
 
   // electron-appcfg.ts
@@ -176,18 +188,18 @@ declare namespace yubo {
   export interface AquesService {
     init(): void;
     encode(source: string): string;
-    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<any>;
+    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<Buffer>;
   }
   // service.audio.ts
   export interface AudioService1 {
-    play(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
+    play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
     stop(): void;
-    record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
+    record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
   }
   export interface AudioService2 {
-    play(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
+    play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
     stop(): void;
-    record(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string>;
+    record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
   }
   // service.util.ts
   export interface AudioSourceService {

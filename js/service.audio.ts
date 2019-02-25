@@ -9,7 +9,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     let audio: HTMLAudioElement = null;
 
     return {
-      play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
+      play: function(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer<string>();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -19,7 +19,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         if (audio) { audio.pause(); }
 
         const fsprefix = `_myubop${Date.now().toString(36)}`;
-        temp().open(fsprefix, (err: Error, info) => {
+        temp().open(fsprefix, (err: Error, info: yubo.TempFd) => {
           if (err) {
             MessageService.syserror('一時作業ファイルを作れませんでした。', err);
             d.reject(err); return;
@@ -46,7 +46,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         if (!audio) { return; }
         audio.pause();
       },
-      record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
+      record: function(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer<string>();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -73,7 +73,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     // Web Audio API base AudioService
     let runningNode: AudioBufferSourceNode = null;
 
-    function toArrayBuffer(bufWav): any {
+    function toArrayBuffer(bufWav: Buffer): ArrayBuffer {
       const aBuffer = new ArrayBuffer(bufWav.length);
       const view = new Uint8Array(aBuffer);
       for (let i = 0; i < bufWav.length; ++i) {
@@ -106,7 +106,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       }
       return pos;
     }
-    function buildCorrectAudioBuffer(audioBuffer: AudioBuffer): any {
+    function buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer {
       const frameCount = correctFrameCount(audioBuffer);
       const nAudioBuffer = new AudioBuffer({
           numberOfChannels: audioBuffer.numberOfChannels,
@@ -123,7 +123,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
     }
 
     return {
-      play: function(bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
+      play: function(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer<string>();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
@@ -231,7 +231,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
       stop: function(): void {
         if (runningNode) { runningNode.stop(0); runningNode = null; }
       },
-      record: function(wavFilePath: string, bufWav: any, options: yubo.PlayOptions): ng.IPromise<string> {
+      record: function(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string> {
         const d = $q.defer<string>();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -298,7 +298,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             AppUtilService.reportDuration(nAudioBuffer.duration);
 
             // create audioData parameter for wav-encoder
-            const audioData = {
+            const audioData: yubo.WavEncoderAudioData = {
               sampleRate: nAudioBuffer.sampleRate,
               channelData: [],
             };
@@ -307,7 +307,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             }
             // create wav file.
             const dInEncode = $q.defer<string>();
-            WavEncoder().encode(audioData).then((buffer) => {
+            WavEncoder().encode(audioData).then((buffer: ArrayBuffer) => {
               fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err: Error) => {
                 if (err) {
                   dInEncode.reject(err); return;
