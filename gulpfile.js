@@ -44,6 +44,7 @@ gulp.task('default', () => {
   console.log(`
 usage:
     gulp --tasks-simple
+    gulp all
     gulp tsc
     gulp tsc-debug
     gulp lint
@@ -63,6 +64,16 @@ usage:
     gulp release
     gulp staging [--branch=develop]
   `);
+});
+
+// all
+gulp.task('all', (cb) => {
+  runSequence('format', 'less', 'tsc', 'lint', 'test', 'staging', (err) => {
+    if (err) {
+      _notifyError();
+    }
+    cb(err);
+  });
 });
 
 // tsc
