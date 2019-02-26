@@ -48,7 +48,7 @@
       </button>
     </div>
 
-    <small id="duration">再生時間(秒):{{duration | number:2}}</small>
+    <small id="duration">再生時間(秒):<span ng-bind="duration | number:2"></span></small>
     <button class="btn btn-large btn-default" id="always-on-top-btn" ng-click="ctrl.switchAlwaysOnTop()" title="前面表示固定のON/OFF切替">
       <span class="icon icon-lock" ng-class="{active:alwaysOnTop}"></span>
     </button>
@@ -79,7 +79,7 @@
       </li>
       <li class="list-group-item voice-config-item" ng-repeat="yvoiceItem in yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == yvoice.id}" ng-attr-id="{{yvoiceItem.id}}">
         <div class="media-body" ng-click="ctrl.select($index)">
-          <strong>{{ $index }}:{{ yvoiceItem.name }}</strong>
+          <strong><span ng-bind="$index"></span>:<span ng-bind="yvoiceItem.name"></span></strong>
           <div class="btn-group pull-right">
             <button class="btn btn-default" id="copy" ng-click="ctrl.copy($index)" title="設定を複製します">
               <span class="icon icon-plus-circled"></span>
@@ -102,7 +102,7 @@
       </li>
       <li class="list-group-footer">
         <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!lastWavFile" title="このボタンをドラッグアンドドロップすると、最後に作成した音声ファイルを取り出せます" ng-click="ctrl.quickLookMessage(lastWavFile)">
-          <span class="icon icon-download"></span>{{lastWavFile.wavFileName||"drag and drop to movie editor"}}
+          <span class="icon icon-download"></span><span ng-bind="lastWavFile.wavFileName||'drag and drop to movie editor'"></span>
         </button>
       </li>
       <!-- for test -->
