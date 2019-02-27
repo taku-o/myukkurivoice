@@ -20,8 +20,6 @@ if (DEBUG) {
     log().error('source-map-support or devtron is not installed.');
   }
 }
-// perfomance monitoring
-if (MONITOR) { log().warn(monitor().format('apps.main', '----')); }
 
 // application settings
 var desktopDir = app.getPath('desktop');

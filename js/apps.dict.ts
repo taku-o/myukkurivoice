@@ -22,7 +22,7 @@ if (DEBUG) {
   }
 }
 // perfomance monitoring
-if (MONITOR) { log().warn(monitor().format('apps.dict', '----')); }
+if (MONITOR) { log().warn(monitor().format('apps.dict', '---- start')); }
 
 // angular app
 angular.module('dictApp',
