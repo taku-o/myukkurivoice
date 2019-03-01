@@ -232,7 +232,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     $scope.display = 'main';
     $scope.showTypeMessageList = true;
     ctrl.phontList = MasterService.getPhontList();
-    $scope.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
+    ctrl.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
     $scope.yinput = angular.copy(YInput);
     $scope.messageList = [];
     $scope.generatedList = [];
