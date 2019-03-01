@@ -22,7 +22,7 @@ angular.module('helpSearchApp', [])
       log().warn('helpsearch:catch angularjs exception: %s, cause:%s', exception, cause);
     };
   })
-  .controller('HelpSearchController', ['$scope', '$window', function($scope, $window) {
+  .controller('HelpSearchController', ['$scope', '$window', function($scope: yubo.IHelpSearchScope, $window: ng.IWindowService) {
 
     // init
     const ctrl = this;

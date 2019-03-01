@@ -244,11 +244,19 @@ declare namespace yubo {
     appCfg:     AppCfg;
     aq10UseKey: string;
   }
+  export interface IDictScope extends ng.IScope {
+    isInEditing: boolean;
+    alwaysOnTop: boolean;
+    message:     string;
+    gridOptions: any;
+    gridApi:     any;
+  }
   export interface IHelpScope extends ng.IScope {
-    display:        string;
-    searchVisibled: boolean;
-    searchText:     string;
-    $location:      ng.ILocaleService;
+    display:   string;
+    $location: ng.ILocationService;
+  }
+  export interface IHelpSearchScope extends ng.IScope {
+    searchText: string;
   }
 
   // apps.main.ts

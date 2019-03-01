@@ -42,7 +42,7 @@ angular.module('dictApp',
   .controller('DictController',
     ['$scope', '$q', '$timeout', '$interval',
      'AqUsrDicService', 'IntroService', 'KindList',
-    function($scope, $q, $timeout, $interval,
+    function($scope: yubo.IDictScope, $q: ng.IQService, $timeout: ng.ITimeoutService, $interval: ng.IIntervalService,
       AqUsrDicService: yubo.AqUsrDicService, IntroService: yubo.IntroService, KindList: yubo.KindEntry[]) {
 
     // menu
@@ -107,7 +107,7 @@ angular.module('dictApp',
           // do nothing
         });
         $scope.gridApi.rowEdit.on.saveRow($scope, (rowEntity) => {
-          const d = $q.defer();
+          const d = $q.defer<string>();
           ctrl.toIsInEditing();
           $scope.gridApi.rowEdit.setSavePromise(rowEntity, d.promise);
 
@@ -169,7 +169,7 @@ angular.module('dictApp',
       });
     };
     this.setup = function(): ng.IPromise<string> {
-      const d = $q.defer();
+      const d = $q.defer<string>();
       // mkdir
       fs().stat(`${mAppDictDir}`, (err: Error, stats) => {
         if (err) {
@@ -186,7 +186,7 @@ angular.module('dictApp',
       return d.promise;
     };
     this.loadCsv = function(): ng.IPromise<any> {
-      const d = $q.defer();
+      const d = $q.defer<any>();
       fs().readFile(`${mAppDictDir}/aq_user.csv`, 'utf-8', (err: Error, data) => {
         if (err) {
           d.reject(err); return;
@@ -311,7 +311,7 @@ angular.module('dictApp',
       });
     };
     ctrl.reset = function(): ng.IPromise<boolean> {
-      const d = $q.defer();
+      const d = $q.defer<boolean>();
       // reset csv
       fs().writeFileSync(`${mAppDictDir}/aq_user.csv`, fs().readFileSync(`${rscDictDir}/aq_user.csv`));
       // and load
@@ -330,7 +330,7 @@ angular.module('dictApp',
       $scope.message = 'MYukkuriVoiceのメイン画面を更新します。';
     };
     this.validateData = function(): ng.IPromise<boolean> {
-      const d = $q.defer();
+      const d = $q.defer<boolean>();
       $scope.gridApi.rowEdit.flushDirtyRows($scope.gridApi.grid).then(() => {
         const errorRows = $scope.gridApi.rowEdit.getErrorRows($scope.gridApi.grid);
         if (errorRows.length < 1) {

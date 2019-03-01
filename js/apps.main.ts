@@ -41,7 +41,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
      'AudioService1', 'AudioService2', 'AudioSourceService', 'SeqFNameService', 'AppUtilService', 'CommandService', 'IntroService',
      'YInput', 'YInputInitialData',
     function(
-      $scope: yubo.IMainScope, $timeout, $q,
+      $scope: yubo.IMainScope, $timeout: ng.ITimeoutService, $q: ng.IQService,
       MessageService: yubo.MessageService, DataService: yubo.DataService, MasterService: yubo.MasterService,
       HistoryService: yubo.HistoryService, AquesService: yubo.AquesService,
       audioServVer1: yubo.AudioService1, audioServVer2: yubo.AudioService2, AudioSourceService: yubo.AudioSourceService,
@@ -413,18 +413,18 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
 
       // play
       const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
-      parsedList.reduce((p, cinput) => {
+      parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
         if(p.then === undefined) {
           p.resolve();
           p = p.promise;
         }
-        return p.then(() => {
+        return (<ng.IPromise<string>>p).then(() => {
           return playEach(cinput);
         });
-      }, $q.defer());
+      }, $q.defer<string>());
     };
     function playEach(cinput: yubo.YCommandInput): ng.IPromise<string> {
-      const d = $q.defer();
+      const d = $q.defer<string>();
       let encoded = cinput.text;
       const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
@@ -546,12 +546,12 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
         let sourceFname: string = null;
         // record wave files
-        parsedList.reduce((p, cinput) => {
+        parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
           if(p.then === undefined) {
             p.resolve();
             p = p.promise;
           }
-          return p.then((fp: string) => {
+          return (<ng.IPromise<string>>p).then((fp: string) => {
             return recordEach(cinput, dir, prefix)
               .then((fp) => {
                 if ($scope.yvoice.sourceWrite && !sourceFname) {
@@ -568,7 +568,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
                 return fp;
               });
           });
-        }, $q.defer())
+        }, $q.defer<string>())
         // record source message
         .then((fp: string) => {
           if (!sourceFname) { return; }
@@ -601,12 +601,12 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
           const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
           let sourceFname: string = null;
           // record wave files
-          parsedList.reduce((p, cinput) => {
+          parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
             if(p.then === undefined) {
               p.resolve();
               p = p.promise;
             }
-            return p.then((fp: string) => {
+            return (<ng.IPromise<string>>p).then((fp: string) => {
               if (containsCommand) {
                 return recordEach(cinput, dir, prefix)
                   .then((fp) => {
@@ -641,7 +641,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
                   });
               }
             });
-          }, $q.defer())
+          }, $q.defer<string>())
           // record source message
           .then((fp: string) => {
             if (!sourceFname) { return; }
@@ -662,7 +662,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       }
     };
     function recordSolo(cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string> {
-      const d = $q.defer();
+      const d = $q.defer<string>();
       let encoded = cinput.text;
       const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 
@@ -715,7 +715,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       return d.promise;
     }
     function recordEach(cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string> {
-      const d = $q.defer();
+      const d = $q.defer<string>();
       let encoded = cinput.text;
       const yvoice = CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
 

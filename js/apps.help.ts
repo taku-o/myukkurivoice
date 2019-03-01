@@ -28,7 +28,7 @@ angular.module('helpApp', ['IncludeDirectives'])
     };
   })
   .controller('HelpController', ['$scope', '$timeout', '$location', '$window',
-  function($scope: yubo.IHelpScope, $timeout, $location, $window) {
+  function($scope: yubo.IHelpScope, $timeout: ng.ITimeoutService, $location: ng.ILocationService, $window: ng.IWindowService) {
 
     const menuList = [
       'about',
