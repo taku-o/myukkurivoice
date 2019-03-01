@@ -231,8 +231,8 @@ declare namespace yubo {
     appCfg:              AppCfg;
     duration:            number;
     lastWavFile:         yubo.IRecordMessage;
-    encodedHighlight:    any;
-    sourceHighlight:     any;
+    encodedHighlight:    {[key: string]: string};
+    sourceHighlight:     {[key: string]: string};
     aq10BasList:         { name: string, id: number}[];
     display:             string;
     alwaysOnTop:         boolean;
