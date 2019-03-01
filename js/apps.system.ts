@@ -15,8 +15,9 @@ if (DEBUG) {
 
 // application config app
 angular.module('systemApp', ['LicenseServices'])
-  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
+  .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
+    $compileProvider.debugInfoEnabled(DEBUG);
   }])
   .factory('$exceptionHandler', () => {
     return (exception: Error, cause: string) => {

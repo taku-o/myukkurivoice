@@ -18,8 +18,9 @@ if (DEBUG) {
 }
 // help app
 angular.module('helpApp', ['IncludeDirectives'])
-  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
+  .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
+    $compileProvider.debugInfoEnabled(DEBUG);
   }])
   .factory('$exceptionHandler', () => {
     return (exception: Error, cause: string) => {

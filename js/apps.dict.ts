@@ -29,8 +29,9 @@ angular.module('dictApp',
   ['dictModels', 'dictServices',
    'ui.grid', 'ui.grid.edit', 'ui.grid.rowEdit', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ui.grid.cellNav',
   ])
-  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
+  .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
+    $compileProvider.debugInfoEnabled(DEBUG);
   }])
   .factory('$exceptionHandler', () => {
     return (exception: Error, cause: string) => {
