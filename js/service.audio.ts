@@ -13,7 +13,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         const d = $q.defer<string>();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
-          d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
+          return $q.reject(new Error('再生する音源が渡されませんでした。'));
         }
         // if audio playing, stop current playing
         if (audio) { audio.pause(); }
@@ -50,11 +50,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         const d = $q.defer<string>();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
-          d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
+          return $q.reject(new Error('音声ファイルの保存先が指定されていません。'));
         }
         if (!bufWav) {
           MessageService.syserror('保存する音源が渡されませんでした。');
-          d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
+          return $q.reject(new Error('保存する音源が渡されませんでした。'));
         }
 
         fs().writeFile(wavFilePath, bufWav, (err: Error) => {
@@ -127,7 +127,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         const d = $q.defer<string>();
         if (!bufWav) {
           MessageService.syserror('再生する音源が渡されませんでした。');
-          d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
+          return $q.reject(new Error('再生する音源が渡されませんでした。'));
         }
         // if audio playing, stop current playing
         if (runningNode) { runningNode.stop(0); runningNode = null; }
@@ -235,11 +235,11 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         const d = $q.defer<string>();
         if (!wavFilePath) {
           MessageService.syserror('音声ファイルの保存先が指定されていません。');
-          d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
+          return $q.reject(new Error('音声ファイルの保存先が指定されていません。'));
         }
         if (!bufWav) {
           MessageService.syserror('保存する音源が渡されませんでした。');
-          d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
+          return $q.reject(new Error('保存する音源が渡されませんでした。'));
         }
 
         const aBuffer = toArrayBuffer(bufWav);

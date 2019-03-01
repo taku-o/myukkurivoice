@@ -198,7 +198,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
         const d = $q.defer<Buffer>();
         if (!encoded) {
           MessageService.syserror('音記号列が入力されていません。');
-          d.reject(new Error('音記号列が入力されていません。')); return d.promise;
+          return $q.reject(new Error('音記号列が入力されていません。'));
         }
 
         // version 1
@@ -280,12 +280,12 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
             }
             if (aquesTalk10DevKey == null) {
               MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
-              d.reject(new Error('まだ初期化処理が完了していないので1秒ほど待ってください。')); return d.promise;
+              return $q.reject(new Error('まだ初期化処理が完了していないので1秒ほど待ってください。'));
             }
             const devKey = fn_AquesTalk10_SetDevKey(aquesTalk10DevKey);
             if (devKey != 0) {
               MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');
-              d.reject(new Error('AquesTalk10開発ライセンスキーが正しくありません。')); return d.promise;
+              return $q.reject(new Error('AquesTalk10開発ライセンスキーが正しくありません。'));
             }
 
             // get and set aquesTalk10 use key
@@ -296,14 +296,14 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
               '';
             if (encryptedUseKey && !aquesTalk10UseKey) {
               MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください');
-              d.reject(new Error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください')); return d.promise;
+              return $q.reject(new Error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください'));
             }
 
             if (encryptedUseKey) {
               const usrKey = fn_AquesTalk10_SetUsrKey(aquesTalk10UseKey);
               if (usrKey != 0) {
                 MessageService.error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`);
-                d.reject(new Error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`)); return d.promise;
+                return $q.reject(new Error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`));
               }
               MessageService.info('AquesTalk10使用ライセンスキーを設定しました。');
             }
@@ -328,7 +328,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
             const errorCode = allocInt.deref();
             MessageService.syserror(errorTable_AquesTalk10(errorCode));
             log().info(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk10(errorCode)}`);
-            d.reject(new Error(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk10(errorCode)}`)); return d.promise;
+            return $q.reject(new Error(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${errorTable_AquesTalk10(errorCode)}`));
           }
 
           const bufWav = ref().reinterpret(r, allocInt.deref(), 0);

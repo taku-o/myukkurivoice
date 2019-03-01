@@ -45,8 +45,7 @@ angular.module('LicenseServices', [])
 
         // get key from cache if exists
         if (consumerKeyCache[licenseType]) {
-          d.resolve(consumerKeyCache[licenseType]);
-          return d.promise;
+          return $q.resolve(consumerKeyCache[licenseType]);
         }
 
         // get encrypted consumer key

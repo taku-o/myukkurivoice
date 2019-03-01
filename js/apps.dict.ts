@@ -113,11 +113,11 @@ angular.module('dictApp',
 
           if (!rowEntity.source) {
             rowEntity.error = '表記が入力されていません';
-            d.reject(new Error('source is empty.')); return d.promise;
+            return $q.reject(new Error('source is empty.'));
           }
           if (!rowEntity.encoded) {
             rowEntity.error = '読みが入力されていません';
-            d.reject(new Error('encoded is empty.')); return d.promise;
+            return $q.reject(new Error('encoded is empty.'));
           }
 
           const r = AqUsrDicService.validateInput(rowEntity.source, rowEntity.encoded, rowEntity.kind);
