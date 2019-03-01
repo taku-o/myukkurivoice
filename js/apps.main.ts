@@ -414,11 +414,11 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       // play
       const parsedList = CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
       parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
-        if(p.then === undefined) {
+        if (p.then === undefined) {
           p.resolve();
           p = p.promise;
         }
-        return (<ng.IPromise<string>>p).then(() => {
+        return (p as ng.IPromise<string>).then(() => {
           return playEach(cinput);
         });
       }, $q.defer<string>());
@@ -547,11 +547,11 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
         let sourceFname: string = null;
         // record wave files
         parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
-          if(p.then === undefined) {
+          if (p.then === undefined) {
             p.resolve();
             p = p.promise;
           }
-          return (<ng.IPromise<string>>p).then((fp: string) => {
+          return (p as ng.IPromise<string>).then((fp: string) => {
             return recordEach(cinput, dir, prefix)
               .then((fp) => {
                 if ($scope.yvoice.sourceWrite && !sourceFname) {
@@ -602,11 +602,11 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
           let sourceFname: string = null;
           // record wave files
           parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
-            if(p.then === undefined) {
+            if (p.then === undefined) {
               p.resolve();
               p = p.promise;
             }
-            return (<ng.IPromise<string>>p).then((fp: string) => {
+            return (p as ng.IPromise<string>).then((fp: string) => {
               if (containsCommand) {
                 return recordEach(cinput, dir, prefix)
                   .then((fp) => {
