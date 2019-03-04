@@ -347,10 +347,10 @@ gulp.task('_manual:assets:docs', () => {
   return gulp.src(['docs/assets/js/*.js', 'docs/assets/css/*.css'], {base: 'docs'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:angular', () => {
-  return gulp.src(['node_modules/angular/angular.min.js'], {base: 'node_modules'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
+  return gulp.src(['node_modules/angular/angular.min.js', 'node_modules/angular/angular.min.js.map'], {base: 'node_modules'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
 gulp.task('_manual:assets:photon', () => {
-  return gulp.src(['node_modules/photon/dist/css/photon.css', 'node_modules/photon/dist/fonts/photon-entypo.woff'], {base: 'node_modules'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
+  return gulp.src(['node_modules/photon/dist/css/photon.css', 'node_modules/photon/dist/fonts/photon-entypo.woff', 'node_modules/photon/dist/fonts/photon-entypo.ttf'], {base: 'node_modules'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
 
 // releaseslog
