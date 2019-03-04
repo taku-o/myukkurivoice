@@ -1,7 +1,8 @@
 "use strict";
 angular.module('helpApp', ['IncludeDirectives'])
-    .config(['$qProvider', function ($qProvider) {
+    .config(['$qProvider', '$compileProvider', function ($qProvider, $compileProvider) {
         $qProvider.errorOnUnhandledRejections(false);
+        $compileProvider.debugInfoEnabled(false);
     }])
     .controller('HelpController', ['$scope', '$timeout', '$location', '$window',
     function ($scope, $timeout, $location, $window) {

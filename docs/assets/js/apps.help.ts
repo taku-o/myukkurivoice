@@ -18,16 +18,17 @@
 //}
 // help app
 angular.module('helpApp', ['IncludeDirectives'])
-  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
+  .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
+    $compileProvider.debugInfoEnabled(false);
   }])
   //.factory('$exceptionHandler', () => {
-  //  return (exception, cause) => {
+  //  return (exception: Error, cause: string) => {
   //    log().warn('help:catch angularjs exception: %s, cause:%s', exception, cause);
   //  };
   //})
   .controller('HelpController', ['$scope', '$timeout', '$location', '$window',
-  function($scope: yubo.IHelpScope, $timeout, $location, $window) {
+  function($scope: yubo.IHelpScope, $timeout: ng.ITimeoutService, $location: ng.ILocationService, $window: ng.IWindowService) {
 
     const menuList = [
       'about',
