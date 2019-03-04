@@ -121,7 +121,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
     // load custom dictionary if exists
     let aqDictPath = `${unpackedPath}/vendor/aq_dic_large`;
     const customDictPath = `${app.getPath('userData')}/userdict`;
-    fs().stat(`${customDictPath}/aqdic.bin`, (err: Error, stats) => {
+    fs().stat(`${customDictPath}/aqdic.bin`, (err: Error, stats: any/*fs.Stats*/) => {
       if (err) { return; }
       aqDictPath = customDictPath;
     });
@@ -233,7 +233,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
             // @ts-ignore
             const bufWav = Buffer.from(stdout, 'binary');
             d.resolve(bufWav);
-          }).on('close', (statusCode) => {
+          }).on('close', (statusCode: number) => {
             if (statusCode < 0) {
               const errorCode = statusCode * -1; // maquestalk1 library result
               MessageService.syserror(errorTable_AquesTalk2(errorCode));
@@ -245,7 +245,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
 
         // version 2
         } else if (phont.version == 'talk2') {
-          fs().readFile(phont.path, (err: Error, phontData) => {
+          fs().readFile(phont.path, (err: Error, phontData: Buffer) => {
             if (err) {
               MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
               d.reject(err); return;

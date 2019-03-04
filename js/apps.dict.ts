@@ -103,7 +103,7 @@ angular.module('dictApp',
       multiSelect: true,
       onRegisterApi: (gridApi) => {
         $scope.gridApi = gridApi;
-        $scope.gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue) => {
+        $scope.gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue: any, oldValue: any) => {
           // do nothing
         });
         $scope.gridApi.rowEdit.on.saveRow($scope, (rowEntity) => {
@@ -171,12 +171,12 @@ angular.module('dictApp',
     this.setup = function(): ng.IPromise<string> {
       const d = $q.defer<string>();
       // mkdir
-      fs().stat(`${mAppDictDir}`, (err: Error, stats) => {
+      fs().stat(`${mAppDictDir}`, (err: Error, stats: any/*fs.Stats*/) => {
         if (err) {
           fs().mkdirSync(`${mAppDictDir}`);
         }
       // copy resource
-      fs().stat(`${mAppDictDir}/aq_user.csv`, (err: Error, stats) => {
+      fs().stat(`${mAppDictDir}/aq_user.csv`, (err: Error, stats: any/*fs.Stats*/) => {
         if (err) {
           fs().writeFileSync(`${mAppDictDir}/aq_user.csv`, fs().readFileSync(`${rscDictDir}/aq_user.csv`));
         }
@@ -187,7 +187,7 @@ angular.module('dictApp',
     };
     this.loadCsv = function(): ng.IPromise<any> {
       const d = $q.defer<any>();
-      fs().readFile(`${mAppDictDir}/aq_user.csv`, 'utf-8', (err: Error, data) => {
+      fs().readFile(`${mAppDictDir}/aq_user.csv`, 'utf-8', (err: Error, data: Buffer) => {
         if (err) {
           d.reject(err); return;
         }
@@ -290,7 +290,7 @@ angular.module('dictApp',
       if ($scope.isInEditing) { return; }
       this.validateData().then(() => {
         // copy resource
-        fs().stat(`${mAppDictDir}/aqdic.bin`, (err: Error, stats) => {
+        fs().stat(`${mAppDictDir}/aqdic.bin`, (err: Error, stats: any/*fs.Stats*/) => {
           if (err) {
             fs().writeFileSync(`${mAppDictDir}/aqdic.bin`, fs().readFileSync(`${rscDictDir}/aqdic.bin`));
           }
@@ -359,7 +359,7 @@ angular.module('dictApp',
   }])
   .filter('mapKind', ['KindHash', function(KindHash) {
     const kindHash = KindHash;
-    return function(input) {
+    return function(input: number) {
       return kindHash[input]? kindHash[input]: '';
     };
   }]);

@@ -177,7 +177,7 @@ angular.module('specApp',
       $scope.messageServicePost = JSON.stringify(message);
       $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo) => {
+    $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo: yubo.IRecordMessage) => {
       $scope.lastWavFile = JSON.stringify(wavFileInfo);
       $timeout(() => { $scope.$apply(); });
     });
