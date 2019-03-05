@@ -92,6 +92,7 @@ angular.module('dictApp',
     $scope.isInEditing = false;
     $scope.message = '';
     $scope.alwaysOnTop = false;
+    const htmlTitle = document.title;
     // AqDicEdit, MYukkuriVoice data dir
     const rscDictDir = `${unpackedPath}/vendor/aq_dic_large`;
     const mAppDictDir = `${app.getPath('userData')}/userdict`;
@@ -206,14 +207,17 @@ angular.module('dictApp',
     this.init();
 
     // editing state
-    const title = document.title;
     ctrl.toIsInEditing = function(): void {
-      document.title = `* ${title}`;
+      const win = require('electron').remote.getCurrentWindow();
       $scope.isInEditing = true;
+      win.setDocumentEdited(true);
+      win.setTitle(`* ${htmlTitle}`);
     };
     ctrl.clearInEditing = function(): void {
-      document.title = `${title}`;
+      const win = require('electron').remote.getCurrentWindow();
       $scope.isInEditing = false;
+      win.setDocumentEdited(false);
+      win.setTitle(htmlTitle);
     };
 
     // action
