@@ -1,5 +1,5 @@
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/assets/js/apps.help.sw.worker.js')
+  navigator.serviceWorker.register('/myukkurivoice-preview/assets/js/apps.help.sw.worker.js')
     .then((registration) => {
       console.log('serviceWorker registration successful', registration.scope);
     })
