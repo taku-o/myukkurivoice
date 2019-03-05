@@ -19,7 +19,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
         if (audio) { audio.pause(); }
 
         const fsprefix = `_myubop${Date.now().toString(36)}`;
-        temp().open(fsprefix, (err: Error, info: yubo.TempFd) => {
+        temp().open(fsprefix, (err: Error, info: temp.FileDescriptor) => {
           if (err) {
             MessageService.syserror('一時作業ファイルを作れませんでした。', err);
             d.reject(err); return;
@@ -298,7 +298,7 @@ angular.module('AudioServices', ['MessageServices', 'UtilServices'])
             AppUtilService.reportDuration(nAudioBuffer.duration);
 
             // create audioData parameter for wav-encoder
-            const audioData: yubo.WavEncoderAudioData = {
+            const audioData: WavEncoder.AudioData = {
               sampleRate: nAudioBuffer.sampleRate,
               channelData: [],
             };

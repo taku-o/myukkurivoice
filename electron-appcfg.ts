@@ -34,7 +34,7 @@ function loadAppConfig(nextTask: () => void): void {
     }
     delete require.cache[configPath];
 
-    const config = new (Config())({defaults: stored}) as yubo.ElectronConfig;
+    const config = new (Config())({defaults: stored}) as ElectronStore.Config;
     ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
       if (config.has(k)) { appCfg[k] = config.get(k); }
     });

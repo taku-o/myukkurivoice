@@ -7,7 +7,7 @@ const DEBUG = process.env.DEBUG != null;
 // application menu
 function initAppMenu(): void {
   const myApp = this;
-  const menuList = [
+  const menuList: Electron.MenuItemConstructorOptions[] = [
     {
       label: 'MYukkuriVoice',
       submenu: [
@@ -297,7 +297,7 @@ function initAppMenu(): void {
   ];
   // アプリケーションフォルダに移動するメニューを追加
   if (!app.isInApplicationsFolder()) {
-    (menuList as any[])[0].submenu.splice(2, 0, 
+    (menuList[0].submenu as Electron.MenuItemConstructorOptions[]).splice(2, 0,
       {
         label: 'アプリケーションフォルダに移動する',
         click() { app.moveToApplicationsFolder(); },
@@ -306,7 +306,7 @@ function initAppMenu(): void {
   }
   // Debugメニューを追加 (Toggle Developer Tools、Install Devtron)
   if (DEBUG) {
-    (menuList as any[]).splice(6, 0,
+    menuList.splice(6, 0,
       {
         label: 'Debug',
         submenu: [
@@ -325,14 +325,14 @@ function initAppMenu(): void {
     );
   }
   // @ts-ignore
-  const menuTemplate = Menu.buildFromTemplate(menuList);
+  const menuTemplate: Electron.Menu = Menu.buildFromTemplate(menuList);
   Menu.setApplicationMenu(menuTemplate);
 }
 
 // dock menu
 function initDockMenu(): void {
   const myApp = this;
-  const dockMenuList = [
+  const dockMenuList: Electron.MenuItemConstructorOptions[] = [
     {
       label: 'About MYukkuriVoice',
       click() { myApp.showAboutWindow(); },
@@ -354,7 +354,7 @@ function initDockMenu(): void {
       click() { myApp.resetWindowPosition(); },
     },
   ];
-  const dockMenu = Menu.buildFromTemplate(dockMenuList);
+  const dockMenu: Electron.Menu = Menu.buildFromTemplate(dockMenuList);
   app.dock.setMenu(dockMenu);
 }
 

@@ -90,8 +90,8 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
   }])
   .factory('HistoryService', ['$q', ($q: ng.IQService): yubo.HistoryService => {
     const MS_MAX_AGE = 1000 * 60 * 60 * 24 * 30; // 30 days
-    let _cache;
-    function cache(): any {
+    let _cache: LRUCache.Cache;
+    function cache(): LRUCache.Cache {
       if (! _cache) {
         _cache = new (lruCache())({max: 20});
       }
@@ -100,9 +100,9 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
 
     let _loaded = false;
     return {
-      load: function(): ng.IPromise<any> {
+      load: function(): ng.IPromise<LRUCache.Cache> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load called')); }
-        const d = $q.defer<any>();
+        const d = $q.defer<LRUCache.Cache>();
         setTimeout(() => {
           const configPath = `${app.getPath('userData')}/history.json`;
           let data: yubo.IRecordMessage[] = null;

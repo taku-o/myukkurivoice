@@ -1,25 +1,76 @@
-declare namespace yubo {
+// node.js fs
+declare namespace fs {
+  export interface Stats {
+    isFile(): boolean;
+    isDirectory(): boolean;
+    isBlockDevice(): boolean;
+    isCharacterDevice(): boolean;
+    isSymbolicLink(): boolean;
+    isFIFO(): boolean;
+    isSocket(): boolean;
+    dev: number;
+    ino: number;
+    mode: number;
+    nlink: number;
+    uid: number;
+    gid: number;
+    rdev: number;
+    size: number;
+    blksize: number;
+    blocks: number;
+    atimeMs: number;
+    mtimeMs: number;
+    ctimeMs: number;
+    birthtimeMs: number;
+    atime: Date;
+    mtime: Date;
+    ctime: Date;
+    birthtime: Date;
+  }
+}
 
+// electron-config
+declare namespace ElectronStore {
+  export interface Config {
+    get(key: string): any;
+    set(key: string, val: any): void;
+    has(key: string): boolean
+  }
+}
+
+// wav-encoder
+declare namespace WavEncoder {
+  export interface AudioData {
+    sampleRate: number;
+    channelData: Float32Array[];
+  }
+}
+
+// temp
+declare namespace temp {
+  export interface FileDescriptor {
+    path: string;
+    fd: number;
+  }
+}
+
+// lru-cache
+declare namespace LRUCache {
+  export interface Cache {
+    load(arr: any): void;
+    get(key: string): any;
+    set(key: string, value: any, maxAge: number): boolean;
+    dump(): any;
+    values(): any;
+    reset(): void;
+  }
+}
+
+declare namespace yubo {
   // external
   // node.js
   export interface Global extends NodeJS.Global {
     appCfg: AppCfg;
-  }
-  // electron-config
-  export interface ElectronConfig {
-	get(key: string): any;
-	set(key: string, val: any): void;
-	has(key: string): boolean
-  }
-  // wav-encoder
-  export interface WavEncoderAudioData {
-    sampleRate: number;
-    channelData: Float32Array[];
-  }
-  // temp
-  export interface TempFd {
-    path: string;
-    fd: number;
   }
 
   // electron-appcfg.ts
@@ -39,7 +90,7 @@ declare namespace yubo {
   export interface IMYukkuriVoice {
     launchArgs:       {filePath: string}
     appCfg:           yubo.AppCfg;
-    config:           yubo.ElectronConfig;
+    config:           ElectronStore.Config;
     mainWindow:       Electron.BrowserWindow;
     helpWindow:       Electron.BrowserWindow;
     helpSearchDialog: Electron.BrowserWindow;
@@ -176,7 +227,7 @@ declare namespace yubo {
     getPhontList(): yubo.YPhont[];
   }
   export interface HistoryService {
-    load(): ng.IPromise<any>;
+    load(): ng.IPromise<LRUCache.Cache>;
     loaded(): boolean;
     save(): ng.IPromise<boolean>;
     clear(): ng.IPromise<boolean>;

@@ -855,7 +855,7 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
     ctrl.quickLookMessage = function(message: yubo.IWriteMessage): void {
       if (message.type != 'record' && message.type != 'source') { return; }
       const quickLookPath = message.quickLookPath;
-      fs().stat(quickLookPath, (err: Error, stats: any/*fs.Stats*/) => {
+      fs().stat(quickLookPath, (err: Error, stats: fs.Stats) => {
         if (err) { return; }
         //MessageService.action(`open with Quick Look. file: ${wavFilePath}`);
         const win = require('electron').remote.getCurrentWindow();

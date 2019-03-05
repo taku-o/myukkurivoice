@@ -172,12 +172,12 @@ angular.module('dictApp',
     this.setup = function(): ng.IPromise<string> {
       const d = $q.defer<string>();
       // mkdir
-      fs().stat(`${mAppDictDir}`, (err: Error, stats: any/*fs.Stats*/) => {
+      fs().stat(`${mAppDictDir}`, (err: Error, stats: fs.Stats) => {
         if (err) {
           fs().mkdirSync(`${mAppDictDir}`);
         }
       // copy resource
-      fs().stat(`${mAppDictDir}/aq_user.csv`, (err: Error, stats: any/*fs.Stats*/) => {
+      fs().stat(`${mAppDictDir}/aq_user.csv`, (err: Error, stats: fs.Stats) => {
         if (err) {
           fs().writeFileSync(`${mAppDictDir}/aq_user.csv`, fs().readFileSync(`${rscDictDir}/aq_user.csv`));
         }
@@ -294,7 +294,7 @@ angular.module('dictApp',
       if ($scope.isInEditing) { return; }
       this.validateData().then(() => {
         // copy resource
-        fs().stat(`${mAppDictDir}/aqdic.bin`, (err: Error, stats: any/*fs.Stats*/) => {
+        fs().stat(`${mAppDictDir}/aqdic.bin`, (err: Error, stats: fs.Stats) => {
           if (err) {
             fs().writeFileSync(`${mAppDictDir}/aqdic.bin`, fs().readFileSync(`${rscDictDir}/aqdic.bin`));
           }

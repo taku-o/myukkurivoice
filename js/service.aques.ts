@@ -121,7 +121,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
     // load custom dictionary if exists
     let aqDictPath = `${unpackedPath}/vendor/aq_dic_large`;
     const customDictPath = `${app.getPath('userData')}/userdict`;
-    fs().stat(`${customDictPath}/aqdic.bin`, (err: Error, stats: any/*fs.Stats*/) => {
+    fs().stat(`${customDictPath}/aqdic.bin`, (err: Error, stats: fs.Stats) => {
       if (err) { return; }
       aqDictPath = customDictPath;
     });
@@ -205,7 +205,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
         if (phont.version == 'talk1') {
           // write encoded to tempory file
           const fsprefix = `_myubow${Date.now().toString(36)}`;
-          temp().open(fsprefix, (err: Error, info: yubo.TempFd) => {
+          temp().open(fsprefix, (err: Error, info: temp.FileDescriptor) => {
             if (err) {
               MessageService.syserror('一時作業ファイルを作れませんでした。', err);
               d.reject(err); return;
