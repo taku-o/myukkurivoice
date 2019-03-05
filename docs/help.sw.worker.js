@@ -40,7 +40,7 @@ self.addEventListener('fetch', function (e) {
         else {
             console.log('not find cache');
             console.log(e.request);
-            return fetch(e.request);
+            return fetch(e.request.clone());
         }
     }));
 });
