@@ -1,6 +1,6 @@
 "use strict";
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/myukkurivoice-preview/assets/js/apps.help.sw.worker.js')
+    navigator.serviceWorker.register('/myukkurivoice-preview/help.sw.worker.js')
         .then(function (registration) {
         console.log('serviceWorker registration successful', registration.scope);
     })["catch"](function (error) {
