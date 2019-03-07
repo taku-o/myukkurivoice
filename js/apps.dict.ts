@@ -161,7 +161,7 @@ angular.module('dictApp',
 
     this.init = function(): ng.IPromise<boolean> {
       return this.setup().then(() => {
-      return this.loadCsv().then((records) => {
+      return this.loadCsv().then((records: yubo.DictRecord[]) => {
         $scope.gridOptions.data = records;
         $timeout(() => { $scope.$apply(); });
         if (MONITOR) { log().warn(monitor().format('apps.dict', 'record loaded')); }
@@ -186,13 +186,13 @@ angular.module('dictApp',
       });
       return d.promise;
     };
-    this.loadCsv = function(): ng.IPromise<any> {
-      const d = $q.defer<any>();
+    this.loadCsv = function(): ng.IPromise<yubo.DictRecord[]> {
+      const d = $q.defer<yubo.DictRecord[]>();
       fs().readFile(`${mAppDictDir}/aq_user.csv`, 'utf-8', (err: Error, data: Buffer) => {
         if (err) {
           d.reject(err); return;
         }
-        const records = (parse())(data, {
+        const records: yubo.DictRecord[] = (parse())(data, {
           columns: [
             'source',
             'encoded',
@@ -281,7 +281,7 @@ angular.module('dictApp',
       });
     };
     ctrl.cancel = function(): ng.IPromise<boolean> {
-      return this.loadCsv().then((records) => {
+      return this.loadCsv().then((records: yubo.DictRecord[]) => {
         $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
         $scope.gridOptions.data = records;
         ctrl.clearInEditing();
@@ -319,7 +319,7 @@ angular.module('dictApp',
       // reset csv
       fs().writeFileSync(`${mAppDictDir}/aq_user.csv`, fs().readFileSync(`${rscDictDir}/aq_user.csv`));
       // and load
-      this.loadCsv().then((records) => {
+      this.loadCsv().then((records: yubo.DictRecord[]) => {
         $scope.gridApi.rowEdit.setRowsClean($scope.gridOptions.data);
         $scope.gridOptions.data = records;
         ctrl.clearInEditing();

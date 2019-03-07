@@ -329,4 +329,11 @@ declare namespace yubo {
     env:      { VOICE: number, SPEED: number };
     encoding: string;
   }
+
+  // apps.dict.ts
+  export interface DictRecord {
+    source:  string;
+    encoded: string;
+    kind:    number;
+  }
 }
