@@ -66,6 +66,25 @@ declare namespace LRUCache {
   }
 }
 
+// github-version-compare
+declare namespace GithubVersionCompare {
+  interface IVersion {
+    latestVersion:    string;
+    publishedAt:      Date;
+    readonly currentVersion:   string;
+    readonly repository:       string;
+    readonly latestReleaseUrl: string;
+    isInitialized:      boolean;
+    hasLatestVersion(): boolean;
+    pull(): Promise<GithubVersionCompare.IVersion>;
+  }
+}
+
+declare module 'github-version-compare' {
+  export = GithubVersionCompare;
+}
+
+
 declare namespace yubo {
   // external
   // node.js

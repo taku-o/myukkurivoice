@@ -356,8 +356,8 @@ function showVersionDialog() {
   const repository = 'taku-o/myukkurivoice';
   const packagejson = require('./package.json');
 
-  const version = new (Version())(repository, packagejson);
-  version.pull().then((version) => {
+  const vobj: GithubVersionCompare.IVersion = new (Version())(repository, packagejson);
+  vobj.pull().then((version: GithubVersionCompare.IVersion) => {
     const message = version.hasLatestVersion()? '新しいバージョンのアプリがあります': 'バージョンは最新です';
     const buttons = version.hasLatestVersion()? ['CLOSE', 'Open Release Page']: ['OK'];
 
