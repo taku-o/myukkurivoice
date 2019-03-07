@@ -102,12 +102,15 @@ angular.module('dictApp',
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: true,
-      onRegisterApi: (gridApi) => {
+      onRegisterApi: (gridApi: any/*IGridApi*/) => {
         $scope.gridApi = gridApi;
-        $scope.gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue: any, oldValue: any) => {
-          // do nothing
-        });
-        $scope.gridApi.rowEdit.on.saveRow($scope, (rowEntity) => {
+        $scope.gridApi.edit.on.afterCellEdit(
+          $scope,
+          (rowEntity: any/*TEntity*/, colDef: any/*IColumnDefOf<TEntity>*/, newValue: any, oldValue: any) => {
+            // do nothing
+          }
+        );
+        $scope.gridApi.rowEdit.on.saveRow($scope, (rowEntity: any/*TEntity*/) => {
           const d = $q.defer<string>();
           ctrl.toIsInEditing();
           $scope.gridApi.rowEdit.setSavePromise(rowEntity, d.promise);
