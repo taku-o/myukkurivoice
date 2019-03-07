@@ -80,11 +80,6 @@ declare namespace GithubVersionCompare {
   }
 }
 
-declare module 'github-version-compare' {
-  export = GithubVersionCompare;
-}
-
-
 declare namespace yubo {
   // external
   // node.js
