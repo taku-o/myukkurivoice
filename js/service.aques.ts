@@ -13,8 +13,9 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular aques service
 angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
-  .factory('AquesService', ['$q', 'MessageService', 'LicenseService',
-  ($q: ng.IQService, MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
+  .factory('AquesService', ['$q', '$timeout', 'MessageService', 'LicenseService',
+  ($q: ng.IQService, $timeout: ng.ITimeoutService,
+   MessageService: yubo.MessageService, LicenseService: yubo.LicenseService): yubo.AquesService => {
     const ptr_void  = ref().refType(ref().types.void);
     const ptr_int   = ref().refType(ref().types.int);
     const ptr_char  = ref().refType(ref().types.char);
@@ -134,7 +135,7 @@ angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
       // get developer key in background.
       // delay loading. UI表示で必要な処理の後に呼ぶ
       init: function(): void {
-        setTimeout(() => {
+        $timeout(() => {
           LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
             aqKanji2KoeDevKey = licenseKey;
           });

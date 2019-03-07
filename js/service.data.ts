@@ -8,8 +8,9 @@ var MONITOR = process.env.MONITOR != null;
 
 // angular data service
 angular.module('DataServices', ['MessageServices', 'mainModels'])
-  .factory('DataService', ['$q', 'YVoice', 'YVoiceInitialData', 'MessageService', 
-  ($q: ng.IQService, YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[], MessageService: yubo.MessageService): yubo.DataService => {
+  .factory('DataService', ['$q', '$timeout', 'YVoice', 'YVoiceInitialData', 'MessageService', 
+  ($q: ng.IQService, $timeout: ng.ITimeoutService,
+   YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[], MessageService: yubo.MessageService): yubo.DataService => {
 
     function uniqId(): string {
       return ('0000' + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
@@ -19,7 +20,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
       load: function(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'data load called')); }
         const d = $q.defer<yubo.YVoice[]>();
-        setTimeout(() => {
+        $timeout(() => {
           const configPath = `${app.getPath('userData')}/data.json`;
           let data: yubo.YVoice[] = null;
           try {
@@ -88,7 +89,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
       },
     };
   }])
-  .factory('HistoryService', ['$q', ($q: ng.IQService): yubo.HistoryService => {
+  .factory('HistoryService', ['$q', '$timeout', ($q: ng.IQService, $timeout: ng.ITimeoutService): yubo.HistoryService => {
     const MS_MAX_AGE = 1000 * 60 * 60 * 24 * 30; // 30 days
     let _cache: LRUCache.Cache;
     function cache(): LRUCache.Cache {
@@ -103,7 +104,7 @@ angular.module('DataServices', ['MessageServices', 'mainModels'])
       load: function(): ng.IPromise<LRUCache.Cache> {
         if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load called')); }
         const d = $q.defer<LRUCache.Cache>();
-        setTimeout(() => {
+        $timeout(() => {
           const configPath = `${app.getPath('userData')}/history.json`;
           let data: yubo.IRecordMessage[] = null;
           try {
