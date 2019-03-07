@@ -260,14 +260,13 @@ gulp.task('toc', () => {
 });
 
 // doc
-gulp.task('doc', ['_readme', '_manual', '_releaseslog', '_version', '_package-contents']);
+gulp.task('doc', ['_readme', '_manual', '_doc:assets', '_releaseslog', '_version', '_package-contents']);
 
 // readme
 gulp.task('_readme', ['_readme:html']);
 gulp.task('_readme:pdf', () => {
   return gulp
     .src('docs/README.md')
-    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
     .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
     .pipe(
       toc({
@@ -289,11 +288,10 @@ gulp.task('_readme:pdf', () => {
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:html:images'], () => {
+gulp.task('_readme:html', () => {
   return gulp
     .src('docs/README.md')
-    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
-    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/', 'src="assets/images/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/', 'src="assets/'))
     .pipe(markdownHtml())
     .pipe(
       wrapper({
@@ -316,23 +314,12 @@ gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:htm
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_readme:html:css', () => {
-  return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
-});
-gulp.task('_readme:html:icns', () => {
-  return gulp.src(['icns/myukkurivoice.iconset/icon_256x256.png']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/icns/myukkurivoice.iconset'));
-});
-gulp.task('_readme:html:images', () => {
-  return gulp.src(['docs/assets/images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
-});
 
 // manual
-gulp.task('_manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
+gulp.task('_manual', ['_manual:html']);
 gulp.task('_manual:html', () => {
   return gulp
     .src(['docs/help.html'])
-    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'assets/photon/dist/css/photon.css'))
-    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'assets/angular/angular.min.js'))
     .pipe(replace(/(static-include template-path="(.*?)"(.*>))<\/div>/g, '$3@@include("$2")</div>'))
     .pipe(finclude())
     .pipe(
@@ -343,14 +330,19 @@ gulp.task('_manual:html', () => {
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_manual:assets:docs', () => {
-  return gulp.src(['docs/assets/js/*.js', 'docs/assets/css/*.css'], {base: 'docs'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
-});
-gulp.task('_manual:assets:angular', () => {
-  return gulp.src(['node_modules/angular/angular.min.js', 'node_modules/angular/angular.min.js.map'], {base: 'node_modules'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
-});
-gulp.task('_manual:assets:photon', () => {
-  return gulp.src(['node_modules/photon/dist/css/photon.css', 'node_modules/photon/dist/fonts/photon-entypo.woff', 'node_modules/photon/dist/fonts/photon-entypo.ttf'], {base: 'node_modules'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
+
+// doc:assets
+gulp.task('_doc:assets', () => {
+  return gulp.src([
+    'docs/assets/**/*.js',
+    'docs/assets/**/*.js.map',
+    'docs/assets/**/*.css',
+    'docs/assets/**/*.png',
+    'docs/assets/**/*.gif',
+    'docs/assets/**/*.ico',
+    'docs/assets/**/*.woff',
+    'docs/assets/**/*.ttf'
+  ], {base: 'docs'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 
 // releaseslog
