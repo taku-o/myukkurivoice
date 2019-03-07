@@ -3,11 +3,11 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open('v1').then((cache) => {
       cache.addAll([
-'https://taku-o.github.io/myukkurivoice-preview/help.cache.js',
+'https://taku-o.github.io/myukkurivoice-preview/cache.js',
+'https://taku-o.github.io/myukkurivoice-preview/sw.js',
 'https://taku-o.github.io/myukkurivoice-preview/assets/css/help.css',
 'https://taku-o.github.io/myukkurivoice-preview/assets/icns/myukkurivoice.iconset/icon_256x256.png',
 'https://taku-o.github.io/myukkurivoice-preview/assets/js/apps.help.js',
-'https://taku-o.github.io/myukkurivoice-preview/assets/js/apps.help.sw.js',
 'https://taku-o.github.io/myukkurivoice-preview/assets/js/directive.include.js',
 'https://taku-o.github.io/myukkurivoice-preview/assets/angular/angular.min.js',
 'https://taku-o.github.io/myukkurivoice-preview/assets/angular/angular.min.js.map',
