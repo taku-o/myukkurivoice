@@ -264,25 +264,6 @@ angular.module('mainApp', ['input-highlight', 'mainDirectives', 'mainServices', 
       }
       if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
       nextTask();
-      //DataService.load(
-      //  (dataList) => {
-      //    if (dataList.length < 1) {
-      //      MessageService.info('初期データを読み込みます。');
-      //      dataList = DataService.initialData();
-      //    }
-      //    $timeout(() => { // $scope.$apply
-      //      $scope.yvoiceList = dataList;
-      //      $scope.yvoice = $scope.yvoiceList[0];
-      //    });
-      //    if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
-      //    nextTask();
-      //  },
-      //  (err) => {
-      //    MessageService.error('初期データの読み込みでエラーが起きました。', err);
-      //    if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
-      //    nextTask();
-      //  }
-      //);
     }
     function loadHistory(): void {
       HistoryService.load().then((cache) => {
