@@ -455,6 +455,14 @@ gulp.task('_test', () => {
 // run app
 gulp.task('app', ['tsc-debug'], (cb) => {
   exec(ELECTRON_CMD + ' .', (err, stdout, stderr) => {
+    /* eslint-disable-next-line no-console */
+    if (stdout) {
+      console.log(stdout);
+    }
+    /* eslint-disable-next-line no-console */
+    if (stderr) {
+      console.error(stderr);
+    }
     cb(err);
   });
 });
