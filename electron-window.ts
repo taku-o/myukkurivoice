@@ -39,9 +39,6 @@ function showMainWindow(): void {
   this.mainWindow.loadFile('./contents-main.html');
 
   // shortcut
-  localShortcut().register(this.mainWindow, 'Command+Q', () => {
-    app.quit();
-  });
   localShortcut().register(this.mainWindow, 'Command+P', () => {
     myApp.mainWindow.webContents.send('shortcut', 'play');
   });
@@ -130,9 +127,6 @@ function showHelpWindow(): void {
   this.helpWindow.loadFile('./contents-help.html');
 
   // shortcut
-  localShortcut().register(this.helpWindow, 'Command+Q', () => {
-    app.quit();
-  });
   localShortcut().register(this.helpWindow, 'Command+W', () => {
     if (myApp.helpWindow) { myApp.helpWindow.close(); }
   });
@@ -204,9 +198,6 @@ function showHelpSearchDialog(): void {
   this.helpSearchDialog.loadFile('./contents-helpsearch.html');
 
   // shortcut
-  localShortcut().register(this.helpSearchDialog, 'Command+Q', () => {
-    app.quit();
-  });
   localShortcut().register(this.helpSearchDialog, 'Command+W', () => {
     if (myApp.helpSearchDialog) { myApp.helpSearchDialog.hide(); }
   });
@@ -255,9 +246,6 @@ function showSystemWindow(): void {
   this.systemWindow.loadFile('./contents-system.html');
 
   // shortcut
-  localShortcut().register(this.systemWindow, 'Command+Q', () => {
-    app.quit();
-  });
   localShortcut().register(this.systemWindow, 'Command+W', () => {
     if (myApp.systemWindow) { myApp.systemWindow.close(); }
   });
@@ -302,9 +290,6 @@ function showDictWindow(): void {
   this.dictWindow.loadFile('./contents-dict.html');
 
   // shortcut
-  localShortcut().register(this.dictWindow, 'Command+Q', () => {
-    app.quit();
-  });
   localShortcut().register(this.dictWindow, 'Command+W', () => {
     if (myApp.dictWindow) { myApp.dictWindow.close(); }
   });
@@ -343,9 +328,6 @@ function showAboutWindow(): void {
     open_devtools: false,
   });
   if (this.mainWindow) { w.setParentWindow(this.mainWindow); }
-  localShortcut().register(w, 'Command+Q', () => {
-    app.quit();
-  });
   localShortcut().register(w, 'Command+W', () => {
     if (w) { w.close(); }
   });
