@@ -22,11 +22,12 @@ if (DEBUG) {
     log().error('source-map-support or devtron is not installed.');
   }
 }
-// replace renderer console log
+// replace renderer console log, and disable file log
 if (CONSOLELOG) {
   const remoteConsole = require('electron').remote.require('console');
   /* eslint-disable-next-line no-global-assign */
   console = remoteConsole;
+  delete log().transports['file'];
 }
 // perfomance monitoring
 if (MONITOR) { log().warn(monitor().format('apps.dict', '---- start')); }

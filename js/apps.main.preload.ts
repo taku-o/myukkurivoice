@@ -11,6 +11,7 @@ if (CONSOLELOG) {
   const remoteConsole = require('electron').remote.require('console');
   /* eslint-disable-next-line no-global-assign */
   console = remoteConsole;
+  delete log().transports['file'];
 }
 // perfomance monitoring
 if (MONITOR) { log().warn(monitor().format('apps.main', '---- start')); }

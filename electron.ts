@@ -12,6 +12,7 @@ import * as AppConfig from './electron-appcfg';
 // env
 const DEBUG = process.env.DEBUG != null;
 const TEST = process.env.NODE_ENV == 'test';
+const CONSOLELOG = process.env.CONSOLELOG != null;
 const MONITOR = process.env.MONITOR != null;
 
 // source-map-support
@@ -29,6 +30,10 @@ if (DEBUG) {
 // change userData for test
 if (TEST && process.env.userData) {
   app.setPath('userData', process.env.userData);
+}
+// disable file log
+if (CONSOLELOG) {
+  delete log().transports['file'];
 }
 // perfomance monitoring
 if (MONITOR) { log().warn(monitor().format('electron', '----------------')); }
