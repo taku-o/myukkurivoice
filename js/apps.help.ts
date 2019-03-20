@@ -20,6 +20,7 @@ if (DEBUG) {
 // replace renderer console log
 if (CONSOLELOG) {
   const remoteConsole = require('electron').remote.require('console');
+  /* eslint-disable-next-line no-global-assign */
   console = remoteConsole;
 }
 

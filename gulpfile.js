@@ -21,6 +21,7 @@ const replace = require('gulp-replace');
 const rimraf = require('rimraf');
 const runSequence = require('run-sequence');
 const sourcemaps = require('gulp-sourcemaps');
+const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 const ts = require('gulp-typescript');
 const using = require('gulp-using');
@@ -28,8 +29,6 @@ const wrapper = require('gulp-wrapper');
 
 const tsProject = ts.createProject('tsconfig.json');
 
-const ELECTRON_CMD = 'DEBUG=1 MONITOR=1 ' + __dirname + '/node_modules/.bin/electron';
-const ELECTRON_CMD_CONSOLE = 'DEBUG=1 MONITOR=1 CONSOLELOG=1 ' + __dirname + '/node_modules/.bin/electron';
 const PACKAGER_CMD = __dirname + '/node_modules/.bin/electron-packager';
 const WORK_DIR = __dirname + '/release';
 const WORK_REPO_DIR = __dirname + '/release/myukkurivoice';
@@ -61,7 +60,6 @@ usage:
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
     gulp app
-    gulp appc
     gulp package
     gulp release
     gulp staging [--branch=develop]
@@ -456,29 +454,21 @@ gulp.task('_test', () => {
 
 // run app
 gulp.task('app', ['tsc-debug'], (cb) => {
-  exec(ELECTRON_CMD + ' .', (err, stdout, stderr) => {
-    /* eslint-disable-next-line no-console */
-    if (stdout) {
-      console.log(stdout);
-    }
-    /* eslint-disable-next-line no-console */
-    if (stderr) {
-      console.error(stderr);
-    }
-    cb(err);
+  const env = process.env;
+  env.DEBUG = 1;
+  env.MONITOR = 1;
+  env.CONSOLELOG = 1;
+  const run = spawn(__dirname + '/node_modules/.bin/electron', ['.'], {
+    env: env,
   });
-});
-gulp.task('appc', ['tsc-debug'], (cb) => {
-  exec(ELECTRON_CMD_CONSOLE + ' .', (err, stdout, stderr) => {
-    /* eslint-disable-next-line no-console */
-    if (stdout) {
-      console.log(stdout);
-    }
-    /* eslint-disable-next-line no-console */
-    if (stderr) {
-      console.error(stderr);
-    }
-    cb(err);
+  run.stdout.on('data', (data) => {
+    process.stdout.write(data.toString('utf-8'));
+  });
+  run.stderr.on('data', (data) => {
+    process.stderr.write(data.toString('utf-8'));
+  });
+  run.on('close', (code) => {
+    cb();
   });
 });
 

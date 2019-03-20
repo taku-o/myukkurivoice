@@ -21,6 +21,7 @@
     "indent": 0,
     "linebreak-style": ["error", "unix"],
     "no-empty": "off",
+    "no-global-assign": "off",
     "no-unused-vars": "warn",
     "semi": ["error", "always"]
   },
@@ -30,6 +31,7 @@
     "rules": {
       "comma-dangle": ["error", "always-multiline"],
       "no-empty": "error",
+      "no-global-assign": "error",
       "no-undef": "off",
       "quotes": ["error", "single", { "avoidEscape": true }],
       "object-curly-spacing": ["error", "never"]
