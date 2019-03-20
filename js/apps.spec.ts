@@ -2,6 +2,7 @@ var _log, log = () => { _log = _log || require('electron-log'); return _log; };
 
 // env
 var DEBUG = process.env.DEBUG != null;
+var CONSOLELOG = process.env.CONSOLELOG != null;
 
 // source-map-support
 if (DEBUG) {
@@ -10,6 +11,11 @@ if (DEBUG) {
   } catch(e) {
     log().error('source-map-support or devtron is not installed.');
   }
+}
+// replace renderer console log
+if (CONSOLELOG) {
+  const remoteConsole = require('electron').remote.require('console');
+  console = remoteConsole;
 }
 
 // application spec app

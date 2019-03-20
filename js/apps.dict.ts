@@ -11,6 +11,7 @@ var unpackedPath = epath().getUnpackedPath();
 
 // env
 var DEBUG = process.env.DEBUG != null;
+var CONSOLELOG = process.env.CONSOLELOG != null;
 var MONITOR = process.env.MONITOR != null;
 
 // source-map-support
@@ -21,6 +22,12 @@ if (DEBUG) {
     log().error('source-map-support or devtron is not installed.');
   }
 }
+// replace renderer console log
+if (CONSOLELOG) {
+  const remoteConsole = require('electron').remote.require('console');
+  console = remoteConsole;
+}
+
 // perfomance monitoring
 if (MONITOR) { log().warn(monitor().format('apps.dict', '---- start')); }
 

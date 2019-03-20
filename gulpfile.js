@@ -29,6 +29,7 @@ const wrapper = require('gulp-wrapper');
 const tsProject = ts.createProject('tsconfig.json');
 
 const ELECTRON_CMD = 'DEBUG=1 MONITOR=1 ' + __dirname + '/node_modules/.bin/electron';
+const ELECTRON_CMD_CONSOLE = 'DEBUG=1 MONITOR=1 CONSOLELOG=1 ' + __dirname + '/node_modules/.bin/electron';
 const PACKAGER_CMD = __dirname + '/node_modules/.bin/electron-packager';
 const WORK_DIR = __dirname + '/release';
 const WORK_REPO_DIR = __dirname + '/release/myukkurivoice';
@@ -60,6 +61,7 @@ usage:
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
     gulp app
+    gulp appc
     gulp package
     gulp release
     gulp staging [--branch=develop]
@@ -455,6 +457,19 @@ gulp.task('_test', () => {
 // run app
 gulp.task('app', ['tsc-debug'], (cb) => {
   exec(ELECTRON_CMD + ' .', (err, stdout, stderr) => {
+    /* eslint-disable-next-line no-console */
+    if (stdout) {
+      console.log(stdout);
+    }
+    /* eslint-disable-next-line no-console */
+    if (stderr) {
+      console.error(stderr);
+    }
+    cb(err);
+  });
+});
+gulp.task('appc', ['tsc-debug'], (cb) => {
+  exec(ELECTRON_CMD_CONSOLE + ' .', (err, stdout, stderr) => {
     /* eslint-disable-next-line no-console */
     if (stdout) {
       console.log(stdout);
