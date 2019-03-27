@@ -140,16 +140,19 @@ angular.module('dictControllers',
     ];
     $scope.gridOptions.data = [];
 
-    this.init = function(): ng.IPromise<boolean> {
-      return this.setup().then(() => {
-      return this.loadCsv().then((records: yubo.DictRecord[]) => {
-        $scope.gridOptions.data = records;
-        $timeout(() => { $scope.$apply(); });
-        if (MONITOR) { log().warn(monitor().format('apps.dict', 'record loaded')); }
-        return true;
-      });
+    // $onInit
+    this.onInit = (): void => {
+      this.setup().then(() => {
+        return this.loadCsv().then((records: yubo.DictRecord[]) => {
+          $scope.gridOptions.data = records;
+          $timeout(() => { $scope.$apply(); });
+          if (MONITOR) { log().warn(monitor().format('apps.dict', 'record loaded')); }
+          return true;
+        });
       });
     };
+    this.onInit();
+
     this.setup = function(): ng.IPromise<string> {
       const d = $q.defer<string>();
       // mkdir
@@ -185,7 +188,6 @@ angular.module('dictControllers',
       });
       return d.promise;
     };
-    this.init();
 
     // editing state
     ctrl.toIsInEditing = function(): void {

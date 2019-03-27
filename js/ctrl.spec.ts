@@ -25,7 +25,11 @@ angular.module('specControllers',
 
     // init
     const ctrl = this;
-    AquesService.init();
+
+    // $onInit
+    this.$onInit = (): void => {
+      AquesService.init();
+    };
 
     // YPhontList
     ctrl.getYPhontList = function(): void {

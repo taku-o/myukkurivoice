@@ -10,9 +10,13 @@ angular.module('systemControllers', ['LicenseServices'])
     const ctrl = this;
     let appCfg = require('electron').remote.getGlobal('appCfg');
     $scope.appCfg = appCfg;
-    $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted?
-      LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted):
-      '';
+
+    // $onInit
+    this.$onInit = (): void => {
+      $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted?
+        LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted):
+        '';
+    };
 
     // actions
     ctrl.cancel = function(): void {

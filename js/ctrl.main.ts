@@ -222,15 +222,17 @@ angular.module('mainControllers', ['input-highlight', 'mainDirectives', 'mainSer
   ctrl.isTest = TEST;
   $scope.yvoiceList = dataJson;
   $scope.yvoice = dataJson.length > 0? dataJson[0]: null;
-  sequentialLoadData();
 
-  // util
-  function sequentialLoadData(): void {
-    loadData(() => {
-      loadHistory();
-      AquesService.init(); // initialize AquesService
-    });
-  }
+  // $onInit
+  this.onInit = (): void => {
+    loadData(angular.noop);
+  };
+  this.onInit();
+  this.$onInit = (): void => {
+    loadHistory();
+    AquesService.init(); // initialize AquesService
+  };
+
   function loadData(nextTask: () => void): void {
     if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData called')); }
     let dataList = dataJson;
