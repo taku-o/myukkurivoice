@@ -32,7 +32,6 @@ const tsProject = ts.createProject('tsconfig.json');
 const PACKAGER_CMD = __dirname + '/node_modules/.bin/electron-packager';
 const WORK_DIR = __dirname + '/release';
 const WORK_REPO_DIR = __dirname + '/release/myukkurivoice';
-const WORK_UNPACK_DIR = __dirname + '/release/myukkurivoice/MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
 const ELECTRON_VERSION = '3.1.1';
