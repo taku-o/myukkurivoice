@@ -141,7 +141,7 @@ angular.module('dictControllers',
     $scope.gridOptions.data = [];
 
     // $onInit
-    this.onInit = (): void => {
+    this.init = (): void => {
       this.setup().then(() => {
         return this.loadCsv().then((records: yubo.DictRecord[]) => {
           $scope.gridOptions.data = records;
@@ -151,7 +151,6 @@ angular.module('dictControllers',
         });
       });
     };
-    this.onInit();
 
     this.setup = function(): ng.IPromise<string> {
       const d = $q.defer<string>();
@@ -343,6 +342,9 @@ angular.module('dictControllers',
     ctrl.tutorial = function(): void {
       IntroService.dictTutorial();
     };
+
+    // run init
+    this.init();
   }])
   .filter('mapKind', ['KindHash', function(KindHash) {
     const kindHash = KindHash;

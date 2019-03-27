@@ -224,10 +224,9 @@ angular.module('mainControllers', ['input-highlight', 'mainDirectives', 'mainSer
   $scope.yvoice = dataJson.length > 0? dataJson[0]: null;
 
   // $onInit
-  this.onInit = (): void => {
-    loadData(angular.noop);
+  this.init = (): void => {
+    loadData(null);
   };
-  this.onInit();
   this.$onInit = (): void => {
     loadHistory();
     AquesService.init(); // initialize AquesService
@@ -245,7 +244,7 @@ angular.module('mainControllers', ['input-highlight', 'mainDirectives', 'mainSer
       });
     }
     if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
-    nextTask();
+    if (nextTask) { nextTask(); }
   }
   function loadHistory(): void {
     HistoryService.load().then((cache) => {
@@ -965,6 +964,9 @@ angular.module('mainControllers', ['input-highlight', 'mainDirectives', 'mainSer
     MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
     $timeout(() => { $scope.$apply(); });
   });
+
+  // run init
+  this.init();
 }]);
 
 declare var global: NodeJS.Global;
