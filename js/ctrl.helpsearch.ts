@@ -1,30 +1,18 @@
-
 // controllers
-angular.module('helpSearchControllers', [])
-  .controller('HelpSearchController', ['$scope', '$window', function($scope: yubo.IHelpSearchScope, $window: ng.IWindowService) {
+angular.module('helpSearchControllers', ['helpSearchReducers'])
+  .controller('HelpSearchController', ['$scope', 'HelpSearchReducer',
+  function($scope: yubo.IHelpSearchScope, reducer) {
 
     // init
     const ctrl = this;
     $scope.searchText = '';
 
-    // event
-    $window.onfocus = function(){
-      document.getElementById('search-text').focus();
-    };
-
     // action
     ctrl.searchInPage = function(): void {
-      const win = require('electron').remote.getCurrentWindow();
-      if ($scope.searchText) {
-        win.getParentWindow().webContents.findInPage($scope.searchText);
-      } else {
-        win.getParentWindow().webContents.stopFindInPage('clearSelection');
-      }
+      reducer.searchInPage($scope);
     };
     ctrl.clearSearchForm = function(): void {
-      $scope.searchText = '';
-      const win = require('electron').remote.getCurrentWindow();
-      win.getParentWindow().webContents.stopFindInPage('clearSelection');
+      reducer.clearSearchForm($scope);
     };
     ctrl.closeSearchForm = function(): void {
       const window = require('electron').remote.getCurrentWindow();
