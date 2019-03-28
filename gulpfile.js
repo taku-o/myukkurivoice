@@ -639,7 +639,6 @@ gulp.task('_package-release', (cb) => {
           --extend-info=extend.plist \
           --no-prune \
           --ignore="^/js/apps.spec.js" \
-          --ignore="^/js/ctrl.spec.js" \
           --ignore="^/contents-spec.html" \
           --ignore="^/vendor" \
           --ignore="^/MYukkuriVoice-darwin-x64" \
