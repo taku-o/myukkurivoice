@@ -70,11 +70,13 @@ angular.module('dictReducers', ['dictModels', 'dictServices'])
 
               if (!rowEntity.source) {
                 rowEntity.error = '表記が入力されていません';
-                return this.$q.reject(new Error('source is empty.'));
+                //return this.$q.reject(new Error('source is empty.')); // why not working ?
+                d.reject(new Error('source is empty.')); return d.promise;
               }
               if (!rowEntity.encoded) {
                 rowEntity.error = '読みが入力されていません';
-                return this.$q.reject(new Error('encoded is empty.'));
+                //return this.$q.reject(new Error('encoded is empty.')); // why not working ?
+                d.reject(new Error('encoded is empty.')); return d.promise;
               }
 
               const r = this.AqUsrDicService.validateInput(rowEntity.source, rowEntity.encoded, rowEntity.kind);
