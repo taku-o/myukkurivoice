@@ -6,7 +6,7 @@ angular.module('helpSearchEvents', [])
         $window.onfocus = (): void => {
           document.getElementById('search-text').focus();
         };
-      }
+      },
     };
   }]);
 

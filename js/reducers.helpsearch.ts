@@ -4,7 +4,7 @@ angular.module('helpSearchReducers', [])
     class HelpSearchReducer {
       constructor() {}
 
-      searchInPage($scope): void {
+      searchInPage($scope: yubo.IHelpSearchScope): void {
         const win = require('electron').remote.getCurrentWindow();
         if ($scope.searchText) {
           win.getParentWindow().webContents.findInPage($scope.searchText);
@@ -12,11 +12,11 @@ angular.module('helpSearchReducers', [])
           win.getParentWindow().webContents.stopFindInPage('clearSelection');
         }
       }
-      clearSearchForm($scope): void {
+      clearSearchForm($scope: yubo.IHelpSearchScope): void {
         $scope.searchText = '';
         const win = require('electron').remote.getCurrentWindow();
         win.getParentWindow().webContents.stopFindInPage('clearSelection');
       }
-    }
+    },
   ]);
 

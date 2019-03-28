@@ -21,7 +21,7 @@ if (CONSOLELOG) {
 }
 
 // angular app
-angular.module('helpApp', ['helpControllers'])
+angular.module('helpApp', ['helpControllers', 'helpEvents'])
   // config
   .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);

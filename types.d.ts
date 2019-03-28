@@ -350,4 +350,23 @@ declare namespace yubo {
     encoded: string;
     kind:    number;
   }
+
+  // apps.help.ts
+  export interface HelpReducer {
+    readonly menuList: string[];
+    locationChangeSuccess($scope: yubo.IHelpScope): void;
+    onShortcut($scope: yubo.IHelpScope, action: string): void;
+    moveToPreviousHelp($scope: yubo.IHelpScope): void;
+    moveToNextHelp($scope: yubo.IHelpScope): void;
+    openSearchForm(): void;
+    browser(url: string): void;
+    showItemInFolder(path: string): void;
+    showSystemWindow(): void;
+  }
+
+  // apps.helpsearch.ts
+  export interface HelpSearchReducer {
+    searchInPage($scope: yubo.IHelpSearchScope): void;
+    clearSearchForm($scope: yubo.IHelpSearchScope): void;
+  }
 }
