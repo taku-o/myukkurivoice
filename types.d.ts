@@ -345,6 +345,27 @@ declare namespace yubo {
   }
 
   // apps.dict.ts
+  export interface DictReducer {
+    readonly htmlTitle: string;
+    readonly rscDictDir: string;
+    readonly mAppDictDir: string;
+    onMenu($scope: yubo.IDictScope, action: string): void;
+    init($scope: yubo.IDictScope): void;
+    onInit($scope: yubo.IDictScope): void;
+    setup(): ng.IPromise<string>;
+    loadCsv(): ng.IPromise<yubo.DictRecord[]>;
+    toIsInEditing($scope: yubo.IDictScope): void;
+    clearInEditing($scope: yubo.IDictScope): void;
+    add($scope: yubo.IDictScope): void;
+    remove($scope: yubo.IDictScope): void;
+    save($scope: yubo.IDictScope): void;
+    cancel($scope: yubo.IDictScope): ng.IPromise<boolean>;
+    dump($scope: yubo.IDictScope): void;
+    reset($scope: yubo.IDictScope): ng.IPromise<boolean>;
+    reload($scope: yubo.IDictScope): void;
+    validateData($scope: yubo.IDictScope): ng.IPromise<boolean>;
+    tutorial(): void;
+  }
   export interface DictRecord {
     source:  string;
     encoded: string;
