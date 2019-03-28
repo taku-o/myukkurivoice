@@ -7,7 +7,7 @@ angular.module('systemReducers', ['LicenseServices'])
       constructor(private LicenseService: yubo.LicenseService) {}
 
       // $onInit
-      onInit($scope: yubo.ISystemScope): void {
+      onLoad($scope: yubo.ISystemScope): void {
         const appCfg = require('electron').remote.getGlobal('appCfg');
         $scope.appCfg = appCfg;
         $scope.aq10UseKey = appCfg.aq10UseKeyEncrypted?

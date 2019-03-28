@@ -1,3 +1,5 @@
+var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+
 // event listeners
 angular.module('dictEvents', [])
   .directive('shortcut', [() => {

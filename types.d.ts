@@ -256,12 +256,17 @@ declare namespace yubo {
     wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<Buffer>;
   }
   // service.audio.ts
-  export interface AudioService1 {
+  export interface IAudioService {
     play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
     stop(): void;
     record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
   }
-  export interface AudioService2 {
+  export interface AudioService1 extends IAudioService {
+    play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
+    stop(): void;
+    record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
+  }
+  export interface AudioService2 extends IAudioService {
     play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
     stop(): void;
     record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
@@ -293,6 +298,7 @@ declare namespace yubo {
     yinput:              yubo.YInput;
     yvoice:              yubo.YVoice;
     yvoiceList:          yubo.YVoice[];
+    phontList:           yubo.YPhont[];
     appCfg:              AppCfg;
     duration:            number;
     lastWavFile:         yubo.IRecordMessage;
@@ -325,6 +331,58 @@ declare namespace yubo {
   }
 
   // apps.main.ts
+  export interface MainReducer {
+    appCfg: yubo.AppCfg;
+    AudioService: yubo.IAudioService;
+    onShortcut($scope: yubo.IMainScope, action: string): void;
+    onMenu($scope: yubo.IMainScope, action: string): void;
+    onDropTextFile($scope: yubo.IMainScope, filePath: string): void;
+    onRecentDocument($scope: yubo.IMainScope, filePath: string): void;
+    init($scope: yubo.IMainScope): void;
+    onLoad($scope: yubo.IMainScope): void;
+    loadData($scope: yubo.IMainScope, nextTask: () => void): void;
+    loadHistory($scope: yubo.IMainScope): void;
+    selectedSource(): string;
+    selectedEncoded(): string;
+    blurOnSource($scope: yubo.IMainScope): void;
+    blurOnEncoded($scope: yubo.IMainScope): void;
+    focusOnSource($scope: yubo.IMainScope): void;
+    focusOnEncoded($scope: yubo.IMainScope): void;
+    clearSourceSelection($scope: yubo.IMainScope): void;
+    clearEncodedSelection($scope: yubo.IMainScope): void;
+    onChangePhont($scope: yubo.IMainScope): void;
+    play($scope: yubo.IMainScope): void;
+    playEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput): ng.IPromise<string>;
+    stop(): void;
+    record($scope: yubo.IMainScope): void;
+    recordSolo($scope: yubo.IMainScope, cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string>;
+    recordEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string>;
+    showSystemWindow(): void;
+    showSpecWindow(): void;
+    help(): void;
+    dictionary(): void;
+    tutorial($scope: yubo.IMainScope): void;
+    shortcut($scope: yubo.IMainScope): void;
+    select($scope: yubo.IMainScope, index: number): void;
+    plus($scope: yubo.IMainScope): void;
+    minus($scope: yubo.IMainScope, index: number): void;
+    copy($scope: yubo.IMainScope, index: number): void;
+    save($scope: yubo.IMainScope): void;
+    reset($scope: yubo.IMainScope): void;
+    quickLookMessage(message: yubo.IWriteMessage): void;
+    recentDocument($scope: yubo.IMainScope, message: yubo.IRecordMessage): void;
+    clearRecentDocuments($scope: yubo.IMainScope): void;
+    encode($scope: yubo.IMainScope): void;
+    clear($scope: yubo.IMainScope): void;
+    fromClipboard($scope: yubo.IMainScope): void;
+    putVoiceName($scope: yubo.IMainScope): void;
+    directory($scope: yubo.IMainScope): void;
+    switchSettingsView($scope: yubo.IMainScope): void;
+    switchMainView($scope: yubo.IMainScope): void;
+    switchMessageListType($scope: yubo.IMainScope): void;
+    switchAlwaysOnTop(): void;
+    onSwitchAlwaysOnTop($scope: yubo.IMainScope, event: Electron.Event, newflg: boolean): void;
+  }
   export interface WaveOptions {
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
@@ -351,7 +409,7 @@ declare namespace yubo {
     readonly mAppDictDir: string;
     onMenu($scope: yubo.IDictScope, action: string): void;
     init($scope: yubo.IDictScope): void;
-    onInit($scope: yubo.IDictScope): void;
+    onLoad($scope: yubo.IDictScope): void;
     setup(): ng.IPromise<string>;
     loadCsv(): ng.IPromise<yubo.DictRecord[]>;
     toIsInEditing($scope: yubo.IDictScope): void;
@@ -393,7 +451,7 @@ declare namespace yubo {
 
   // apps.system.ts
   export interface SystemReducer {
-    onInit($scope: yubo.ISystemScope): void;
+    onLoad($scope: yubo.ISystemScope): void;
     cancel($scope: yubo.ISystemScope): void;
     save($scope: yubo.ISystemScope): void;
     reset(): void;

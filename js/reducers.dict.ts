@@ -49,7 +49,7 @@ angular.module('dictReducers', ['dictModels', 'dictServices'])
           });
         });
       }
-      onInit($scope: yubo.IDictScope): void {
+      onLoad($scope: yubo.IDictScope): void {
         // initialize records
         $scope.gridOptions = {
           enableFiltering: true,

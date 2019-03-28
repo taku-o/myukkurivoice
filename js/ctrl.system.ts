@@ -7,7 +7,7 @@ angular.module('systemControllers', ['systemReducers'])
 
     // $onInit
     this.$onInit = (): void => {
-      reducer.onInit($scope);
+      reducer.onLoad($scope);
     };
 
     // actions

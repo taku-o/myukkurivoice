@@ -28,7 +28,7 @@
 
     <div class="form-inline form-group">
       <select class="form-control" ng-model="yvoice.phont" id="phont" ng-change="ctrl.onChangePhont()">
-        <option ng-repeat="v in ::ctrl.phontList track by v.id" ng-value="v.id" ng-bind="v.name"></option>
+        <option ng-repeat="v in ::phontList track by v.id" ng-value="v.id" ng-bind="v.name"></option>
       </select>
     </div>
 

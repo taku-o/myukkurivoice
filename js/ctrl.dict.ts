@@ -19,7 +19,7 @@ angular.module('dictControllers',
 
     // $onInit
     this.$onInit = (): void => {
-      reducer.onInit($scope);
+      reducer.onLoad($scope);
     };
 
     // editing state
