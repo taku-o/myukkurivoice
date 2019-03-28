@@ -369,4 +369,12 @@ declare namespace yubo {
     searchInPage($scope: yubo.IHelpSearchScope): void;
     clearSearchForm($scope: yubo.IHelpSearchScope): void;
   }
+
+  // apps.system.ts
+  export interface SystemReducer {
+    onInit($scope: yubo.ISystemScope): void;
+    cancel($scope: yubo.ISystemScope): void;
+    save($scope: yubo.ISystemScope): void;
+    reset(): void;
+  }
 }

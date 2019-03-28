@@ -7,7 +7,7 @@ var homeDir = app.getPath('home');
 // action reducer
 angular.module('helpReducers', [])
   .service('HelpReducer', ['$timeout', '$location', '$window',
-    class HelpReducer {
+    class HelpReducer implements yubo.HelpReducer {
 
       readonly menuList = [
         'about',

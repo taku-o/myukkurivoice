@@ -1,7 +1,7 @@
 // controllers
 angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
   .controller('HelpController', ['$scope', '$location', 'HelpReducer',
-  function($scope: yubo.IHelpScope, $location: ng.ILocationService, reducer) {
+  function($scope: yubo.IHelpScope, $location: ng.ILocationService, reducer: yubo.HelpReducer) {
     // init
     const ctrl = this;
     $scope.$location = $location;

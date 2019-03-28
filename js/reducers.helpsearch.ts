@@ -1,7 +1,7 @@
 // action reducer
 angular.module('helpSearchReducers', [])
   .service('HelpSearchReducer', [
-    class HelpSearchReducer {
+    class HelpSearchReducer implements yubo.HelpSearchReducer {
       constructor() {}
 
       searchInPage($scope: yubo.IHelpSearchScope): void {

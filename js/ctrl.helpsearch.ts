@@ -1,7 +1,7 @@
 // controllers
 angular.module('helpSearchControllers', ['helpSearchReducers'])
   .controller('HelpSearchController', ['$scope', 'HelpSearchReducer',
-  function($scope: yubo.IHelpSearchScope, reducer) {
+  function($scope: yubo.IHelpSearchScope, reducer: yubo.HelpSearchReducer) {
 
     // init
     const ctrl = this;
