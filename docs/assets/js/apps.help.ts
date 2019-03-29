@@ -1,3 +1,3 @@
 // angular app
-angular.module('helpApp', ['helpControllers'])
+angular.module('helpApp', ['helpControllers']);
 
