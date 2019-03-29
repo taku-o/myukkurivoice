@@ -96,9 +96,7 @@ gulp.task('_rm-js', () => {
 });
 // tsc-doc
 gulp.task('tsc-doc', ['tsc'], () => {
-  return gulp
-    .src(['js/ctrl.help.js', 'js/directive.include.js', 'js/reducers.help.js'])
-    .pipe(gulp.dest('docs/assets/js'));
+  return gulp.src(['js/ctrl.help.js', 'js/directive.include.js', 'js/reducers.help.js']).pipe(gulp.dest('docs/assets/js'));
 });
 
 // lint

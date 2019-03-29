@@ -19,5 +19,5 @@ class HelpSearchReducer implements yubo.HelpSearchReducer {
 
 angular.module('helpSearchReducers', [])
   .service('HelpSearchReducer', [
-    HelpSearchReducer
+    HelpSearchReducer,
   ]);
