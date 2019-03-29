@@ -1,50 +1,25 @@
 "use strict";
-angular.module('helpControllers', ['IncludeDirectives'])
-    .controller('HelpController', ['$scope', '$timeout', '$location', '$window',
-    function ($scope, $timeout, $location, $window) {
-        var menuList = [
-            'about',
-            'voicecode',
-            'trouble',
-            'update',
-            'uninstall',
-            'backup',
-            'license',
-            'contact',
-            'funclist',
-            'play',
-            'tuna',
-            'writing',
-            'dataconfig',
-            'dragout',
-            'multivoice',
-            'dictionary',
-            'history',
-            'shortcut',
-            'help',
-            'expand',
-        ];
+angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
+    .controller('HelpController', ['$scope', '$location', 'HelpReducer',
+    function ($scope, $location, reducer) {
         var ctrl = this;
         $scope.$location = $location;
         $scope.$on('$locationChangeSuccess', function (event) {
-            if ($location.url().startsWith('/%23')) {
-                $window.location.href = $location.absUrl().replace('%23', '#');
-                return;
-            }
-            var hash = $location.hash();
-            if (menuList.includes(hash)) {
-                $scope.display = hash;
-            }
-            else {
-                $scope.display = 'about';
-            }
-            $timeout(function () { $scope.$apply(); });
+            reducer.locationChangeSuccess($scope);
         });
+        $scope.$on('shortcut', function (event, action) {
+            reducer.onShortcut($scope, action);
+        });
+        ctrl.openSearchForm = function () {
+            reducer.openSearchForm();
+        };
         ctrl.browser = function (url) {
-            $window.open(url);
+            reducer.browser(url);
         };
         ctrl.showItemInFolder = function (path) {
+            reducer.browser(path);
         };
         ctrl.showSystemWindow = function () {
+            reducer.showSystemWindow();
         };
     }]);
