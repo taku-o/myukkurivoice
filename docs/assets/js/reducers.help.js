@@ -94,13 +94,17 @@ angular.module('helpReducers', [])
             }
         };
         HelpReducer.prototype.showItemInFolder = function (path) {
-            var app = require('electron').remote.app;
-            var homeDir = app.getPath('home');
-            var expanded = path.replace('$HOME', homeDir);
-            shell().showItemInFolder(expanded);
+            if ('process' in window) {
+                var app_1 = require('electron').remote.app;
+                var homeDir = app_1.getPath('home');
+                var expanded = path.replace('$HOME', homeDir);
+                shell().showItemInFolder(expanded);
+            }
         };
         HelpReducer.prototype.showSystemWindow = function () {
-            ipcRenderer().send('showSystemWindow', 'system');
+            if ('process' in window) {
+                ipcRenderer().send('showSystemWindow', 'system');
+            }
         };
         return HelpReducer;
     }()),]);

@@ -94,13 +94,19 @@ angular.module('helpReducers', [])
         }
       }
       showItemInFolder(path: string): void {
-        const app = require('electron').remote.app;
-        const homeDir = app.getPath('home');
-        const expanded = path.replace('$HOME', homeDir);
-        shell().showItemInFolder(expanded);
+        // run on electron
+        if ('process' in window) {
+          const app = require('electron').remote.app;
+          const homeDir = app.getPath('home');
+          const expanded = path.replace('$HOME', homeDir);
+          shell().showItemInFolder(expanded);
+        }
       }
       showSystemWindow(): void {
-        ipcRenderer().send('showSystemWindow', 'system');
+        // run on electron
+        if ('process' in window) {
+          ipcRenderer().send('showSystemWindow', 'system');
+        }
       }
     },
   ]);
