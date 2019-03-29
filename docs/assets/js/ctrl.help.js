@@ -17,7 +17,7 @@ angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
             reducer.browser(url);
         };
         ctrl.showItemInFolder = function (path) {
-            reducer.browser(path);
+            reducer.showItemInFolder(path);
         };
         ctrl.showSystemWindow = function () {
             reducer.showSystemWindow();
