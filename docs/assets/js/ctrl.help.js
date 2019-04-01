@@ -2,12 +2,12 @@
 angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
     .controller('HelpController', ['$scope', '$location', 'HelpReducer',
     function ($scope, $location, reducer) {
-        var ctrl = this;
+        const ctrl = this;
         $scope.$location = $location;
-        $scope.$on('$locationChangeSuccess', function (event) {
+        $scope.$on('$locationChangeSuccess', (event) => {
             reducer.locationChangeSuccess($scope);
         });
-        $scope.$on('shortcut', function (event, action) {
+        $scope.$on('shortcut', (event, action) => {
             reducer.onShortcut($scope, action);
         });
         ctrl.openSearchForm = function () {

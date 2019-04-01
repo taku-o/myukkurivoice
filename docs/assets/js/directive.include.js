@@ -1,10 +1,10 @@
 "use strict";
 angular.module('IncludeDirectives', [])
-    .directive('staticInclude', function () {
+    .directive('staticInclude', () => {
     return {
         restrict: 'AE',
-        templateUrl: function (element, attrs) {
+        templateUrl: (element, attrs) => {
             return attrs.templatePath;
-        }
+        },
     };
 });

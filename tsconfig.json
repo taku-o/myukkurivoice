@@ -25,7 +25,8 @@
     "strictNullChecks": false, // temporary
     "suppressImplicitAnyIndexErrors": true,
     "traceResolution": false,
-    "lib": ["dom", "es7"]
+    "moduleResolution": "Node",
+    "target": "ES2018"
   },
   "include": ["*.ts", "js/*.ts", "test/*.ts", "docs/assets/js/*.ts"],
   "exclude": ["node_modules"],

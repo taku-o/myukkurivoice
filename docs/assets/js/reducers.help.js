@@ -1,8 +1,8 @@
 "use strict";
-var _ipcRenderer, ipcRenderer = function () { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
-var _shell, shell = function () { _shell = _shell || require('electron').shell; return _shell; };
-var HelpReducer = (function () {
-    function HelpReducer($timeout, $location, $window) {
+var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _shell, shell = () => { _shell = _shell || require('electron').shell; return _shell; };
+class HelpReducer {
+    constructor($timeout, $location, $window) {
         this.$timeout = $timeout;
         this.$location = $location;
         this.$window = $window;
@@ -29,21 +29,21 @@ var HelpReducer = (function () {
             'expand',
         ];
     }
-    HelpReducer.prototype.locationChangeSuccess = function ($scope) {
+    locationChangeSuccess($scope) {
         if (this.$location.url().startsWith('/%23')) {
             this.$window.location.href = this.$location.absUrl().replace('%23', '#');
             return;
         }
-        var hash = this.$location.hash();
+        const hash = this.$location.hash();
         if (this.menuList.includes(hash)) {
             $scope.display = hash;
         }
         else {
             $scope.display = 'about';
         }
-        this.$timeout(function () { $scope.$apply(); });
-    };
-    HelpReducer.prototype.onShortcut = function ($scope, action) {
+        this.$timeout(() => { $scope.$apply(); });
+    }
+    onShortcut($scope, action) {
         switch (action) {
             case 'moveToPreviousHelp':
                 this.moveToPreviousHelp($scope);
@@ -52,10 +52,10 @@ var HelpReducer = (function () {
                 this.moveToNextHelp($scope);
                 break;
         }
-    };
-    HelpReducer.prototype.moveToPreviousHelp = function ($scope) {
-        var index = this.menuList.indexOf($scope.display);
-        var moved = index - 1;
+    }
+    moveToPreviousHelp($scope) {
+        const index = this.menuList.indexOf($scope.display);
+        const moved = index - 1;
         if (index < 0) {
             this.$location.hash(this.menuList[0]);
         }
@@ -65,11 +65,11 @@ var HelpReducer = (function () {
         else {
             this.$location.hash(this.menuList[moved]);
         }
-        this.$timeout(function () { $scope.$apply(); });
-    };
-    HelpReducer.prototype.moveToNextHelp = function ($scope) {
-        var index = this.menuList.indexOf($scope.display);
-        var moved = index + 1;
+        this.$timeout(() => { $scope.$apply(); });
+    }
+    moveToNextHelp($scope) {
+        const index = this.menuList.indexOf($scope.display);
+        const moved = index + 1;
         if (index < 0) {
             this.$location.hash(this.menuList[0]);
         }
@@ -79,34 +79,33 @@ var HelpReducer = (function () {
         else {
             this.$location.hash(this.menuList[moved]);
         }
-        this.$timeout(function () { $scope.$apply(); });
-    };
-    HelpReducer.prototype.openSearchForm = function () {
+        this.$timeout(() => { $scope.$apply(); });
+    }
+    openSearchForm() {
         ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
-    };
-    HelpReducer.prototype.browser = function (url) {
+    }
+    browser(url) {
         if ('process' in window) {
             shell().openExternal(url);
         }
         else {
             this.$window.open(url);
         }
-    };
-    HelpReducer.prototype.showItemInFolder = function (path) {
+    }
+    showItemInFolder(path) {
         if ('process' in window) {
-            var app_1 = require('electron').remote.app;
-            var homeDir = app_1.getPath('home');
-            var expanded = path.replace('$HOME', homeDir);
+            const app = require('electron').remote.app;
+            const homeDir = app.getPath('home');
+            const expanded = path.replace('$HOME', homeDir);
             shell().showItemInFolder(expanded);
         }
-    };
-    HelpReducer.prototype.showSystemWindow = function () {
+    }
+    showSystemWindow() {
         if ('process' in window) {
             ipcRenderer().send('showSystemWindow', 'system');
         }
-    };
-    return HelpReducer;
-}());
+    }
+}
 angular.module('helpReducers', [])
     .service('HelpReducer', [
     '$timeout',
