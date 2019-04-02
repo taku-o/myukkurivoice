@@ -14,10 +14,10 @@ var MONITOR = process.env.MONITOR != null;
 
 // action reducer
 class DictReducer implements yubo.DictReducer {
-  readonly htmlTitle: string = document.title;
+  private readonly htmlTitle: string = document.title;
   // AqDicEdit, MYukkuriVoice data dir
-  readonly rscDictDir: string = `${unpackedPath}/vendor/aq_dic_large`;
-  readonly mAppDictDir: string = `${app.getPath('userData')}/userdict`;
+  private readonly rscDictDir: string = `${unpackedPath}/vendor/aq_dic_large`;
+  private readonly mAppDictDir: string = `${app.getPath('userData')}/userdict`;
 
   constructor(
     private $q: ng.IQService,
@@ -117,7 +117,7 @@ class DictReducer implements yubo.DictReducer {
     $scope.gridOptions.data = [];
   }
 
-  setup(): ng.IPromise<string> {
+  private setup(): ng.IPromise<string> {
     const d = this.$q.defer<string>();
     // mkdir
     fs().stat(`${this.mAppDictDir}`, (err: Error, stats: fs.Stats) => {
@@ -134,7 +134,7 @@ class DictReducer implements yubo.DictReducer {
     });
     return d.promise;
   }
-  loadCsv(): ng.IPromise<yubo.DictRecord[]> {
+  private loadCsv(): ng.IPromise<yubo.DictRecord[]> {
     const d = this.$q.defer<yubo.DictRecord[]>();
     fs().readFile(`${this.mAppDictDir}/aq_user.csv`, 'utf-8', (err: Error, data: Buffer) => {
       if (err) {
@@ -277,7 +277,7 @@ class DictReducer implements yubo.DictReducer {
     ipcRenderer().send('reloadMainWindow', 'reload');
     $scope.message = 'MYukkuriVoiceのメイン画面を更新します。';
   }
-  validateData($scope: yubo.IDictScope): ng.IPromise<boolean> {
+  private validateData($scope: yubo.IDictScope): ng.IPromise<boolean> {
     const d = this.$q.defer<boolean>();
     $scope.gridApi.rowEdit.flushDirtyRows($scope.gridApi.grid).then(() => {
       const errorRows = $scope.gridApi.rowEdit.getErrorRows($scope.gridApi.grid);

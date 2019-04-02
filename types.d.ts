@@ -332,31 +332,31 @@ declare namespace yubo {
 
   // apps.main.ts
   export interface MainReducer {
-    appCfg: yubo.AppCfg;
-    AudioService: yubo.IAudioService;
+    //private appCfg: yubo.AppCfg;
+    //private AudioService: yubo.IAudioService;
     onShortcut($scope: yubo.IMainScope, action: string): void;
     onMenu($scope: yubo.IMainScope, action: string): void;
     onDropTextFile($scope: yubo.IMainScope, filePath: string): void;
     onRecentDocument($scope: yubo.IMainScope, filePath: string): void;
     init($scope: yubo.IMainScope): void;
     onLoad($scope: yubo.IMainScope): void;
-    loadData($scope: yubo.IMainScope, nextTask: () => void): void;
-    loadHistory($scope: yubo.IMainScope): void;
-    selectedSource(): string;
-    selectedEncoded(): string;
+    //private loadData($scope: yubo.IMainScope, nextTask: () => void): void;
+    //private loadHistory($scope: yubo.IMainScope): void;
+    //private selectedSource(): string;
+    //private selectedEncoded(): string;
     blurOnSource($scope: yubo.IMainScope): void;
     blurOnEncoded($scope: yubo.IMainScope): void;
     focusOnSource($scope: yubo.IMainScope): void;
     focusOnEncoded($scope: yubo.IMainScope): void;
-    clearSourceSelection($scope: yubo.IMainScope): void;
-    clearEncodedSelection($scope: yubo.IMainScope): void;
+    //private clearSourceSelection($scope: yubo.IMainScope): void;
+    //private clearEncodedSelection($scope: yubo.IMainScope): void;
     onChangePhont($scope: yubo.IMainScope): void;
     play($scope: yubo.IMainScope): void;
-    playEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput): ng.IPromise<string>;
+    //private playEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput): ng.IPromise<string>;
     stop(): void;
     record($scope: yubo.IMainScope): void;
-    recordSolo($scope: yubo.IMainScope, cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string>;
-    recordEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string>;
+    //private recordSolo($scope: yubo.IMainScope, cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string>;
+    //private recordEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string>;
     showSystemWindow(): void;
     showSpecWindow(): void;
     help(): void;
@@ -404,14 +404,14 @@ declare namespace yubo {
 
   // apps.dict.ts
   export interface DictReducer {
-    readonly htmlTitle: string;
-    readonly rscDictDir: string;
-    readonly mAppDictDir: string;
+    //private readonly htmlTitle: string;
+    //private readonly rscDictDir: string;
+    //private readonly mAppDictDir: string;
     onMenu($scope: yubo.IDictScope, action: string): void;
     init($scope: yubo.IDictScope): void;
     onLoad($scope: yubo.IDictScope): void;
-    setup(): ng.IPromise<string>;
-    loadCsv(): ng.IPromise<yubo.DictRecord[]>;
+    //private setup(): ng.IPromise<string>;
+    //private loadCsv(): ng.IPromise<yubo.DictRecord[]>;
     toIsInEditing($scope: yubo.IDictScope): void;
     clearInEditing($scope: yubo.IDictScope): void;
     add($scope: yubo.IDictScope): void;
@@ -421,7 +421,7 @@ declare namespace yubo {
     dump($scope: yubo.IDictScope): void;
     reset($scope: yubo.IDictScope): ng.IPromise<boolean>;
     reload($scope: yubo.IDictScope): void;
-    validateData($scope: yubo.IDictScope): ng.IPromise<boolean>;
+    //private validateData($scope: yubo.IDictScope): ng.IPromise<boolean>;
     tutorial(): void;
   }
   export interface DictRecord {
@@ -432,11 +432,11 @@ declare namespace yubo {
 
   // apps.help.ts
   export interface HelpReducer {
-    readonly menuList: string[];
+    //private readonly menuList: string[];
     locationChangeSuccess($scope: yubo.IHelpScope): void;
     onShortcut($scope: yubo.IHelpScope, action: string): void;
-    moveToPreviousHelp($scope: yubo.IHelpScope): void;
-    moveToNextHelp($scope: yubo.IHelpScope): void;
+    //private moveToPreviousHelp($scope: yubo.IHelpScope): void;
+    //private moveToNextHelp($scope: yubo.IHelpScope): void;
     openSearchForm(): void;
     browser(url: string): void;
     showItemInFolder(path: string): void;

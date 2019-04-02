@@ -3,7 +3,7 @@ var _shell, shell             = () => { _shell = _shell || require('electron').s
 
 // action reducer
 class HelpReducer implements yubo.HelpReducer {
-  readonly menuList = [
+  private readonly menuList = [
     'about',
     'voicecode',
     'trouble',
@@ -57,7 +57,7 @@ class HelpReducer implements yubo.HelpReducer {
         break;
     }
   }
-  moveToPreviousHelp($scope: yubo.IHelpScope): void {
+  private moveToPreviousHelp($scope: yubo.IHelpScope): void {
     const index = this.menuList.indexOf($scope.display);
     const moved = index - 1;
     if (index < 0) {
@@ -69,7 +69,7 @@ class HelpReducer implements yubo.HelpReducer {
     }
     this.$timeout(() => { $scope.$apply(); });
   }
-  moveToNextHelp($scope: yubo.IHelpScope): void {
+  private moveToNextHelp($scope: yubo.IHelpScope): void {
     const index = this.menuList.indexOf($scope.display);
     const moved = index + 1;
     if (index < 0) {

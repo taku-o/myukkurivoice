@@ -15,8 +15,9 @@ var desktopDir = app.getPath('desktop');
 
 // action reducer
 class MainReducer implements yubo.MainReducer {
-  appCfg: yubo.AppCfg = require('electron').remote.getGlobal('appCfg');
-  AudioService: yubo.IAudioService = this.appCfg.audioServVer == 'html5audio'? this.audioServVer1: this.audioServVer2;
+  private appCfg: yubo.AppCfg = require('electron').remote.getGlobal('appCfg');
+  private AudioService: yubo.IAudioService = this.appCfg.audioServVer == 'html5audio'? this.audioServVer1: this.audioServVer2;
+
   constructor(
     private $timeout: ng.ITimeoutService,
     private $q: ng.IQService,
@@ -166,7 +167,7 @@ class MainReducer implements yubo.MainReducer {
     });
   }
 
-  loadData($scope: yubo.IMainScope, nextTask: () => void): void {
+  private loadData($scope: yubo.IMainScope, nextTask: () => void): void {
     if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData called')); }
     let dataList = dataJson;
     if (dataList.length < 1) {
@@ -180,7 +181,7 @@ class MainReducer implements yubo.MainReducer {
     if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
     if (nextTask) { nextTask(); }
   }
-  loadHistory($scope: yubo.IMainScope): void {
+  private loadHistory($scope: yubo.IMainScope): void {
     this.HistoryService.load().then((cache) => {
       this.$timeout(() => { // $scope.$apply
         $scope.generatedList = this.HistoryService.getList();
@@ -191,14 +192,14 @@ class MainReducer implements yubo.MainReducer {
     });
   }
 
-  selectedSource(): string {
+  private selectedSource(): string {
     const textarea = document.getElementById('source') as HTMLInputElement;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = textarea.value.substring(start, end);
     return selectedText;
   }
-  selectedEncoded(): string {
+  private selectedEncoded(): string {
     const textarea = document.getElementById('encoded') as HTMLInputElement;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
@@ -221,13 +222,13 @@ class MainReducer implements yubo.MainReducer {
     this.clearSourceSelection($scope);
     this.clearEncodedSelection($scope);
   }
-  clearSourceSelection($scope: yubo.IMainScope): void {
+  private clearSourceSelection($scope: yubo.IMainScope): void {
     $scope.sourceHighlight['#619FFF'] = '';
     const textarea = document.getElementById('source') as HTMLInputElement;
     textarea.selectionStart = 0;
     textarea.selectionEnd = 0;
   }
-  clearEncodedSelection($scope: yubo.IMainScope): void {
+  private clearEncodedSelection($scope: yubo.IMainScope): void {
     $scope.encodedHighlight['#619FFF'] = '';
     const textarea = document.getElementById('encoded') as HTMLInputElement;
     textarea.selectionStart = 0;
@@ -313,7 +314,7 @@ class MainReducer implements yubo.MainReducer {
       });
     }, this.$q.defer<string>());
   }
-  playEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput): ng.IPromise<string> {
+  private playEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput): ng.IPromise<string> {
     const d = this.$q.defer<string>();
     let encoded = cinput.text;
     const yvoice = this.CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
@@ -551,7 +552,7 @@ class MainReducer implements yubo.MainReducer {
       ipcRenderer().send('showSaveDialog', 'wav');
     }
   }
-  recordSolo($scope: yubo.IMainScope, cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string> {
+  private recordSolo($scope: yubo.IMainScope, cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
     let encoded = cinput.text;
     const yvoice = this.CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
@@ -604,7 +605,7 @@ class MainReducer implements yubo.MainReducer {
     });
     return d.promise;
   }
-  recordEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string> {
+  private recordEach($scope: yubo.IMainScope, cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
     let encoded = cinput.text;
     const yvoice = this.CommandService.detectVoiceConfig(cinput, $scope.yvoiceList);
