@@ -1,5 +1,5 @@
 'use strict';
-import {BrowserWindow,dialog,shell} from 'electron';
+import {BrowserWindow, dialog, shell} from 'electron';
 var _localShortcut, localShortcut     = () => { _localShortcut = _localShortcut || require('electron-localshortcut'); return _localShortcut; };
 var _log, log                         = () => { _log = _log || require('electron-log'); return _log; };
 var _path, path                       = () => { _path = _path || require('path'); return _path; };

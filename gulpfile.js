@@ -146,8 +146,8 @@ gulp.task('less', () => {
 // format
 gulp.task('format', ['_format-json', '_format-js', '_format-ts', '_format-md', '_format-less']);
 // format-ts
-gulp.task('_format-ts', ['_format-ts-fix', '_format-ts-test']);
-gulp.task('_format-ts-fix', () => {
+gulp.task('_format-ts', ['_format-ts-eslint', '_format-ts-test']);
+gulp.task('_format-ts-eslint', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
     .pipe(eslint({useEslintrc: true, fix: true}))

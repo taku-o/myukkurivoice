@@ -1,4 +1,3 @@
-var app = require('electron').remote.app;
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // env

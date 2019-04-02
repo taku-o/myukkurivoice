@@ -1,5 +1,5 @@
 'use strict';
-import {app,Menu,shell} from 'electron';
+import {app, Menu, shell} from 'electron';
 
 // env
 const DEBUG = process.env.DEBUG != null;

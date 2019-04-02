@@ -1,5 +1,5 @@
 'use strict';
-import {app,dialog,ipcMain} from 'electron';
+import {app, dialog, ipcMain} from 'electron';
 var _log, log         = () => { _log = _log || require('electron-log'); return _log; };
 var _path, path       = () => { _path = _path || require('path'); return _path; };
 var _monitor, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
