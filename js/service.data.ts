@@ -7,7 +7,7 @@ var _monitor, monitor   = () => { _monitor = _monitor || require('electron-perfo
 var MONITOR = process.env.MONITOR != null;
 
 // angular data service
-angular.module('DataServices', ['MessageServices', 'mainModels'])
+angular.module('DataServices', ['MessageServices', 'mainModels']);
 
 // DataService
 class DataService {

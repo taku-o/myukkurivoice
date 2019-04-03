@@ -268,8 +268,14 @@ declare namespace yubo {
     record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
   }
   export interface AudioService1 extends IAudioService {
+    //private audio: HTMLAudioElement;
   }
   export interface AudioService2 extends IAudioService {
+    //private runningNode: AudioBufferSourceNode;
+    //private toArrayBuffer(bufWav: Buffer): ArrayBuffer;
+    //private correctFrameCount(audioBuffer: AudioBuffer): number;
+    //private correctBufferLength(buffer: Float32Array): number;
+    //private buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer;
   }
   // service.util.ts
   export interface AudioSourceService {
