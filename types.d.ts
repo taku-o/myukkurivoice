@@ -193,6 +193,7 @@ declare namespace yubo {
   }
   // service.license.ts
   export interface LicenseService {
+    //private readonly consumerKeyCache: {[index: string]: string;};
     encrypt(passPhrase: string, plainKey: string): string;
     decrypt(passPhrase: string, encryptedKey: string): string;
     consumerKey(licenseType: string): ng.IPromise<string>;
@@ -262,21 +263,20 @@ declare namespace yubo {
     record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
   }
   export interface AudioService1 extends IAudioService {
-    play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
-    stop(): void;
-    record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
   }
   export interface AudioService2 extends IAudioService {
-    play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
-    stop(): void;
-    record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
   }
   // service.util.ts
   export interface AudioSourceService {
+    //private readonly waveExt: string;
+    //private readonly sourceExt: string;
     sourceFname(wavFilePath: string): string;
     save(filePath: string, sourceText: string): ng.IPromise<string>;
   }
   export interface SeqFNameService {
+    //private readonly ext: string;
+    //private readonly numPattern: string;
+    //private readonly limit: string;
     splitFname(filePath: string): {dir: string, basename: string};
     nextFname(prefix: string, num: number): string;
     nextNumber(dir: string, prefix: string): ng.IPromise<number>;
