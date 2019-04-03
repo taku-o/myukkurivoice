@@ -4,10 +4,10 @@ var _log, log         = () => { _log = _log || require('electron-log'); return _
 var _path, path       = () => { _path = _path || require('path'); return _path; };
 var _monitor, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
-import * as Menu from './electron-menu';
-import * as Pane from './electron-window';
-import * as Launch from './electron-launch';
-import * as AppConfig from './electron-appcfg';
+import Menu from './electron-menu';
+import Pane from './electron-window';
+import Launch from './electron-launch';
+import AppConfig from './electron-appcfg';
 
 // env
 const DEBUG = process.env.DEBUG != null;
@@ -53,10 +53,12 @@ const MYukkuriVoice = function(): void {
 };
 const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 // set prototype
-// MYukkuriVoice.prototype.fnc = fnc
-[Pane, Menu, Launch, AppConfig].forEach((baseCtor) => {
-  Object.getOwnPropertyNames(baseCtor).forEach((name) => {
-    if (name != '__esModule') { MYukkuriVoice.prototype[name] = baseCtor[name]; }
+// MYukkuriVoice.prototype.fnc = Menu.prototype.fnc
+[Pane, Menu, Launch, AppConfig].forEach(baseCtor => {
+  Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+    if (name != 'constructor') {
+      Object.defineProperty(MYukkuriVoice.prototype, name, Object.getOwnPropertyDescriptor(baseCtor.prototype, name));
+    }
   });
 });
 

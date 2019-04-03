@@ -34,6 +34,7 @@ declare namespace ElectronStore {
   export interface Config {
     get(key: string): any;
     set(key: string, val: any): void;
+    set(key: {[key: string]: any}): void;
     has(key: string): boolean
   }
 }
