@@ -5,7 +5,7 @@ var _epath, epath       = () => { _epath = _epath || require('electron-path'); r
 var unpackedPath = epath().getUnpackedPath();
 
 // angular license service
-class LicenseService {
+class LicenseService implements yubo.LicenseService {
   private readonly consumerKeyCache: {[index: string]: string} = {};
   constructor(
     private $q: ng.IQService
@@ -19,6 +19,7 @@ class LicenseService {
     const encryptionResult = cryptico().encrypt(plainKey, mattsPublicKeyString);
     return encryptionResult.cipher;
   }
+
   decrypt(passPhrase: string, encryptedKey: string): string {
     const bits = 1024;
     const mattsRSAkey = cryptico().generateRSAKey(passPhrase, bits);
@@ -32,6 +33,7 @@ class LicenseService {
     }
     return decryptionResult.plaintext;
   }
+
   consumerKey(licenseType: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
 

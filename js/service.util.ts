@@ -2,7 +2,7 @@ var _fs, fs     = () => { _fs = _fs || require('fs'); return _fs; };
 var _path, path = () => { _path = _path || require('path'); return _path; };
 
 // angular util service
-angular.module('UtilServices', ['MessageServices'])
+angular.module('UtilServices', ['MessageServices']);
 
 // AudioSourceService
 class AudioSourceService implements yubo.AudioSourceService {
@@ -19,6 +19,7 @@ class AudioSourceService implements yubo.AudioSourceService {
     const filename = basename + this.sourceExt;
     return path().join(dir, filename);
   }
+
   save(filePath: string, sourceText: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
     fs().writeFile(filePath, sourceText, 'utf-8', function(err: Error) {
@@ -35,7 +36,7 @@ angular.module('UtilServices')
   .factory('AudioSourceService', [
     '$q',
     'MessageService',
-    MessageService,
+    AudioSourceService,
   ]);
 
 // SeqFNameService
@@ -56,10 +57,12 @@ class SeqFNameService implements yubo.SeqFNameService {
       basename: basename,
     };
   }
+
   nextFname(prefix: string, num: number): string {
     const formatted = ('0000'+ num).slice(-4);
     return prefix + formatted + this.ext;
   }
+
   nextNumber(dir: string, prefix: string): ng.IPromise<number> {
     const d = this.$q.defer<number>();
     fs().readdir(dir, (err: Error, files: string[]) => {
@@ -115,6 +118,7 @@ class AppUtilService implements yubo.AppUtilService {
   disableRhythm(encoded: string): string {
     return encoded.replace(/['/]/g, '');
   }
+
   reportDuration(duration: number): void {
     this.$rootScope.$broadcast('duration', duration);
   }

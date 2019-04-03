@@ -18,10 +18,13 @@
   },
   "rules": {
     "array-bracket-spacing": ["error", "never"],
-    "comma-spacing": ["error", {
-      "before": false,
-      "after": true
-    }],
+    "comma-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
     "indent": 0,
     "linebreak-style": ["error", "unix"],
     "no-empty": "off",

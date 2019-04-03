@@ -14,6 +14,7 @@ class MessageService implements yubo.MessageService {
     };
     this.$rootScope.$broadcast('message', post);
   }
+
   record(message: string, opts:{wavFilePath: string, srcTextPath: string, source: string, encoded: string}): void {
     const wavFileName = path().basename(opts.wavFilePath);
     const post: yubo.IRecordMessage = {
@@ -30,6 +31,7 @@ class MessageService implements yubo.MessageService {
     this.$rootScope.$broadcast('message', post);
     this.$rootScope.$broadcast('wavGenerated', post);
   }
+
   recordSource(message: string, opts: {srcTextPath: string, source: string}): void {
     const post: yubo.ISourceMessage = {
       created: new Date(),
@@ -41,6 +43,7 @@ class MessageService implements yubo.MessageService {
     };
     this.$rootScope.$broadcast('message', post);
   }
+
   info(message: string): void {
     const post: yubo.IMessage = {
       created: new Date(),
@@ -49,6 +52,7 @@ class MessageService implements yubo.MessageService {
     };
     this.$rootScope.$broadcast('message', post);
   }
+
   error(message: string, err: Error | null = null): void {
     if (err) {
       message = message + err.message;
@@ -60,6 +64,7 @@ class MessageService implements yubo.MessageService {
     };
     this.$rootScope.$broadcast('message', post);
   }
+
   syserror(message: string, err: Error | null = null): void {
     if (err) {
       message = message + err.message;
