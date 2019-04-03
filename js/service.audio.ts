@@ -17,7 +17,7 @@ class AudioService1 implements yubo.AudioService1 {
     const d = this.$q.defer<string>();
     if (!bufWav) {
       this.MessageService.syserror('再生する音源が渡されませんでした。');
-      return this.$q.reject(new Error('再生する音源が渡されませんでした。'));
+      d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
     }
     // if audio playing, stop current playing
     if (this.audio) { this.audio.pause(); }
@@ -56,11 +56,11 @@ class AudioService1 implements yubo.AudioService1 {
     const d = this.$q.defer<string>();
     if (!wavFilePath) {
       this.MessageService.syserror('音声ファイルの保存先が指定されていません。');
-      return this.$q.reject(new Error('音声ファイルの保存先が指定されていません。'));
+      d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
     }
     if (!bufWav) {
       this.MessageService.syserror('保存する音源が渡されませんでした。');
-      return this.$q.reject(new Error('保存する音源が渡されませんでした。'));
+      d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
     }
 
     fs().writeFile(wavFilePath, bufWav, (err: Error) => {
@@ -142,7 +142,7 @@ class AudioService2 implements yubo.AudioService2 {
     const d = this.$q.defer<string>();
     if (!bufWav) {
       this.MessageService.syserror('再生する音源が渡されませんでした。');
-      return this.$q.reject(new Error('再生する音源が渡されませんでした。'));
+      d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
     }
     // if audio playing, stop current playing
     if (this.runningNode) { this.runningNode.stop(0); this.runningNode = null; }
@@ -252,11 +252,11 @@ class AudioService2 implements yubo.AudioService2 {
     const d = this.$q.defer<string>();
     if (!wavFilePath) {
       this.MessageService.syserror('音声ファイルの保存先が指定されていません。');
-      return this.$q.reject(new Error('音声ファイルの保存先が指定されていません。'));
+      d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
     }
     if (!bufWav) {
       this.MessageService.syserror('保存する音源が渡されませんでした。');
-      return this.$q.reject(new Error('保存する音源が渡されませんでした。'));
+      d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
     }
 
     const aBuffer = this.toArrayBuffer(bufWav);

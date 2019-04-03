@@ -39,7 +39,7 @@ class LicenseService implements yubo.LicenseService {
 
     // get key from cache if exists
     if (this.consumerKeyCache[licenseType]) {
-      return this.$q.resolve(this.consumerKeyCache[licenseType]);
+      d.resolve(this.consumerKeyCache[licenseType]); return d.promise;
     }
 
     // get encrypted consumer key

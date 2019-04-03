@@ -273,7 +273,7 @@ class AquesService {
     const d = this.$q.defer<Buffer>();
     if (!encoded) {
       this.MessageService.syserror('音記号列が入力されていません。');
-      return this.$q.reject(new Error('音記号列が入力されていません。'));
+      d.reject(new Error('音記号列が入力されていません。')); return d.promise;
     }
 
     // version 1
@@ -355,12 +355,12 @@ class AquesService {
         }
         if (this.aquesTalk10DevKey == null) {
           this.MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
-          return this.$q.reject(new Error('まだ初期化処理が完了していないので1秒ほど待ってください。'));
+          d.reject(new Error('まだ初期化処理が完了していないので1秒ほど待ってください。')); return d.promise;
         }
         const devKey = this.aquesTalk10Lib.setDevKey(this.aquesTalk10DevKey);
         if (devKey != 0) {
           this.MessageService.syserror('AquesTalk10開発ライセンスキーが正しくありません。');
-          return this.$q.reject(new Error('AquesTalk10開発ライセンスキーが正しくありません。'));
+          d.reject(new Error('AquesTalk10開発ライセンスキーが正しくありません。')); return d.promise;
         }
 
         // get and set aquesTalk10 use key
@@ -371,14 +371,14 @@ class AquesService {
           '';
         if (encryptedUseKey && !aquesTalk10UseKey) {
           this.MessageService.error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください');
-          return this.$q.reject(new Error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください'));
+          d.reject(new Error('AquesTalk10使用ライセンスキーの復号に失敗しました。環境設定で使用ライセンスキーを設定し直してください')); return d.promise;
         }
 
         if (encryptedUseKey) {
           const usrKey = this.aquesTalk10Lib.setUsrKey(aquesTalk10UseKey);
           if (usrKey != 0) {
             this.MessageService.error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`);
-            return this.$q.reject(new Error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`));
+            d.reject(new Error(`${'AquesTalk10使用ライセンスキーが正しくありません。環境設定で使用ライセンスキーを設定してください。'}${aquesTalk10UseKey}`)); return d.promise;
           }
           this.MessageService.info('AquesTalk10使用ライセンスキーを設定しました。');
         }
@@ -403,7 +403,7 @@ class AquesService {
         const errorCode = allocInt.deref();
         this.MessageService.syserror(this.aquesTalk10Lib.errorTable(errorCode));
         log().info(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${this.aquesTalk10Lib.errorTable(errorCode)}`);
-        return this.$q.reject(new Error(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${this.aquesTalk10Lib.errorTable(errorCode)}`));
+        d.reject(new Error(`fn_AquesTalk10_Synthe_Utf8 raise error. error_code:${this.aquesTalk10Lib.errorTable(errorCode)}`)); return d.promise;
       }
 
       const bufWav = ref().reinterpret(r, allocInt.deref(), 0);

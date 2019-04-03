@@ -326,7 +326,7 @@ class MainReducer implements yubo.MainReducer {
     });
     if (!phont) {
       this.MessageService.error('声の種類が未指定です。');
-      return this.$q.reject(new Error('声の種類が未指定です。'));
+      d.reject(new Error('声の種類が未指定です。')); return d.promise;
     }
 
     // disable rhythm if option is on
@@ -564,7 +564,7 @@ class MainReducer implements yubo.MainReducer {
     });
     if (!phont) {
       this.MessageService.error('声の種類が未指定です。');
-      return this.$q.reject(new Error('声の種類が未指定です。'));
+      d.reject(new Error('声の種類が未指定です。')); return d.promise;
     }
 
     // disable rhythm if option is on
@@ -617,7 +617,7 @@ class MainReducer implements yubo.MainReducer {
     });
     if (!phont) {
       this.MessageService.error('声の種類が未指定です。');
-      return this.$q.reject(new Error('声の種類が未指定です。'));
+      d.reject(new Error('声の種類が未指定です。')); return d.promise;
     }
 
     // disable rhythm if option is on
