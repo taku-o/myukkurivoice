@@ -126,7 +126,7 @@ declare namespace yubo {
   }
 
   // electron.ts
-  export interface IMYukkuriVoice {
+  export interface IMYukkuriVoice extends FnAppCfg, FnLaunch, FnMenu, FnWindow {
     launchArgs:       {filePath: string}
     appCfg:           yubo.AppCfg;
     config:           ElectronStore.Config;
@@ -135,6 +135,29 @@ declare namespace yubo {
     helpSearchDialog: Electron.BrowserWindow;
     systemWindow:     Electron.BrowserWindow;
     dictWindow:       Electron.BrowserWindow;
+    resetAppConfigOnMain(): void;
+    switchAlwaysOnTop():    void;
+  }
+  export interface FnAppCfg {
+    loadAppConfig(nextTask: () => void): void;
+    updateAppConfig(options: yubo.AppCfg): void;
+    resetAppConfig(): void;
+    resetWindowSize(): void;
+    resetWindowPosition(): void;
+  }
+  export interface FnLaunch {
+    handleOpenFile(filePath: string): void;
+    handleOpenUrl(scheme: string): void;
+  }
+  export interface FnMenu {
+    initAppMenu(): void;
+    initDockMenu(): void;
+    enableDictMenu(): void;
+    disableDictMenu(): void;
+    enableHelpMenu(): void;
+    disableHelpMenu(): void;
+  }
+  export interface FnWindow {
     showMainWindow(): void;
     showHelpWindow(): void;
     showHelpSearchDialog(): void;
@@ -143,19 +166,6 @@ declare namespace yubo {
     showAboutWindow(): void;
     showVersionDialog(): void;
     showSpecWindow(): void;
-    initAppMenu(): void;
-    initDockMenu(): void;
-    enableDictMenu(): void;
-    disableDictMenu(): void;
-    enableHelpMenu(): void;
-    disableHelpMenu(): void;
-    handleOpenFile(filePath: string): void;
-    handleOpenUrl(scheme: string): void;
-    loadAppConfig(nextTask: () => void): void;
-    updateAppConfig(options: yubo.AppCfg): void;
-    resetAppConfig(): void;
-    resetWindowSize(): void;
-    resetWindowPosition(): void;
   }
 
   // models.main.ts

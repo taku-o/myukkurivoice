@@ -52,27 +52,13 @@ const MYukkuriVoice = function(): void {
   this.dictWindow = null;
 };
 const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
-MYukkuriVoice.prototype.showMainWindow = Pane.showMainWindow;
-MYukkuriVoice.prototype.showHelpWindow = Pane.showHelpWindow;
-MYukkuriVoice.prototype.showHelpSearchDialog = Pane.showHelpSearchDialog;
-MYukkuriVoice.prototype.showSystemWindow = Pane.showSystemWindow;
-MYukkuriVoice.prototype.showDictWindow = Pane.showDictWindow;
-MYukkuriVoice.prototype.showAboutWindow = Pane.showAboutWindow;
-MYukkuriVoice.prototype.showVersionDialog = Pane.showVersionDialog;
-MYukkuriVoice.prototype.showSpecWindow = Pane.showSpecWindow;
-MYukkuriVoice.prototype.initAppMenu = Menu.initAppMenu;
-MYukkuriVoice.prototype.initDockMenu = Menu.initDockMenu;
-MYukkuriVoice.prototype.enableDictMenu = Menu.enableDictMenu;
-MYukkuriVoice.prototype.disableDictMenu = Menu.disableDictMenu;
-MYukkuriVoice.prototype.enableHelpMenu = Menu.enableHelpMenu;
-MYukkuriVoice.prototype.disableHelpMenu = Menu.disableHelpMenu;
-MYukkuriVoice.prototype.handleOpenFile = Launch.handleOpenFile;
-MYukkuriVoice.prototype.handleOpenUrl = Launch.handleOpenUrl;
-MYukkuriVoice.prototype.loadAppConfig = AppConfig.loadAppConfig;
-MYukkuriVoice.prototype.updateAppConfig = AppConfig.updateAppConfig;
-MYukkuriVoice.prototype.resetAppConfig = AppConfig.resetAppConfig;
-MYukkuriVoice.prototype.resetWindowSize = AppConfig.resetWindowSize;
-MYukkuriVoice.prototype.resetWindowPosition = AppConfig.resetWindowPosition;
+// set prototype
+// MYukkuriVoice.prototype.fnc = fnc
+[Pane, Menu, Launch, AppConfig].forEach((baseCtor) => {
+  Object.getOwnPropertyNames(baseCtor).forEach((name) => {
+    if (name != '__esModule') { MYukkuriVoice.prototype[name] = baseCtor[name]; }
+  });
+});
 
 // handle uncaughtException
 process.on('uncaughtException', (err: Error) => {
