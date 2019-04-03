@@ -66,6 +66,31 @@ declare namespace LRUCache {
   }
 }
 
+// ref
+declare namespace ref {
+  export interface Type {
+    size: number;
+    indirection: number;
+    get(buffer: Buffer, offset: number): any;
+    set(buffer: Buffer, offset: number, value: any): void;
+    name?: string;
+    alignment?: number;
+  }
+}
+// ref-struct
+declare namespace refStruct {
+  interface StructType {
+    new (arg: Buffer, data?: {}): any;
+    new (data?: {}): any;
+    (arg: Buffer, data?: {}): any;
+    (data?: {}): any;
+    fields: { [key: string]: { type: ref.Type } };
+    defineProperty(name: string, type: ref.Type): void;
+    defineProperty(name: string, type: string): void;
+    toString(): string;
+  }
+}
+
 // github-version-compare
 declare namespace GithubVersionCompare {
   interface IVersion {
@@ -256,7 +281,35 @@ declare namespace yubo {
     getList(): yubo.IRecordMessage[];
   }
   // service.aques.ts
+  export interface AqKanji2KoeLib {
+    create(pathDic: string, pErr: Buffer): Buffer;
+    release(hAqKanji2Koe: Buffer): void;
+    convert(hAqKanji2Koe: Buffer, kanji: string, koe: Buffer, nBufKoe: number): number;
+    setDevKey(key: string): number;
+    errorTable(code: number): string;
+  }
+  export interface AquesTalk2Lib {
+    synthe(koe: string, iSpeed: number, size: Buffer, phontDat: Buffer): Buffer;
+    freeWave(wav: Buffer): void;
+    errorTable(code: number): string;
+  }
+  export interface AquesTalk10Lib {
+    AQTK_VOICE: refStruct.StructType;
+    synthe(pParam: Buffer, koe: string, size: Buffer): Buffer;
+    freeWave(wav: Buffer): void;
+    setDevKey(key: string): number;
+    setUsrKey(key: string): number;
+    errorTable(code: number): string;
+  }
   export interface AquesService {
+    //private readonly aqKanji2KoeLib: yubo.AqKanji2KoeLib;
+    //private readonly aquesTalk2Lib: yubo.AquesTalk2Lib;
+    //private readonly aquesTalk10Lib: yubo.AquesTalk10Lib;
+    //private aqDictPath: string;
+    //private aqKanji2KoeDevKey: string;
+    //private aquesTalk10DevKey: string;
+    //private _isAqKanji2KoeDevkeySet: boolean;
+    //private _isAquesTalk10LicensekeySet: boolean;
     init(): void;
     encode(source: string): string;
     wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<Buffer>;
@@ -304,6 +357,7 @@ declare namespace yubo {
     getLastError(): string;
   }
   export interface AqUsrDicService {
+    //private readonly aqUsrDicLib: yubo.AqUsrDicLib;
     generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string};
     generateCSV(inUserDicPath: string, outCsvPath: string): {success:boolean, message:string};
     validateInput(surface: string, yomi: string, posCode: number): {success:boolean, message:string};

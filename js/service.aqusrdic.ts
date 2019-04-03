@@ -5,25 +5,24 @@ var unpackedPath  = epath().getUnpackedPath();
 
 // aquestalk dictionary service
 class AqUsrDicLib implements yubo.AqUsrDicLib {
+  // int AqUsrDic_Import(const char * pathUserDic, const char * pathDicCsv)
+  // int AqUsrDic_Export(const char * pathUserDic, const char * pathDicCsv)
+  // int AqUsrDic_Check(const char * surface, const char * yomi, int posCode)
+  // const char * AqUsrDic_GetLastError()
   private fn_AqUsrDic_Import: (pathUserDic: string, pathDicCsv: string) => number;
   private fn_AqUsrDic_Export: (pathUserDic: string, pathDicCsv: string) => number;
   private fn_AqUsrDic_Check: (surface: string, yomi: string, posCode: number) => number;
   private fn_AqUsrDic_GetLastError: () => string;
   constructor() {
-    // int AqUsrDic_Import(const char * pathUserDic, const char * pathDicCsv)
-    // int AqUsrDic_Export(const char * pathUserDic, const char * pathDicCsv)
-    // int AqUsrDic_Check(const char * surface, const char * yomi, int posCode)
-    // const char * AqUsrDic_GetLastError()
     const frameworkPath: string = `${unpackedPath}/vendor/AqUsrDic.framework/Versions/A/AqUsrDic`;
     const ptr_AqUsrDic_Import       = ffi().DynamicLibrary(frameworkPath).get('AqUsrDic_Import');
     const ptr_AqUsrDic_Export       = ffi().DynamicLibrary(frameworkPath).get('AqUsrDic_Export');
     const ptr_AqUsrDic_Check        = ffi().DynamicLibrary(frameworkPath).get('AqUsrDic_Check');
     const ptr_AqUsrDic_GetLastError = ffi().DynamicLibrary(frameworkPath).get('AqUsrDic_GetLastError');
-
-    this.fn_AqUsrDic_Import       = ffi().ForeignFunction(ptr_AqUsrDic_Import, 'int', ['string', 'string']);
-    this.fn_AqUsrDic_Export       = ffi().ForeignFunction(ptr_AqUsrDic_Export, 'int', ['string', 'string']);
-    this.fn_AqUsrDic_Check        = ffi().ForeignFunction(ptr_AqUsrDic_Check, 'int', ['string', 'string', 'int']);
-    this.fn_AqUsrDic_GetLastError = ffi().ForeignFunction(ptr_AqUsrDic_GetLastError, 'string', []);
+    this.fn_AqUsrDic_Import         = ffi().ForeignFunction(ptr_AqUsrDic_Import, 'int', ['string', 'string']);
+    this.fn_AqUsrDic_Export         = ffi().ForeignFunction(ptr_AqUsrDic_Export, 'int', ['string', 'string']);
+    this.fn_AqUsrDic_Check          = ffi().ForeignFunction(ptr_AqUsrDic_Check, 'int', ['string', 'string', 'int']);
+    this.fn_AqUsrDic_GetLastError   = ffi().ForeignFunction(ptr_AqUsrDic_GetLastError, 'string', []);
   }
 
   importDic(pathUserDic: string, pathDicCsv: string): number {
@@ -44,7 +43,7 @@ class AqUsrDicLib implements yubo.AqUsrDicLib {
 }
 
 class AqUsrDicService implements yubo.AqUsrDicService {
-  private aqUsrDicLib = new AqUsrDicLib();
+  private readonly aqUsrDicLib = new AqUsrDicLib();
   constructor() {}
 
   generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string} {
