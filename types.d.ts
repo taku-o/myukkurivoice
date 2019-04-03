@@ -292,6 +292,10 @@ declare namespace yubo {
   }
   // service.aqusrdic.ts
   export interface AqUsrDicService {
+    //private fn_AqUsrDic_Import: (pathUserDic: string, pathDicCsv: string) => number;
+    //private fn_AqUsrDic_Export: (pathUserDic: string, pathDicCsv: string) => number;
+    //private fn_AqUsrDic_Check: (surface: string, yomi: string, posCode: number) => number;
+    //private fn_AqUsrDic_GetLastError: () => string;
     generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string};
     generateCSV(inUserDicPath: string, outCsvPath: string): {success:boolean, message:string};
     validateInput(surface: string, yomi: string, posCode: number): {success:boolean, message:string};
