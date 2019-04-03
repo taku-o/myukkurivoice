@@ -2,7 +2,7 @@ var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('
 
 // event listeners
 angular.module('helpEvents', ['helpReducers'])
-  .directive('shortcut', ['HelpReducer', (reducer) => {
+  .directive('shortcut', ['HelpReducer', (reducer: yubo.HelpReducer) => {
     return {
       link: (scope: ng.IScope): void => {
         ipcRenderer().on('shortcut', (event: Electron.Event, action: string) => {
@@ -13,9 +13,6 @@ angular.module('helpEvents', ['helpReducers'])
               break;
             case 'openSearchForm':
               reducer.openSearchForm();
-              break;
-            case 'closeSearchForm':
-              reducer.closeSearchForm();
               break;
           }
         });

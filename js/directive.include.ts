@@ -4,7 +4,7 @@ angular.module('IncludeDirectives', [])
   .directive('staticInclude', () => {
     return {
       restrict: 'AE',
-      templateUrl: (element, attrs) => {
+      templateUrl: (element: ng.IDocumentService, attrs: ng.IAttributes) => {
         return attrs.templatePath;
       },
     };

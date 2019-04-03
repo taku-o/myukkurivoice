@@ -4,7 +4,7 @@ var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('
 // angular directive
 angular.module('DragDirectives', [])
   // wav-draggable
-  .directive('wavDraggable', ($parse) => {
+  .directive('wavDraggable', ($parse: ng.IParseService) => {
     return (scope: ng.IScope, element: ng.IDocumentService, attr: ng.IAttributes) => {
       let f: (e: Event) => boolean;
       scope.$watch('lastWavFile', (value: yubo.IRecordMessage) => {
@@ -31,7 +31,7 @@ angular.module('DragDirectives', [])
     };
   })
   // txt-droppable
-  .directive('txtDroppable', ($parse) => {
+  .directive('txtDroppable', ($parse: ng.IParseService) => {
     return (scope: yubo.IMainScope, element: ng.IDocumentService, attr: ng.IAttributes) => {
       const el: HTMLElement = element[0];
 
