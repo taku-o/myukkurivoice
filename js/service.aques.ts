@@ -23,9 +23,9 @@ class AqKanji2KoeLib implements yubo.AqKanji2KoeLib {
   private fn_AqKanji2Koe_Convert: (hAqKanji2Koe: Buffer, kanji: string, koe: Buffer, nBufKoe: number) => number;
   private fn_AqKanji2Koe_SetDevKey: (key: string) => number;
   constructor() {
-    const ptr_void  = ref().refType(ref().types.void);
-    const ptr_int   = ref().refType(ref().types.int);
-    const ptr_char  = ref().refType(ref().types.char);
+    const ptr_void = ref().refType(ref().types.void);
+    const ptr_int  = ref().refType(ref().types.int);
+    const ptr_char = ref().refType(ref().types.char);
 
     const frameworkPath: string = `${unpackedPath}/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`;
     const ptr_AqKanji2Koe_Create    = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
