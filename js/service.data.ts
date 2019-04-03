@@ -10,7 +10,7 @@ var MONITOR = process.env.MONITOR != null;
 angular.module('DataServices', ['MessageServices', 'mainModels']);
 
 // DataService
-class DataService {
+class DataService implements yubo.DataService {
   constructor(
     private $q: ng.IQService,
     private $timeout: ng.ITimeoutService,
@@ -102,7 +102,7 @@ angular.module('DataServices')
   ]);
 
 // MasterService
-class MasterService {
+class MasterService implements yubo.MasterService {
   constructor(
     private phontList: yubo.YPhont[]
   ) {}
@@ -117,7 +117,7 @@ angular.module('DataServices')
   ]);
 
 // HistoryService
-class HistoryService {
+class HistoryService implements yubo.HistoryService {
   private readonly MS_MAX_AGE: number = 1000 * 60 * 60 * 24 * 30; // 30 days
   private _cache: LRUCache.Cache;
   constructor(
