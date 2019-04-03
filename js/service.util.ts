@@ -33,7 +33,7 @@ class AudioSourceService implements yubo.AudioSourceService {
   }
 }
 angular.module('UtilServices')
-  .factory('AudioSourceService', [
+  .service('AudioSourceService', [
     '$q',
     'MessageService',
     AudioSourceService,
@@ -103,7 +103,7 @@ class SeqFNameService implements yubo.SeqFNameService {
   }
 }
 angular.module('UtilServices')
-  .factory('SeqFNameService', [
+  .service('SeqFNameService', [
     '$q',
     'MessageService',
     SeqFNameService,
@@ -124,7 +124,7 @@ class AppUtilService implements yubo.AppUtilService {
   }
 }
 angular.module('UtilServices')
-  .factory('AppUtilService', [
+  .service('AppUtilService', [
     '$rootScope',
     AppUtilService,
   ]);

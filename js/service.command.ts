@@ -80,7 +80,7 @@ class CommandService implements yubo.CommandService {
 }
 
 angular.module('CommandServices', ['MessageServices', 'mainModels'])
-  .factory('CommandService', [
+  .service('CommandService', [
     'MessageService',
     'YCommandInput',
     CommandService,

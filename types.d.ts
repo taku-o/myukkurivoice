@@ -231,6 +231,7 @@ declare namespace yubo {
   }
   // service.data.ts
   export interface DataService {
+    //private uniqId(): string;
     load(ok: (dataList: yubo.YVoice[]) => void, ng: (err: Error) => void): ng.IPromise<yubo.YVoice[]>;
     initialData(): yubo.YVoice[];
     create(): yubo.YVoice;
@@ -242,6 +243,10 @@ declare namespace yubo {
     getPhontList(): yubo.YPhont[];
   }
   export interface HistoryService {
+    //private readonly MS_MAX_AGE: number;
+    //private _cache: LRUCache.Cache;
+    //private cache(): LRUCache.Cache;
+    //private _loaded: boolean;
     load(): ng.IPromise<LRUCache.Cache>;
     loaded(): boolean;
     save(): ng.IPromise<boolean>;
