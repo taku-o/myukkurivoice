@@ -360,20 +360,20 @@ export default class FnMenu implements yubo.FnMenu {
     app.dock.setMenu(dockMenu);
   }
 
-  private readonly dictMenuItems = [
-    'dict-close',
-    'dict-tutorial',
-    'dict-add',
-    'dict-delete',
-    'dict-save',
-    'dict-cancel',
-    'dict-export',
-    'dict-reset',
-  ];
   enableDictMenu(): void {
     const menu = Menu.getApplicationMenu();
     if (!menu) { return; }
-    for (let m of this.dictMenuItems) {
+    const dictMenuItems = [
+      'dict-close',
+      'dict-tutorial',
+      'dict-add',
+      'dict-delete',
+      'dict-save',
+      'dict-cancel',
+      'dict-export',
+      'dict-reset',
+    ];
+    for (let m of dictMenuItems) {
       const item = menu.getMenuItemById(m);
       item.enabled = true;
     }
@@ -381,19 +381,29 @@ export default class FnMenu implements yubo.FnMenu {
   disableDictMenu(): void {
     const menu = Menu.getApplicationMenu();
     if (!menu) { return; }
-    for (let m of this.dictMenuItems) {
+    const dictMenuItems = [
+      'dict-close',
+      'dict-tutorial',
+      'dict-add',
+      'dict-delete',
+      'dict-save',
+      'dict-cancel',
+      'dict-export',
+      'dict-reset',
+    ];
+    for (let m of dictMenuItems) {
       const item = menu.getMenuItemById(m);
       item.enabled = false;
     }
   }
 
-  private readonly helpMenuItems = [
-    'open-help-search',
-  ];
   enableHelpMenu(): void {
     const menu = Menu.getApplicationMenu();
     if (!menu) { return; }
-    for (let m of this.helpMenuItems) {
+    const helpMenuItems = [
+      'open-help-search',
+    ];
+    for (let m of helpMenuItems) {
       const item = menu.getMenuItemById(m);
       item.enabled = true;
     }
@@ -401,7 +411,10 @@ export default class FnMenu implements yubo.FnMenu {
   disableHelpMenu(): void {
     const menu = Menu.getApplicationMenu();
     if (!menu) { return; }
-    for (let m of this.helpMenuItems) {
+    const helpMenuItems = [
+      'open-help-search',
+    ];
+    for (let m of helpMenuItems) {
       const item = menu.getMenuItemById(m);
       item.enabled = false;
     }
