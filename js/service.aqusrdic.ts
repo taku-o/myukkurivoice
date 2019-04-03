@@ -4,12 +4,11 @@ var _epath, epath = () => { _epath = _epath || require('electron-path'); return 
 var unpackedPath  = epath().getUnpackedPath();
 
 // aquestalk dictionary service
-class AqUsrDicService implements yubo.AqUsrDicService {
+class AqUsrDicLib implements yubo.AqUsrDicLib {
   private fn_AqUsrDic_Import: (pathUserDic: string, pathDicCsv: string) => number;
   private fn_AqUsrDic_Export: (pathUserDic: string, pathDicCsv: string) => number;
   private fn_AqUsrDic_Check: (surface: string, yomi: string, posCode: number) => number;
   private fn_AqUsrDic_GetLastError: () => string;
-
   constructor() {
     // int AqUsrDic_Import(const char * pathUserDic, const char * pathDicCsv)
     // int AqUsrDic_Export(const char * pathUserDic, const char * pathDicCsv)
@@ -27,43 +26,64 @@ class AqUsrDicService implements yubo.AqUsrDicService {
     this.fn_AqUsrDic_GetLastError = ffi().ForeignFunction(ptr_AqUsrDic_GetLastError, 'string', []);
   }
 
+  importDic(pathUserDic: string, pathDicCsv: string): number {
+    return this.fn_AqUsrDic_Import(pathUserDic, pathDicCsv);
+  }
+
+  exportDic(pathUserDic: string, pathDicCsv: string): number {
+    return this.fn_AqUsrDic_Export(pathUserDic, pathDicCsv);
+  }
+
+  check(surface: string, yomi: string, posCode: number): number {
+    return this.fn_AqUsrDic_Check(surface, yomi, posCode);
+  }
+
+  getLastError(): string {
+    return this.fn_AqUsrDic_GetLastError();
+  }
+}
+
+class AqUsrDicService implements yubo.AqUsrDicService {
+  private aqUsrDicLib = new AqUsrDicLib();
+  constructor() {}
+
   generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string} {
     try {
       fs().chmodSync(outUserDicPath, 0o644); // chmod 644 if exists
     } catch (err) {
       fs().closeSync(fs().openSync(outUserDicPath, 'a+')); // create with 644 permission.
     }
-    const result = this.fn_AqUsrDic_Import(outUserDicPath, inCsvPath);
+    const result = this.aqUsrDicLib.importDic(outUserDicPath, inCsvPath);
     if (result == 0) {
       return {success:true, message:null};
     } else {
-      const errorMsg = this.fn_AqUsrDic_GetLastError();
+      const errorMsg = this.aqUsrDicLib.getLastError();
       return {success:false, message:errorMsg};
     }
   }
 
   generateCSV(inUserDicPath: string, outCsvPath: string): {success:boolean, message:string} {
-    const result = this.fn_AqUsrDic_Export(inUserDicPath, outCsvPath);
+    const result = this.aqUsrDicLib.exportDic(inUserDicPath, outCsvPath);
     if (result == 0) {
       return {success:true, message:null};
     } else {
-      const errorMsg = this.fn_AqUsrDic_GetLastError();
+      const errorMsg = this.aqUsrDicLib.getLastError();
       return {success:false, message:errorMsg};
     }
   }
 
   validateInput(surface: string, yomi: string, posCode: number): {success:boolean, message:string} {
-    const result = this.fn_AqUsrDic_Check(surface, yomi, posCode);
+    const result = this.aqUsrDicLib.check(surface, yomi, posCode);
     if (result == 0) {
       return {success:true, message:null};
     } else {
-      const errorMsg = this.fn_AqUsrDic_GetLastError();
+      const errorMsg = this.aqUsrDicLib.getLastError();
       return {success:false, message:errorMsg};
     }
   }
 
   getLastError(): string {
-    return this.fn_AqUsrDic_GetLastError();
+    return this.aqUsrDicLib.getLastError();
   }
 }
 

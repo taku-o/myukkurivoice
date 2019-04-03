@@ -89,11 +89,11 @@ declare namespace yubo {
 
   // electron-appcfg.ts
   export interface AppCfg {
-    mainWindow:        { width: number, height: number, x: number | null, y: number | null };
-    helpWindow?:       { width: number, height: number };
-    helpSearchDialog?: { width: number, height: number };
-    systemWindow?:     { width: number, height: number };
-    dictWindow?:       { width: number, height: number };
+    mainWindow:          {width: number, height: number, x: number | null, y: number | null };
+    helpWindow?:         {width: number, height: number};
+    helpSearchDialog?:   {width: number, height: number};
+    systemWindow?:       {width: number, height: number};
+    dictWindow?:         {width: number, height: number};
     audioServVer:        'html5audio' | 'webaudioapi';
     showMsgPane:         boolean;
     passPhrase:          string | null;
@@ -140,7 +140,7 @@ declare namespace yubo {
     readonly version:  'talk1' | 'talk2' | 'talk10';
     readonly idVoice?: 0 | 1;
     readonly path?:    string;
-    readonly struct?:  { bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number };
+    readonly struct?:  {bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number};
   }
   export interface YVoice {
     id?:          string;
@@ -161,7 +161,7 @@ declare namespace yubo {
     rhythmOn:     boolean,
     sourceWrite:  boolean;
     seqWrite:     boolean;
-    seqWriteOptions: { dir: string, prefix: string };
+    seqWriteOptions: {dir: string, prefix: string};
   }
   export interface YInput {
     source:  string;
@@ -297,11 +297,13 @@ declare namespace yubo {
     reportDuration(duration: number): void;
   }
   // service.aqusrdic.ts
+  export interface AqUsrDicLib {
+    importDic(pathUserDic: string, pathDicCsv: string): number;
+    exportDic(pathUserDic: string, pathDicCsv: string): number;
+    check(surface: string, yomi: string, posCode: number): number;
+    getLastError(): string;
+  }
   export interface AqUsrDicService {
-    //private fn_AqUsrDic_Import: (pathUserDic: string, pathDicCsv: string) => number;
-    //private fn_AqUsrDic_Export: (pathUserDic: string, pathDicCsv: string) => number;
-    //private fn_AqUsrDic_Check: (surface: string, yomi: string, posCode: number) => number;
-    //private fn_AqUsrDic_GetLastError: () => string;
     generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string};
     generateCSV(inUserDicPath: string, outCsvPath: string): {success:boolean, message:string};
     validateInput(surface: string, yomi: string, posCode: number): {success:boolean, message:string};
@@ -319,7 +321,7 @@ declare namespace yubo {
     lastWavFile:         yubo.IRecordMessage;
     encodedHighlight:    {[key: string]: string};
     sourceHighlight:     {[key: string]: string};
-    aq10BasList:         { name: string, id: number}[];
+    aq10BasList:         {name: string, id: number}[];
     display:             string;
     alwaysOnTop:         boolean;
     showTypeMessageList: boolean;
@@ -413,7 +415,7 @@ declare namespace yubo {
     detune:       number;
   }
   export interface CmdOptions {
-    env:      { VOICE: number, SPEED: number };
+    env:      {VOICE: number, SPEED: number};
     encoding: string;
   }
 
