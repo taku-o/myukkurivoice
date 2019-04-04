@@ -22,7 +22,7 @@ class AudioSourceService implements yubo.AudioSourceService {
 
   save(filePath: string, sourceText: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
-    fs().writeFile(filePath, sourceText, 'utf-8', function(err: Error) {
+    fs().writeFile(filePath, sourceText, 'utf-8', (err: Error) => {
       if (err) {
         this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
         d.reject(err); return;

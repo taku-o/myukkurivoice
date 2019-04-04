@@ -67,7 +67,7 @@ class DataService implements yubo.DataService {
 
   save(dataList: yubo.YVoice[]): ng.IPromise<boolean> {
     const d = this.$q.defer<boolean>();
-    storage().set('data', dataList, function(error: Error) {
+    storage().set('data', dataList, (error: Error) => {
       if (error) {
         this.MessageService.syserror('ボイス設定の保存に失敗しました。', error);
         d.reject(error); return;
@@ -80,7 +80,7 @@ class DataService implements yubo.DataService {
 
   clear(): ng.IPromise<boolean> {
     const d = this.$q.defer<boolean>();
-    storage().remove('data', function(error: Error) {
+    storage().remove('data', (error: Error) => {
       if (error) {
         this.MessageService.syserror('ボイス設定の削除に失敗しました。', error);
         d.reject(error); return;
@@ -161,7 +161,7 @@ class HistoryService implements yubo.HistoryService {
   save(): ng.IPromise<boolean> {
     const d = this.$q.defer<boolean>();
     const data = this.cache().dump();
-    storage().set('history', data, function(err: Error) {
+    storage().set('history', data, (err: Error) => {
       if (err) {
         d.reject(err); return;
       }
@@ -173,7 +173,7 @@ class HistoryService implements yubo.HistoryService {
   clear(): ng.IPromise<boolean> {
     const d = this.$q.defer<boolean>();
     this.cache().reset();
-    storage().remove('history', function(err: Error) {
+    storage().remove('history', (err: Error) => {
       if (err) {
         d.reject(err); return;
       }

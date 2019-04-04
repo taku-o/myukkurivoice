@@ -69,7 +69,7 @@ class DictReducer implements yubo.DictReducer {
 
           if (!rowEntity.source) {
             rowEntity.error = '表記が入力されていません';
-            d.reject(new Error('source is empty.')); return d.promise;
+            return this.$q.reject(new Error('source is empty.'));
           }
           if (!rowEntity.encoded) {
             rowEntity.error = '読みが入力されていません';

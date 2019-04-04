@@ -781,7 +781,7 @@ class MainReducer implements yubo.MainReducer {
     // command
     if (this.CommandService.containsCommand(source, $scope.yvoiceList)) {
       const parsedList = this.CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
-      angular.forEach(parsedList, function(cinput) {
+      angular.forEach(parsedList, (cinput) => {
         cinput.text = this.AquesService.encode(cinput.text);
       });
       $scope.yinput.encoded = this.CommandService.toString(parsedList);
