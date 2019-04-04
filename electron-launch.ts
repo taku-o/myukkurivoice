@@ -3,7 +3,8 @@ import {app} from 'electron';
 var _url, url   = () => { _url = _url || require('url'); return _url; };
 var _path, path = () => { _path = _path || require('path'); return _path; };
 
-export default class FnLaunch implements yubo.FnLaunch {
+class FnLaunch implements yubo.FnLaunch {
+  constructor() {}
 
   handleOpenFile(filePath: string): void {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
@@ -38,3 +39,5 @@ export default class FnLaunch implements yubo.FnLaunch {
     }
   }
 }
+
+export default FnLaunch;

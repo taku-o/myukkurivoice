@@ -4,7 +4,8 @@ import {app, Menu, shell} from 'electron';
 // env
 const DEBUG = process.env.DEBUG != null;
 
-export default class FnMenu implements yubo.FnMenu {
+class FnMenu implements yubo.FnMenu {
+  constructor() {}
 
   // application menu
   initAppMenu(): void {
@@ -420,3 +421,5 @@ export default class FnMenu implements yubo.FnMenu {
     }
   }
 }
+
+export default FnMenu;

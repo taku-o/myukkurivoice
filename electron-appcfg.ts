@@ -8,7 +8,8 @@ var _monitor, monitor = () => { _monitor = _monitor || require('electron-perform
 // env
 const MONITOR = process.env.MONITOR != null;
 
-export default class FnAppCfg implements FnAppCfg {
+class FnAppCfg implements FnAppCfg {
+  constructor() {}
 
   // load
   loadAppConfig(nextTask: () => void): void {
@@ -103,4 +104,5 @@ export default class FnAppCfg implements FnAppCfg {
   }
 }
 
+export default FnAppCfg;
 declare var global: yubo.Global;

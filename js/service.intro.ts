@@ -1,5 +1,5 @@
 // angular intro service
-class IntroService {
+class IntroService implements yubo.IntroService {
   constructor() {}
 
   mainTutorial(): void {

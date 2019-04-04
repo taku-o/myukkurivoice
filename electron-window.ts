@@ -14,7 +14,9 @@ const TEST = process.env.NODE_ENV == 'test';
 const transparent: boolean = TEST? true: false;
 const opacity: number = TEST? 0.0: 1.0;
 
-export default class FnWindow implements yubo.FnWindow {
+class FnWindow implements yubo.FnWindow {
+  constructor() {}
+
   // main window
   showMainWindow(): void {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
@@ -391,3 +393,5 @@ export default class FnWindow implements yubo.FnWindow {
     specWindow.loadFile('./contents-spec.html');
   }
 }
+
+export default FnWindow;

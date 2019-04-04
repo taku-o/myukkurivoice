@@ -180,7 +180,7 @@ class AquesTalk10Lib implements yubo.AquesTalk10Lib {
 }
 
 // AquesTalk frontend
-class AquesService {
+class AquesService implements yubo.AquesService {
   private readonly aqKanji2KoeLib = new AqKanji2KoeLib();
   private readonly aquesTalk2Lib = new AquesTalk2Lib();
   private readonly aquesTalk10Lib = new AquesTalk10Lib();
