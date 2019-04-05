@@ -214,6 +214,9 @@ declare namespace yubo {
     readonly id:   number;
     readonly kind: string;
   }
+  export interface KindHash {
+    [key: number]: string;
+  }
 
   // service.intro.ts
   export interface IntroService {

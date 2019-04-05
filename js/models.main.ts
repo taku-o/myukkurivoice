@@ -3,8 +3,9 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular model
 angular.module('mainModels', [])
-  .factory('YPhontList', (): yubo.YPhont[] => {
-    return [
+  // YPhontList: yubo.YPhont[]
+  .constant('YPhontList',
+    [
       {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0},
       {id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1},
       {id:'aq_f1c',     name:'f1c 女声',                  version:'talk2',  path:`${unpackedPath}/vendor/phont/aq_f1c.phont`},
@@ -31,10 +32,11 @@ angular.module('mainModels', [])
       {id:'gVoice_M2',  name:'aq10-M2 男声2',             version:'talk10', struct:{bas:2, spd:105, vol:100, pit:45,  acc:130, lmd:120, fsc:100}},
       {id:'gVoice_R1',  name:'aq10-R1 ロボット1',         version:'talk10', struct:{bas:2, spd:100, vol:100, pit:30,  acc:20,  lmd:190, fsc:100}},
       {id:'gVoice_R2',  name:'aq10-R2 ロボット2',         version:'talk10', struct:{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
-    ];
-  })
-  .factory('YVoice', (): yubo.YVoice => {
-    return {
+    ]
+  )
+  // YVoice: yubo.YVoice
+  .constant('YVoice',
+    {
       id: null,
       name: 'f1 女声1(ゆっくり)',
       phont: 'at1_f1',
@@ -50,10 +52,11 @@ angular.module('mainModels', [])
         dir: '',
         prefix: '',
       },
-    };
-  })
-  .factory('YVoiceInitialData', (): yubo.YVoice[] => {
-    return [
+    }
+  )
+  // YVoiceInitialData: yubo.YVoice[]
+  .constant('YVoiceInitialData',
+    [
       {
         id: 'sample_1',
         name: 'f1 女声1(ゆっくり)',
@@ -129,23 +132,26 @@ angular.module('mainModels', [])
           prefix: '',
         },
       },
-    ];
-  })
-  .factory('YInput', (): yubo.YInput => {
-    return {
+    ]
+  )
+  // YInput: yubo.YInput
+  .constant('YInput',
+    {
       source: '',
       encoded: '',
-    };
-  })
-  .factory('YInputInitialData', (): yubo.YInput => {
-    return {
+    }
+  )
+  // YInputInitialData: yubo.YInput
+  .constant('YInputInitialData',
+    {
       source: 'エムユックリボイスへようこそ。ゆっくりしていってね！',
       encoded: "エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、",
-    };
-  })
-  .factory('YCommandInput', (): yubo.YCommandInput => {
-    return {
+    }
+  )
+  // YCommandInput: yubo.YCommandInput
+  .constant('YCommandInput',
+    {
       name: '',
       text: '',
-    };
-  });
+    }
+  );

@@ -59,9 +59,8 @@ angular.module('dictControllers',
     // run init
     reducer.init($scope);
   }])
-  .filter('mapKind', ['KindHash', function(KindHash) {
-    const kindHash = KindHash;
-    return function(input: number) {
-      return kindHash[input]? kindHash[input]: '';
+  .filter('mapKind', ['KindHash', (KindHash: yubo.KindHash) => {
+    return (input: number) => {
+      return KindHash[input]? KindHash[input]: '';
     };
   }]);
