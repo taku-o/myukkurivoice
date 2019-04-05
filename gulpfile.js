@@ -46,7 +46,6 @@ usage:
     gulp all
     gulp tsc
     gulp tsc-debug
-    gulp tsc-doc
     gulp lint
     gulp lint-ts
     gulp lint-js
@@ -68,7 +67,7 @@ usage:
 
 // all
 gulp.task('all', (cb) => {
-  runSequence('format', 'less', 'tsc', 'tsc-doc', 'lint', 'test', 'staging', (err) => {
+  runSequence('format', 'less', 'tsc', 'lint', 'test', 'staging', (err) => {
     if (err) {
       _notifyError();
     }
@@ -77,7 +76,10 @@ gulp.task('all', (cb) => {
 });
 
 // tsc
-gulp.task('tsc', () => {
+gulp.task('tsc', ['_tsc'], () => {
+  return gulp.src(['js/ctrl.help.js', 'js/directive.include.js', 'js/reducers.help.js']).pipe(gulp.dest('docs/assets/js'));
+});
+gulp.task('_tsc', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
     .pipe(tsProject())
@@ -93,10 +95,6 @@ gulp.task('tsc-debug', () => {
 });
 gulp.task('_rm-js', () => {
   return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js']);
-});
-// tsc-doc
-gulp.task('tsc-doc', ['tsc'], () => {
-  return gulp.src(['js/ctrl.help.js', 'js/directive.include.js', 'js/reducers.help.js']).pipe(gulp.dest('docs/assets/js'));
 });
 
 // lint
@@ -492,7 +490,7 @@ gulp.task('release', (cb) => {
     cb('branch is selected');
     return;
   }
-  runSequence('_rm-workdir', '_mk-workdir', '_ch-workdir', '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install', 'tsc', 'tsc-doc', '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify', (err) => {
+  runSequence('_rm-workdir', '_mk-workdir', '_ch-workdir', '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install', 'tsc', '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify', (err) => {
     if (err) {
       _notifyError();
     }
@@ -507,7 +505,7 @@ gulp.task('staging', (cb) => {
       .toString()
       .trim();
   }
-  runSequence('_rm-workdir', '_mk-workdir', '_ch-workdir', '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install', 'tsc', 'tsc-doc', '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify', (err) => {
+  runSequence('_rm-workdir', '_mk-workdir', '_ch-workdir', '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install', 'tsc', '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify', (err) => {
     if (err) {
       _notifyError();
     }
