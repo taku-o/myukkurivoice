@@ -78,14 +78,14 @@ gulp.task('all', (cb) => {
 
 // tsc
 gulp.task('tsc', () => {
-  return tsProject
-    .src()
+  return gulp
+    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
     .pipe(tsProject())
     .js.pipe(gulp.dest('.'));
 });
 gulp.task('tsc-debug', () => {
-  return tsProject
-    .src()
+  return gulp
+    .src(['*.ts', 'js/*.ts', 'test/*.ts'], {base: '.'})
     .pipe(sourcemaps.init())
     .pipe(tsProject())
     .js.pipe(sourcemaps.write())
