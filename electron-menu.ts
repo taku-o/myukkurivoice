@@ -361,10 +361,8 @@ class FnMenu implements yubo.FnMenu {
     app.dock.setMenu(dockMenu);
   }
 
-  enableDictMenu(): void {
-    const menu = Menu.getApplicationMenu();
-    if (!menu) { return; }
-    const dictMenuItems = [
+  dictMenuItems(): string[] {
+    return [
       'dict-close',
       'dict-tutorial',
       'dict-add',
@@ -374,48 +372,45 @@ class FnMenu implements yubo.FnMenu {
       'dict-export',
       'dict-reset',
     ];
-    for (let m of dictMenuItems) {
+  }
+  enableDictMenu(): void {
+    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
+    const menu = Menu.getApplicationMenu();
+    if (!menu) { return; }
+    for (let m of myApp.dictMenuItems()) {
       const item = menu.getMenuItemById(m);
       item.enabled = true;
     }
   }
   disableDictMenu(): void {
+    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const menu = Menu.getApplicationMenu();
     if (!menu) { return; }
-    const dictMenuItems = [
-      'dict-close',
-      'dict-tutorial',
-      'dict-add',
-      'dict-delete',
-      'dict-save',
-      'dict-cancel',
-      'dict-export',
-      'dict-reset',
-    ];
-    for (let m of dictMenuItems) {
+    for (let m of myApp.dictMenuItems()) {
       const item = menu.getMenuItemById(m);
       item.enabled = false;
     }
   }
 
-  enableHelpMenu(): void {
-    const menu = Menu.getApplicationMenu();
-    if (!menu) { return; }
-    const helpMenuItems = [
+  helpMenuItems(): string[] {
+    return [
       'open-help-search',
     ];
-    for (let m of helpMenuItems) {
+  }
+  enableHelpMenu(): void {
+    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
+    const menu = Menu.getApplicationMenu();
+    if (!menu) { return; }
+    for (let m of myApp.helpMenuItems()) {
       const item = menu.getMenuItemById(m);
       item.enabled = true;
     }
   }
   disableHelpMenu(): void {
+    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const menu = Menu.getApplicationMenu();
     if (!menu) { return; }
-    const helpMenuItems = [
-      'open-help-search',
-    ];
-    for (let m of helpMenuItems) {
+    for (let m of myApp.helpMenuItems()) {
       const item = menu.getMenuItemById(m);
       item.enabled = false;
     }

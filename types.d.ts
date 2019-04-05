@@ -35,7 +35,7 @@ declare namespace ElectronStore {
     get(key: string): any;
     set(key: string, val: any): void;
     set(key: {[key: string]: any}): void;
-    has(key: string): boolean
+    has(key: string): boolean;
   }
 }
 
@@ -153,8 +153,10 @@ declare namespace yubo {
   export interface FnMenu {
     initAppMenu(): void;
     initDockMenu(): void;
+    dictMenuItems(): string[];
     enableDictMenu(): void;
     disableDictMenu(): void;
+    helpMenuItems(): string[];
     enableHelpMenu(): void;
     disableHelpMenu(): void;
   }

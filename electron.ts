@@ -53,7 +53,7 @@ const MYukkuriVoice = function(): void {
 };
 const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 // set prototype
-// MYukkuriVoice.prototype.fnc = Menu.prototype.fnc
+// MYukkuriVoice.prototype.fnc = (Pane, Menu, Launch, AppConfig).prototype.fnc
 [Pane, Menu, Launch, AppConfig].forEach(baseCtor => {
   Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
     if (name != 'constructor') {
