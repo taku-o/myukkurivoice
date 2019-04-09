@@ -2,7 +2,9 @@ var app = require('electron').remote.app;
 var _log, log               = () => { _log = _log || require('electron-log'); return _log; };
 var _fs, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
 var _ffi, ffi               = () => { _ffi = _ffi || require('ffi'); return _ffi; };
+var _os, os                 = () => { _os = _os || require('os'); return _os; };
 var _ref, ref               = () => { _ref = _ref || require('ref'); return _ref; };
+var _semver, semver         = () => { _semver = _semver || require('semver'); return _semver; };
 var _StructType, StructType = () => { _StructType = _StructType || require('ref-struct'); return _StructType; };
 var _temp, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
 var _exec, exec             = () => { _exec = _exec || require('child_process').exec; return _exec; };
@@ -61,6 +63,18 @@ class AqKanji2KoeLib implements yubo.AqKanji2KoeLib {
     if (code >= 300 && code < 400) { return 'ユーザ辞書(aq_user.dic)が不正'; }
     if (code == 100)               { return 'その他のエラー'; }
     return '';
+  }
+}
+
+// AquesTalk1
+class AquesTalk1Lib implements yubo.AquesTalk1Lib {
+  readonly SUPPORTED_LAST_VERSION: string = '19.0.0'; // Mojave next
+  private release: string;
+  constructor() {}
+
+  isSupported(): boolean {
+    this.release = this.release || os().release();
+    return semver().lt(this.release, this.SUPPORTED_LAST_VERSION);
   }
 }
 
@@ -182,6 +196,7 @@ class AquesTalk10Lib implements yubo.AquesTalk10Lib {
 // AquesTalk frontend
 class AquesService implements yubo.AquesService {
   private readonly aqKanji2KoeLib = new AqKanji2KoeLib();
+  private readonly aquesTalk1Lib = new AquesTalk1Lib();
   private readonly aquesTalk2Lib = new AquesTalk2Lib();
   private readonly aquesTalk10Lib = new AquesTalk10Lib();
   private aqDictPath: string = `${unpackedPath}/vendor/aq_dic_large`;
@@ -278,6 +293,11 @@ class AquesService implements yubo.AquesService {
 
     // version 1
     if (phont.version == 'talk1') {
+      if (!this.aquesTalk1Lib.isSupported()) {
+        this.MessageService.error('AquesTalk 1の音声再生機能はこのOSのバージョンではサポートされません。');
+        d.reject(new Error('AquesTalk 1の音声再生機能はこのOSのバージョンではサポートされません。')); return d.promise;
+      }
+
       // write encoded to tempory file
       const fsprefix = `_myubow${Date.now().toString(36)}`;
       temp().open(fsprefix, (err: Error, info: temp.FileDescriptor) => {

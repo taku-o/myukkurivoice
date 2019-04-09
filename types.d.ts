@@ -304,6 +304,11 @@ declare namespace yubo {
     setDevKey(key: string): number;
     errorTable(code: number): string;
   }
+  export interface AquesTalk1Lib {
+    //private release: string;
+    readonly SUPPORTED_LAST_VERSION: string;
+    isSupported(): boolean;
+  }
   export interface AquesTalk2Lib {
     synthe(koe: string, iSpeed: number, size: Buffer, phontDat: Buffer): Buffer;
     freeWave(wav: Buffer): void;
@@ -319,6 +324,7 @@ declare namespace yubo {
   }
   export interface AquesService {
     //private readonly aqKanji2KoeLib: yubo.AqKanji2KoeLib;
+    //private readonly aquesTalk1Lib: yubo.AquesTalk1Lib;
     //private readonly aquesTalk2Lib: yubo.AquesTalk2Lib;
     //private readonly aquesTalk10Lib: yubo.AquesTalk10Lib;
     //private aqDictPath: string;
