@@ -77,7 +77,9 @@ gulp.task('all', (cb) => {
 
 // tsc
 gulp.task('tsc', ['_tsc'], () => {
-  return gulp.src(['js/ctrl.help.js', 'js/directive.include.js', 'js/reducers.help.js']).pipe(gulp.dest('docs/assets/js'));
+  return gulp
+    .src(['js/ctrl.help.js', 'js/directive.include.js', 'js/reducers.help.js'])
+    .pipe(gulp.dest('docs/assets/js'));
 });
 gulp.task('_tsc', () => {
   return gulp
@@ -125,7 +127,7 @@ gulp.task('lint-html', () => {
     .pipe(
       prettier({
         parser: 'angular',
-        printWidth: 300,
+        printWidth: 120,
         proseWrap: 'preserve',
         tabWidth: 2,
         useTabs: false,
@@ -160,7 +162,7 @@ gulp.task('_format-ts-test', () => {
         arrowParens: 'always',
         bracketSpacing: false,
         insertPragma: false,
-        printWidth: 300,
+        printWidth: 120,
         proseWrap: 'preserve',
         requirePragma: false,
         semi: true,
@@ -181,7 +183,7 @@ gulp.task('_format-js', () => {
         arrowParens: 'always',
         bracketSpacing: false,
         insertPragma: false,
-        printWidth: 300,
+        printWidth: 120,
         proseWrap: 'preserve',
         requirePragma: false,
         semi: true,
@@ -200,7 +202,7 @@ gulp.task('_format-html', () => {
     .pipe(
       prettier({
         parser: 'angular',
-        printWidth: 300,
+        printWidth: 120,
         proseWrap: 'preserve',
         tabWidth: 2,
         useTabs: false,
@@ -215,7 +217,7 @@ gulp.task('_format-json', () => {
     .pipe(
       prettier({
         parser: 'json',
-        printWidth: 300,
+        printWidth: 120,
         proseWrap: 'preserve',
         tabWidth: 2,
         useTabs: false,
@@ -230,7 +232,7 @@ gulp.task('_format-less', () => {
     .pipe(
       prettier({
         parser: 'less',
-        printWidth: 300,
+        printWidth: 120,
         proseWrap: 'preserve',
         tabWidth: 4,
         useTabs: false,
@@ -295,7 +297,12 @@ gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:htm
   return gulp
     .src('docs/README.md')
     .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
-    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/', 'src="assets/images/'))
+    .pipe(
+      replace(
+        'src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/',
+        'src="assets/images/'
+      )
+    )
     .pipe(markdownHtml())
     .pipe(
       wrapper({
@@ -322,7 +329,9 @@ gulp.task('_readme:html:css', () => {
   return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
 });
 gulp.task('_readme:html:icns', () => {
-  return gulp.src(['icns/myukkurivoice.iconset/icon_256x256.png']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/icns/myukkurivoice.iconset'));
+  return gulp
+    .src(['icns/myukkurivoice.iconset/icon_256x256.png'])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/icns/myukkurivoice.iconset'));
 });
 gulp.task('_readme:html:images', () => {
   return gulp.src(['docs/assets/images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
@@ -333,8 +342,15 @@ gulp.task('_manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:ang
 gulp.task('_manual:html', () => {
   return gulp
     .src(['docs/help.html'])
-    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css', 'assets/photon/dist/css/photon.css'))
-    .pipe(replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'assets/angular/angular.min.js'))
+    .pipe(
+      replace(
+        'https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css',
+        'assets/photon/dist/css/photon.css'
+      )
+    )
+    .pipe(
+      replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'assets/angular/angular.min.js')
+    )
     .pipe(replace(/(static-include template-path="(.*?)"(.*>))<\/div>/g, '$3@@include("$2")</div>'))
     .pipe(finclude())
     .pipe(
@@ -346,13 +362,26 @@ gulp.task('_manual:html', () => {
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:docs', () => {
-  return gulp.src(['docs/assets/js/*.js', 'docs/assets/css/*.css'], {base: 'docs'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+  return gulp
+    .src(['docs/assets/js/*.js', 'docs/assets/css/*.css'], {base: 'docs'})
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
 gulp.task('_manual:assets:angular', () => {
-  return gulp.src(['node_modules/angular/angular.min.js', 'node_modules/angular/angular.min.js.map'], {base: 'node_modules'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
+  return gulp
+    .src(['node_modules/angular/angular.min.js', 'node_modules/angular/angular.min.js.map'], {base: 'node_modules'})
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
 gulp.task('_manual:assets:photon', () => {
-  return gulp.src(['node_modules/photon/dist/css/photon.css', 'node_modules/photon/dist/fonts/photon-entypo.woff', 'node_modules/photon/dist/fonts/photon-entypo.ttf'], {base: 'node_modules'}).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
+  return gulp
+    .src(
+      [
+        'node_modules/photon/dist/css/photon.css',
+        'node_modules/photon/dist/fonts/photon-entypo.woff',
+        'node_modules/photon/dist/fonts/photon-entypo.ttf',
+      ],
+      {base: 'node_modules'}
+    )
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
 
 // releaseslog
@@ -412,10 +441,20 @@ gulp.task('_package-contents', (cb) => {
   });
 });
 gulp.task('_package-contents:cp', () => {
-  return gulp.src(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html', 'MYukkuriVoice-darwin-x64/version']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/licenses'));
+  return gulp
+    .src([
+      'MYukkuriVoice-darwin-x64/LICENSE',
+      'MYukkuriVoice-darwin-x64/LICENSES.chromium.html',
+      'MYukkuriVoice-darwin-x64/version',
+    ])
+    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/licenses'));
 });
 gulp.task('_package-contents:rm', () => {
-  return del(['MYukkuriVoice-darwin-x64/LICENSE', 'MYukkuriVoice-darwin-x64/LICENSES.chromium.html', 'MYukkuriVoice-darwin-x64/version']);
+  return del([
+    'MYukkuriVoice-darwin-x64/LICENSE',
+    'MYukkuriVoice-darwin-x64/LICENSES.chromium.html',
+    'MYukkuriVoice-darwin-x64/version',
+  ]);
 });
 
 // clean
@@ -490,12 +529,29 @@ gulp.task('release', (cb) => {
     cb('branch is selected');
     return;
   }
-  runSequence('_rm-workdir', '_mk-workdir', '_ch-workdir', '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install', 'tsc', '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify', (err) => {
-    if (err) {
-      _notifyError();
+  runSequence(
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release',
+    '_unpacked',
+    'doc',
+    '_zip-app',
+    '_open-appdir',
+    '_notify',
+    (err) => {
+      if (err) {
+        _notifyError();
+      }
+      cb(err);
     }
-    cb(err);
-  });
+  );
 });
 
 // staging
@@ -505,12 +561,29 @@ gulp.task('staging', (cb) => {
       .toString()
       .trim();
   }
-  runSequence('_rm-workdir', '_mk-workdir', '_ch-workdir', '_git-clone', '_ch-repodir', '_git-submodule', '_npm-install', 'tsc', '_rm-package', '_package-release', '_unpacked', 'doc', '_zip-app', '_open-appdir', '_notify', (err) => {
-    if (err) {
-      _notifyError();
+  runSequence(
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release',
+    '_unpacked',
+    'doc',
+    '_zip-app',
+    '_open-appdir',
+    '_notify',
+    (err) => {
+      if (err) {
+        _notifyError();
+      }
+      cb(err);
     }
-    cb(err);
-  });
+  );
 });
 
 // workdir
@@ -597,9 +670,12 @@ gulp.task('_npm-install', (cb) => {
 
 // zip
 gulp.task('_zip-app', (cb) => {
-  exec('ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '.zip', (err, stdout, stderr) => {
-    cb(err);
-  });
+  exec(
+    'ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '.zip',
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
 });
 
 // open

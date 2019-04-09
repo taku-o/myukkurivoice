@@ -197,7 +197,8 @@ describe('specWindow-service-CommandService', function() {
         text: 'test2',
       },
     ];
-    const cmdInputListToString = 'aq_yukkuri(サンプル設定2)＞test\n' + 'f1 女声1(ゆっくり)＞test1\n' + 'aq_yukkuri(サンプル設定2)＞test2\n';
+    const cmdInputListToString =
+      'aq_yukkuri(サンプル設定2)＞test\n' + 'f1 女声1(ゆっくり)＞test1\n' + 'aq_yukkuri(サンプル設定2)＞test2\n';
 
     return (
       this.client

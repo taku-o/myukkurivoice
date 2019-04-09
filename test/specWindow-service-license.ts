@@ -66,7 +66,10 @@ describe('specWindow-service-LicenseService', function() {
   it('decrypt', function() {
     return (
       this.client
-        .setValue('#encrypted-key', 'LF7ZJec+SPvmUhhpzPDEJ0ubiVt42NR62WoVW1vJKtaCQR2ActwuiO7vVAs893tIICMBniWOqDmY29hK1YUNAP6EWydrrBFzIU5GBxWtNqj36R5VjR0iJ7j2BhAZWp7lK2lMm2HJxoz9ZmNA2WMBxy/aKloM3KiW5A+cZBNjf6w=?IDFnCDZ/lAmXjxFfV5YSiXc6oFcGkFRBWWou13O5osRA5pVneS52yOEzqVrl56wq')
+        .setValue(
+          '#encrypted-key',
+          'LF7ZJec+SPvmUhhpzPDEJ0ubiVt42NR62WoVW1vJKtaCQR2ActwuiO7vVAs893tIICMBniWOqDmY29hK1YUNAP6EWydrrBFzIU5GBxWtNqj36R5VjR0iJ7j2BhAZWp7lK2lMm2HJxoz9ZmNA2WMBxy/aKloM3KiW5A+cZBNjf6w=?IDFnCDZ/lAmXjxFfV5YSiXc6oFcGkFRBWWou13O5osRA5pVneS52yOEzqVrl56wq',
+        )
         .setValue('#pass-phrase', 'hogehoge')
         .setValue('#plain-key', '')
         .click('#decrypt')
