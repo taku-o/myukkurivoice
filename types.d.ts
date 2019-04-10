@@ -307,7 +307,7 @@ declare namespace yubo {
   export interface AquesTalk1Lib {
     //private release: string;
     readonly SUPPORTED_LAST_VERSION: string;
-    isSupported(): boolean;
+    isSupported(version?: string): boolean;
   }
   export interface AquesTalk2Lib {
     synthe(koe: string, iSpeed: number, size: Buffer, phontDat: Buffer): Buffer;

@@ -152,6 +152,21 @@
       <input id="history-err" type="text" ng-model="historyErr">
     </div>
 
+    <div>
+      AquesService.AqKanji2Koe
+      AquesService.AquesTalk2
+      AquesService.AquesTalk10
+      <input id="error-table-code" type="text" ng-model="errorTableCode">
+      <input id="error-table-result" type="text" ng-model="errorTableResult">
+      <button id="error-table-aqkanji2koe" ng-click="ctrl.errorTableAqkanji2koe()"></button>
+      <button id="error-table-aquestalk2" ng-click="ctrl.errorTableAquestalk2()"></button>
+      <button id="error-table-aquestalk10" ng-click="ctrl.errorTableAquestalk10()"></button>
+    </div>
+    <div>AquesService.AquesTalk1
+      <input id="os-version" type="text" ng-model="osVersion">
+      <input id="is-supported-result" type="text" ng-model="isSupportedResult">
+      <button id="is-supported" ng-click="ctrl.isSupported()"></button>
+    </div>
     <div>AquesService
       <input id="source" type="text" ng-model="source">
       <button id="encode" ng-click="ctrl.encode()"></button>
