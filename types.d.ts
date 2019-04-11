@@ -530,6 +530,7 @@ declare namespace yubo {
     onShortcut($scope: yubo.IHelpScope, action: string): void;
     //private moveToPreviousHelp($scope: yubo.IHelpScope): void;
     //private moveToNextHelp($scope: yubo.IHelpScope): void;
+    page(pageName: string): void;
     openSearchForm(): void;
     browser(url: string): void;
     showItemInFolder(path: string): void;

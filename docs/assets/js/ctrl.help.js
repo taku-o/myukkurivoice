@@ -1,15 +1,17 @@
 "use strict";
 angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
-    .controller('HelpController', ['$scope', '$location', 'HelpReducer',
-    function ($scope, $location, reducer) {
+    .controller('HelpController', ['$scope', 'HelpReducer',
+    function ($scope, reducer) {
         const ctrl = this;
-        $scope.$location = $location;
         $scope.$on('$locationChangeSuccess', (event) => {
             reducer.locationChangeSuccess($scope);
         });
         $scope.$on('shortcut', (event, action) => {
             reducer.onShortcut($scope, action);
         });
+        ctrl.page = function (pageName) {
+            reducer.page(pageName);
+        };
         ctrl.openSearchForm = function () {
             reducer.openSearchForm();
         };

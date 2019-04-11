@@ -294,20 +294,20 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     ctrl.errorTableAqkanji2koe = function(): void {
       const lib = new AqKanji2KoeLib();
       $scope.errorTableResult = lib.errorTable($scope.errorTableCode);
-    }
+    };
     ctrl.errorTableAquestalk2 = function(): void {
       const lib = new AquesTalk2Lib();
       $scope.errorTableResult = lib.errorTable($scope.errorTableCode);
-    }
+    };
     ctrl.errorTableAquestalk10 = function(): void {
       const lib = new AquesTalk10Lib();
       $scope.errorTableResult = lib.errorTable($scope.errorTableCode);
-    }
+    };
     // AquesService.AquesTalk1
     ctrl.isSupported = function(): void {
       const lib = new AquesTalk1Lib();
       $scope.isSupportedResult = lib.isSupported($scope.osVersion);
-    }
+    };
     // AquesService
     ctrl.encode = function(): void {
       const r = AquesService.encode($scope.source);

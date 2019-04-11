@@ -1,10 +1,9 @@
 // controllers
 angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
-  .controller('HelpController', ['$scope', '$location', 'HelpReducer',
-  function($scope: yubo.IHelpScope, $location: ng.ILocationService, reducer: yubo.HelpReducer) {
+  .controller('HelpController', ['$scope', 'HelpReducer',
+  function($scope: yubo.IHelpScope, reducer: yubo.HelpReducer) {
     // init
     const ctrl = this;
-    $scope.$location = $location;
 
     // event url hash changed
     $scope.$on('$locationChangeSuccess', (event: ng.IAngularEvent) => {
@@ -16,6 +15,9 @@ angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
     });
 
     // action
+    ctrl.page = function(pageName: string): void {
+      reducer.page(pageName);
+    };
     ctrl.openSearchForm = function(): void {
       reducer.openSearchForm();
     };

@@ -21,68 +21,68 @@
   <div class="pane-sm sidebar">
     <nav class="nav-group">
       <h5 class="nav-group-title">ヘルプ</h5>
-      <span class="nav-group-item help-item" id="menu-about" ng-class="{active:display == 'about'}" ng-click="$location.hash('about')">
+      <span class="nav-group-item help-item" id="menu-about" ng-class="{active:display == 'about'}" ng-click="ctrl.page('about')">
         <span class="icon icon-help-circled"></span>MYukkuriVoiceについて
       </span>
-      <span class="nav-group-item help-item" id="menu-voicecode" ng-class="{active:display == 'voicecode'}" ng-click="$location.hash('voicecode')">
+      <span class="nav-group-item help-item" id="menu-voicecode" ng-class="{active:display == 'voicecode'}" ng-click="ctrl.page('voicecode')">
         <span class="icon icon-help-circled"></span>音声記号列
       </span>
-      <span class="nav-group-item help-item" id="menu-trouble" ng-class="{active:display == 'trouble'}" ng-click="$location.hash('trouble')">
+      <span class="nav-group-item help-item" id="menu-trouble" ng-class="{active:display == 'trouble'}" ng-click="ctrl.page('trouble')">
         <span class="icon icon-help-circled"></span>トラブルシューティング
       </span>
-      <span class="nav-group-item help-item" id="menu-update" ng-class="{active:display == 'update'}" ng-click="$location.hash('update')">
+      <span class="nav-group-item help-item" id="menu-update" ng-class="{active:display == 'update'}" ng-click="ctrl.page('update')">
         <span class="icon icon-help-circled"></span>アプリを更新するには
       </span>
-      <span class="nav-group-item help-item" id="menu-uninstall" ng-class="{active:display == 'uninstall'}" ng-click="$location.hash('uninstall')">
+      <span class="nav-group-item help-item" id="menu-uninstall" ng-class="{active:display == 'uninstall'}" ng-click="ctrl.page('uninstall')">
         <span class="icon icon-help-circled"></span>アンインストールするには
       </span>
-      <span class="nav-group-item help-item" id="menu-backup" ng-class="{active:display == 'backup'}" ng-click="$location.hash('backup')">
+      <span class="nav-group-item help-item" id="menu-backup" ng-class="{active:display == 'backup'}" ng-click="ctrl.page('backup')">
         <span class="icon icon-help-circled"></span>設定をバックアップするには
       </span>
-      <span class="nav-group-item help-item" id="menu-license" ng-class="{active:display == 'license'}" ng-click="$location.hash('license')">
+      <span class="nav-group-item help-item" id="menu-license" ng-class="{active:display == 'license'}" ng-click="ctrl.page('license')">
         <span class="icon icon-help-circled"></span>AquesTalkのライセンスについて
       </span>
-      <span class="nav-group-item help-item" id="menu-contact" ng-class="{active:display == 'contact'}" ng-click="$location.hash('contact')">
+      <span class="nav-group-item help-item" id="menu-contact" ng-class="{active:display == 'contact'}" ng-click="ctrl.page('contact')">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
 
       <h5 class="nav-group-title">各機能詳細</h5>
-      <span class="nav-group-item functions-item" id="menu-funclist" ng-class="{active:display == 'funclist'}" ng-click="$location.hash('funclist')">
+      <span class="nav-group-item functions-item" id="menu-funclist" ng-class="{active:display == 'funclist'}" ng-click="ctrl.page('funclist')">
         <span class="icon icon-help-circled"></span>機能一覧
       </span>
-      <span class="nav-group-item functions-item" id="menu-play" ng-class="{active:display == 'play'}" ng-click="$location.hash('play')">
+      <span class="nav-group-item functions-item" id="menu-play" ng-class="{active:display == 'play'}" ng-click="ctrl.page('play')">
         <span class="icon icon-help-circled"></span>音声を再生する
       </span>
-      <span class="nav-group-item functions-item" id="menu-tuna" ng-class="{active:display == 'tuna'}" ng-click="$location.hash('tuna')">
+      <span class="nav-group-item functions-item" id="menu-tuna" ng-class="{active:display == 'tuna'}" ng-click="ctrl.page('tuna')">
         <span class="icon icon-help-circled"></span>再生する音声の調整
       </span>
-      <span class="nav-group-item functions-item" id="menu-writing" ng-class="{active:display == 'writing'}" ng-click="$location.hash('writing')">
+      <span class="nav-group-item functions-item" id="menu-writing" ng-class="{active:display == 'writing'}" ng-click="ctrl.page('writing')">
         <span class="icon icon-help-circled"></span>音声ファイル保存の設定
       </span>
-      <span class="nav-group-item functions-item" id="menu-dataconfig" ng-class="{active:display == 'dataconfig'}" ng-click="$location.hash('dataconfig')">
+      <span class="nav-group-item functions-item" id="menu-dataconfig" ng-class="{active:display == 'dataconfig'}" ng-click="ctrl.page('dataconfig')">
         <span class="icon icon-help-circled"></span>音声再生設定の編集
       </span>
-      <span class="nav-group-item functions-item" id="menu-dragout" ng-class="{active:display == 'dragout'}" ng-click="$location.hash('dragout')">
+      <span class="nav-group-item functions-item" id="menu-dragout" ng-class="{active:display == 'dragout'}" ng-click="ctrl.page('dragout')">
         <span class="icon icon-help-circled"></span>録音ファイルのドラッグアンドドロップ
       </span>
-      <span class="nav-group-item functions-item" id="menu-multivoice" ng-class="{active:display == 'multivoice'}" ng-click="$location.hash('multivoice')">
+      <span class="nav-group-item functions-item" id="menu-multivoice" ng-class="{active:display == 'multivoice'}" ng-click="ctrl.page('multivoice')">
         <span class="icon icon-help-circled"></span>マルチボイス機能
       </span>
-      <span class="nav-group-item functions-item" id="menu-dictionary" ng-class="{active:display == 'dictionary'}" ng-click="$location.hash('dictionary')">
+      <span class="nav-group-item functions-item" id="menu-dictionary" ng-class="{active:display == 'dictionary'}" ng-click="ctrl.page('dictionary')">
         <span class="icon icon-help-circled"></span>ユーザー辞書機能
       </span>
-      <span class="nav-group-item functions-item" id="menu-history" ng-class="{active:display == 'history'}" ng-click="$location.hash('history')">
+      <span class="nav-group-item functions-item" id="menu-history" ng-class="{active:display == 'history'}" ng-click="ctrl.page('history')">
         <span class="icon icon-help-circled"></span>最近録音したファイルの一覧
       </span>
-      <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="$location.hash('shortcut')">
+      <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:display == 'shortcut'}" ng-click="ctrl.page('shortcut')">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
-      <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:display == 'help'}" ng-click="$location.hash('help')">
+      <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:display == 'help'}" ng-click="ctrl.page('help')">
         <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
 
       <h5 class="nav-group-title">ナビゲーション</h5>
-      <span class="nav-group-item navs-item" id="menu-expand" ng-class="{active:display == 'expand'}" ng-click="$location.hash('expand')">
+      <span class="nav-group-item navs-item" id="menu-expand" ng-class="{active:display == 'expand'}" ng-click="ctrl.page('expand')">
         <span class="icon icon-map"></span>ヘルプを全て展開
       </span>
       <span class="nav-group-item navs-item" id="menu-nav-top" ng-click="ctrl.browser('https://taku-o.github.io/myukkurivoice/')">

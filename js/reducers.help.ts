@@ -61,11 +61,11 @@ class HelpReducer implements yubo.HelpReducer {
     const index = this.menuList.indexOf($scope.display);
     const moved = index - 1;
     if (index < 0) {
-      this.$location.hash(this.menuList[0]);
+      this.page(this.menuList[0]);
     } else if (moved < 0) {
-      this.$location.hash(this.menuList[this.menuList.length - 1]);
+      this.page(this.menuList[this.menuList.length - 1]);
     } else {
-      this.$location.hash(this.menuList[moved]);
+      this.page(this.menuList[moved]);
     }
     this.$timeout(() => { $scope.$apply(); });
   }
@@ -73,15 +73,18 @@ class HelpReducer implements yubo.HelpReducer {
     const index = this.menuList.indexOf($scope.display);
     const moved = index + 1;
     if (index < 0) {
-      this.$location.hash(this.menuList[0]);
+      this.page(this.menuList[0]);
     } else if (moved >= this.menuList.length) {
-      this.$location.hash(this.menuList[0]);
+      this.page(this.menuList[0]);
     } else {
-      this.$location.hash(this.menuList[moved]);
+      this.page(this.menuList[moved]);
     }
     this.$timeout(() => { $scope.$apply(); });
   }
 
+  page(pageName): void {
+    this.$location.hash(pageName);
+  }
   openSearchForm(): void {
     ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
   }
