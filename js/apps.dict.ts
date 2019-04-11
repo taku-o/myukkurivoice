@@ -25,7 +25,7 @@ if (CONSOLELOG) {
 if (MONITOR) { log().warn(monitor().format('apps.dict', '---- start')); }
 
 // angular app
-angular.module('dictApp', ['dictControllers'])
+angular.module('dictApp', ['dictControllers', 'dictEvents'])
   // config
   .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
