@@ -4,7 +4,7 @@ var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('
 angular.module('mainEvents', []);
 
 // shortcut
-class MainShortcutEvent {
+class MainShortcutEvent implements yubo.MainShortcutEvent {
   constructor() {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('shortcut', (event: Electron.Event, action: string) => {
@@ -49,7 +49,7 @@ angular.module('mainEvents')
   ]);
 
 // menu
-class MainMenuEvent {
+class MainMenuEvent implements yubo.MainMenuEvent {
   constructor() {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('menu', (event: Electron.Event, action: string) => {
@@ -100,7 +100,7 @@ angular.module('mainEvents')
   ]);
 
 // dropTextFile
-class MainDropTextFileEvent {
+class MainDropTextFileEvent implements yubo.MainDropTextFileEvent {
   constructor() {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('dropTextFile', (event: Electron.Event, filePath: string) => {
@@ -114,7 +114,7 @@ angular.module('mainEvents')
   ]);
 
 // recentDocument
-class MainRecentDocumentEvent {
+class MainRecentDocumentEvent implements yubo.MainRecentDocumentEvent {
   constructor() {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('recentDocument', (event: Electron.Event, filePath: string) => {

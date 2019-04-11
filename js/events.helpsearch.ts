@@ -1,5 +1,5 @@
 // event listeners
-class HelpSearchEvent {
+class HelpSearchEvent implements yubo.HelpSearchEvent {
   constructor(
     private $window: ng.IWindowService
   ) {}

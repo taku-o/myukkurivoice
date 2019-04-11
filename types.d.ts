@@ -386,6 +386,19 @@ declare namespace yubo {
     getLastError(): string;
   }
 
+  // directive
+  export interface WavDraggable extends ng.IDirective {}
+  export interface TxtDroppable extends ng.IDirective {}
+  export interface StaticInclude extends ng.IDirective {}
+  export interface MainShortcutEvent extends ng.IDirective {}
+  export interface MainMenuEvent extends ng.IDirective {}
+  export interface MainDropTextFileEvent extends ng.IDirective {}
+  export interface MainRecentDocumentEvent extends ng.IDirective {}
+  export interface DictShortcutEvent extends ng.IDirective {}
+  export interface DictMenuEvent extends ng.IDirective {}
+  export interface HelpShortcutEvent extends ng.IDirective {}
+  export interface HelpSearchEvent extends ng.IDirective {}
+
   // scope
   export interface IMainScope extends ng.IScope {
     yinput:              yubo.YInput;

@@ -1,7 +1,7 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // event listeners
-class HelpShortcutEvent {
+class HelpShortcutEvent implements yubo.HelpShortcutEvent {
   constructor(
     private reducer: yubo.HelpReducer
   ) {}

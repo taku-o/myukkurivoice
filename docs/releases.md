@@ -1,7 +1,7 @@
 # 0.11.0
 
-- AquesTalk 1の音声再生機能をmacOS Mojaveより後のOSでは動作しないように修正。
-    - macOS Mojaveは32ビットアプリをサポートする最後のmacOSであるため、AquesTalk 1の機能を実行不能、アプリが落ちるため。
+- AquesTalk 1 の音声再生機能を macOS Mojave より後の OS では動作しないように修正。
+  - macOS Mojave は 32 ビットアプリをサポートする最後の macOS であるため、AquesTalk 1 の機能を実行不能、アプリが落ちるため。
 - 内部構造の大きな修正。
 
 # 0.10.5

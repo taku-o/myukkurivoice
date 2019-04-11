@@ -4,7 +4,7 @@ var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('
 angular.module('dictEvents', []);
 
 // shortcut
-class DictShortcutEvent {
+class DictShortcutEvent implements yubo.DictShortcutEvent {
   constructor() {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('shortcut', (event: Electron.Event, action: string) => {
@@ -25,7 +25,7 @@ angular.module('dictEvents')
   ]);
 
 // menu
-class DictMenuEvent {
+class DictMenuEvent implements yubo.DictMenuEvent {
   constructor() {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('menu', (event: Electron.Event, action: string) => {
