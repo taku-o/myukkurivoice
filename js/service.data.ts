@@ -23,7 +23,7 @@ class DataService implements yubo.DataService {
     return ('0000' + (Math.random()*Math.pow(36, 4) << 0).toString(36)).slice(-4);
   }
 
-  load(ok = null, ng = null): ng.IPromise<yubo.YVoice[]> {
+  load(ok: (dataList: yubo.YVoice[]) => void, ng: (err: Error) => void): ng.IPromise<yubo.YVoice[]> {
     if (MONITOR) { log().warn(monitor().format('srv.data', 'data load called')); }
     const d = this.$q.defer<yubo.YVoice[]>();
     this.$timeout(() => {

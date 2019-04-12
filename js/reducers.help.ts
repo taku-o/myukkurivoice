@@ -82,7 +82,7 @@ class HelpReducer implements yubo.HelpReducer {
     this.$timeout(() => { $scope.$apply(); });
   }
 
-  page(pageName): void {
+  page(pageName: string): void {
     this.$location.hash(pageName);
   }
   openSearchForm(): void {
