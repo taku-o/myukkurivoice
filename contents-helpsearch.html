@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="css/helpsearch.css">
   <script src="node_modules/angular/angular.min.js"></script>
+  <script src="js/stores.helpsearch.js"></script>
   <script src="js/reducers.helpsearch.js"></script>
   <script src="js/events.helpsearch.js"></script>
   <script src="js/ctrl.helpsearch.js"></script>
@@ -20,7 +21,7 @@
     <div class="pane pane-left">
       <form ng-submit="ctrl.searchInPage()">
         <label>検索する文字列：</label>
-        <input id="search-text" class="form-control" type="search" ng-model="searchText" autofocus>
+        <input id="search-text" class="form-control" type="search" ng-model="ctrl.searchText" autofocus>
       </form>
     </div> <!-- pane-left -->
 

@@ -406,6 +406,7 @@ declare namespace yubo {
     display: string;
   }
   export interface HelpSearchStore {
+    searchText: string;
   }
 
   // scope
@@ -436,9 +437,6 @@ declare namespace yubo {
     message:     string;
     gridOptions: any;
     gridApi:     any;
-  }
-  export interface IHelpSearchScope extends ng.IScope {
-    searchText: string;
   }
 
   // apps.main.ts
@@ -557,8 +555,8 @@ declare namespace yubo {
 
   // apps.helpsearch.ts
   export interface HelpSearchReducer {
-    searchInPage($scope: yubo.IHelpSearchScope): void;
-    clearSearchForm($scope: yubo.IHelpSearchScope): void;
+    searchInPage(): void;
+    clearSearchForm(): void;
   }
 
   // apps.system.ts

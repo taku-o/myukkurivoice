@@ -1,23 +1,26 @@
 // action reducer
 class HelpSearchReducer implements yubo.HelpSearchReducer {
-  constructor() {}
+  constructor(
+    private store: yubo.HelpSearchStore
+  ) {}
 
-  searchInPage($scope: yubo.IHelpSearchScope): void {
+  searchInPage(): void {
     const win = require('electron').remote.getCurrentWindow();
-    if ($scope.searchText) {
-      win.getParentWindow().webContents.findInPage($scope.searchText);
+    if (this.store.searchText) {
+      win.getParentWindow().webContents.findInPage(this.store.searchText);
     } else {
       win.getParentWindow().webContents.stopFindInPage('clearSelection');
     }
   }
-  clearSearchForm($scope: yubo.IHelpSearchScope): void {
-    $scope.searchText = '';
+  clearSearchForm(): void {
+    this.store.searchText = '';
     const win = require('electron').remote.getCurrentWindow();
     win.getParentWindow().webContents.stopFindInPage('clearSelection');
   }
 }
 
-angular.module('helpSearchReducers', [])
+angular.module('helpSearchReducers', ['helpSearchStores'])
   .service('HelpSearchReducer', [
+    'HelpSearchStore',
     HelpSearchReducer,
   ]);

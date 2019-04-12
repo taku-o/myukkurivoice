@@ -1,6 +1,6 @@
 class HelpSearchStore implements yubo.HelpSearchStore {
-  constructor(
-  ) {}
+  constructor() {}
+  searchText: string = '';
 }
 
 angular.module('helpSearchStores', [])

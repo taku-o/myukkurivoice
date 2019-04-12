@@ -1,22 +1,33 @@
 // controllers
-angular.module('helpSearchControllers', ['helpSearchReducers'])
-  .controller('HelpSearchController', ['$scope', 'HelpSearchReducer',
-  function($scope: yubo.IHelpSearchScope, reducer: yubo.HelpSearchReducer) {
+class HelpSearchController {
+  constructor(
+    private store: yubo.HelpSearchStore,
+    private reducer: yubo.HelpSearchReducer
+  ) {}
 
-    // init
-    const ctrl = this;
-    $scope.searchText = '';
+  // accessor
+  get searchText() {
+    return this.store.searchText;
+  }
+  set searchText(input: string) {
+    this.store.searchText = input;
+  }
 
-    // action
-    ctrl.searchInPage = function(): void {
-      reducer.searchInPage($scope);
-    };
-    ctrl.clearSearchForm = function(): void {
-      reducer.clearSearchForm($scope);
-    };
-    ctrl.closeSearchForm = function(): void {
-      const window = require('electron').remote.getCurrentWindow();
-      window.hide();
-    };
-  }]);
-
+  // action
+  searchInPage(): void {
+    this.reducer.searchInPage();
+  }
+  clearSearchForm(): void {
+    this.reducer.clearSearchForm();
+  }
+  closeSearchForm(): void {
+    const window = require('electron').remote.getCurrentWindow();
+    window.hide();
+  }
+}
+angular.module('helpSearchControllers', ['helpSearchStores', 'helpSearchReducers'])
+  .controller('HelpSearchController', [
+    'HelpSearchStore',
+    'HelpSearchReducer',
+    (store: yubo.HelpSearchStore, reducer: yubo.HelpSearchReducer) => new HelpSearchController(store, reducer),
+  ]);
