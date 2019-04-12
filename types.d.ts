@@ -395,7 +395,7 @@ declare namespace yubo {
   export interface HelpShortcutEvent extends ng.IDirective {}
   export interface HelpSearchEvent extends ng.IDirective {}
 
-  // store
+  // store, scope
   export interface MainStore {
   }
   export interface SystemStore {
@@ -406,6 +406,8 @@ declare namespace yubo {
     isInEditing: boolean;
     message:     string;
     gridOptions: any;
+  }
+  export interface IDictScope extends ng.IScope {
   }
   export interface HelpStore {
     display: string;
@@ -431,9 +433,6 @@ declare namespace yubo {
     showTypeMessageList: boolean;
     messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
     generatedList:       IRecordMessage[];
-  }
-  export interface IDictScope extends ng.IScope {
-    //gridOptions: any;
   }
 
   // apps.main.ts
