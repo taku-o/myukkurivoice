@@ -1,7 +1,7 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // event listeners
-angular.module('dictEvents', []);
+angular.module('dictEvents', ['dictReducers']);
 
 // shortcut
 class DictShortcutEvent implements yubo.DictShortcutEvent {
@@ -26,7 +26,9 @@ angular.module('dictEvents')
 
 // menu
 class DictMenuEvent implements yubo.DictMenuEvent {
-  constructor() {}
+  constructor(
+    private reducer: yubo.DictReducer
+  ) {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('menu', (event: Electron.Event, action: string) => {
       switch (action) {
@@ -46,7 +48,7 @@ class DictMenuEvent implements yubo.DictMenuEvent {
           document.getElementById('export').click();
           break;
         case 'reset':
-          scope.$broadcast('menu', action);
+          this.reducer.onMenu(action);
           break;
         case 'tutorial':
           document.getElementById('tutorial').click();
@@ -57,5 +59,6 @@ class DictMenuEvent implements yubo.DictMenuEvent {
 }
 angular.module('dictEvents')
   .directive('menu', [
-    () => new DictMenuEvent(),
+    'DictReducer',
+    (reducer: yubo.DictReducer) => new DictMenuEvent(reducer),
   ]);

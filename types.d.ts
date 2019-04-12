@@ -403,6 +403,9 @@ declare namespace yubo {
     aq10UseKey: string;
   }
   export interface DictStore {
+    isInEditing: boolean;
+    message:     string;
+    gridOptions: any;
   }
   export interface HelpStore {
     display: string;
@@ -430,11 +433,7 @@ declare namespace yubo {
     generatedList:       IRecordMessage[];
   }
   export interface IDictScope extends ng.IScope {
-    isInEditing: boolean;
-    alwaysOnTop: boolean;
-    message:     string;
-    gridOptions: any;
-    gridApi:     any;
+    //gridOptions: any;
   }
 
   // apps.main.ts
@@ -514,21 +513,22 @@ declare namespace yubo {
     //private readonly htmlTitle: string;
     //private readonly rscDictDir: string;
     //private readonly mAppDictDir: string;
-    onMenu($scope: yubo.IDictScope, action: string): void;
-    init($scope: yubo.IDictScope): void;
+    //private gridApi: any/*IGridApi*/;
+    onMenu(action: string): void;
+    init(): void;
     onLoad($scope: yubo.IDictScope): void;
     //private setup(): ng.IPromise<string>;
     //private loadCsv(): ng.IPromise<yubo.DictRecord[]>;
-    toIsInEditing($scope: yubo.IDictScope): void;
-    clearInEditing($scope: yubo.IDictScope): void;
-    add($scope: yubo.IDictScope): void;
-    remove($scope: yubo.IDictScope): void;
-    save($scope: yubo.IDictScope): void;
-    cancel($scope: yubo.IDictScope): ng.IPromise<boolean>;
-    dump($scope: yubo.IDictScope): void;
-    reset($scope: yubo.IDictScope): ng.IPromise<boolean>;
-    reload($scope: yubo.IDictScope): void;
-    //private validateData($scope: yubo.IDictScope): ng.IPromise<boolean>;
+    toIsInEditing(): void;
+    clearInEditing(): void;
+    add(): void;
+    remove(): void;
+    save(): void;
+    cancel(): ng.IPromise<boolean>;
+    dump(): void;
+    reset(): ng.IPromise<boolean>;
+    reload(): void;
+    //private validateData(): ng.IPromise<boolean>;
     tutorial(): void;
   }
   export interface DictRecord {

@@ -1,6 +1,8 @@
 class DictStore implements yubo.DictStore {
-  constructor(
-  ) {}
+  constructor() {}
+  isInEditing: boolean = false;
+  message: string = '';
+  gridOptions: any;
 }
 
 angular.module('dictStores', [])

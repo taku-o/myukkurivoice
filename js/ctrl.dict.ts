@@ -1,64 +1,75 @@
 // controllers
+class DictController {
+  constructor(
+    private $scope: yubo.IDictScope,
+    private store: yubo.DictStore,
+    private reducer: yubo.DictReducer
+  ) {
+    // run init
+    reducer.init();
+  }
+
+  // accessor
+  get isInEditing() {
+    return this.store.isInEditing;
+  }
+  get message() {
+    return this.store.message;
+  }
+  get gridOptions() {
+    return this.store.gridOptions;
+  }
+
+  // $onInit
+  $onInit(): void {
+    this.reducer.onLoad(this.$scope);
+  }
+
+  // editing state
+  toIsInEditing(): void {
+    this.reducer.toIsInEditing();
+  }
+  clearInEditing(): void {
+    this.reducer.clearInEditing();
+  }
+
+  // action
+  add(): void {
+    this.reducer.add();
+  }
+  remove(): void {
+    this.reducer.remove();
+  }
+  save(): void {
+    this.reducer.save();
+  }
+  cancel(): ng.IPromise<boolean> {
+    return this.reducer.cancel();
+  }
+  dump(): void {
+    this.reducer.dump();
+  }
+  reset(): ng.IPromise<boolean> {
+    return this.reducer.reset();
+  }
+  reload(): void {
+    this.reducer.reload();
+  }
+  tutorial(): void {
+    this.reducer.tutorial();
+  }
+}
+
 angular.module('dictControllers',
-  ['dictReducers',
+  ['dictStores', 'dictReducers',
    'ui.grid', 'ui.grid.edit', 'ui.grid.rowEdit', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ui.grid.cellNav',
   ])
-  .controller('DictController', ['$scope', 'DictReducer',
-    function($scope: yubo.IDictScope, reducer: yubo.DictReducer) {
-
-    // menu event bridge
-    $scope.$on('menu', (event: ng.IAngularEvent, action: string) => {
-      reducer.onMenu($scope, action);
-    });
-
-    // init
-    const ctrl = this;
-    $scope.isInEditing = false;
-    $scope.message = '';
-    $scope.alwaysOnTop = false;
-
-    // $onInit
-    this.$onInit = (): void => {
-      reducer.onLoad($scope);
-    };
-
-    // editing state
-    ctrl.toIsInEditing = function(): void {
-      reducer.toIsInEditing($scope);
-    };
-    ctrl.clearInEditing = function(): void {
-      reducer.clearInEditing($scope);
-    };
-
-    // action
-    ctrl.add = function(): void {
-      reducer.add($scope);
-    };
-    ctrl.delete = function(): void {
-      reducer.remove($scope);
-    };
-    ctrl.save = function(): void {
-      reducer.save($scope);
-    };
-    ctrl.cancel = function(): ng.IPromise<boolean> {
-      return reducer.cancel($scope);
-    };
-    ctrl.export = function(): void {
-      reducer.dump($scope);
-    };
-    ctrl.reset = function(): ng.IPromise<boolean> {
-      return reducer.reset($scope);
-    };
-    ctrl.reload = function(): void {
-      reducer.reload($scope);
-    };
-    ctrl.tutorial = function(): void {
-      reducer.tutorial();
-    };
-
-    // run init
-    reducer.init($scope);
-  }])
+  .controller('DictController', [
+    '$scope',
+    'DictStore',
+    'DictReducer',
+    ($scope: yubo.IDictScope, store: yubo.DictStore, reducer: yubo.DictReducer) => new DictController($scope, store, reducer),
+  ])
   .filter('mapKind', ['KindHash', (KindHash: yubo.KindHash) => {
     return (input: number) => {
       return KindHash[input]? KindHash[input]: '';
