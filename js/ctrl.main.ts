@@ -4,9 +4,9 @@ var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('
 const TEST = process.env.NODE_ENV == 'test';
 
 // controllers
-angular.module('mainControllers', ['mainReducers', 'mainDirectives', 'mainServices', 'mainModels', 'input-highlight'])
-  .controller('MainController', ['$scope', 'MainReducer', 'MasterService', 'YInput',
-  function($scope: yubo.IMainScope, reducer: yubo.MainReducer, MasterService: yubo.MasterService, YInput: yubo.YInput) {
+angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives', 'mainServices', 'mainModels', 'input-highlight'])
+  .controller('MainController', ['$scope', 'MainStore', 'MainReducer', 'MasterService', 'YInput',
+  function($scope: yubo.IMainScope, store: yubo.MainStore, reducer: yubo.MainReducer, MasterService: yubo.MasterService, YInput: yubo.YInput) {
 
   // event bridge
   $scope.$on('shortcut', (event: ng.IAngularEvent, action: string) => {

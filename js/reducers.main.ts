@@ -21,6 +21,7 @@ class MainReducer implements yubo.MainReducer {
   constructor(
     private $timeout: ng.ITimeoutService,
     private $q: ng.IQService,
+    private store: yubo.MainStore,
     private MessageService: yubo.MessageService,
     private DataService: yubo.DataService,
     private HistoryService: yubo.HistoryService,
@@ -891,10 +892,11 @@ class MainReducer implements yubo.MainReducer {
   }
 }
 
-angular.module('mainReducers', ['mainServices', 'mainModels'])
+angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
   .service('MainReducer', [
     '$timeout',
     '$q',
+    'MainStore',
     'MessageService',
     'DataService',
     'HistoryService',

@@ -398,25 +398,6 @@ declare namespace yubo {
   // store, scope
   export interface MainStore {
   }
-  export interface SystemStore {
-    appCfg:     AppCfg;
-    aq10UseKey: string;
-  }
-  export interface DictStore {
-    isInEditing: boolean;
-    message:     string;
-    gridOptions: any;
-  }
-  export interface IDictScope extends ng.IScope {
-  }
-  export interface HelpStore {
-    display: string;
-  }
-  export interface HelpSearchStore {
-    searchText: string;
-  }
-
-  // scope
   export interface IMainScope extends ng.IScope {
     yinput:              yubo.YInput;
     yvoice:              yubo.YVoice;
@@ -433,6 +414,23 @@ declare namespace yubo {
     showTypeMessageList: boolean;
     messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
     generatedList:       IRecordMessage[];
+  }
+  export interface SystemStore {
+    appCfg:     AppCfg;
+    aq10UseKey: string;
+  }
+  export interface DictStore {
+    isInEditing: boolean;
+    message:     string;
+    gridOptions: any;
+  }
+  export interface IDictScope extends ng.IScope {
+  }
+  export interface HelpStore {
+    display: string;
+  }
+  export interface HelpSearchStore {
+    searchText: string;
   }
 
   // apps.main.ts
