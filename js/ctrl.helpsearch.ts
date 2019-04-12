@@ -1,12 +1,12 @@
 // controllers
-class HelpSearchController {
+class HelpSearchController implements yubo.HelpSearchController {
   constructor(
     private store: yubo.HelpSearchStore,
     private reducer: yubo.HelpSearchReducer
   ) {}
 
   // accessor
-  get searchText() {
+  get searchText(): string {
     return this.store.searchText;
   }
   set searchText(input: string) {

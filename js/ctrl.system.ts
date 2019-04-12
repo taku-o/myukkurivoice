@@ -1,5 +1,5 @@
 // controllers
-class SystemController {
+class SystemController implements yubo.SystemController {
   constructor(
     private store: yubo.SystemStore,
     private reducer: yubo.SystemReducer

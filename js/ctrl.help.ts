@@ -1,12 +1,12 @@
 // controllers
-class HelpController {
+class HelpController implements yubo.HelpController {
   constructor(
     private store: yubo.HelpStore,
     private reducer: yubo.HelpReducer
   ) {}
 
   // accessor
-  get display() {
+  get display(): string {
     return this.store.display;
   }
 

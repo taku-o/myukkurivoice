@@ -508,6 +508,25 @@ declare namespace yubo {
   }
 
   // apps.dict.ts
+  export interface DictController {
+    // accessor
+    isInEditing: boolean;
+    message:     string;
+    gridOptions: any;
+    // state
+    $onInit(): void;
+    toIsInEditing(): void;
+    clearInEditing(): void;
+    // action
+    add(): void;
+    remove(): void;
+    save(): void;
+    cancel(): ng.IPromise<boolean>;
+    dump(): void;
+    reset(): ng.IPromise<boolean>;
+    reload(): void;
+    tutorial(): void;
+  }
   export interface DictReducer {
     //private readonly htmlTitle: string;
     //private readonly rscDictDir: string;
@@ -537,6 +556,16 @@ declare namespace yubo {
   }
 
   // apps.help.ts
+  export interface HelpController {
+    // accessor
+    display: string
+    // action
+    page(pageName: string): void;
+    openSearchForm(): void;
+    browser(url: string): void;
+    showItemInFolder(path: string): void;
+    showSystemWindow(): void;
+  }
   export interface HelpReducer {
     //private readonly menuList: string[];
     locationChangeSuccess(): void;
@@ -551,12 +580,31 @@ declare namespace yubo {
   }
 
   // apps.helpsearch.ts
+  export interface HelpSearchController {
+    // accessor
+    searchText: string;
+    // action
+    searchInPage(): void;
+    clearSearchForm(): void;
+    closeSearchForm(): void;
+  }
   export interface HelpSearchReducer {
     searchInPage(): void;
     clearSearchForm(): void;
   }
 
   // apps.system.ts
+  export interface SystemController {
+    // accessor
+    appCfg: AppCfg;
+    aq10UseKey: string;
+    // state
+    $onInit(): void;
+    // actions
+    cancel(): void;
+    save(): void;
+    reset(): void;
+  }
   export interface SystemReducer {
     onLoad(): void;
     cancel(): void;

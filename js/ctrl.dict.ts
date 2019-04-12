@@ -1,5 +1,5 @@
 // controllers
-class DictController {
+class DictController implements yubo.DictController {
   constructor(
     private $scope: yubo.IDictScope,
     private store: yubo.DictStore,
