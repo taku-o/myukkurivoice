@@ -1,23 +1,41 @@
 // controllers
-angular.module('systemControllers', ['systemReducers'])
-  .controller('SystemController', ['$scope', 'SystemReducer',
-  function($scope: yubo.ISystemScope, reducer: yubo.SystemReducer) {
-    // init
-    const ctrl = this;
+class SystemController {
+  constructor(
+    private store: yubo.SystemStore,
+    private reducer: yubo.SystemReducer
+  ) {}
 
-    // $onInit
-    this.$onInit = (): void => {
-      reducer.onLoad($scope);
-    };
+  // accessor
+  get appCfg() {
+    return this.store.appCfg;
+  }
+  get aq10UseKey() {
+    return this.store.aq10UseKey;
+  }
+  set aq10UseKey(key: string) {
+    this.store.aq10UseKey = key;
+  }
 
-    // actions
-    ctrl.cancel = function(): void {
-      reducer.cancel($scope);
-    };
-    ctrl.save = function(): void {
-      reducer.save($scope);
-    };
-    ctrl.reset = function(): void {
-      reducer.reset();
-    };
-  }]);
+  // $onInit
+  $onInit(): void {
+    this.reducer.onLoad();
+  }
+
+  // actions
+  cancel(): void {
+    this.reducer.cancel();
+  }
+  save(): void {
+    this.reducer.save();
+  }
+  reset(): void {
+    this.reducer.reset();
+  }
+}
+
+angular.module('systemControllers', ['systemStores', 'systemReducers'])
+  .controller('SystemController', [
+    'SystemStore',
+    'SystemReducer',
+    (store: yubo.SystemStore, reducer: yubo.SystemReducer) => new SystemController(store, reducer),
+  ]);

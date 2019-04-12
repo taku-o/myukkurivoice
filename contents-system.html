@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/system.css">
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="js/service.license.js"></script>
+  <script src="js/stores.system.js"></script>
   <script src="js/reducers.system.js"></script>
   <script src="js/ctrl.system.js"></script>
   <script src="js/apps.system.js"></script>
@@ -19,9 +20,9 @@
     <div class="box">
       ウィンドウサイズ
       <div class="form-group">
-        width <input type="number" id="main-width" min="200" max="3000" step="1" ng-model="appCfg.mainWindow.width"  placeholder="width">
+        width <input type="number" id="main-width" min="200" max="3000" step="1" ng-model="ctrl.appCfg.mainWindow.width"  placeholder="width">
         <span class="splitter">x</span>
-        height <input type="number" id="main-height" min="200" max="3000" step="1" ng-model="appCfg.mainWindow.height" placeholder="height" size="5">
+        height <input type="number" id="main-height" min="200" max="3000" step="1" ng-model="ctrl.appCfg.mainWindow.height" placeholder="height" size="5">
       </div>
     </div>
 
@@ -29,13 +30,13 @@
       音声再生エンジン
       <div class="radio">
         <label>
-          <input type="radio" id="audio-serv-ver-html5audio" ng-model="appCfg.audioServVer" value="html5audio">html5audio
+          <input type="radio" id="audio-serv-ver-html5audio" ng-model="ctrl.appCfg.audioServVer" value="html5audio">html5audio
           <small>安定確実エンジン。一部機能に制限がある。</small>
         </label>
       </div>
       <div class="radio">
         <label>
-          <input type="radio" id="audio-serv-ver-webaudioapi" ng-model="appCfg.audioServVer" value="webaudioapi">webaudioapi
+          <input type="radio" id="audio-serv-ver-webaudioapi" ng-model="ctrl.appCfg.audioServVer" value="webaudioapi">webaudioapi
           <small>実験的エンジン。全ての機能を利用できる。</small>
         </label>
       </div>
@@ -43,14 +44,14 @@
 
     <div class="box">
       <div class="checkbox">
-        <label><input type="checkbox" id="show-msg-pane" ng-model="appCfg.showMsgPane">メッセージリストを表示する</label>
+        <label><input type="checkbox" id="show-msg-pane" ng-model="ctrl.appCfg.showMsgPane">メッセージリストを表示する</label>
       </div>
     </div>
 
     <div class="box">
       <div class="form-group">
         <label>AquesTalk10 使用ラインセンスキー</label>
-        <input type="text" class="form-control" id="aq10-use-key" ng-model="aq10UseKey" ng-class="{caution:aq10UseKey==''}" placeholder="XXXX-XXXX-XXXX-XXXX">
+        <input type="text" class="form-control" id="aq10-use-key" ng-model="ctrl.aq10UseKey" ng-class="{caution:ctrl.aq10UseKey==''}" placeholder="XXXX-XXXX-XXXX-XXXX">
         <small>AquesTalk10の機能を個人かつ非営利以外の用途で使う場合は、AquesTalk10の使用ライセンスキー(Mac用)、もしくは使用ライセンスキー(商用コンテンツ向け)を設定してください</small>
       </div>
     </div>

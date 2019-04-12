@@ -1,6 +1,7 @@
 class SystemStore implements yubo.SystemStore {
-  constructor(
-  ) {}
+  constructor() {}
+  appCfg: yubo.AppCfg = null;
+  aq10UseKey: string = null;
 }
 
 angular.module('systemStores', [])

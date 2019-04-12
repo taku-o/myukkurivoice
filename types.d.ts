@@ -399,6 +399,8 @@ declare namespace yubo {
   export interface MainStore {
   }
   export interface SystemStore {
+    appCfg:     AppCfg;
+    aq10UseKey: string;
   }
   export interface DictStore {
   }
@@ -426,10 +428,6 @@ declare namespace yubo {
     showTypeMessageList: boolean;
     messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
     generatedList:       IRecordMessage[];
-  }
-  export interface ISystemScope extends ng.IScope {
-    appCfg:     AppCfg;
-    aq10UseKey: string;
   }
   export interface IDictScope extends ng.IScope {
     isInEditing: boolean;
@@ -561,9 +559,9 @@ declare namespace yubo {
 
   // apps.system.ts
   export interface SystemReducer {
-    onLoad($scope: yubo.ISystemScope): void;
-    cancel($scope: yubo.ISystemScope): void;
-    save($scope: yubo.ISystemScope): void;
+    onLoad(): void;
+    cancel(): void;
+    save(): void;
     reset(): void;
   }
 }
