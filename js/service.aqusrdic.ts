@@ -4,6 +4,9 @@ var _epath, epath = () => { _epath = _epath || require('electron-path'); return 
 var unpackedPath  = epath().getUnpackedPath();
 
 // aquestalk dictionary service
+angular.module('AqUsrDicServices', []);
+
+// AqUsrDicLib
 class AqUsrDicLib implements yubo.AqUsrDicLib {
   // int AqUsrDic_Import(const char * pathUserDic, const char * pathDicCsv)
   // int AqUsrDic_Export(const char * pathUserDic, const char * pathDicCsv)
@@ -41,10 +44,16 @@ class AqUsrDicLib implements yubo.AqUsrDicLib {
     return this.fn_AqUsrDic_GetLastError();
   }
 }
+angular.module('AqUsrDicServices')
+  .service('AqUsrDicLib', [
+    AqUsrDicLib,
+  ]);
 
+// AqUsrDicService
 class AqUsrDicService implements yubo.AqUsrDicService {
-  private readonly aqUsrDicLib = new AqUsrDicLib();
-  constructor() {}
+  constructor(
+    private aqUsrDicLib: yubo.AqUsrDicLib
+  ) {}
 
   generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string} {
     try {
@@ -85,8 +94,8 @@ class AqUsrDicService implements yubo.AqUsrDicService {
     return this.aqUsrDicLib.getLastError();
   }
 }
-
-angular.module('AqUsrDicServices', [])
-  .factory('AqUsrDicService', [
+angular.module('AqUsrDicServices')
+  .service('AqUsrDicService', [
+    'AqUsrDicLib',
     AqUsrDicService,
   ]);

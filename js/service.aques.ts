@@ -14,6 +14,8 @@ var _waitUntil, waitUntil   = () => { _waitUntil = _waitUntil || require('wait-u
 var unpackedPath = epath().getUnpackedPath();
 
 // angular aques service
+angular.module('AquesServices', ['MessageServices', 'LicenseServices']);
+
 // AqKanji2Koe
 class AqKanji2KoeLib implements yubo.AqKanji2KoeLib {
   // void * AqKanji2Koe_Create (const char *pathDic, int *pErr)
@@ -65,6 +67,10 @@ class AqKanji2KoeLib implements yubo.AqKanji2KoeLib {
     return '';
   }
 }
+angular.module('AquesServices')
+  .service('AqKanji2KoeLib', [
+    AqKanji2KoeLib,
+  ]);
 
 // AquesTalk1
 class AquesTalk1Lib implements yubo.AquesTalk1Lib {
@@ -81,6 +87,10 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
     }
   }
 }
+angular.module('AquesServices')
+  .service('AquesTalk1Lib', [
+    AquesTalk1Lib,
+  ]);
 
 // AquesTalk2
 class AquesTalk2Lib implements yubo.AquesTalk2Lib {
@@ -130,6 +140,10 @@ class AquesTalk2Lib implements yubo.AquesTalk2Lib {
     return '';
   }
 }
+angular.module('AquesServices')
+  .service('AquesTalk2Lib', [
+    AquesTalk2Lib,
+  ]);
 
 // AquesTalk10
 class AquesTalk10Lib implements yubo.AquesTalk10Lib {
@@ -196,20 +210,24 @@ class AquesTalk10Lib implements yubo.AquesTalk10Lib {
     return '';
   }
 }
+angular.module('AquesServices')
+  .service('AquesTalk10Lib', [
+    AquesTalk10Lib,
+  ]);
 
 // AquesTalk frontend
 class AquesService implements yubo.AquesService {
-  private readonly aqKanji2KoeLib = new AqKanji2KoeLib();
-  private readonly aquesTalk1Lib = new AquesTalk1Lib();
-  private readonly aquesTalk2Lib = new AquesTalk2Lib();
-  private readonly aquesTalk10Lib = new AquesTalk10Lib();
   private aqDictPath: string = `${unpackedPath}/vendor/aq_dic_large`;
 
   constructor(
     private $q: ng.IQService,
     private $timeout: ng.ITimeoutService,
     private MessageService: yubo.MessageService,
-    private LicenseService: yubo.LicenseService
+    private LicenseService: yubo.LicenseService,
+    private aqKanji2KoeLib: yubo.AqKanji2KoeLib,
+    private aquesTalk1Lib: yubo.AquesTalk1Lib,
+    private aquesTalk2Lib: yubo.AquesTalk2Lib,
+    private aquesTalk10Lib: yubo.AquesTalk10Lib
   ) {
     // load custom dictionary if exists
     const customDictPath = `${app.getPath('userData')}/userdict`;
@@ -438,12 +456,15 @@ class AquesService implements yubo.AquesService {
     return d.promise;
   }
 }
-
-angular.module('AquesServices', ['MessageServices', 'LicenseServices'])
-  .factory('AquesService', [
+angular.module('AquesServices')
+  .service('AquesService', [
     '$q',
     '$timeout',
     'MessageService',
     'LicenseService',
+    'AqKanji2KoeLib',
+    'AquesTalk1Lib',
+    'AquesTalk2Lib',
+    'AquesTalk10Lib',
     AquesService,
   ]);

@@ -9,11 +9,7 @@
   "globals": {
     "angular": true,
     "introJs": true,
-    "dataJson": true,
-    "AqKanji2KoeLib": true,
-    "AquesTalk1Lib": true,
-    "AquesTalk2Lib": true,
-    "AquesTalk10Lib": true
+    "dataJson": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {

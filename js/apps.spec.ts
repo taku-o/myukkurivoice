@@ -37,6 +37,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       'KindList', 'KindHash',
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
       'DataService', 'MasterService', 'HistoryService',
+      'AqKanji2KoeLib', 'AquesTalk1Lib', 'AquesTalk2Lib', 'AquesTalk10Lib',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
       'AqUsrDicService',
@@ -47,6 +48,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       LicenseService: yubo.LicenseService, IntroService: yubo.IntroService, MessageService: yubo.MessageService,
       CommandService: yubo.CommandService,
       DataService: yubo.DataService, MasterService: yubo.MasterService, HistoryService: yubo.HistoryService,
+      AqKanji2KoeLib: yubo.AqKanji2KoeLib, AquesTalk1Lib: yubo.AquesTalk1Lib, AquesTalk2Lib: yubo.AquesTalk2Lib, AquesTalk10Lib: yubo.AquesTalk10Lib,
       AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
       AudioSourceService: yubo.AudioSourceService,
       AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService,
@@ -292,21 +294,17 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     // AquesService.AquesTalk2
     // AquesService.AquesTalk10
     ctrl.errorTableAqkanji2koe = function(): void {
-      const lib = new AqKanji2KoeLib();
-      $scope.errorTableResult = lib.errorTable($scope.errorTableCode);
+      $scope.errorTableResult = AqKanji2KoeLib.errorTable($scope.errorTableCode);
     };
     ctrl.errorTableAquestalk2 = function(): void {
-      const lib = new AquesTalk2Lib();
-      $scope.errorTableResult = lib.errorTable($scope.errorTableCode);
+      $scope.errorTableResult = AquesTalk2Lib.errorTable($scope.errorTableCode);
     };
     ctrl.errorTableAquestalk10 = function(): void {
-      const lib = new AquesTalk10Lib();
-      $scope.errorTableResult = lib.errorTable($scope.errorTableCode);
+      $scope.errorTableResult = AquesTalk10Lib.errorTable($scope.errorTableCode);
     };
     // AquesService.AquesTalk1
     ctrl.isSupported = function(): void {
-      const lib = new AquesTalk1Lib();
-      $scope.isSupportedResult = lib.isSupported($scope.osVersion);
+      $scope.isSupportedResult = AquesTalk1Lib.isSupported($scope.osVersion);
     };
     // AquesService
     ctrl.encode = function(): void {

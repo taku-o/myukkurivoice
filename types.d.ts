@@ -323,10 +323,6 @@ declare namespace yubo {
     errorTable(code: number): string;
   }
   export interface AquesService {
-    //private readonly aqKanji2KoeLib: yubo.AqKanji2KoeLib;
-    //private readonly aquesTalk1Lib: yubo.AquesTalk1Lib;
-    //private readonly aquesTalk2Lib: yubo.AquesTalk2Lib;
-    //private readonly aquesTalk10Lib: yubo.AquesTalk10Lib;
     //private aqDictPath: string;
     //private aqKanji2KoeDevKey: string;
     //private aquesTalk10DevKey: string;
@@ -379,7 +375,6 @@ declare namespace yubo {
     getLastError(): string;
   }
   export interface AqUsrDicService {
-    //private readonly aqUsrDicLib: yubo.AqUsrDicLib;
     generateUserDict(inCsvPath: string, outUserDicPath: string): {success:boolean, message:string};
     generateCSV(inUserDicPath: string, outCsvPath: string): {success:boolean, message:string};
     validateInput(surface: string, yomi: string, posCode: number): {success:boolean, message:string};
