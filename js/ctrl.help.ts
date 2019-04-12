@@ -1,34 +1,35 @@
 // controllers
-angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
-  .controller('HelpController', ['$scope', 'HelpReducer',
-  function($scope: yubo.IHelpScope, reducer: yubo.HelpReducer) {
-    // init
-    const ctrl = this;
+class HelpController {
+  constructor(
+    private store: yubo.HelpStore,
+    private reducer: yubo.HelpReducer
+  ) {}
 
-    // event url hash changed
-    $scope.$on('$locationChangeSuccess', (event: ng.IAngularEvent) => {
-      reducer.locationChangeSuccess($scope);
-    });
-    // shortcut event bridge
-    $scope.$on('shortcut', (event: ng.IAngularEvent, action: string) => {
-      reducer.onShortcut($scope, action);
-    });
+  // accessor
+  get display() {
+    return this.store.display;
+  }
 
-    // action
-    ctrl.page = function(pageName: string): void {
-      reducer.page(pageName);
-    };
-    ctrl.openSearchForm = function(): void {
-      reducer.openSearchForm();
-    };
-    ctrl.browser = function(url: string): void {
-      reducer.browser(url);
-    };
-    ctrl.showItemInFolder = function(path: string): void {
-      reducer.showItemInFolder(path);
-    };
-    ctrl.showSystemWindow = function(): void {
-      reducer.showSystemWindow();
-    };
-  }]);
-
+  // action
+  page(pageName: string): void {
+    this.reducer.page(pageName);
+  }
+  openSearchForm(): void {
+    this.reducer.openSearchForm();
+  }
+  browser(url: string): void {
+    this.reducer.browser(url);
+  }
+  showItemInFolder(path: string): void {
+    this.reducer.showItemInFolder(path);
+  }
+  showSystemWindow(): void {
+    this.reducer.showSystemWindow();
+  }
+}
+angular.module('helpControllers', ['helpStores', 'helpReducers', 'IncludeDirectives'])
+  .controller('HelpController', [
+    'HelpStore',
+    'HelpReducer',
+    (store: yubo.HelpStore, reducer: yubo.HelpReducer) => new HelpController(store, reducer),
+  ]);

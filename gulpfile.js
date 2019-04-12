@@ -78,7 +78,7 @@ gulp.task('all', (cb) => {
 // tsc
 gulp.task('tsc', ['_tsc'], () => {
   return gulp
-    .src(['js/ctrl.help.js', 'js/directive.include.js', 'js/reducers.help.js'])
+    .src(['js/ctrl.help.js', 'js/directive.include.js', 'js/events.help.js', 'js/reducers.help.js', 'js/stores.help.js'])
     .pipe(gulp.dest('docs/assets/js'));
 });
 gulp.task('_tsc', () => {

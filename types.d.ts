@@ -391,8 +391,22 @@ declare namespace yubo {
   export interface MainRecentDocumentEvent extends ng.IDirective {}
   export interface DictShortcutEvent extends ng.IDirective {}
   export interface DictMenuEvent extends ng.IDirective {}
+  export interface HelpUrlEvent extends ng.IDirective {}
   export interface HelpShortcutEvent extends ng.IDirective {}
   export interface HelpSearchEvent extends ng.IDirective {}
+
+  // store
+  export interface MainStore {
+  }
+  export interface SystemStore {
+  }
+  export interface DictStore {
+  }
+  export interface HelpStore {
+    display: string;
+  }
+  export interface HelpSearchStore {
+  }
 
   // scope
   export interface IMainScope extends ng.IScope {
@@ -422,10 +436,6 @@ declare namespace yubo {
     message:     string;
     gridOptions: any;
     gridApi:     any;
-  }
-  export interface IHelpScope extends ng.IScope {
-    display:   string;
-    $location: ng.ILocationService;
   }
   export interface IHelpSearchScope extends ng.IScope {
     searchText: string;
@@ -534,10 +544,10 @@ declare namespace yubo {
   // apps.help.ts
   export interface HelpReducer {
     //private readonly menuList: string[];
-    locationChangeSuccess($scope: yubo.IHelpScope): void;
-    onShortcut($scope: yubo.IHelpScope, action: string): void;
-    //private moveToPreviousHelp($scope: yubo.IHelpScope): void;
-    //private moveToNextHelp($scope: yubo.IHelpScope): void;
+    locationChangeSuccess(): void;
+    onShortcut(action: string): void;
+    //private moveToPreviousHelp(): void;
+    //private moveToNextHelp(): void;
     page(pageName: string): void;
     openSearchForm(): void;
     browser(url: string): void;

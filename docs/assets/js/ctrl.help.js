@@ -1,27 +1,31 @@
 "use strict";
-angular.module('helpControllers', ['helpReducers', 'IncludeDirectives'])
-    .controller('HelpController', ['$scope', 'HelpReducer',
-    function ($scope, reducer) {
-        const ctrl = this;
-        $scope.$on('$locationChangeSuccess', (event) => {
-            reducer.locationChangeSuccess($scope);
-        });
-        $scope.$on('shortcut', (event, action) => {
-            reducer.onShortcut($scope, action);
-        });
-        ctrl.page = function (pageName) {
-            reducer.page(pageName);
-        };
-        ctrl.openSearchForm = function () {
-            reducer.openSearchForm();
-        };
-        ctrl.browser = function (url) {
-            reducer.browser(url);
-        };
-        ctrl.showItemInFolder = function (path) {
-            reducer.showItemInFolder(path);
-        };
-        ctrl.showSystemWindow = function () {
-            reducer.showSystemWindow();
-        };
-    }]);
+class HelpController {
+    constructor(store, reducer) {
+        this.store = store;
+        this.reducer = reducer;
+    }
+    get display() {
+        return this.store.display;
+    }
+    page(pageName) {
+        this.reducer.page(pageName);
+    }
+    openSearchForm() {
+        this.reducer.openSearchForm();
+    }
+    browser(url) {
+        this.reducer.browser(url);
+    }
+    showItemInFolder(path) {
+        this.reducer.showItemInFolder(path);
+    }
+    showSystemWindow() {
+        this.reducer.showSystemWindow();
+    }
+}
+angular.module('helpControllers', ['helpStores', 'helpReducers', 'IncludeDirectives'])
+    .controller('HelpController', [
+    'HelpStore',
+    'HelpReducer',
+    (store, reducer) => new HelpController(store, reducer),
+]);

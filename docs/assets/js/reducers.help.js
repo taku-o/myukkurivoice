@@ -2,10 +2,11 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _shell, shell = () => { _shell = _shell || require('electron').shell; return _shell; };
 class HelpReducer {
-    constructor($timeout, $location, $window) {
+    constructor($timeout, $location, $window, store) {
         this.$timeout = $timeout;
         this.$location = $location;
         this.$window = $window;
+        this.store = store;
         this.menuList = [
             'about',
             'voicecode',
@@ -29,32 +30,37 @@ class HelpReducer {
             'expand',
         ];
     }
-    locationChangeSuccess($scope) {
+    locationChangeSuccess() {
         if (this.$location.url().startsWith('/%23')) {
             this.$window.location.href = this.$location.absUrl().replace('%23', '#');
             return;
         }
         const hash = this.$location.hash();
-        if (this.menuList.includes(hash)) {
-            $scope.display = hash;
-        }
-        else {
-            $scope.display = 'about';
-        }
-        this.$timeout(() => { $scope.$apply(); });
+        this.$timeout(() => {
+            if (this.menuList.includes(hash)) {
+                this.store.display = hash;
+            }
+            else {
+                this.store.display = 'about';
+            }
+        });
     }
-    onShortcut($scope, action) {
+    onShortcut(action) {
         switch (action) {
             case 'moveToPreviousHelp':
-                this.moveToPreviousHelp($scope);
+                this.$timeout(() => {
+                    this.moveToPreviousHelp();
+                });
                 break;
             case 'moveToNextHelp':
-                this.moveToNextHelp($scope);
+                this.$timeout(() => {
+                    this.moveToNextHelp();
+                });
                 break;
         }
     }
-    moveToPreviousHelp($scope) {
-        const index = this.menuList.indexOf($scope.display);
+    moveToPreviousHelp() {
+        const index = this.menuList.indexOf(this.store.display);
         const moved = index - 1;
         if (index < 0) {
             this.page(this.menuList[0]);
@@ -65,10 +71,9 @@ class HelpReducer {
         else {
             this.page(this.menuList[moved]);
         }
-        this.$timeout(() => { $scope.$apply(); });
     }
-    moveToNextHelp($scope) {
-        const index = this.menuList.indexOf($scope.display);
+    moveToNextHelp() {
+        const index = this.menuList.indexOf(this.store.display);
         const moved = index + 1;
         if (index < 0) {
             this.page(this.menuList[0]);
@@ -79,7 +84,6 @@ class HelpReducer {
         else {
             this.page(this.menuList[moved]);
         }
-        this.$timeout(() => { $scope.$apply(); });
     }
     page(pageName) {
         this.$location.hash(pageName);
@@ -109,10 +113,11 @@ class HelpReducer {
         }
     }
 }
-angular.module('helpReducers', [])
+angular.module('helpReducers', ['helpStores'])
     .service('HelpReducer', [
     '$timeout',
     '$location',
     '$window',
+    'HelpStore',
     HelpReducer,
 ]);

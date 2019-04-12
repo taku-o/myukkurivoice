@@ -1,6 +1,26 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // event listeners
+angular.module('helpEvents', ['helpReducers']);
+
+// url change event
+class HelpUrlEvent implements yubo.HelpUrlEvent {
+  constructor(
+    private reducer: yubo.HelpReducer
+  ) {}
+  link(scope: ng.IScope): void {
+    scope.$on('$locationChangeSuccess', (event: ng.IAngularEvent) => {
+      this.reducer.locationChangeSuccess();
+    });
+  }
+}
+angular.module('helpEvents')
+  .directive('urls', [
+    'HelpReducer',
+    (reducer: yubo.HelpReducer) => new HelpUrlEvent(reducer),
+  ]);
+
+// shortcut
 class HelpShortcutEvent implements yubo.HelpShortcutEvent {
   constructor(
     private reducer: yubo.HelpReducer
@@ -10,7 +30,7 @@ class HelpShortcutEvent implements yubo.HelpShortcutEvent {
       switch (action) {
         case 'moveToPreviousHelp':
         case 'moveToNextHelp':
-          scope.$broadcast('shortcut', action);
+          this.reducer.onShortcut(action);
           break;
         case 'openSearchForm':
           this.reducer.openSearchForm();
@@ -19,7 +39,7 @@ class HelpShortcutEvent implements yubo.HelpShortcutEvent {
     });
   }
 }
-angular.module('helpEvents', ['helpReducers'])
+angular.module('helpEvents')
   .directive('shortcut', [
     'HelpReducer',
     (reducer: yubo.HelpReducer) => new HelpShortcutEvent(reducer),

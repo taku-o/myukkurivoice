@@ -1,2 +1,2 @@
 "use strict";
-angular.module('helpApp', ['helpControllers']);
+angular.module('helpApp', ['helpControllers', 'helpEvents']);

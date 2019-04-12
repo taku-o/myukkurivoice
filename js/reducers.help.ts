@@ -28,10 +28,11 @@ class HelpReducer implements yubo.HelpReducer {
   constructor(
     private $timeout: ng.ITimeoutService,
     private $location: ng.ILocationService,
-    private $window: ng.IWindowService
+    private $window: ng.IWindowService,
+    private store: yubo.HelpStore
   ) {}
 
-  locationChangeSuccess($scope: yubo.IHelpScope) {
+  locationChangeSuccess() {
     // fix broken url
     if (this.$location.url().startsWith('/%23')) {
       this.$window.location.href = this.$location.absUrl().replace('%23', '#');
@@ -39,26 +40,31 @@ class HelpReducer implements yubo.HelpReducer {
     }
 
     const hash = this.$location.hash();
-    if (this.menuList.includes(hash)) {
-      $scope.display = hash;
-    } else {
-      $scope.display = 'about';
-    }
-    this.$timeout(() => { $scope.$apply(); });
+    this.$timeout(() => { // $scope.$apply
+      if (this.menuList.includes(hash)) {
+        this.store.display = hash;
+      } else {
+        this.store.display = 'about';
+      }
+    });
   }
 
-  onShortcut($scope: yubo.IHelpScope, action: string): void {
+  onShortcut(action: string): void {
     switch (action) {
       case 'moveToPreviousHelp':
-        this.moveToPreviousHelp($scope);
+        this.$timeout(() => { // $scope.$apply
+          this.moveToPreviousHelp();
+        });
         break;
       case 'moveToNextHelp':
-        this.moveToNextHelp($scope);
+        this.$timeout(() => { // $scope.$apply
+          this.moveToNextHelp();
+        });
         break;
     }
   }
-  private moveToPreviousHelp($scope: yubo.IHelpScope): void {
-    const index = this.menuList.indexOf($scope.display);
+  private moveToPreviousHelp(): void {
+    const index = this.menuList.indexOf(this.store.display);
     const moved = index - 1;
     if (index < 0) {
       this.page(this.menuList[0]);
@@ -67,10 +73,9 @@ class HelpReducer implements yubo.HelpReducer {
     } else {
       this.page(this.menuList[moved]);
     }
-    this.$timeout(() => { $scope.$apply(); });
   }
-  private moveToNextHelp($scope: yubo.IHelpScope): void {
-    const index = this.menuList.indexOf($scope.display);
+  private moveToNextHelp(): void {
+    const index = this.menuList.indexOf(this.store.display);
     const moved = index + 1;
     if (index < 0) {
       this.page(this.menuList[0]);
@@ -79,7 +84,6 @@ class HelpReducer implements yubo.HelpReducer {
     } else {
       this.page(this.menuList[moved]);
     }
-    this.$timeout(() => { $scope.$apply(); });
   }
 
   page(pageName: string): void {
@@ -114,10 +118,11 @@ class HelpReducer implements yubo.HelpReducer {
   }
 }
 
-angular.module('helpReducers', [])
+angular.module('helpReducers', ['helpStores'])
   .service('HelpReducer', [
     '$timeout',
     '$location',
     '$window',
+    'HelpStore',
     HelpReducer,
   ]);
