@@ -141,9 +141,9 @@ class MainReducer implements yubo.MainReducer {
 
     // event listener
     $scope.$on('message', (event: ng.IAngularEvent, message: yubo.IMessage | yubo.IRecordMessage) => {
-      $scope.messageList.unshift(message);
-      while ($scope.messageList.length > 5) {
-        $scope.messageList.pop();
+      this.store.messageList.unshift(message);
+      while (this.store.messageList.length > 5) {
+        this.store.messageList.pop();
       }
       this.$timeout(() => { $scope.$apply(); });
     });
@@ -151,9 +151,9 @@ class MainReducer implements yubo.MainReducer {
       // lastWavFile
       $scope.lastWavFile = wavFileInfo;
       // generatedList
-      $scope.generatedList.unshift(wavFileInfo);
-      while ($scope.generatedList.length > 10) {
-        $scope.generatedList.pop();
+      this.store.generatedList.unshift(wavFileInfo);
+      while (this.store.generatedList.length > 10) {
+        this.store.generatedList.pop();
       }
       this.$timeout(() => { $scope.$apply(); });
       // recentDocumentList
@@ -185,9 +185,9 @@ class MainReducer implements yubo.MainReducer {
   private loadHistory($scope: yubo.IMainScope): void {
     this.HistoryService.load().then((cache) => {
       this.$timeout(() => { // $scope.$apply
-        $scope.generatedList = this.HistoryService.getList();
-        while ($scope.generatedList.length > 10) {
-          $scope.generatedList.pop();
+        this.store.generatedList = this.HistoryService.getList();
+        while (this.store.generatedList.length > 10) {
+          this.store.generatedList.pop();
         }
       });
     });
@@ -767,7 +767,7 @@ class MainReducer implements yubo.MainReducer {
     app.clearRecentDocuments();
     this.HistoryService.clear();
     this.$timeout(() => { // $scope.$apply
-      $scope.generatedList = [];
+      this.store.generatedList = [];
     });
   }
 

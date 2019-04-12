@@ -24,13 +24,12 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
 
   // init
   const ctrl = this;
+  ctrl.store = store;
   $scope.display = 'main';
   $scope.showTypeMessageList = true;
   $scope.phontList = MasterService.getPhontList();
   ctrl.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
   $scope.yinput = angular.copy(YInput);
-  $scope.messageList = [];
-  $scope.generatedList = [];
   $scope.lastWavFile = null;
   $scope.alwaysOnTop = false;
   ctrl.isTest = TEST;

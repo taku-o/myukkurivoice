@@ -10,7 +10,7 @@
       <th class="message-item-type">type</th>
       <th class="message-item-body">message</th>
     </tr>
-    <tr class="message-item" ng-repeat="message in messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record',source:message.type=='source'}">
+    <tr class="message-item" ng-repeat="message in ctrl.store.messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record',source:message.type=='source'}">
       <td class="message-item-created" ng-bind="message.created | date: 'yyyy/M/d HH:mm:ss'"></td>
       <td class="message-item-type" ng-bind="message.type"></td>
       <td class="message-item-body" ng-click="ctrl.quickLookMessage(message)"><span ng-show="message.type=='record'" class="icon icon-music"></span><span ng-bind="message.body"></span></td>
@@ -31,7 +31,7 @@
       <th class="message-item-body">message</th>
       <th class="message-item-encoded">encoded</th>
     </tr>
-    <tr class="message-item" ng-repeat="message in generatedList track by $index">
+    <tr class="message-item" ng-repeat="message in ctrl.store.generatedList track by $index">
       <td class="message-item-created" ng-bind="message.created | date: 'yyyy/M/d HH:mm:ss'"></td>
       <td class="message-item-wavFileName" ng-attr-title="{{message.wavFilePath}}" ng-click="ctrl.quickLookMessage(message)"><span class="icon icon-music"></span> <span ng-bind="message.wavFileName"></span></td>
       <td class="message-item-source" ng-click="ctrl.recentDocument(message)"><span class="icon icon-publish"></span> <span ng-bind="message.source"></span></td>

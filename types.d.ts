@@ -397,6 +397,23 @@ declare namespace yubo {
 
   // store, scope
   export interface MainStore {
+    //yinput:              yubo.YInput;
+    //yvoice:              yubo.YVoice;
+    //yvoiceList:          yubo.YVoice[];
+    //phontList:           yubo.YPhont[];
+    //appCfg:              AppCfg;
+    //duration:            number;
+    //lastWavFile:         yubo.IRecordMessage;
+    //encodedHighlight:    {[key: string]: string};
+    //sourceHighlight:     {[key: string]: string};
+    //aq10BasList:         {name: string, id: number}[];
+    //display:             string;
+    //alwaysOnTop:         boolean;
+    //showTypeMessageList: boolean;
+
+
+    messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
+    generatedList:       IRecordMessage[];
   }
   export interface IMainScope extends ng.IScope {
     yinput:              yubo.YInput;
@@ -412,8 +429,6 @@ declare namespace yubo {
     display:             string;
     alwaysOnTop:         boolean;
     showTypeMessageList: boolean;
-    messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
-    generatedList:       IRecordMessage[];
   }
   export interface SystemStore {
     appCfg:     AppCfg;
