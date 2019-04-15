@@ -25,13 +25,10 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   // init
   const ctrl = this;
   ctrl.store = store;
-  $scope.display = 'main';
-  $scope.showTypeMessageList = true;
   $scope.phontList = MasterService.getPhontList();
   ctrl.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
   $scope.yinput = angular.copy(YInput);
   $scope.lastWavFile = null;
-  $scope.alwaysOnTop = false;
   ctrl.isTest = TEST;
   $scope.yvoiceList = dataJson;
   $scope.yvoice = dataJson.length > 0? dataJson[0]: null;

@@ -879,14 +879,14 @@ class MainReducer implements yubo.MainReducer {
   }
   switchMessageListType($scope: yubo.IMainScope): void {
     this.MessageService.action('switch message list type.');
-    $scope.showTypeMessageList = !$scope.showTypeMessageList;
+    this.store.showTypeMessageList = !this.store.showTypeMessageList;
   }
   switchAlwaysOnTop(): void {
     this.MessageService.action('switch alwaysOnTop option.');
     ipcRenderer().send('switchAlwaysOnTop', 'mainWindow');
   }
   onSwitchAlwaysOnTop($scope: yubo.IMainScope, event: Electron.Event, newflg: boolean): void {
-    $scope.alwaysOnTop = newflg;
+    this.store.alwaysOnTop = newflg;
     this.MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
     this.$timeout(() => { $scope.$apply(); });
   }

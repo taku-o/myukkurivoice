@@ -408,8 +408,8 @@ declare namespace yubo {
     //sourceHighlight:     {[key: string]: string};
     //aq10BasList:         {name: string, id: number}[];
     display:             string;
-    //alwaysOnTop:         boolean;
-    //showTypeMessageList: boolean;
+    alwaysOnTop:         boolean;
+    showTypeMessageList: boolean;
     messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
     generatedList:       IRecordMessage[];
   }
@@ -425,8 +425,8 @@ declare namespace yubo {
     sourceHighlight:     {[key: string]: string};
     aq10BasList:         {name: string, id: number}[];
     //display:             string;
-    alwaysOnTop:         boolean;
-    showTypeMessageList: boolean;
+    //alwaysOnTop:         boolean;
+    //showTypeMessageList: boolean;
     //messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
     //generatedList:       IRecordMessage[];
   }

@@ -1,4 +1,4 @@
-<table class="table-striped message-list" ng-if="showTypeMessageList">
+<table class="table-striped message-list" ng-if="ctrl.store.showTypeMessageList">
   <thead ng-click="ctrl.switchMessageListType()">
     <tr>
       <th colspan="3">message list (click to display generated wav list) <span class="icon icon-shuffle"></span></th>
@@ -18,7 +18,7 @@
   </tbody>
 </table>
 
-<table class="table-striped message-list" ng-if="!showTypeMessageList">
+<table class="table-striped message-list" ng-if="!ctrl.store.showTypeMessageList">
   <thead ng-click="ctrl.switchMessageListType()">
     <tr>
       <th colspan="4">generated wav list (click to display message list) <span class="icon icon-shuffle"></span></th>

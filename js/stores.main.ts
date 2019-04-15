@@ -13,8 +13,8 @@ class MainStore implements yubo.MainStore {
   //sourceHighlight:     {[key: string]: string};
   //aq10BasList:         {name: string, id: number}[];
   display: string = 'main';
-  //alwaysOnTop:         boolean;
-  //showTypeMessageList: boolean;
+  alwaysOnTop: boolean = false;
+  showTypeMessageList: boolean = true;
   messageList: (yubo.IMessage | yubo.IRecordMessage | yubo.ISourceMessage)[] = [];
   generatedList: yubo.IRecordMessage[] = [];
 }
