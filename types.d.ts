@@ -407,11 +407,9 @@ declare namespace yubo {
     //encodedHighlight:    {[key: string]: string};
     //sourceHighlight:     {[key: string]: string};
     //aq10BasList:         {name: string, id: number}[];
-    //display:             string;
+    display:             string;
     //alwaysOnTop:         boolean;
     //showTypeMessageList: boolean;
-
-
     messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
     generatedList:       IRecordMessage[];
   }
@@ -426,9 +424,11 @@ declare namespace yubo {
     encodedHighlight:    {[key: string]: string};
     sourceHighlight:     {[key: string]: string};
     aq10BasList:         {name: string, id: number}[];
-    display:             string;
+    //display:             string;
     alwaysOnTop:         boolean;
     showTypeMessageList: boolean;
+    //messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
+    //generatedList:       IRecordMessage[];
   }
   export interface SystemStore {
     appCfg:     AppCfg;

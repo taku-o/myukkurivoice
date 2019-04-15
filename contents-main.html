@@ -117,8 +117,8 @@
     </ul>
   </div>
 
-  <div class="pane" static-include template-path="contents-main-player.html" ng-show="display == 'main'"></div>
-  <div class="pane" static-include template-path="contents-main-settings.html" ng-if="display == 'settings'"></div>
+  <div class="pane" static-include template-path="contents-main-player.html" ng-show="ctrl.store.display == 'main'"></div>
+  <div class="pane" static-include template-path="contents-main-settings.html" ng-if="ctrl.store.display == 'settings'"></div>
 
 </div><!-- page-group -->
 </div><!-- window-content -->

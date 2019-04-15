@@ -50,7 +50,7 @@ class MainReducer implements yubo.MainReducer {
           } else {
             $scope.yvoice = $scope.yvoiceList[0];
           }
-          $scope.display = 'main';
+          this.store.display = 'main';
           this.$timeout(() => { $scope.$apply(); });
         }
         break;
@@ -62,7 +62,7 @@ class MainReducer implements yubo.MainReducer {
           } else {
             $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
           }
-          $scope.display = 'main';
+          this.store.display = 'main';
           this.$timeout(() => { $scope.$apply(); });
         }
         break;
@@ -679,7 +679,7 @@ class MainReducer implements yubo.MainReducer {
     ipcRenderer().send('showDictWindow', 'help');
   }
   tutorial($scope: yubo.IMainScope): void {
-    if ($scope.display == 'main') {
+    if (this.store.display == 'main') {
       this.MessageService.action('run main tutorial.');
       this.IntroService.mainTutorial();
     } else {
@@ -689,10 +689,10 @@ class MainReducer implements yubo.MainReducer {
   }
   shortcut($scope: yubo.IMainScope): void {
     this.MessageService.action('show shortcut key help.');
-    if ($scope.display == 'main') {
+    if (this.store.display == 'main') {
       this.IntroService.shortcut();
     } else {
-      $scope.display = 'main';
+      this.store.display = 'main';
       this.MessageService.info('標準の画面に切り替えます。');
       this.$timeout(() => {
         $scope.$apply();
@@ -703,7 +703,7 @@ class MainReducer implements yubo.MainReducer {
   select($scope: yubo.IMainScope, index: number): void {
     this.MessageService.action('switch voice config.');
     $scope.yvoice = $scope.yvoiceList[index];
-    $scope.display = 'main';
+    this.store.display = 'main';
   }
   plus($scope: yubo.IMainScope): void {
     this.MessageService.action('add new voice config.');
@@ -718,7 +718,7 @@ class MainReducer implements yubo.MainReducer {
     }
     $scope.yvoiceList.splice(index, 1);
     $scope.yvoice = $scope.yvoiceList[0];
-    $scope.display = 'main';
+    this.store.display = 'main';
   }
   copy($scope: yubo.IMainScope, index: number): void {
     this.MessageService.action('copy and create new voice config.');
@@ -738,7 +738,7 @@ class MainReducer implements yubo.MainReducer {
     $scope.yvoiceList = this.DataService.initialData();
     $scope.yvoice = $scope.yvoiceList[0];
     $scope.yinput = angular.copy(this.YInputInitialData);
-    $scope.display = 'main';
+    this.store.display = 'main';
     this.clearSourceSelection($scope);
     this.clearEncodedSelection($scope);
   }
@@ -871,11 +871,11 @@ class MainReducer implements yubo.MainReducer {
 
   switchSettingsView($scope: yubo.IMainScope): void {
     this.MessageService.action('switch to settings view.');
-    $scope.display = 'settings';
+    this.store.display = 'settings';
   }
   switchMainView($scope: yubo.IMainScope): void {
     this.MessageService.action('switch to main view.');
-    $scope.display = 'main';
+    this.store.display = 'main';
   }
   switchMessageListType($scope: yubo.IMainScope): void {
     this.MessageService.action('switch message list type.');
