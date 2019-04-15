@@ -3,7 +3,7 @@ class MainStore implements yubo.MainStore {
   ) {}
 
   //yinput:              yubo.YInput;
-  //yvoice:              yubo.YVoice;
+  //curYvoice:           yubo.YVoice;
   //yvoiceList:          yubo.YVoice[];
   //appCfg:              AppCfg;
   duration: number;

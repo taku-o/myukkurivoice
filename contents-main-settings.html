@@ -2,32 +2,32 @@
   <form>
     <div class="form-group">
       <!-- <label>name</label> -->
-      <input type="text" class="form-control" id="name2" ng-model="yvoice.name" placeholder="name">
+      <input type="text" class="form-control" id="name2" ng-model="curYvoice.name" placeholder="name">
     </div>
 
     <div class="voice-tuna-box" id="voice-tuna-box" ng-show="appCfg.audioServVer == 'webaudioapi'">
       <div class="form-inline form-group">
-        <small>playback rate:</small><input type="number" min="0.4" max="3" step="0.1" id="playback-rate" ng-model="yvoice.playbackRate">
-        <small>detune:</small><input type="number" min="-1200" max="1200" step="50" id="detune" ng-model="yvoice.detune">
+        <small>playback rate:</small><input type="number" min="0.4" max="3" step="0.1" id="playback-rate" ng-model="curYvoice.playbackRate">
+        <small>detune:</small><input type="number" min="-1200" max="1200" step="50" id="detune" ng-model="curYvoice.detune">
       </div>
 
-      <div class="form-inline form-group voice-tuna-box-talk10" ng-show="yvoice.version == 'talk10'">
+      <div class="form-inline form-group voice-tuna-box-talk10" ng-show="curYvoice.version == 'talk10'">
         <div><small class="label-tuna">AquesTalk10 音声カスタマイズ</small></div>
         <small class="label-tuna">ﾍﾞｰｽ:</small>
-        <select ng-model="yvoice.bas" id="voice-qa10-bas">
+        <select ng-model="curYvoice.bas" id="voice-qa10-bas">
           <option ng-repeat="option in ::ctrl.aq10BasList track by option.id" ng-value="option.id" ng-bind="option.name"></option>
         </select>
-        <small class="label-tuna">高さ:</small><input type="number" min="20" max="200" step="1" id="voice-aq10-pit" ng-model="yvoice.pit">
-        <small class="label-tuna">ｱｸｾﾝﾄ:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-acc" ng-model="yvoice.acc">
-        <small class="label-tuna">音程:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-lmd" ng-model="yvoice.lmd">
-        <small class="label-tuna">音程2:</small><input type="number" min="50" max="200" step="1" id="voice-aq10-fsc" ng-model="yvoice.fsc">
+        <small class="label-tuna">高さ:</small><input type="number" min="20" max="200" step="1" id="voice-aq10-pit" ng-model="curYvoice.pit">
+        <small class="label-tuna">ｱｸｾﾝﾄ:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-acc" ng-model="curYvoice.acc">
+        <small class="label-tuna">音程:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-lmd" ng-model="curYvoice.lmd">
+        <small class="label-tuna">音程2:</small><input type="number" min="50" max="200" step="1" id="voice-aq10-fsc" ng-model="curYvoice.fsc">
       </div>
     </div>
 
     <div class="source-write-box" id="source-write-box">
       <div class="checkbox">
         <label>
-          <input type="checkbox" ng-model="yvoice.sourceWrite">音声記録時にテキストファイルにメッセージを書き出す
+          <input type="checkbox" ng-model="curYvoice.sourceWrite">音声記録時にテキストファイルにメッセージを書き出す
         </label>
       </div>
     </div>
@@ -35,18 +35,18 @@
     <div class="seq-write-box" id="seq-write-box">
       <div class="checkbox">
         <label>
-          <input type="checkbox" ng-model="yvoice.seqWrite">連番ファイル出力機能を使用する
+          <input type="checkbox" ng-model="curYvoice.seqWrite">連番ファイル出力機能を使用する
         </label>
       </div>
-      <div class="form-group" ng-show="yvoice.seqWrite">
+      <div class="form-group" ng-show="curYvoice.seqWrite">
         <!-- <label>file name prefix</label> -->
-        <input type="text" class="form-control" id="prefix" ng-model="yvoice.seqWriteOptions.prefix" placeholder="ファイル名のプレフィックス">
+        <input type="text" class="form-control" id="prefix" ng-model="curYvoice.seqWriteOptions.prefix" placeholder="ファイル名のプレフィックス">
       </div>
-      <div class="form-group" ng-show="yvoice.seqWrite">
+      <div class="form-group" ng-show="curYvoice.seqWrite">
         <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
           <span class="icon icon-folder"></span>出力先ディレクトリ選択
         </button>
-        <small>dir: <span ng-bind="yvoice.seqWriteOptions.dir || '未選択時はデスクトップを使用'"></span></small>
+        <small>dir: <span ng-bind="curYvoice.seqWriteOptions.dir || '未選択時はデスクトップを使用'"></span></small>
       </div>
     </div>
 

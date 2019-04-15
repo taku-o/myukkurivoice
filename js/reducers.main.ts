@@ -45,11 +45,11 @@ class MainReducer implements yubo.MainReducer {
         break;
       case 'swichNextConfig':
         {
-          const indexToN = $scope.yvoiceList.indexOf($scope.yvoice);
+          const indexToN = $scope.yvoiceList.indexOf($scope.curYvoice);
           if ($scope.yvoiceList.length > indexToN + 1) {
-            $scope.yvoice = $scope.yvoiceList[indexToN + 1];
+            $scope.curYvoice = $scope.yvoiceList[indexToN + 1];
           } else {
-            $scope.yvoice = $scope.yvoiceList[0];
+            $scope.curYvoice = $scope.yvoiceList[0];
           }
           this.store.display = 'main';
           this.$timeout(() => { $scope.$apply(); });
@@ -57,11 +57,11 @@ class MainReducer implements yubo.MainReducer {
         break;
       case 'swichPreviousConfig':
         {
-          const indexToP = $scope.yvoiceList.indexOf($scope.yvoice);
+          const indexToP = $scope.yvoiceList.indexOf($scope.curYvoice);
           if (indexToP - 1 >= 0) {
-            $scope.yvoice = $scope.yvoiceList[indexToP - 1];
+            $scope.curYvoice = $scope.yvoiceList[indexToP - 1];
           } else {
-            $scope.yvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
+            $scope.curYvoice = $scope.yvoiceList[$scope.yvoiceList.length - 1];
           }
           this.store.display = 'main';
           this.$timeout(() => { $scope.$apply(); });
@@ -73,14 +73,14 @@ class MainReducer implements yubo.MainReducer {
     switch (action) {
       case 'minus':
         {
-          const indexForM = $scope.yvoiceList.indexOf($scope.yvoice);
+          const indexForM = $scope.yvoiceList.indexOf($scope.curYvoice);
           this.minus($scope, indexForM);
           this.$timeout(() => { $scope.$apply(); });
         }
         break;
       case 'copy':
         {
-          const indexForCP = $scope.yvoiceList.indexOf($scope.yvoice);
+          const indexForCP = $scope.yvoiceList.indexOf($scope.curYvoice);
           this.copy($scope, indexForCP);
           this.$timeout(() => { $scope.$apply(); });
         }
@@ -177,7 +177,7 @@ class MainReducer implements yubo.MainReducer {
       dataList = this.DataService.initialData();
       this.$timeout(() => { // $scope.$apply
         $scope.yvoiceList = dataList;
-        $scope.yvoice = $scope.yvoiceList[0];
+        $scope.curYvoice = $scope.yvoiceList[0];
       });
     }
     if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
@@ -241,22 +241,22 @@ class MainReducer implements yubo.MainReducer {
   onChangePhont($scope: yubo.IMainScope): void {
     let phont: yubo.YPhont = null;
     angular.forEach(this.YPhontMasterList, (value, key) => {
-      if (value.id == $scope.yvoice.phont) { phont = value; }
+      if (value.id == $scope.curYvoice.phont) { phont = value; }
     });
     if (!phont) { return; }
-    $scope.yvoice.version = phont.version;
+    $scope.curYvoice.version = phont.version;
     if (phont.version == 'talk10') {
-      $scope.yvoice.bas = phont.struct.bas;
-      $scope.yvoice.pit = phont.struct.pit;
-      $scope.yvoice.acc = phont.struct.acc;
-      $scope.yvoice.lmd = phont.struct.lmd;
-      $scope.yvoice.fsc = phont.struct.fsc;
+      $scope.curYvoice.bas = phont.struct.bas;
+      $scope.curYvoice.pit = phont.struct.pit;
+      $scope.curYvoice.acc = phont.struct.acc;
+      $scope.curYvoice.lmd = phont.struct.lmd;
+      $scope.curYvoice.fsc = phont.struct.fsc;
     } else {
-      delete $scope.yvoice.bas;
-      delete $scope.yvoice.pit;
-      delete $scope.yvoice.acc;
-      delete $scope.yvoice.lmd;
-      delete $scope.yvoice.fsc;
+      delete $scope.curYvoice.bas;
+      delete $scope.curYvoice.pit;
+      delete $scope.curYvoice.acc;
+      delete $scope.curYvoice.lmd;
+      delete $scope.curYvoice.fsc;
     }
   }
 
@@ -283,7 +283,7 @@ class MainReducer implements yubo.MainReducer {
       }
       // encoding, command
       if (this.CommandService.containsCommand(source, $scope.yvoiceList)) {
-        const parsedListForEnc = this.CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+        const parsedListForEnc = this.CommandService.parseInput(source, $scope.yvoiceList, $scope.curYvoice);
         angular.forEach(parsedListForEnc, (cinput) => {
           cinput.text = this.AquesService.encode(cinput.text);
         });
@@ -305,7 +305,7 @@ class MainReducer implements yubo.MainReducer {
     }
 
     // play
-    const parsedList = this.CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+    const parsedList = this.CommandService.parseInput(encoded, $scope.yvoiceList, $scope.curYvoice);
     parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
       if (p.then === undefined) {
         p.resolve();
@@ -382,7 +382,7 @@ class MainReducer implements yubo.MainReducer {
 
     let phont: yubo.YPhont = null;
     angular.forEach(this.YPhontMasterList, (value, key) => {
-      if (value.id == $scope.yvoice.phont) { phont = value; }
+      if (value.id == $scope.curYvoice.phont) { phont = value; }
     });
     if (!phont) {
       this.MessageService.error('声の種類が未指定です。');
@@ -406,7 +406,7 @@ class MainReducer implements yubo.MainReducer {
       }
       // encoding, command
       if (this.CommandService.containsCommand(source, $scope.yvoiceList)) {
-        const parsedListForEnc = this.CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+        const parsedListForEnc = this.CommandService.parseInput(source, $scope.yvoiceList, $scope.curYvoice);
         angular.forEach(parsedListForEnc, (cinput) => {
           cinput.text = this.AquesService.encode(cinput.text);
         });
@@ -428,15 +428,15 @@ class MainReducer implements yubo.MainReducer {
     }
 
     // 連番保存
-    if ($scope.yvoice.seqWrite) {
-      let dir = $scope.yvoice.seqWriteOptions.dir;
-      const prefix = $scope.yvoice.seqWriteOptions.prefix;
+    if ($scope.curYvoice.seqWrite) {
+      let dir = $scope.curYvoice.seqWriteOptions.dir;
+      const prefix = $scope.curYvoice.seqWriteOptions.prefix;
       if (!dir) {
         dir = desktopDir;
       }
 
       // record
-      const parsedList = this.CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+      const parsedList = this.CommandService.parseInput(encoded, $scope.yvoiceList, $scope.curYvoice);
       let sourceFname: string = null;
       // record wave files
       parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
@@ -447,7 +447,7 @@ class MainReducer implements yubo.MainReducer {
         return (p as ng.IPromise<string>).then((fp: string) => {
           return this.recordEach($scope, cinput, dir, prefix)
             .then((fp) => {
-              if ($scope.yvoice.sourceWrite && !sourceFname) {
+              if ($scope.curYvoice.sourceWrite && !sourceFname) {
                 sourceFname = this.AudioSourceService.sourceFname(fp);
               }
               this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
@@ -491,7 +491,7 @@ class MainReducer implements yubo.MainReducer {
 
         // record
         const containsCommand = this.CommandService.containsCommand(encoded, $scope.yvoiceList);
-        const parsedList = this.CommandService.parseInput(encoded, $scope.yvoiceList, $scope.yvoice);
+        const parsedList = this.CommandService.parseInput(encoded, $scope.yvoiceList, $scope.curYvoice);
         let sourceFname: string = null;
         // record wave files
         parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
@@ -503,7 +503,7 @@ class MainReducer implements yubo.MainReducer {
             if (containsCommand) {
               return this.recordEach($scope, cinput, dir, prefix)
                 .then((fp) => {
-                  if ($scope.yvoice.sourceWrite && !sourceFname) {
+                  if ($scope.curYvoice.sourceWrite && !sourceFname) {
                     sourceFname = this.AudioSourceService.sourceFname(fp);
                   }
                   this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
@@ -519,7 +519,7 @@ class MainReducer implements yubo.MainReducer {
             } else {
               return this.recordSolo($scope, cinput, filePath)
                 .then((fp) => {
-                  if ($scope.yvoice.sourceWrite && !sourceFname) {
+                  if ($scope.curYvoice.sourceWrite && !sourceFname) {
                     sourceFname = this.AudioSourceService.sourceFname(fp);
                   }
                   this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
@@ -703,7 +703,7 @@ class MainReducer implements yubo.MainReducer {
   }
   select($scope: yubo.IMainScope, index: number): void {
     this.MessageService.action('switch voice config.');
-    $scope.yvoice = $scope.yvoiceList[index];
+    $scope.curYvoice = $scope.yvoiceList[index];
     this.store.display = 'main';
   }
   plus($scope: yubo.IMainScope): void {
@@ -718,7 +718,7 @@ class MainReducer implements yubo.MainReducer {
       return;
     }
     $scope.yvoiceList.splice(index, 1);
-    $scope.yvoice = $scope.yvoiceList[0];
+    $scope.curYvoice = $scope.yvoiceList[0];
     this.store.display = 'main';
   }
   copy($scope: yubo.IMainScope, index: number): void {
@@ -737,7 +737,7 @@ class MainReducer implements yubo.MainReducer {
     this.DataService.clear();
     // set initial data
     $scope.yvoiceList = this.DataService.initialData();
-    $scope.yvoice = $scope.yvoiceList[0];
+    $scope.curYvoice = $scope.yvoiceList[0];
     $scope.yinput = angular.copy(this.YInputInitialData);
     this.store.display = 'main';
     this.clearSourceSelection($scope);
@@ -782,7 +782,7 @@ class MainReducer implements yubo.MainReducer {
 
     // command
     if (this.CommandService.containsCommand(source, $scope.yvoiceList)) {
-      const parsedList = this.CommandService.parseInput(source, $scope.yvoiceList, $scope.yvoice);
+      const parsedList = this.CommandService.parseInput(source, $scope.yvoiceList, $scope.curYvoice);
       angular.forEach(parsedList, (cinput) => {
         cinput.text = this.AquesService.encode(cinput.text);
       });
@@ -823,37 +823,37 @@ class MainReducer implements yubo.MainReducer {
 
     // top
     if (pos == 0) {
-      $scope.yinput[field.id] = `${$scope.yvoice.name}${'＞'}${field.value}`;
-      field.selectionStart = (`${$scope.yvoice.name}${'＞'}`).length;
-      field.selectionEnd = (`${$scope.yvoice.name}${'＞'}`).length;
+      $scope.yinput[field.id] = `${$scope.curYvoice.name}${'＞'}${field.value}`;
+      field.selectionStart = (`${$scope.curYvoice.name}${'＞'}`).length;
+      field.selectionEnd = (`${$scope.curYvoice.name}${'＞'}`).length;
     // last
     } else if (pos == length) {
       if (field.value.substring(pos-1, pos) == '\n') {
-        $scope.yinput[field.id] = `${field.value}${$scope.yvoice.name}${'＞'}`;
+        $scope.yinput[field.id] = `${field.value}${$scope.curYvoice.name}${'＞'}`;
         field.selectionStart = (field.value).length;
         field.selectionEnd = (field.value).length;
       } else {
-        $scope.yinput[field.id] = `${field.value}\n${$scope.yvoice.name}${'＞'}`;
+        $scope.yinput[field.id] = `${field.value}\n${$scope.curYvoice.name}${'＞'}`;
         field.selectionStart = (field.value).length;
         field.selectionEnd = (field.value).length;
       }
     // in text
     } else {
       if (field.value.substring(pos-1, pos) == '\n') {
-        $scope.yinput[field.id] = `${field.value.substring(0, pos)}${$scope.yvoice.name}${'＞'}${field.value.substring(pos, length)}`;
-        field.selectionStart = (`${field.value.substring(0, pos)}${$scope.yvoice.name}${'＞'}`).length;
-        field.selectionEnd = (`${field.value.substring(0, pos)}${$scope.yvoice.name}${'＞'}`).length;
+        $scope.yinput[field.id] = `${field.value.substring(0, pos)}${$scope.curYvoice.name}${'＞'}${field.value.substring(pos, length)}`;
+        field.selectionStart = (`${field.value.substring(0, pos)}${$scope.curYvoice.name}${'＞'}`).length;
+        field.selectionEnd = (`${field.value.substring(0, pos)}${$scope.curYvoice.name}${'＞'}`).length;
       } else {
-        $scope.yinput[field.id] = `${field.value.substring(0, pos)}\n${$scope.yvoice.name}${'＞'}${field.value.substring(pos, length)}`;
-        field.selectionStart = (`${field.value.substring(0, pos)}\n${$scope.yvoice.name}${'＞'}`).length;
-        field.selectionEnd = (`${field.value.substring(0, pos)}\n${$scope.yvoice.name}${'＞'}`).length;
+        $scope.yinput[field.id] = `${field.value.substring(0, pos)}\n${$scope.curYvoice.name}${'＞'}${field.value.substring(pos, length)}`;
+        field.selectionStart = (`${field.value.substring(0, pos)}\n${$scope.curYvoice.name}${'＞'}`).length;
+        field.selectionEnd = (`${field.value.substring(0, pos)}\n${$scope.curYvoice.name}${'＞'}`).length;
       }
     }
     this.$timeout(() => { $scope.$apply(); });
   }
   directory($scope: yubo.IMainScope): void {
     this.MessageService.action('select directory.');
-    if (!$scope.yvoice.seqWrite) {
+    if (!$scope.curYvoice.seqWrite) {
       this.MessageService.error('連番ファイル設定が無効です。');
       return;
     }
@@ -862,10 +862,10 @@ class MainReducer implements yubo.MainReducer {
       if (!dirs || dirs.length < 1) {
         return;
       }
-      $scope.yvoice.seqWriteOptions.dir = dirs[0];
+      $scope.curYvoice.seqWriteOptions.dir = dirs[0];
       this.$timeout(() => { $scope.$apply(); });
     });
-    let optDir = $scope.yvoice.seqWriteOptions.dir;
+    let optDir = $scope.curYvoice.seqWriteOptions.dir;
     if (!optDir) { optDir = desktopDir; }
     ipcRenderer().send('showDirDialog', optDir);
   }

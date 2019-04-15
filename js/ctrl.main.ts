@@ -27,11 +27,11 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   ctrl.store = store;
   ctrl.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
   ctrl.YPhontMasterList = YPhontMasterList;
+  ctrl.isTest = TEST;
 
   $scope.yinput = angular.copy(YInput);
-  ctrl.isTest = TEST;
   $scope.yvoiceList = dataJson;
-  $scope.yvoice = dataJson.length > 0? dataJson[0]: null;
+  $scope.curYvoice = dataJson.length > 0? dataJson[0]: null;
 
   // $onInit
   this.$onInit = (): void => {
