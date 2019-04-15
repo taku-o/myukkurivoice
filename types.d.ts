@@ -402,7 +402,7 @@ declare namespace yubo {
     //yvoiceList:          yubo.YVoice[];
     //phontList:           yubo.YPhont[];
     //appCfg:              AppCfg;
-    //duration:            number;
+    duration:            number;
     //lastWavFile:         yubo.IRecordMessage;
     //encodedHighlight:    {[key: string]: string};
     //sourceHighlight:     {[key: string]: string};
@@ -419,7 +419,7 @@ declare namespace yubo {
     yvoiceList:          yubo.YVoice[];
     phontList:           yubo.YPhont[];
     appCfg:              AppCfg;
-    duration:            number;
+    //duration:            number;
     lastWavFile:         yubo.IRecordMessage;
     encodedHighlight:    {[key: string]: string};
     sourceHighlight:     {[key: string]: string};

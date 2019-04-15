@@ -163,7 +163,7 @@ class MainReducer implements yubo.MainReducer {
     });
     $scope.$on('duration', (event: ng.IAngularEvent, duration: number) => {
       this.$timeout(() => { // $scope.$apply
-        $scope.duration = duration;
+        this.store.duration = duration;
       });
     });
   }

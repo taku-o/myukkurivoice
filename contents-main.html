@@ -48,7 +48,7 @@
       </button>
     </div>
 
-    <small id="duration">再生時間(秒):<span ng-bind="duration | number:2"></span></small>
+    <small id="duration">再生時間(秒):<span ng-bind="ctrl.store.duration | number:2"></span></small>
     <button class="btn btn-large btn-default" id="always-on-top-btn" ng-click="ctrl.switchAlwaysOnTop()" title="前面表示固定のON/OFF切替">
       <span class="icon icon-lock" ng-class="{active:ctrl.store.alwaysOnTop}"></span>
     </button>
