@@ -3,8 +3,8 @@ var unpackedPath = epath().getUnpackedPath();
 
 // angular model
 angular.module('mainModels', [])
-  // YPhontList: yubo.YPhont[]
-  .constant('YPhontList',
+  // YPhontMasterList: yubo.YPhont[]
+  .constant('YPhontMasterList',
     [
       {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0},
       {id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1},

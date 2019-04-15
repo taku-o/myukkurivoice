@@ -101,21 +101,6 @@ angular.module('DataServices')
     DataService,
   ]);
 
-// MasterService
-class MasterService implements yubo.MasterService {
-  constructor(
-    private phontList: yubo.YPhont[]
-  ) {}
-  getPhontList(): yubo.YPhont[] {
-    return this.phontList;
-  }
-}
-angular.module('DataServices')
-  .service('MasterService', [
-    'YPhontList',
-    MasterService,
-  ]);
-
 // HistoryService
 class HistoryService implements yubo.HistoryService {
   private readonly MS_MAX_AGE: number = 1000 * 60 * 60 * 24 * 30; // 30 days

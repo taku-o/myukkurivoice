@@ -33,21 +33,21 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
   })
   .controller('SpecController', ['$scope', '$timeout',
-      'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
+      'YPhontMasterList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
       'KindList', 'KindHash',
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
-      'DataService', 'MasterService', 'HistoryService',
+      'DataService', 'HistoryService',
       'AqKanji2KoeLib', 'AquesTalk1Lib', 'AquesTalk2Lib', 'AquesTalk10Lib',
       'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
       'AppUtilService', 'SeqFNameService',
       'AqUsrDicService',
     function($scope: any, $timeout: ng.ITimeoutService,
-      YPhontList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
+      YPhontMasterList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
       YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
       KindList, KindHash,
       LicenseService: yubo.LicenseService, IntroService: yubo.IntroService, MessageService: yubo.MessageService,
       CommandService: yubo.CommandService,
-      DataService: yubo.DataService, MasterService: yubo.MasterService, HistoryService: yubo.HistoryService,
+      DataService: yubo.DataService, HistoryService: yubo.HistoryService,
       AqKanji2KoeLib: yubo.AqKanji2KoeLib, AquesTalk1Lib: yubo.AquesTalk1Lib, AquesTalk2Lib: yubo.AquesTalk2Lib, AquesTalk10Lib: yubo.AquesTalk10Lib,
       AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
       AudioSourceService: yubo.AudioSourceService,
@@ -63,10 +63,10 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       AquesService.init();
     };
 
-    // YPhontList
-    ctrl.getYPhontList = function(): void {
-      const r = YPhontList;
-      $scope.getYPhontListResult = JSON.stringify(r);
+    // YPhontMasterList
+    ctrl.getYPhontMasterList = function(): void {
+      const r = YPhontMasterList;
+      $scope.getYPhontMasterListResult = JSON.stringify(r);
     };
     // YVoice
     ctrl.getYVoice = function(): void {
@@ -254,12 +254,6 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       });
     };
 
-    // MasterService
-    ctrl.getPhontList = function(): void {
-      const list = MasterService.getPhontList();
-      $scope.getPhontListResult = JSON.stringify(list);
-    };
-
     // HistoryService
     ctrl.historyLoad = function(): void {
       HistoryService.load().then((cache) => {
@@ -312,7 +306,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       $scope.encodeResult = r;
     };
     ctrl.waveVer1 = function(): void {
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -332,7 +326,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       });
     };
     ctrl.waveVer2 = function(): void {
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -352,7 +346,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       });
     };
     ctrl.waveVer10 = function(): void {
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -372,7 +366,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     // AudioService1
     ctrl.play1AqVer1 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -405,7 +399,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.play1AqVer2 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -438,7 +432,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.play1AqVer10 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -472,7 +466,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
 
     ctrl.record1AqVer1 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -505,7 +499,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.record1AqVer2 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -538,7 +532,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.record1AqVer10 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -573,7 +567,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     // AudioService2
     ctrl.play2AqVer1 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -606,7 +600,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.play2AqVer2 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -639,7 +633,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.play2AqVer10 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -673,7 +667,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
 
     ctrl.record2AqVer1 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -706,7 +700,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.record2AqVer2 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -739,7 +733,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.record2AqVer10 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {

@@ -33,6 +33,7 @@ class MainReducer implements yubo.MainReducer {
     private AppUtilService: yubo.AppUtilService,
     private CommandService: yubo.CommandService,
     private IntroService: yubo.IntroService,
+    private YPhontMasterList: yubo.YPhont[],
     private YInputInitialData: yubo.YInput
   ) {}
 
@@ -239,7 +240,7 @@ class MainReducer implements yubo.MainReducer {
   // list box selection changed
   onChangePhont($scope: yubo.IMainScope): void {
     let phont: yubo.YPhont = null;
-    angular.forEach($scope.phontList, (value, key) => {
+    angular.forEach(this.YPhontMasterList, (value, key) => {
       if (value.id == $scope.yvoice.phont) { phont = value; }
     });
     if (!phont) { return; }
@@ -322,7 +323,7 @@ class MainReducer implements yubo.MainReducer {
 
     // phont
     let phont: yubo.YPhont = null;
-    angular.forEach($scope.phontList, (value, key) => {
+    angular.forEach(this.YPhontMasterList, (value, key) => {
       if (value.id == yvoice.phont) { phont = value; }
     });
     if (!phont) {
@@ -380,7 +381,7 @@ class MainReducer implements yubo.MainReducer {
     }
 
     let phont: yubo.YPhont = null;
-    angular.forEach($scope.phontList, (value, key) => {
+    angular.forEach(this.YPhontMasterList, (value, key) => {
       if (value.id == $scope.yvoice.phont) { phont = value; }
     });
     if (!phont) {
@@ -560,7 +561,7 @@ class MainReducer implements yubo.MainReducer {
 
     // phont
     let phont: yubo.YPhont = null;
-    angular.forEach($scope.phontList, (value, key) => {
+    angular.forEach(this.YPhontMasterList, (value, key) => {
       if (value.id == yvoice.phont) { phont = value; }
     });
     if (!phont) {
@@ -613,7 +614,7 @@ class MainReducer implements yubo.MainReducer {
 
     // phont
     let phont: yubo.YPhont = null;
-    angular.forEach($scope.phontList, (value, key) => {
+    angular.forEach(this.YPhontMasterList, (value, key) => {
       if (value.id == yvoice.phont) { phont = value; }
     });
     if (!phont) {
@@ -908,6 +909,7 @@ angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
     'AppUtilService',
     'CommandService',
     'IntroService',
+    'YPhontMasterList',
     'YInputInitialData',
     MainReducer,
   ]);

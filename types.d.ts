@@ -280,9 +280,6 @@ declare namespace yubo {
     save(dataList: yubo.YVoice[]): ng.IPromise<boolean>;
     clear(): ng.IPromise<boolean>;
   }
-  export interface MasterService {
-    getPhontList(): yubo.YPhont[];
-  }
   export interface HistoryService {
     //private readonly MS_MAX_AGE: number;
     //private _cache: LRUCache.Cache;
@@ -400,13 +397,11 @@ declare namespace yubo {
     //yinput:              yubo.YInput;
     //yvoice:              yubo.YVoice;
     //yvoiceList:          yubo.YVoice[];
-    //phontList:           yubo.YPhont[];
     //appCfg:              AppCfg;
     duration:            number;
     lastWavFile:         yubo.IRecordMessage;
     //encodedHighlight:    {[key: string]: string};
     //sourceHighlight:     {[key: string]: string};
-    //aq10BasList:         {name: string, id: number}[];
     display:             string;
     alwaysOnTop:         boolean;
     showTypeMessageList: boolean;
@@ -417,13 +412,11 @@ declare namespace yubo {
     yinput:              yubo.YInput;
     yvoice:              yubo.YVoice;
     yvoiceList:          yubo.YVoice[];
-    phontList:           yubo.YPhont[];
     appCfg:              AppCfg;
     //duration:            number;
     //lastWavFile:         yubo.IRecordMessage;
     encodedHighlight:    {[key: string]: string};
     sourceHighlight:     {[key: string]: string};
-    aq10BasList:         {name: string, id: number}[];
     //display:             string;
     //alwaysOnTop:         boolean;
     //showTypeMessageList: boolean;
