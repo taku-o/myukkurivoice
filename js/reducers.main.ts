@@ -149,7 +149,7 @@ class MainReducer implements yubo.MainReducer {
     });
     $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo: yubo.IRecordMessage) => {
       // lastWavFile
-      $scope.lastWavFile = wavFileInfo;
+      this.store.lastWavFile = wavFileInfo;
       // generatedList
       this.store.generatedList.unshift(wavFileInfo);
       while (this.store.generatedList.length > 10) {

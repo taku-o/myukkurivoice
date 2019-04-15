@@ -403,7 +403,7 @@ declare namespace yubo {
     //phontList:           yubo.YPhont[];
     //appCfg:              AppCfg;
     duration:            number;
-    //lastWavFile:         yubo.IRecordMessage;
+    lastWavFile:         yubo.IRecordMessage;
     //encodedHighlight:    {[key: string]: string};
     //sourceHighlight:     {[key: string]: string};
     //aq10BasList:         {name: string, id: number}[];
@@ -420,7 +420,7 @@ declare namespace yubo {
     phontList:           yubo.YPhont[];
     appCfg:              AppCfg;
     //duration:            number;
-    lastWavFile:         yubo.IRecordMessage;
+    //lastWavFile:         yubo.IRecordMessage;
     encodedHighlight:    {[key: string]: string};
     sourceHighlight:     {[key: string]: string};
     aq10BasList:         {name: string, id: number}[];

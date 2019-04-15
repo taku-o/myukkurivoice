@@ -9,7 +9,7 @@ class WavDraggable implements yubo.WavDraggable {
   constructor() {}
   link(scope: ng.IScope, element: ng.IDocumentService, attr: ng.IAttributes) {
     let f: (e: Event) => boolean;
-    scope.$watch('lastWavFile', (value: yubo.IRecordMessage) => {
+    scope.$watch('ctrl.store.lastWavFile', (value: yubo.IRecordMessage) => {
       const message = value;
       if (!message || !message.wavFilePath) {
         return;

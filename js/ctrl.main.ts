@@ -28,7 +28,6 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   $scope.phontList = MasterService.getPhontList();
   ctrl.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
   $scope.yinput = angular.copy(YInput);
-  $scope.lastWavFile = null;
   ctrl.isTest = TEST;
   $scope.yvoiceList = dataJson;
   $scope.yvoice = dataJson.length > 0? dataJson[0]: null;

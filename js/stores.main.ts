@@ -8,7 +8,7 @@ class MainStore implements yubo.MainStore {
   //phontList:           yubo.YPhont[];
   //appCfg:              AppCfg;
   duration: number;
-  //lastWavFile:         yubo.IRecordMessage;
+  lastWavFile: yubo.IRecordMessage = null;
   //encodedHighlight:    {[key: string]: string};
   //sourceHighlight:     {[key: string]: string};
   //aq10BasList:         {name: string, id: number}[];
