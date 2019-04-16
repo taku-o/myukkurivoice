@@ -5,8 +5,8 @@ const TEST = process.env.NODE_ENV == 'test';
 
 // controllers
 angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives', 'mainServices', 'mainModels', 'input-highlight'])
-  .controller('MainController', ['$scope', 'MainStore', 'MainReducer', 'YPhontMasterList', 'YInput',
-  function($scope: yubo.IMainScope, store: yubo.MainStore, reducer: yubo.MainReducer, YPhontMasterList: yubo.YPhont[], YInput: yubo.YInput) {
+  .controller('MainController', ['$scope', 'MainStore', 'MainReducer', 'YPhontMasterList',
+  function($scope: yubo.IMainScope, store: yubo.MainStore, reducer: yubo.MainReducer, YPhontMasterList: yubo.YPhont[]) {
 
   // event bridge
   $scope.$on('shortcut', (event: ng.IAngularEvent, action: string) => {
@@ -29,7 +29,6 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   ctrl.YPhontMasterList = YPhontMasterList;
   ctrl.isTest = TEST;
 
-  $scope.yinput = angular.copy(YInput);
   $scope.yvoiceList = dataJson;
   $scope.curYvoice = dataJson.length > 0? dataJson[0]: null;
 

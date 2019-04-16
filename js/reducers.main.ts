@@ -100,10 +100,10 @@ class MainReducer implements yubo.MainReducer {
         this.MessageService.error('テキストファイルを読み込めませんでした。', err);
         return;
       }
-      if ($scope.yinput) {
+      if (this.store.yinput) {
         const win = require('electron').remote.getCurrentWindow();
         win.focus();
-        $scope.yinput.source = data;
+        this.store.yinput.source = data;
         this.$timeout(() => { $scope.$apply(); });
       }
     });
@@ -114,8 +114,8 @@ class MainReducer implements yubo.MainReducer {
     const f = (filePath: string) => {
       const r = this.HistoryService.get(filePath);
       if (r) {
-        $scope.yinput.source = r.source;
-        $scope.yinput.encoded = r.encoded;
+        this.store.yinput.source = r.source;
+        this.store.yinput.encoded = r.encoded;
         this.$timeout(() => { $scope.$apply(); });
       } else {
         this.MessageService.info('履歴データは見つかりませんでした。');
@@ -263,20 +263,20 @@ class MainReducer implements yubo.MainReducer {
   // action
   play($scope: yubo.IMainScope): void {
     this.MessageService.action('start to play voice.');
-    if (!$scope.yinput.source && !$scope.yinput.encoded) {
+    if (!this.store.yinput.source && !this.store.yinput.encoded) {
       this.MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
       return;
     }
 
     // text converting
-    let encoded = $scope.yinput.encoded;
+    let encoded = this.store.yinput.encoded;
     const _selectedEncoded = this.selectedEncoded();
     if (_selectedEncoded) {
       encoded = _selectedEncoded;
       this.clearSourceSelection($scope);
     }
     if (!encoded) {
-      let source = $scope.yinput.source;
+      let source = this.store.yinput.source;
       const _selectedSource = this.selectedSource();
       if (_selectedSource) {
         source = _selectedSource;
@@ -375,7 +375,7 @@ class MainReducer implements yubo.MainReducer {
   }
   record($scope: yubo.IMainScope): void {
     this.MessageService.action('record voice.');
-    if (!$scope.yinput.source && !$scope.yinput.encoded) {
+    if (!this.store.yinput.source && !this.store.yinput.encoded) {
       this.MessageService.error('メッセージ、音記号列、どちらも入力されていません。');
       return;
     }
@@ -390,15 +390,15 @@ class MainReducer implements yubo.MainReducer {
     }
 
     // text converting
-    let encoded = $scope.yinput.encoded;
-    let loggingSourceText = $scope.yinput.source;
+    let encoded = this.store.yinput.encoded;
+    let loggingSourceText = this.store.yinput.source;
     const _selectedEncoded = this.selectedEncoded();
     if (_selectedEncoded) {
       encoded = _selectedEncoded;
       this.clearSourceSelection($scope);
     }
     if (!encoded) {
-      let source = $scope.yinput.source;
+      let source = this.store.yinput.source;
       const _selectedSource = this.selectedSource();
       if (_selectedSource) {
         source = _selectedSource;
@@ -738,7 +738,7 @@ class MainReducer implements yubo.MainReducer {
     // set initial data
     $scope.yvoiceList = this.DataService.initialData();
     $scope.curYvoice = $scope.yvoiceList[0];
-    $scope.yinput = angular.copy(this.YInputInitialData);
+    this.store.yinput = angular.copy(this.YInputInitialData);
     this.store.display = 'main';
     this.clearSourceSelection($scope);
     this.clearEncodedSelection($scope);
@@ -757,8 +757,8 @@ class MainReducer implements yubo.MainReducer {
     const r = this.HistoryService.get(message.wavFilePath);
     if (r) {
       this.$timeout(() => { // $scope.$apply
-        $scope.yinput.source = r.source;
-        $scope.yinput.encoded = r.encoded;
+        this.store.yinput.source = r.source;
+        this.store.yinput.encoded = r.encoded;
       });
     } else {
       this.MessageService.info('履歴データは見つかりませんでした。');
@@ -774,7 +774,7 @@ class MainReducer implements yubo.MainReducer {
 
   encode($scope: yubo.IMainScope): void {
     this.MessageService.action('encode source text.');
-    let source = $scope.yinput.source;
+    let source = this.store.yinput.source;
     const _selectedSource = this.selectedSource();
     if (_selectedSource) {
       source = _selectedSource;
@@ -786,19 +786,19 @@ class MainReducer implements yubo.MainReducer {
       angular.forEach(parsedList, (cinput) => {
         cinput.text = this.AquesService.encode(cinput.text);
       });
-      $scope.yinput.encoded = this.CommandService.toString(parsedList);
+      this.store.yinput.encoded = this.CommandService.toString(parsedList);
       this.clearEncodedSelection($scope);
     // not command
     } else {
       const encoded = this.AquesService.encode(source);
-      $scope.yinput.encoded = encoded;
+      this.store.yinput.encoded = encoded;
       this.clearEncodedSelection($scope);
     }
   }
   clear($scope: yubo.IMainScope): void {
     this.MessageService.action('clear input text.');
-    $scope.yinput.source = '';
-    $scope.yinput.encoded = '';
+    this.store.yinput.source = '';
+    this.store.yinput.encoded = '';
     this.clearSourceSelection($scope);
     this.clearEncodedSelection($scope);
   }
@@ -806,8 +806,8 @@ class MainReducer implements yubo.MainReducer {
     this.MessageService.action('paste clipboard text to source.');
     const text = clipboard().readText();
     if (text) {
-      $scope.yinput.source = text;
-      $scope.yinput.encoded = '';
+      this.store.yinput.source = text;
+      this.store.yinput.encoded = '';
       this.clearSourceSelection($scope);
       this.clearEncodedSelection($scope);
     } else {
@@ -823,28 +823,28 @@ class MainReducer implements yubo.MainReducer {
 
     // top
     if (pos == 0) {
-      $scope.yinput[field.id] = `${$scope.curYvoice.name}${'＞'}${field.value}`;
+      this.store.yinput[field.id] = `${$scope.curYvoice.name}${'＞'}${field.value}`;
       field.selectionStart = (`${$scope.curYvoice.name}${'＞'}`).length;
       field.selectionEnd = (`${$scope.curYvoice.name}${'＞'}`).length;
     // last
     } else if (pos == length) {
       if (field.value.substring(pos-1, pos) == '\n') {
-        $scope.yinput[field.id] = `${field.value}${$scope.curYvoice.name}${'＞'}`;
+        this.store.yinput[field.id] = `${field.value}${$scope.curYvoice.name}${'＞'}`;
         field.selectionStart = (field.value).length;
         field.selectionEnd = (field.value).length;
       } else {
-        $scope.yinput[field.id] = `${field.value}\n${$scope.curYvoice.name}${'＞'}`;
+        this.store.yinput[field.id] = `${field.value}\n${$scope.curYvoice.name}${'＞'}`;
         field.selectionStart = (field.value).length;
         field.selectionEnd = (field.value).length;
       }
     // in text
     } else {
       if (field.value.substring(pos-1, pos) == '\n') {
-        $scope.yinput[field.id] = `${field.value.substring(0, pos)}${$scope.curYvoice.name}${'＞'}${field.value.substring(pos, length)}`;
+        this.store.yinput[field.id] = `${field.value.substring(0, pos)}${$scope.curYvoice.name}${'＞'}${field.value.substring(pos, length)}`;
         field.selectionStart = (`${field.value.substring(0, pos)}${$scope.curYvoice.name}${'＞'}`).length;
         field.selectionEnd = (`${field.value.substring(0, pos)}${$scope.curYvoice.name}${'＞'}`).length;
       } else {
-        $scope.yinput[field.id] = `${field.value.substring(0, pos)}\n${$scope.curYvoice.name}${'＞'}${field.value.substring(pos, length)}`;
+        this.store.yinput[field.id] = `${field.value.substring(0, pos)}\n${$scope.curYvoice.name}${'＞'}${field.value.substring(pos, length)}`;
         field.selectionStart = (`${field.value.substring(0, pos)}\n${$scope.curYvoice.name}${'＞'}`).length;
         field.selectionEnd = (`${field.value.substring(0, pos)}\n${$scope.curYvoice.name}${'＞'}`).length;
       }

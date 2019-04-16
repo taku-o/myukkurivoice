@@ -394,7 +394,7 @@ declare namespace yubo {
 
   // store, scope
   export interface MainStore {
-    //yinput:              yubo.YInput;
+    yinput:              yubo.YInput;
     //curYvoice:           yubo.YVoice;
     //yvoiceList:          yubo.YVoice[];
     //appCfg:              AppCfg;
@@ -409,7 +409,7 @@ declare namespace yubo {
     generatedList:       IRecordMessage[];
   }
   export interface IMainScope extends ng.IScope {
-    yinput:              yubo.YInput;
+    //yinput:              yubo.YInput;
     curYvoice:           yubo.YVoice;
     yvoiceList:          yubo.YVoice[];
     appCfg:              AppCfg;

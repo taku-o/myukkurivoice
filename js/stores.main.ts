@@ -1,8 +1,11 @@
 class MainStore implements yubo.MainStore {
   constructor(
-  ) {}
+    YInput: yubo.YInput
+  ) {
+    this.yinput = angular.copy(YInput);
+  }
 
-  //yinput:              yubo.YInput;
+  yinput: yubo.YInput;
   //curYvoice:           yubo.YVoice;
   //yvoiceList:          yubo.YVoice[];
   //appCfg:              AppCfg;
@@ -17,7 +20,8 @@ class MainStore implements yubo.MainStore {
   generatedList: yubo.IRecordMessage[] = [];
 }
 
-angular.module('mainStores', [])
+angular.module('mainStores', ['mainModels'])
   .service('MainStore', [
+    'YInput',
     MainStore,
   ]);

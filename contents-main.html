@@ -37,13 +37,13 @@
 <header class="toolbar toolbar-header">
   <div class="toolbar-actions">
     <div class="btn-group" id="btn-group-audio">
-      <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
+      <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()" ng-disabled="(!ctrl.store.yinput.source) && (!ctrl.store.yinput.encoded)">
         <span class="icon icon-play"></span>再生
       </button>
       <button class="btn btn-large btn-default" id="stop" ng-click="ctrl.stop()">
         <span class="icon icon-stop"></span>停止
       </button>
-      <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
+      <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()" ng-disabled="(!ctrl.store.yinput.source) && (!ctrl.store.yinput.encoded)">
         <span class="icon icon-record"></span>記録
       </button>
     </div>

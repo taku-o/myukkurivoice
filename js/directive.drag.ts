@@ -2,7 +2,7 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // angular directive
-angular.module('DragDirectives', []);
+angular.module('DragDirectives', ['mainStores']);
 
 // wav-draggable
 class WavDraggable implements yubo.WavDraggable {
@@ -39,7 +39,10 @@ angular.module('DragDirectives')
 
 // txt-droppable
 class TxtDroppable implements yubo.TxtDroppable {
-  constructor() {}
+  constructor(
+    private store: yubo.MainStore
+  ) {}
+
   link (scope: yubo.IMainScope, element: ng.IDocumentService, attr: ng.IAttributes) {
     const el: HTMLElement = element[0];
 
@@ -50,7 +53,7 @@ class TxtDroppable implements yubo.TxtDroppable {
       const reader = new FileReader();
       reader.onload = (loadedFile) => {
         // yinput.source or yinput.encoded
-        scope.yinput[el.id] = reader.result;
+        this.store.yinput[el.id] = reader.result;
         scope.$apply();
       };
       const file = e.dataTransfer.files[0];
@@ -61,5 +64,6 @@ class TxtDroppable implements yubo.TxtDroppable {
 }
 angular.module('DragDirectives')
   .directive('txtDroppable', [
-    () => new TxtDroppable(),
+    'MainStore',
+    (store: yubo.MainStore) => new TxtDroppable(store),
   ]);
