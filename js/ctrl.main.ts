@@ -40,32 +40,32 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
 
   // selected text highlight
   ctrl.blurOnSource = function(): void {
-    reducer.blurOnSource($scope);
+    reducer.blurOnSource();
   };
   ctrl.blurOnEncoded = function(): void {
-    reducer.blurOnEncoded($scope);
+    reducer.blurOnEncoded();
   };
   ctrl.focusOnSource = function(): void {
-    reducer.focusOnSource($scope);
+    reducer.focusOnSource();
   };
   ctrl.focusOnEncoded = function(): void {
-    reducer.focusOnEncoded($scope);
+    reducer.focusOnEncoded();
   };
 
   // list box selection changed
   ctrl.onChangePhont = function(): void {
-    reducer.onChangePhont($scope);
+    reducer.onChangePhont();
   };
 
   // action
   ctrl.play = function(): void {
-    reducer.play($scope);
+    reducer.play();
   };
   ctrl.stop = function(): void {
     reducer.stop();
   };
   ctrl.record = function(): void {
-    reducer.record($scope);
+    reducer.record();
   };
   ctrl.showSystemWindow = function(): void {
     if (!TEST) { return; }
@@ -82,47 +82,47 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
     reducer.dictionary();
   };
   ctrl.tutorial = function(): void {
-    reducer.tutorial($scope);
+    reducer.tutorial();
   };
   ctrl.shortcut = function(): void {
     reducer.shortcut($scope);
   };
   ctrl.select = function(index: number): void {
-    reducer.select($scope, index);
+    reducer.select(index);
   };
   ctrl.plus = function(): void {
-    reducer.plus($scope);
+    reducer.plus();
   };
   ctrl.minus = function(index: number): void {
-    reducer.minus($scope, index);
+    reducer.minus(index);
   };
   ctrl.copy = function(index: number): void {
-    reducer.copy($scope, index);
+    reducer.copy(index);
   };
   ctrl.save = function(): void {
-    reducer.save($scope);
+    reducer.save();
   };
   ctrl.reset = function(): void {
-    reducer.reset($scope);
+    reducer.reset();
   };
   ctrl.quickLookMessage = function(message: yubo.IWriteMessage): void {
     reducer.quickLookMessage(message);
   };
   ctrl.recentDocument = function(message: yubo.IRecordMessage): void {
-    reducer.recentDocument($scope, message);
+    reducer.recentDocument(message);
   };
   ctrl.clearRecentDocuments = function(): void {
-    reducer.clearRecentDocuments($scope);
+    reducer.clearRecentDocuments();
   };
 
   ctrl.encode = function(): void {
-    reducer.encode($scope);
+    reducer.encode();
   };
   ctrl.clear = function(): void {
-    reducer.clear($scope);
+    reducer.clear();
   };
   ctrl.fromClipboard = function(): void {
-    reducer.fromClipboard($scope);
+    reducer.fromClipboard();
   };
   ctrl.putVoiceName = function(): void {
     reducer.putVoiceName($scope);
@@ -132,13 +132,13 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   };
 
   ctrl.switchSettingsView = function(): void {
-    reducer.switchSettingsView($scope);
+    reducer.switchSettingsView();
   };
   ctrl.switchMainView = function(): void {
-    reducer.switchMainView($scope);
+    reducer.switchMainView();
   };
   ctrl.switchMessageListType = function(): void {
-    reducer.switchMessageListType($scope);
+    reducer.switchMessageListType();
   };
   ctrl.switchAlwaysOnTop = function(): void {
     reducer.switchAlwaysOnTop();
@@ -148,7 +148,7 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   });
 
   // run init
-  reducer.init($scope);
+  reducer.init();
 }]);
 
 declare var dataJson: yubo.YVoice[];
