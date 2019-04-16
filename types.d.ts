@@ -395,9 +395,8 @@ declare namespace yubo {
   // store, scope
   export interface MainStore {
     yinput:              yubo.YInput;
-    //curYvoice:           yubo.YVoice;
-    //yvoiceList:          yubo.YVoice[];
-    //appCfg:              AppCfg;
+    curYvoice:           yubo.YVoice;
+    yvoiceList:          yubo.YVoice[];
     duration:            number;
     lastWavFile:         yubo.IRecordMessage;
     //encodedHighlight:    {[key: string]: string};
@@ -409,19 +408,8 @@ declare namespace yubo {
     generatedList:       IRecordMessage[];
   }
   export interface IMainScope extends ng.IScope {
-    //yinput:              yubo.YInput;
-    curYvoice:           yubo.YVoice;
-    yvoiceList:          yubo.YVoice[];
-    appCfg:              AppCfg;
-    //duration:            number;
-    //lastWavFile:         yubo.IRecordMessage;
     encodedHighlight:    {[key: string]: string};
     sourceHighlight:     {[key: string]: string};
-    //display:             string;
-    //alwaysOnTop:         boolean;
-    //showTypeMessageList: boolean;
-    //messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
-    //generatedList:       IRecordMessage[];
   }
   export interface SystemStore {
     appCfg:     AppCfg;
@@ -443,7 +431,7 @@ declare namespace yubo {
 
   // apps.main.ts
   export interface MainReducer {
-    //private appCfg: yubo.AppCfg;
+    appCfg: yubo.AppCfg;
     //private AudioService: yubo.IAudioService;
     onShortcut($scope: yubo.IMainScope, action: string): void;
     onMenu($scope: yubo.IMainScope, action: string): void;

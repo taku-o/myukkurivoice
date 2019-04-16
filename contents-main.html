@@ -77,14 +77,14 @@
       <li class="list-group-header">
         <input class="form-control" id="filter-text" type="search" ng-model='filterText.name' placeholder="設定一覧絞り込み">
       </li>
-      <li class="list-group-item voice-config-item" ng-repeat="yvoiceItem in yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == curYvoice.id}" ng-attr-id="{{yvoiceItem.id}}">
+      <li class="list-group-item voice-config-item" ng-repeat="yvoiceItem in ctrl.store.yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == ctrl.store.curYvoice.id}" ng-attr-id="{{yvoiceItem.id}}">
         <div class="media-body" ng-click="ctrl.select($index)">
           <strong><span ng-bind="$index"></span>:<span ng-bind="yvoiceItem.name"></span></strong>
           <div class="btn-group pull-right">
             <button class="btn btn-default" id="copy" ng-click="ctrl.copy($index)" title="設定を複製します">
               <span class="icon icon-plus-circled"></span>
             </button>
-            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="yvoiceList.length > 1" title="設定を削除します">
+            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="ctrl.store.yvoiceList.length > 1" title="設定を削除します">
               <span class="icon icon-minus-circled"></span>
             </button>
           </div>

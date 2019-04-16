@@ -25,12 +25,13 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   // init
   const ctrl = this;
   ctrl.store = store;
+  ctrl.store.yvoiceList = dataJson;
+  ctrl.store.curYvoice = dataJson.length > 0? dataJson[0]: null;
+
+  ctrl.appCfg = reducer.appCfg;
   ctrl.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
   ctrl.YPhontMasterList = YPhontMasterList;
   ctrl.isTest = TEST;
-
-  $scope.yvoiceList = dataJson;
-  $scope.curYvoice = dataJson.length > 0? dataJson[0]: null;
 
   // $onInit
   this.$onInit = (): void => {

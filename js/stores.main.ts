@@ -6,9 +6,8 @@ class MainStore implements yubo.MainStore {
   }
 
   yinput: yubo.YInput;
-  //curYvoice:           yubo.YVoice;
-  //yvoiceList:          yubo.YVoice[];
-  //appCfg:              AppCfg;
+  curYvoice: yubo.YVoice;
+  yvoiceList: yubo.YVoice[];
   duration: number;
   lastWavFile: yubo.IRecordMessage = null;
   //encodedHighlight:    {[key: string]: string};
