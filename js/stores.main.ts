@@ -8,10 +8,17 @@ class MainStore implements yubo.MainStore {
   yinput: yubo.YInput;
   curYvoice: yubo.YVoice;
   yvoiceList: yubo.YVoice[];
+
   duration: number;
   lastWavFile: yubo.IRecordMessage = null;
-  //encodedHighlight:    {[key: string]: string};
-  //sourceHighlight:     {[key: string]: string};
+
+  sourceHighlight: {[key: string]: string} = {
+    '#619FFF' : '{{ sourceHighlight["#619FFF"] }}',
+  };
+  encodedHighlight: {[key: string]: string} = {
+    '#619FFF' : '{{ encodedHighlight["#619FFF"] }}',
+  };
+
   display: string = 'main';
   alwaysOnTop: boolean = false;
   showTypeMessageList: boolean = true;

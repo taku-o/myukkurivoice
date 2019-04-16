@@ -210,10 +210,10 @@ class MainReducer implements yubo.MainReducer {
 
   // selected text highlight
   blurOnSource($scope: yubo.IMainScope): void {
-    $scope.sourceHighlight['#619FFF'] = this.selectedSource();
+    this.store.sourceHighlight['#619FFF'] = this.selectedSource();
   }
   blurOnEncoded($scope: yubo.IMainScope): void {
-    $scope.encodedHighlight['#619FFF'] = this.selectedEncoded();
+    this.store.encodedHighlight['#619FFF'] = this.selectedEncoded();
   }
   focusOnSource($scope: yubo.IMainScope): void {
     this.clearSourceSelection($scope);
@@ -224,13 +224,13 @@ class MainReducer implements yubo.MainReducer {
     this.clearEncodedSelection($scope);
   }
   private clearSourceSelection($scope: yubo.IMainScope): void {
-    $scope.sourceHighlight['#619FFF'] = '';
+    this.store.sourceHighlight['#619FFF'] = '';
     const textarea = document.getElementById('source') as HTMLInputElement;
     textarea.selectionStart = 0;
     textarea.selectionEnd = 0;
   }
   private clearEncodedSelection($scope: yubo.IMainScope): void {
-    $scope.encodedHighlight['#619FFF'] = '';
+    this.store.encodedHighlight['#619FFF'] = '';
     const textarea = document.getElementById('encoded') as HTMLInputElement;
     textarea.selectionStart = 0;
     textarea.selectionEnd = 0;

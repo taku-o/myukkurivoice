@@ -399,8 +399,8 @@ declare namespace yubo {
     yvoiceList:          yubo.YVoice[];
     duration:            number;
     lastWavFile:         yubo.IRecordMessage;
-    //encodedHighlight:    {[key: string]: string};
-    //sourceHighlight:     {[key: string]: string};
+    encodedHighlight:    {[key: string]: string};
+    sourceHighlight:     {[key: string]: string};
     display:             string;
     alwaysOnTop:         boolean;
     showTypeMessageList: boolean;
@@ -408,8 +408,6 @@ declare namespace yubo {
     generatedList:       IRecordMessage[];
   }
   export interface IMainScope extends ng.IScope {
-    encodedHighlight:    {[key: string]: string};
-    sourceHighlight:     {[key: string]: string};
   }
   export interface SystemStore {
     appCfg:     AppCfg;

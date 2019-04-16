@@ -39,12 +39,6 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   };
 
   // selected text highlight
-  $scope.sourceHighlight = {
-    '#619FFF' : '{{ sourceHighlight["#619FFF"] }}',
-  };
-  $scope.encodedHighlight = {
-    '#619FFF' : '{{ encodedHighlight["#619FFF"] }}',
-  };
   ctrl.blurOnSource = function(): void {
     reducer.blurOnSource($scope);
   };

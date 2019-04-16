@@ -7,7 +7,7 @@
 
     <div class="form-group">
       <!-- <label>Source</label> -->
-      <textarea class="form-control" id="source" rows="4" txt-droppable ng-model="ctrl.store.yinput.source" highlight="sourceHighlight" ng-blur="ctrl.blurOnSource()" ng-focus="ctrl.focusOnSource()" placeholder="メッセージ入力欄" autofocus></textarea>
+      <textarea class="form-control" id="source" rows="4" txt-droppable ng-model="ctrl.store.yinput.source" highlight="ctrl.store.sourceHighlight" ng-blur="ctrl.blurOnSource()" ng-focus="ctrl.focusOnSource()" placeholder="メッセージ入力欄" autofocus></textarea>
     </div>
 
     <div class="form-inline form-group btn-group-convert">
@@ -23,7 +23,7 @@
     </div>
     <div class="form-group">
       <!-- <label>Encoded</label> -->
-      <textarea class="form-control" id="encoded" rows="4" txt-droppable ng-model="ctrl.store.yinput.encoded" highlight="encodedHighlight" ng-blur="ctrl.blurOnEncoded()" ng-focus="ctrl.focusOnEncoded()" placeholder="音記号列入力欄"></textarea>
+      <textarea class="form-control" id="encoded" rows="4" txt-droppable ng-model="ctrl.store.yinput.encoded" highlight="ctrl.store.encodedHighlight" ng-blur="ctrl.blurOnEncoded()" ng-focus="ctrl.focusOnEncoded()" placeholder="音記号列入力欄"></textarea>
     </div>
 
     <div class="form-inline form-group">
