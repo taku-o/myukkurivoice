@@ -189,6 +189,7 @@ class MainReducer implements yubo.MainReducer {
         while (this.store.generatedList.length > 10) {
           this.store.generatedList.pop();
         }
+        if (MONITOR) { ipcRenderer().send('appLaunchFinished', 'history data loaded.'); }
       });
     });
   }

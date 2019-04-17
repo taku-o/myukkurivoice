@@ -102,6 +102,14 @@ app.on('ready', () => {
   });
 });
 
+// application initialization finish monitoring
+if (MONITOR) {
+  ipcMain.on('appLaunchFinished', (event: Electron.Event, message: string) => {
+    log().warn(monitor().format('electron', '----'));
+    log().warn(monitor().format('electron', 'app launch finished'));
+  });
+}
+
 // show window event
 ipcMain.on('showHelpWindow', (event: Electron.Event, message: string) => {
   myApp.showHelpWindow();
