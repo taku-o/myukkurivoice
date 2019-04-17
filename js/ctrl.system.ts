@@ -5,7 +5,9 @@ class SystemController implements yubo.SystemController {
     private $timeout: ng.ITimeoutService,
     private store: yubo.SystemStore,
     private reducer: yubo.SystemReducer
-  ) {}
+  ) {
+    reducer.addObserver(this);
+  }
 
   // accessor
   get appCfg() {

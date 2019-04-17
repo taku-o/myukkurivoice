@@ -13,6 +13,7 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
     reducer: yubo.MainReducer,
     YPhontMasterList: yubo.YPhont[]
   ) {
+  reducer.addObserver(((this as unknown) as yubo.StoreObserver));
 
   // event bridge
   $scope.$on('shortcut', (event: ng.IAngularEvent, action: string) => {

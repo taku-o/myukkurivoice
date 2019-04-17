@@ -5,7 +5,9 @@ class HelpController implements yubo.HelpController {
     private $timeout: ng.ITimeoutService,
     private store: yubo.HelpStore,
     private reducer: yubo.HelpReducer
-  ) {}
+  ) {
+    reducer.addObserver(this);
+  }
 
   // accessor
   get display(): string {

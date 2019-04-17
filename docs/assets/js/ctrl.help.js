@@ -5,6 +5,7 @@ class HelpController {
         this.$timeout = $timeout;
         this.store = store;
         this.reducer = reducer;
+        reducer.addObserver(this);
     }
     get display() {
         return this.store.display;

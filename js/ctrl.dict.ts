@@ -6,6 +6,7 @@ class DictController implements yubo.DictController {
     private store: yubo.DictStore,
     private reducer: yubo.DictReducer
   ) {
+    reducer.addObserver(this);
     // run init
     reducer.init();
   }
