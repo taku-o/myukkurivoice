@@ -85,7 +85,7 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
     reducer.tutorial();
   };
   ctrl.shortcut = function(): void {
-    reducer.shortcut($scope);
+    reducer.shortcut();
   };
   ctrl.select = function(index: number): void {
     reducer.select(index);

@@ -688,7 +688,7 @@ class MainReducer implements yubo.MainReducer {
       this.IntroService.settingsTutorial();
     }
   }
-  shortcut($scope: yubo.IMainScope): void {
+  shortcut(): void {
     this.MessageService.action('show shortcut key help.');
     if (this.store.display == 'main') {
       this.IntroService.shortcut();
@@ -696,7 +696,6 @@ class MainReducer implements yubo.MainReducer {
       this.store.display = 'main';
       this.MessageService.info('標準の画面に切り替えます。');
       this.$timeout(() => {
-        $scope.$apply();
         this.IntroService.shortcut();
       });
     }

@@ -459,7 +459,7 @@ declare namespace yubo {
     help(): void;
     dictionary(): void;
     tutorial(): void;
-    shortcut($scope: yubo.IMainScope): void;
+    shortcut(): void;
     select(index: number): void;
     plus(): void;
     minus(index: number): void;
