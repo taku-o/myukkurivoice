@@ -63,7 +63,7 @@ class DictController implements yubo.DictController {
 
   // store observer
   update(objects: {[key: string]: any}): void {
-    this.$timeout(() => { this.$scope.$apply(); });
+    this.$timeout(() => {});
   }
 }
 

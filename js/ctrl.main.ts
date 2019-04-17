@@ -156,7 +156,7 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
 
   // store observer
   this.update = (objects: {[key: string]: any}): void => {
-    $timeout(() => { $scope.$apply(); });
+    $timeout(() => {});
   };
 
   // run init

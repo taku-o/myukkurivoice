@@ -44,7 +44,7 @@ class DataService implements yubo.DataService {
         if (ok) { ok(data); }
         d.resolve(data);
       }
-    }, 0);
+    }, 0, false);
     return d.promise;
   }
 
@@ -135,7 +135,7 @@ class HistoryService implements yubo.HistoryService {
       this.cache().load(data);
       this._loaded = true;
       d.resolve(this.cache());
-    }, 0);
+    }, 0, false);
     return d.promise;
   }
 

@@ -1,7 +1,6 @@
 // controllers
 class HelpController implements yubo.HelpController {
   constructor(
-    private $scope: ng.IScope,
     private $timeout: ng.ITimeoutService,
     private store: yubo.HelpStore,
     private reducer: yubo.HelpReducer
@@ -33,19 +32,17 @@ class HelpController implements yubo.HelpController {
 
   // store observer
   update(objects: {[key: string]: any}): void {
-    this.$timeout(() => { this.$scope.$apply(); });
+    this.$timeout(() => {});
   }
 }
 angular.module('helpControllers', ['helpStores', 'helpReducers', 'IncludeDirectives'])
   .controller('HelpController', [
-    '$scope',
     '$timeout',
     'HelpStore',
     'HelpReducer',
     (
-      $scope: ng.IScope,
       $timeout: ng.ITimeoutService,
       store: yubo.HelpStore,
       reducer: yubo.HelpReducer
-    ) => new HelpController($scope, $timeout, store, reducer),
+    ) => new HelpController($timeout, store, reducer),
   ]);

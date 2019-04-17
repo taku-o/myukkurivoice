@@ -249,7 +249,7 @@ class AquesService implements yubo.AquesService {
       this.LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
         this.aquesTalk10DevKey = licenseKey;
       });
-    }, 0);
+    }, 0, false);
   }
 
   private _isAqKanji2KoeDevkeySet: boolean = false;

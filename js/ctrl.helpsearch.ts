@@ -1,7 +1,6 @@
 // controllers
 class HelpSearchController implements yubo.HelpSearchController {
   constructor(
-    private $scope: ng.IScope,
     private $timeout: ng.ITimeoutService,
     private store: yubo.HelpSearchStore,
     private reducer: yubo.HelpSearchReducer
@@ -31,19 +30,17 @@ class HelpSearchController implements yubo.HelpSearchController {
 
   // store observer
   update(objects: {[key: string]: any}): void {
-    this.$timeout(() => { this.$scope.$apply(); });
+    this.$timeout(() => {});
   }
 }
 angular.module('helpSearchControllers', ['helpSearchStores', 'helpSearchReducers'])
   .controller('HelpSearchController', [
-    '$scope',
     '$timeout',
     'HelpSearchStore',
     'HelpSearchReducer',
     (
-      $scope: ng.IScope,
       $timeout: ng.ITimeoutService,
       store: yubo.HelpSearchStore,
       reducer: yubo.HelpSearchReducer
-    ) => new HelpSearchController($scope, $timeout, store, reducer),
+    ) => new HelpSearchController($timeout, store, reducer),
   ]);
