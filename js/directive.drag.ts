@@ -43,7 +43,7 @@ class TxtDroppable implements yubo.TxtDroppable {
     private store: yubo.MainStore
   ) {}
 
-  link (scope: yubo.IMainScope, element: ng.IDocumentService, attr: ng.IAttributes) {
+  link (scope: ng.IScope, element: ng.IDocumentService, attr: ng.IAttributes) {
     const el: HTMLElement = element[0];
 
     el.addEventListener('drop', (e: DragEvent) => {

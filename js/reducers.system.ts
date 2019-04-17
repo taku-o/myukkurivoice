@@ -37,6 +37,17 @@ class SystemReducer implements yubo.SystemReducer {
   reset(): void {
     ipcRenderer().send('resetAppConfig', '');
   }
+
+  // store observer
+  private observers: yubo.StoreObserver[] = [];
+  addObserver(observer: yubo.StoreObserver): void {
+    this.observers.push(observer);
+  }
+  private notifyUpdates(objects: {[key: string]: any}): void {
+    for (let o of this.observers) {
+      o.update(objects);
+    }
+  }
 }
 
 angular.module('systemReducers', ['systemStores', 'LicenseServices'])

@@ -1,7 +1,8 @@
 // controllers
 class DictController implements yubo.DictController {
   constructor(
-    private $scope: yubo.IDictScope,
+    private $scope: ng.IScope,
+    private $timeout: ng.ITimeoutService,
     private store: yubo.DictStore,
     private reducer: yubo.DictReducer
   ) {
@@ -58,6 +59,11 @@ class DictController implements yubo.DictController {
   tutorial(): void {
     this.reducer.tutorial();
   }
+
+  // store observer
+  update(objects: {[key: string]: any}): void {
+    this.$timeout(() => { this.$scope.$apply(); });
+  }
 }
 
 angular.module('dictControllers',
@@ -66,9 +72,15 @@ angular.module('dictControllers',
   ])
   .controller('DictController', [
     '$scope',
+    '$timeout',
     'DictStore',
     'DictReducer',
-    ($scope: yubo.IDictScope, store: yubo.DictStore, reducer: yubo.DictReducer) => new DictController($scope, store, reducer),
+    (
+      $scope: ng.IScope,
+      $timeout: ng.ITimeoutService,
+      store: yubo.DictStore,
+      reducer: yubo.DictReducer
+    ) => new DictController($scope, $timeout, store, reducer),
   ])
   .filter('mapKind', ['KindHash', (KindHash: yubo.KindHash) => {
     return (input: number) => {

@@ -116,6 +116,17 @@ class HelpReducer implements yubo.HelpReducer {
       ipcRenderer().send('showSystemWindow', 'system');
     }
   }
+
+  // store observer
+  private observers: yubo.StoreObserver[] = [];
+  addObserver(observer: yubo.StoreObserver): void {
+    this.observers.push(observer);
+  }
+  private notifyUpdates(objects: {[key: string]: any}): void {
+    for (let o of this.observers) {
+      o.update(objects);
+    }
+  }
 }
 
 angular.module('helpReducers', ['helpStores'])

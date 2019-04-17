@@ -38,7 +38,7 @@ class MainReducer implements yubo.MainReducer {
   ) {}
 
   // event
-  onShortcut($scope: yubo.IMainScope, action: string): void {
+  onShortcut($scope: ng.IScope, action: string): void {
     switch (action) {
       case 'putVoiceName':
         this.putVoiceName($scope);
@@ -69,7 +69,7 @@ class MainReducer implements yubo.MainReducer {
         break;
     }
   }
-  onMenu($scope: yubo.IMainScope, action: string): void {
+  onMenu($scope: ng.IScope, action: string): void {
     switch (action) {
       case 'minus':
         {
@@ -93,7 +93,7 @@ class MainReducer implements yubo.MainReducer {
         break;
     }
   }
-  onDropTextFile($scope: yubo.IMainScope, filePath: string): void {
+  onDropTextFile($scope: ng.IScope, filePath: string): void {
     this.MessageService.action('drop textfile to app icon.');
     fs().readFile(filePath, 'utf-8', (err: Error, data: string) => {
       if (err) {
@@ -108,7 +108,7 @@ class MainReducer implements yubo.MainReducer {
       }
     });
   }
-  onRecentDocument($scope: yubo.IMainScope, filePath: string): void {
+  onRecentDocument($scope: ng.IScope, filePath: string): void {
     this.MessageService.action('select from Recent Document List.');
 
     const f = (filePath: string) => {
@@ -135,7 +135,7 @@ class MainReducer implements yubo.MainReducer {
   init(): void {
     this.loadData(null);
   }
-  onLoad($scope: yubo.IMainScope): void {
+  onLoad($scope: ng.IScope): void {
     this.loadHistory();
     this.AquesService.init(); // initialize AquesService
 
@@ -813,7 +813,7 @@ class MainReducer implements yubo.MainReducer {
       this.MessageService.info('クリップボードにデータがありません。');
     }
   }
-  putVoiceName($scope: yubo.IMainScope): void {
+  putVoiceName($scope: ng.IScope): void {
     const field = document.activeElement as HTMLInputElement;
     if (field.id != 'source' && field.id != 'encoded') { return; }
 
@@ -850,7 +850,7 @@ class MainReducer implements yubo.MainReducer {
     }
     this.$timeout(() => { $scope.$apply(); });
   }
-  directory($scope: yubo.IMainScope): void {
+  directory($scope: ng.IScope): void {
     this.MessageService.action('select directory.');
     if (!this.store.curYvoice.seqWrite) {
       this.MessageService.error('連番ファイル設定が無効です。');
@@ -885,10 +885,21 @@ class MainReducer implements yubo.MainReducer {
     this.MessageService.action('switch alwaysOnTop option.');
     ipcRenderer().send('switchAlwaysOnTop', 'mainWindow');
   }
-  onSwitchAlwaysOnTop($scope: yubo.IMainScope, event: Electron.Event, newflg: boolean): void {
+  onSwitchAlwaysOnTop($scope: ng.IScope, event: Electron.Event, newflg: boolean): void {
     this.store.alwaysOnTop = newflg;
     this.MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
     this.$timeout(() => { $scope.$apply(); });
+  }
+
+  // store observer
+  private observers: yubo.StoreObserver[] = [];
+  addObserver(observer: yubo.StoreObserver): void {
+    this.observers.push(observer);
+  }
+  private notifyUpdates(objects: {[key: string]: any}): void {
+    for (let o of this.observers) {
+      o.update(objects);
+    }
   }
 }
 

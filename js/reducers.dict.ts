@@ -52,7 +52,7 @@ class DictReducer implements yubo.DictReducer {
       });
     });
   }
-  onLoad($scope: yubo.IDictScope): void {
+  onLoad($scope: ng.IScope): void {
     // initialize records
     this.store.gridOptions = {
       enableFiltering: true,
@@ -312,6 +312,17 @@ class DictReducer implements yubo.DictReducer {
 
   tutorial(): void {
     this.IntroService.dictTutorial();
+  }
+
+  // store observer
+  private observers: yubo.StoreObserver[] = [];
+  addObserver(observer: yubo.StoreObserver): void {
+    this.observers.push(observer);
+  }
+  private notifyUpdates(objects: {[key: string]: any}): void {
+    for (let o of this.observers) {
+      o.update(objects);
+    }
   }
 }
 

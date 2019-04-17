@@ -1,6 +1,8 @@
 "use strict";
 class HelpController {
-    constructor(store, reducer) {
+    constructor($scope, $timeout, store, reducer) {
+        this.$scope = $scope;
+        this.$timeout = $timeout;
         this.store = store;
         this.reducer = reducer;
     }
@@ -22,10 +24,15 @@ class HelpController {
     showSystemWindow() {
         this.reducer.showSystemWindow();
     }
+    update(objects) {
+        this.$timeout(() => { this.$scope.$apply(); });
+    }
 }
 angular.module('helpControllers', ['helpStores', 'helpReducers', 'IncludeDirectives'])
     .controller('HelpController', [
+    '$scope',
+    '$timeout',
     'HelpStore',
     'HelpReducer',
-    (store, reducer) => new HelpController(store, reducer),
+    ($scope, $timeout, store, reducer) => new HelpController($scope, $timeout, store, reducer),
 ]);

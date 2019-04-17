@@ -5,8 +5,14 @@ const TEST = process.env.NODE_ENV == 'test';
 
 // controllers
 angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives', 'mainServices', 'mainModels', 'input-highlight'])
-  .controller('MainController', ['$scope', 'MainStore', 'MainReducer', 'YPhontMasterList',
-  function($scope: yubo.IMainScope, store: yubo.MainStore, reducer: yubo.MainReducer, YPhontMasterList: yubo.YPhont[]) {
+  .controller('MainController', ['$scope', '$timeout', 'MainStore', 'MainReducer', 'YPhontMasterList',
+  function(
+    $scope: ng.IScope,
+    $timeout: ng.ITimeoutService,
+    store: yubo.MainStore,
+    reducer: yubo.MainReducer,
+    YPhontMasterList: yubo.YPhont[]
+  ) {
 
   // event bridge
   $scope.$on('shortcut', (event: ng.IAngularEvent, action: string) => {
@@ -146,6 +152,11 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   ipcRenderer().on('switchAlwaysOnTop', (event: Electron.Event, newflg: boolean) => {
     reducer.onSwitchAlwaysOnTop($scope, event, newflg);
   });
+
+  // store observer
+  this.update = (objects: {[key: string]: any}): void => {
+    $timeout(() => { $scope.$apply(); });
+  };
 
   // run init
   reducer.init();

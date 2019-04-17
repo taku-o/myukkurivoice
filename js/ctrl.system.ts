@@ -1,6 +1,8 @@
 // controllers
 class SystemController implements yubo.SystemController {
   constructor(
+    private $scope: ng.IScope,
+    private $timeout: ng.ITimeoutService,
     private store: yubo.SystemStore,
     private reducer: yubo.SystemReducer
   ) {}
@@ -31,11 +33,23 @@ class SystemController implements yubo.SystemController {
   reset(): void {
     this.reducer.reset();
   }
+
+  // store observer
+  update(objects: {[key: string]: any}): void {
+    this.$timeout(() => { this.$scope.$apply(); });
+  }
 }
 
 angular.module('systemControllers', ['systemStores', 'systemReducers'])
   .controller('SystemController', [
+    '$scope',
+    '$timeout',
     'SystemStore',
     'SystemReducer',
-    (store: yubo.SystemStore, reducer: yubo.SystemReducer) => new SystemController(store, reducer),
+    (
+      $scope: ng.IScope,
+      $timeout: ng.ITimeoutService,
+      store: yubo.SystemStore,
+      reducer: yubo.SystemReducer
+    ) => new SystemController($scope, $timeout, store, reducer),
   ]);

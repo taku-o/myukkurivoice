@@ -398,6 +398,16 @@ declare namespace yubo {
   export interface HelpShortcutEvent extends ng.IDirective {}
   export interface HelpSearchEvent extends ng.IDirective {}
 
+  // observer
+  interface Reducer {
+    //private observers: yubo.StoreObserver[];
+    addObserver(observer: yubo.StoreObserver): void;
+    //private notifyUpdates(objects: {[key: string]: any}): void;
+  }
+  interface StoreObserver {
+    update(objects: {[key: string]: any}): void;
+  }
+
   // store, scope
   export interface MainStore {
     yinput:              yubo.YInput;
@@ -413,8 +423,6 @@ declare namespace yubo {
     messageList:         (IMessage | IRecordMessage | ISourceMessage)[];
     generatedList:       IRecordMessage[];
   }
-  export interface IMainScope extends ng.IScope {
-  }
   export interface SystemStore {
     appCfg:     AppCfg;
     aq10UseKey: string;
@@ -424,8 +432,6 @@ declare namespace yubo {
     message:     string;
     gridOptions: any;
   }
-  export interface IDictScope extends ng.IScope {
-  }
   export interface HelpStore {
     display: string;
   }
@@ -434,15 +440,15 @@ declare namespace yubo {
   }
 
   // apps.main.ts
-  export interface MainReducer {
+  export interface MainReducer extends yubo.Reducer {
     appCfg: yubo.AppCfg;
     //private AudioService: yubo.IAudioService;
-    onShortcut($scope: yubo.IMainScope, action: string): void;
-    onMenu($scope: yubo.IMainScope, action: string): void;
-    onDropTextFile($scope: yubo.IMainScope, filePath: string): void;
-    onRecentDocument($scope: yubo.IMainScope, filePath: string): void;
+    onShortcut($scope: ng.IScope, action: string): void;
+    onMenu($scope: ng.IScope, action: string): void;
+    onDropTextFile($scope: ng.IScope, filePath: string): void;
+    onRecentDocument($scope: ng.IScope, filePath: string): void;
     init(): void;
-    onLoad($scope: yubo.IMainScope): void;
+    onLoad($scope: ng.IScope): void;
     //private loadData(nextTask: () => void): void;
     //private loadHistory(): void;
     //private selectedSource(): string;
@@ -478,13 +484,13 @@ declare namespace yubo {
     encode(): void;
     clear(): void;
     fromClipboard(): void;
-    putVoiceName($scope: yubo.IMainScope): void;
-    directory($scope: yubo.IMainScope): void;
+    putVoiceName($scope: ng.IScope): void;
+    directory($scope: ng.IScope): void;
     switchSettingsView(): void;
     switchMainView(): void;
     switchMessageListType(): void;
     switchAlwaysOnTop(): void;
-    onSwitchAlwaysOnTop($scope: yubo.IMainScope, event: Electron.Event, newflg: boolean): void;
+    onSwitchAlwaysOnTop($scope: ng.IScope, event: Electron.Event, newflg: boolean): void;
   }
   export interface WaveOptions {
     passPhrase:          string;
@@ -506,7 +512,7 @@ declare namespace yubo {
   }
 
   // apps.dict.ts
-  export interface DictController {
+  export interface DictController extends yubo.StoreObserver {
     // accessor
     isInEditing: boolean;
     message:     string;
@@ -525,14 +531,14 @@ declare namespace yubo {
     reload(): void;
     tutorial(): void;
   }
-  export interface DictReducer {
+  export interface DictReducer extends yubo.Reducer {
     //private readonly htmlTitle: string;
     //private readonly rscDictDir: string;
     //private readonly mAppDictDir: string;
     //private gridApi: any/*IGridApi*/;
     onMenu(action: string): void;
     init(): void;
-    onLoad($scope: yubo.IDictScope): void;
+    onLoad($scope: ng.IScope): void;
     //private setup(): ng.IPromise<string>;
     //private loadCsv(): ng.IPromise<yubo.DictRecord[]>;
     toIsInEditing(): void;
@@ -554,7 +560,7 @@ declare namespace yubo {
   }
 
   // apps.help.ts
-  export interface HelpController {
+  export interface HelpController extends yubo.StoreObserver {
     // accessor
     display: string
     // action
@@ -564,7 +570,7 @@ declare namespace yubo {
     showItemInFolder(path: string): void;
     showSystemWindow(): void;
   }
-  export interface HelpReducer {
+  export interface HelpReducer extends yubo.Reducer {
     //private readonly menuList: string[];
     locationChangeSuccess(): void;
     onShortcut(action: string): void;
@@ -578,7 +584,7 @@ declare namespace yubo {
   }
 
   // apps.helpsearch.ts
-  export interface HelpSearchController {
+  export interface HelpSearchController extends yubo.StoreObserver {
     // accessor
     searchText: string;
     // action
@@ -586,13 +592,13 @@ declare namespace yubo {
     clearSearchForm(): void;
     closeSearchForm(): void;
   }
-  export interface HelpSearchReducer {
+  export interface HelpSearchReducer extends yubo.Reducer {
     searchInPage(): void;
     clearSearchForm(): void;
   }
 
   // apps.system.ts
-  export interface SystemController {
+  export interface SystemController extends yubo.StoreObserver {
     // accessor
     appCfg: AppCfg;
     aq10UseKey: string;
@@ -603,7 +609,7 @@ declare namespace yubo {
     save(): void;
     reset(): void;
   }
-  export interface SystemReducer {
+  export interface SystemReducer extends yubo.Reducer {
     onLoad(): void;
     cancel(): void;
     save(): void;

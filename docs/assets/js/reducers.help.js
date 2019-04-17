@@ -29,6 +29,7 @@ class HelpReducer {
             'help',
             'expand',
         ];
+        this.observers = [];
     }
     locationChangeSuccess() {
         if (this.$location.url().startsWith('/%23')) {
@@ -110,6 +111,14 @@ class HelpReducer {
     showSystemWindow() {
         if ('process' in window) {
             ipcRenderer().send('showSystemWindow', 'system');
+        }
+    }
+    addObserver(observer) {
+        this.observers.push(observer);
+    }
+    notifyUpdates(objects) {
+        for (let o of this.observers) {
+            o.update(objects);
         }
     }
 }

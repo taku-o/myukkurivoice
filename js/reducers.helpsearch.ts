@@ -17,6 +17,17 @@ class HelpSearchReducer implements yubo.HelpSearchReducer {
     const win = require('electron').remote.getCurrentWindow();
     win.getParentWindow().webContents.stopFindInPage('clearSelection');
   }
+
+  // store observer
+  private observers: yubo.StoreObserver[] = [];
+  addObserver(observer: yubo.StoreObserver): void {
+    this.observers.push(observer);
+  }
+  private notifyUpdates(objects: {[key: string]: any}): void {
+    for (let o of this.observers) {
+      o.update(objects);
+    }
+  }
 }
 
 angular.module('helpSearchReducers', ['helpSearchStores'])
