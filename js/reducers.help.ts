@@ -26,7 +26,6 @@ class HelpReducer implements yubo.HelpReducer {
     'expand',
   ];
   constructor(
-    private $timeout: ng.ITimeoutService,
     private $location: ng.ILocationService,
     private $window: ng.IWindowService,
     private store: yubo.HelpStore
@@ -40,26 +39,23 @@ class HelpReducer implements yubo.HelpReducer {
     }
 
     const hash = this.$location.hash();
-    this.$timeout(() => { // $scope.$apply
-      if (this.menuList.includes(hash)) {
-        this.store.display = hash;
-      } else {
-        this.store.display = 'about';
-      }
-    });
+    if (this.menuList.includes(hash)) {
+      this.store.display = hash;
+    } else {
+      this.store.display = 'about';
+    }
+    this.notifyUpdates({display: this.store.display});
   }
 
   onShortcut(action: string): void {
     switch (action) {
       case 'moveToPreviousHelp':
-        this.$timeout(() => { // $scope.$apply
-          this.moveToPreviousHelp();
-        });
+        this.moveToPreviousHelp();
+        this.notifyUpdates({});
         break;
       case 'moveToNextHelp':
-        this.$timeout(() => { // $scope.$apply
-          this.moveToNextHelp();
-        });
+        this.moveToNextHelp();
+        this.notifyUpdates({});
         break;
     }
   }
@@ -131,7 +127,6 @@ class HelpReducer implements yubo.HelpReducer {
 
 angular.module('helpReducers', ['helpStores'])
   .service('HelpReducer', [
-    '$timeout',
     '$location',
     '$window',
     'HelpStore',

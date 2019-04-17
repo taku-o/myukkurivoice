@@ -2,8 +2,7 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _shell, shell = () => { _shell = _shell || require('electron').shell; return _shell; };
 class HelpReducer {
-    constructor($timeout, $location, $window, store) {
-        this.$timeout = $timeout;
+    constructor($location, $window, store) {
         this.$location = $location;
         this.$window = $window;
         this.store = store;
@@ -37,26 +36,21 @@ class HelpReducer {
             return;
         }
         const hash = this.$location.hash();
-        this.$timeout(() => {
-            if (this.menuList.includes(hash)) {
-                this.store.display = hash;
-            }
-            else {
-                this.store.display = 'about';
-            }
-        });
+        if (this.menuList.includes(hash)) {
+            this.store.display = hash;
+        }
+        else {
+            this.store.display = 'about';
+        }
+        this.notifyUpdates({ display: this.store.display });
     }
     onShortcut(action) {
         switch (action) {
             case 'moveToPreviousHelp':
-                this.$timeout(() => {
-                    this.moveToPreviousHelp();
-                });
+                this.moveToPreviousHelp();
                 break;
             case 'moveToNextHelp':
-                this.$timeout(() => {
-                    this.moveToNextHelp();
-                });
+                this.moveToNextHelp();
                 break;
         }
     }
@@ -124,7 +118,6 @@ class HelpReducer {
 }
 angular.module('helpReducers', ['helpStores'])
     .service('HelpReducer', [
-    '$timeout',
     '$location',
     '$window',
     'HelpStore',
