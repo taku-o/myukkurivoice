@@ -48,9 +48,11 @@ class HelpReducer {
         switch (action) {
             case 'moveToPreviousHelp':
                 this.moveToPreviousHelp();
+                this.notifyUpdates({});
                 break;
             case 'moveToNextHelp':
                 this.moveToNextHelp();
+                this.notifyUpdates({});
                 break;
         }
     }

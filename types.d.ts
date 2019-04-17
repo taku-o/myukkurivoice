@@ -443,10 +443,10 @@ declare namespace yubo {
   export interface MainReducer extends yubo.Reducer {
     appCfg: yubo.AppCfg;
     //private AudioService: yubo.IAudioService;
-    onShortcut($scope: ng.IScope, action: string): void;
-    onMenu($scope: ng.IScope, action: string): void;
-    onDropTextFile($scope: ng.IScope, filePath: string): void;
-    onRecentDocument($scope: ng.IScope, filePath: string): void;
+    onShortcut(action: string): void;
+    onMenu(action: string): void;
+    onDropTextFile(filePath: string): void;
+    onRecentDocument(filePath: string): void;
     init(): void;
     onLoad($scope: ng.IScope): void;
     //private loadData(nextTask: () => void): void;
@@ -484,13 +484,13 @@ declare namespace yubo {
     encode(): void;
     clear(): void;
     fromClipboard(): void;
-    putVoiceName($scope: ng.IScope): void;
-    directory($scope: ng.IScope): void;
+    putVoiceName(): void;
+    directory(): void;
     switchSettingsView(): void;
     switchMainView(): void;
     switchMessageListType(): void;
     switchAlwaysOnTop(): void;
-    onSwitchAlwaysOnTop($scope: ng.IScope, event: Electron.Event, newflg: boolean): void;
+    onSwitchAlwaysOnTop(event: Electron.Event, newflg: boolean): void;
   }
   export interface WaveOptions {
     passPhrase:          string;

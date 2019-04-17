@@ -19,7 +19,6 @@ class MainReducer implements yubo.MainReducer {
   private AudioService: yubo.IAudioService = this.appCfg.audioServVer == 'html5audio'? this.audioServVer1: this.audioServVer2;
 
   constructor(
-    private $timeout: ng.ITimeoutService,
     private $q: ng.IQService,
     private store: yubo.MainStore,
     private MessageService: yubo.MessageService,
@@ -38,10 +37,10 @@ class MainReducer implements yubo.MainReducer {
   ) {}
 
   // event
-  onShortcut($scope: ng.IScope, action: string): void {
+  onShortcut(action: string): void {
     switch (action) {
       case 'putVoiceName':
-        this.putVoiceName($scope);
+        this.putVoiceName();
         break;
       case 'swichNextConfig':
         {
@@ -52,7 +51,7 @@ class MainReducer implements yubo.MainReducer {
             this.store.curYvoice = this.store.yvoiceList[0];
           }
           this.store.display = 'main';
-          this.$timeout(() => { $scope.$apply(); });
+          this.notifyUpdates({curYvoice: this.store.curYvoice, display: this.store.display});
         }
         break;
       case 'swichPreviousConfig':
@@ -64,25 +63,25 @@ class MainReducer implements yubo.MainReducer {
             this.store.curYvoice = this.store.yvoiceList[this.store.yvoiceList.length - 1];
           }
           this.store.display = 'main';
-          this.$timeout(() => { $scope.$apply(); });
+          this.notifyUpdates({curYvoice: this.store.curYvoice, display: this.store.display});
         }
         break;
     }
   }
-  onMenu($scope: ng.IScope, action: string): void {
+  onMenu(action: string): void {
     switch (action) {
       case 'minus':
         {
           const indexForM = this.store.yvoiceList.indexOf(this.store.curYvoice);
           this.minus(indexForM);
-          this.$timeout(() => { $scope.$apply(); });
+          this.notifyUpdates({});
         }
         break;
       case 'copy':
         {
           const indexForCP = this.store.yvoiceList.indexOf(this.store.curYvoice);
           this.copy(indexForCP);
-          this.$timeout(() => { $scope.$apply(); });
+          this.notifyUpdates({});
         }
         break;
       case 'reset':
@@ -93,7 +92,7 @@ class MainReducer implements yubo.MainReducer {
         break;
     }
   }
-  onDropTextFile($scope: ng.IScope, filePath: string): void {
+  onDropTextFile(filePath: string): void {
     this.MessageService.action('drop textfile to app icon.');
     fs().readFile(filePath, 'utf-8', (err: Error, data: string) => {
       if (err) {
@@ -104,11 +103,11 @@ class MainReducer implements yubo.MainReducer {
         const win = require('electron').remote.getCurrentWindow();
         win.focus();
         this.store.yinput.source = data;
-        this.$timeout(() => { $scope.$apply(); });
+        this.notifyUpdates({yinput: this.store.yinput});
       }
     });
   }
-  onRecentDocument($scope: ng.IScope, filePath: string): void {
+  onRecentDocument(filePath: string): void {
     this.MessageService.action('select from Recent Document List.');
 
     const f = (filePath: string) => {
@@ -116,7 +115,7 @@ class MainReducer implements yubo.MainReducer {
       if (r) {
         this.store.yinput.source = r.source;
         this.store.yinput.encoded = r.encoded;
-        this.$timeout(() => { $scope.$apply(); });
+        this.notifyUpdates({yinput: this.store.yinput});
       } else {
         this.MessageService.info('履歴データは見つかりませんでした。');
       }
@@ -145,7 +144,7 @@ class MainReducer implements yubo.MainReducer {
       while (this.store.messageList.length > 5) {
         this.store.messageList.pop();
       }
-      this.$timeout(() => { $scope.$apply(); });
+      this.notifyUpdates({messageList: this.store.messageList});
     });
     $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo: yubo.IRecordMessage) => {
       // lastWavFile
@@ -155,16 +154,15 @@ class MainReducer implements yubo.MainReducer {
       while (this.store.generatedList.length > 10) {
         this.store.generatedList.pop();
       }
-      this.$timeout(() => { $scope.$apply(); });
+      this.notifyUpdates({lastWavFile: this.store.lastWavFile, generatedList: this.store.generatedList});
       // recentDocumentList
       app.addRecentDocument(wavFileInfo.wavFilePath);
       this.HistoryService.add(wavFileInfo);
       this.HistoryService.save();
     });
     $scope.$on('duration', (event: ng.IAngularEvent, duration: number) => {
-      this.$timeout(() => { // $scope.$apply
-        this.store.duration = duration;
-      });
+      this.store.duration = duration;
+      this.notifyUpdates({duration: this.store.duration});
     });
   }
 
@@ -174,23 +172,21 @@ class MainReducer implements yubo.MainReducer {
     if (dataList.length < 1) {
       this.MessageService.info('初期データを読み込みます。');
       dataList = this.DataService.initialData();
-      this.$timeout(() => { // $scope.$apply
-        this.store.yvoiceList = dataList;
-        this.store.curYvoice = this.store.yvoiceList[0];
-      });
+      this.store.yvoiceList = dataList;
+      this.store.curYvoice = this.store.yvoiceList[0];
+      this.notifyUpdates({yvoiceList: this.store.yvoiceList, curYvoice: this.store.curYvoice});
     }
     if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData done')); }
     if (nextTask) { nextTask(); }
   }
   private loadHistory(): void {
     this.HistoryService.load().then((cache) => {
-      this.$timeout(() => { // $scope.$apply
-        this.store.generatedList = this.HistoryService.getList();
-        while (this.store.generatedList.length > 10) {
-          this.store.generatedList.pop();
-        }
-        if (MONITOR) { ipcRenderer().send('appLaunchFinished', 'history data loaded.'); }
-      });
+      this.store.generatedList = this.HistoryService.getList();
+      while (this.store.generatedList.length > 10) {
+        this.store.generatedList.pop();
+      }
+      this.notifyUpdates({generatedList: this.store.generatedList});
+      if (MONITOR) { ipcRenderer().send('appLaunchFinished', 'history data loaded.'); }
     });
   }
 
@@ -695,9 +691,8 @@ class MainReducer implements yubo.MainReducer {
     } else {
       this.store.display = 'main';
       this.MessageService.info('標準の画面に切り替えます。');
-      this.$timeout(() => {
-        this.IntroService.shortcut();
-      });
+      this.IntroService.shortcut();
+      this.notifyUpdates({});
     }
   }
   select(index: number): void {
@@ -755,10 +750,9 @@ class MainReducer implements yubo.MainReducer {
   recentDocument(message: yubo.IRecordMessage): void {
     const r = this.HistoryService.get(message.wavFilePath);
     if (r) {
-      this.$timeout(() => { // $scope.$apply
-        this.store.yinput.source = r.source;
-        this.store.yinput.encoded = r.encoded;
-      });
+      this.store.yinput.source = r.source;
+      this.store.yinput.encoded = r.encoded;
+      this.notifyUpdates({yinput: this.store.yinput});
     } else {
       this.MessageService.info('履歴データは見つかりませんでした。');
     }
@@ -766,9 +760,8 @@ class MainReducer implements yubo.MainReducer {
   clearRecentDocuments(): void {
     app.clearRecentDocuments();
     this.HistoryService.clear();
-    this.$timeout(() => { // $scope.$apply
-      this.store.generatedList = [];
-    });
+    this.store.generatedList = [];
+    this.notifyUpdates({generatedList: this.store.generatedList});
   }
 
   encode(): void {
@@ -813,7 +806,7 @@ class MainReducer implements yubo.MainReducer {
       this.MessageService.info('クリップボードにデータがありません。');
     }
   }
-  putVoiceName($scope: ng.IScope): void {
+  putVoiceName(): void {
     const field = document.activeElement as HTMLInputElement;
     if (field.id != 'source' && field.id != 'encoded') { return; }
 
@@ -848,9 +841,9 @@ class MainReducer implements yubo.MainReducer {
         field.selectionEnd = (`${field.value.substring(0, pos)}\n${this.store.curYvoice.name}${'＞'}`).length;
       }
     }
-    this.$timeout(() => { $scope.$apply(); });
+    this.notifyUpdates({yinput: this.store.yinput});
   }
-  directory($scope: ng.IScope): void {
+  directory(): void {
     this.MessageService.action('select directory.');
     if (!this.store.curYvoice.seqWrite) {
       this.MessageService.error('連番ファイル設定が無効です。');
@@ -862,7 +855,7 @@ class MainReducer implements yubo.MainReducer {
         return;
       }
       this.store.curYvoice.seqWriteOptions.dir = dirs[0];
-      this.$timeout(() => { $scope.$apply(); });
+      this.notifyUpdates({curYvoice: this.store.curYvoice});
     });
     let optDir = this.store.curYvoice.seqWriteOptions.dir;
     if (!optDir) { optDir = desktopDir; }
@@ -885,10 +878,10 @@ class MainReducer implements yubo.MainReducer {
     this.MessageService.action('switch alwaysOnTop option.');
     ipcRenderer().send('switchAlwaysOnTop', 'mainWindow');
   }
-  onSwitchAlwaysOnTop($scope: ng.IScope, event: Electron.Event, newflg: boolean): void {
+  onSwitchAlwaysOnTop(event: Electron.Event, newflg: boolean): void {
     this.store.alwaysOnTop = newflg;
     this.MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
-    this.$timeout(() => { $scope.$apply(); });
+    this.notifyUpdates({alwaysOnTop: this.store.alwaysOnTop});
   }
 
   // store observer
@@ -905,7 +898,6 @@ class MainReducer implements yubo.MainReducer {
 
 angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
   .service('MainReducer', [
-    '$timeout',
     '$q',
     'MainStore',
     'MessageService',

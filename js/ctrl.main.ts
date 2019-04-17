@@ -17,16 +17,16 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
 
   // event bridge
   $scope.$on('shortcut', (event: ng.IAngularEvent, action: string) => {
-    reducer.onShortcut($scope, action);
+    reducer.onShortcut(action);
   });
   $scope.$on('menu', (event: ng.IAngularEvent, action: string) => {
-    reducer.onMenu($scope, action);
+    reducer.onMenu(action);
   });
   $scope.$on('dropTextFile', (event: ng.IAngularEvent, filePath: string) => {
-    reducer.onDropTextFile($scope, filePath);
+    reducer.onDropTextFile(filePath);
   });
   $scope.$on('recentDocument', (event: ng.IAngularEvent, filePath: string) => {
-    reducer.onRecentDocument($scope, filePath);
+    reducer.onRecentDocument(filePath);
   });
 
   // init
@@ -132,10 +132,10 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
     reducer.fromClipboard();
   };
   ctrl.putVoiceName = function(): void {
-    reducer.putVoiceName($scope);
+    reducer.putVoiceName();
   };
   ctrl.directory = function(): void {
-    reducer.directory($scope);
+    reducer.directory();
   };
 
   ctrl.switchSettingsView = function(): void {
@@ -151,7 +151,7 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
     reducer.switchAlwaysOnTop();
   };
   ipcRenderer().on('switchAlwaysOnTop', (event: Electron.Event, newflg: boolean) => {
-    reducer.onSwitchAlwaysOnTop($scope, event, newflg);
+    reducer.onSwitchAlwaysOnTop(event, newflg);
   });
 
   // store observer
