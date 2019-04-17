@@ -388,6 +388,7 @@ declare namespace yubo {
   export interface WavDraggable extends ng.IDirective {}
   export interface TxtDroppable extends ng.IDirective {}
   export interface StaticInclude extends ng.IDirective {}
+  export interface AfterRender extends ng.IDirective {}
   export interface MainShortcutEvent extends ng.IDirective {}
   export interface MainMenuEvent extends ng.IDirective {}
   export interface MainDropTextFileEvent extends ng.IDirective {}
@@ -449,6 +450,7 @@ declare namespace yubo {
     onRecentDocument(filePath: string): void;
     init(): void;
     onLoad($scope: ng.IScope): void;
+    afterRender(): void;
     //private loadData(nextTask: () => void): void;
     //private loadHistory(): void;
     //private selectedSource(): string;

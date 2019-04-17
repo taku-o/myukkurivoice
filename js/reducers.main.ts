@@ -135,9 +135,6 @@ class MainReducer implements yubo.MainReducer {
     this.loadData(null);
   }
   onLoad($scope: ng.IScope): void {
-    this.loadHistory();
-    this.AquesService.init(); // initialize AquesService
-
     // event listener
     $scope.$on('message', (event: ng.IAngularEvent, message: yubo.IMessage | yubo.IRecordMessage) => {
       this.store.messageList.unshift(message);
@@ -164,6 +161,10 @@ class MainReducer implements yubo.MainReducer {
       this.store.duration = duration;
       this.notifyUpdates({duration: this.store.duration});
     });
+  }
+  afterRender(): void {
+    this.loadHistory();
+    this.AquesService.init(); // initialize AquesService
   }
 
   private loadData(nextTask: () => void): void {
