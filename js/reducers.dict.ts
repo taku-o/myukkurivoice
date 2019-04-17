@@ -23,7 +23,6 @@ class DictReducer implements yubo.DictReducer {
 
   constructor(
     private $q: ng.IQService,
-    private $timeout: ng.ITimeoutService,
     private $interval: ng.IIntervalService,
     private store: yubo.DictStore,
     private AqUsrDicService: yubo.AqUsrDicService,
@@ -44,9 +43,8 @@ class DictReducer implements yubo.DictReducer {
   init(): void {
     this.setup().then(() => {
       return this.loadCsv().then((records: yubo.DictRecord[]) => {
-        this.$timeout(() => { // $scope.$apply
-          this.store.gridOptions.data = records;
-        });
+        this.store.gridOptions.data = records;
+        this.notifyUpdates({gridOptions: this.store.gridOptions});
         if (MONITOR) { log().warn(monitor().format('apps.dict', 'record loaded')); }
         return true;
       });
@@ -217,25 +215,22 @@ class DictReducer implements yubo.DictReducer {
         quote: '',
       });
       fs().writeFileSync(`${this.mAppDictDir}/aq_user.csv`, data);
-      this.$timeout(() => { // $scope.$apply
-        this.clearInEditing();
-        this.store.message = '作業データを保存しました。';
-      });
+      this.clearInEditing();
+      this.store.message = '作業データを保存しました。';
+      this.notifyUpdates({});
     })
     .catch((err: Error) => {
-      this.$timeout(() => { // $scope.$apply
-        this.store.message = 'エラー。不正な作業データが残っています。修正するまで保存できません。';
-      });
+      this.store.message = 'エラー。不正な作業データが残っています。修正するまで保存できません。';
+      this.notifyUpdates({message: this.store.message});
     });
   }
   cancel(): ng.IPromise<boolean> {
     return this.loadCsv().then((records: yubo.DictRecord[]) => {
-      this.$timeout(() => { // $scope.$apply
-        this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
-        this.store.gridOptions.data = records;
-        this.clearInEditing();
-        this.store.message = '保存していない編集中の作業データを取り消しました。';
-      });
+      this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
+      this.store.gridOptions.data = records;
+      this.clearInEditing();
+      this.store.message = '保存していない編集中の作業データを取り消しました。';
+      this.notifyUpdates({});
       return true;
     });
   }
@@ -250,20 +245,17 @@ class DictReducer implements yubo.DictReducer {
         // generate user dict
         const r = this.AqUsrDicService.generateUserDict(`${this.mAppDictDir}/aq_user.csv`, `${this.mAppDictDir}/aq_user.dic`);
         if (!r.success) {
-          this.$timeout(() => { // $scope.$apply
-            this.store.message = r.message;
-          });
+          this.store.message = r.message;
+          this.notifyUpdates({message: this.store.message});
           return;
         }
-        this.$timeout(() => { // $scope.$apply
-          this.store.message = 'ユーザー辞書を更新しました。';
-        });
+        this.store.message = 'ユーザー辞書を更新しました。';
+        this.notifyUpdates({message: this.store.message});
       });
     })
     .catch((err: Error) => {
-      this.$timeout(() => { // $scope.$apply
-        this.store.message = 'エラー。不正な作業データが残っています。修正するまでエクスポートできません。';
-      });
+      this.store.message = 'エラー。不正な作業データが残っています。修正するまでエクスポートできません。';
+      this.notifyUpdates({message: this.store.message});
     });
   }
   reset(): ng.IPromise<boolean> {
@@ -272,12 +264,11 @@ class DictReducer implements yubo.DictReducer {
     fs().writeFileSync(`${this.mAppDictDir}/aq_user.csv`, fs().readFileSync(`${this.rscDictDir}/aq_user.csv`));
     // and load
     this.loadCsv().then((records: yubo.DictRecord[]) => {
-      this.$timeout(() => { // $scope.$apply
-        this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
-        this.store.gridOptions.data = records;
-        this.clearInEditing();
-        this.store.message = 'マスター辞書データで作業データをリセットしました。';
-      });
+      this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
+      this.store.gridOptions.data = records;
+      this.clearInEditing();
+      this.store.message = 'マスター辞書データで作業データをリセットしました。';
+      this.notifyUpdates({});
       d.resolve(true);
     });
     return d.promise;
@@ -329,7 +320,6 @@ class DictReducer implements yubo.DictReducer {
 angular.module('dictReducers', ['dictStores', 'dictModels', 'dictServices'])
   .service('DictReducer', [
     '$q',
-    '$timeout',
     '$interval',
     'DictStore',
     'AqUsrDicService',
