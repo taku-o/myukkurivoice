@@ -1,7 +1,10 @@
-var _log, log = () => { _log = _log || require('electron-log'); return _log; };
+var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _log, log                 = () => { _log = _log || require('electron-log'); return _log; };
+var _monitor, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 // env
 var DEBUG = process.env.DEBUG != null;
+var MONITOR = process.env.MONITOR != null;
 
 // source-map-support
 if (DEBUG) {
@@ -25,3 +28,17 @@ angular.module('mainApp', ['mainControllers', 'mainEvents'])
     };
   });
 
+// perfomance monitoring
+if (MONITOR) {
+  angular.module('mainApp')
+    .directive('afterRender', [() => {
+      return {
+        restrict: 'A',
+        link: (scope, element, attrs) => {
+          (angular as any).getTestability(element).whenStable(() => {
+            log().warn(monitor().format('apps.main', 'app launch finished'));
+          });
+        },
+      };
+    }]);
+}
