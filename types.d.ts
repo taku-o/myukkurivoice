@@ -127,7 +127,7 @@ declare namespace yubo {
   }
 
   // electron.ts
-  export interface IMYukkuriVoice extends FnAppCfg, FnLaunch, FnMenu, FnWindow {
+  export interface IMYukkuriVoice extends FnAppCfg, FnLaunch, FnMenu, FnWindow, FnEvent {
     launchArgs:       {filePath: string}
     appCfg:           yubo.AppCfg;
     config:           ElectronStore.Config;
@@ -136,8 +136,6 @@ declare namespace yubo {
     helpSearchDialog: Electron.BrowserWindow;
     systemWindow:     Electron.BrowserWindow;
     dictWindow:       Electron.BrowserWindow;
-    resetAppConfigOnMain(): void;
-    switchAlwaysOnTop():    void;
   }
   export interface FnAppCfg {
     loadAppConfig(nextTask: () => void): void;
@@ -169,6 +167,14 @@ declare namespace yubo {
     showAboutWindow(): void;
     showVersionDialog(): void;
     showSpecWindow(): void;
+  }
+  export interface FnEvent {
+    acceptEvents(): void;
+    //private registerWindowOpenEvents(): void;
+    //private registerMainAppEvents(): void;
+    //private registerSystemAppEvents(): void;
+    resetAppConfigOnMain(): void;
+    switchAlwaysOnTop(): void;
   }
 
   // models.main.ts
