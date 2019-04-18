@@ -89,6 +89,9 @@ class MainMenuEvent implements yubo.MainMenuEvent {
         case 'clearRecentDocuments':
           this.reducer.onMenu(action);
           break;
+        case 'switchAlwaysOnTop':
+          this.reducer.onMenu(action);
+          break;
         case 'devtron':
           require('devtron').install();
           break;

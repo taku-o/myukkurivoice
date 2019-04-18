@@ -16,8 +16,8 @@ class HelpSearchController implements yubo.HelpSearchController {
     this.reducer.clearSearchForm();
   }
   closeSearchForm(): void {
-    const window = require('electron').remote.getCurrentWindow();
-    window.hide();
+    const curwindow = require('electron').remote.getCurrentWindow();
+    curwindow.hide();
   }
 
   // store observer

@@ -1,148 +1,154 @@
-var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
-
 // env
 const TEST = process.env.NODE_ENV == 'test';
 
 // controllers
-angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives', 'mainServices', 'mainModels', 'input-highlight'])
-  .controller('MainController', ['$scope', '$timeout', 'MainStore', 'MainReducer', 'YPhontMasterList',
-  function(
-    $scope: ng.IScope,
-    $timeout: ng.ITimeoutService,
-    store: yubo.MainStore,
-    reducer: yubo.MainReducer,
-    YPhontMasterList: yubo.YPhont[]
+class MainController implements yubo.MainController {
+  appCfg: yubo.AppCfg;
+  readonly aq10BasList: {[key: string]: any}[] = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
+  readonly isTest: boolean = TEST;
+
+  constructor(
+    private $scope: ng.IScope,
+    private $timeout: ng.ITimeoutService,
+    public store: yubo.MainStore,
+    private reducer: yubo.MainReducer,
+    public YPhontMasterList: yubo.YPhont[]
   ) {
-  reducer.addObserver(((this as unknown) as yubo.StoreObserver));
+    reducer.addObserver(this);
+    this.appCfg = reducer.appCfg;
 
-  // init
-  const ctrl = this;
-  ctrl.store = store;
-
-  ctrl.appCfg = reducer.appCfg;
-  ctrl.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
-  ctrl.YPhontMasterList = YPhontMasterList;
-  ctrl.isTest = TEST;
+    // run init
+    reducer.init();
+  }
 
   // $onInit
-  this.$onInit = (): void => {
-    reducer.onLoad($scope);
-  };
+  $onInit(): void {
+    this.reducer.onLoad(this.$scope);
+  }
 
   // selected text highlight
-  ctrl.blurOnSource = function(): void {
-    reducer.blurOnSource();
-  };
-  ctrl.blurOnEncoded = function(): void {
-    reducer.blurOnEncoded();
-  };
-  ctrl.focusOnSource = function(): void {
-    reducer.focusOnSource();
-  };
-  ctrl.focusOnEncoded = function(): void {
-    reducer.focusOnEncoded();
-  };
+  blurOnSource(): void {
+    this.reducer.blurOnSource();
+  }
+  blurOnEncoded(): void {
+    this.reducer.blurOnEncoded();
+  }
+  focusOnSource(): void {
+    this.reducer.focusOnSource();
+  }
+  focusOnEncoded(): void {
+    this.reducer.focusOnEncoded();
+  }
 
   // list box selection changed
-  ctrl.onChangePhont = function(): void {
-    reducer.onChangePhont();
-  };
+  onChangePhont(): void {
+    this.reducer.onChangePhont();
+  }
 
   // action
-  ctrl.play = function(): void {
-    reducer.play();
-  };
-  ctrl.stop = function(): void {
-    reducer.stop();
-  };
-  ctrl.record = function(): void {
-    reducer.record();
-  };
-  ctrl.showSystemWindow = function(): void {
-    if (!TEST) { return; }
-    reducer.showSystemWindow();
-  };
-  ctrl.showSpecWindow = function(): void {
-    if (!TEST) { return; }
-    reducer.showSpecWindow();
-  };
-  ctrl.help = function(): void {
-    reducer.help();
-  };
-  ctrl.dictionary = function(): void {
-    reducer.dictionary();
-  };
-  ctrl.tutorial = function(): void {
-    reducer.tutorial();
-  };
-  ctrl.shortcut = function(): void {
-    reducer.shortcut();
-  };
-  ctrl.select = function(index: number): void {
-    reducer.select(index);
-  };
-  ctrl.plus = function(): void {
-    reducer.plus();
-  };
-  ctrl.minus = function(index: number): void {
-    reducer.minus(index);
-  };
-  ctrl.copy = function(index: number): void {
-    reducer.copy(index);
-  };
-  ctrl.save = function(): void {
-    reducer.save();
-  };
-  ctrl.reset = function(): void {
-    reducer.reset();
-  };
-  ctrl.quickLookMessage = function(message: yubo.IWriteMessage): void {
-    reducer.quickLookMessage(message);
-  };
-  ctrl.recentDocument = function(message: yubo.IRecordMessage): void {
-    reducer.recentDocument(message);
-  };
-  ctrl.clearRecentDocuments = function(): void {
-    reducer.clearRecentDocuments();
-  };
+  play(): void {
+    this.reducer.play();
+  }
+  stop(): void {
+    this.reducer.stop();
+  }
+  record(): void {
+    this.reducer.record();
+  }
+  showSystemWindow(): void {
+    if (!this.isTest) { return; }
+    this.reducer.showSystemWindow();
+  }
+  showSpecWindow(): void {
+    if (!this.isTest) { return; }
+    this.reducer.showSpecWindow();
+  }
+  help(): void {
+    this.reducer.help();
+  }
+  dictionary(): void {
+    this.reducer.dictionary();
+  }
+  tutorial(): void {
+    this.reducer.tutorial();
+  }
+  shortcut(): void {
+    this.reducer.shortcut();
+  }
+  select(index: number): void {
+    this.reducer.select(index);
+  }
+  plus(): void {
+    this.reducer.plus();
+  }
+  minus(index: number): void {
+    this.reducer.minus(index);
+  }
+  copy(index: number): void {
+    this.reducer.copy(index);
+  }
+  save(): void {
+    this.reducer.save();
+  }
+  reset(): void {
+    this.reducer.reset();
+  }
+  quickLookMessage(message: yubo.IWriteMessage): void {
+    this.reducer.quickLookMessage(message);
+  }
+  recentDocument(message: yubo.IRecordMessage): void {
+    this.reducer.recentDocument(message);
+  }
+  clearRecentDocuments(): void {
+    this.reducer.clearRecentDocuments();
+  }
 
-  ctrl.encode = function(): void {
-    reducer.encode();
-  };
-  ctrl.clear = function(): void {
-    reducer.clear();
-  };
-  ctrl.fromClipboard = function(): void {
-    reducer.fromClipboard();
-  };
-  ctrl.putVoiceName = function(): void {
-    reducer.putVoiceName();
-  };
-  ctrl.directory = function(): void {
-    reducer.directory();
-  };
+  encode(): void {
+    this.reducer.encode();
+  }
+  clear(): void {
+    this.reducer.clear();
+  }
+  fromClipboard(): void {
+    this.reducer.fromClipboard();
+  }
+  putVoiceName(): void {
+    this.reducer.putVoiceName();
+  }
+  directory(): void {
+    this.reducer.directory();
+  }
 
-  ctrl.switchSettingsView = function(): void {
-    reducer.switchSettingsView();
-  };
-  ctrl.switchMainView = function(): void {
-    reducer.switchMainView();
-  };
-  ctrl.switchMessageListType = function(): void {
-    reducer.switchMessageListType();
-  };
-  ctrl.switchAlwaysOnTop = function(): void {
-    reducer.switchAlwaysOnTop();
-  };
-  ipcRenderer().on('switchAlwaysOnTop', (event: Electron.Event, newflg: boolean) => {
-    reducer.onSwitchAlwaysOnTop(event, newflg);
-  });
+  switchSettingsView(): void {
+    this.reducer.switchSettingsView();
+  }
+  switchMainView(): void {
+    this.reducer.switchMainView();
+  }
+  switchMessageListType(): void {
+    this.reducer.switchMessageListType();
+  }
+  switchAlwaysOnTop(): void {
+    this.reducer.switchAlwaysOnTop();
+  }
 
   // store observer
-  this.update = (objects: {[key: string]: any}): void => {
-    $timeout(() => {});
-  };
-
-  // run init
-  reducer.init();
-}]);
+  update(objects: {[key: string]: any}): void {
+    this.$timeout(() => {});
+  }
+}
+angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives', 'mainServices', 'mainModels', 'input-highlight'])
+  .controller('MainController', [
+    '$scope',
+    '$timeout',
+    'MainStore',
+    'MainReducer',
+    'YPhontMasterList',
+    (
+      $scope: ng.IScope,
+      $timeout: ng.ITimeoutService,
+      store: yubo.MainStore,
+      reducer: yubo.MainReducer,
+      YPhontMasterList: yubo.YPhont[]
+    ) => new MainController($scope, $timeout, store, reducer, YPhontMasterList),
+  ]);

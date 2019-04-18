@@ -243,7 +243,7 @@ class FnMenu implements yubo.FnMenu {
         submenu: [
           {
             label: '前面表示固定切替',
-            click() { myApp.switchAlwaysOnTop(); },
+            click() { myApp.mainWindow.webContents.send('menu', 'switchAlwaysOnTop'); },
           },
           {type: 'separator'},
           {role: 'reload'},

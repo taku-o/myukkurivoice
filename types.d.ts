@@ -174,7 +174,6 @@ declare namespace yubo {
     //private registerMainAppEvents(): void;
     //private registerSystemAppEvents(): void;
     resetAppConfigOnMain(): void;
-    switchAlwaysOnTop(): void;
   }
 
   // models.main.ts
@@ -441,6 +440,50 @@ declare namespace yubo {
   }
 
   // apps.main.ts
+  export interface MainController extends yubo.StoreObserver {
+    store: yubo.MainStore;
+    appCfg: yubo.AppCfg;
+    aq10BasList: {[key: string]: any}[];
+    isTest: boolean;
+    YPhontMasterList: yubo.YPhont[];
+    // state
+    $onInit(): void;
+    // selected text highlight
+    blurOnSource(): void;
+    blurOnEncoded(): void;
+    focusOnSource(): void;
+    focusOnEncoded(): void;
+    // list box selection changed
+    onChangePhont(): void;
+    // action
+    play(): void;
+    stop(): void;
+    record(): void;
+    showSystemWindow(): void;
+    showSpecWindow(): void;
+    help(): void;
+    dictionary(): void;
+    tutorial(): void;
+    shortcut(): void;
+    select(index: number): void;
+    plus(): void;
+    minus(index: number): void;
+    copy(index: number): void;
+    save(): void;
+    reset(): void;
+    quickLookMessage(message: yubo.IWriteMessage): void;
+    recentDocument(message: yubo.IRecordMessage): void;
+    clearRecentDocuments(): void;
+    encode(): void;
+    clear(): void;
+    fromClipboard(): void;
+    putVoiceName(): void;
+    directory(): void;
+    switchSettingsView(): void;
+    switchMainView(): void;
+    switchMessageListType(): void;
+    switchAlwaysOnTop(): void;
+  }
   export interface MainReducer extends yubo.Reducer {
     appCfg: yubo.AppCfg;
     //private AudioService: yubo.IAudioService;
@@ -492,7 +535,6 @@ declare namespace yubo {
     switchMainView(): void;
     switchMessageListType(): void;
     switchAlwaysOnTop(): void;
-    onSwitchAlwaysOnTop(event: Electron.Event, newflg: boolean): void;
   }
   export interface WaveOptions {
     passPhrase:          string;

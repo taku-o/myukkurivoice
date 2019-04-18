@@ -95,6 +95,10 @@ class MainReducer implements yubo.MainReducer {
       case 'clearRecentDocuments':
         this.clearRecentDocuments();
         break;
+      case 'switchAlwaysOnTop':
+        this.switchAlwaysOnTop();
+        this.notifyUpdates({});
+        break;
     }
   }
   onDropTextFile(filePath: string): void {
@@ -880,13 +884,10 @@ class MainReducer implements yubo.MainReducer {
     this.store.showTypeMessageList = !this.store.showTypeMessageList;
   }
   switchAlwaysOnTop(): void {
-    this.MessageService.action('switch alwaysOnTop option.');
-    ipcRenderer().send('switchAlwaysOnTop', 'mainWindow');
-  }
-  onSwitchAlwaysOnTop(event: Electron.Event, newflg: boolean): void {
-    this.store.alwaysOnTop = newflg;
-    this.MessageService.info(`update alwaysOnTop option ${newflg?'ON':'OFF'}`);
-    this.notifyUpdates({alwaysOnTop: this.store.alwaysOnTop});
+    const curwindow = require('electron').remote.getCurrentWindow();
+    const newflg = !curwindow.isAlwaysOnTop();
+    this.MessageService.info(`switch alwaysOnTop option ${newflg?'ON':'OFF'}`);
+    curwindow.setAlwaysOnTop(newflg);
   }
 
   // store observer

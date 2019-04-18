@@ -18,8 +18,8 @@ class SystemReducer implements yubo.SystemReducer {
 
   cancel(): void {
     this.store.appCfg = angular.copy(require('electron').remote.getGlobal('appCfg'));
-    const window = require('electron').remote.getCurrentWindow();
-    window.close();
+    const curwindow = require('electron').remote.getCurrentWindow();
+    curwindow.close();
   }
   save(): void {
     const aq10UseKeyEncrypted = this.store.aq10UseKey?

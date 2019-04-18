@@ -70,12 +70,6 @@ class FnEvent implements yubo.FnEvent {
       myApp.mainWindow.webContents.reload();
       event.sender.send('reloadMainWindow', message);
     });
-
-    ipcMain.on('switchAlwaysOnTop', (event: Electron.Event, message: string) => {
-      const newflg = !myApp.mainWindow.isAlwaysOnTop();
-      myApp.mainWindow.setAlwaysOnTop(newflg);
-      event.sender.send('switchAlwaysOnTop', newflg);
-    });
   }
 
   private registerSystemAppEvents(): void {
@@ -130,12 +124,6 @@ class FnEvent implements yubo.FnEvent {
     myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
     myApp.mainWindow.webContents.reload();
     if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
-  }
-  switchAlwaysOnTop(): void {
-    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
-    const newflg = !myApp.mainWindow.isAlwaysOnTop();
-    myApp.mainWindow.setAlwaysOnTop(newflg);
-    myApp.mainWindow.webContents.send('switchAlwaysOnTop', newflg);
   }
 }
 
