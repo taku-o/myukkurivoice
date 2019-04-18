@@ -14,7 +14,7 @@ var MONITOR = process.env.MONITOR != null;
 
 // action reducer
 class DictReducer implements yubo.DictReducer {
-  private htmlTitle: string;
+  private readonly htmlTitle: string = document.title;
   // AqDicEdit, MYukkuriVoice data dir
   private readonly rscDictDir: string = `${unpackedPath}/vendor/aq_dic_large`;
   private readonly mAppDictDir: string = `${app.getPath('userData')}/userdict`;
@@ -23,15 +23,12 @@ class DictReducer implements yubo.DictReducer {
 
   constructor(
     private $q: ng.IQService,
-    private $document: ng.IDocumentService,
     private $interval: ng.IIntervalService,
     private store: yubo.DictStore,
     private AqUsrDicService: yubo.AqUsrDicService,
     private IntroService: yubo.IntroService,
     private KindList: yubo.KindEntry[]
-  ) {
-    this.htmlTitle = $document[0].title;
-  }
+  ) {}
 
   // event
   onMenu(action: string): void {
@@ -324,7 +321,6 @@ angular.module('dictReducers', ['dictStores', 'dictModels', 'dictServices'])
   .service('DictReducer', [
     '$q',
     '$interval',
-    '$document',
     'DictStore',
     'AqUsrDicService',
     'IntroService',

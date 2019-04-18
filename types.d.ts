@@ -515,6 +515,7 @@ declare namespace yubo {
 
   // apps.dict.ts
   export interface DictController extends yubo.StoreObserver {
+    store: yubo.DictStore;
     // state
     $onInit(): void;
     toIsInEditing(): void;
@@ -530,7 +531,7 @@ declare namespace yubo {
     tutorial(): void;
   }
   export interface DictReducer extends yubo.Reducer {
-    //private htmlTitle: string;
+    //private readonly htmlTitle: string;
     //private readonly rscDictDir: string;
     //private readonly mAppDictDir: string;
     //private gridApi: any/*IGridApi*/;
@@ -559,6 +560,7 @@ declare namespace yubo {
 
   // apps.help.ts
   export interface HelpController extends yubo.StoreObserver {
+    store: yubo.HelpStore;
     // action
     page(pageName: string): void;
     openSearchForm(): void;
@@ -581,6 +583,7 @@ declare namespace yubo {
 
   // apps.helpsearch.ts
   export interface HelpSearchController extends yubo.StoreObserver {
+    store: yubo.HelpSearchStore;
     // action
     searchInPage(): void;
     clearSearchForm(): void;
@@ -593,6 +596,7 @@ declare namespace yubo {
 
   // apps.system.ts
   export interface SystemController extends yubo.StoreObserver {
+    store: yubo.SystemStore;
     // state
     $onInit(): void;
     // actions

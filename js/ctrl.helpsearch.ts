@@ -2,7 +2,7 @@
 class HelpSearchController implements yubo.HelpSearchController {
   constructor(
     private $timeout: ng.ITimeoutService,
-    private store: yubo.HelpSearchStore,
+    public store: yubo.HelpSearchStore,
     private reducer: yubo.HelpSearchReducer
   ) {
     reducer.addObserver(this);

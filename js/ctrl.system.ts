@@ -2,7 +2,7 @@
 class SystemController implements yubo.SystemController {
   constructor(
     private $timeout: ng.ITimeoutService,
-    private store: yubo.SystemStore,
+    public store: yubo.SystemStore,
     private reducer: yubo.SystemReducer
   ) {
     reducer.addObserver(this);

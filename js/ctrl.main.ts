@@ -18,9 +18,6 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   // init
   const ctrl = this;
   ctrl.store = store;
-  ctrl.store.yvoiceList = (window as any).dataJson;
-  ctrl.store.curYvoice = (window as any).dataJson.length > 0? (window as any).dataJson[0]: null;
-  delete (window as any)['dataJson'];
 
   ctrl.appCfg = reducer.appCfg;
   ctrl.aq10BasList = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];

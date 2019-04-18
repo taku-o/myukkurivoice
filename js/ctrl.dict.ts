@@ -3,7 +3,7 @@ class DictController implements yubo.DictController {
   constructor(
     private $scope: ng.IScope,
     private $timeout: ng.ITimeoutService,
-    private store: yubo.DictStore,
+    public store: yubo.DictStore,
     private reducer: yubo.DictReducer
   ) {
     reducer.addObserver(this);
