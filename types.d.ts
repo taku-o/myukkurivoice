@@ -534,7 +534,7 @@ declare namespace yubo {
     tutorial(): void;
   }
   export interface DictReducer extends yubo.Reducer {
-    //private readonly htmlTitle: string;
+    //private htmlTitle: string;
     //private readonly rscDictDir: string;
     //private readonly mAppDictDir: string;
     //private gridApi: any/*IGridApi*/;

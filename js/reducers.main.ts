@@ -20,6 +20,7 @@ class MainReducer implements yubo.MainReducer {
 
   constructor(
     private $q: ng.IQService,
+    private $document: ng.IDocumentService,
     private store: yubo.MainStore,
     private MessageService: yubo.MessageService,
     private DataService: yubo.DataService,
@@ -191,14 +192,14 @@ class MainReducer implements yubo.MainReducer {
   }
 
   private selectedSource(): string {
-    const textarea = document.getElementById('source') as HTMLInputElement;
+    const textarea = this.$document[0].getElementById('source') as HTMLInputElement;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = textarea.value.substring(start, end);
     return selectedText;
   }
   private selectedEncoded(): string {
-    const textarea = document.getElementById('encoded') as HTMLInputElement;
+    const textarea = this.$document[0].getElementById('encoded') as HTMLInputElement;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = textarea.value.substring(start, end);
@@ -222,13 +223,13 @@ class MainReducer implements yubo.MainReducer {
   }
   private clearSourceSelection(): void {
     this.store.sourceHighlight['#619FFF'] = '';
-    const textarea = document.getElementById('source') as HTMLInputElement;
+    const textarea = this.$document[0].getElementById('source') as HTMLInputElement;
     textarea.selectionStart = 0;
     textarea.selectionEnd = 0;
   }
   private clearEncodedSelection(): void {
     this.store.encodedHighlight['#619FFF'] = '';
-    const textarea = document.getElementById('encoded') as HTMLInputElement;
+    const textarea = this.$document[0].getElementById('encoded') as HTMLInputElement;
     textarea.selectionStart = 0;
     textarea.selectionEnd = 0;
   }
@@ -807,7 +808,7 @@ class MainReducer implements yubo.MainReducer {
     }
   }
   putVoiceName(): void {
-    const field = document.activeElement as HTMLInputElement;
+    const field = this.$document[0].activeElement as HTMLInputElement;
     if (field.id != 'source' && field.id != 'encoded') { return; }
 
     const pos = field.selectionStart;
@@ -899,6 +900,7 @@ class MainReducer implements yubo.MainReducer {
 angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
   .service('MainReducer', [
     '$q',
+    '$document',
     'MainStore',
     'MessageService',
     'DataService',

@@ -1,16 +1,18 @@
 // event listeners
 class HelpSearchEvent implements yubo.HelpSearchEvent {
   constructor(
-    private $window: ng.IWindowService
+    private $window: ng.IWindowService,
+    private $document: ng.IDocumentService
   ) {}
   link(scope: ng.IScope): void {
     this.$window.onfocus = (): void => {
-      document.getElementById('search-text').focus();
+      this.$document[0].getElementById('search-text').focus();
     };
   }
 }
 angular.module('helpSearchEvents', [])
   .directive('event', [
     '$window',
-    ($window: ng.IWindowService) => new HelpSearchEvent($window),
+    '$document',
+    ($window: ng.IWindowService, $document: ng.IDocumentService) => new HelpSearchEvent($window, $document),
   ]);
