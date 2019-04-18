@@ -34,7 +34,11 @@
   },
   "overrides": {
     "files": ["*.ts", "js/*.ts", "test/*.ts"],
-    "parser": "typescript-eslint-parser",
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "tsconfigRootDir": "./"
+    },
     "rules": {
       "comma-dangle": ["error", "always-multiline"],
       "no-empty": "error",
