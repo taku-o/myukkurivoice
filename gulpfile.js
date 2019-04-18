@@ -121,7 +121,17 @@ gulp.task('lint-js', () => {
 });
 gulp.task('lint-q', () => {
   return gulp
-    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts', '*.js', 'js/*.js', 'test/*.js', 'docs/assets/js/*.js'])
+    .src([
+      '*.ts',
+      'js/*.ts',
+      'test/*.ts',
+      'docs/assets/js/*.ts',
+      '!types.d.ts',
+      '*.js',
+      'js/*.js',
+      'test/*.js',
+      'docs/assets/js/*.js',
+    ])
     .pipe(eslint({useEslintrc: true, quiet: true}))
     .pipe(eslint.format());
 });
