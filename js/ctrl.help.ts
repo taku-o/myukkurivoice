@@ -8,11 +8,6 @@ class HelpController implements yubo.HelpController {
     reducer.addObserver(this);
   }
 
-  // accessor
-  get display(): string {
-    return this.store.display;
-  }
-
   // action
   page(pageName: string): void {
     this.reducer.page(pageName);

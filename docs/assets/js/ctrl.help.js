@@ -6,9 +6,6 @@ class HelpController {
         this.reducer = reducer;
         reducer.addObserver(this);
     }
-    get display() {
-        return this.store.display;
-    }
     page(pageName) {
         this.reducer.page(pageName);
     }

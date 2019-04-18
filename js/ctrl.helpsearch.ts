@@ -8,14 +8,6 @@ class HelpSearchController implements yubo.HelpSearchController {
     reducer.addObserver(this);
   }
 
-  // accessor
-  get searchText(): string {
-    return this.store.searchText;
-  }
-  set searchText(input: string) {
-    this.store.searchText = input;
-  }
-
   // action
   searchInPage(): void {
     this.reducer.searchInPage();

@@ -515,10 +515,6 @@ declare namespace yubo {
 
   // apps.dict.ts
   export interface DictController extends yubo.StoreObserver {
-    // accessor
-    isInEditing: boolean;
-    message:     string;
-    gridOptions: any;
     // state
     $onInit(): void;
     toIsInEditing(): void;
@@ -563,8 +559,6 @@ declare namespace yubo {
 
   // apps.help.ts
   export interface HelpController extends yubo.StoreObserver {
-    // accessor
-    display: string
     // action
     page(pageName: string): void;
     openSearchForm(): void;
@@ -587,8 +581,6 @@ declare namespace yubo {
 
   // apps.helpsearch.ts
   export interface HelpSearchController extends yubo.StoreObserver {
-    // accessor
-    searchText: string;
     // action
     searchInPage(): void;
     clearSearchForm(): void;
@@ -601,9 +593,6 @@ declare namespace yubo {
 
   // apps.system.ts
   export interface SystemController extends yubo.StoreObserver {
-    // accessor
-    appCfg: AppCfg;
-    aq10UseKey: string;
     // state
     $onInit(): void;
     // actions

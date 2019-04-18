@@ -23,68 +23,68 @@
   <div class="pane-sm sidebar">
     <nav class="nav-group">
       <h5 class="nav-group-title">ヘルプ</h5>
-      <span class="nav-group-item help-item" id="menu-about" ng-class="{active:ctrl.display == 'about'}" ng-click="ctrl.page('about')">
+      <span class="nav-group-item help-item" id="menu-about" ng-class="{active:ctrl.store.display == 'about'}" ng-click="ctrl.page('about')">
         <span class="icon icon-help-circled"></span>MYukkuriVoiceについて
       </span>
-      <span class="nav-group-item help-item" id="menu-voicecode" ng-class="{active:ctrl.display == 'voicecode'}" ng-click="ctrl.page('voicecode')">
+      <span class="nav-group-item help-item" id="menu-voicecode" ng-class="{active:ctrl.store.display == 'voicecode'}" ng-click="ctrl.page('voicecode')">
         <span class="icon icon-help-circled"></span>音声記号列
       </span>
-      <span class="nav-group-item help-item" id="menu-trouble" ng-class="{active:ctrl.display == 'trouble'}" ng-click="ctrl.page('trouble')">
+      <span class="nav-group-item help-item" id="menu-trouble" ng-class="{active:ctrl.store.display == 'trouble'}" ng-click="ctrl.page('trouble')">
         <span class="icon icon-help-circled"></span>トラブルシューティング
       </span>
-      <span class="nav-group-item help-item" id="menu-update" ng-class="{active:ctrl.display == 'update'}" ng-click="ctrl.page('update')">
+      <span class="nav-group-item help-item" id="menu-update" ng-class="{active:ctrl.store.display == 'update'}" ng-click="ctrl.page('update')">
         <span class="icon icon-help-circled"></span>アプリを更新するには
       </span>
-      <span class="nav-group-item help-item" id="menu-uninstall" ng-class="{active:ctrl.display == 'uninstall'}" ng-click="ctrl.page('uninstall')">
+      <span class="nav-group-item help-item" id="menu-uninstall" ng-class="{active:ctrl.store.display == 'uninstall'}" ng-click="ctrl.page('uninstall')">
         <span class="icon icon-help-circled"></span>アンインストールするには
       </span>
-      <span class="nav-group-item help-item" id="menu-backup" ng-class="{active:ctrl.display == 'backup'}" ng-click="ctrl.page('backup')">
+      <span class="nav-group-item help-item" id="menu-backup" ng-class="{active:ctrl.store.display == 'backup'}" ng-click="ctrl.page('backup')">
         <span class="icon icon-help-circled"></span>設定をバックアップするには
       </span>
-      <span class="nav-group-item help-item" id="menu-license" ng-class="{active:ctrl.display == 'license'}" ng-click="ctrl.page('license')">
+      <span class="nav-group-item help-item" id="menu-license" ng-class="{active:ctrl.store.display == 'license'}" ng-click="ctrl.page('license')">
         <span class="icon icon-help-circled"></span>AquesTalkのライセンスについて
       </span>
-      <span class="nav-group-item help-item" id="menu-contact" ng-class="{active:ctrl.display == 'contact'}" ng-click="ctrl.page('contact')">
+      <span class="nav-group-item help-item" id="menu-contact" ng-class="{active:ctrl.store.display == 'contact'}" ng-click="ctrl.page('contact')">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
 
       <h5 class="nav-group-title">各機能詳細</h5>
-      <span class="nav-group-item functions-item" id="menu-funclist" ng-class="{active:ctrl.display == 'funclist'}" ng-click="ctrl.page('funclist')">
+      <span class="nav-group-item functions-item" id="menu-funclist" ng-class="{active:ctrl.store.display == 'funclist'}" ng-click="ctrl.page('funclist')">
         <span class="icon icon-help-circled"></span>機能一覧
       </span>
-      <span class="nav-group-item functions-item" id="menu-play" ng-class="{active:ctrl.display == 'play'}" ng-click="ctrl.page('play')">
+      <span class="nav-group-item functions-item" id="menu-play" ng-class="{active:ctrl.store.display == 'play'}" ng-click="ctrl.page('play')">
         <span class="icon icon-help-circled"></span>音声を再生する
       </span>
-      <span class="nav-group-item functions-item" id="menu-tuna" ng-class="{active:ctrl.display == 'tuna'}" ng-click="ctrl.page('tuna')">
+      <span class="nav-group-item functions-item" id="menu-tuna" ng-class="{active:ctrl.store.display == 'tuna'}" ng-click="ctrl.page('tuna')">
         <span class="icon icon-help-circled"></span>再生する音声の調整
       </span>
-      <span class="nav-group-item functions-item" id="menu-writing" ng-class="{active:ctrl.display == 'writing'}" ng-click="ctrl.page('writing')">
+      <span class="nav-group-item functions-item" id="menu-writing" ng-class="{active:ctrl.store.display == 'writing'}" ng-click="ctrl.page('writing')">
         <span class="icon icon-help-circled"></span>音声ファイル保存の設定
       </span>
-      <span class="nav-group-item functions-item" id="menu-dataconfig" ng-class="{active:ctrl.display == 'dataconfig'}" ng-click="ctrl.page('dataconfig')">
+      <span class="nav-group-item functions-item" id="menu-dataconfig" ng-class="{active:ctrl.store.display == 'dataconfig'}" ng-click="ctrl.page('dataconfig')">
         <span class="icon icon-help-circled"></span>音声再生設定の編集
       </span>
-      <span class="nav-group-item functions-item" id="menu-dragout" ng-class="{active:ctrl.display == 'dragout'}" ng-click="ctrl.page('dragout')">
+      <span class="nav-group-item functions-item" id="menu-dragout" ng-class="{active:ctrl.store.display == 'dragout'}" ng-click="ctrl.page('dragout')">
         <span class="icon icon-help-circled"></span>録音ファイルのドラッグアンドドロップ
       </span>
-      <span class="nav-group-item functions-item" id="menu-multivoice" ng-class="{active:ctrl.display == 'multivoice'}" ng-click="ctrl.page('multivoice')">
+      <span class="nav-group-item functions-item" id="menu-multivoice" ng-class="{active:ctrl.store.display == 'multivoice'}" ng-click="ctrl.page('multivoice')">
         <span class="icon icon-help-circled"></span>マルチボイス機能
       </span>
-      <span class="nav-group-item functions-item" id="menu-dictionary" ng-class="{active:ctrl.display == 'dictionary'}" ng-click="ctrl.page('dictionary')">
+      <span class="nav-group-item functions-item" id="menu-dictionary" ng-class="{active:ctrl.store.display == 'dictionary'}" ng-click="ctrl.page('dictionary')">
         <span class="icon icon-help-circled"></span>ユーザー辞書機能
       </span>
-      <span class="nav-group-item functions-item" id="menu-history" ng-class="{active:ctrl.display == 'history'}" ng-click="ctrl.page('history')">
+      <span class="nav-group-item functions-item" id="menu-history" ng-class="{active:ctrl.store.display == 'history'}" ng-click="ctrl.page('history')">
         <span class="icon icon-help-circled"></span>最近録音したファイルの一覧
       </span>
-      <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:ctrl.display == 'shortcut'}" ng-click="ctrl.page('shortcut')">
+      <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:ctrl.store.display == 'shortcut'}" ng-click="ctrl.page('shortcut')">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
-      <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:ctrl.display == 'help'}" ng-click="ctrl.page('help')">
+      <span class="nav-group-item functions-item" id="menu-help" ng-class="{active:ctrl.store.display == 'help'}" ng-click="ctrl.page('help')">
         <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
 
       <h5 class="nav-group-title">ナビゲーション</h5>
-      <span class="nav-group-item navs-item" id="menu-expand" ng-class="{active:ctrl.display == 'expand'}" ng-click="ctrl.page('expand')">
+      <span class="nav-group-item navs-item" id="menu-expand" ng-class="{active:ctrl.store.display == 'expand'}" ng-click="ctrl.page('expand')">
         <span class="icon icon-map"></span>ヘルプを全て展開
       </span>
       <span class="nav-group-item navs-item" id="menu-search" ng-click="ctrl.openSearchForm()">
@@ -93,28 +93,28 @@
     </nav>
   </div>
 
-  <div class="pane" id="about-pane"      static-include template-path="_help/about.html"      ng-if="ctrl.display == 'about'"></div>
-  <div class="pane" id="voicecode-pane"  static-include template-path="_help/voicecode.html"  ng-if="ctrl.display == 'voicecode'"></div>
-  <div class="pane" id="trouble-pane"    static-include template-path="_help/trouble.html"    ng-if="ctrl.display == 'trouble'"></div>
-  <div class="pane" id="update-pane"     static-include template-path="_help/update.html"     ng-if="ctrl.display == 'update'"></div>
-  <div class="pane" id="uninstall-pane"  static-include template-path="_help/uninstall.html"  ng-if="ctrl.display == 'uninstall'"></div>
-  <div class="pane" id="backup-pane"     static-include template-path="_help/backup.html"     ng-if="ctrl.display == 'backup'"></div>
-  <div class="pane" id="license-pane"    static-include template-path="_help/license.html"    ng-if="ctrl.display == 'license'"></div>
-  <div class="pane" id="contact-pane"    static-include template-path="_help/contact.html"    ng-if="ctrl.display == 'contact'"></div>
+  <div class="pane" id="about-pane"      static-include template-path="_help/about.html"      ng-if="ctrl.store.display == 'about'"></div>
+  <div class="pane" id="voicecode-pane"  static-include template-path="_help/voicecode.html"  ng-if="ctrl.store.display == 'voicecode'"></div>
+  <div class="pane" id="trouble-pane"    static-include template-path="_help/trouble.html"    ng-if="ctrl.store.display == 'trouble'"></div>
+  <div class="pane" id="update-pane"     static-include template-path="_help/update.html"     ng-if="ctrl.store.display == 'update'"></div>
+  <div class="pane" id="uninstall-pane"  static-include template-path="_help/uninstall.html"  ng-if="ctrl.store.display == 'uninstall'"></div>
+  <div class="pane" id="backup-pane"     static-include template-path="_help/backup.html"     ng-if="ctrl.store.display == 'backup'"></div>
+  <div class="pane" id="license-pane"    static-include template-path="_help/license.html"    ng-if="ctrl.store.display == 'license'"></div>
+  <div class="pane" id="contact-pane"    static-include template-path="_help/contact.html"    ng-if="ctrl.store.display == 'contact'"></div>
 
-  <div class="pane" id="funclist-pane"   static-include template-path="_help/funclist.html"   ng-if="ctrl.display == 'funclist'"></div>
-  <div class="pane" id="play-pane"       static-include template-path="_help/play.html"       ng-if="ctrl.display == 'play'"></div>
-  <div class="pane" id="tuna-pane"       static-include template-path="_help/tuna.html"       ng-if="ctrl.display == 'tuna'"></div>
-  <div class="pane" id="writing-pane"    static-include template-path="_help/writing.html"    ng-if="ctrl.display == 'writing'"></div>
-  <div class="pane" id="dataconfig-pane" static-include template-path="_help/dataconfig.html" ng-if="ctrl.display == 'dataconfig'"></div>
-  <div class="pane" id="dragout-pane"    static-include template-path="_help/dragout.html"    ng-if="ctrl.display == 'dragout'"></div>
-  <div class="pane" id="multivoice-pane" static-include template-path="_help/multivoice.html" ng-if="ctrl.display == 'multivoice'"></div>
-  <div class="pane" id="dictionary-pane" static-include template-path="_help/dictionary.html" ng-if="ctrl.display == 'dictionary'"></div>
-  <div class="pane" id="history-pane"    static-include template-path="_help/history.html"    ng-if="ctrl.display == 'history'"></div>
-  <div class="pane" id="shortcut-pane"   static-include template-path="_help/shortcut.html"   ng-if="ctrl.display == 'shortcut'"></div>
-  <div class="pane" id="help-pane"       static-include template-path="_help/help.html"       ng-if="ctrl.display == 'help'"></div>
+  <div class="pane" id="funclist-pane"   static-include template-path="_help/funclist.html"   ng-if="ctrl.store.display == 'funclist'"></div>
+  <div class="pane" id="play-pane"       static-include template-path="_help/play.html"       ng-if="ctrl.store.display == 'play'"></div>
+  <div class="pane" id="tuna-pane"       static-include template-path="_help/tuna.html"       ng-if="ctrl.store.display == 'tuna'"></div>
+  <div class="pane" id="writing-pane"    static-include template-path="_help/writing.html"    ng-if="ctrl.store.display == 'writing'"></div>
+  <div class="pane" id="dataconfig-pane" static-include template-path="_help/dataconfig.html" ng-if="ctrl.store.display == 'dataconfig'"></div>
+  <div class="pane" id="dragout-pane"    static-include template-path="_help/dragout.html"    ng-if="ctrl.store.display == 'dragout'"></div>
+  <div class="pane" id="multivoice-pane" static-include template-path="_help/multivoice.html" ng-if="ctrl.store.display == 'multivoice'"></div>
+  <div class="pane" id="dictionary-pane" static-include template-path="_help/dictionary.html" ng-if="ctrl.store.display == 'dictionary'"></div>
+  <div class="pane" id="history-pane"    static-include template-path="_help/history.html"    ng-if="ctrl.store.display == 'history'"></div>
+  <div class="pane" id="shortcut-pane"   static-include template-path="_help/shortcut.html"   ng-if="ctrl.store.display == 'shortcut'"></div>
+  <div class="pane" id="help-pane"       static-include template-path="_help/help.html"       ng-if="ctrl.store.display == 'help'"></div>
 
-  <div class="pane" id="expand-pane" ng-if="ctrl.display == 'expand'">
+  <div class="pane" id="expand-pane" ng-if="ctrl.store.display == 'expand'">
     <div class="box" static-include template-path="_help/about.html"></div>
     <div class="box" static-include template-path="_help/voicecode.html"></div>
     <div class="box" static-include template-path="_help/trouble.html"></div>

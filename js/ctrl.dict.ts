@@ -11,17 +11,6 @@ class DictController implements yubo.DictController {
     reducer.init();
   }
 
-  // accessor
-  get isInEditing() {
-    return this.store.isInEditing;
-  }
-  get message() {
-    return this.store.message;
-  }
-  get gridOptions() {
-    return this.store.gridOptions;
-  }
-
   // $onInit
   $onInit(): void {
     this.reducer.onLoad(this.$scope);

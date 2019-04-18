@@ -8,17 +8,6 @@ class SystemController implements yubo.SystemController {
     reducer.addObserver(this);
   }
 
-  // accessor
-  get appCfg() {
-    return this.store.appCfg;
-  }
-  get aq10UseKey() {
-    return this.store.aq10UseKey;
-  }
-  set aq10UseKey(key: string) {
-    this.store.aq10UseKey = key;
-  }
-
   // $onInit
   $onInit(): void {
     this.reducer.onLoad();
