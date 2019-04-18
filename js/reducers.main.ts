@@ -170,7 +170,7 @@ class MainReducer implements yubo.MainReducer {
 
   private loadData(nextTask: () => void): void {
     if (MONITOR) { log().warn(monitor().format('apps.main', 'loadData called')); }
-    let dataList = dataJson;
+    let dataList = this.store.yvoiceList;
     if (dataList.length < 1) {
       this.MessageService.info('初期データを読み込みます。');
       dataList = this.DataService.initialData();

@@ -109,7 +109,7 @@ gulp.task('_rm-js', () => {
 gulp.task('lint', ['lint-q', 'lint-html']);
 gulp.task('lint-ts', () => {
   return gulp
-    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts'])
+    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts'])
     .pipe(eslint({useEslintrc: true}))
     .pipe(eslint.format());
 });
@@ -121,7 +121,7 @@ gulp.task('lint-js', () => {
 });
 gulp.task('lint-q', () => {
   return gulp
-    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '*.js', 'js/*.js', 'test/*.js', 'docs/assets/js/*.js'])
+    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts', '*.js', 'js/*.js', 'test/*.js', 'docs/assets/js/*.js'])
     .pipe(eslint({useEslintrc: true, quiet: true}))
     .pipe(eslint.format());
 });

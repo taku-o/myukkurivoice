@@ -8,8 +8,7 @@
   },
   "globals": {
     "angular": true,
-    "introJs": true,
-    "dataJson": true
+    "introJs": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
@@ -29,7 +28,7 @@
     "linebreak-style": ["error", "unix"],
     "no-empty": "off",
     "no-global-assign": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": ["warn", {"args": "none"}],
     "semi": ["error", "always"]
   },
   "overrides": {

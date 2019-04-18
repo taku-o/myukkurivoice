@@ -16,14 +16,13 @@ if (CONSOLELOG) {
 // perfomance monitoring
 if (MONITOR) { log().warn(monitor().format('apps.main', '---- start')); }
 
-var dataJsonFile = `${app.getPath('userData')}/data.json`;
-var dataJson: yubo.YVoice[] = null;
+// pre loading data.json
 try {
   if (MONITOR) { log().warn(monitor().format('apps.main', 'pre load called')); }
-  dataJson = require(dataJsonFile);
+  (window as any).dataJson = require(`${app.getPath('userData')}/data.json`);
   if (MONITOR) { log().warn(monitor().format('apps.main', 'pre load done')); }
 } catch (e) {
-  dataJson = [];
+  (window as any).dataJson = [];
 }
-delete require.cache[dataJsonFile];
+delete require.cache[`${app.getPath('userData')}/data.json`];
 
