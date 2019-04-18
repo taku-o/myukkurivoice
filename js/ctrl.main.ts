@@ -15,20 +15,6 @@ angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives
   ) {
   reducer.addObserver(((this as unknown) as yubo.StoreObserver));
 
-  // event bridge
-  $scope.$on('shortcut', (event: ng.IAngularEvent, action: string) => {
-    reducer.onShortcut(action);
-  });
-  $scope.$on('menu', (event: ng.IAngularEvent, action: string) => {
-    reducer.onMenu(action);
-  });
-  $scope.$on('dropTextFile', (event: ng.IAngularEvent, filePath: string) => {
-    reducer.onDropTextFile(filePath);
-  });
-  $scope.$on('recentDocument', (event: ng.IAngularEvent, filePath: string) => {
-    reducer.onRecentDocument(filePath);
-  });
-
   // init
   const ctrl = this;
   ctrl.store = store;

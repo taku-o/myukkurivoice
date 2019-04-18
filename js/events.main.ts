@@ -1,11 +1,13 @@
 var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // event listeners
-angular.module('mainEvents', []);
+angular.module('mainEvents', ['mainReducers']);
 
 // shortcut
 class MainShortcutEvent implements yubo.MainShortcutEvent {
-  constructor() {}
+  constructor(
+    private reducer: yubo.MainReducer
+  ) {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('shortcut', (event: Electron.Event, action: string) => {
       switch (action) {
@@ -22,7 +24,7 @@ class MainShortcutEvent implements yubo.MainShortcutEvent {
           document.getElementById('from-clipboard').click();
           break;
         case 'putVoiceName':
-          scope.$broadcast('shortcut', action);
+          this.reducer.onShortcut(action);
           break;
         case 'moveToSource':
           document.getElementById('source').focus();
@@ -31,10 +33,10 @@ class MainShortcutEvent implements yubo.MainShortcutEvent {
           document.getElementById('encoded').focus();
           break;
         case 'swichNextConfig':
-          scope.$broadcast('shortcut', action);
+          this.reducer.onShortcut(action);
           break;
         case 'swichPreviousConfig':
-          scope.$broadcast('shortcut', action);
+          this.reducer.onShortcut(action);
           break;
         case 'encode':
           document.getElementById('encode').click();
@@ -45,12 +47,15 @@ class MainShortcutEvent implements yubo.MainShortcutEvent {
 }
 angular.module('mainEvents')
   .directive('shortcut', [
-    () => new MainShortcutEvent(),
+    'MainReducer',
+    (reducer: yubo.MainReducer) => new MainShortcutEvent(reducer),
   ]);
 
 // menu
 class MainMenuEvent implements yubo.MainMenuEvent {
-  constructor() {}
+  constructor(
+    private reducer: yubo.MainReducer
+  ) {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('menu', (event: Electron.Event, action: string) => {
       switch (action) {
@@ -61,16 +66,16 @@ class MainMenuEvent implements yubo.MainMenuEvent {
           document.getElementById('plus').click();
           break;
         case 'minus':
-          scope.$broadcast('menu', action);
+          this.reducer.onMenu(action);
           break;
         case 'copy':
-          scope.$broadcast('menu', action);
+          this.reducer.onMenu(action);
           break;
         case 'save':
           document.getElementById('save').click();
           break;
         case 'reset':
-          scope.$broadcast('menu', action);
+          this.reducer.onMenu(action);
           break;
         case 'dictionary':
           document.getElementById('dictionary').click();
@@ -82,7 +87,7 @@ class MainMenuEvent implements yubo.MainMenuEvent {
           document.getElementById('tutorial').click();
           break;
         case 'clearRecentDocuments':
-          scope.$broadcast('menu', action);
+          this.reducer.onMenu(action);
           break;
         case 'devtron':
           require('devtron').install();
@@ -96,33 +101,40 @@ class MainMenuEvent implements yubo.MainMenuEvent {
 }
 angular.module('mainEvents')
   .directive('menu', [
-    () => new MainMenuEvent(),
+    'MainReducer',
+    (reducer: yubo.MainReducer) => new MainMenuEvent(reducer),
   ]);
 
 // dropTextFile
 class MainDropTextFileEvent implements yubo.MainDropTextFileEvent {
-  constructor() {}
+  constructor(
+    private reducer: yubo.MainReducer
+  ) {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('dropTextFile', (event: Electron.Event, filePath: string) => {
-      scope.$broadcast('dropTextFile', filePath);
+      this.reducer.onDropTextFile(filePath);
     });
   }
 }
 angular.module('mainEvents')
   .directive('dropTextFile', [
-    () => new MainDropTextFileEvent(),
+    'MainReducer',
+    (reducer: yubo.MainReducer) => new MainDropTextFileEvent(reducer),
   ]);
 
 // recentDocument
 class MainRecentDocumentEvent implements yubo.MainRecentDocumentEvent {
-  constructor() {}
+  constructor(
+    private reducer: yubo.MainReducer
+  ) {}
   link(scope: ng.IScope): void {
     ipcRenderer().on('recentDocument', (event: Electron.Event, filePath: string) => {
-      scope.$broadcast('recentDocument', filePath);
+      this.reducer.onRecentDocument(filePath);
     });
   }
 }
 angular.module('mainEvents')
   .directive('recentDocument', [
-    () => new MainRecentDocumentEvent(),
+    'MainReducer',
+    (reducer: yubo.MainReducer) => new MainRecentDocumentEvent(reducer),
   ]);
