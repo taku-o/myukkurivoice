@@ -887,6 +887,7 @@ class MainReducer implements yubo.MainReducer {
     const curwindow = require('electron').remote.getCurrentWindow();
     const newflg = !curwindow.isAlwaysOnTop();
     this.MessageService.info(`switch alwaysOnTop option ${newflg?'ON':'OFF'}`);
+    this.store.alwaysOnTop = newflg;
     curwindow.setAlwaysOnTop(newflg);
   }
 
