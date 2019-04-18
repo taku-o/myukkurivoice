@@ -28,7 +28,7 @@
     "linebreak-style": ["error", "unix"],
     "no-empty": "off",
     "no-global-assign": "off",
-    "no-unused-vars": ["warn", {"args": "none"}],
+    "no-unused-vars": ["warn", {"args": "none", "varsIgnorePattern": "^_void"}],
     "semi": ["error", "always"]
   },
   "overrides": {

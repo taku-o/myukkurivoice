@@ -371,7 +371,7 @@ class FnWindow implements yubo.FnWindow {
         defaultId: 0,
         cancelId: 0,
       };
-      const r = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+      const _void = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
     });
   }
 

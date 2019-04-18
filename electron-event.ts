@@ -126,7 +126,7 @@ class FnEvent implements yubo.FnEvent {
       buttons: ['OK'],
       defaultId: 0,
     };
-    const r = dialog.showMessageBox(myApp.mainWindow, dialogOptions);
+    const _void = dialog.showMessageBox(myApp.mainWindow, dialogOptions);
     myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
     myApp.mainWindow.webContents.reload();
     if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
