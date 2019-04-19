@@ -2,6 +2,9 @@ var _fs, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
 var _temp, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
 var _WavEncoder, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
 
+// env
+var TEST = process.env.NODE_ENV == 'test';
+
 // angular audio service
 angular.module('AudioServices', ['MessageServices', 'UtilServices']);
 
@@ -38,6 +41,9 @@ class AudioService1 implements yubo.AudioService1 {
         this.audio = new Audio('');
         this.audio.autoplay = false;
         this.audio.src = info.path;
+        if (TEST) {
+          this.audio.volume = options.volume;
+        }
         this.audio.onended = () => {
           d.resolve('ok');
         };
@@ -197,7 +203,6 @@ class AudioService2 implements yubo.AudioService2 {
 
       // rendering
       return offlineCtx.startRendering().then((renderedBuffer: AudioBuffer) => {
-
         // trim unused empty buffer.
         const nAudioBuffer = this.buildCorrectAudioBuffer(renderedBuffer);
 

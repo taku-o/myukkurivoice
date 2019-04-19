@@ -1,5 +1,5 @@
 // env
-const TEST = process.env.NODE_ENV == 'test';
+var TEST = process.env.NODE_ENV == 'test';
 
 // controllers
 class MainController implements yubo.MainController {

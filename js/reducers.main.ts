@@ -354,9 +354,9 @@ class MainReducer implements yubo.MainReducer {
       waveOptions.fsc = yvoice.fsc;
     }
     const playOptions: yubo.PlayOptions = {
-      volume:yvoice.volume,
-      playbackRate:yvoice.playbackRate,
-      detune:yvoice.detune,
+      volume: yvoice.volume,
+      playbackRate: yvoice.playbackRate,
+      detune: yvoice.detune,
     };
 
     this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
@@ -592,9 +592,9 @@ class MainReducer implements yubo.MainReducer {
       waveOptions.fsc = yvoice.fsc;
     }
     const playOptions: yubo.PlayOptions = {
-      volume:yvoice.volume,
-      playbackRate:yvoice.playbackRate,
-      detune:yvoice.detune,
+      volume: yvoice.volume,
+      playbackRate: yvoice.playbackRate,
+      detune: yvoice.detune,
     };
 
     this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
@@ -645,9 +645,9 @@ class MainReducer implements yubo.MainReducer {
       waveOptions.fsc = yvoice.fsc;
     }
     const playOptions: yubo.PlayOptions = {
-      volume:yvoice.volume,
-      playbackRate:yvoice.playbackRate,
-      detune:yvoice.detune,
+      volume: yvoice.volume,
+      playbackRate: yvoice.playbackRate,
+      detune: yvoice.detune,
     };
 
     this.SeqFNameService.nextNumber(dir, fnameprefix).then((nextNum) => {

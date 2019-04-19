@@ -3,6 +3,7 @@ var _log, log = () => { _log = _log || require('electron-log'); return _log; };
 // env
 var DEBUG = process.env.DEBUG != null;
 var CONSOLELOG = process.env.CONSOLELOG != null;
+var TEST_VOLUME = 0.1;
 
 // source-map-support
 if (DEBUG) {
@@ -379,7 +380,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -412,7 +413,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -445,7 +446,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -479,7 +480,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -512,7 +513,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -545,7 +546,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -580,7 +581,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -613,7 +614,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -646,7 +647,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -680,7 +681,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -713,7 +714,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -746,7 +747,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
