@@ -16,14 +16,6 @@ class DictController implements yubo.DictController {
     this.reducer.onLoad(this.$scope);
   }
 
-  // editing state
-  toIsInEditing(): void {
-    this.reducer.toIsInEditing();
-  }
-  clearInEditing(): void {
-    this.reducer.clearInEditing();
-  }
-
   // action
   add(): void {
     this.reducer.add();

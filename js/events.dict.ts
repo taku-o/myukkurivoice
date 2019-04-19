@@ -48,7 +48,7 @@ class DictMenuEvent implements yubo.DictMenuEvent {
           document.getElementById('export').click();
           break;
         case 'reset':
-          this.reducer.onMenu(action);
+          this.reducer.reset();
           break;
         case 'tutorial':
           document.getElementById('tutorial').click();

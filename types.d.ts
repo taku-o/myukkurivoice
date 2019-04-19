@@ -560,8 +560,6 @@ declare namespace yubo {
     store: yubo.DictStore;
     // state
     $onInit(): void;
-    toIsInEditing(): void;
-    clearInEditing(): void;
     // action
     add(): void;
     remove(): void;
@@ -577,13 +575,12 @@ declare namespace yubo {
     //private readonly rscDictDir: string;
     //private readonly mAppDictDir: string;
     //private gridApi: any/*IGridApi*/;
-    onMenu(action: string): void;
     init(): void;
     onLoad($scope: ng.IScope): void;
     //private setup(): ng.IPromise<string>;
     //private loadCsv(): ng.IPromise<yubo.DictRecord[]>;
-    toIsInEditing(): void;
-    clearInEditing(): void;
+    //private toIsInEditing(): void;
+    //private clearInEditing(): void;
     add(): void;
     remove(): void;
     save(): void;

@@ -30,15 +30,6 @@ class DictReducer implements yubo.DictReducer {
     private KindList: yubo.KindEntry[]
   ) {}
 
-  // event
-  onMenu(action: string): void {
-    switch (action) {
-      case 'reset':
-        this.reset();
-        break;
-    }
-  }
-
   // $onInit
   init(): void {
     this.setup().then(() => {
@@ -153,13 +144,13 @@ class DictReducer implements yubo.DictReducer {
     return d.promise;
   }
 
-  toIsInEditing(): void {
+  private toIsInEditing(): void {
     const win = require('electron').remote.getCurrentWindow();
     this.store.isInEditing = true;
     win.setDocumentEdited(true);
     win.setTitle(`* ${this.htmlTitle}`);
   }
-  clearInEditing(): void {
+  private clearInEditing(): void {
     const win = require('electron').remote.getCurrentWindow();
     this.store.isInEditing = false;
     win.setDocumentEdited(false);
