@@ -116,8 +116,10 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     ctrl.consumerKey = function(): void {
       LicenseService.consumerKey($scope.licenseType).then((value) => {
-        $scope.consumerKeyResult = value;
-        $scope.consumerKeyDone = 'ok';
+        $timeout(() => {
+          $scope.consumerKeyResult = value;
+          $scope.consumerKeyDone = 'ok';
+        });
       })
       .catch((err: Error) => {
         $scope.consumerKeyErr = err.message;

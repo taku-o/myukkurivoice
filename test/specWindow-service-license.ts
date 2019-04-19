@@ -96,10 +96,9 @@ describe('specWindow-service-LicenseService', function() {
     );
   });
 
-  it('consumerKey', function() {
+  it('consumerKey aquesTalk10DevKey', function() {
     return (
       this.client
-        // consumerKey aquesTalk10DevKey
         .setValue('#license-type', 'aquesTalk10DevKey')
         .setValue('#consumer-key-result', '')
         .setValue('#consumer-key-err', '')
@@ -113,6 +112,28 @@ describe('specWindow-service-LicenseService', function() {
         .then((value: string) => {
           assert.ok(!value, position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.match(/error/i), position());
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            assert.ok(!log.message.match(/error/i), position());
+          });
+        })
+    );
+  });
+
+  it('consumerKey unknown key', function() {
+    return (
+      this.client
         // consumerKey unknown key
         .setValue('#license-type', 'unknown')
         .setValue('#consumer-key-result', 'initial value')
