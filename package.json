@@ -69,6 +69,7 @@
     "@typescript-eslint/parser": "^1.6.0",
     "asar": "^0.14.5",
     "caller-position": "git+https://github.com/taku-o/caller-position.git#master",
+    "chai": "^4.2.0",
     "devtron": "^1.4.0",
     "electron": "^3.1.3",
     "electron-packager": "^12.1.0",

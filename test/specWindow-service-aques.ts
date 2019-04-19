@@ -1,5 +1,5 @@
 import {Application} from 'spectron';
-import * as assert from 'assert';
+import {assert} from 'chai';
 import {position} from 'caller-position';
 import * as rimraf from 'rimraf';
 import * as path from 'path';
