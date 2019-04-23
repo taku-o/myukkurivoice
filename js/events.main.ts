@@ -1,4 +1,4 @@
-var _ipcRenderer :any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // event listeners
 angular.module('mainEvents', ['mainReducers']);

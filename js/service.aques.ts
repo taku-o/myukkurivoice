@@ -1,15 +1,15 @@
 var app = require('electron').remote.app;
-var _log :any, log               = () => { _log = _log || require('electron-log'); return _log; };
-var _fs :any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
-var _ffi :any, ffi               = () => { _ffi = _ffi || require('ffi'); return _ffi; };
-var _os :any, os                 = () => { _os = _os || require('os'); return _os; };
-var _ref :any, ref               = () => { _ref = _ref || require('ref'); return _ref; };
-var _semver :any, semver         = () => { _semver = _semver || require('semver'); return _semver; };
-var _StructType :any, StructType = () => { _StructType = _StructType || require('ref-struct'); return _StructType; };
-var _temp :any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _exec :any, exec             = () => { _exec = _exec || require('child_process').exec; return _exec; };
-var _epath :any, epath           = () => { _epath = _epath || require('electron-path'); return _epath; };
-var _waitUntil :any, waitUntil   = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
+var _log: any, log               = () => { _log = _log || require('electron-log'); return _log; };
+var _fs: any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
+var _ffi: any, ffi               = () => { _ffi = _ffi || require('ffi'); return _ffi; };
+var _os: any, os                 = () => { _os = _os || require('os'); return _os; };
+var _ref: any, ref               = () => { _ref = _ref || require('ref'); return _ref; };
+var _semver: any, semver         = () => { _semver = _semver || require('semver'); return _semver; };
+var _StructType: any, StructType = () => { _StructType = _StructType || require('ref-struct'); return _StructType; };
+var _temp: any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _exec: any, exec             = () => { _exec = _exec || require('child_process').exec; return _exec; };
+var _epath: any, epath           = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _waitUntil: any, waitUntil   = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 var unpackedPath = epath().getUnpackedPath();
 

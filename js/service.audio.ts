@@ -1,6 +1,6 @@
-var _fs :any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
-var _temp :any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _WavEncoder :any, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
+var _fs: any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
+var _temp: any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _WavEncoder: any, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
 
 // env
 var TEST = process.env.NODE_ENV == 'test';

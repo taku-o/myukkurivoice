@@ -1,4 +1,4 @@
-var _log :any, log = () => { _log = _log || require('electron-log'); return _log; };
+var _log: any, log = () => { _log = _log || require('electron-log'); return _log; };
 
 // env
 var DEBUG = process.env.DEBUG != null;

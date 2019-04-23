@@ -1,11 +1,11 @@
 var app = require('electron').remote.app;
-var _ipcRenderer :any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
-var _log :any, log                 = () => { _log = _log || require('electron-log'); return _log; };
-var _fs :any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
-var _parse :any, parse             = () => { _parse = _parse || require('csv-parse/lib/sync'); return _parse; };
-var _stringify :any, stringify     = () => { _stringify = _stringify || require('csv-stringify/lib/sync'); return _stringify; };
-var _epath :any, epath             = () => { _epath = _epath || require('electron-path'); return _epath; };
-var _monitor :any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
+var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _parse: any, parse             = () => { _parse = _parse || require('csv-parse/lib/sync'); return _parse; };
+var _stringify: any, stringify     = () => { _stringify = _stringify || require('csv-stringify/lib/sync'); return _stringify; };
+var _epath: any, epath             = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 var unpackedPath = epath().getUnpackedPath();
 

@@ -1,4 +1,4 @@
-var _path :any, path = () => { _path = _path || require('path'); return _path; };
+var _path: any, path = () => { _path = _path || require('path'); return _path; };
 
 // angular message service
 class MessageService implements yubo.MessageService {

@@ -1,6 +1,6 @@
-var _fs :any, fs       = () => { _fs = _fs || require('fs'); return _fs; };
-var _ffi :any, ffi     = () => { _ffi = _ffi || require('ffi'); return _ffi; };
-var _epath :any, epath = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _fs: any, fs       = () => { _fs = _fs || require('fs'); return _fs; };
+var _ffi: any, ffi     = () => { _ffi = _ffi || require('ffi'); return _ffi; };
+var _epath: any, epath = () => { _epath = _epath || require('electron-path'); return _epath; };
 var unpackedPath  = epath().getUnpackedPath();
 
 // aquestalk dictionary service
