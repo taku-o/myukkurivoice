@@ -1,4 +1,4 @@
-var _epath, epath = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _epath :any, epath = () => { _epath = _epath || require('electron-path'); return _epath; };
 var unpackedPath = epath().getUnpackedPath();
 
 // angular model

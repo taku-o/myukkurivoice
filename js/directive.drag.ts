@@ -1,5 +1,5 @@
 // (UI dependecy contains)
-var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _ipcRenderer :any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // angular directive
 angular.module('DragDirectives', ['mainStores']);

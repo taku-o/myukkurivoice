@@ -1,7 +1,7 @@
 'use strict';
 import {app} from 'electron';
-var _url, url   = () => { _url = _url || require('url'); return _url; };
-var _path, path = () => { _path = _path || require('path'); return _path; };
+var _url: any, url   = () => { _url = _url || require('url'); return _url; };
+var _path: any, path = () => { _path = _path || require('path'); return _path; };
 
 class FnLaunch implements yubo.FnLaunch {
   constructor() {}

@@ -1,5 +1,5 @@
-var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
-var _shell, shell             = () => { _shell = _shell || require('electron').shell; return _shell; };
+var _ipcRenderer :any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _shell :any, shell             = () => { _shell = _shell || require('electron').shell; return _shell; };
 
 // action reducer
 class HelpReducer implements yubo.HelpReducer {

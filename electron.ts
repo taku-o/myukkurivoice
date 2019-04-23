@@ -1,7 +1,7 @@
 'use strict';
 import {app} from 'electron';
-var _log, log         = () => { _log = _log || require('electron-log'); return _log; };
-var _monitor, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _log: any, log         = () => { _log = _log || require('electron-log'); return _log; };
+var _monitor: any, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 import Menu from './electron-menu';
 import Pane from './electron-window';

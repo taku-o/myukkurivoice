@@ -1,6 +1,6 @@
 'use strict';
 import {dialog, ipcMain} from 'electron';
-var _path, path = () => { _path = _path || require('path'); return _path; };
+var _path: any, path = () => { _path = _path || require('path'); return _path; };
 
 class FnEvent implements yubo.FnEvent {
   constructor() {}

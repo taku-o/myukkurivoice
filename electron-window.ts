@@ -1,10 +1,10 @@
 'use strict';
 import {BrowserWindow, dialog, shell} from 'electron';
-var _localShortcut, localShortcut     = () => { _localShortcut = _localShortcut || require('electron-localshortcut'); return _localShortcut; };
-var _log, log                         = () => { _log = _log || require('electron-log'); return _log; };
-var _path, path                       = () => { _path = _path || require('path'); return _path; };
-var _openAboutWindow, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('about-window').default; return _openAboutWindow; };
-var _Version, Version                 = () => { _Version = _Version || require('github-version-compare').Version; return _Version; };
+var _localShortcut: any, localShortcut     = () => { _localShortcut = _localShortcut || require('electron-localshortcut'); return _localShortcut; };
+var _log: any, log                         = () => { _log = _log || require('electron-log'); return _log; };
+var _path: any, path                       = () => { _path = _path || require('path'); return _path; };
+var _openAboutWindow: any, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('about-window').default; return _openAboutWindow; };
+var _Version: any, Version                 = () => { _Version = _Version || require('github-version-compare').Version; return _Version; };
 
 // env
 const DEBUG = process.env.DEBUG != null;
@@ -338,7 +338,7 @@ class FnWindow implements yubo.FnWindow {
   }
 
   // showVersionDialog
-  showVersionDialog() {
+  showVersionDialog(): void {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const repository = 'taku-o/myukkurivoice';
     const packagejson = require('./package.json');

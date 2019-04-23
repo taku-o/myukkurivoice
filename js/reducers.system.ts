@@ -1,4 +1,4 @@
-var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _ipcRenderer :any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // action reducer
 class SystemReducer implements yubo.SystemReducer {

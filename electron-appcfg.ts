@@ -1,9 +1,9 @@
 'use strict';
 import {app} from 'electron';
-var _crypto, crypto   = () => { _crypto = _crypto || require('crypto'); return _crypto; };
-var _Config, Config   = () => { _Config = _Config || require('electron-store'); return _Config; };
-var _log, log         = () => { _log = _log || require('electron-log'); return _log; };
-var _monitor, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _crypto: any, crypto   = () => { _crypto = _crypto || require('crypto'); return _crypto; };
+var _Config: any, Config   = () => { _Config = _Config || require('electron-store'); return _Config; };
+var _log: any, log         = () => { _log = _log || require('electron-log'); return _log; };
+var _monitor: any, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 // env
 const MONITOR = process.env.MONITOR != null;
