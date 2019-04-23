@@ -584,11 +584,11 @@ declare namespace yubo {
     add(): void;
     remove(): void;
     save(): void;
-    cancel(): Promise<boolean>;
+    cancel(): ng.IPromise<boolean>;
     dump(): void;
-    reset(): Promise<boolean>;
+    reset(): ng.IPromise<boolean>;
     reload(): void;
-    //private validateData(): Promise<boolean>;
+    //private validateData(): ng.IPromise<boolean>;
     tutorial(): void;
   }
   export interface DictRecord {

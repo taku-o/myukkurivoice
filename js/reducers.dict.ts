@@ -215,14 +215,15 @@ class DictReducer implements yubo.DictReducer {
       this.notifyUpdates({message: this.store.message});
     });
   }
-  async cancel(): Promise<boolean> {
-    const records: yubo.DictRecord[] = await this.loadCsv();
-    this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
-    this.store.gridOptions.data = records;
-    this.clearInEditing();
-    this.store.message = '保存していない編集中の作業データを取り消しました。';
-    this.notifyUpdates({});
-    return true;
+  cancel(): ng.IPromise<boolean> {
+    return this.loadCsv().then((records: yubo.DictRecord[]) => {
+      this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
+      this.store.gridOptions.data = records;
+      this.clearInEditing();
+      this.store.message = '保存していない編集中の作業データを取り消しました。';
+      this.notifyUpdates({});
+      return true;
+    });
   }
   dump(): void {
     if (this.store.isInEditing) { return; }
@@ -248,38 +249,47 @@ class DictReducer implements yubo.DictReducer {
       this.notifyUpdates({message: this.store.message});
     });
   }
-  async reset(): Promise<boolean> {
+  reset(): ng.IPromise<boolean> {
+    const d = this.$q.defer<boolean>();
     // reset csv
     fs().writeFileSync(`${this.mAppDictDir}/aq_user.csv`, fs().readFileSync(`${this.rscDictDir}/aq_user.csv`));
     // and load
-    const records: yubo.DictRecord[] = await this.loadCsv();
-    // set and return
-    this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
-    this.store.gridOptions.data = records;
-    this.clearInEditing();
-    this.store.message = 'マスター辞書データで作業データをリセットしました。';
-    this.notifyUpdates({});
-    return true;
+    this.loadCsv().then((records: yubo.DictRecord[]) => {
+      this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
+      this.store.gridOptions.data = records;
+      this.clearInEditing();
+      this.store.message = 'マスター辞書データで作業データをリセットしました。';
+      this.notifyUpdates({});
+      d.resolve(true);
+    });
+    return d.promise;
   }
   reload(): void {
     ipcRenderer().send('reloadMainWindow', 'reload');
     this.store.message = 'MYukkuriVoiceのメイン画面を更新します。';
   }
-  private async validateData(): Promise<boolean> {
-    await this.gridApi.rowEdit.flushDirtyRows(this.gridApi.grid);
-    const errorRows = this.gridApi.rowEdit.getErrorRows(this.gridApi.grid);
-    if (errorRows.length < 1) {
-      return true;
-    }
-    // check errorRows that is really error ?
-    for (let row of errorRows) {
-      if (row.error) {
-        throw new Error('error data found.');
+  private validateData(): ng.IPromise<boolean> {
+    const d = this.$q.defer<boolean>();
+    this.gridApi.rowEdit.flushDirtyRows(this.gridApi.grid).then(() => {
+      const errorRows = this.gridApi.rowEdit.getErrorRows(this.gridApi.grid);
+      if (errorRows.length < 1) {
+        d.resolve(true); return;
       }
-    }
-    // fix error rows to clean.
-    this.gridApi.rowEdit.setRowsClean(errorRows);
-    return true;
+      // check errorRows that is really error ?
+      for (let row of errorRows) {
+        if (row.error) {
+          d.reject(new Error('error data found.'));
+          return;
+        }
+      }
+      // fix error rows to clean.
+      this.gridApi.rowEdit.setRowsClean(errorRows);
+      d.resolve(true);
+    })
+    .catch((err: Error) => {
+      d.reject(err);
+    });
+    return d.promise;
   }
 
   tutorial(): void {
