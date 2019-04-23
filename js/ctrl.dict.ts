@@ -26,13 +26,13 @@ class DictController implements yubo.DictController {
   save(): void {
     this.reducer.save();
   }
-  cancel(): ng.IPromise<boolean> {
+  cancel(): Promise<boolean> {
     return this.reducer.cancel();
   }
   dump(): void {
     this.reducer.dump();
   }
-  reset(): ng.IPromise<boolean> {
+  reset(): Promise<boolean> {
     return this.reducer.reset();
   }
   reload(): void {
