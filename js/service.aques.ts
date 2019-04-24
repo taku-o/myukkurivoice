@@ -1,6 +1,6 @@
 var app = require('electron').remote.app;
 var _log: any, log               = () => { _log = _log || require('electron-log'); return _log; };
-var _fs: any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
+var _fsp: any, fsp               = () => { _fsp = _fsp || require('fs').promises; return _fsp; };
 var _ffi: any, ffi               = () => { _ffi = _ffi || require('ffi'); return _ffi; };
 var _os: any, os                 = () => { _os = _os || require('os'); return _os; };
 var _ref: any, ref               = () => { _ref = _ref || require('ref'); return _ref; };
@@ -231,9 +231,12 @@ class AquesService implements yubo.AquesService {
   ) {
     // load custom dictionary if exists
     const customDictPath = `${app.getPath('userData')}/userdict`;
-    fs().stat(`${customDictPath}/aqdic.bin`, (err: Error, stats: fs.Stats) => {
-      if (err) { return; }
+    fsp().stat(`${customDictPath}/aqdic.bin`)
+    .then((stats: fs.Stats) => {
       this.aqDictPath = customDictPath;
+    })
+    .catch((err: Error) => {
+      return; // do nothing
     });
   }
 
@@ -328,46 +331,46 @@ class AquesService implements yubo.AquesService {
           d.reject(err); return;
         }
 
-      fs().writeFile(info.path, encoded, (err: Error) => {
-        if (err) {
-          this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-          d.reject(err); return;
-        }
-
-      const cmdOptions: yubo.CmdOptions = {
-        env: {
-          VOICE: phont.idVoice,
-          SPEED: speed,
-        },
-        encoding: 'binary',
-      };
-      const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
-      exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
-        if (err) {
-          log().info(`maquestalk1 failed. ${err}`);
-          d.reject(err); return;
-        }
-        // @ts-ignore
-        const bufWav = Buffer.from(stdout, 'binary');
-        d.resolve(bufWav);
-      }).on('close', (statusCode: number) => {
-        if (statusCode < 0) {
-          const errorCode = statusCode * -1; // maquestalk1 library result
-          this.MessageService.syserror(this.aquesTalk2Lib.errorTable(errorCode));
-          log().info(`AquesTalk_SyntheMV raise error. error_code:${this.aquesTalk2Lib.errorTable(errorCode)}`);
-        }
-      }); // maquestalk1
+      fsp().writeFile(info.path, encoded)
+      .catch((err: Error) => {
+        this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
+        d.reject(err);
+      })
+      .then(() => {
+        const cmdOptions: yubo.CmdOptions = {
+          env: {
+            VOICE: phont.idVoice,
+            SPEED: speed,
+          },
+          encoding: 'binary',
+        };
+        const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
+        exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
+          if (err) {
+            log().info(`maquestalk1 failed. ${err}`);
+            d.reject(err); return;
+          }
+          // @ts-ignore
+          const bufWav = Buffer.from(stdout, 'binary');
+          d.resolve(bufWav);
+        }).on('close', (statusCode: number) => {
+          if (statusCode < 0) {
+            const errorCode = statusCode * -1; // maquestalk1 library result
+            this.MessageService.syserror(this.aquesTalk2Lib.errorTable(errorCode));
+            log().info(`AquesTalk_SyntheMV raise error. error_code:${this.aquesTalk2Lib.errorTable(errorCode)}`);
+          }
+        }); // maquestalk1
       }); // fs.writeFile
       }); // temp.open
 
     // version 2
     } else if (phont.version == 'talk2') {
-      fs().readFile(phont.path, (err: Error, phontData: Buffer) => {
-        if (err) {
-          this.MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
-          d.reject(err); return;
-        }
-
+      fsp().readFile(phont.path)
+      .catch((err: Error) => {
+        this.MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
+        d.reject(err);
+      })
+      .then((phontData: Buffer) => {
         const allocInt = ref().alloc('int');
         const r = this.aquesTalk2Lib.synthe(encoded, speed, allocInt, phontData);
         if (ref().isNull(r)) {

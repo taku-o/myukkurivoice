@@ -1,4 +1,4 @@
-var _fs: any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
+var _fsp: any, fsp               = () => { _fsp = _fsp || require('fs').promises; return _fsp; };
 var _temp: any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
 var _WavEncoder: any, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
 
@@ -32,12 +32,12 @@ class AudioService1 implements yubo.AudioService1 {
         d.reject(err); return;
       }
 
-      fs().writeFile(info.path, bufWav, (err: Error) => {
-        if (err) {
-          this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-          d.reject(err); return;
-        }
-
+      fsp().writeFile(info.path, bufWav)
+      .catch((err: Error) => {
+        this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
+        d.reject(err);
+      })
+      .then(() => {
         this.audio = new Audio('');
         this.audio.autoplay = false;
         this.audio.src = info.path;
@@ -69,11 +69,12 @@ class AudioService1 implements yubo.AudioService1 {
       d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
     }
 
-    fs().writeFile(wavFilePath, bufWav, (err: Error) => {
-      if (err) {
-        this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
-        d.reject(err); return;
-      }
+    fsp().writeFile(wavFilePath, bufWav)
+    .catch((err: Error) => {
+      this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
+      d.reject(err);
+    })
+    .then(() => {
       d.resolve('ok');
     });
     return d.promise;
@@ -330,10 +331,11 @@ class AudioService2 implements yubo.AudioService2 {
         // create wav file.
         const dInEncode = this.$q.defer<string>();
         WavEncoder().encode(audioData).then((buffer: ArrayBuffer) => {
-          fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err: Error) => {
-            if (err) {
-              dInEncode.reject(err); return;
-            }
+          fsp().writeFile(wavFilePath, Buffer.from(buffer), 'binary')
+          .catch((err: Error) => {
+            dInEncode.reject(err);
+          })
+          .then(() => {
             dInEncode.resolve('ok');
           });
         });

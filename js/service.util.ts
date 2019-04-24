@@ -1,4 +1,4 @@
-var _fs: any, fs     = () => { _fs = _fs || require('fs'); return _fs; };
+var _fsp: any, fsp   = () => { _fsp = _fsp || require('fs').promises; return _fsp; };
 var _path: any, path = () => { _path = _path || require('path'); return _path; };
 
 // angular util service
@@ -22,12 +22,13 @@ class AudioSourceService implements yubo.AudioSourceService {
 
   save(filePath: string, sourceText: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
-    fs().writeFile(filePath, sourceText, 'utf-8', (err: Error) => {
-      if (err) {
-        this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
-        d.reject(err); return;
-      }
+    fsp().writeFile(filePath, sourceText, 'utf-8')
+    .then(() => {
       d.resolve(filePath);
+    })
+    .catch((err: Error) => {
+      this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
+      d.reject(err);
     });
     return d.promise;
   }
@@ -65,12 +66,12 @@ class SeqFNameService implements yubo.SeqFNameService {
 
   nextNumber(dir: string, prefix: string): ng.IPromise<number> {
     const d = this.$q.defer<number>();
-    fs().readdir(dir, (err: Error, files: string[]) => {
-      if (err) {
-        this.MessageService.syserror('ディレクトリを参照できませんでした。', err);
-        d.reject(err); return;
-      }
-
+    fsp().readdir(dir)
+    .catch((err: Error) => {
+      this.MessageService.syserror('ディレクトリを参照できませんでした。', err);
+      d.reject(err); return;
+    })
+    .then((files: string[]) => {
       const pattern = new RegExp(`^${prefix}(${this.numPattern})${this.ext}$`);
 
       const npList: number[] = [];

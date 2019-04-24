@@ -2,6 +2,7 @@ var app = require('electron').remote.app;
 var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
 var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _fsp: any, fsp                 = () => { _fsp = _fsp || require('fs').promises; return _fsp; };
 var _parse: any, parse             = () => { _parse = _parse || require('csv-parse/lib/sync'); return _parse; };
 var _stringify: any, stringify     = () => { _stringify = _stringify || require('csv-stringify/lib/sync'); return _stringify; };
 var _epath: any, epath             = () => { _epath = _epath || require('electron-path'); return _epath; };
@@ -111,26 +112,35 @@ class DictReducer implements yubo.DictReducer {
   private setup(): ng.IPromise<string> {
     const d = this.$q.defer<string>();
     // mkdir
-    fs().stat(`${this.mAppDictDir}`, (err: Error, stats: fs.Stats) => {
-      if (err) {
-        fs().mkdirSync(`${this.mAppDictDir}`);
-      }
-    // copy resource
-    fs().stat(`${this.mAppDictDir}/aq_user.csv`, (err: Error, stats: fs.Stats) => {
-      if (err) {
+    fsp().stat(`${this.mAppDictDir}`)
+    .catch((err: Error) => {
+      fs().mkdirSync(`${this.mAppDictDir}`);
+    })
+    .then((stats: fs.Stats) => {
+      // do nothing
+    })
+    .finally(() => {
+      // copy resource
+      fsp().stat(`${this.mAppDictDir}/aq_user.csv`)
+      .catch((err: Error) => {
         fs().writeFileSync(`${this.mAppDictDir}/aq_user.csv`, fs().readFileSync(`${this.rscDictDir}/aq_user.csv`));
-      }
-      d.resolve('ok');
-    });
+      })
+      .then((stats: fs.Stats) => {
+        // do nothing
+      })
+      .finally(() => {
+        d.resolve('ok');
+      });
     });
     return d.promise;
   }
   private loadCsv(): ng.IPromise<yubo.DictRecord[]> {
     const d = this.$q.defer<yubo.DictRecord[]>();
-    fs().readFile(`${this.mAppDictDir}/aq_user.csv`, 'utf-8', (err: Error, data: Buffer) => {
-      if (err) {
-        d.reject(err); return;
-      }
+    fsp().readFile(`${this.mAppDictDir}/aq_user.csv`, 'utf-8')
+    .catch((err: Error) => {
+      d.reject(err);
+    })
+    .then((data: Buffer) => {
       const records: yubo.DictRecord[] = (parse())(data, {
         columns: [
           'source',
@@ -229,10 +239,14 @@ class DictReducer implements yubo.DictReducer {
     if (this.store.isInEditing) { return; }
     this.validateData().then(() => {
       // copy resource
-      fs().stat(`${this.mAppDictDir}/aqdic.bin`, (err: Error, stats: fs.Stats) => {
-        if (err) {
-          fs().writeFileSync(`${this.mAppDictDir}/aqdic.bin`, fs().readFileSync(`${this.rscDictDir}/aqdic.bin`));
-        }
+      fsp().stat(`${this.mAppDictDir}/aqdic.bin`)
+      .catch((err: Error) => {
+        fs().writeFileSync(`${this.mAppDictDir}/aqdic.bin`, fs().readFileSync(`${this.rscDictDir}/aqdic.bin`));
+      })
+      .then((stats: fs.Stats) => {
+        // do nothing
+      })
+      .finally(() => {
         // generate user dict
         const r = this.AqUsrDicService.generateUserDict(`${this.mAppDictDir}/aq_user.csv`, `${this.mAppDictDir}/aq_user.dic`);
         if (!r.success) {

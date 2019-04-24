@@ -2,7 +2,7 @@ var app = require('electron').remote.app;
 var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _clipboard: any, clipboard     = () => { _clipboard = _clipboard || require('electron').clipboard; return _clipboard; };
 var _path: any, path               = () => { _path = _path || require('path'); return _path; };
-var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _fsp: any, fsp                 = () => { _fsp = _fsp || require('fs').promises; return _fsp; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
 var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 var _waitUntil: any, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
@@ -103,11 +103,11 @@ class MainReducer implements yubo.MainReducer {
   }
   onDropTextFile(filePath: string): void {
     this.MessageService.action('drop textfile to app icon.');
-    fs().readFile(filePath, 'utf-8', (err: Error, data: string) => {
-      if (err) {
-        this.MessageService.error('テキストファイルを読み込めませんでした。', err);
-        return;
-      }
+    fsp().readFile(filePath, 'utf-8')
+    .catch((err: Error) => {
+      this.MessageService.error('テキストファイルを読み込めませんでした。', err);
+    })
+    .then((data: string) => {
       if (this.store.yinput) {
         const win = require('electron').remote.getCurrentWindow();
         win.focus();
@@ -749,11 +749,14 @@ class MainReducer implements yubo.MainReducer {
   quickLookMessage(message: yubo.IWriteMessage): void {
     if (message.type != 'record' && message.type != 'source') { return; }
     const quickLookPath = message.quickLookPath;
-    fs().stat(quickLookPath, (err: Error, stats: fs.Stats) => {
-      if (err) { return; }
+    fsp().stat(quickLookPath)
+    .then((stats: fs.Stats) => {
       //this.MessageService.action(`open with Quick Look. file: ${wavFilePath}`);
       const win = require('electron').remote.getCurrentWindow();
       win.previewFile(quickLookPath);
+    })
+    .catch((err: Error) => {
+      return; // do nothing
     });
   }
   recentDocument(message: yubo.IRecordMessage): void {
