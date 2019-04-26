@@ -365,7 +365,7 @@ gulp.task('_manual:html', () => {
       )
     )
     .pipe(
-      replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js', 'assets/angular/angular.min.js')
+      replace('https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js', 'assets/angular/angular.min.js')
     )
     .pipe(replace(/(static-include template-path="(.*?)"(.*>))<\/div>/g, '$3@@include("$2")</div>'))
     .pipe(finclude())
@@ -748,6 +748,7 @@ gulp.task('_package-release', (cb) => {
           --ignore="^/vendor/aqtk2-mac" \
           --ignore="/ffi/deps/" \
           --ignore="/node_modules/@types" \
+          --ignore="/node_modules/angular-ui-grid/css" \
           --ignore="/node_modules/angular-ui-grid/i18n" \
           --ignore="/node_modules/angular-ui-grid/index.js$" \
           --ignore="/node_modules/angular-ui-grid/less" \
@@ -925,6 +926,7 @@ gulp.task('_package-debug', (cb) => {
           --ignore="^/vendor/aqtk2-mac" \
           --ignore="/ffi/deps/" \
           --ignore="/node_modules/@types" \
+          --ignore="/node_modules/angular-ui-grid/css" \
           --ignore="/node_modules/angular-ui-grid/i18n" \
           --ignore="/node_modules/angular-ui-grid/index.js$" \
           --ignore="/node_modules/angular-ui-grid/less" \
