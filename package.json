@@ -24,7 +24,7 @@
     "url": "https://github.com/taku-o/myukkurivoice/issues",
     "email": "mail@nanasi.jp"
   },
-  "author": "taku-o <mail@nanasi.jp> (http://nanasi.jp/)",
+  "author": "taku-o <mail@nanasi.jp> (https://nanasi.jp/)",
   "license": "MIT",
   "dependencies": {
     "@types/angular": "^1.6.51",
