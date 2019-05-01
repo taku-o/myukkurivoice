@@ -51,13 +51,21 @@ describe('specWindow-service-LicenseService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
@@ -84,13 +92,21 @@ describe('specWindow-service-LicenseService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
@@ -119,13 +135,21 @@ describe('specWindow-service-LicenseService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
@@ -155,13 +179,21 @@ describe('specWindow-service-LicenseService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
