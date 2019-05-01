@@ -64,7 +64,7 @@ describe('helpSearchDialog', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i)) {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());
@@ -102,7 +102,7 @@ describe('helpSearchDialog', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i)) {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());
@@ -145,7 +145,7 @@ describe('helpSearchDialog', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i)) {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());
