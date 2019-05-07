@@ -37,6 +37,14 @@ const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 const ELECTRON_VERSION = '3.1.1';
 const APP_VERSION = require('./package.json').version;
 
+// for fast exit
+gulp.on('stop', () => {
+  process.exit(0);
+});
+gulp.on('err', () => {
+  process.exit(1);
+});
+
 // default task
 gulp.task('default', () => {
   /* eslint-disable-next-line no-console */
