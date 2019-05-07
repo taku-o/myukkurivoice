@@ -26,6 +26,7 @@
     ],
     "indent": 0,
     "linebreak-style": ["error", "unix"],
+    "no-console": "off",
     "no-empty": "off",
     "no-global-assign": "off",
     "no-unused-vars": ["warn", { "args": "none", "varsIgnorePattern": "^_void" }],
@@ -40,6 +41,7 @@
     },
     "rules": {
       "comma-dangle": ["error", "always-multiline"],
+      "no-console": "error",
       "no-empty": "error",
       "no-global-assign": "error",
       "no-undef": "off",
