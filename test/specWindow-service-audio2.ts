@@ -1,6 +1,7 @@
 import {Application} from 'spectron';
 import {assert} from 'chai';
 import {position} from 'caller-position';
+import {validator as wavValidator} from 'wav-fmt-validator';
 import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
@@ -109,6 +110,7 @@ describe('specWindow-service-AudioService2', function() {
             fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_1.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
+              assert.ok(wavValidator(data));
               resolve();
             });
           });
@@ -126,6 +128,7 @@ describe('specWindow-service-AudioService2', function() {
             fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_2.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
+              assert.ok(wavValidator(data));
               resolve();
             });
           });
@@ -143,6 +146,7 @@ describe('specWindow-service-AudioService2', function() {
             fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_10.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
+              assert.ok(wavValidator(data));
               resolve();
             });
           });
