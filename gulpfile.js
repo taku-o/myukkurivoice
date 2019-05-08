@@ -19,7 +19,6 @@ const prettier = require('gulp-prettier');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const rimraf = require('rimraf');
-const runSequence = require('run-sequence');
 const sourcemaps = require('gulp-sourcemaps');
 const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
@@ -74,17 +73,14 @@ usage:
 });
 
 // all
-gulp.task('all', (cb) => {
-  runSequence('format', 'less', 'tsc', 'lint', 'test', 'staging', (err) => {
-    if (err) {
-      _notifyError();
-    }
-    cb(err);
-  });
+gulp.task('all', () => { return gulp.series('format', 'less', 'tsc', 'lint', 'test', 'staging')
+  .on('error', (err) => {
+    _notifyError();
+  })
 });
 
 // tsc
-gulp.task('tsc', ['_tsc'], () => {
+gulp.task('tsc', () => { return gulp.series('_tsc', () => {
   return gulp
     .src([
       'js/ctrl.help.js',
@@ -94,7 +90,7 @@ gulp.task('tsc', ['_tsc'], () => {
       'js/stores.help.js',
     ])
     .pipe(gulp.dest('docs/assets/js'));
-});
+}) });
 gulp.task('_tsc', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
@@ -114,7 +110,7 @@ gulp.task('_rm-js', () => {
 });
 
 // lint
-gulp.task('lint', ['lint-q', 'lint-html']);
+gulp.task('lint', () => { return gulp.parallel('lint-q', 'lint-html') });
 gulp.task('lint-ts', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts'])
@@ -168,9 +164,9 @@ gulp.task('less', () => {
 });
 
 // format
-gulp.task('format', ['_format-json', '_format-js', '_format-ts', '_format-md', '_format-less']);
+gulp.task('format', () => { return gulp.parallel('_format-json', '_format-js', '_format-ts', '_format-md', '_format-less') });
 // format-ts
-gulp.task('_format-ts', ['_format-ts-eslint', '_format-ts-test']);
+gulp.task('_format-ts', () => { return gulp.parallel('_format-ts-eslint', '_format-ts-test') });
 gulp.task('_format-ts-eslint', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
@@ -288,10 +284,10 @@ gulp.task('toc', () => {
 });
 
 // doc
-gulp.task('doc', ['_readme', '_manual', '_releaseslog', '_version', '_package-contents']);
+gulp.task('doc', () => { return gulp.parallel('_readme', '_manual', '_releaseslog', '_version', '_package-contents') });
 
 // readme
-gulp.task('_readme', ['_readme:html']);
+gulp.task('_readme', () => { return gulp.parallel('_readme:html') });
 gulp.task('_readme:pdf', () => {
   return gulp
     .src('docs/README.md')
@@ -317,7 +313,7 @@ gulp.task('_readme:pdf', () => {
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:html:images'], () => {
+gulp.task('_readme:html', () => { return gulp.series(gulp.parallel('_readme:html:css', '_readme:html:icns', '_readme:html:images'), () => {
   return gulp
     .src('docs/README.md')
     .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
@@ -348,7 +344,7 @@ gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:htm
       })
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
-});
+})});
 gulp.task('_readme:html:css', () => {
   return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
 });
@@ -362,7 +358,7 @@ gulp.task('_readme:html:images', () => {
 });
 
 // manual
-gulp.task('_manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
+gulp.task('_manual', () => { return gulp.parallel('_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon') });
 gulp.task('_manual:html', () => {
   return gulp
     .src(['docs/help.html'])
@@ -409,7 +405,7 @@ gulp.task('_manual:assets:photon', () => {
 });
 
 // releaseslog
-gulp.task('_releaseslog', ['_releaseslog:pdf']);
+gulp.task('_releaseslog', () => { return gulp.parallel('_releaseslog:pdf') });
 gulp.task('_releaseslog:pdf', () => {
   return gulp
     .src('docs/releases.md')
@@ -456,13 +452,10 @@ gulp.task('_version', (cb) => {
 });
 
 // _package-contents
-gulp.task('_package-contents', (cb) => {
-  runSequence('_package-contents:cp', '_package-contents:rm', (err) => {
-    if (err) {
-      _notifyError();
-    }
-    cb(err);
-  });
+gulp.task('_package-contents', () => { return gulp.series('_package-contents:cp', '_package-contents:rm')
+  .on('error', (err) => {
+    _notifyError();
+  })
 });
 gulp.task('_package-contents:cp', () => {
   return gulp
@@ -482,35 +475,34 @@ gulp.task('_package-contents:rm', () => {
 });
 
 // clean
-gulp.task('clean', ['_rm-js', '_rm-package', '_rm-workdir']);
+gulp.task('clean', () => { return gulp.parallel('_rm-js', '_rm-package', '_rm-workdir') });
 
 // test
 gulp.task('test', (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
-        if (err) {
+      gulp.series('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify',
+        () => {
+          cb();
+        })
+        .on('error', (err) => {
           _notifyError();
-        }
-        cb(err);
-      });
+        })
     } else {
-      runSequence('tsc-debug', '_test', '_notify', (err) => {
-        if (err) {
+      gulp.series('tsc-debug', '_test', '_notify',
+        () => {
+          cb();
+        })
+        .on('error', (err) => {
           _notifyError();
-        }
-        cb(err);
-      });
+        })
     }
   });
 });
-gulp.task('test-rebuild', (cb) => {
-  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
-    if (err) {
-      _notifyError();
-    }
-    cb(err);
-  });
+gulp.task('test-rebuild', () => { return gulp.series('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify')
+  .on('error', (err) => {
+    _notifyError();
+  })
 });
 gulp.task('_test', () => {
   const targets = argv && argv.t ? argv.t : 'test/*.js';
@@ -518,7 +510,7 @@ gulp.task('_test', () => {
 });
 
 // run app
-gulp.task('app', ['tsc-debug'], (cb) => {
+gulp.task('app', () => { return gulp.series('tsc-debug', (cb) => {
   const env = process.env;
   env.DEBUG = 1;
   env.MONITOR = 1;
@@ -535,16 +527,13 @@ gulp.task('app', ['tsc-debug'], (cb) => {
   run.on('close', (code) => {
     cb();
   });
-});
+}) });
 
 // package
-gulp.task('package', (cb) => {
-  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', (err) => {
-    if (err) {
-      _notifyError();
-    }
-    cb(err);
-  });
+gulp.task('package', () => { return gulp.series('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify')
+  .on('error', (err) => {
+    _notifyError();
+  })
 });
 
 // release
@@ -553,7 +542,7 @@ gulp.task('release', (cb) => {
     cb('branch is selected');
     return;
   }
-  runSequence(
+  gulp.series(
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -569,13 +558,13 @@ gulp.task('release', (cb) => {
     '_zip-app',
     '_open-appdir',
     '_notify',
-    (err) => {
-      if (err) {
-        _notifyError();
-      }
-      cb(err);
+    () => {
+      cb();
     }
-  );
+  )
+    .on('error', (err) => {
+      _notifyError();
+    })
 });
 
 // staging
@@ -585,7 +574,7 @@ gulp.task('staging', (cb) => {
       .toString()
       .trim();
   }
-  runSequence(
+  gulp.series(
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -601,13 +590,14 @@ gulp.task('staging', (cb) => {
     '_zip-app',
     '_open-appdir',
     '_notify',
-    (err) => {
-      if (err) {
-        _notifyError();
-      }
-      cb(err);
+    () => {
+      cb();
     }
-  );
+
+  )
+    .on('error', (err) => {
+      _notifyError();
+    })
 });
 
 // workdir
@@ -626,13 +616,10 @@ gulp.task('_ch-workdir', () => {
 });
 
 // app.asar.unpacked
-gulp.task('_unpacked', (cb) => {
-  runSequence('_unpacked:mkdir', '_unpacked:cp', (err) => {
-    if (err) {
-      _notifyError();
-    }
-    cb(err);
-  });
+gulp.task('_unpacked', () => { return gulp.series('_unpacked:mkdir', '_unpacked:cp')
+  .on('error', (err) => {
+    _notifyError();
+  })
 });
 gulp.task('_unpacked:mkdir', (cb) => {
   const UNPACK_DIR = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
