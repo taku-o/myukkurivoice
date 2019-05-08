@@ -106,13 +106,20 @@ declare namespace GithubVersionCompare {
   }
 }
 
-declare namespace yubo {
-  // external
-  // node.js
-  export interface Global extends NodeJS.Global {
-    appCfg: AppCfg;
+// extends external
+// NodeJS
+declare namespace NodeJS {
+  export interface Global {
+    appCfg: yubo.AppCfg;
   }
+}
 
+// global
+interface Window {
+  dataJson: yubo.YVoice[];
+}
+
+declare namespace yubo {
   // electron-appcfg.ts
   export interface AppCfg {
     mainWindow:          {width: number, height: number, x: number | null, y: number | null };

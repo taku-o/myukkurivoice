@@ -105,4 +105,3 @@ class FnAppCfg implements FnAppCfg {
 }
 
 export default FnAppCfg;
-declare var global: yubo.Global;

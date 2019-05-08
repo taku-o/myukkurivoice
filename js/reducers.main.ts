@@ -36,9 +36,9 @@ class MainReducer implements yubo.MainReducer {
     private YPhontMasterList: yubo.YPhont[],
     private YInputInitialData: yubo.YInput
   ) {
-    this.store.yvoiceList = (window as any).dataJson;
-    this.store.curYvoice = (window as any).dataJson.length > 0? (window as any).dataJson[0]: null;
-    delete (window as any)['dataJson'];
+    this.store.yvoiceList = window.dataJson;
+    this.store.curYvoice = window.dataJson.length > 0? window.dataJson[0]: null;
+    delete window['dataJson'];
   }
 
   // event
