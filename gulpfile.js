@@ -34,7 +34,7 @@ const WORK_DIR = __dirname + '/release';
 const WORK_REPO_DIR = __dirname + '/release/myukkurivoice';
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 
-const ELECTRON_VERSION = require('./package-lock.json').dependencies.electron.version;
+const ELECTRON_VERSION = require('./package.json').versions.electron;
 const APP_VERSION = require('./package.json').version;
 
 // for fast exit

@@ -25,11 +25,11 @@
 - native 関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
 
 ```
-  - bindings 1.3.1
+  - bindings 1.5.0
   - debug 4.1.1
   - ffi 2.3.0
   - ms 2.1.1
-  - nan 2.12.1
+  - nan 2.13.2
   - natives 1.1.6
   - ref 1.3.5
   - ref-struct 1.1.0
@@ -118,9 +118,9 @@
 ```
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
   nvm ls-remote
-  nvm install v10.2.1
-  nvm use v10.2.1
-  nvm alias default v10.2.1
+  nvm install v10.11.0
+  nvm use v10.11.0
+  nvm alias default v10.11.0
 ```
 
 ### Module version mismatch. Expected 50, got 51
@@ -128,7 +128,7 @@
 - もし、この類のエラーに遭遇したら、次のようなコマンドを実行して rebuild する
 
 ```
-  npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --abi=51
+  ./node_modules/.bin/electron-rebuild
 ```
 
 # その他
