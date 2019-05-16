@@ -52,7 +52,7 @@ usage:
 gulp.task('all', (cb) => {
   runSequence('format', 'less', 'tsc', 'lint', 'test', 'staging', (err) => {
     if (err) {
-      _notifyError();
+      global._notifyError();
     }
     cb(err);
   });
@@ -97,11 +97,10 @@ gulp.task('_notify', () => {
     sound: 'Glass',
   });
 });
-function _notifyError() {
+global._notifyError = () => {
   return notifier.notify({
     title: 'gulp-task',
     message: 'error.',
     sound: 'Frog',
   });
-}
-
+};
