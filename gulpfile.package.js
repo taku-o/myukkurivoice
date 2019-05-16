@@ -1,5 +1,6 @@
 const del = require('del');
 const exec = require('child_process').exec;
+const fse = require('fs-extra');
 const gulp = require('gulp');
 const mkdirp = require('mkdirp');
 const path = require('path');
