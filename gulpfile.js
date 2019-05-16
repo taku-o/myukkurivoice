@@ -9,6 +9,7 @@ require('./gulpfile.less');
 require('./gulpfile.lint');
 require('./gulpfile.notify');
 require('./gulpfile.package');
+require('./gulpfile.release');
 require('./gulpfile.test');
 require('./gulpfile.tsc');
 
