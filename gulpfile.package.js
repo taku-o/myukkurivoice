@@ -1,0 +1,555 @@
+const argv = require('yargs').argv;
+const del = require('del');
+const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
+const fse = require('fs-extra');
+const git = require('gulp-git');
+const gulp = require('gulp');
+const install = require('gulp-install');
+const mkdirp = require('mkdirp');
+const path = require('path');
+const rimraf = require('rimraf');
+const runSequence = require('run-sequence');
+
+const PACKAGER_CMD = path.join(__dirname, './node_modules/.bin/electron-packager');
+const WORK_DIR = path.join(__dirname, './release');
+const WORK_REPO_DIR = path.join(__dirname, './release/myukkurivoice');
+const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
+
+const ELECTRON_VERSION = require('./package.json').versions.electron;
+const APP_VERSION = require('./package.json').version;
+
+// package
+gulp.task('package', (cb) => {
+  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', (err) => {
+    if (err) {
+      _notifyError();
+    }
+    cb(err);
+  });
+});
+
+// release
+gulp.task('release', (cb) => {
+  if (argv && argv.branch) {
+    cb('branch is selected');
+    return;
+  }
+  runSequence(
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release',
+    '_unpacked',
+    'doc',
+    '_zip-app',
+    '_open-appdir',
+    '_notify',
+    (err) => {
+      if (err) {
+        _notifyError();
+      }
+      cb(err);
+    }
+  );
+});
+
+// staging
+gulp.task('staging', (cb) => {
+  if (!(argv && argv.branch)) {
+    argv.branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
+      .toString()
+      .trim();
+  }
+  runSequence(
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release',
+    '_unpacked',
+    'doc',
+    '_zip-app',
+    '_open-appdir',
+    '_notify',
+    (err) => {
+      if (err) {
+        _notifyError();
+      }
+      cb(err);
+    }
+  );
+});
+
+// workdir
+gulp.task('_rm-workdir', (cb) => {
+  rimraf(WORK_DIR, (err) => {
+    cb(err);
+  });
+});
+gulp.task('_mk-workdir', (cb) => {
+  mkdirp(WORK_DIR, (err) => {
+    cb(err);
+  });
+});
+gulp.task('_ch-workdir', () => {
+  process.chdir(WORK_DIR);
+});
+
+// app.asar.unpacked
+gulp.task('_unpacked', (cb) => {
+  runSequence('_unpacked:mkdir', '_unpacked:cp', (err) => {
+    if (err) {
+      _notifyError();
+    }
+    cb(err);
+  });
+});
+gulp.task('_unpacked:mkdir', (cb) => {
+  const UNPACK_DIR = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
+  mkdirp(`${UNPACK_DIR}/vendor`, (err) => {
+    cb(err);
+  });
+});
+gulp.task('_unpacked:cp', (cb) => {
+  const UNPACK_DIR = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked';
+  Promise.all([
+    fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`),
+    fse.copy('vendor/AqUsrDic.framework', `${UNPACK_DIR}/vendor/AqUsrDic.framework`),
+    fse.copy('vendor/AquesTalk.framework', `${UNPACK_DIR}/vendor/AquesTalk.framework`),
+    fse.copy('vendor/AquesTalk2.framework', `${UNPACK_DIR}/vendor/AquesTalk2.framework`),
+    fse.copy('vendor/AquesTalk10.framework', `${UNPACK_DIR}/vendor/AquesTalk10.framework`),
+    fse.copy('vendor/aq_dic_large', `${UNPACK_DIR}/vendor/aq_dic_large`),
+    fse.copy('vendor/phont', `${UNPACK_DIR}/vendor/phont`),
+    fse.copy('vendor/maquestalk1', `${UNPACK_DIR}/vendor/maquestalk1`),
+    fse.copy('vendor/secret', `${UNPACK_DIR}/vendor/secret`),
+  ])
+    .then(() => {
+      cb();
+    })
+    .catch((err) => {
+      cb(err);
+    });
+});
+
+// git
+gulp.task('_git-clone', (cb) => {
+  const opts = argv && argv.branch ? {args: '-b ' + argv.branch} : {args: '-b master'};
+  git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
+    cb(err);
+  });
+});
+gulp.task('_git-submodule', (cb) => {
+  git.updateSubmodule({args: '--init'}, cb);
+});
+
+// repodir
+gulp.task('_ch-repodir', () => {
+  process.chdir(WORK_REPO_DIR);
+});
+
+// npm
+gulp.task('_npm-install', (cb) => {
+  gulp
+    .src(['./package.json'])
+    .pipe(gulp.dest('./'))
+    .pipe(
+      install(
+        {
+          npm: '--production',
+        },
+        cb
+      )
+    );
+});
+
+// zip
+gulp.task('_zip-app', (cb) => {
+  exec(
+    'ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '.zip',
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
+});
+
+// open
+gulp.task('_open-appdir', (cb) => {
+  exec('open ' + APP_PACKAGE_NAME, (err, stdout, stderr) => {
+    cb(err);
+  });
+});
+
+// package
+gulp.task('_rm-package', () => {
+  return del(['MYukkuriVoice-darwin-x64']);
+});
+
+gulp.task('_package-release', (cb) => {
+  exec(
+    PACKAGER_CMD +
+      ` . MYukkuriVoice \
+          --platform=darwin --arch=x64 \
+          --app-version=${APP_VERSION} \
+          --electron-version=${ELECTRON_VERSION} \
+          --icon=icns/myukkurivoice.icns --overwrite --asar \
+          --protocol-name=myukkurivoice --protocol=myukkurivoice \
+          --extend-info=extend.plist \
+          --no-prune \
+          --ignore="^/js/apps.spec.js" \
+          --ignore="^/contents-spec.html" \
+          --ignore="^/vendor" \
+          --ignore="^/MYukkuriVoice-darwin-x64" \
+          --ignore="^/docs" \
+          --ignore="^/extend.plist" \
+          --ignore="^/icns" \
+          --ignore="^/release" \
+          --ignore="^/test" \
+          --ignore="^/vendor/aqk2k_mac" \
+          --ignore="^/vendor/aqtk1-mac" \
+          --ignore="^/vendor/aqtk10-mac" \
+          --ignore="^/vendor/aqtk2-mac" \
+          --ignore="/ffi/deps/" \
+          --ignore="/node_modules/@types" \
+          --ignore="/node_modules/angular-ui-grid/css" \
+          --ignore="/node_modules/angular-ui-grid/i18n" \
+          --ignore="/node_modules/angular-ui-grid/index.js$" \
+          --ignore="/node_modules/angular-ui-grid/less" \
+          --ignore="/node_modules/angular-ui-grid/package.json$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.auto-resize.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.auto-resize.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.cellnav.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.core.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.css$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.edit.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.empty-base-layer.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.empty-base-layer.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.expandable.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.expandable.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.exporter.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.exporter.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.grouping.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.grouping.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.importer.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.importer.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.infinite-scroll.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.infinite-scroll.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.move-columns.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pagination.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pagination.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pinning.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pinning.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.resize-columns.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.row-edit.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.saveState.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.saveState.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.selection.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-base.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-base.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-view.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-view.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.validate.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.validate.min.js$" \
+          --ignore="/node_modules/angular/angular-csp\\.css$" \
+          --ignore="/node_modules/angular/angular\\.js$" \
+          --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
+          --ignore="/node_modules/angular/index\\.js$" \
+          --ignore="/node_modules/angular/package\\.json$" \
+          --ignore="/node_modules/intro\\.js/intro\\.js$" \
+          --ignore="/node_modules/intro\\.js/introjs-rtl\\.css$" \
+          --ignore="/node_modules/intro\\.js/introjs\\.css$" \
+          --ignore="/node_modules/intro\\.js/minified/introjs-rtl\\.min\\.css$" \
+          --ignore="/node_modules/intro\\.js/themes" \
+          --ignore="/node_modules/photon/CNAME$" \
+          --ignore="/node_modules/photon/_config\\.yml$" \
+          --ignore="/node_modules/photon/dist/template-app/" \
+          --ignore="/node_modules/photon/fonts/" \
+          --ignore="/docs/" \
+          --ignore="/example/" \
+          --ignore="/examples/" \
+          --ignore="/man/" \
+          --ignore="/sample/" \
+          --ignore="/samples/" \
+          --ignore="/test/" \
+          --ignore="/tests/" \
+          --ignore="/.+\\.Makefile$" \
+          --ignore="/.+\\.cc$" \
+          --ignore="/.+\\.coffee$" \
+          --ignore="/.+\\.coveralls.yml$" \
+          --ignore="/.+\\.gyp$" \
+          --ignore="/.+\\.h$" \
+          --ignore="/.+\\.js\\.gzip$" \
+          --ignore="/.+\\.js\\.map$" \
+          --ignore="/.+\\.jst$" \
+          --ignore="/.+\\.less$" \
+          --ignore="/.+\\.markdown$" \
+          --ignore="/.+\\.md$" \
+          --ignore="/.+\\.py$" \
+          --ignore="/.+\\.scss$" \
+          --ignore="/.+\\.swp$" \
+          --ignore="/.+\\.target\\.mk$" \
+          --ignore="/.+\\.tsbuildinfo$" \
+          --ignore="/.+\\.tgz$" \
+          --ignore="/.+\\.ts$" \
+          --ignore="/AUTHORS$" \
+          --ignore="/CHANGELOG$" \
+          --ignore="/CHANGES$" \
+          --ignore="/CONTRIBUTE$" \
+          --ignore="/CONTRIBUTING$" \
+          --ignore="/ChangeLog$" \
+          --ignore="/Gruntfile\\.js$" \
+          --ignore="/HISTORY$" \
+          --ignore="/History$" \
+          --ignore="/LICENCE$" \
+          --ignore="/LICENSE$" \
+          --ignore="/LICENSE-MIT\\.txt$" \
+          --ignore="/LICENSE-jsbn$" \
+          --ignore="/LICENSES\\.chromium\\.html$" \
+          --ignore="/LICENSE\\.APACHE2$" \
+          --ignore="/LICENSE\\.BSD$" \
+          --ignore="/LICENSE\\.MIT$" \
+          --ignore="/LICENSE\\.html$" \
+          --ignore="/LICENSE\\.txt$" \
+          --ignore="/License$" \
+          --ignore="/MAKEFILE$" \
+          --ignore="/Makefile$" \
+          --ignore="/OWNERS$" \
+          --ignore="/README$" \
+          --ignore="/README\\.hbs$" \
+          --ignore="/README\\.html$" \
+          --ignore="/Readme$" \
+          --ignore="/\\.DS_Store$" \
+          --ignore="/\\.babelrc$" \
+          --ignore="/\\.cache/$" \
+          --ignore="/\\.editorconfig$" \
+          --ignore="/\\.eslintignore$" \
+          --ignore="/\\.eslintrc$" \
+          --ignore="/\\.eslintrc\\.json$" \
+          --ignore="/\\.eslintrc\\.yml$" \
+          --ignore="/\\.git$" \
+          --ignore="/\\.gitignore$" \
+          --ignore="/\\.gitmodules$" \
+          --ignore="/\\.hound.yml$" \
+          --ignore="/\\.jshintrc$" \
+          --ignore="/\\.keep$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.prettierrc$" \
+          --ignore="/\\.prettierrc\\.json$" \
+          --ignore="/\\.prettierrc\\.yaml$" \
+          --ignore="/\\.python-version$" \
+          --ignore="/\\.stylelintrc$" \
+          --ignore="/\\.stylelintrc\\.json$" \
+          --ignore="/\\.travis\\.yml$" \
+          --ignore="/appveyor\\.yml$" \
+          --ignore="/bower\\.json$" \
+          --ignore="/component\\.json$" \
+          --ignore="/example\\.html$" \
+          --ignore="/example\\.js$" \
+          --ignore="/favicon\\.ico$" \
+          --ignore="/gulpfile\\.js$" \
+          --ignore="/karma\\.conf\\.js$" \
+          --ignore="/license$" \
+          --ignore="/license\\.txt$" \
+          --ignore="/package-lock\\.json$" \
+          --ignore="/project\\.pbxproj$" \
+          --ignore="/test\\.js$" \
+          --ignore="/tsconfig\\.json$" \
+          --ignore="/usage\\.txt$" \
+          --ignore="/yarn\\.lock$"`,
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
+});
+
+gulp.task('_package-debug', (cb) => {
+  exec(
+    PACKAGER_CMD +
+      ` . MYukkuriVoice \
+          --platform=darwin --arch=x64 \
+          --app-version=${APP_VERSION} \
+          --electron-version=${ELECTRON_VERSION} \
+          --icon=icns/myukkurivoice.icns --overwrite --asar \
+          --protocol-name=myukkurivoice --protocol=myukkurivoice \
+          --extend-info=extend.plist \
+          --no-prune \
+          --ignore="^/vendor" \
+          --ignore="^/MYukkuriVoice-darwin-x64" \
+          --ignore="^/docs" \
+          --ignore="^/extend.plist" \
+          --ignore="^/icns" \
+          --ignore="^/release" \
+          --ignore="^/test" \
+          --ignore="^/vendor/aqk2k_mac" \
+          --ignore="^/vendor/aqtk1-mac" \
+          --ignore="^/vendor/aqtk10-mac" \
+          --ignore="^/vendor/aqtk2-mac" \
+          --ignore="/ffi/deps/" \
+          --ignore="/node_modules/@types" \
+          --ignore="/node_modules/angular-ui-grid/css" \
+          --ignore="/node_modules/angular-ui-grid/i18n" \
+          --ignore="/node_modules/angular-ui-grid/index.js$" \
+          --ignore="/node_modules/angular-ui-grid/less" \
+          --ignore="/node_modules/angular-ui-grid/package.json$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.auto-resize.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.auto-resize.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.cellnav.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.core.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.css$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.edit.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.empty-base-layer.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.empty-base-layer.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.expandable.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.expandable.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.exporter.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.exporter.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.grouping.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.grouping.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.importer.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.importer.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.infinite-scroll.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.infinite-scroll.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.move-columns.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pagination.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pagination.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pinning.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.pinning.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.resize-columns.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.row-edit.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.saveState.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.saveState.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.selection.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-base.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-base.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-view.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.tree-view.min.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.validate.js$" \
+          --ignore="/node_modules/angular-ui-grid/ui-grid.validate.min.js$" \
+          --ignore="/node_modules/angular/angular-csp\\.css$" \
+          --ignore="/node_modules/angular/angular\\.js$" \
+          --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
+          --ignore="/node_modules/angular/index\\.js$" \
+          --ignore="/node_modules/angular/package\\.json$" \
+          --ignore="/node_modules/intro\\.js/intro\\.js$" \
+          --ignore="/node_modules/intro\\.js/introjs-rtl\\.css$" \
+          --ignore="/node_modules/intro\\.js/introjs\\.css$" \
+          --ignore="/node_modules/intro\\.js/minified/introjs-rtl\\.min\\.css$" \
+          --ignore="/node_modules/intro\\.js/themes/" \
+          --ignore="/node_modules/photon/CNAME$" \
+          --ignore="/node_modules/photon/_config\\.yml$" \
+          --ignore="/node_modules/photon/dist/template-app/" \
+          --ignore="/node_modules/photon/fonts/" \
+          --ignore="/docs/" \
+          --ignore="/example/" \
+          --ignore="/examples/" \
+          --ignore="/man/" \
+          --ignore="/sample/" \
+          --ignore="/samples/" \
+          --ignore="/test/" \
+          --ignore="/tests/" \
+          --ignore="/.+\\.Makefile$" \
+          --ignore="/.+\\.cc$" \
+          --ignore="/.+\\.coffee$" \
+          --ignore="/.+\\.coveralls.yml$" \
+          --ignore="/.+\\.gyp$" \
+          --ignore="/.+\\.h$" \
+          --ignore="/.+\\.js\\.gzip$" \
+          --ignore="/.+\\.js\\.map$" \
+          --ignore="/.+\\.jst$" \
+          --ignore="/.+\\.less$" \
+          --ignore="/.+\\.markdown$" \
+          --ignore="/.+\\.md$" \
+          --ignore="/.+\\.py$" \
+          --ignore="/.+\\.scss$" \
+          --ignore="/.+\\.swp$" \
+          --ignore="/.+\\.target\\.mk$" \
+          --ignore="/.+\\.tsbuildinfo$" \
+          --ignore="/.+\\.tgz$" \
+          --ignore="/.+\\.ts$" \
+          --ignore="/AUTHORS$" \
+          --ignore="/CHANGELOG$" \
+          --ignore="/CHANGES$" \
+          --ignore="/CONTRIBUTE$" \
+          --ignore="/CONTRIBUTING$" \
+          --ignore="/ChangeLog$" \
+          --ignore="/Gruntfile\\.js$" \
+          --ignore="/HISTORY$" \
+          --ignore="/History$" \
+          --ignore="/LICENCE$" \
+          --ignore="/LICENSE$" \
+          --ignore="/LICENSE-MIT\\.txt$" \
+          --ignore="/LICENSE-jsbn$" \
+          --ignore="/LICENSES\\.chromium\\.html$" \
+          --ignore="/LICENSE\\.APACHE2$" \
+          --ignore="/LICENSE\\.BSD$" \
+          --ignore="/LICENSE\\.MIT$" \
+          --ignore="/LICENSE\\.html$" \
+          --ignore="/LICENSE\\.txt$" \
+          --ignore="/License$" \
+          --ignore="/MAKEFILE$" \
+          --ignore="/Makefile$" \
+          --ignore="/OWNERS$" \
+          --ignore="/README$" \
+          --ignore="/README\\.hbs$" \
+          --ignore="/README\\.html$" \
+          --ignore="/Readme$" \
+          --ignore="/\\.DS_Store$" \
+          --ignore="/\\.babelrc$" \
+          --ignore="/\\.cache/$" \
+          --ignore="/\\.editorconfig$" \
+          --ignore="/\\.eslintignore$" \
+          --ignore="/\\.eslintrc$" \
+          --ignore="/\\.eslintrc\\.json$" \
+          --ignore="/\\.eslintrc\\.yml$" \
+          --ignore="/\\.git$" \
+          --ignore="/\\.gitignore$" \
+          --ignore="/\\.gitmodules$" \
+          --ignore="/\\.hound.yml$" \
+          --ignore="/\\.jshintrc$" \
+          --ignore="/\\.keep$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.npmignore$" \
+          --ignore="/\\.prettierrc$" \
+          --ignore="/\\.prettierrc\\.json$" \
+          --ignore="/\\.prettierrc\\.yaml$" \
+          --ignore="/\\.python-version$" \
+          --ignore="/\\.stylelintrc$" \
+          --ignore="/\\.stylelintrc\\.json$" \
+          --ignore="/\\.travis\\.yml$" \
+          --ignore="/appveyor\\.yml$" \
+          --ignore="/bower\\.json$" \
+          --ignore="/component\\.json$" \
+          --ignore="/example\\.html$" \
+          --ignore="/example\\.js$" \
+          --ignore="/favicon\\.ico$" \
+          --ignore="/gulpfile\\.js$" \
+          --ignore="/karma\\.conf\\.js$" \
+          --ignore="/license$" \
+          --ignore="/license\\.txt$" \
+          --ignore="/package-lock\\.json$" \
+          --ignore="/project\\.pbxproj$" \
+          --ignore="/test\\.js$" \
+          --ignore="/tsconfig\\.json$" \
+          --ignore="/usage\\.txt$" \
+          --ignore="/yarn\\.lock$"`,
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
+});
