@@ -20,7 +20,7 @@
     "movie"
   ],
   "versions": {
-    "electron": "4.1.5",
+    "electron": "4.2.1",
     "node": "v10.11.0"
   },
   "homepage": "https://github.com/taku-o/myukkurivoice",
@@ -76,7 +76,7 @@
     "caller-position": "git+https://github.com/taku-o/caller-position.git#master",
     "chai": "^4.2.0",
     "devtron": "^1.4.0",
-    "electron": "^4.1.5",
+    "electron": "^4.2.1",
     "electron-packager": "^12.2.0",
     "electron-performance-monitor": "git+https://github.com/taku-o/electron-performance-monitor.git#master",
     "electron-rebuild": "^1.8.4",
