@@ -48,4 +48,3 @@ gulp.task('lint-html', () => {
       })
     );
 });
-

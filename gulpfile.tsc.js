@@ -34,4 +34,3 @@ gulp.task('tsc-debug', () => {
 gulp.task('_rm-js', () => {
   return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js', '!gulpfile.*.js', '*.tsbuildinfo']);
 });
-

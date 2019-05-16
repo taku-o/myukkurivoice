@@ -36,4 +36,3 @@ gulp.task('_test', () => {
   const targets = argv && argv.t ? argv.t : 'test/*.js';
   return gulp.src([targets], {read: false}).pipe(mocha({bail: true, reporter: 'tap'}));
 });
-

@@ -36,7 +36,7 @@ gulp.task('_format-ts-test', () => {
 // format-js
 gulp.task('_format-js', () => {
   return gulp
-    .src(['gulpfile.js'], {base: '.'})
+    .src(['gulpfile.js', 'gulpfile.*.js'], {base: '.'})
     .pipe(
       prettier({
         arrowParens: 'always',
@@ -113,4 +113,3 @@ gulp.task('_format-md', () => {
     )
     .pipe(gulp.dest('.'));
 });
-

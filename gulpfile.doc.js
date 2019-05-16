@@ -206,4 +206,3 @@ gulp.task('_package-contents:rm', () => {
     'MYukkuriVoice-darwin-x64/version',
   ]);
 });
-
