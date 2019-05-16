@@ -23,7 +23,7 @@ const APP_VERSION = require('./package.json').version;
 gulp.task('package', (cb) => {
   runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', (err) => {
     if (err) {
-      global._notifyError();
+      gulp.start('_notifyError');
     }
     cb(err);
   });
@@ -53,7 +53,7 @@ gulp.task('release', (cb) => {
     '_notify',
     (err) => {
       if (err) {
-        global._notifyError();
+        gulp.start('_notifyError');
       }
       cb(err);
     }
@@ -85,7 +85,7 @@ gulp.task('staging', (cb) => {
     '_notify',
     (err) => {
       if (err) {
-        global._notifyError();
+        gulp.start('_notifyError');
       }
       cb(err);
     }
@@ -111,7 +111,7 @@ gulp.task('_ch-workdir', () => {
 gulp.task('_unpacked', (cb) => {
   runSequence('_unpacked:mkdir', '_unpacked:cp', (err) => {
     if (err) {
-      global._notifyError();
+      gulp.start('_notifyError');
     }
     cb(err);
   });

@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const notifier = require('node-notifier');
 const runSequence = require('run-sequence');
 const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
@@ -8,6 +7,7 @@ require('./gulpfile.doc');
 require('./gulpfile.format');
 require('./gulpfile.less');
 require('./gulpfile.lint');
+require('./gulpfile.notify');
 require('./gulpfile.package');
 require('./gulpfile.test');
 require('./gulpfile.tsc');
@@ -52,7 +52,7 @@ usage:
 gulp.task('all', (cb) => {
   runSequence('format', 'less', 'tsc', 'lint', 'test', 'staging', (err) => {
     if (err) {
-      global._notifyError();
+      gulp.start('_notifyError');
     }
     cb(err);
   });
@@ -88,19 +88,3 @@ gulp.task('app', ['tsc-debug'], (cb) => {
     cb();
   });
 });
-
-// notify
-gulp.task('_notify', () => {
-  return notifier.notify({
-    title: 'gulp-task',
-    message: 'finished.',
-    sound: 'Glass',
-  });
-});
-global._notifyError = () => {
-  return notifier.notify({
-    title: 'gulp-task',
-    message: 'error.',
-    sound: 'Frog',
-  });
-};
