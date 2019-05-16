@@ -38,12 +38,12 @@ const ELECTRON_VERSION = require('./package.json').versions.electron;
 const APP_VERSION = require('./package.json').version;
 
 // for fast exit
-gulp.on('stop', () => {
-  process.exit(0);
-});
-gulp.on('err', () => {
-  process.exit(1);
-});
+//gulp.on('stop', () => {
+//  process.exit(0);
+//});
+//gulp.on('err', () => {
+//  process.exit(1);
+//});
 
 // default task
 gulp.task('default', () => {
