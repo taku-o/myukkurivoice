@@ -8,14 +8,14 @@ const runSequence = require('run-sequence');
 gulp.task('test', (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
+      runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', '_kill', (err) => {
         if (err) {
           gulp.start('_notifyError');
         }
         cb(err);
       });
     } else {
-      runSequence('tsc-debug', '_test', '_notify', (err) => {
+      runSequence('tsc-debug', '_test', '_notify', '_kill', (err) => {
         if (err) {
           gulp.start('_notifyError');
         }
@@ -25,7 +25,7 @@ gulp.task('test', (cb) => {
   });
 });
 gulp.task('test-rebuild', (cb) => {
-  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', (err) => {
+  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', '_kill', (err) => {
     if (err) {
       gulp.start('_notifyError');
     }

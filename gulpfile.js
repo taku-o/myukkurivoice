@@ -13,14 +13,6 @@ require('./gulpfile.release');
 require('./gulpfile.test');
 require('./gulpfile.tsc');
 
-// for fast exit
-//gulp.on('stop', () => {
-//  process.exit(0);
-//});
-//gulp.on('err', () => {
-//  process.exit(1);
-//});
-
 // default task
 gulp.task('default', () => {
   /* eslint-disable-next-line no-console */
@@ -51,7 +43,7 @@ usage:
 
 // all
 gulp.task('all', (cb) => {
-  runSequence('format', 'less', 'tsc', 'lint', 'test', 'staging', (err) => {
+  runSequence('format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill', (err) => {
     if (err) {
       gulp.start('_notifyError');
     }
@@ -69,6 +61,18 @@ gulp.task('toc', () => {
 
 // clean
 gulp.task('clean', ['_rm-js', '_rm-package', '_rm-workdir']);
+
+// kill
+// for fast exit
+gulp.task('_kill', () => {
+  gulp.on('stop', () => {
+    process.exit(0);
+  });
+  gulp.on('err', () => {
+    process.exit(1);
+  });
+  return true;
+});
 
 // run app
 gulp.task('app', ['tsc-debug'], (cb) => {

@@ -13,7 +13,7 @@ const APP_VERSION = require('./package.json').version;
 
 // package
 gulp.task('package', (cb) => {
-  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', (err) => {
+  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill', (err) => {
     if (err) {
       gulp.start('_notifyError');
     }

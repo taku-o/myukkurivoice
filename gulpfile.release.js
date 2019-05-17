@@ -35,6 +35,7 @@ gulp.task('release', (cb) => {
     '_zip-app',
     '_open-appdir',
     '_notify',
+    '_kill',
     (err) => {
       if (err) {
         gulp.start('_notifyError');
@@ -67,6 +68,7 @@ gulp.task('staging', (cb) => {
     '_zip-app',
     '_open-appdir',
     '_notify',
+    '_kill',
     (err) => {
       if (err) {
         gulp.start('_notifyError');
