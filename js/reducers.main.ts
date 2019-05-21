@@ -311,18 +311,18 @@ class MainReducer implements yubo.MainReducer {
 
     // play
     const parsedList = this.CommandService.parseInput(encoded, this.store.yvoiceList, this.store.curYvoice);
-    parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
+    parsedList.reduce((p: any/*ng.IDeferred<{duration: number}> | ng.IPromise<{duration: number}>*/, cinput) => {
       if (p.then === undefined) {
         p.resolve();
         p = p.promise;
       }
-      return (p as ng.IPromise<string>).then(() => {
+      return (p as ng.IPromise<{duration: number}>).then((audioParams: {duration: number}) => {
         return this.playEach(cinput);
       });
-    }, this.$q.defer<string>());
+    }, this.$q.defer<{duration: number}>());
   }
-  private playEach(cinput: yubo.YCommandInput): ng.IPromise<string> {
-    const d = this.$q.defer<string>();
+  private playEach(cinput: yubo.YCommandInput): ng.IPromise<{duration: number}> {
+    const d = this.$q.defer<{duration: number}>();
     let encoded = cinput.text;
     const yvoice = this.CommandService.detectVoiceConfig(cinput, this.store.yvoiceList);
 
@@ -360,8 +360,8 @@ class MainReducer implements yubo.MainReducer {
     };
 
     this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
-      return this.AudioService.play(bufWav, playOptions).then(() => {
-        d.resolve('ok');
+      return this.AudioService.play(bufWav, playOptions).then((audioParams: {duration: number}) => {
+        d.resolve(audioParams);
       })
       .catch((err: Error) => {
         this.MessageService.error('音声データを再生できませんでした。', err);
@@ -444,31 +444,32 @@ class MainReducer implements yubo.MainReducer {
       const parsedList = this.CommandService.parseInput(encoded, this.store.yvoiceList, this.store.curYvoice);
       let sourceFname: string = null;
       // record wave files
-      parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
+      parsedList.reduce((p: any/*ng.IDeferred<{wavFilePath: string, duration: number}> | ng.IPromise<{wavFilePath: string, duration: number}>*/, cinput) => {
         if (p.then === undefined) {
           p.resolve();
           p = p.promise;
         }
-        return (p as ng.IPromise<string>).then((fp: string) => {
+        return (p as ng.IPromise<{wavFilePath: string, duration: number}>).then((audioParams: {wavFilePath: string, duration: number}) => {
           return this.recordEach(cinput, dir, prefix)
-            .then((fp) => {
+            .then((audioParams: {wavFilePath: string, duration: number}) => {
               if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                sourceFname = this.TextSubtitleService.sourceFname(fp);
+                sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
               }
-              this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
+              this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
                 {
-                  wavFilePath: fp,
+                  wavFilePath: audioParams.wavFilePath,
                   srcTextPath: sourceFname,
                   source: loggingSourceText,
                   encoded: cinput.text,
+                  duration: audioParams.duration,
                 }
               );
-              return fp;
+              return audioParams;
             });
         });
-      }, this.$q.defer<string>())
+      }, this.$q.defer<{wavFilePath: string, duration: number}>())
       // record source message
-      .then((fp: string) => {
+      .then((audioParams: {wavFilePath: string, duration: number}) => {
         if (!sourceFname) { return; }
         this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
           this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
@@ -499,49 +500,51 @@ class MainReducer implements yubo.MainReducer {
         const parsedList = this.CommandService.parseInput(encoded, this.store.yvoiceList, this.store.curYvoice);
         let sourceFname: string = null;
         // record wave files
-        parsedList.reduce((p: any/*ng.IDeferred<string> | ng.IPromise<string>*/, cinput) => {
+        parsedList.reduce((p: any/*ng.IDeferred<{wavFilePath: string, duration: number}> | ng.IPromise<{wavFilePath: string, duration: number}>*/, cinput) => {
           if (p.then === undefined) {
             p.resolve();
             p = p.promise;
           }
-          return (p as ng.IPromise<string>).then((fp: string) => {
+          return (p as ng.IPromise<{wavFilePath: string, duration: number}>).then((audioParams: {wavFilePath: string, duration: number}) => {
             if (containsCommand) {
               return this.recordEach(cinput, dir, prefix)
-                .then((fp) => {
+                .then((audioParams: {wavFilePath: string, duration: number}) => {
                   if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                    sourceFname = this.TextSubtitleService.sourceFname(fp);
+                    sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
                   }
-                  this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
+                  this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
                     {
-                      wavFilePath: fp,
+                      wavFilePath: audioParams.wavFilePath,
                       srcTextPath: sourceFname,
                       source: loggingSourceText,
                       encoded: cinput.text,
+                      duration: audioParams.duration,
                     }
                   );
-                  return fp;
+                  return audioParams;
                 });
             } else {
               return this.recordSolo(cinput, filePath)
-                .then((fp) => {
+                .then((audioParams: {wavFilePath: string, duration: number}) => {
                   if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                    sourceFname = this.TextSubtitleService.sourceFname(fp);
+                    sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
                   }
-                  this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
+                  this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
                     {
-                      wavFilePath: fp,
+                      wavFilePath: audioParams.wavFilePath,
                       srcTextPath: sourceFname,
                       source: loggingSourceText,
                       encoded: cinput.text,
+                      duration: audioParams.duration,
                     }
                   );
-                  return fp;
+                  return audioParams;
                 });
             }
           });
-        }, this.$q.defer<string>())
+        }, this.$q.defer<{wavFilePath: string, duration: number}>())
         // record source message
-        .then((fp: string) => {
+        .then((audioParams: {wavFilePath: string, duration: number}) => {
           if (!sourceFname) { return; }
           this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
             this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
@@ -559,8 +562,8 @@ class MainReducer implements yubo.MainReducer {
       ipcRenderer().send('showSaveDialog', 'wav');
     }
   }
-  private recordSolo(cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string> {
-    const d = this.$q.defer<string>();
+  private recordSolo(cinput: yubo.YCommandInput, filePath: string): ng.IPromise<{wavFilePath: string, duration: number}> {
+    const d = this.$q.defer<{wavFilePath: string, duration: number}>();
     let encoded = cinput.text;
     const yvoice = this.CommandService.detectVoiceConfig(cinput, this.store.yvoiceList);
 
@@ -598,8 +601,8 @@ class MainReducer implements yubo.MainReducer {
     };
 
     this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
-      return this.AudioService.record(filePath, bufWav, playOptions).then(() => {
-        d.resolve(filePath);
+      return this.AudioService.record(filePath, bufWav, playOptions).then((audioParams: {duration: number}) => {
+        d.resolve({wavFilePath: filePath, duration: audioParams.duration});
       })
       .catch((err: Error) => {
         this.MessageService.error('音声データを記録できませんでした。', err);
@@ -612,8 +615,8 @@ class MainReducer implements yubo.MainReducer {
     });
     return d.promise;
   }
-  private recordEach(cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string> {
-    const d = this.$q.defer<string>();
+  private recordEach(cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<{wavFilePath: string, duration: number}> {
+    const d = this.$q.defer<{wavFilePath: string, duration: number}>();
     let encoded = cinput.text;
     const yvoice = this.CommandService.detectVoiceConfig(cinput, this.store.yvoiceList);
 
@@ -655,8 +658,8 @@ class MainReducer implements yubo.MainReducer {
       const filePath = path().join(dir, nextFname);
 
       this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
-        return this.AudioService.record(filePath, bufWav, playOptions).then(() => {
-          d.resolve(filePath);
+        return this.AudioService.record(filePath, bufWav, playOptions).then((audioParams: {duration: number}) => {
+          d.resolve({wavFilePath: filePath, duration: audioParams.duration});
         })
         .catch((err: Error) => {
           this.MessageService.error('音声データを記録できませんでした。', err);
