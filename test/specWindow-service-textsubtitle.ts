@@ -7,7 +7,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AudioSourceService', function() {
+describe('specWindow-service-TextSubtitleService', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;

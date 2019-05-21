@@ -39,7 +39,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
       'DataService', 'HistoryService',
       'AqKanji2KoeLib', 'AquesTalk1Lib', 'AquesTalk2Lib', 'AquesTalk10Lib',
-      'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
+      'AquesService', 'AudioService1', 'AudioService2',
+      'TextSubtitleService',
       'AppUtilService', 'SeqFNameService',
       'AqUsrDicService',
     function($scope: any, $timeout: ng.ITimeoutService,
@@ -51,7 +52,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       DataService: yubo.DataService, HistoryService: yubo.HistoryService,
       AqKanji2KoeLib: yubo.AqKanji2KoeLib, AquesTalk1Lib: yubo.AquesTalk1Lib, AquesTalk2Lib: yubo.AquesTalk2Lib, AquesTalk10Lib: yubo.AquesTalk10Lib,
       AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
-      AudioSourceService: yubo.AudioSourceService,
+      TextSubtitleService: yubo.TextSubtitleService,
       AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService,
       AqUsrDicService: yubo.AqUsrDicService
     ) {
@@ -798,13 +799,13 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       $scope.getLastErrorResult = r;
     };
 
-    // AudioSourceService
+    // TextSubtitleService
     ctrl.sourceFname = function(): void {
-      const r = AudioSourceService.sourceFname($scope.wavFilePath);
+      const r = TextSubtitleService.sourceFname($scope.wavFilePath);
       $scope.sourceFnameResult = r;
     };
     ctrl.save = function(): void {
-      AudioSourceService.save($scope.filePath, $scope.sourceText)
+      TextSubtitleService.save($scope.filePath, $scope.sourceText)
       .then(() => {
         $scope.saveResult = 'ok';
       })

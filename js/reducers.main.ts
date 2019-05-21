@@ -28,7 +28,7 @@ class MainReducer implements yubo.MainReducer {
     private AquesService: yubo.AquesService,
     private audioServVer1: yubo.AudioService1,
     private audioServVer2: yubo.AudioService2,
-    private AudioSourceService: yubo.AudioSourceService,
+    private TextSubtitleService: yubo.TextSubtitleService,
     private SeqFNameService: yubo.SeqFNameService,
     private AppUtilService: yubo.AppUtilService,
     private CommandService: yubo.CommandService,
@@ -453,7 +453,7 @@ class MainReducer implements yubo.MainReducer {
           return this.recordEach(cinput, dir, prefix)
             .then((fp) => {
               if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                sourceFname = this.AudioSourceService.sourceFname(fp);
+                sourceFname = this.TextSubtitleService.sourceFname(fp);
               }
               this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
                 {
@@ -470,7 +470,7 @@ class MainReducer implements yubo.MainReducer {
       // record source message
       .then((fp: string) => {
         if (!sourceFname) { return; }
-        this.AudioSourceService.save(sourceFname, loggingSourceText).then(() => {
+        this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
           this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
             {
               srcTextPath: sourceFname,
@@ -509,7 +509,7 @@ class MainReducer implements yubo.MainReducer {
               return this.recordEach(cinput, dir, prefix)
                 .then((fp) => {
                   if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                    sourceFname = this.AudioSourceService.sourceFname(fp);
+                    sourceFname = this.TextSubtitleService.sourceFname(fp);
                   }
                   this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
                     {
@@ -525,7 +525,7 @@ class MainReducer implements yubo.MainReducer {
               return this.recordSolo(cinput, filePath)
                 .then((fp) => {
                   if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                    sourceFname = this.AudioSourceService.sourceFname(fp);
+                    sourceFname = this.TextSubtitleService.sourceFname(fp);
                   }
                   this.MessageService.record(`${'音声ファイルを保存しました。path: '}${fp}`,
                     {
@@ -543,7 +543,7 @@ class MainReducer implements yubo.MainReducer {
         // record source message
         .then((fp: string) => {
           if (!sourceFname) { return; }
-          this.AudioSourceService.save(sourceFname, loggingSourceText).then(() => {
+          this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
             this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
               {
                 srcTextPath: sourceFname,
@@ -914,7 +914,7 @@ angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
     'AquesService',
     'AudioService1',
     'AudioService2',
-    'AudioSourceService',
+    'TextSubtitleService',
     'SeqFNameService',
     'AppUtilService',
     'CommandService',

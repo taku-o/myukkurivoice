@@ -357,13 +357,14 @@ declare namespace yubo {
     //private correctBufferLength(buffer: Float32Array): number;
     //private buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer;
   }
-  // service.util.ts
-  export interface AudioSourceService {
+  // service.subtitle.ts
+  export interface TextSubtitleService {
     //private readonly waveExt: string;
     //private readonly sourceExt: string;
     sourceFname(wavFilePath: string): string;
     save(filePath: string, sourceText: string): ng.IPromise<string>;
   }
+  // service.util.ts
   export interface SeqFNameService {
     //private readonly ext: string;
     //private readonly numPattern: string;
