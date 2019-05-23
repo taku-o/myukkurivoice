@@ -55,6 +55,7 @@ describe('specWindow-service-HistoryService', function() {
       created: '2018-12-17T00:50:19.163Z',
       body: '音声ファイルを保存しました',
       quickLookPath: '/tmp/aa0001.wav',
+      duration: 1.4,
       type: 'record',
     };
 

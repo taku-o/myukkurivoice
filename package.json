@@ -66,6 +66,7 @@
     "ref-struct": "^1.1.0",
     "temp": "^0.8.3",
     "wait-until": "0.0.2",
+    "wav-audio-length": "^0.1.1",
     "wav-encoder": "^1.3.0"
   },
   "devDependencies": {
@@ -105,7 +106,7 @@
     "source-map-support": "^0.5.12",
     "spectron": "^5.0.0",
     "typescript": "^3.4.5",
-    "wav-fmt-validator": "^0.1.1",
+    "wav-fmt-validator": "^0.1.2",
     "yargs": "^12.0.5"
   }
 }

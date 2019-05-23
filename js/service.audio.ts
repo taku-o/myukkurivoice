@@ -1,6 +1,7 @@
-var _fs: any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
-var _temp: any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _WavEncoder: any, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
+var _fs: any, fs                  = () => { _fs = _fs || require('fs'); return _fs; };
+var _temp: any, temp              = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _WavEncoder: any, WavEncoder  = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
+var _wavDuration:any, wavDuration = () => { _wavDuration = _wavDuration || require('wav-audio-length').default; return _wavDuration; };
 
 // env
 var TEST = process.env.NODE_ENV == 'test';
@@ -13,7 +14,8 @@ class AudioService1 implements yubo.AudioService1 {
   private audio: HTMLAudioElement = null;
   constructor(
     private $q: ng.IQService,
-    private MessageService: yubo.MessageService
+    private MessageService: yubo.MessageService,
+    private AppUtilService: yubo.AppUtilService
   ) {}
 
   play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<{duration: number}> {
@@ -32,6 +34,10 @@ class AudioService1 implements yubo.AudioService1 {
         d.reject(err); return;
       }
 
+      // report duration
+      const wavSec = wavDuration()(bufWav);
+      this.AppUtilService.reportDuration(wavSec);
+
       fs().writeFile(info.path, bufWav, (err: Error) => {
         if (err) {
           this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
@@ -45,7 +51,7 @@ class AudioService1 implements yubo.AudioService1 {
           this.audio.volume = options.volume;
         }
         this.audio.onended = () => {
-          d.resolve({duration: null});
+          d.resolve({duration: wavSec});
         };
         this.audio.play();
       });
@@ -69,12 +75,16 @@ class AudioService1 implements yubo.AudioService1 {
       d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
     }
 
+    // report duration
+    const wavSec = wavDuration()(bufWav);
+    this.AppUtilService.reportDuration(wavSec);
+
     fs().writeFile(wavFilePath, bufWav, (err: Error) => {
       if (err) {
         this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
         d.reject(err); return;
       }
-      d.resolve({duration: null});
+      d.resolve({duration: wavSec});
     });
     return d.promise;
   }
@@ -83,6 +93,7 @@ angular.module('AudioServices')
   .service('AudioService1', [
     '$q',
     'MessageService',
+    'AppUtilService',
     AudioService1,
   ]);
 

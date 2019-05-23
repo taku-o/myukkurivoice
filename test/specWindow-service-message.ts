@@ -92,6 +92,7 @@ describe('specWindow-service-MessageService', function() {
           assert.equal('hoge.wav', parsed.wavFileName, position());
           assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
           assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
+          assert.equal(1.44, parsed.duration, position());
         })
         // event on wavGenerated
         .waitForValue('#last-wav-file', 5000)
@@ -105,6 +106,7 @@ describe('specWindow-service-MessageService', function() {
           assert.equal('hoge.wav', parsed.wavFileName, position());
           assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
           assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
+          assert.equal(1.44, parsed.duration, position());
         })
         // catch error
         .catch((err: Error) => {

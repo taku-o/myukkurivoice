@@ -156,7 +156,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
           srcTextPath: srcTextPath,
           source: msg,
           encoded: msg,
-          duration: 10.0,
+          duration: 1.44,
         }
       );
     };
