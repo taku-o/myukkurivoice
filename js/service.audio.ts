@@ -1,7 +1,8 @@
-var _fs: any, fs                  = () => { _fs = _fs || require('fs'); return _fs; };
-var _temp: any, temp              = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _WavEncoder: any, WavEncoder  = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
-var _wavDuration:any, wavDuration = () => { _wavDuration = _wavDuration || require('wav-audio-length').default; return _wavDuration; };
+var _fs: any, fs                           = () => { _fs = _fs || require('fs'); return _fs; };
+var _temp: any, temp                       = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _WavEncoder: any, WavEncoder           = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
+var _wavDuration: any, wavDuration         = () => { _wavDuration = _wavDuration || require('wav-audio-length').default; return _wavDuration; };
+var _fcpxRoleEncoder: any, fcpxRoleEncoder = () => { _fcpxRoleEncoder = _fcpxRoleEncoder || require('fcpx-audio-role-encoder').default; return _fcpxRoleEncoder; };
 
 // env
 var TEST = process.env.NODE_ENV == 'test';
@@ -78,6 +79,12 @@ class AudioService1 implements yubo.AudioService1 {
     // report duration
     const wavSec = wavDuration()(bufWav);
     this.AppUtilService.reportDuration(wavSec);
+
+    // TODO
+    // extensions.fcpx
+    //if (options.fcpxIxml && options.fcpxIxmlOptions.audioRole) {
+    //  fcpxRoleEncoder().encode(bufWav, options.fcpxIxmlOptions.audioRole);
+    //}
 
     fs().writeFile(wavFilePath, bufWav, (err: Error) => {
       if (err) {
@@ -341,6 +348,13 @@ class AudioService2 implements yubo.AudioService2 {
         // create wav file.
         const dInEncode = this.$q.defer<{duration: number}>();
         WavEncoder().encode(audioData).then((buffer: ArrayBuffer) => {
+
+          // TODO
+          // extensions.fcpx
+          //if (options.fcpxIxml && options.fcpxIxmlOptions.audioRole) {
+          //  fcpxRoleEncoder().encode(bufWav, options.fcpxIxmlOptions.audioRole);
+          //}
+
           fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err: Error) => {
             if (err) {
               dInEncode.reject(err); return;

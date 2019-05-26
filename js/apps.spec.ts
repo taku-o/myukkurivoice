@@ -483,15 +483,17 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
+      const roptions: yubo.RecordOptions = {
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -516,15 +518,17 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
+      const roptions: yubo.RecordOptions = {
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -549,15 +553,17 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
+      const roptions: yubo.RecordOptions = {
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -684,15 +690,17 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
+      const roptions: yubo.RecordOptions = {
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -717,15 +725,17 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
+      const roptions: yubo.RecordOptions = {
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -750,15 +760,17 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
+      const roptions: yubo.RecordOptions = {
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {

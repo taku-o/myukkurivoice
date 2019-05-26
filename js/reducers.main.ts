@@ -594,14 +594,16 @@ class MainReducer implements yubo.MainReducer {
       waveOptions.lmd = yvoice.lmd;
       waveOptions.fsc = yvoice.fsc;
     }
-    const playOptions: yubo.PlayOptions = {
+    const recordOptions: yubo.RecordOptions = {
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
+      fcpxIxml: yvoice.fcpxIxml,
+      fcpxIxmlOptions: yvoice.fcpxIxmlOptions,
     };
 
     this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
-      return this.AudioService.record(filePath, bufWav, playOptions).then((audioParams: {duration: number}) => {
+      return this.AudioService.record(filePath, bufWav, recordOptions).then((audioParams: {duration: number}) => {
         d.resolve({wavFilePath: filePath, duration: audioParams.duration});
       })
       .catch((err: Error) => {
@@ -647,10 +649,12 @@ class MainReducer implements yubo.MainReducer {
       waveOptions.lmd = yvoice.lmd;
       waveOptions.fsc = yvoice.fsc;
     }
-    const playOptions: yubo.PlayOptions = {
+    const recordOptions: yubo.RecordOptions = {
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
+      fcpxIxml: yvoice.fcpxIxml,
+      fcpxIxmlOptions: yvoice.fcpxIxmlOptions,
     };
 
     this.SeqFNameService.nextNumber(dir, fnameprefix).then((nextNum) => {
@@ -658,7 +662,7 @@ class MainReducer implements yubo.MainReducer {
       const filePath = path().join(dir, nextFname);
 
       this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
-        return this.AudioService.record(filePath, bufWav, playOptions).then((audioParams: {duration: number}) => {
+        return this.AudioService.record(filePath, bufWav, recordOptions).then((audioParams: {duration: number}) => {
           d.resolve({wavFilePath: filePath, duration: audioParams.duration});
         })
         .catch((err: Error) => {

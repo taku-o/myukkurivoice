@@ -214,7 +214,7 @@ declare namespace yubo {
     seqWrite:     boolean;
     seqWriteOptions: {dir: string, prefix: string};
     fcpxIxml:     boolean;
-    fcpxIxmlOptions: {audioRole: string;};
+    fcpxIxmlOptions: {audioRole?: string;};
   }
   export interface YInput {
     source:  string;
@@ -349,7 +349,7 @@ declare namespace yubo {
   export interface IAudioService {
     play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<{duration: number}>;
     stop(): void;
-    record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<{duration: number}>;
+    record(wavFilePath: string, bufWav: Buffer, options: yubo.RecordOptions): ng.IPromise<{duration: number}>;
   }
   export interface AudioService1 extends IAudioService {
     //private audio: HTMLAudioElement;
@@ -561,6 +561,13 @@ declare namespace yubo {
     volume:       number;
     playbackRate: number;
     detune:       number;
+  }
+  export interface RecordOptions {
+    volume:       number;
+    playbackRate: number;
+    detune:       number;
+    fcpxIxml:     boolean;
+    fcpxIxmlOptions: {audioRole?: string;};
   }
   export interface CmdOptions {
     env:      {VOICE: number, SPEED: number};
