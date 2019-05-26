@@ -22,9 +22,10 @@ class FnAppCfg implements FnAppCfg {
       systemWindow:     {width: 390, height: 480},
       dictWindow:       {width: 800, height: 600},
       audioServVer:     'webaudioapi', // html5audio or webaudioapi
-      showMsgPane: true,
-      passPhrase: null,
+      showMsgPane:      true,
+      passPhrase:       null,
       aq10UseKeyEncrypted: '',
+      extensions:       {},
     };
 
     setTimeout(() => {
@@ -38,7 +39,7 @@ class FnAppCfg implements FnAppCfg {
       delete require.cache[configPath];
 
       const config = new (Config())({defaults: stored}) as ElectronStore.Config;
-      ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
+      ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'extensions'].forEach((k: string) => {
         if (config.has(k)) { appCfg[k] = config.get(k); }
       });
       // if passPhrase not exists, record passPhrase.
@@ -69,8 +70,9 @@ class FnAppCfg implements FnAppCfg {
       showMsgPane:         options.showMsgPane,
       passPhrase:          options.passPhrase,
       aq10UseKeyEncrypted: options.aq10UseKeyEncrypted,
+      extensions:          options.extensions,
     });
-    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
+    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'extensions'].forEach((k: string) => {
       if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
     });
     global.appCfg = myApp.appCfg;
@@ -85,8 +87,9 @@ class FnAppCfg implements FnAppCfg {
       showMsgPane:         true,
       passPhrase:          crypto().randomBytes(16).toString('hex'),
       aq10UseKeyEncrypted: '',
+      extensions:          {},
     });
-    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted'].forEach((k: string) => {
+    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'extensions'].forEach((k: string) => {
       if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
     });
     global.appCfg = myApp.appCfg;

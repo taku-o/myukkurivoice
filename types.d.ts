@@ -131,6 +131,7 @@ declare namespace yubo {
     showMsgPane:         boolean;
     passPhrase:          string | null;
     aq10UseKeyEncrypted: string;
+    extensions:          {fcpx?: boolean};
   }
 
   // electron.ts
@@ -212,6 +213,8 @@ declare namespace yubo {
     sourceWrite:  boolean;
     seqWrite:     boolean;
     seqWriteOptions: {dir: string, prefix: string};
+    fcpxIxml:     boolean;
+    fcpxIxmlOptions: {audioRole: string;};
   }
   export interface YInput {
     source:  string;
