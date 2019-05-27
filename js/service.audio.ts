@@ -65,7 +65,7 @@ class AudioService1 implements yubo.AudioService1 {
     this.audio.pause();
   }
 
-  record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<{duration: number}> {
+  record(wavFilePath: string, bufWav: Buffer, options: yubo.RecordOptions): ng.IPromise<{duration: number}> {
     const d = this.$q.defer<{duration: number}>();
     if (!wavFilePath) {
       this.MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -80,13 +80,12 @@ class AudioService1 implements yubo.AudioService1 {
     const wavSec = wavDuration()(bufWav);
     this.AppUtilService.reportDuration(wavSec);
 
-    // TODO
     // extensions.fcpx
-    //if (options.fcpxIxml && options.fcpxIxmlOptions.audioRole) {
-    //  fcpxRoleEncoder().encode(bufWav, options.fcpxIxmlOptions.audioRole);
-    //}
+    let rBufWav = options.fcpxIxml?
+      new (fcpxRoleEncoder())().encodeSync(bufWav, options.fcpxIxmlOptions.audioRole):
+      bufWav;
 
-    fs().writeFile(wavFilePath, bufWav, (err: Error) => {
+    fs().writeFile(wavFilePath, rBufWav, (err: Error) => {
       if (err) {
         this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
         d.reject(err); return;
@@ -271,7 +270,7 @@ class AudioService2 implements yubo.AudioService2 {
     if (this.runningNode) { this.runningNode.stop(0); this.runningNode = null; }
   }
 
-  record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<{duration: number}> {
+  record(wavFilePath: string, bufWav: Buffer, options: yubo.RecordOptions): ng.IPromise<{duration: number}> {
     const d = this.$q.defer<{duration: number}>();
     if (!wavFilePath) {
       this.MessageService.syserror('音声ファイルの保存先が指定されていません。');
@@ -348,14 +347,14 @@ class AudioService2 implements yubo.AudioService2 {
         // create wav file.
         const dInEncode = this.$q.defer<{duration: number}>();
         WavEncoder().encode(audioData).then((buffer: ArrayBuffer) => {
+          const inBufWav = Buffer.from(buffer);
 
-          // TODO
           // extensions.fcpx
-          //if (options.fcpxIxml && options.fcpxIxmlOptions.audioRole) {
-          //  fcpxRoleEncoder().encode(bufWav, options.fcpxIxmlOptions.audioRole);
-          //}
+          let rBufWav = options.fcpxIxml?
+            new (fcpxRoleEncoder())().encodeSync(inBufWav, options.fcpxIxmlOptions.audioRole):
+            inBufWav;
 
-          fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err: Error) => {
+          fs().writeFile(wavFilePath, rBufWav, 'binary', (err: Error) => {
             if (err) {
               dInEncode.reject(err); return;
             }

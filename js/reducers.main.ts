@@ -598,9 +598,14 @@ class MainReducer implements yubo.MainReducer {
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
-      fcpxIxml: yvoice.fcpxIxml,
-      fcpxIxmlOptions: yvoice.fcpxIxmlOptions,
+      fcpxIxml: false,
+      fcpxIxmlOptions: {audioRole: null},
     };
+    // extensions.fcpx
+    if (this.appCfg.extensions.fcpx && yvoice.fcpxIxml && yvoice.fcpxIxmlOptions.audioRole) {
+      recordOptions.fcpxIxml = true;
+      recordOptions.fcpxIxmlOptions = {audioRole: yvoice.fcpxIxmlOptions.audioRole};
+    }
 
     this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
       return this.AudioService.record(filePath, bufWav, recordOptions).then((audioParams: {duration: number}) => {
@@ -653,9 +658,14 @@ class MainReducer implements yubo.MainReducer {
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
-      fcpxIxml: yvoice.fcpxIxml,
-      fcpxIxmlOptions: yvoice.fcpxIxmlOptions,
+      fcpxIxml: false,
+      fcpxIxmlOptions: {audioRole: null},
     };
+    // extensions.fcpx
+    if (this.appCfg.extensions.fcpx && yvoice.fcpxIxml && yvoice.fcpxIxmlOptions.audioRole) {
+      recordOptions.fcpxIxml = true;
+      recordOptions.fcpxIxmlOptions = {audioRole: yvoice.fcpxIxmlOptions.audioRole};
+    }
 
     this.SeqFNameService.nextNumber(dir, fnameprefix).then((nextNum) => {
       const nextFname = this.SeqFNameService.nextFname(fnameprefix, nextNum);
