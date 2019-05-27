@@ -42,7 +42,7 @@ describe('helpWindow', function() {
       })
       .elements('.nav-group-item.functions-item')
       .then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 11, position());
+        assert.equal(response.value.length, 12, position());
       })
       .elements('.nav-group-item.navs-item')
       .then((response: HTMLInputElement) => {
@@ -145,6 +145,10 @@ describe('helpWindow', function() {
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
         })
+        .isVisible('#help-fcpx-ixml')
+        .then((isVisible: boolean) => {
+          assert.ok(!isVisible, position());
+        })
         .click('#menu-about')
         .isVisible('#about-pane')
         .then((isVisible: boolean) => {
@@ -232,6 +236,11 @@ describe('helpWindow', function() {
         })
         .click('#menu-help')
         .isVisible('#help-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        .click('#menu-fcpx-ixml')
+        .isVisible('#fcpx-ixml-pane')
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
