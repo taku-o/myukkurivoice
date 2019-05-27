@@ -2,7 +2,7 @@ import {Application} from 'spectron';
 import {assert} from 'chai';
 import {position} from 'caller-position';
 import {validator as wavValidator, parser as wavParser} from 'wav-fmt-validator';
-import {Riff} from '../node_modules/wav-fmt-validator/riff';
+import {Riff} from '../node_modules/fcpx-audio-role-encoder/riff';
 import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
