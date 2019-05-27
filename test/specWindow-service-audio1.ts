@@ -123,7 +123,7 @@ describe('specWindow-service-AudioService1', function() {
               assert.ok(!isContainIxml, position());
 
               const dump = wavParser(data);
-              assert.notInclude(dump, 'iXML', position())
+              assert.notInclude(dump, 'iXML', position());
 
               resolve();
             });
@@ -154,7 +154,7 @@ describe('specWindow-service-AudioService1', function() {
               assert.ok(!isContainIxml, position());
 
               const dump = wavParser(data);
-              assert.notInclude(dump, 'iXML', position())
+              assert.notInclude(dump, 'iXML', position());
 
               resolve();
             });
@@ -185,7 +185,7 @@ describe('specWindow-service-AudioService1', function() {
               assert.ok(!isContainIxml, position());
 
               const dump = wavParser(data);
-              assert.notInclude(dump, 'iXML', position())
+              assert.notInclude(dump, 'iXML', position());
 
               resolve();
             });
@@ -247,8 +247,8 @@ describe('specWindow-service-AudioService1', function() {
               assert.ok(isContainIxml, position());
 
               const dump = wavParser(data);
-              assert.include(dump, 'iXML', position())
-              assert.include(dump, 'tmp-track1-role', position())
+              assert.include(dump, 'iXML', position());
+              assert.include(dump, 'tmp-track1-role', position());
 
               resolve();
             });
@@ -280,8 +280,8 @@ describe('specWindow-service-AudioService1', function() {
               assert.ok(isContainIxml, position());
 
               const dump = wavParser(data);
-              assert.include(dump, 'iXML', position())
-              assert.include(dump, 'tmp-track2-role', position())
+              assert.include(dump, 'iXML', position());
+              assert.include(dump, 'tmp-track2-role', position());
 
               resolve();
             });
@@ -313,8 +313,8 @@ describe('specWindow-service-AudioService1', function() {
               assert.ok(isContainIxml, position());
 
               const dump = wavParser(data);
-              assert.include(dump, 'iXML', position())
-              assert.include(dump, 'tmp-track10-role', position())
+              assert.include(dump, 'iXML', position());
+              assert.include(dump, 'tmp-track10-role', position());
 
               resolve();
             });
