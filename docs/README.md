@@ -233,6 +233,8 @@ macOS High Sierra(10.13)以降に対応しています。
 
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/readme-fcpx-ixml-role.gif" width="400">
 
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/readme-fcpx-ixml-role-setup.gif" width="400">
+
 <a name="その他"></a>
 
 ### その他
