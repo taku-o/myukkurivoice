@@ -29,7 +29,7 @@
   - debug 4.1.1
   - ffi 2.3.0
   - ms 2.1.1
-  - nan 2.13.2
+  - nan 2.14.0
   - natives 1.1.6
   - ref 1.3.5
   - ref-struct 1.1.0
@@ -118,9 +118,9 @@
 ```
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
   nvm ls-remote
-  nvm install v10.11.0
-  nvm use v10.11.0
-  nvm alias default v10.11.0
+  nvm install v10.2.1
+  nvm use v10.2.1
+  nvm alias default v10.2.1
 ```
 
 ### Module version mismatch. Expected 50, got 51

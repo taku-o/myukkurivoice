@@ -66,11 +66,11 @@ macOS High Sierra(10.13)以降に対応しています。
 
 ## アプリバージョン
 
-| バージョン | 開発ステータス   | リンク                                                                | 対応            |
-| ---------- | ---------------- | --------------------------------------------------------------------- | --------------- |
-| 0.11.\*    | 開発版           | [最新](https://github.com/taku-o/myukkurivoice/releases/latest)       | MacOS X 10.10〜 |
-| 0.10.\*    | テスト済・安定   | [0.10.5](https://github.com/taku-o/myukkurivoice/releases/tag/0.10.5) |                 |
-| 0.8.\*     | 一世代前の安定版 | [0.8.1](https://github.com/taku-o/myukkurivoice/releases/tag/0.8.1)   |                 |
+| バージョン | 開発ステータス   | リンク                                                                |
+| ---------- | ---------------- | --------------------------------------------------------------------- |
+| 0.11.\*    | 開発版           | [最新](https://github.com/taku-o/myukkurivoice/releases/latest)       |
+| 0.10.\*    | テスト済・安定   | [0.10.5](https://github.com/taku-o/myukkurivoice/releases/tag/0.10.5) |
+| 0.8.\*     | 一世代前の安定版 | [0.8.1](https://github.com/taku-o/myukkurivoice/releases/tag/0.8.1)   |
 
 <a name="myukkurivoiceの導入"></a>
 
