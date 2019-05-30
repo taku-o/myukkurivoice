@@ -36,7 +36,9 @@ macOS High Sierra(10.13)以降に対応しています。
   - [保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ](#%E4%BF%9D%E5%AD%98%E3%81%97%E3%81%9F%E9%9F%B3%E5%A3%B0%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E3%82%A2%E3%83%97%E3%83%AA%E3%81%8B%E3%82%89%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%82%BD%E3%83%95%E3%83%88%E3%81%AB%E7%9B%B4%E6%8E%A5%E3%83%89%E3%83%A9%E3%83%83%E3%82%B0%E3%82%A2%E3%83%B3%E3%83%89%E3%83%89%E3%83%AD%E3%83%83%E3%83%97)
   - [ユーザー辞書機能](#%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E8%BE%9E%E6%9B%B8%E6%A9%9F%E8%83%BD)
   - [最近録音したファイルの一覧と入力の復元](#%E6%9C%80%E8%BF%91%E9%8C%B2%E9%9F%B3%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E4%B8%80%E8%A6%A7%E3%81%A8%E5%85%A5%E5%8A%9B%E3%81%AE%E5%BE%A9%E5%85%83)
-  - [オーディオロールの自動割り当てを設定 (動画編集ソフト Final Cut Pro X 用)](#%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%AE%E8%87%AA%E5%8B%95%E5%89%B2%E3%82%8A%E5%BD%93%E3%81%A6%E3%82%92%E8%A8%AD%E5%AE%9A-%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%82%BD%E3%83%95%E3%83%88-final-cut-pro-x%E7%94%A8)
+  - [動画編集ソフト Final Cut Pro X 用機能](#%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%82%BD%E3%83%95%E3%83%88-final-cut-pro-x-%E7%94%A8%E6%A9%9F%E8%83%BD)
+    - [オーディオロールの自動割り当てを設定](#%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%AE%E8%87%AA%E5%8B%95%E5%89%B2%E3%82%8A%E5%BD%93%E3%81%A6%E3%82%92%E8%A8%AD%E5%AE%9A)
+    - [フォルダーアクションでオーディオロールを設定する](#%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E3%83%BC%E3%82%A2%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A7%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%AD%E3%83%BC%E3%83%AB%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B)
   - [その他](#%E3%81%9D%E3%81%AE%E4%BB%96)
   - [機能一覧](#%E6%A9%9F%E8%83%BD%E4%B8%80%E8%A6%A7)
 - [動画リンク](#%E5%8B%95%E7%94%BB%E3%83%AA%E3%83%B3%E3%82%AF)
@@ -226,12 +228,24 @@ macOS High Sierra(10.13)以降に対応しています。
 
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/readme-app-recent-edit.png" width="400">
 
-### オーディオロールの自動割り当てを設定 (動画編集ソフト Final Cut Pro X 用)
+### 動画編集ソフト Final Cut Pro X 用機能
+
+#### オーディオロールの自動割り当てを設定
 
 - Final Cut Pro X に用意されている、オーディオロールの自動割り当て機能を利用できます。
 - 音声ファイルのオーディオロールを設定できます。
 
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/readme-fcpx-ixml-role.gif" width="400">
+
+#### フォルダーアクションでオーディオロールを設定する
+
+- 指定したフォルダーに入れた音声ファイルを、オーディオロールの自動割り当て設定付きの音声ファイルに変換します。
+- 現在、MYukkuriVoiceとは、別のプロジェクトで開発されています。
+  - MacOS X Folder Action, to append Audio Role to wav file for "Final Cut Pro X".
+    - [https://github.com/taku-o/fcpx-audio-role-workflow](https://github.com/taku-o/fcpx-audio-role-workflow)
+    - [日本語ドキュメント](https://github.com/taku-o/fcpx-audio-role-workflow/blob/master/README-ja.md)
+
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/readme-folder-action.gif" width="400">
 
 <a name="その他"></a>
 
@@ -267,7 +281,7 @@ macOS High Sierra(10.13)以降に対応しています。
 - ユーザー辞書機能
 - 最近録音したファイルの一覧。選択すると録音時の入力メッセージ、音声記号列を復元します。
 - オーディオロールの自動割り当てを設定 (動画編集ソフト Final Cut Pro X 用)
-- フォルダーアクションでオーディオロールを設定する
+- フォルダーアクションでオーディオロールを設定する (動画編集ソフト Final Cut Pro X 用)
 - 各種ショートカットキー
 - チュートリアル、ヘルプ
 
