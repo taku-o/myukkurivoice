@@ -12,6 +12,9 @@ const runSequence = require('run-sequence');
 const WORK_DIR = path.join(__dirname, './release');
 const WORK_REPO_DIR = path.join(__dirname, './release/myukkurivoice');
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
+const MAS_APP_PACKAGE_NAME = 'MYukkuriVoice-mas-x64';
+
+const DEVELOPER_ID_APPLICATION_KEY = require('./keys/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
 
 // release
 gulp.task('release', (cb) => {
@@ -33,6 +36,8 @@ gulp.task('release', (cb) => {
     '_unpacked',
     'doc',
     '_zip-app',
+    '_codesign',
+    '_zip-app-signed',
     '_open-appdir',
     '_notify',
     '_kill',
@@ -66,7 +71,45 @@ gulp.task('staging', (cb) => {
     '_unpacked',
     'doc',
     '_zip-app',
+    '_codesign',
+    '_zip-app-signed',
     '_open-appdir',
+    '_notify',
+    '_kill',
+    (err) => {
+      if (err) {
+        gulp.start('_notifyError');
+      }
+      cb(err);
+    }
+  );
+});
+
+// store
+gulp.task('store', (cb) => {
+  //if (argv && argv.branch) {
+  //  cb('branch is selected');
+  //  return;
+  //}
+  if (!(argv && argv.branch)) {
+    argv.branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
+      .toString()
+      .trim();
+  }
+  runSequence(
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release:store',
+    '_unpacked:store',
+    '_codesign:store',
+    '_open-appdir:store',
     '_notify',
     '_kill',
     (err) => {
@@ -124,8 +167,46 @@ gulp.task('_npm-install', (cb) => {
     );
 });
 
+// codesign
+gulp.task('_codesign', (cb) => {
+  const platform = 'darwin';
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  exec(
+    '/usr/bin/codesign' +
+      ` -s "${DEVELOPER_ID_APPLICATION_KEY}" \
+        --deep \
+        --keychain "/Users/${process.env.USER}/Library/Keychains/login.keychain" \
+        ${APP_PATH}`,
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
+});
+gulp.task('_codesign:store', (cb) => {
+  const platform = 'mas';
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  exec(
+    '/usr/bin/codesign' +
+      ` -s "${DEVELOPER_ID_APPLICATION_KEY}" \
+        --deep \
+        --keychain "/Users/${process.env.USER}/Library/Keychains/login.keychain" \
+        ${APP_PATH}`,
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
+});
+
 // zip
 gulp.task('_zip-app', (cb) => {
+  exec(
+    'ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '-nosigned.zip',
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
+});
+gulp.task('_zip-app-signed', (cb) => {
   exec(
     'ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '.zip',
     (err, stdout, stderr) => {
@@ -140,3 +221,9 @@ gulp.task('_open-appdir', (cb) => {
     cb(err);
   });
 });
+gulp.task('_open-appdir:store', (cb) => {
+  exec('open ' + MAS_APP_PACKAGE_NAME, (err, stdout, stderr) => {
+    cb(err);
+  });
+});
+

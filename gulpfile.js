@@ -3,6 +3,7 @@ const runSequence = require('run-sequence');
 const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
+// tasks
 require('./gulpfile.doc');
 require('./gulpfile.format');
 require('./gulpfile.less');
@@ -38,6 +39,7 @@ usage:
     gulp package
     gulp release
     gulp staging [--branch=develop]
+    gulp store [--branch=develop]
   `);
 });
 
