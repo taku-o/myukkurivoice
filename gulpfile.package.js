@@ -263,6 +263,7 @@ gulp.task('_package-release', (cb) => {
       --platform=${platform} --arch=x64 \
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
+      --app-bundle-id=jp.nanasi.myukkurivoice \
       --icon=icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \
       --extend-info=extend.plist \
@@ -280,6 +281,7 @@ gulp.task('_package-release:store', (cb) => {
       --platform=${platform} --arch=x64 \
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
+      --app-bundle-id=jp.nanasi.myukkurivoice \
       --icon=icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \
       --extend-info=extend.plist \
@@ -297,6 +299,7 @@ gulp.task('_package-debug', (cb) => {
       --platform=${platform} --arch=x64 \
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
+      --app-bundle-id=jp.nanasi.myukkurivoice \
       --icon=icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \
       --extend-info=extend.plist \

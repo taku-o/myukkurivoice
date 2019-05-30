@@ -14,7 +14,7 @@ const WORK_REPO_DIR = path.join(__dirname, './release/myukkurivoice');
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 const MAS_APP_PACKAGE_NAME = 'MYukkuriVoice-mas-x64';
 
-const DEVELOPER_ID_APPLICATION_KEY = require('./keys/MacAppleStore.json').version;
+const DEVELOPER_ID_APPLICATION_KEY = require('./keys/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
 
 // release
 gulp.task('release', (cb) => {
