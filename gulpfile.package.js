@@ -249,7 +249,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="/usage\\.txt$" \
     --ignore="/yarn\\.lock$" `;
 
-  if (forDebug) {
+  if (!forDebug) {
     ignores += ` \
         --ignore="^/js/apps.spec.js$" \
         --ignore="^/contents-spec.html$" `;
