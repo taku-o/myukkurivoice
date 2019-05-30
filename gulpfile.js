@@ -3,8 +3,6 @@ const runSequence = require('run-sequence');
 const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
-// global.DEVELOPER_ID_APPLICATION_KEY
-require('./keys/apple');
 // tasks
 require('./gulpfile.doc');
 require('./gulpfile.format');
@@ -41,6 +39,7 @@ usage:
     gulp package
     gulp release
     gulp staging [--branch=develop]
+    gulp store [--branch=develop]
   `);
 });
 
