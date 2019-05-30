@@ -226,4 +226,3 @@ gulp.task('_open-appdir:store', (cb) => {
     cb(err);
   });
 });
-

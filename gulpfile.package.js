@@ -258,8 +258,9 @@ function getIgnoreFiles(forDebug) {
 }
 gulp.task('_package-release', (cb) => {
   const platform = 'darwin';
-  exec(PACKAGER_CMD +
-    ` . MYukkuriVoice \
+  exec(
+    PACKAGER_CMD +
+      ` . MYukkuriVoice \
       --platform=${platform} --arch=x64 \
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
@@ -276,8 +277,9 @@ gulp.task('_package-release', (cb) => {
 });
 gulp.task('_package-release:store', (cb) => {
   const platform = 'mas';
-  exec(PACKAGER_CMD +
-    ` . MYukkuriVoice \
+  exec(
+    PACKAGER_CMD +
+      ` . MYukkuriVoice \
       --platform=${platform} --arch=x64 \
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
@@ -294,8 +296,9 @@ gulp.task('_package-release:store', (cb) => {
 });
 gulp.task('_package-debug', (cb) => {
   const platform = 'darwin';
-  exec(PACKAGER_CMD +
-    ` . MYukkuriVoice \
+  exec(
+    PACKAGER_CMD +
+      ` . MYukkuriVoice \
       --platform=${platform} --arch=x64 \
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \

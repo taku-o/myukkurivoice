@@ -242,7 +242,7 @@ macOS High Sierra(10.13)以降に対応しています。
 #### フォルダーアクションでオーディオロールを設定する
 
 - 指定したフォルダーに入れた音声ファイルを、オーディオロールの自動割り当て設定付きの音声ファイルに変換します。
-- 現在、MYukkuriVoiceとは、別のプロジェクトで開発されています。
+  - <small>(現在、MYukkuriVoice とは、別のプロジェクトで開発されています。)</small>
   - FCPX Audio Role Append Folder Action.
     - [https://github.com/taku-o/fcpx-audio-role-workflow](https://github.com/taku-o/fcpx-audio-role-workflow)
     - [日本語ドキュメント](https://github.com/taku-o/fcpx-audio-role-workflow/blob/master/README-ja.md)
