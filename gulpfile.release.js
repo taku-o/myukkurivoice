@@ -14,6 +14,8 @@ const WORK_REPO_DIR = path.join(__dirname, './release/myukkurivoice');
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 const MAS_APP_PACKAGE_NAME = 'MYukkuriVoice-mas-x64';
 
+const DEVELOPER_ID_APPLICATION_KEY = require('./keys/MacAppleStore.json').version;
+
 // release
 gulp.task('release', (cb) => {
   if (argv && argv.branch) {
@@ -166,11 +168,12 @@ gulp.task('_npm-install', (cb) => {
 });
 
 // codesign
-function signApp(platform, cb) {
+gulp.task('_codesign', (cb) => {
+  const platform = 'darwin';
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   exec(
     '/usr/bin/codesign' +
-      ` -s "${global.DEVELOPER_ID_APPLICATION_KEY}" \
+      ` -s "${DEVELOPER_ID_APPLICATION_KEY}" \
         --deep \
         --keychain "/Users/${process.env.USER}/Library/Keychains/login.keychain" \
         ${APP_PATH}`,
@@ -178,12 +181,20 @@ function signApp(platform, cb) {
       cb(err);
     }
   );
-}
-gulp.task('_codesign', (cb) => {
-  signApp('darwin', cb);
 });
 gulp.task('_codesign:store', (cb) => {
-  signApp('mas', cb);
+  const platform = 'mas';
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  exec(
+    '/usr/bin/codesign' +
+      ` -s "${DEVELOPER_ID_APPLICATION_KEY}" \
+        --deep \
+        --keychain "/Users/${process.env.USER}/Library/Keychains/login.keychain" \
+        ${APP_PATH}`,
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
 });
 
 // zip
