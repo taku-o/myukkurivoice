@@ -33,6 +33,8 @@ gulp.task('release', (cb) => {
     '_unpacked',
     'doc',
     '_zip-app',
+    '_codesign',
+    '_zip-app-signed',
     '_open-appdir',
     '_notify',
     '_kill',
@@ -66,6 +68,8 @@ gulp.task('staging', (cb) => {
     '_unpacked',
     'doc',
     '_zip-app',
+    '_codesign',
+    '_zip-app-signed',
     '_open-appdir',
     '_notify',
     '_kill',
@@ -124,8 +128,31 @@ gulp.task('_npm-install', (cb) => {
     );
 });
 
+// codesign
+gulp.task('_codesign', (cb) => {
+  const APP_PATH = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app';
+  exec(
+    '/usr/bin/codesign' +
+      ` -s "${global.DEVELOPER_ID_APPLICATION_KEY}" \
+        --deep \
+        --keychain "/Users/${process.env.USER}/Library/Keychains/login.keychain" \
+        ${APP_PATH}`,
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
+});
+
 // zip
 gulp.task('_zip-app', (cb) => {
+  exec(
+    'ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '-nosigned.zip',
+    (err, stdout, stderr) => {
+      cb(err);
+    }
+  );
+});
+gulp.task('_zip-app-signed', (cb) => {
   exec(
     'ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '.zip',
     (err, stdout, stderr) => {
