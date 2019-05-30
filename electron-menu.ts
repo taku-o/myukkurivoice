@@ -18,10 +18,6 @@ class FnMenu implements yubo.FnMenu {
             label: 'About MYukkuriVoice',
             click() { myApp.showAboutWindow(); },
           },
-          {
-            label: 'アップデートを確認する',
-            click() { myApp.showVersionDialog(); },
-          },
           {type: 'separator'},
           {
             label: '環境設定',
@@ -300,11 +296,20 @@ class FnMenu implements yubo.FnMenu {
     ];
     // アプリケーションフォルダに移動するメニューを追加
     if (!app.isInApplicationsFolder()) {
-      (menuList[0].submenu as Electron.MenuItemConstructorOptions[]).splice(2, 0,
+      (menuList[0].submenu as Electron.MenuItemConstructorOptions[]).splice(1, 0,
         {
           label: 'アプリケーションフォルダに移動する',
           click() { app.moveToApplicationsFolder(); },
         }
+      );
+    }
+    // MacAppStoreでなければ、アップデート確認メニューを追加
+    if (process.mas !== true) {
+      (menuList[0].submenu as Electron.MenuItemConstructorOptions[]).splice(1, 0,
+        {
+          label: 'アップデートを確認する',
+          click() { myApp.showVersionDialog(); },
+        },
       );
     }
     // Debugメニューを追加 (Toggle Developer Tools、Install Devtron)
