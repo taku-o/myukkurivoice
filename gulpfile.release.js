@@ -12,6 +12,7 @@ const runSequence = require('run-sequence');
 const WORK_DIR = path.join(__dirname, './release');
 const WORK_REPO_DIR = path.join(__dirname, './release/myukkurivoice');
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
+const MAS_APP_PACKAGE_NAME = 'MYukkuriVoice-mas-x64';
 
 // release
 gulp.task('release', (cb) => {
@@ -82,6 +83,42 @@ gulp.task('staging', (cb) => {
   );
 });
 
+// store
+gulp.task('store', (cb) => {
+  //if (argv && argv.branch) {
+  //  cb('branch is selected');
+  //  return;
+  //}
+  if (!(argv && argv.branch)) {
+    argv.branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
+      .toString()
+      .trim();
+  }
+  runSequence(
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release:store',
+    '_unpacked:store',
+    '_codesign:store',
+    '_open-appdir:store',
+    '_notify',
+    '_kill',
+    (err) => {
+      if (err) {
+        gulp.start('_notifyError');
+      }
+      cb(err);
+    }
+  );
+});
+
 // workdir
 gulp.task('_rm-workdir', (cb) => {
   rimraf(WORK_DIR, (err) => {
@@ -129,8 +166,8 @@ gulp.task('_npm-install', (cb) => {
 });
 
 // codesign
-gulp.task('_codesign', (cb) => {
-  const APP_PATH = 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app';
+function signApp(platform, cb) {
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   exec(
     '/usr/bin/codesign' +
       ` -s "${global.DEVELOPER_ID_APPLICATION_KEY}" \
@@ -141,6 +178,12 @@ gulp.task('_codesign', (cb) => {
       cb(err);
     }
   );
+}
+gulp.task('_codesign', (cb) => {
+  signApp('darwin', cb);
+});
+gulp.task('_codesign:store', (cb) => {
+  signApp('mas', cb);
 });
 
 // zip
@@ -167,3 +210,9 @@ gulp.task('_open-appdir', (cb) => {
     cb(err);
   });
 });
+gulp.task('_open-appdir:store', (cb) => {
+  exec('open ' + MAS_APP_PACKAGE_NAME, (err, stdout, stderr) => {
+    cb(err);
+  });
+});
+

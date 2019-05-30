@@ -41,6 +41,7 @@ usage:
     gulp package
     gulp release
     gulp staging [--branch=develop]
+    gulp store [--branch=develop]
   `);
 });
 
