@@ -241,7 +241,7 @@ macOS High Sierra(10.13)以降に対応しています。
 
 - 指定したフォルダーに入れた音声ファイルを、オーディオロールの自動割り当て設定付きの音声ファイルに変換します。
 - 現在、MYukkuriVoiceとは、別のプロジェクトで開発されています。
-  - MacOS X Folder Action, to append Audio Role to wav file for "Final Cut Pro X".
+  - FCPX Audio Role Append Folder Action.
     - [https://github.com/taku-o/fcpx-audio-role-workflow](https://github.com/taku-o/fcpx-audio-role-workflow)
     - [日本語ドキュメント](https://github.com/taku-o/fcpx-audio-role-workflow/blob/master/README-ja.md)
 
