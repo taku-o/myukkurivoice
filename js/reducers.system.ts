@@ -30,7 +30,8 @@ class SystemReducer implements yubo.SystemReducer {
       'audioServVer': this.store.appCfg.audioServVer,
       'showMsgPane': this.store.appCfg.showMsgPane,
       'passPhrase': this.store.appCfg.passPhrase,
-      'aq10UseKeyEncrypted':aq10UseKeyEncrypted,
+      'aq10UseKeyEncrypted': aq10UseKeyEncrypted,
+      'extensions': this.store.appCfg.extensions,
     };
     ipcRenderer().send('updateAppConfig', options);
   }

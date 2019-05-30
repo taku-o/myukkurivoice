@@ -50,6 +50,23 @@
       </div>
     </div>
 
+    <div class="fcpx-ixml-box" id="fcpx-ixml-box" ng-show="ctrl.appCfg.extensions.fcpx">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="ctrl.store.curYvoice.fcpxIxml">音声ファイルにオーディオロール自動割り当て設定を書き込む
+        </label>
+        <br>
+        <small>
+        ・動画編集ソフトFinal Cut Pro X用の機能です。<br>
+        ・標準でないwavファイルが出力されます。(アプリによっては動かない可能性がある)
+        </small>
+      </div>
+      <div class="form-group" ng-show="ctrl.store.curYvoice.fcpxIxml">
+        <!-- <label>audio role name</label> -->
+        <input type="text" class="form-control" id="audioRole" ng-model="ctrl.store.curYvoice.fcpxIxmlOptions.audioRole" placeholder="自動割り当てするオーディオロール名">
+      </div>
+    </div>
+
     <div class="form-group">
       <button class="btn btn-large btn-default pull-right switch-view" id="switch-main-view" ng-click="ctrl.switchMainView()">
         <span class="icon icon-shuffle"></span>標準の画面に切替

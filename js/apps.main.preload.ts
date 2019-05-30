@@ -19,10 +19,10 @@ if (MONITOR) { log().warn(monitor().format('apps.main', '---- start')); }
 // pre loading data.json
 try {
   if (MONITOR) { log().warn(monitor().format('apps.main', 'pre load called')); }
-  (window as any).dataJson = require(`${app.getPath('userData')}/data.json`);
+  window.dataJson = require(`${app.getPath('userData')}/data.json`);
   if (MONITOR) { log().warn(monitor().format('apps.main', 'pre load done')); }
 } catch (e) {
-  (window as any).dataJson = [];
+  window.dataJson = [];
 }
 delete require.cache[`${app.getPath('userData')}/data.json`];
 

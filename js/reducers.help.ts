@@ -23,6 +23,7 @@ class HelpReducer implements yubo.HelpReducer {
     'history',
     'shortcut',
     'help',
+    'fcpx-ixml',
     'expand',
   ];
   constructor(

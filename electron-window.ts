@@ -36,6 +36,7 @@ class FnWindow implements yubo.FnWindow {
       transparent: transparent,
       opacity: opacity,
       webPreferences: {
+        nodeIntegration: true,
         devTools: DEBUG,
       },
     });
@@ -124,6 +125,7 @@ class FnWindow implements yubo.FnWindow {
       transparent: transparent,
       opacity: opacity,
       webPreferences: {
+        nodeIntegration: true,
         devTools: DEBUG,
       },
     });
@@ -195,6 +197,7 @@ class FnWindow implements yubo.FnWindow {
       transparent: transparent,
       opacity: opacity,
       webPreferences: {
+        nodeIntegration: true,
         devTools: DEBUG,
       },
     });
@@ -243,6 +246,7 @@ class FnWindow implements yubo.FnWindow {
       transparent: transparent,
       opacity: opacity,
       webPreferences: {
+        nodeIntegration: true,
         devTools: DEBUG,
       },
     });
@@ -287,6 +291,7 @@ class FnWindow implements yubo.FnWindow {
       transparent: transparent,
       opacity: opacity,
       webPreferences: {
+        nodeIntegration: true,
         devTools: DEBUG,
       },
     });
@@ -387,6 +392,7 @@ class FnWindow implements yubo.FnWindow {
       transparent: transparent,
       opacity: opacity,
       webPreferences: {
+        nodeIntegration: true,
         devTools: DEBUG,
       },
     });

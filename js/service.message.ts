@@ -15,7 +15,7 @@ class MessageService implements yubo.MessageService {
     this.$rootScope.$broadcast('message', post);
   }
 
-  record(message: string, opts:{wavFilePath: string, srcTextPath: string, source: string, encoded: string}): void {
+  record(message: string, opts:{wavFilePath: string, srcTextPath: string, source: string, encoded: string, duration: number}): void {
     const wavFileName = path().basename(opts.wavFilePath);
     const post: yubo.IRecordMessage = {
       created: new Date(),
@@ -26,6 +26,7 @@ class MessageService implements yubo.MessageService {
       quickLookPath: opts.wavFilePath,
       source: opts.source,
       encoded: opts.encoded,
+      duration: opts.duration,
       type: 'record',
     };
     this.$rootScope.$broadcast('message', post);

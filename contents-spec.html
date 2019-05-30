@@ -16,6 +16,7 @@
   <script src="js/service.intro.js"></script>
   <script src="js/service.license.js"></script>
   <script src="js/service.message.js"></script>
+  <script src="js/service.subtitle.js"></script>
   <script src="js/service.util.js"></script>
   <script src="js/services.main.js"></script>
   <script src="js/service.aqusrdic.js"></script>
@@ -207,6 +208,10 @@
       <button id="record1-aqver1" ng-click="ctrl.record1AqVer1()"></button>
       <button id="record1-aqver2" ng-click="ctrl.record1AqVer2()"></button>
       <button id="record1-aqver10" ng-click="ctrl.record1AqVer10()"></button>
+      <input id="record1-audio-role" type="text" ng-model="record1AudioRole">
+      <button id="record1-aqver1-fcpx" ng-click="ctrl.record1AqVer1Fcpx()"></button>
+      <button id="record1-aqver2-fcpx" ng-click="ctrl.record1AqVer2Fcpx()"></button>
+      <button id="record1-aqver10-fcpx" ng-click="ctrl.record1AqVer10Fcpx()"></button>
       <input id="record-result-1" type="text" ng-model="recordResult1">
     </div>
 
@@ -222,10 +227,14 @@
       <button id="record2-aqver1" ng-click="ctrl.record2AqVer1()"></button>
       <button id="record2-aqver2" ng-click="ctrl.record2AqVer2()"></button>
       <button id="record2-aqver10" ng-click="ctrl.record2AqVer10()"></button>
+      <input id="record2-audio-role" type="text" ng-model="record2AudioRole">
+      <button id="record2-aqver1-fcpx" ng-click="ctrl.record2AqVer1Fcpx()"></button>
+      <button id="record2-aqver2-fcpx" ng-click="ctrl.record2AqVer2Fcpx()"></button>
+      <button id="record2-aqver10-fcpx" ng-click="ctrl.record2AqVer10Fcpx()"></button>
       <input id="record-result-2" type="text" ng-model="recordResult2">
     </div>
 
-    <div>AudioSourceService
+    <div>TextSubtitleService
       <input id="wav-file-path" type="text" ng-model="wavFilePath">
       <button id="source-fname" ng-click="ctrl.sourceFname()"></button>
       <input id="source-fname-result" type="text" ng-model="sourceFnameResult">

@@ -1,6 +1,8 @@
-var _fs: any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
-var _temp: any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _WavEncoder: any, WavEncoder = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
+var _fs: any, fs                           = () => { _fs = _fs || require('fs'); return _fs; };
+var _temp: any, temp                       = () => { _temp = _temp || require('temp').track(); return _temp; };
+var _WavEncoder: any, WavEncoder           = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
+var _wavDuration: any, wavDuration         = () => { _wavDuration = _wavDuration || require('wav-audio-length').default; return _wavDuration; };
+var _fcpxRoleEncoder: any, fcpxRoleEncoder = () => { _fcpxRoleEncoder = _fcpxRoleEncoder || require('fcpx-audio-role-encoder').default; return _fcpxRoleEncoder; };
 
 // env
 var TEST = process.env.NODE_ENV == 'test';
@@ -13,11 +15,12 @@ class AudioService1 implements yubo.AudioService1 {
   private audio: HTMLAudioElement = null;
   constructor(
     private $q: ng.IQService,
-    private MessageService: yubo.MessageService
+    private MessageService: yubo.MessageService,
+    private AppUtilService: yubo.AppUtilService
   ) {}
 
-  play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string> {
-    const d = this.$q.defer<string>();
+  play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<{duration: number}> {
+    const d = this.$q.defer<{duration: number}>();
     if (!bufWav) {
       this.MessageService.syserror('再生する音源が渡されませんでした。');
       d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
@@ -32,6 +35,10 @@ class AudioService1 implements yubo.AudioService1 {
         d.reject(err); return;
       }
 
+      // report duration
+      const wavSec = wavDuration()(bufWav);
+      this.AppUtilService.reportDuration(wavSec);
+
       fs().writeFile(info.path, bufWav, (err: Error) => {
         if (err) {
           this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
@@ -45,7 +52,7 @@ class AudioService1 implements yubo.AudioService1 {
           this.audio.volume = options.volume;
         }
         this.audio.onended = () => {
-          d.resolve('ok');
+          d.resolve({duration: wavSec});
         };
         this.audio.play();
       });
@@ -58,8 +65,8 @@ class AudioService1 implements yubo.AudioService1 {
     this.audio.pause();
   }
 
-  record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string> {
-    const d = this.$q.defer<string>();
+  record(wavFilePath: string, bufWav: Buffer, options: yubo.RecordOptions): ng.IPromise<{duration: number}> {
+    const d = this.$q.defer<{duration: number}>();
     if (!wavFilePath) {
       this.MessageService.syserror('音声ファイルの保存先が指定されていません。');
       d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
@@ -69,12 +76,21 @@ class AudioService1 implements yubo.AudioService1 {
       d.reject(new Error('保存する音源が渡されませんでした。')); return d.promise;
     }
 
-    fs().writeFile(wavFilePath, bufWav, (err: Error) => {
+    // report duration
+    const wavSec = wavDuration()(bufWav);
+    this.AppUtilService.reportDuration(wavSec);
+
+    // extensions.fcpx
+    let rBufWav = options.fcpxIxml?
+      new (fcpxRoleEncoder())().encodeSync(bufWav, options.fcpxIxmlOptions.audioRole):
+      bufWav;
+
+    fs().writeFile(wavFilePath, rBufWav, (err: Error) => {
       if (err) {
         this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
         d.reject(err); return;
       }
-      d.resolve('ok');
+      d.resolve({duration: wavSec});
     });
     return d.promise;
   }
@@ -83,6 +99,7 @@ angular.module('AudioServices')
   .service('AudioService1', [
     '$q',
     'MessageService',
+    'AppUtilService',
     AudioService1,
   ]);
 
@@ -144,8 +161,8 @@ class AudioService2 implements yubo.AudioService2 {
     return nAudioBuffer;
   }
 
-  play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string> {
-    const d = this.$q.defer<string>();
+  play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<{duration: number}> {
+    const d = this.$q.defer<{duration: number}>();
     if (!bufWav) {
       this.MessageService.syserror('再生する音源が渡されませんでした。');
       d.reject(new Error('再生する音源が渡されませんでした。')); return d.promise;
@@ -209,13 +226,13 @@ class AudioService2 implements yubo.AudioService2 {
         // report duration
         this.AppUtilService.reportDuration(nAudioBuffer.duration);
 
-        const dInPlay = this.$q.defer<string>();
+        const dInPlay = this.$q.defer<{duration: number}>();
         // play voice
         audioPlayNode = audioCtx.createBufferSource();
         audioPlayNode.buffer = nAudioBuffer;
         audioPlayNode.connect(audioCtx.destination);
         audioPlayNode.onended = () => {
-          dInPlay.resolve('ok');
+          dInPlay.resolve({duration: nAudioBuffer.duration});
         };
         audioPlayNode.start(0);
 
@@ -223,9 +240,9 @@ class AudioService2 implements yubo.AudioService2 {
         return dInPlay.promise;
       }); // offlineCtx.startRendering
     })
-    .then(() => {
+    .then((audioParams: {duration: number}) => {
       this.runningNode = null;
-      d.resolve('ok');
+      d.resolve(audioParams);
     })
     .catch((err: Error) => {
       this.MessageService.syserror('音源の再生に失敗しました。', err);
@@ -253,8 +270,8 @@ class AudioService2 implements yubo.AudioService2 {
     if (this.runningNode) { this.runningNode.stop(0); this.runningNode = null; }
   }
 
-  record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string> {
-    const d = this.$q.defer<string>();
+  record(wavFilePath: string, bufWav: Buffer, options: yubo.RecordOptions): ng.IPromise<{duration: number}> {
+    const d = this.$q.defer<{duration: number}>();
     if (!wavFilePath) {
       this.MessageService.syserror('音声ファイルの保存先が指定されていません。');
       d.reject(new Error('音声ファイルの保存先が指定されていません。')); return d.promise;
@@ -328,20 +345,27 @@ class AudioService2 implements yubo.AudioService2 {
           audioData.channelData[i] = nAudioBuffer.getChannelData(i);
         }
         // create wav file.
-        const dInEncode = this.$q.defer<string>();
+        const dInEncode = this.$q.defer<{duration: number}>();
         WavEncoder().encode(audioData).then((buffer: ArrayBuffer) => {
-          fs().writeFile(wavFilePath, Buffer.from(buffer), 'binary', (err: Error) => {
+          const inBufWav = Buffer.from(buffer);
+
+          // extensions.fcpx
+          let rBufWav = options.fcpxIxml?
+            new (fcpxRoleEncoder())().encodeSync(inBufWav, options.fcpxIxmlOptions.audioRole):
+            inBufWav;
+
+          fs().writeFile(wavFilePath, rBufWav, 'binary', (err: Error) => {
             if (err) {
               dInEncode.reject(err); return;
             }
-            dInEncode.resolve('ok');
+            dInEncode.resolve({duration: nAudioBuffer.duration});
           });
         });
         return dInEncode.promise;
       }); // offlineCtx.startRendering
     })
-    .then(() => {
-      d.resolve('ok');
+    .then((audioParams: {duration: number}) => {
+      d.resolve(audioParams);
     })
     .catch((err: Error) => {
       this.MessageService.syserror('音声ファイルの作成に失敗しました。', err);

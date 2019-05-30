@@ -8,6 +8,7 @@ angular.module('mainServices', [
   'IntroServices',
   'LicenseServices',
   'MessageServices',
+  'SubtitleServices',
   'UtilServices',
 ]);
 

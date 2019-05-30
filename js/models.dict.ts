@@ -2,7 +2,7 @@ angular.module('dictModels', [])
   // KindList: yubo.KindEntry[]
   .constant('KindList',
     [
-      {id: 0,  kind: '名詞', hoge:'foo'},
+      {id: 0,  kind: '名詞'},
       {id: 1,  kind: '名詞(サ変)'},
       {id: 2,  kind: '人名'},
       {id: 3,  kind: '人名(姓)'},

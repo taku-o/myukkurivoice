@@ -26,6 +26,7 @@ class HelpReducer {
             'history',
             'shortcut',
             'help',
+            'fcpx-ixml',
             'expand',
         ];
         this.observers = [];

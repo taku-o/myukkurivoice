@@ -7,7 +7,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AudioSourceService', function() {
+describe('specWindow-service-TextSubtitleService', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;
@@ -52,13 +52,21 @@ describe('specWindow-service-AudioSourceService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
@@ -87,13 +95,21 @@ describe('specWindow-service-AudioSourceService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );

@@ -106,13 +106,20 @@ declare namespace GithubVersionCompare {
   }
 }
 
-declare namespace yubo {
-  // external
-  // node.js
-  export interface Global extends NodeJS.Global {
-    appCfg: AppCfg;
+// extends external
+// NodeJS
+declare namespace NodeJS {
+  export interface Global {
+    appCfg: yubo.AppCfg;
   }
+}
 
+// global
+interface Window {
+  dataJson: yubo.YVoice[];
+}
+
+declare namespace yubo {
   // electron-appcfg.ts
   export interface AppCfg {
     mainWindow:          {width: number, height: number, x: number | null, y: number | null };
@@ -124,6 +131,7 @@ declare namespace yubo {
     showMsgPane:         boolean;
     passPhrase:          string | null;
     aq10UseKeyEncrypted: string;
+    extensions:          {fcpx?: boolean};
   }
 
   // electron.ts
@@ -205,6 +213,8 @@ declare namespace yubo {
     sourceWrite:  boolean;
     seqWrite:     boolean;
     seqWriteOptions: {dir: string, prefix: string};
+    fcpxIxml:     boolean;
+    fcpxIxmlOptions: {audioRole?: string;};
   }
   export interface YInput {
     source:  string;
@@ -247,7 +257,7 @@ declare namespace yubo {
   // service.message.ts
   export interface MessageService {
     action(message: string): void;
-    record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string}): void;
+    record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string, duration: number}): void;
     recordSource(message: string, opts: {srcTextPath: string, source: string}): void;
     info(message: string): void;
     error(message: string, err?: Error): void;
@@ -270,6 +280,7 @@ declare namespace yubo {
     readonly srcTextPath: string;
     readonly source: string;
     readonly encoded: string;
+    readonly duration: number;
   }
   export interface ISourceMessage extends IWriteMessage {
     readonly srcTextPath: string;
@@ -336,9 +347,9 @@ declare namespace yubo {
   }
   // service.audio.ts
   export interface IAudioService {
-    play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
+    play(bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<{duration: number}>;
     stop(): void;
-    record(wavFilePath: string, bufWav: Buffer, options: yubo.PlayOptions): ng.IPromise<string>;
+    record(wavFilePath: string, bufWav: Buffer, options: yubo.RecordOptions): ng.IPromise<{duration: number}>;
   }
   export interface AudioService1 extends IAudioService {
     //private audio: HTMLAudioElement;
@@ -350,13 +361,14 @@ declare namespace yubo {
     //private correctBufferLength(buffer: Float32Array): number;
     //private buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer;
   }
-  // service.util.ts
-  export interface AudioSourceService {
+  // service.subtitle.ts
+  export interface TextSubtitleService {
     //private readonly waveExt: string;
     //private readonly sourceExt: string;
     sourceFname(wavFilePath: string): string;
     save(filePath: string, sourceText: string): ng.IPromise<string>;
   }
+  // service.util.ts
   export interface SeqFNameService {
     //private readonly ext: string;
     //private readonly numPattern: string;
@@ -506,11 +518,11 @@ declare namespace yubo {
     //private clearEncodedSelection(): void;
     onChangePhont(): void;
     play(): void;
-    //private playEach(cinput: yubo.YCommandInput): ng.IPromise<string>;
+    //private playEach(cinput: yubo.YCommandInput): ng.IPromise<{duration: number}>;
     stop(): void;
     record(): void;
-    //private recordSolo(cinput: yubo.YCommandInput, filePath: string): ng.IPromise<string>;
-    //private recordEach(cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<string>;
+    //private recordSolo(cinput: yubo.YCommandInput, filePath: string): ng.IPromise<{wavFilePath: string, duration: number}>;
+    //private recordEach(cinput: yubo.YCommandInput, dir: string, fnameprefix: string): ng.IPromise<{wavFilePath: string, duration: number}>;
     showSystemWindow(): void;
     showSpecWindow(): void;
     help(): void;
@@ -549,6 +561,13 @@ declare namespace yubo {
     volume:       number;
     playbackRate: number;
     detune:       number;
+  }
+  export interface RecordOptions {
+    volume:       number;
+    playbackRate: number;
+    detune:       number;
+    fcpxIxml:     boolean;
+    fcpxIxmlOptions: {audioRole?: string;};
   }
   export interface CmdOptions {
     env:      {VOICE: number, SPEED: number};

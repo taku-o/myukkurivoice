@@ -7,7 +7,7 @@
   <title>ヘルプビューワ</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/css/photon.css">
   <link rel="stylesheet" href="assets/css/help.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
   <script src="assets/js/directive.include.js"></script>
   <script src="assets/js/stores.help.js"></script>
   <script src="assets/js/reducers.help.js"></script>
@@ -83,6 +83,11 @@
         <span class="icon icon-help-circled"></span>チュートリアル・ヘルプ
       </span>
 
+      <h5 class="nav-group-title">動画編集ソフトFinal Cut Pro X用</h5>
+      <span class="nav-group-item functions-item" id="menu-fcpx-ixml" ng-class="{active:ctrl.store.display == 'fcpx-ixml'}" ng-click="ctrl.page('fcpx-ixml')">
+        <span class="icon icon-help-circled"></span>読み込み時に割り当てられるオーディオロールを設定する
+      </span>
+
       <h5 class="nav-group-title">ナビゲーション</h5>
       <span class="nav-group-item navs-item" id="menu-expand" ng-class="{active:ctrl.store.display == 'expand'}" ng-click="ctrl.page('expand')">
         <span class="icon icon-map"></span>ヘルプを全て展開
@@ -117,6 +122,8 @@
   <div class="pane" id="shortcut-pane"   static-include template-path="_help/shortcut.html"   ng-if="ctrl.store.display == 'shortcut'"></div>
   <div class="pane" id="help-pane"       static-include template-path="_help/help.html"       ng-if="ctrl.store.display == 'help'"></div>
 
+  <div class="pane" id="fcpx-ixml-pane"  static-include template-path="_help/fcpx-ixml.html"  ng-if="ctrl.store.display == 'fcpx-ixml'"></div>
+
   <div class="pane" id="expand-pane" ng-if="ctrl.store.display == 'expand'">
     <div class="box" static-include template-path="_help/about.html"></div>
     <div class="box" static-include template-path="_help/voicecode.html"></div>
@@ -127,6 +134,7 @@
     <div class="box" static-include template-path="_help/license.html"></div>
     <div class="box" static-include template-path="_help/contact.html"></div>
 
+    <h2>各機能詳細</h2>
     <div class="box" static-include template-path="_help/funclist.html"></div>
     <div class="box" static-include template-path="_help/play.html"></div>
     <div class="box" static-include template-path="_help/tuna.html"></div>
@@ -138,6 +146,9 @@
     <div class="box" static-include template-path="_help/history.html"></div>
     <div class="box" static-include template-path="_help/shortcut.html"></div>
     <div class="box" static-include template-path="_help/help.html"></div>
+
+    <h2>拡張機能 (動画編集ソフトFinal Cut Pro X用)</h2>
+    <div class="box" static-include template-path="_help/fcpx-ixml.html"></div>
   </div>
 
 </div><!-- page-group -->
