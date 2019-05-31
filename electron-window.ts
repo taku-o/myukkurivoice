@@ -97,11 +97,13 @@ class FnWindow implements yubo.FnWindow {
     myApp.mainWindow.on('closed', () => {
       myApp.mainWindow = null;
     });
-    myApp.mainWindow.on('unresponsive', () => {
+    myApp.mainWindow.on('unresponsive', (event) => {
       log().warn('main:event:unresponsive');
+      log().warn(event);
     });
-    myApp.mainWindow.webContents.on('crashed', () => {
+    myApp.mainWindow.webContents.on('crashed', (event) => {
       log().error('main:event:crashed');
+      log().error(event);
     });
   }
 
@@ -162,11 +164,13 @@ class FnWindow implements yubo.FnWindow {
     myApp.helpWindow.on('closed', () => {
       myApp.helpWindow = null;
     });
-    myApp.helpWindow.on('unresponsive', () => {
+    myApp.helpWindow.on('unresponsive', (event) => {
       log().warn('help:event:unresponsive');
+      log().warn(event);
     });
-    myApp.helpWindow.webContents.on('crashed', () => {
+    myApp.helpWindow.webContents.on('crashed', (event) => {
       log().error('help:event:crashed');
+      log().error(event);
     });
   }
 
@@ -219,11 +223,13 @@ class FnWindow implements yubo.FnWindow {
     myApp.helpSearchDialog.on('closed', () => {
       myApp.helpSearchDialog = null;
     });
-    myApp.helpSearchDialog.on('unresponsive', () => {
+    myApp.helpSearchDialog.on('unresponsive', (event) => {
       log().warn('helpsearch:event:unresponsive');
+      log().warn(event);
     });
-    myApp.helpSearchDialog.webContents.on('crashed', () => {
+    myApp.helpSearchDialog.webContents.on('crashed', (event) => {
       log().error('helpsearch:event:crashed');
+      log().error(event);
     });
   }
 
@@ -264,11 +270,13 @@ class FnWindow implements yubo.FnWindow {
     myApp.systemWindow.on('closed', () => {
       myApp.systemWindow = null;
     });
-    myApp.systemWindow.on('unresponsive', () => {
+    myApp.systemWindow.on('unresponsive', (event) => {
       log().warn('system:event:unresponsive');
+      log().warn(event);
     });
-    myApp.systemWindow.webContents.on('crashed', () => {
+    myApp.systemWindow.webContents.on('crashed', (event) => {
       log().error('system:event:crashed');
+      log().error(event);
     });
   }
 
@@ -319,11 +327,13 @@ class FnWindow implements yubo.FnWindow {
     myApp.dictWindow.on('closed', () => {
       myApp.dictWindow = null;
     });
-    myApp.dictWindow.on('unresponsive', () => {
-      log().warn('main:event:unresponsive');
+    myApp.dictWindow.on('unresponsive', (event) => {
+      log().warn('dict:event:unresponsive');
+      log().warn(event);
     });
-    myApp.dictWindow.webContents.on('crashed', () => {
-      log().error('main:event:crashed');
+    myApp.dictWindow.webContents.on('crashed', (event) => {
+      log().error('dict:event:crashed');
+      log().error(event);
     });
   }
 
