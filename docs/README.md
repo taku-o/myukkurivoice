@@ -293,10 +293,8 @@ macOS High Sierra(10.13)以降に対応しています。
 
 [<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30435205.png" width="400">](http://www.nicovideo.jp/watch/sm30435205)
 
-<a href="http://www.nicovideo.jp/watch/sm30435205"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30435205.png" width="400"></a>
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30826557.png" width="400">](http://www.nicovideo.jp/watch/sm30826557)
 
-<a href="http://www.nicovideo.jp/watch/sm30826557"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30826557.png" width="400"></a>
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm32273442.png" width="400">](http://www.nicovideo.jp/watch/sm32273442)
 
-<a href="http://www.nicovideo.jp/watch/sm32273442"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm32273442.png" width="400"></a>
-
-<a href="http://www.nicovideo.jp/watch/sm34217643"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm34217643.png" width="400"></a>
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm34217643.png" width="400">](http://www.nicovideo.jp/watch/sm34217643)
