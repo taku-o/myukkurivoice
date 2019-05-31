@@ -175,6 +175,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="/.+\\.less$" \
     --ignore="/.+\\.markdown$" \
     --ignore="/.+\\.md$" \
+    --ignore="/.+\\.o$" \
     --ignore="/.+\\.py$" \
     --ignore="/.+\\.scss$" \
     --ignore="/.+\\.swp$" \
