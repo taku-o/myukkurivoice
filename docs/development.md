@@ -20,6 +20,24 @@
     +-- secret                    AquesTalk10ライセンスキー取得コード
 ```
 
+### keys
+
+- keysにはアプリのビルドに必要な、しかし秘匿すべきデータファイルを入れてあります。
+- このkeysディレクトリは公開していません。
+
+```
+  keys
+    +-- MacAppleStore.json
+```
+
+```
+{
+  "DEVELOPER_ID_APPLICATION_KEY": "Developer ID Application: XXXXXX (XXXXXX)",
+  "MAC_DEVELOPER_INSTALLER_3RD": "3rd Party Mac Developer Installer: XXXXXX (XXXXXX)",
+  "MAC_DEVELOPER_APPLICATION_3RD": "3rd Party Mac Developer Application: XXXXXX (XXXXXX)"
+}
+```
+
 ## library for binary
 
 - native 関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
@@ -53,19 +71,17 @@
   gulp tsc
 ```
 
-- 次のコマンドで Electron アプリをビルドします。
-
-```
-  gulp package
-```
-
 - デバッグモードで動かして、動作を確認しましょう。
 
 ```
   gulp app
 ```
 
-## リリース
+- 次のコマンドで Electron アプリをビルドします。
+
+```
+  gulp package
+```
 
 - リリース用のアプリケーションを作成するにはリリース用のコマンドを実行します。
 
