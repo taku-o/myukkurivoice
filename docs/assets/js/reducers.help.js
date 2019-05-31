@@ -41,7 +41,12 @@ class HelpReducer {
             this.store.display = hash;
         }
         else {
-            this.store.display = 'about';
+            if ('process' in window) {
+                this.store.display = 'about-app';
+            }
+            else {
+                this.store.display = 'about';
+            }
         }
         this.notifyUpdates({ display: this.store.display });
     }
@@ -84,7 +89,12 @@ class HelpReducer {
         }
     }
     page(pageName) {
-        this.$location.hash(pageName);
+        if (pageName == 'about' && 'process' in window) {
+            this.$location.hash('about-app');
+        }
+        else {
+            this.$location.hash(pageName);
+        }
     }
     openSearchForm() {
         ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');

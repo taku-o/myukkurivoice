@@ -4,6 +4,7 @@ const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
 // tasks
+require('./gulpfile.about');
 require('./gulpfile.doc');
 require('./gulpfile.format');
 require('./gulpfile.less');
@@ -32,6 +33,7 @@ usage:
     gulp format
     gulp toc
     gulp doc
+    gulp about
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]

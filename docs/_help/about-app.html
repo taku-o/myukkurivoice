@@ -1,0 +1,295 @@
+<div class="content"><h1 id="myukkurivoice">MYukkuriVoice</h1>
+<p><a href="https://taku-o.github.io/myukkurivoice/">MYukkuriVoice</a>は、AquesTalk を利用した Mac OSX 向けの<br>動画制作向けに調整された合成音声生成アプリケーションです。<br>入力した日本語メッセージから音声ファイルを作成できます。<br>macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、
+macOS High Sierra(10.13)以降に対応しています。</p>
+<img src="images/icon_256x256.png" class="noborder">
+
+<p>本ソフトは、(株)アクエストの音声合成ライブラリ AquesTalk を使用しており、その著作権は同社に帰属します。<br>本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。ご注意ください。<br><a href="http://www.a-quest.com/">http://www.a-quest.com/</a></p>
+<h2 id="-">目次</h2>
+<!-- toc -->
+
+<ul>
+<li>開発ステータス</li>
+<li>アプリバージョン</li>
+<li>MYukkuriVoice の導入<ul>
+<li>ダウンロード</li>
+<li>インストール</li>
+<li>アンインストール</li>
+</ul>
+</li>
+<li>MYukkuriVoice に関して<ul>
+<li>アプリの使い方を学ぶにはまず何から始めれば良いか</li>
+<li>取り扱い種別・使用ライセンス</li>
+<li>ヘルプ・マニュアル</li>
+<li>リリースノート</li>
+<li>連絡先・問題の報告</li>
+</ul>
+</li>
+<li>MYukkuriVoice の主な特徴<ul>
+<li>基本</li>
+<li>ショートカット</li>
+<li>ファイルの出力オプション</li>
+<li>選択した範囲のテキストのみの音声再生・録音</li>
+<li>保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ</li>
+<li>ユーザー辞書機能</li>
+<li>最近録音したファイルの一覧と入力の復元</li>
+<li>動画編集ソフト Final Cut Pro X 用機能<ul>
+<li>オーディオロールの自動割り当てを設定</li>
+<li>フォルダーアクションでオーディオロールを設定する</li>
+</ul>
+</li>
+<li>その他</li>
+<li>機能一覧</li>
+</ul>
+</li>
+<li>動画リンク</li>
+</ul>
+<!-- tocstop -->
+
+<p><a name="開発ステータス"></a></p>
+<h2 id="-">開発ステータス</h2>
+<ul>
+<li>アプリ公開</li>
+<li>(2017/11/15) AquesTalk10 の音声の再生に対応。</li>
+<li>(2017/11/21) 録音した音声ファイルを動画編集ソフトに直接ドラッグアンドドロップできるように。</li>
+<li>(2017/11/28) 個人で非営利用途以外で使う人向けに、AquesTalk10 の使用ライセンスキーを環境設定で設定できるようになりました。</li>
+<li>(2018/01/12) AquesTalk10 の音声設定調節機能を追加しました。AquesTalk10 ベースの声を選んだ時のみ、アクセント、音程などの音声の調節を行えます。</li>
+<li>(2018/08/26) ボイスロイドにあるマルチボイス機能を追加。<ul>
+<li>&quot;声種プリセット＞会話&quot;と入力して、複数メッセージをまとめて音声再生、音声録音する機能です。</li>
+<li><a href="https://taku-o.github.io/myukkurivoice/help#!#multivoice">マルチボイスヘルプ</a></li>
+</ul>
+</li>
+<li>内部構造を大きく変更したので、<ul>
+<li>アプリをバージョンアップする前は、大事な設定はメモを取っておいてください。</li>
+<li>動作がおかしい場合はメニューから設定の初期化を実施するか、過去のバージョンを利用してください。</li>
+</ul>
+</li>
+<li>ユーザー辞書機能を追加。</li>
+<li>録音処理が劇的に高速化。超早くなった。</li>
+<li>(NEW!! 2019/12/31) Final Cut Pro X のオーディオロール自動割り当て機能を利用できるようになりました。</li>
+</ul>
+<p><a name="アプリバージョン"></a></p>
+<h2 id="-">アプリバージョン</h2>
+<table>
+<thead>
+<tr>
+<th>バージョン</th>
+<th>開発ステータス</th>
+<th>リンク</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.11.*</td>
+<td>開発版</td>
+<td><a href="https://github.com/taku-o/myukkurivoice/releases/latest">最新</a></td>
+</tr>
+<tr>
+<td>0.10.*</td>
+<td>テスト済・安定</td>
+<td><a href="https://github.com/taku-o/myukkurivoice/releases/tag/0.10.5">0.10.5</a></td>
+</tr>
+<tr>
+<td>0.8.*</td>
+<td>一世代前の安定版</td>
+<td><a href="https://github.com/taku-o/myukkurivoice/releases/tag/0.8.1">0.8.1</a></td>
+</tr>
+</tbody></table>
+<p><a name="myukkurivoiceの導入"></a></p>
+<h2 id="myukkurivoice-">MYukkuriVoice の導入</h2>
+<p><a name="ダウンロード"></a></p>
+<h3 id="-">ダウンロード</h3>
+<ul>
+<li>最新のアプリは次の URL からダウンロードできます。<ul>
+<li><a href="https://github.com/taku-o/myukkurivoice/releases">https://github.com/taku-o/myukkurivoice/releases</a></li>
+</ul>
+</li>
+<li>MYukkuriVoice-darwin-x64.zip をダウンロードしてください。</li>
+</ul>
+<p><a name="インストール"></a></p>
+<h3 id="-">インストール</h3>
+<p>圧縮ファイル(MYukkuriVoice-darwin-x64.zip)をダウンロードして解凍後、<br>アプリケーションフォルダ、もしくは任意の場所にアプリケーション(MYukkuriVoice.app)を置いてください。</p>
+<p><a name="アンインストール"></a></p>
+<h3 id="-">アンインストール</h3>
+<ul>
+<li>アプリケーションをアンインストールするには、次のファイル・フォルダを削除してください。<ul>
+<li>アプリケーション MYukkuriVoice.app</li>
+<li>~/Application Support/MYukkuriVoice フォルダ</li>
+<li>~/Library/Logs/MYukkuriVoice フォルダ</li>
+</ul>
+</li>
+</ul>
+<p><a name="myukkurivoiceに関して"></a></p>
+<h2 id="myukkurivoice-">MYukkuriVoice に関して</h2>
+<p><a name="アプリの使い方を学ぶにはまず何から始めれば良いか"></a></p>
+<h3 id="-">アプリの使い方を学ぶにはまず何から始めれば良いか</h3>
+<ol>
+<li>MYukkuriVoice を起動すると、右上に「チュートリアル」ボタンがあるので、それを押してチュートリアルを読んでみましょう。</li>
+<li>メッセージ入力欄に文字を入力、「▶ 再生」ボタンを押して、音声を再生してみましょう。</li>
+<li>メッセージ入力欄に文字を入力、「● 記録」ボタンを押して、音声を録音してみましょう。</li>
+<li>声の種類を切り替えて、音声を再生、記録してみましょう。</li>
+</ol>
+<p><a name="取り扱い種別・使用ライセンス"></a></p>
+<h3 id="-">取り扱い種別・使用ライセンス</h3>
+<p>本ソフトは、(株)アクエストの音声合成ライブラリ AquesTalk を使用しており、その著作権は同社に帰属します。</p>
+<ul>
+<li><a href="http://www.a-quest.com/">http://www.a-quest.com/</a></li>
+</ul>
+<p>本ソフトは個人の動画作成で使うなど、非営利目的で扱う場合には無償で扱えますが、<br>例えば、企業での利用であったり、広告をつけた動画で利用するなど収益が発生する場合には、<br>営利目的での利用となり、当該ライブラリの使用ライセンスが必要となります。</p>
+<p>どのようなケースが営利目的に該当するか、どのようにして使用ライセンスを入手すれば良いか、については、<br>こちらのページにまとめてありますのでご確認ください。</p>
+<ul>
+<li><a href="https://taku-o.github.io/myukkurivoice/help#!#license">AquesTalk のライセンスについて</a></li>
+</ul>
+<p><a name="ヘルプ・マニュアル"></a></p>
+<h3 id="-">ヘルプ・マニュアル</h3>
+<ul>
+<li>MYukkuriVoice のヘルプです。<ul>
+<li><a href="https://taku-o.github.io/myukkurivoice/help">https://taku-o.github.io/myukkurivoice/help</a></li>
+<li>アプリ内にある「ヘルプ」ボタンでも同じ内容をご覧になれます。</li>
+</ul>
+</li>
+</ul>
+<p><a name="リリースノート"></a></p>
+<h3 id="-">リリースノート</h3>
+<ul>
+<li>各バージョンごとの変更点<ul>
+<li><a href="https://taku-o.github.io/myukkurivoice/releases">https://taku-o.github.io/myukkurivoice/releases</a></li>
+</ul>
+</li>
+</ul>
+<p><a name="連絡先・問題の報告"></a></p>
+<h3 id="-">連絡先・問題の報告</h3>
+<ul>
+<li>MYukkuriVoice は、次の URL で開発しています。<ul>
+<li><a href="https://github.com/taku-o/myukkurivoice">https://github.com/taku-o/myukkurivoice</a></li>
+</ul>
+</li>
+<li>バグ報告は<a href="https://github.com/taku-o/myukkurivoice/issues">こちら(課題リスト)</a>に登録お願いいたします。</li>
+<li>連絡する際はこちら(<a href="mailto:mail@nanasi.jp">mail@nanasi.jp</a>)までお願いします。</li>
+</ul>
+<p><a name="myukkurivoiceの主な特徴"></a></p>
+<h2 id="myukkurivoice-">MYukkuriVoice の主な特徴</h2>
+<p><a name="基本"></a></p>
+<h3 id="-">基本</h3>
+<ul>
+<li>MacOSX Sierra 以降で動作検証。</li>
+<li>設定を用意して切り替えて作業するスタイルで利用します。</li>
+</ul>
+<img class="border" src="images/readme.gif" width="400">
+
+<p><a name="ショートカット"></a></p>
+<h3 id="-">ショートカット</h3>
+<ul>
+<li>動画制作向きのショートカットキーがいくつか定義されています</li>
+</ul>
+<img class="border" src="images/readme-shortcut-play.png" width="400">
+
+<p><a name="ファイルの出力オプション"></a></p>
+<h3 id="-">ファイルの出力オプション</h3>
+<p>1 ファイルごとにファイル名を指定して保存する方法以外に、<br>音声ファイルを連番付きのファイル名で保存したり、<br>音声ファイルの元となったメッセージを保存する機能があります。</p>
+<img class="border" src="images/readme-filewriteopt.png" width="400">
+
+<p><a name="選択した範囲のテキストのみの音声再生・録音"></a></p>
+<h3 id="-">選択した範囲のテキストのみの音声再生・録音</h3>
+<ul>
+<li>選択した範囲のテキストを再生、録音する機能があります。</li>
+<li>メッセージ入力欄、音記号列入力欄、どちらでも機能します。</li>
+</ul>
+<img class="border" src="images/readme-select-encoded.png" width="400">
+
+<p><a name="保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ"></a></p>
+<h3 id="-">保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ</h3>
+<ul>
+<li>最後に保存した音声ファイルのリンクが、アプリの左下に表示されます。</li>
+<li>ドラッグアンドドロップで動画編集ソフトに渡せます。</li>
+</ul>
+<img class="border" src="images/readme-dnd.gif" width="400">
+
+<p><a name="ユーザー辞書機能"></a></p>
+<h3 id="-">ユーザー辞書機能</h3>
+<ul>
+<li>ユーザー辞書の機能があります。</li>
+<li>設定すると、指定の語が来た時に、指定の読み方をするようになります。</li>
+<li>またメッセージを音声記号列に変換する際、この辞書の定義が使われます。</li>
+</ul>
+<img class="border" src="images/readme-aqdicedit.png" width="400">
+
+<p><a name="最近録音したファイルの一覧と入力の復元"></a></p>
+<h3 id="-">最近録音したファイルの一覧と入力の復元</h3>
+<ul>
+<li>録音したファイルの一覧を記録しています。</li>
+<li>一覧には、アプリの下部と、Dock のアプリアイコンからアクセスします。</li>
+</ul>
+<img class="border" src="images/readme-app-recent-line.png" width="400">
+
+<ul>
+<li>一覧から選択すると、音声を録音した当時の入力情報を、アプリの入力欄に復元できます。</li>
+</ul>
+<img class="border" src="images/readme-app-recent-edit.png" width="400">
+
+<h3 id="-final-cut-pro-x-">動画編集ソフト Final Cut Pro X 用機能</h3>
+<h4 id="-">オーディオロールの自動割り当てを設定</h4>
+<ul>
+<li>Final Cut Pro X に用意されている、オーディオロールの自動割り当て機能を利用できます。</li>
+<li>音声ファイルのオーディオロールを設定できます。</li>
+</ul>
+<img class="border" src="images/readme-fcpx-ixml-role.gif" width="400">
+
+<img class="border" src="images/readme-fcpx-ixml-role-setup.gif" width="400">
+
+<h4 id="-">フォルダーアクションでオーディオロールを設定する</h4>
+<ul>
+<li>指定したフォルダーに入れた音声ファイルを、オーディオロールの自動割り当て設定付きの音声ファイルに変換します。<ul>
+<li><small>(現在、MYukkuriVoice とは、別のプロジェクトで開発されています。)</small></li>
+<li>FCPX Audio Role Append Folder Action.<ul>
+<li><a href="https://github.com/taku-o/fcpx-audio-role-workflow">https://github.com/taku-o/fcpx-audio-role-workflow</a></li>
+<li><a href="https://github.com/taku-o/fcpx-audio-role-workflow/blob/master/README-ja.md">日本語ドキュメント</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img class="border" src="images/readme-folder-action.gif" width="400">
+
+<p><a name="その他"></a></p>
+<h3 id="-">その他</h3>
+<ul>
+<li>チュートリアル、ヘルプが用意されています</li>
+</ul>
+<img src="images/readme-tutorial.png" width="400">
+
+<ul>
+<li>AquesTalk10 から導入された音声の調節機能にも対応しています。(AquesTalk10 ベースの音声のみ)</li>
+</ul>
+<img class="border" src="images/readme-editaq10voice.png" width="400">
+
+<p><a name="機能一覧"></a></p>
+<h3 id="-">機能一覧</h3>
+<ul>
+<li>AquesTalk1, AquesTalk2, AquesTalk10 ベースのメッセージ音声再生、音声録音機能</li>
+<li>音記号列の表示編集、および、変更後音記号列の音声再生機能</li>
+<li>テキストエリアで選択したテキスト部分のみを音声再生、音声録音</li>
+<li>設定の保存、複製。設定に名前をつけて複数の設定を保存可能。</li>
+<li>ファイル名を指定しての音声ファイル保存。連番ファイルでの音声ファイル保存の選択可能</li>
+<li>音声保存時に、音声の元となったメッセージもテキストファイルに保存</li>
+<li>音量、再生速度の調整。音質の調整。</li>
+<li>再生する音声の抑揚の ON・OFF 切替</li>
+<li>音声の再生時間目安の表示</li>
+<li>アプリから動画編集ソフトに、音声ファイルを直接ドラッグアンドドロップできる機能</li>
+<li>ウィンドウの前面表示固定、切替機能</li>
+<li>アプリを閉じた時のウィンドウの位置を記憶する</li>
+<li>マルチボイス機能</li>
+<li>テキストファイルをドロップしての入力。テキストフィールド、および、アプリアイコンが対応。</li>
+<li>保存メッセージをクリックして、音声ファイル、メッセージファイルを QuickLook で開く。</li>
+<li>ユーザー辞書機能</li>
+<li>最近録音したファイルの一覧。選択すると録音時の入力メッセージ、音声記号列を復元します。</li>
+<li>オーディオロールの自動割り当てを設定 (動画編集ソフト Final Cut Pro X 用)</li>
+<li>フォルダーアクションでオーディオロールを設定する (動画編集ソフト Final Cut Pro X 用)</li>
+<li>各種ショートカットキー</li>
+<li>チュートリアル、ヘルプ</li>
+</ul>
+<p><a name="動画リンク"></a></p>
+<h2 id="-">動画リンク</h2>
+<p><a href="http://www.nicovideo.jp/watch/sm30435205"><img class="border" src="images/sm30435205.png" width="400"></a></p>
+<p><a href="http://www.nicovideo.jp/watch/sm30826557"><img class="border" src="images/sm30826557.png" width="400"></a></p>
+<p><a href="http://www.nicovideo.jp/watch/sm32273442"><img class="border" src="images/sm32273442.png" width="400"></a></p>
+<p><a href="http://www.nicovideo.jp/watch/sm34217643"><img class="border" src="images/sm34217643.png" width="400"></a></p>
+</div>

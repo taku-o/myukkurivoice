@@ -21,8 +21,7 @@ gulp.task('_readme', ['_readme:html']);
 gulp.task('_readme:pdf', () => {
   return gulp
     .src('docs/README.md')
-    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="icns/'))
-    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/', 'src="docs/'))
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="images/'))
     .pipe(
       toc({
         linkify: function(content) {
@@ -43,13 +42,12 @@ gulp.task('_readme:pdf', () => {
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:html:images'], () => {
+gulp.task('_readme:html', ['_readme:html:css', '_readme:html:images:assets', '_readme:html:images:app'], () => {
   return gulp
     .src('docs/README.md')
-    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/icns/', 'src="assets/icns/'))
     .pipe(
       replace(
-        'src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/docs/assets/images/',
+        'src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/',
         'src="assets/images/'
       )
     )
@@ -78,13 +76,11 @@ gulp.task('_readme:html', ['_readme:html:css', '_readme:html:icns', '_readme:htm
 gulp.task('_readme:html:css', () => {
   return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
 });
-gulp.task('_readme:html:icns', () => {
-  return gulp
-    .src(['icns/myukkurivoice.iconset/icon_256x256.png'])
-    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/icns/myukkurivoice.iconset'));
-});
-gulp.task('_readme:html:images', () => {
+gulp.task('_readme:html:images:assets', () => {
   return gulp.src(['docs/assets/images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
+});
+gulp.task('_readme:html:images:app', () => {
+  return gulp.src(['images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
 });
 
 // manual

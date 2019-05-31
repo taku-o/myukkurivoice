@@ -43,7 +43,13 @@ class HelpReducer implements yubo.HelpReducer {
     if (this.menuList.includes(hash)) {
       this.store.display = hash;
     } else {
-      this.store.display = 'about';
+      // run on electron
+      if ('process' in window) {
+        this.store.display = 'about-app';
+      // run on browser
+      } else {
+        this.store.display = 'about';
+      }
     }
     this.notifyUpdates({display: this.store.display});
   }
@@ -84,7 +90,13 @@ class HelpReducer implements yubo.HelpReducer {
   }
 
   page(pageName: string): void {
-    this.$location.hash(pageName);
+    // run on electron
+    if (pageName == 'about' && 'process' in window) {
+      this.$location.hash('about-app');
+    // run on browser
+    } else {
+      this.$location.hash(pageName);
+    }
   }
   openSearchForm(): void {
     ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
