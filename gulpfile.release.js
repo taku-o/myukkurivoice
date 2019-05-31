@@ -89,10 +89,9 @@ gulp.task('staging', (cb) => {
 
 // store
 gulp.task('store', (cb) => {
-  if (!(argv && argv.branch)) {
-    argv.branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
-      .toString()
-      .trim();
+  if (argv && argv.branch) {
+    cb('branch is selected');
+    return;
   }
   runSequence(
     '_rm-workdir',
