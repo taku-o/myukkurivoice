@@ -73,7 +73,7 @@ describe('helpWindow', function() {
   it('helpWindow menu click', function() {
     return (
       this.client
-        .isVisible('#about-pane')
+        .isVisible('#about-app-pane')
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
@@ -150,7 +150,7 @@ describe('helpWindow', function() {
           assert.ok(!isVisible, position());
         })
         .click('#menu-about')
-        .isVisible('#about-pane')
+        .isVisible('#about-app-pane')
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
@@ -250,7 +250,7 @@ describe('helpWindow', function() {
           assert.ok(isVisible, position());
         })
         // finally
-        .isVisible('#about-pane')
+        .isVisible('#about-app-pane')
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
         })
