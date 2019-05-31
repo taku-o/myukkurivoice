@@ -2,6 +2,7 @@
 <html ng-app="specApp">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
   <title>MYukkuriVoice Test</title>
   <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
   <script src="node_modules/angular/angular.min.js"></script>
@@ -15,25 +16,21 @@
   <script src="js/service.intro.js"></script>
   <script src="js/service.license.js"></script>
   <script src="js/service.message.js"></script>
+  <script src="js/service.subtitle.js"></script>
   <script src="js/service.util.js"></script>
   <script src="js/services.main.js"></script>
   <script src="js/service.aqusrdic.js"></script>
   <script src="js/services.dict.js"></script>
   <script src="js/apps.spec.js"></script>
-  <script type="text/javascript">
-    document.ondragover = document.ondrop = function(e) {
-      e.preventDefault(); return false;
-    };
-  </script>
 </head>
 <body>
 <div class="window" ng-controller="SpecController as ctrl">
 <div class="window-content">
   <form>
     <!-- models -->
-    <div>YPhontList
-      <button id="get-yphont-list" ng-click="ctrl.getYPhontList()"></button>
-      <input id="get-yphont-list-result" type="text" ng-model="getYPhontListResult">
+    <div>YPhontMasterList
+      <button id="get-yphont-master-list" ng-click="ctrl.getYPhontMasterList()"></button>
+      <input id="get-yphont-master-list-result" type="text" ng-model="getYPhontMasterListResult">
     </div>
     <div>YVoice
       <button id="get-yvoice" ng-click="ctrl.getYVoice()"></button>
@@ -138,11 +135,6 @@
       <input id="clear-result" type="text" ng-model="clearResult">
     </div>
 
-    <div>MasterService
-      <button id="get-phont-list" ng-click="ctrl.getPhontList()"></button>
-      <input id="get-phont-list-result" type="text" ng-model="getPhontListResult">
-    </div>
-
     <div>HistoryService
       <button id="history-load" ng-click="ctrl.historyLoad()"></button>
       <button id="history-save" ng-click="ctrl.historySave()"></button>
@@ -156,6 +148,21 @@
       <input id="history-err" type="text" ng-model="historyErr">
     </div>
 
+    <div>
+      AquesService.AqKanji2Koe
+      AquesService.AquesTalk2
+      AquesService.AquesTalk10
+      <input id="error-table-code" type="text" ng-model="errorTableCode">
+      <input id="error-table-result" type="text" ng-model="errorTableResult">
+      <button id="error-table-aqkanji2koe" ng-click="ctrl.errorTableAqkanji2koe()"></button>
+      <button id="error-table-aquestalk2" ng-click="ctrl.errorTableAquestalk2()"></button>
+      <button id="error-table-aquestalk10" ng-click="ctrl.errorTableAquestalk10()"></button>
+    </div>
+    <div>AquesService.AquesTalk1
+      <input id="os-version" type="text" ng-model="osVersion">
+      <input id="is-supported-result" type="text" ng-model="isSupportedResult">
+      <button id="is-supported" ng-click="ctrl.isSupported()"></button>
+    </div>
     <div>AquesService
       <input id="source" type="text" ng-model="source">
       <button id="encode" ng-click="ctrl.encode()"></button>
@@ -201,6 +208,10 @@
       <button id="record1-aqver1" ng-click="ctrl.record1AqVer1()"></button>
       <button id="record1-aqver2" ng-click="ctrl.record1AqVer2()"></button>
       <button id="record1-aqver10" ng-click="ctrl.record1AqVer10()"></button>
+      <input id="record1-audio-role" type="text" ng-model="record1AudioRole">
+      <button id="record1-aqver1-fcpx" ng-click="ctrl.record1AqVer1Fcpx()"></button>
+      <button id="record1-aqver2-fcpx" ng-click="ctrl.record1AqVer2Fcpx()"></button>
+      <button id="record1-aqver10-fcpx" ng-click="ctrl.record1AqVer10Fcpx()"></button>
       <input id="record-result-1" type="text" ng-model="recordResult1">
     </div>
 
@@ -216,10 +227,14 @@
       <button id="record2-aqver1" ng-click="ctrl.record2AqVer1()"></button>
       <button id="record2-aqver2" ng-click="ctrl.record2AqVer2()"></button>
       <button id="record2-aqver10" ng-click="ctrl.record2AqVer10()"></button>
+      <input id="record2-audio-role" type="text" ng-model="record2AudioRole">
+      <button id="record2-aqver1-fcpx" ng-click="ctrl.record2AqVer1Fcpx()"></button>
+      <button id="record2-aqver2-fcpx" ng-click="ctrl.record2AqVer2Fcpx()"></button>
+      <button id="record2-aqver10-fcpx" ng-click="ctrl.record2AqVer10Fcpx()"></button>
       <input id="record-result-2" type="text" ng-model="recordResult2">
     </div>
 
-    <div>AudioSourceService
+    <div>TextSubtitleService
       <input id="wav-file-path" type="text" ng-model="wavFilePath">
       <button id="source-fname" ng-click="ctrl.sourceFname()"></button>
       <input id="source-fname-result" type="text" ng-model="sourceFnameResult">

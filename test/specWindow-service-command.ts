@@ -1,5 +1,5 @@
 import {Application} from 'spectron';
-import * as assert from 'assert';
+import {assert} from 'chai';
 import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
@@ -80,13 +80,21 @@ describe('specWindow-service-CommandService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
@@ -135,48 +143,68 @@ describe('specWindow-service-CommandService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
   });
 
-  // TODO fix JSON parse error.
-  //it('detectVoiceConfig', function() {
-  //  const cmdInput = {
-  //    name: 'aq_yukkuri(サンプル設定2)',
-  //    text: 'test',
-  //  };
-  //  return this.client
-  //    .setValue('#command-input-source', JSON.stringify(cmdInput))
-  //    .click('#detect-voice-config')
-  //    .getValue('#detect-voice-config-result').then((value: string) => {
-  //      const parsed = JSON.parse(value);
-  //      assert.equal('sample_2', parsed.id, position());
-  //      assert.equal('aq_yukkuri(サンプル設定2)', parsed.name, position());
-  //      assert.equal('talk2', parsed.version, position());
-  //    })
-  //    // catch error
-  //    .catch((err: Error) => {
-  //      assert.fail(err.message);
-  //    })
-  //    .getMainProcessLogs().then((logs: string[]) => {
-  //      logs.forEach((log) => {
-  //        assert.ok(! log.match(/error/i), position());
-  //      });
-  //    })
-  //    .getRenderProcessLogs().then((logs: WebdriverIO.LogEntry[]) => {
-  //      logs.forEach((log) => {
-  //        assert.ok(! log.message.match(/error/i), position());
-  //      });
-  //    });
-  //});
+  it('detectVoiceConfig', function() {
+    const cmdInput = {
+      name: 'aq_yukkuri(サンプル設定2)',
+      text: 'test',
+    };
+    return (
+      this.client
+        .setValue('#command-input-source', JSON.stringify(cmdInput))
+        .click('#detect-voice-config')
+        .getValue('#detect-voice-config-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal('sample_2', parsed.id, position());
+          assert.equal('aq_yukkuri(サンプル設定2)', parsed.name, position());
+          assert.equal('talk2', parsed.version, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
 
   it('toString', function() {
     const cmdInputList = [
@@ -193,7 +221,8 @@ describe('specWindow-service-CommandService', function() {
         text: 'test2',
       },
     ];
-    const cmdInputListToString = 'aq_yukkuri(サンプル設定2)＞test\n' + 'f1 女声1(ゆっくり)＞test1\n' + 'aq_yukkuri(サンプル設定2)＞test2\n';
+    const cmdInputListToString =
+      'aq_yukkuri(サンプル設定2)＞test\n' + 'f1 女声1(ゆっくり)＞test1\n' + 'aq_yukkuri(サンプル設定2)＞test2\n';
 
     return (
       this.client
@@ -210,13 +239,21 @@ describe('specWindow-service-CommandService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );

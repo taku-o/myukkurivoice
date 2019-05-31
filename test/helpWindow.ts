@@ -1,5 +1,5 @@
 import {Application} from 'spectron';
-import * as assert from 'assert';
+import {assert} from 'chai';
 import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
@@ -42,7 +42,7 @@ describe('helpWindow', function() {
       })
       .elements('.nav-group-item.functions-item')
       .then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 11, position());
+        assert.equal(response.value.length, 12, position());
       })
       .elements('.nav-group-item.navs-item')
       .then((response: HTMLInputElement) => {
@@ -51,13 +51,21 @@ describe('helpWindow', function() {
       .getMainProcessLogs()
       .then((logs: string[]) => {
         logs.forEach((log) => {
-          assert.ok(!log.match(/error/i), position());
+          if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+            /* eslint-disable-next-line no-console */
+            console.error(log);
+            assert.ok(false, position());
+          }
         });
       })
       .getRenderProcessLogs()
       .then((logs: WebdriverIO.LogEntry[]) => {
         logs.forEach((log) => {
-          assert.ok(!log.message.match(/error/i), position());
+          if (log.message.match(/error/i)) {
+            /* eslint-disable-next-line no-console */
+            console.error(log.message);
+            assert.ok(false, position());
+          }
         });
       });
   });
@@ -65,7 +73,7 @@ describe('helpWindow', function() {
   it('helpWindow menu click', function() {
     return (
       this.client
-        .isVisible('#about-pane')
+        .isVisible('#about-app-pane')
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
@@ -137,8 +145,12 @@ describe('helpWindow', function() {
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
         })
+        .isVisible('#help-fcpx-ixml')
+        .then((isVisible: boolean) => {
+          assert.ok(!isVisible, position());
+        })
         .click('#menu-about')
-        .isVisible('#about-pane')
+        .isVisible('#about-app-pane')
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
@@ -227,13 +239,18 @@ describe('helpWindow', function() {
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
+        .click('#menu-fcpx-ixml')
+        .isVisible('#fcpx-ixml-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
         .click('#menu-expand')
         .isVisible('#expand-pane')
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
         // finally
-        .isVisible('#about-pane')
+        .isVisible('#about-app-pane')
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
         })
@@ -244,13 +261,21 @@ describe('helpWindow', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );

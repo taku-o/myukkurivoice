@@ -1,5 +1,5 @@
 import {Application} from 'spectron';
-import * as assert from 'assert';
+import {assert} from 'chai';
 import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
@@ -51,13 +51,21 @@ describe('specWindow-service-LicenseService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
@@ -66,7 +74,10 @@ describe('specWindow-service-LicenseService', function() {
   it('decrypt', function() {
     return (
       this.client
-        .setValue('#encrypted-key', 'LF7ZJec+SPvmUhhpzPDEJ0ubiVt42NR62WoVW1vJKtaCQR2ActwuiO7vVAs893tIICMBniWOqDmY29hK1YUNAP6EWydrrBFzIU5GBxWtNqj36R5VjR0iJ7j2BhAZWp7lK2lMm2HJxoz9ZmNA2WMBxy/aKloM3KiW5A+cZBNjf6w=?IDFnCDZ/lAmXjxFfV5YSiXc6oFcGkFRBWWou13O5osRA5pVneS52yOEzqVrl56wq')
+        .setValue(
+          '#encrypted-key',
+          'LF7ZJec+SPvmUhhpzPDEJ0ubiVt42NR62WoVW1vJKtaCQR2ActwuiO7vVAs893tIICMBniWOqDmY29hK1YUNAP6EWydrrBFzIU5GBxWtNqj36R5VjR0iJ7j2BhAZWp7lK2lMm2HJxoz9ZmNA2WMBxy/aKloM3KiW5A+cZBNjf6w=?IDFnCDZ/lAmXjxFfV5YSiXc6oFcGkFRBWWou13O5osRA5pVneS52yOEzqVrl56wq',
+        )
         .setValue('#pass-phrase', 'hogehoge')
         .setValue('#plain-key', '')
         .click('#decrypt')
@@ -81,22 +92,29 @@ describe('specWindow-service-LicenseService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );
   });
 
-  it('consumerKey', function() {
+  it('consumerKey aquesTalk10DevKey', function() {
     return (
       this.client
-        // consumerKey aquesTalk10DevKey
         .setValue('#license-type', 'aquesTalk10DevKey')
         .setValue('#consumer-key-result', '')
         .setValue('#consumer-key-err', '')
@@ -110,6 +128,36 @@ describe('specWindow-service-LicenseService', function() {
         .then((value: string) => {
           assert.ok(!value, position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('consumerKey unknown key', function() {
+    return (
+      this.client
         // consumerKey unknown key
         .setValue('#license-type', 'unknown')
         .setValue('#consumer-key-result', 'initial value')
@@ -131,13 +179,21 @@ describe('specWindow-service-LicenseService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );

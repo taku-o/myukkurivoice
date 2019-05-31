@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html ng-app="dictApp">
+<html ng-app="dictApp" menu shortcut>
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
   <title>辞書ツール</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
@@ -20,12 +21,11 @@
   <script src="js/service.intro.js"></script>
   <script src="js/service.aqusrdic.js"></script>
   <script src="js/services.dict.js"></script>
+  <script src="js/stores.dict.js"></script>
+  <script src="js/reducers.dict.js"></script>
+  <script src="js/events.dict.js"></script>
+  <script src="js/ctrl.dict.js"></script>
   <script src="js/apps.dict.js"></script>
-  <script type="text/javascript">
-    document.ondragover = document.ondrop = function(e) {
-      e.preventDefault(); return false;
-    };
-  </script>
 </head>
 <body>
 <div class="window" ng-controller="DictController as ctrl">
@@ -43,7 +43,7 @@
         <button id="append-record" class="btn btn-large btn-default" ng-click="ctrl.add()">
           <span class="icon icon-plus-circled"></span>追加
         </button>
-        <button id="delete-record" class="btn btn-large btn-default" ng-click="ctrl.delete()">
+        <button id="delete-record" class="btn btn-large btn-default" ng-click="ctrl.remove()">
           <span class="icon icon-minus-circled"></span>削除
         </button>
       </div>
@@ -81,7 +81,7 @@
             </div>
           </li>
           <!-- export -->
-          <li class="list-group-item" id="export" ng-click="ctrl.export()" ng-class="{disable:isInEditing}">
+          <li class="list-group-item" id="export" ng-click="ctrl.dump()" ng-class="{disable:ctrl.store.isInEditing}">
             <img class="img-circle media-object pull-left" src="images/twotone_import_export_black_36dp.png" width="32" height="32">
             <div class="media-body">
               <strong>Export</strong>
@@ -112,7 +112,7 @@
 
       <!-- main -->
       <div class="pane">
-        <div id="grid" ui-grid="gridOptions"
+        <div id="grid" ui-grid="ctrl.store.gridOptions"
           ui-grid-edit ui-grid-row-edit ui-grid-resize-columns ui-grid-selection ui-grid-cellNav
           class="grid"></div>
       </div>
@@ -123,7 +123,7 @@
 
   <!-- footer -->
   <footer class="toolbar toolbar-footer" id="footer">
-    <h1 class="title">{{message}}</h1>
+    <h1 class="title" ng-bind="ctrl.store.message"></h1>
   </footer>
 </div> <!-- window -->
 </body>

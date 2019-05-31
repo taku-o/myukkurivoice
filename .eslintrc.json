@@ -8,28 +8,42 @@
   },
   "globals": {
     "angular": true,
-    "introJs": true,
-    "dataJson": true
+    "introJs": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
-    "ecmaVersion": 2016,
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
     "array-bracket-spacing": ["error", "never"],
+    "comma-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
     "indent": 0,
     "linebreak-style": ["error", "unix"],
+    "no-console": "off",
     "no-empty": "off",
-    "no-unused-vars": "warn",
+    "no-global-assign": "off",
+    "no-unused-vars": ["warn", { "args": "none", "varsIgnorePattern": "^_void" }],
     "semi": ["error", "always"]
   },
   "overrides": {
     "files": ["*.ts", "js/*.ts", "test/*.ts"],
-    "parser": "typescript-eslint-parser",
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "tsconfigRootDir": "./"
+    },
     "rules": {
       "comma-dangle": ["error", "always-multiline"],
+      "no-console": "error",
       "no-empty": "error",
+      "no-global-assign": "error",
       "no-undef": "off",
       "quotes": ["error", "single", { "avoidEscape": true }],
       "object-curly-spacing": ["error", "never"]

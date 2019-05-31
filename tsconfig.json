@@ -7,6 +7,7 @@
     "alwaysStrict": true,
     "charset": "utf8",
     "diagnostics": false,
+    "incremental": true,
     "listEmittedFiles": false,
     "listFiles": false,
     "noEmitOnError": true,
@@ -14,6 +15,7 @@
     "noImplicitAny": false, // temporary
     "noImplicitReturns": true,
     "noImplicitThis": false,
+    "noStrictGenericChecks": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "pretty": true,
@@ -22,8 +24,12 @@
     "skipLibCheck": false,
     "sourceMap": false,
     "strictNullChecks": false, // temporary
+    "suppressImplicitAnyIndexErrors": true,
     "traceResolution": false,
-    "lib": ["dom", "es7"]
+    "lib": ["es2018", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2018"
   },
   "include": ["*.ts", "js/*.ts", "test/*.ts", "docs/assets/js/*.ts"],
   "exclude": ["node_modules"],

@@ -1,53 +1,69 @@
 // (UI dependecy contains)
-var _ipcRenderer, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
+var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 
 // angular directive
-angular.module('DragDirectives', [])
-  // wav-draggable
-  .directive('wavDraggable', ($parse) => {
-    return (scope: ng.IScope, element, attr) => {
-      let f;
-      scope.$watch('lastWavFile', (value: yubo.IRecordMessage) => {
-        const message = value;
-        if (!message || !message.wavFilePath) {
-          return;
-        }
-        const wavFilePath = message.wavFilePath;
+angular.module('DragDirectives', ['mainStores']);
 
-        const el = element[0];
-        el.draggable = true;
+// wav-draggable
+class WavDraggable implements yubo.WavDraggable {
+  constructor() {}
+  link(scope: ng.IScope, element: ng.IDocumentService, attr: ng.IAttributes) {
+    let f: (e: Event) => boolean;
+    scope.$watch('ctrl.store.lastWavFile', (value: yubo.IRecordMessage) => {
+      const message = value;
+      if (!message || !message.wavFilePath) {
+        return;
+      }
+      const wavFilePath = message.wavFilePath;
 
-        // replace event listener
-        if (f) {
-          el.removeEventListener('dragstart', f, false);
-        }
-        f = (e) => {
-          e.preventDefault();
-          ipcRenderer().send('ondragstartwav', wavFilePath);
-          return false;
-        };
-        el.addEventListener('dragstart', f, false);
-      });
-    };
-  })
-  // txt-droppable
-  .directive('txtDroppable', ($parse) => {
-    return (scope: yubo.IMainScope, element, attr) => {
       const el = element[0];
+      el.draggable = true;
 
-      el.addEventListener('drop', (e) => {
+      // replace event listener
+      if (f) {
+        el.removeEventListener('dragstart', f, false);
+      }
+      f = (e: Event) => {
         e.preventDefault();
-
-        // read dropped file and set.
-        const reader = new FileReader();
-        reader.onload = (loadedFile) => {
-          // yinput.source or yinput.encoded
-          scope.yinput[el.id] = reader.result;
-          scope.$apply();
-        };
-        const file = e.dataTransfer.files[0];
-        reader.readAsText(file);
+        ipcRenderer().send('ondragstartwav', wavFilePath);
         return false;
-      });
-    };
-  });
+      };
+      el.addEventListener('dragstart', f, false);
+    });
+  }
+}
+angular.module('DragDirectives')
+  .directive('wavDraggable', [
+    () => new WavDraggable(),
+  ]);
+
+// txt-droppable
+class TxtDroppable implements yubo.TxtDroppable {
+  constructor(
+    private store: yubo.MainStore
+  ) {}
+
+  link (scope: ng.IScope, element: ng.IDocumentService, attr: ng.IAttributes) {
+    const el: HTMLElement = element[0];
+
+    el.addEventListener('drop', (e: DragEvent) => {
+      e.preventDefault();
+
+      // read dropped file and set.
+      const reader = new FileReader();
+      reader.onload = (loadedFile) => {
+        // yinput.source or yinput.encoded
+        this.store.yinput[el.id] = reader.result;
+        scope.$apply();
+      };
+      const file = e.dataTransfer.files[0];
+      reader.readAsText(file);
+      return false;
+    });
+  }
+}
+angular.module('DragDirectives')
+  .directive('txtDroppable', [
+    'MainStore',
+    (store: yubo.MainStore) => new TxtDroppable(store),
+  ]);

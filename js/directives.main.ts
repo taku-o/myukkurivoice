@@ -3,5 +3,6 @@
 angular.module('mainDirectives', [
   'IncludeDirectives',
   'DragDirectives',
+  'AfterRenderDirectives',
 ]);
 

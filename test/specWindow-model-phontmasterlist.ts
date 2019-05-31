@@ -1,12 +1,12 @@
 import {Application} from 'spectron';
-import * as assert from 'assert';
+import {assert} from 'chai';
 import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-model-YPhontList', function() {
+describe('specWindow-model-YPhontMasterList', function() {
   this.timeout(10000);
 
   before(function() {
@@ -34,11 +34,11 @@ describe('specWindow-model-YPhontList', function() {
     return this.client.close();
   });
 
-  it('YPhontList', function() {
+  it('YPhontMasterList', function() {
     return (
       this.client
-        .click('#get-yphont-list')
-        .getValue('#get-yphont-list-result')
+        .click('#get-yphont-master-list')
+        .getValue('#get-yphont-master-list-result')
         .then((value: string) => {
           const parsed = JSON.parse(value);
           assert.equal(parsed.length, 26, position());
@@ -79,13 +79,21 @@ describe('specWindow-model-YPhontList', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );

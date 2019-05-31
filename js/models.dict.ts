@@ -1,6 +1,7 @@
 angular.module('dictModels', [])
-  .factory('KindList', (): yubo.KindEntry[] => {
-    return [
+  // KindList: yubo.KindEntry[]
+  .constant('KindList',
+    [
       {id: 0,  kind: '名詞'},
       {id: 1,  kind: '名詞(サ変)'},
       {id: 2,  kind: '人名'},
@@ -29,10 +30,11 @@ angular.module('dictModels', [])
       {id: 25, kind: '記号(アルファベット)'},
       {id: 26, kind: '感動詞'},
       {id: 27, kind: '間投詞'},
-    ];
-  })
-  .factory('KindHash', () => {
-    return {
+    ]
+  )
+  // KindHash: yubo.KindHash
+  .constant('KindHash',
+    {
       0: '名詞',
       1: '名詞(サ変)',
       2: '人名',
@@ -61,6 +63,6 @@ angular.module('dictModels', [])
       25: '記号(アルファベット)',
       26: '感動詞',
       27: '間投詞',
-    };
-  });
+    }
+  );
 

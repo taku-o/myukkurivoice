@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html ng-app="mainApp">
+<html ng-app="mainApp" shortcut menu drop-text-file recent-document after-render>
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
   <title>MYukkuriVoice</title>
   <script src="js/apps.main.preload.js"></script>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
@@ -19,17 +20,18 @@
   <script src="js/service.intro.js"></script>
   <script src="js/service.license.js"></script>
   <script src="js/service.message.js"></script>
+  <script src="js/service.subtitle.js"></script>
   <script src="js/service.util.js"></script>
   <script src="js/services.main.js"></script>
   <script src="js/directive.include.js"></script>
   <script src="js/directive.drag.js"></script>
+  <script src="js/directive.afterrender.js"></script>
   <script src="js/directives.main.js"></script>
+  <script src="js/stores.main.js"></script>
+  <script src="js/reducers.main.js"></script>
+  <script src="js/events.main.js"></script>
+  <script src="js/ctrl.main.js"></script>
   <script src="js/apps.main.js"></script>
-  <script type="text/javascript">
-    document.ondragover = document.ondrop = function(e) {
-      e.preventDefault(); return false;
-    };
-  </script>
 </head>
 <body>
 <div class="window" ng-controller="MainController as ctrl">
@@ -37,20 +39,20 @@
 <header class="toolbar toolbar-header">
   <div class="toolbar-actions">
     <div class="btn-group" id="btn-group-audio">
-      <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
+      <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()" ng-disabled="(!ctrl.store.yinput.source) && (!ctrl.store.yinput.encoded)">
         <span class="icon icon-play"></span>再生
       </button>
       <button class="btn btn-large btn-default" id="stop" ng-click="ctrl.stop()">
         <span class="icon icon-stop"></span>停止
       </button>
-      <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()" ng-disabled="(!yinput.source) && (!yinput.encoded)">
+      <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()" ng-disabled="(!ctrl.store.yinput.source) && (!ctrl.store.yinput.encoded)">
         <span class="icon icon-record"></span>記録
       </button>
     </div>
 
-    <small id="duration">再生時間(秒):{{duration | number:2}}</small>
+    <small id="duration">再生時間(秒):<span ng-bind="ctrl.store.duration | number:2"></span></small>
     <button class="btn btn-large btn-default" id="always-on-top-btn" ng-click="ctrl.switchAlwaysOnTop()" title="前面表示固定のON/OFF切替">
-      <span class="icon icon-lock" ng-class="{active:alwaysOnTop}"></span>
+      <span class="icon icon-lock" ng-class="{active:ctrl.store.alwaysOnTop}"></span>
     </button>
 
     <div class="btn-group pull-right">
@@ -77,14 +79,14 @@
       <li class="list-group-header">
         <input class="form-control" id="filter-text" type="search" ng-model='filterText.name' placeholder="設定一覧絞り込み">
       </li>
-      <li class="list-group-item voice-config-item" ng-repeat="yvoiceItem in yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == yvoice.id}" ng-attr-id="{{yvoiceItem.id}}">
+      <li class="list-group-item voice-config-item" ng-repeat="yvoiceItem in ctrl.store.yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == ctrl.store.curYvoice.id}" ng-attr-id="{{yvoiceItem.id}}">
         <div class="media-body" ng-click="ctrl.select($index)">
-          <strong>{{ $index }}:{{ yvoiceItem.name }}</strong>
+          <strong><span ng-bind="$index"></span>:<span ng-bind="yvoiceItem.name"></span></strong>
           <div class="btn-group pull-right">
             <button class="btn btn-default" id="copy" ng-click="ctrl.copy($index)" title="設定を複製します">
               <span class="icon icon-plus-circled"></span>
             </button>
-            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="yvoiceList.length > 1" title="設定を削除します">
+            <button class="btn btn-default" id="minus" ng-click="ctrl.minus($index)" ng-show="ctrl.store.yvoiceList.length > 1" title="設定を削除します">
               <span class="icon icon-minus-circled"></span>
             </button>
           </div>
@@ -101,12 +103,12 @@
         </div>
       </li>
       <li class="list-group-footer">
-        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!lastWavFile" title="このボタンをドラッグアンドドロップすると、最後に作成した音声ファイルを取り出せます" ng-click="ctrl.quickLookMessage(lastWavFile)">
-          <span class="icon icon-download"></span>{{lastWavFile.wavFileName||"drag and drop to movie editor"}}
+        <button class="btn btn-large btn-primary pull-right" id="wav-draggable-btn" wav-draggable ng-disabled="!ctrl.store.lastWavFile" title="このボタンをドラッグアンドドロップすると、最後に作成した音声ファイルを取り出せます" ng-click="ctrl.quickLookMessage(ctrl.store.lastWavFile)">
+          <span class="icon icon-download"></span><span ng-bind="ctrl.store.lastWavFile.wavFileName||'drag and drop to movie editor'"></span>
         </button>
       </li>
       <!-- for test -->
-      <li class="list-group-footer" ng-if="ctrl.isTest">
+      <li class="list-group-footer" ng-if="::ctrl.isTest">
         <button class="btn btn-warning" id="show-system-window" ng-click="ctrl.showSystemWindow()">
           <span class="icon icon-rocket"></span>system window
         </button>
@@ -117,8 +119,8 @@
     </ul>
   </div>
 
-  <div class="pane" static-include template-path="contents-main-player.html" ng-show="display == 'main'"></div>
-  <div class="pane" static-include template-path="contents-main-settings.html" ng-show="display == 'settings'"></div>
+  <div class="pane" static-include template-path="contents-main-player.html" ng-show="ctrl.store.display == 'main'"></div>
+  <div class="pane" static-include template-path="contents-main-settings.html" ng-if="ctrl.store.display == 'settings'"></div>
 
 </div><!-- page-group -->
 </div><!-- window-content -->

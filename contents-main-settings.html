@@ -2,32 +2,32 @@
   <form>
     <div class="form-group">
       <!-- <label>name</label> -->
-      <input type="text" class="form-control" id="name2" ng-model="yvoice.name" placeholder="name">
+      <input type="text" class="form-control" id="name2" ng-model="ctrl.store.curYvoice.name" placeholder="name">
     </div>
 
-    <div class="voice-tuna-box" id="voice-tuna-box" ng-show="appCfg.audioServVer == 'webaudioapi'">
+    <div class="voice-tuna-box" id="voice-tuna-box" ng-show="ctrl.appCfg.audioServVer == 'webaudioapi'">
       <div class="form-inline form-group">
-        <small>playback rate:</small><input type="number" min="0.4" max="3" step="0.1" id="playback-rate" ng-model="yvoice.playbackRate">
-        <small>detune:</small><input type="number" min="-1200" max="1200" step="50" id="detune" ng-model="yvoice.detune">
+        <small>playback rate:</small><input type="number" min="0.4" max="3" step="0.1" id="playback-rate" ng-model="ctrl.store.curYvoice.playbackRate">
+        <small>detune:</small><input type="number" min="-1200" max="1200" step="50" id="detune" ng-model="ctrl.store.curYvoice.detune">
       </div>
 
-      <div class="form-inline form-group voice-tuna-box-talk10" ng-show="yvoice.version == 'talk10'">
+      <div class="form-inline form-group voice-tuna-box-talk10" ng-show="ctrl.store.curYvoice.version == 'talk10'">
         <div><small class="label-tuna">AquesTalk10 音声カスタマイズ</small></div>
         <small class="label-tuna">ﾍﾞｰｽ:</small>
-        <select ng-model="yvoice.bas" id="voice-qa10-bas">
-          <option ng-repeat="option in aq10BasList track by option.id" ng-value="option.id">{{option.name}}</option>
+        <select ng-model="ctrl.store.curYvoice.bas" id="voice-qa10-bas">
+          <option ng-repeat="option in ::ctrl.aq10BasList track by option.id" ng-value="option.id" ng-bind="option.name"></option>
         </select>
-        <small class="label-tuna">高さ:</small><input type="number" min="20" max="200" step="1" id="voice-aq10-pit" ng-model="yvoice.pit">
-        <small class="label-tuna">ｱｸｾﾝﾄ:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-acc" ng-model="yvoice.acc">
-        <small class="label-tuna">音程:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-lmd" ng-model="yvoice.lmd">
-        <small class="label-tuna">音程2:</small><input type="number" min="50" max="200" step="1" id="voice-aq10-fsc" ng-model="yvoice.fsc">
+        <small class="label-tuna">高さ:</small><input type="number" min="20" max="200" step="1" id="voice-aq10-pit" ng-model="ctrl.store.curYvoice.pit">
+        <small class="label-tuna">ｱｸｾﾝﾄ:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-acc" ng-model="ctrl.store.curYvoice.acc">
+        <small class="label-tuna">音程:</small><input type="number" min="0"  max="200" step="1" id="voice-aq10-lmd" ng-model="ctrl.store.curYvoice.lmd">
+        <small class="label-tuna">音程2:</small><input type="number" min="50" max="200" step="1" id="voice-aq10-fsc" ng-model="ctrl.store.curYvoice.fsc">
       </div>
     </div>
 
     <div class="source-write-box" id="source-write-box">
       <div class="checkbox">
         <label>
-          <input type="checkbox" ng-model="yvoice.sourceWrite">音声記録時にテキストファイルにメッセージを書き出す
+          <input type="checkbox" ng-model="ctrl.store.curYvoice.sourceWrite">音声記録時にテキストファイルにメッセージを書き出す
         </label>
       </div>
     </div>
@@ -35,18 +35,35 @@
     <div class="seq-write-box" id="seq-write-box">
       <div class="checkbox">
         <label>
-          <input type="checkbox" ng-model="yvoice.seqWrite">連番ファイル出力機能を使用する
+          <input type="checkbox" ng-model="ctrl.store.curYvoice.seqWrite">連番ファイル出力機能を使用する
         </label>
       </div>
-      <div class="form-group" ng-show="yvoice.seqWrite">
+      <div class="form-group" ng-show="ctrl.store.curYvoice.seqWrite">
         <!-- <label>file name prefix</label> -->
-        <input type="text" class="form-control" id="prefix" ng-model="yvoice.seqWriteOptions.prefix" placeholder="ファイル名のプレフィックス">
+        <input type="text" class="form-control" id="prefix" ng-model="ctrl.store.curYvoice.seqWriteOptions.prefix" placeholder="ファイル名のプレフィックス">
       </div>
-      <div class="form-group" ng-show="yvoice.seqWrite">
+      <div class="form-group" ng-show="ctrl.store.curYvoice.seqWrite">
         <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
           <span class="icon icon-folder"></span>出力先ディレクトリ選択
         </button>
-        <small>dir: {{yvoice.seqWriteOptions.dir || '未選択時はデスクトップを使用'}}</small>
+        <small>dir: <span ng-bind="ctrl.store.curYvoice.seqWriteOptions.dir || '未選択時はデスクトップを使用'"></span></small>
+      </div>
+    </div>
+
+    <div class="fcpx-ixml-box" id="fcpx-ixml-box" ng-show="ctrl.appCfg.extensions.fcpx">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="ctrl.store.curYvoice.fcpxIxml">音声ファイルにオーディオロール自動割り当て設定を書き込む
+        </label>
+        <br>
+        <small>
+        ・動画編集ソフトFinal Cut Pro X用の機能です。<br>
+        ・標準でないwavファイルが出力されます。(アプリによっては動かない可能性がある)
+        </small>
+      </div>
+      <div class="form-group" ng-show="ctrl.store.curYvoice.fcpxIxml">
+        <!-- <label>audio role name</label> -->
+        <input type="text" class="form-control" id="audioRole" ng-model="ctrl.store.curYvoice.fcpxIxmlOptions.audioRole" placeholder="自動割り当てするオーディオロール名">
       </div>
     </div>
 
@@ -57,6 +74,6 @@
     </div>
   </form>
 
-  <div static-include template-path="contents-main-messages.html" ng-show="appCfg.showMsgPane"></div>
+  <div static-include template-path="contents-main-messages.html" ng-show="ctrl.appCfg.showMsgPane"></div>
 </div><!-- settings pane -->
 

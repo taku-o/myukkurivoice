@@ -1,98 +1,95 @@
-var _fs, fs     = () => { _fs = _fs || require('fs'); return _fs; };
-var _path, path = () => { _path = _path || require('path'); return _path; };
+var _fs: any, fs     = () => { _fs = _fs || require('fs'); return _fs; };
+var _path: any, path = () => { _path = _path || require('path'); return _path; };
 
 // angular util service
-angular.module('UtilServices', ['MessageServices'])
-  .factory('AudioSourceService', ['$q', 'MessageService', ($q: ng.IQService, MessageService: yubo.MessageService): yubo.AudioSourceService => {
-    const waveExt = '.wav';
-    const sourceExt = '.txt';
+angular.module('UtilServices', ['MessageServices']);
 
+// SeqFNameService
+class SeqFNameService implements yubo.SeqFNameService {
+  private readonly ext: string = '.wav';
+  private readonly numPattern: string = '[0-9]{4}';
+  private readonly limit: number = 9999;
+  constructor(
+    private $q: ng.IQService,
+    private MessageService: yubo.MessageService
+  ) {}
+
+  splitFname(filePath: string): {dir: string, basename: string} {
+    const dir = path().dirname(filePath);
+    const basename = path().basename(filePath, this.ext);
     return {
-      sourceFname: function(wavFilePath: string): string {
-        const dir = path().dirname(wavFilePath);
-        const basename = path().basename(wavFilePath, waveExt);
-        const filename = basename + sourceExt;
-        return path().join(dir, filename);
-      },
-      save: function(filePath: string, sourceText: string): ng.IPromise<string> {
-        const d = $q.defer<string>();
-        fs().writeFile(filePath, sourceText, 'utf-8', function(err: Error) {
-          if (err) {
-            MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
+      dir: dir,
+      basename: basename,
+    };
+  }
+
+  nextFname(prefix: string, num: number): string {
+    const formatted = ('0000'+ num).slice(-4);
+    return prefix + formatted + this.ext;
+  }
+
+  nextNumber(dir: string, prefix: string): ng.IPromise<number> {
+    const d = this.$q.defer<number>();
+    fs().readdir(dir, (err: Error, files: string[]) => {
+      if (err) {
+        this.MessageService.syserror('ディレクトリを参照できませんでした。', err);
+        d.reject(err); return;
+      }
+
+      const pattern = new RegExp(`^${prefix}(${this.numPattern})${this.ext}$`);
+
+      const npList: number[] = [];
+      files.forEach((file) => {
+        try {
+          if (pattern.test(file)) {
+            const matched = pattern.exec(file);
+            npList.push(Number(matched![1]));
+          }
+        } catch(err) {
+          if (err.code != 'ENOENT') {
+            this.MessageService.syserror('ファイル参照時にエラーが起きました。', err);
             d.reject(err); return;
           }
-          d.resolve(filePath);
-        });
-        return d.promise;
-      },
-    };
-  }])
-  .factory('SeqFNameService', ['$q', 'MessageService', ($q: ng.IQService, MessageService: yubo.MessageService): yubo.SeqFNameService => {
-    const ext = '.wav';
-    const numPattern = '[0-9]{4}';
-    const limit = 9999;
+        }
+      });
+      if (npList.length < 1) {
+        d.resolve(0); return;
+      }
 
-    return {
-      splitFname: function(filePath: string): {dir: string, basename: string} {
-        const dir = path().dirname(filePath);
-        const basename = path().basename(filePath, ext);
-        return {
-          dir: dir,
-          basename: basename,
-        };
-      },
-      nextFname: function(prefix: string, num: number): string {
-        const formatted = ('0000'+ num).slice(-4);
-        return prefix + formatted + ext;
-      },
-      nextNumber: function(dir: string, prefix: string): ng.IPromise<number> {
-        const d = $q.defer<number>();
-        fs().readdir(dir, (err: Error, files: string[]) => {
-          if (err) {
-            MessageService.syserror('ディレクトリを参照できませんでした。', err);
-            d.reject(err); return;
-          }
+      const maxNum = Math.max.apply(null, npList);
+      if (maxNum >= this.limit) {
+        this.MessageService.syserror(`${this.limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`);
+        d.reject(new Error(`${this.limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`)); return;
+      }
+      const next = maxNum + 1;
+      d.resolve(next);
+    });
+    return d.promise;
+  }
+}
+angular.module('UtilServices')
+  .service('SeqFNameService', [
+    '$q',
+    'MessageService',
+    SeqFNameService,
+  ]);
 
-          const pattern = new RegExp(`^${prefix}(${numPattern})${ext}$`);
+// AppUtilService
+class AppUtilService implements yubo.AppUtilService {
+  constructor(
+    private $rootScope: ng.IRootScopeService
+  ) {}
 
-          const npList: number[] = [];
-          files.forEach((file) => {
-            try {
-              if (pattern.test(file)) {
-                const matched = pattern.exec(file);
-                npList.push(Number(matched![1]));
-              }
-            } catch(err) {
-              if (err.code != 'ENOENT') {
-                MessageService.syserror('ファイル参照時にエラーが起きました。', err);
-                d.reject(err); return;
-              }
-            }
-          });
-          if (npList.length < 1) {
-            d.resolve(0); return;
-          }
+  disableRhythm(encoded: string): string {
+    return encoded.replace(/['/]/g, '');
+  }
 
-          const maxNum = Math.max.apply(null, npList);
-          if (maxNum >= limit) {
-            MessageService.syserror(`${limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`);
-            d.reject(new Error(`${limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`)); return;
-          }
-          const next = maxNum + 1;
-          d.resolve(next);
-        });
-        return d.promise;
-      },
-    };
-  }])
-  .factory('AppUtilService', ['$rootScope', ($rootScope: ng.IRootScopeService): yubo.AppUtilService => {
-    return {
-      disableRhythm: function(encoded: string): string {
-        return encoded.replace(/['/]/g, '');
-      },
-      reportDuration: function(duration: number): void {
-        $rootScope.$broadcast('duration', duration);
-      },
-    };
-  }]);
-
+  reportDuration(duration: number): void {
+    this.$rootScope.$broadcast('duration', duration);
+  }
+}
+angular.module('UtilServices')
+  .service('AppUtilService', [
+    '$rootScope',
+    AppUtilService,
+  ]);

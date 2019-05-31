@@ -1,12 +1,12 @@
 import {Application} from 'spectron';
-import * as assert from 'assert';
+import {assert} from 'chai';
 import {position} from 'caller-position';
 import * as temp from 'temp';
 temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-MasterService', function() {
+describe('specWindow-service-AquesService-AquesTalk2', function() {
   this.timeout(10000);
 
   before(function() {
@@ -34,15 +34,20 @@ describe('specWindow-service-MasterService', function() {
     return this.client.close();
   });
 
-  it('MasterService', function() {
+  it('errorTable', function() {
     return (
       this.client
-        // getPhontList
-        .click('#get-phont-list')
-        .getValue('#get-phont-list-result')
+        .setValue('#error-table-code', '106')
+        .click('#error-table-aquestalk2')
+        .getValue('#error-table-result')
         .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.equal(parsed.length, 26, position());
+          assert.equal(value, '音記号列のタグの指定が正しくない', position());
+        })
+        .setValue('#error-table-code', '108')
+        .click('#error-table-aquestalk2')
+        .getValue('#error-table-result')
+        .then((value: string) => {
+          assert.equal(value, 'タグ内の値の指定が正しくない', position());
         })
         // catch error
         .catch((err: Error) => {
@@ -51,13 +56,21 @@ describe('specWindow-service-MasterService', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.match(/error/i), position());
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
           });
         })
         .getRenderProcessLogs()
         .then((logs: WebdriverIO.LogEntry[]) => {
           logs.forEach((log) => {
-            assert.ok(!log.message.match(/error/i), position());
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
           });
         })
     );

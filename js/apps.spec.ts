@@ -1,7 +1,9 @@
-var _log, log = () => { _log = _log || require('electron-log'); return _log; };
+var _log: any, log = () => { _log = _log || require('electron-log'); return _log; };
 
 // env
 var DEBUG = process.env.DEBUG != null;
+var CONSOLELOG = process.env.CONSOLELOG != null;
+var TEST_VOLUME = 0.1;
 
 // source-map-support
 if (DEBUG) {
@@ -11,47 +13,62 @@ if (DEBUG) {
     log().error('source-map-support or devtron is not installed.');
   }
 }
+// replace renderer console log, and disable file log
+if (CONSOLELOG) {
+  const remoteConsole = require('electron').remote.require('console');
+  /* eslint-disable-next-line no-global-assign */
+  console = remoteConsole;
+  delete log().transports['file'];
+}
 
-// application spec app
-angular.module('specApp',
-  ['mainModels', 'dictModels', 'mainServices', 'dictServices'])
-  .config(['$qProvider', ($qProvider: ng.IQProvider) => {
+// angular app
+angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServices'])
+  // config
+  .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);
+    $compileProvider.debugInfoEnabled(DEBUG);
   }])
   .factory('$exceptionHandler', () => {
-    return (exception, cause) => {
+    return (exception: Error, cause: string) => {
       log().warn('spec:catch angularjs exception: %s, cause:%s', exception, cause);
     };
   })
   .controller('SpecController', ['$scope', '$timeout',
-      'YPhontList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
+      'YPhontMasterList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
       'KindList', 'KindHash',
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
-      'DataService', 'MasterService', 'HistoryService',
-      'AquesService', 'AudioService1', 'AudioService2', 'AudioSourceService',
+      'DataService', 'HistoryService',
+      'AqKanji2KoeLib', 'AquesTalk1Lib', 'AquesTalk2Lib', 'AquesTalk10Lib',
+      'AquesService', 'AudioService1', 'AudioService2',
+      'TextSubtitleService',
       'AppUtilService', 'SeqFNameService',
       'AqUsrDicService',
-    function($scope: any, $timeout,
-      YPhontList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
+    function($scope: any, $timeout: ng.ITimeoutService,
+      YPhontMasterList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
       YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
       KindList, KindHash,
       LicenseService: yubo.LicenseService, IntroService: yubo.IntroService, MessageService: yubo.MessageService,
       CommandService: yubo.CommandService,
-      DataService: yubo.DataService, MasterService: yubo.MasterService, HistoryService: yubo.HistoryService,
+      DataService: yubo.DataService, HistoryService: yubo.HistoryService,
+      AqKanji2KoeLib: yubo.AqKanji2KoeLib, AquesTalk1Lib: yubo.AquesTalk1Lib, AquesTalk2Lib: yubo.AquesTalk2Lib, AquesTalk10Lib: yubo.AquesTalk10Lib,
       AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
-      AudioSourceService: yubo.AudioSourceService,
+      TextSubtitleService: yubo.TextSubtitleService,
       AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService,
       AqUsrDicService: yubo.AqUsrDicService
     ) {
 
     // init
     const ctrl = this;
-    AquesService.init();
 
-    // YPhontList
-    ctrl.getYPhontList = function(): void {
-      const r = YPhontList;
-      $scope.getYPhontListResult = JSON.stringify(r);
+    // $onInit
+    this.$onInit = (): void => {
+      AquesService.init();
+    };
+
+    // YPhontMasterList
+    ctrl.getYPhontMasterList = function(): void {
+      const r = YPhontMasterList;
+      $scope.getYPhontMasterListResult = JSON.stringify(r);
     };
     // YVoice
     ctrl.getYVoice = function(): void {
@@ -100,8 +117,10 @@ angular.module('specApp',
     };
     ctrl.consumerKey = function(): void {
       LicenseService.consumerKey($scope.licenseType).then((value) => {
-        $scope.consumerKeyResult = value;
-        $scope.consumerKeyDone = 'ok';
+        $timeout(() => {
+          $scope.consumerKeyResult = value;
+          $scope.consumerKeyDone = 'ok';
+        });
       })
       .catch((err: Error) => {
         $scope.consumerKeyErr = err.message;
@@ -137,6 +156,7 @@ angular.module('specApp',
           srcTextPath: srcTextPath,
           source: msg,
           encoded: msg,
+          duration: 1.44,
         }
       );
     };
@@ -176,7 +196,7 @@ angular.module('specApp',
       $scope.messageServicePost = JSON.stringify(message);
       $timeout(() => { $scope.$apply(); });
     });
-    $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo) => {
+    $scope.$on('wavGenerated', (event: ng.IAngularEvent, wavFileInfo: yubo.IRecordMessage) => {
       $scope.lastWavFile = JSON.stringify(wavFileInfo);
       $timeout(() => { $scope.$apply(); });
     });
@@ -193,13 +213,12 @@ angular.module('specApp',
       const r = CommandService.parseInput($scope.parseInputInput, yvoiceList, currentYvoice);
       $scope.parseInputResult = JSON.stringify(r);
     };
-    // TODO what's? this code is not correct.
-    //ctrl.detectVoiceConfig = function(): void {
-    //  const commandInput = JSON.parse($scope.commandInputSource);
-    //  const yvoiceList = YVoiceInitialData;
-    //  const r = CommandService.detectVoiceConfig(commandInput, yvoiceList);
-    //  $scope.detectVoiceConfigResult = JSON.stringify(r);
-    //};
+    ctrl.detectVoiceConfig = function(): void {
+      const commandInput = JSON.parse($scope.commandInputSource);
+      const yvoiceList = YVoiceInitialData;
+      const r = CommandService.detectVoiceConfig(commandInput, yvoiceList);
+      $scope.detectVoiceConfigResult = JSON.stringify(r);
+    };
     ctrl.toString = function(): void {
       const commandInputList = JSON.parse($scope.commandInputList);
       const r = CommandService.toString(commandInputList);
@@ -240,12 +259,6 @@ angular.module('specApp',
       });
     };
 
-    // MasterService
-    ctrl.getPhontList = function(): void {
-      const list = MasterService.getPhontList();
-      $scope.getPhontListResult = JSON.stringify(list);
-    };
-
     // HistoryService
     ctrl.historyLoad = function(): void {
       HistoryService.load().then((cache) => {
@@ -276,13 +289,29 @@ angular.module('specApp',
       $scope.historyResult = JSON.stringify(r);
     };
 
+    // AquesService.AqKanji2Koe
+    // AquesService.AquesTalk2
+    // AquesService.AquesTalk10
+    ctrl.errorTableAqkanji2koe = function(): void {
+      $scope.errorTableResult = AqKanji2KoeLib.errorTable($scope.errorTableCode);
+    };
+    ctrl.errorTableAquestalk2 = function(): void {
+      $scope.errorTableResult = AquesTalk2Lib.errorTable($scope.errorTableCode);
+    };
+    ctrl.errorTableAquestalk10 = function(): void {
+      $scope.errorTableResult = AquesTalk10Lib.errorTable($scope.errorTableCode);
+    };
+    // AquesService.AquesTalk1
+    ctrl.isSupported = function(): void {
+      $scope.isSupportedResult = AquesTalk1Lib.isSupported($scope.osVersion);
+    };
     // AquesService
     ctrl.encode = function(): void {
       const r = AquesService.encode($scope.source);
       $scope.encodeResult = r;
     };
     ctrl.waveVer1 = function(): void {
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -302,7 +331,7 @@ angular.module('specApp',
       });
     };
     ctrl.waveVer2 = function(): void {
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -322,7 +351,7 @@ angular.module('specApp',
       });
     };
     ctrl.waveVer10 = function(): void {
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -342,7 +371,7 @@ angular.module('specApp',
     // AudioService1
     ctrl.play1AqVer1 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -355,7 +384,7 @@ angular.module('specApp',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -375,7 +404,7 @@ angular.module('specApp',
     };
     ctrl.play1AqVer2 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -388,7 +417,7 @@ angular.module('specApp',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -408,7 +437,7 @@ angular.module('specApp',
     };
     ctrl.play1AqVer10 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -421,7 +450,7 @@ angular.module('specApp',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -442,7 +471,7 @@ angular.module('specApp',
 
     ctrl.record1AqVer1 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -454,15 +483,52 @@ angular.module('specApp',
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+          $scope.recordResult1 = 'ok';
+        })
+        .catch((err: Error) => {
+          $scope.recordResult1 = err.message;
+        });
+      })
+      .catch((err: Error) => {
+        $scope.recordResult1 = err.message;
+      });
+    };
+    ctrl.record1AqVer1Fcpx = function(): void {
+      // phont
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk1') {
+          phont = list[i]; break;
+        }
+      }
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
+        playbackRate: 1.0,
+        detune: 0,
+        fcpxIxml: true,
+        fcpxIxmlOptions: {audioRole: $scope.record1AudioRole},
+      };
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -475,7 +541,7 @@ angular.module('specApp',
     };
     ctrl.record1AqVer2 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -487,15 +553,52 @@ angular.module('specApp',
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+          $scope.recordResult1 = 'ok';
+        })
+        .catch((err: Error) => {
+          $scope.recordResult1 = err.message;
+        });
+      })
+      .catch((err: Error) => {
+        $scope.recordResult1 = err.message;
+      });
+    };
+    ctrl.record1AqVer2Fcpx = function(): void {
+      // phont
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk2') {
+          phont = list[i]; break;
+        }
+      }
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
+        playbackRate: 1.0,
+        detune: 0,
+        fcpxIxml: true,
+        fcpxIxmlOptions: {audioRole: $scope.record1AudioRole},
+      };
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -508,7 +611,7 @@ angular.module('specApp',
     };
     ctrl.record1AqVer10 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -520,15 +623,52 @@ angular.module('specApp',
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService1.record($scope.wavFilePath1, bufWav, poptions).then((value) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+          $scope.recordResult1 = 'ok';
+        })
+        .catch((err: Error) => {
+          $scope.recordResult1 = err.message;
+        });
+      })
+      .catch((err: Error) => {
+        $scope.recordResult1 = err.message;
+      });
+    };
+    ctrl.record1AqVer10Fcpx = function(): void {
+      // phont
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk10') {
+          phont = list[i]; break;
+        }
+      }
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
+        playbackRate: 1.0,
+        detune: 0,
+        fcpxIxml: true,
+        fcpxIxmlOptions: {audioRole: $scope.record1AudioRole},
+      };
+      // wave
+      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+        // record
+        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -543,7 +683,7 @@ angular.module('specApp',
     // AudioService2
     ctrl.play2AqVer1 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -556,7 +696,7 @@ angular.module('specApp',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -576,7 +716,7 @@ angular.module('specApp',
     };
     ctrl.play2AqVer2 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -589,7 +729,7 @@ angular.module('specApp',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -609,7 +749,7 @@ angular.module('specApp',
     };
     ctrl.play2AqVer10 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -622,7 +762,7 @@ angular.module('specApp',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
@@ -643,7 +783,7 @@ angular.module('specApp',
 
     ctrl.record2AqVer1 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk1') {
@@ -655,15 +795,52 @@ angular.module('specApp',
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+          $scope.recordResult2 = 'ok';
+        })
+        .catch((err: Error) => {
+          $scope.recordResult2 = err.message;
+        });
+      })
+      .catch((err: Error) => {
+        $scope.recordResult2 = err.message;
+      });
+    };
+    ctrl.record2AqVer1Fcpx = function(): void {
+      // phont
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk1') {
+          phont = list[i]; break;
+        }
+      }
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
+        playbackRate: 1.0,
+        detune: 0,
+        fcpxIxml: true,
+        fcpxIxmlOptions: {audioRole: $scope.record2AudioRole},
+      };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -676,7 +853,7 @@ angular.module('specApp',
     };
     ctrl.record2AqVer2 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk2') {
@@ -688,15 +865,52 @@ angular.module('specApp',
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+          $scope.recordResult2 = 'ok';
+        })
+        .catch((err: Error) => {
+          $scope.recordResult2 = err.message;
+        });
+      })
+      .catch((err: Error) => {
+        $scope.recordResult2 = err.message;
+      });
+    };
+    ctrl.record2AqVer2Fcpx = function(): void {
+      // phont
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk2') {
+          phont = list[i]; break;
+        }
+      }
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
+        playbackRate: 1.0,
+        detune: 0,
+        fcpxIxml: true,
+        fcpxIxmlOptions: {audioRole: $scope.record2AudioRole},
+      };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -709,7 +923,7 @@ angular.module('specApp',
     };
     ctrl.record2AqVer10 = function(): void {
       // phont
-      const list = MasterService.getPhontList();
+      const list = YPhontMasterList;
       let phont;
       for (let i = 0; i < list.length; i ++) {
         if (list[i].version == 'talk10') {
@@ -721,15 +935,52 @@ angular.module('specApp',
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
-      const poptions: yubo.PlayOptions = {
-        volume: 1.0,
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
+        fcpxIxml: false,
+        fcpxIxmlOptions: {},
       };
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
-        // play
-        AudioService2.record($scope.wavFilePath2, bufWav, poptions).then((value) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+          $scope.recordResult2 = 'ok';
+        })
+        .catch((err: Error) => {
+          $scope.recordResult2 = err.message;
+        });
+      })
+      .catch((err: Error) => {
+        $scope.recordResult2 = err.message;
+      });
+    };
+    ctrl.record2AqVer10Fcpx = function(): void {
+      // phont
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk10') {
+          phont = list[i]; break;
+        }
+      }
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
+        passPhrase: 'xxxxxxx',
+        aq10UseKeyEncrypted: '',
+      };
+      const roptions: yubo.RecordOptions = {
+        volume: TEST_VOLUME,
+        playbackRate: 1.0,
+        detune: 0,
+        fcpxIxml: true,
+        fcpxIxmlOptions: {audioRole: $scope.record2AudioRole},
+      };
+      // wave
+      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+        // record
+        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -771,13 +1022,13 @@ angular.module('specApp',
       $scope.getLastErrorResult = r;
     };
 
-    // AudioSourceService
+    // TextSubtitleService
     ctrl.sourceFname = function(): void {
-      const r = AudioSourceService.sourceFname($scope.wavFilePath);
+      const r = TextSubtitleService.sourceFname($scope.wavFilePath);
       $scope.sourceFnameResult = r;
     };
     ctrl.save = function(): void {
-      AudioSourceService.save($scope.filePath, $scope.sourceText)
+      TextSubtitleService.save($scope.filePath, $scope.sourceText)
       .then(() => {
         $scope.saveResult = 'ok';
       })

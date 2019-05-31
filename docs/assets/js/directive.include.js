@@ -1,10 +1,13 @@
 "use strict";
+class StaticInclude {
+    constructor() {
+        this.restrict = 'AE';
+    }
+    templateUrl(element, attrs) {
+        return attrs.templatePath;
+    }
+}
 angular.module('IncludeDirectives', [])
-    .directive('staticInclude', function () {
-    return {
-        restrict: 'AE',
-        templateUrl: function (element, attrs) {
-            return attrs.templatePath;
-        }
-    };
-});
+    .directive('staticInclude', [
+    () => new StaticInclude(),
+]);
