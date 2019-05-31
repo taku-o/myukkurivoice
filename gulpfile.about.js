@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const markdownHtml = require('gulp-markdown');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
+const replaceStr = require('gulp-replace-string');
 const toc = require('gulp-markdown-toc');
 const wrapper = require('gulp-wrapper');
 
@@ -13,6 +14,13 @@ gulp.task('about', [], () => {
       replace(
         'src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/',
         'src="images/'
+      )
+    )
+    .pipe(
+      replaceStr(
+        new RegExp('<a href="(.*?)"', 'g'),
+        '[[$1]]'
+        //'<a ng-click="ctrl.browser(\'$1\'>$2</a>'
       )
     )
     .pipe(
@@ -37,12 +45,4 @@ gulp.task('about', [], () => {
     )
     .pipe(gulp.dest('docs/_help'));
 });
-//gulp.task('_readme:html:css', () => {
-//  return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
-//});
-//gulp.task('_readme:html:icns', () => {
-//  return gulp
-//    .src(['icns/myukkurivoice.iconset/icon_256x256.png'])
-//    .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/icns/myukkurivoice.iconset'));
-//});
 

@@ -291,6 +291,8 @@ macOS High Sierra(10.13)以降に対応しています。
 
 ## 動画リンク
 
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30435205.png" width="400">](http://www.nicovideo.jp/watch/sm30435205)
+
 <a href="http://www.nicovideo.jp/watch/sm30435205"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30435205.png" width="400"></a>
 
 <a href="http://www.nicovideo.jp/watch/sm30826557"><img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30826557.png" width="400"></a>
