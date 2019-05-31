@@ -12,7 +12,6 @@ const runSequence = require('run-sequence');
 const WORK_DIR = path.join(__dirname, './release');
 const WORK_REPO_DIR = path.join(__dirname, './release/myukkurivoice');
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
-const MAS_APP_PACKAGE_NAME = 'MYukkuriVoice-mas-x64';
 
 const DEVELOPER_ID_APPLICATION_KEY = require('./mas/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
 
@@ -85,42 +84,6 @@ gulp.task('staging', (cb) => {
   );
 });
 
-// store
-gulp.task('store', (cb) => {
-  //if (argv && argv.branch) {
-  //  cb('branch is selected');
-  //  return;
-  //}
-  if (!(argv && argv.branch)) {
-    argv.branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
-      .toString()
-      .trim();
-  }
-  runSequence(
-    '_rm-workdir',
-    '_mk-workdir',
-    '_ch-workdir',
-    '_git-clone',
-    '_ch-repodir',
-    '_git-submodule',
-    '_npm-install',
-    'tsc',
-    '_rm-package',
-    '_package-release:store',
-    '_unpacked:store',
-    '_codesign:store',
-    '_open-appdir:store',
-    '_notify',
-    '_kill',
-    (err) => {
-      if (err) {
-        gulp.start('_notifyError');
-      }
-      cb(err);
-    }
-  );
-});
-
 // workdir
 gulp.task('_rm-workdir', (cb) => {
   rimraf(WORK_DIR, (err) => {
@@ -182,20 +145,6 @@ gulp.task('_codesign', (cb) => {
     }
   );
 });
-gulp.task('_codesign:store', (cb) => {
-  const platform = 'mas';
-  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
-  exec(
-    '/usr/bin/codesign' +
-      ` -s "${DEVELOPER_ID_APPLICATION_KEY}" \
-        --deep \
-        --keychain "/Users/${process.env.USER}/Library/Keychains/login.keychain" \
-        ${APP_PATH}`,
-    (err, stdout, stderr) => {
-      cb(err);
-    }
-  );
-});
 
 // zip
 gulp.task('_zip-app', (cb) => {
@@ -218,11 +167,6 @@ gulp.task('_zip-app-signed', (cb) => {
 // open
 gulp.task('_open-appdir', (cb) => {
   exec('open ' + APP_PACKAGE_NAME, (err, stdout, stderr) => {
-    cb(err);
-  });
-});
-gulp.task('_open-appdir:store', (cb) => {
-  exec('open ' + MAS_APP_PACKAGE_NAME, (err, stdout, stderr) => {
     cb(err);
   });
 });
