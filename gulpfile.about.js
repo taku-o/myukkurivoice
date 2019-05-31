@@ -15,13 +15,6 @@ gulp.task('about', [], () => {
         'src="images/'
       )
     )
-    //.pipe(
-    //  replaceStr(
-    //    new RegExp('<a href="(.*?)"', 'g'),
-    //    '[[$1]]'
-    //    //'<a ng-click="ctrl.browser(\'$1\'>$2</a>'
-    //  )
-    //)
     .pipe(
       toc({
         linkify: function(content) {
@@ -30,6 +23,12 @@ gulp.task('about', [], () => {
       })
     )
     .pipe(markdownHtml())
+    .pipe(
+      replace(
+        /<a href="(.*?)">(.*?)<\/a>/g,
+        '<a ng-click="ctrl.browser(\'$1\')">$2<span class="icon icon-popup"></span></a>'
+      )
+    )
     .pipe(
       wrapper({
         header: '<div class="content">',
