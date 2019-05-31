@@ -446,6 +446,8 @@ declare namespace yubo {
   }
   export interface HelpStore {
     display: string;
+    readonly onBrowser: boolean;
+    readonly onElectron: boolean;
   }
   export interface HelpSearchStore {
     searchText: string;

@@ -43,13 +43,7 @@ class HelpReducer implements yubo.HelpReducer {
     if (this.menuList.includes(hash)) {
       this.store.display = hash;
     } else {
-      // run on electron
-      if ('process' in window) {
-        this.store.display = 'about-app';
-      // run on browser
-      } else {
-        this.store.display = 'about';
-      }
+      this.store.display = 'about';
     }
     this.notifyUpdates({display: this.store.display});
   }
@@ -90,20 +84,14 @@ class HelpReducer implements yubo.HelpReducer {
   }
 
   page(pageName: string): void {
-    // run on electron
-    if (pageName == 'about' && 'process' in window) {
-      this.$location.hash('about-app');
-    // run on browser
-    } else {
-      this.$location.hash(pageName);
-    }
+    this.$location.hash(pageName);
   }
   openSearchForm(): void {
     ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
   }
   browser(url: string): void {
     // run on electron
-    if ('process' in window) {
+    if (this.store.onElectron) {
       shell().openExternal(url);
     // run on browser
     } else {
@@ -112,7 +100,7 @@ class HelpReducer implements yubo.HelpReducer {
   }
   showItemInFolder(path: string): void {
     // run on electron
-    if ('process' in window) {
+    if (this.store.onElectron) {
       const app = require('electron').remote.app;
       const homeDir = app.getPath('home');
       const expanded = path.replace('$HOME', homeDir);
@@ -121,7 +109,7 @@ class HelpReducer implements yubo.HelpReducer {
   }
   showSystemWindow(): void {
     // run on electron
-    if ('process' in window) {
+    if (this.store.onElectron) {
       ipcRenderer().send('showSystemWindow', 'system');
     }
   }

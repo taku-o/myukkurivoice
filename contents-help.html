@@ -98,8 +98,8 @@
     </nav>
   </div>
 
-  <div class="pane" id="about-app-pane"  static-include template-path="_help/about-app.html"  ng-if="ctrl.store.display == 'about-app'"></div>
-  <div class="pane" id="about-pane"      static-include template-path="_help/about.html"      ng-if="ctrl.store.display == 'about'"></div>
+  <div class="pane" id="about-app-pane"  static-include template-path="_help/about-app.html"  ng-if="ctrl.store.display == 'about' && ctrl.store.onElectron"></div>
+  <div class="pane" id="about-pane"      static-include template-path="_help/about.html"      ng-if="ctrl.store.display == 'about' && ctrl.store.onBrowser"></div>
   <div class="pane" id="voicecode-pane"  static-include template-path="_help/voicecode.html"  ng-if="ctrl.store.display == 'voicecode'"></div>
   <div class="pane" id="trouble-pane"    static-include template-path="_help/trouble.html"    ng-if="ctrl.store.display == 'trouble'"></div>
   <div class="pane" id="update-pane"     static-include template-path="_help/update.html"     ng-if="ctrl.store.display == 'update'"></div>
