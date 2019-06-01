@@ -90,7 +90,6 @@ macOS High Sierra(10.13)以降に対応しています。
 | :------------------------------------ | :------------------------------------------------------ |
 | **MYukkuriVoice-darwin-x64.zip**      | MYukkuriVoiceアプリ。**これをダウンロードしましょう。** |
 | MYukkuriVoice-darwin-x64-nosigned.zip | MYukkuriVoiceアプリ(未署名版)                           |
-| fcpx-audio-role-workflow.dmg          | Final Cut Pro X用のフォルダーアクション                 |
 
 <a name="インストール"></a>
 
