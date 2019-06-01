@@ -9,12 +9,7 @@ const wrapper = require('gulp-wrapper');
 gulp.task('about', [], () => {
   return gulp
     .src('docs/README.md')
-    .pipe(
-      replace(
-        'src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/',
-        'src="images/'
-      )
-    )
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="images/'))
     .pipe(
       toc({
         linkify: function(content) {
@@ -43,4 +38,3 @@ gulp.task('about', [], () => {
     )
     .pipe(gulp.dest('docs/_help'));
 });
-

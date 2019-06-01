@@ -86,10 +86,10 @@ macOS High Sierra(10.13)以降に対応しています。
   - [https://github.com/taku-o/myukkurivoice/releases](https://github.com/taku-o/myukkurivoice/releases)
 - MYukkuriVoice-darwin-x64.zip をダウンロードしてください。
 
-| ファイル名                            | 説明                                                    |
-| :------------------------------------ | :------------------------------------------------------ |
-| **MYukkuriVoice-darwin-x64.zip**      | MYukkuriVoiceアプリ。**これをダウンロードしましょう。** |
-| MYukkuriVoice-darwin-x64-nosigned.zip | MYukkuriVoiceアプリ(未署名版)                           |
+| ファイル名                            | 説明                                                     |
+| :------------------------------------ | :------------------------------------------------------- |
+| **MYukkuriVoice-darwin-x64.zip**      | MYukkuriVoice アプリ。**これをダウンロードしましょう。** |
+| MYukkuriVoice-darwin-x64-nosigned.zip | MYukkuriVoice アプリ(未署名版)                           |
 
 <a name="インストール"></a>
 

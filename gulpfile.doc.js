@@ -45,12 +45,7 @@ gulp.task('_readme:pdf', () => {
 gulp.task('_readme:html', ['_readme:html:css', '_readme:html:images:assets', '_readme:html:images:app'], () => {
   return gulp
     .src('docs/README.md')
-    .pipe(
-      replace(
-        'src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/',
-        'src="assets/images/'
-      )
-    )
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="assets/images/'))
     .pipe(markdownHtml())
     .pipe(
       wrapper({

@@ -1,13 +1,16 @@
 # 開発用の情報
 
 ## releases document memo.
-* GitHub releasesの最後に、ファイルの説明を入れる。
 
-| ファイル名                            | 説明                                                    |
-| :------------------------------------ | :------------------------------------------------------ |
-| **MYukkuriVoice-darwin-x64.zip**      | MYukkuriVoiceアプリ。**これをダウンロードしましょう。** |
-| MYukkuriVoice-darwin-x64-nosigned.zip | MYukkuriVoiceアプリ(未署名版)                           |
-| fcpx-audio-role-workflow.dmg          | Final Cut Pro X用のフォルダーアクション                 |
+- GitHub releases の最後に、ファイルの説明を入れる。
+
+| ファイル名                            | 説明                                                     |
+| :------------------------------------ | :------------------------------------------------------- |
+| **MYukkuriVoice-darwin-x64.zip**      | MYukkuriVoice アプリ。**これをダウンロードしましょう。** |
+| MYukkuriVoice-darwin-x64-nosigned.zip | MYukkuriVoice アプリ(未署名版)                           |
+
+- Final Cut Pro X 用フォルダーアクション
+  - https://github.com/taku-o/fcpx-audio-role-workflow/releases
 
 ## vendor
 
