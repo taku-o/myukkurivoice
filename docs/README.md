@@ -242,6 +242,9 @@ macOS High Sierra(10.13)以降に対応しています。
 
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-fcpx-ixml-role.gif" width="400">
 
+- 環境設定から「拡張機能」→「Final Cut Pro X」のチェックを有効に。
+- ボイスの設定で、自動で割り当てるオーディロールを設定します。
+
 <img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-fcpx-ixml-role-setup.gif" width="400">
 
 #### フォルダーアクションでオーディオロールを設定する
