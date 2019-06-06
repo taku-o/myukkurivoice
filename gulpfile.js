@@ -69,12 +69,12 @@ gulp.task('clean', ['_rm-js', '_rm-package', '_rm-workdir']);
 // kill
 // for fast exit
 gulp.task('_kill', () => {
-  //gulp.on('stop', () => {
-  //  process.exit(0);
-  //});
-  //gulp.on('err', () => {
-  //  process.exit(1);
-  //});
+  gulp.on('stop', () => {
+    process.exit(0);
+  });
+  gulp.on('err', () => {
+    process.exit(1);
+  });
   return true;
 });
 
