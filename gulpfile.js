@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const runSequence = require('run-sequence');
 const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
@@ -47,13 +46,11 @@ usage:
 });
 
 // all
-gulp.task('all', (cb) => {
-  runSequence('format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill', (err) => {
-    if (err) {
-      gulp.start('_notifyError');
-    }
-    cb(err);
-  });
+gulp.task('all', () => {
+  return gulp.series('format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill')
+    .catch((err) => {
+      return _notifyError();
+    });
 });
 
 // table of contents

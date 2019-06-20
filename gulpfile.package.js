@@ -4,20 +4,17 @@ const fse = require('fs-extra');
 const gulp = require('gulp');
 const mkdirp = require('mkdirp');
 const path = require('path');
-const runSequence = require('run-sequence');
 
 const PACKAGER_CMD = path.join(__dirname, './node_modules/.bin/electron-packager');
 const ELECTRON_VERSION = require('./package.json').versions.electron;
 const APP_VERSION = require('./package.json').version;
 
 // package
-gulp.task('package', (cb) => {
-  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill', (err) => {
-    if (err) {
-      gulp.start('_notifyError');
-    }
-    cb(err);
-  });
+gulp.task('package', () => {
+  return gulp.series('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
+    .catch((err) => {
+      return _notifyError();
+    });
 });
 
 // app.asar.unpacked
@@ -47,21 +44,17 @@ function copyUnpackedResources(platform, cb) {
       cb(err);
     });
 }
-gulp.task('_unpacked', (cb) => {
-  runSequence('_unpacked:mkdir', '_unpacked:cp', (err) => {
-    if (err) {
-      gulp.start('_notifyError');
-    }
-    cb(err);
-  });
+gulp.task('_unpacked', () => {
+  return gulp.series('_unpacked:mkdir', '_unpacked:cp')
+    .catch((err) => {
+      return _notifyError();
+    });
 });
-gulp.task('_unpacked:store', (cb) => {
-  runSequence('_unpacked:mkdir:store', '_unpacked:cp:store', (err) => {
-    if (err) {
-      gulp.start('_notifyError');
-    }
-    cb(err);
-  });
+gulp.task('_unpacked:store', () => {
+  return gulp.series('_unpacked:mkdir:store', '_unpacked:cp:store')
+    .catch((err) => {
+      return _notifyError();
+    });
 });
 gulp.task('_unpacked:mkdir', (cb) => {
   mkdirUnpacked('darwin', cb);

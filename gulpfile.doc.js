@@ -7,7 +7,6 @@ const markdownHtml = require('gulp-markdown');
 const mkdirp = require('mkdirp');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
-const runSequence = require('run-sequence');
 const toc = require('gulp-markdown-toc');
 const wrapper = require('gulp-wrapper');
 
@@ -170,13 +169,11 @@ gulp.task('_version', (cb) => {
 });
 
 // _package-contents
-gulp.task('_package-contents', (cb) => {
-  runSequence('_package-contents:cp', '_package-contents:rm', (err) => {
-    if (err) {
-      gulp.start('_notifyError');
-    }
-    cb(err);
-  });
+gulp.task('_package-contents', () => {
+  return gulp.series('_package-contents:cp', '_package-contents:rm')
+    .catch((err) => {
+      return _notifyError();
+    });
 });
 gulp.task('_package-contents:cp', () => {
   return gulp

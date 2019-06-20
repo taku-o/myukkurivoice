@@ -7,7 +7,6 @@ const install = require('gulp-install');
 const mkdirp = require('mkdirp');
 const path = require('path');
 const rimraf = require('rimraf');
-const runSequence = require('run-sequence');
 
 const WORK_DIR = path.join(__dirname, './release');
 const WORK_REPO_DIR = path.join(__dirname, './release/myukkurivoice');
@@ -19,12 +18,11 @@ const DEVELOPER_INSTALLER_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPE
 const DEVELOPER_APPLICATION_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPER_APPLICATION_3RD_KEY;
 
 // release
-gulp.task('release', (cb) => {
+gulp.task('release', () => {
   if (argv && argv.branch) {
-    cb('branch is selected');
-    return;
+    throw new Error('branch is selected');
   }
-  runSequence(
+  return gulp.series(
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -42,24 +40,21 @@ gulp.task('release', (cb) => {
     '_zip-app-signed',
     '_open-appdir',
     '_notify',
-    '_kill',
-    (err) => {
-      if (err) {
-        gulp.start('_notifyError');
-      }
-      cb(err);
-    }
-  );
+    '_kill'
+  )
+  .catch((err) => {
+    return _notifyError();
+  });
 });
 
 // staging
-gulp.task('staging', (cb) => {
+gulp.task('staging', () => {
   if (!(argv && argv.branch)) {
     argv.branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
       .toString()
       .trim();
   }
-  runSequence(
+  return gulp.series(
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -77,23 +72,19 @@ gulp.task('staging', (cb) => {
     //'_zip-app-signed',
     '_open-appdir',
     '_notify',
-    '_kill',
-    (err) => {
-      if (err) {
-        gulp.start('_notifyError');
-      }
-      cb(err);
-    }
-  );
+    '_kill'
+  )
+  .catch((err) => {
+    return _notifyError();
+  });
 });
 
 // store
-gulp.task('store', (cb) => {
+gulp.task('store', () => {
   if (argv && argv.branch) {
-    cb('branch is selected');
-    return;
+    throw new Error('branch is selected');
   }
-  runSequence(
+  return gulp.series(
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -108,14 +99,11 @@ gulp.task('store', (cb) => {
     '_codesign:store',
     '_open-appdir:store',
     '_notify',
-    '_kill',
-    (err) => {
-      if (err) {
-        gulp.start('_notifyError');
-      }
-      cb(err);
-    }
-  );
+    '_kill'
+  )
+  .catch((err) => {
+    return _notifyError();
+  });
 });
 
 // workdir
