@@ -13,11 +13,16 @@ const wrapper = require('gulp-wrapper');
 
 const APP_VERSION = require('./package.json').version;
 
-// doc
-gulp.task('doc', ['_readme', '_manual', '_releaseslog', '_version', '_package-contents']);
-
 // readme
-gulp.task('_readme', ['_readme:html']);
+gulp.task('_readme:html:css', () => {
+  return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
+});
+gulp.task('_readme:html:images:assets', () => {
+  return gulp.src(['docs/assets/images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
+});
+gulp.task('_readme:html:images:app', () => {
+  return gulp.src(['images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
+});
 gulp.task('_readme:pdf', () => {
   return gulp
     .src('docs/README.md')
@@ -42,7 +47,7 @@ gulp.task('_readme:pdf', () => {
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
-gulp.task('_readme:html', ['_readme:html:css', '_readme:html:images:assets', '_readme:html:images:app'], () => {
+gulp.task('_readme:html', gulp.series(gulp.parallel('_readme:html:css', '_readme:html:images:assets', '_readme:html:images:app'), () => {
   return gulp
     .src('docs/README.md')
     .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="assets/images/'))
@@ -67,19 +72,10 @@ gulp.task('_readme:html', ['_readme:html:css', '_readme:html:images:assets', '_r
       })
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
-});
-gulp.task('_readme:html:css', () => {
-  return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
-});
-gulp.task('_readme:html:images:assets', () => {
-  return gulp.src(['docs/assets/images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
-});
-gulp.task('_readme:html:images:app', () => {
-  return gulp.src(['images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
-});
+}));
+gulp.task('_readme', gulp.parallel('_readme:html'));
 
 // manual
-gulp.task('_manual', ['_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon']);
 gulp.task('_manual:html', () => {
   return gulp
     .src(['docs/help.html'])
@@ -124,9 +120,9 @@ gulp.task('_manual:assets:photon', () => {
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets'));
 });
+gulp.task('_manual', gulp.parallel('_manual:html', '_manual:assets:docs', '_manual:assets:angular', '_manual:assets:photon'));
 
 // releaseslog
-gulp.task('_releaseslog', ['_releaseslog:pdf']);
 gulp.task('_releaseslog:pdf', () => {
   return gulp
     .src('docs/releases.md')
@@ -154,6 +150,7 @@ gulp.task('_releaseslog:txt', () => {
     )
     .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
 });
+gulp.task('_releaseslog', gulp.parallel('_releaseslog:pdf'));
 
 // version
 gulp.task('_version', (cb) => {
@@ -197,3 +194,7 @@ gulp.task('_package-contents:rm', () => {
     'MYukkuriVoice-darwin-x64/version',
   ]);
 });
+
+// doc
+gulp.task('doc', gulp.parallel('_readme', '_manual', '_releaseslog', '_version', '_package-contents'));
+

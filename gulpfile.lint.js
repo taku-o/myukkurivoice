@@ -4,7 +4,6 @@ const prettier = require('gulp-prettier');
 const using = require('gulp-using');
 
 // lint
-gulp.task('lint', ['lint-q', 'lint-html']);
 gulp.task('lint-ts', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts'])
@@ -48,3 +47,4 @@ gulp.task('lint-html', () => {
       })
     );
 });
+gulp.task('lint', gulp.parallel('lint-q', 'lint-html'));

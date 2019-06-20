@@ -41,12 +41,7 @@ class HelpReducer {
             this.store.display = hash;
         }
         else {
-            if ('process' in window) {
-                this.store.display = 'about-app';
-            }
-            else {
-                this.store.display = 'about';
-            }
+            this.store.display = 'about';
         }
         this.notifyUpdates({ display: this.store.display });
     }
@@ -89,18 +84,13 @@ class HelpReducer {
         }
     }
     page(pageName) {
-        if (pageName == 'about' && 'process' in window) {
-            this.$location.hash('about-app');
-        }
-        else {
-            this.$location.hash(pageName);
-        }
+        this.$location.hash(pageName);
     }
     openSearchForm() {
         ipcRenderer().send('showHelpSearchDialog', 'show help search dialog');
     }
     browser(url) {
-        if ('process' in window) {
+        if (this.store.onElectron) {
             shell().openExternal(url);
         }
         else {
@@ -108,7 +98,7 @@ class HelpReducer {
         }
     }
     showItemInFolder(path) {
-        if ('process' in window) {
+        if (this.store.onElectron) {
             const app = require('electron').remote.app;
             const homeDir = app.getPath('home');
             const expanded = path.replace('$HOME', homeDir);
@@ -116,7 +106,7 @@ class HelpReducer {
         }
     }
     showSystemWindow() {
-        if ('process' in window) {
+        if (this.store.onElectron) {
             ipcRenderer().send('showSystemWindow', 'system');
         }
     }

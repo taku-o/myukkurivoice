@@ -6,7 +6,7 @@ const toc = require('gulp-markdown-toc');
 const wrapper = require('gulp-wrapper');
 
 // about
-gulp.task('about', [], () => {
+gulp.task('about', () => {
   return gulp
     .src('docs/README.md')
     .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="images/'))
