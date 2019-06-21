@@ -20,17 +20,20 @@ gulp.task('tsc-debug', () => {
     .js.pipe(sourcemaps.write())
     .pipe(gulp.dest('.'));
 });
-gulp.task('tsc', gulp.series('_tsc', () => {
-  return gulp
-    .src([
-      'js/ctrl.help.js',
-      'js/directive.include.js',
-      'js/events.help.js',
-      'js/reducers.help.js',
-      'js/stores.help.js',
-    ])
-    .pipe(gulp.dest('docs/assets/js'));
-}));
+gulp.task(
+  'tsc',
+  gulp.series('_tsc', () => {
+    return gulp
+      .src([
+        'js/ctrl.help.js',
+        'js/directive.include.js',
+        'js/events.help.js',
+        'js/reducers.help.js',
+        'js/stores.help.js',
+      ])
+      .pipe(gulp.dest('docs/assets/js'));
+  })
+);
 
 gulp.task('_rm-js', () => {
   return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js', '!gulpfile.*.js', '*.tsbuildinfo']);

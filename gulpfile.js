@@ -61,21 +61,24 @@ gulp.task('toc', () => {
 gulp.task('clean', gulp.parallel('_rm-js', '_rm-package', '_rm-workdir'));
 
 // run app
-gulp.task('app', gulp.series('tsc-debug', (cb) => {
-  const env = process.env;
-  env.DEBUG = 1;
-  env.MONITOR = 1;
-  env.CONSOLELOG = 1;
-  const run = spawn(__dirname + '/node_modules/.bin/electron', ['.'], {
-    env: env,
-  });
-  run.stdout.on('data', (data) => {
-    process.stdout.write(data.toString('utf-8'));
-  });
-  run.stderr.on('data', (data) => {
-    process.stderr.write(data.toString('utf-8'));
-  });
-  run.on('close', (code) => {
-    cb();
-  });
-}));
+gulp.task(
+  'app',
+  gulp.series('tsc-debug', (cb) => {
+    const env = process.env;
+    env.DEBUG = 1;
+    env.MONITOR = 1;
+    env.CONSOLELOG = 1;
+    const run = spawn(__dirname + '/node_modules/.bin/electron', ['.'], {
+      env: env,
+    });
+    run.stdout.on('data', (data) => {
+      process.stdout.write(data.toString('utf-8'));
+    });
+    run.stderr.on('data', (data) => {
+      process.stderr.write(data.toString('utf-8'));
+    });
+    run.on('close', (code) => {
+      cb();
+    });
+  })
+);

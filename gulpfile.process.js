@@ -9,6 +9,5 @@ gulp.task('_kill', (cb) => {
   gulp.on('err', () => {
     process.exit(1);
   });
-  return cb(true);
+  return cb();
 });
-
