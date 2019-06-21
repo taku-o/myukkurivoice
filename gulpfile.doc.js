@@ -12,6 +12,9 @@ const wrapper = require('gulp-wrapper');
 
 const APP_VERSION = require('./package.json').version;
 
+// task dependency
+var _notifyError = require('./gulpfile.notify')._notifyError;
+
 // readme
 gulp.task('_readme:html:css', () => {
   return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
