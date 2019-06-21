@@ -47,7 +47,7 @@ usage:
 });
 
 // all
-gulp.task('all', gulp.series('_notifyCatchError', 'format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill'));
+gulp.task('all', gulp.series('_handleError', 'format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill'));
 
 // table of contents
 gulp.task('toc', () => {

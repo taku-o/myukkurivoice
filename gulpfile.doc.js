@@ -202,7 +202,7 @@ gulp.task('_package-contents:rm', () => {
     {allowEmpty: true}
   );
 });
-gulp.task('_package-contents', gulp.series('_notifyCatchError', '_package-contents:cp', '_package-contents:rm'));
+gulp.task('_package-contents', gulp.series('_handleError', '_package-contents:cp', '_package-contents:rm'));
 
 // doc
 gulp.task('doc', gulp.parallel('_readme', '_manual', '_releaseslog', '_version', '_package-contents'));

@@ -17,10 +17,10 @@ function _notifyError() {
     sound: 'Frog',
   });
 }
-gulp.task('_notifyCatchError', (cb) => {
-  gulp.on('err', () => {
-    _notifyError();
-  });
+gulp.task('_handleError', (cb) => {
+  //gulp.on('err', () => {
+  //  _notifyError();
+  //});
   return cb();
 });
 

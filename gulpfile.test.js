@@ -11,8 +11,8 @@ gulp.task('_test', () => {
 gulp.task('test', (cb) => {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      return gulp.series(
-        '_notifyCatchError',
+      gulp.series(
+        '_handleError',
         'tsc-debug',
         '_rm-package',
         '_package-debug',
@@ -20,12 +20,14 @@ gulp.task('test', (cb) => {
         '_test',
         '_notify',
         '_kill',
-        () => {
+        (done) => {
+          done();
           return cb();
         }
       )();
     } else {
-      return gulp.series('_notifyCatchError', 'tsc-debug', '_test', '_notify', '_kill', () => {
+      gulp.series('_handleError', 'tsc-debug', '_test', '_notify', '_kill', (done) => {
+        done();
         return cb();
       })();
     }
@@ -33,14 +35,5 @@ gulp.task('test', (cb) => {
 });
 gulp.task(
   'test-rebuild',
-  gulp.series(
-    '_notifyCatchError',
-    'tsc-debug',
-    '_rm-package',
-    '_package-debug',
-    '_unpacked',
-    '_test',
-    '_notify',
-    '_kill'
-  )
+  gulp.series('_handleError', 'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', '_kill')
 );

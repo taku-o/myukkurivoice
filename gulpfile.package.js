@@ -48,8 +48,8 @@ gulp.task('_unpacked:cp', (cb) => {
 gulp.task('_unpacked:cp:store', (cb) => {
   copyUnpackedResources('mas', cb);
 });
-gulp.task('_unpacked', gulp.series('_notifyCatchError', '_unpacked:mkdir', '_unpacked:cp'));
-gulp.task('_unpacked:store', gulp.series('_notifyCatchError', '_unpacked:mkdir:store', '_unpacked:cp:store'));
+gulp.task('_unpacked', gulp.series('_handleError', '_unpacked:mkdir', '_unpacked:cp'));
+gulp.task('_unpacked:store', gulp.series('_handleError', '_unpacked:mkdir:store', '_unpacked:cp:store'));
 
 // package
 gulp.task('_rm-package', () => {
@@ -293,5 +293,5 @@ gulp.task('_package-debug', (cb) => {
 // package
 gulp.task(
   'package',
-  gulp.series('_notifyCatchError', 'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
+  gulp.series('_handleError', 'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
 );
