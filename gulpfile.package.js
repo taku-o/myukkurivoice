@@ -9,14 +9,6 @@ const PACKAGER_CMD = path.join(__dirname, './node_modules/.bin/electron-packager
 const ELECTRON_VERSION = require('./package.json').versions.electron;
 const APP_VERSION = require('./package.json').version;
 
-// package
-gulp.task('package', () => {
-  return gulp.series('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
-    .catch((err) => {
-      return _notifyError();
-    });
-});
-
 // app.asar.unpacked
 function mkdirUnpacked(platform, cb) {
   const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
@@ -44,18 +36,6 @@ function copyUnpackedResources(platform, cb) {
       cb(err);
     });
 }
-gulp.task('_unpacked', () => {
-  return gulp.series('_unpacked:mkdir', '_unpacked:cp')
-    .catch((err) => {
-      return _notifyError();
-    });
-});
-gulp.task('_unpacked:store', () => {
-  return gulp.series('_unpacked:mkdir:store', '_unpacked:cp:store')
-    .catch((err) => {
-      return _notifyError();
-    });
-});
 gulp.task('_unpacked:mkdir', (cb) => {
   mkdirUnpacked('darwin', cb);
 });
@@ -68,6 +48,8 @@ gulp.task('_unpacked:cp', (cb) => {
 gulp.task('_unpacked:cp:store', (cb) => {
   copyUnpackedResources('mas', cb);
 });
+gulp.task('_unpacked', gulp.series('_notifyCatchError', '_unpacked:mkdir', '_unpacked:cp'));
+gulp.task('_unpacked:store', gulp.series('_notifyCatchError', '_unpacked:mkdir:store', '_unpacked:cp:store'));
 
 // package
 gulp.task('_rm-package', () => {
@@ -307,3 +289,7 @@ gulp.task('_package-debug', (cb) => {
     }
   );
 });
+
+// package
+gulp.task('package', gulp.series('_notifyCatchError', 'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill'));
+

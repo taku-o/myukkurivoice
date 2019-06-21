@@ -23,6 +23,7 @@ gulp.task('release', () => {
     throw new Error('branch is selected');
   }
   return gulp.series(
+    '_notifyCatchError',
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -41,10 +42,7 @@ gulp.task('release', () => {
     '_open-appdir',
     '_notify',
     '_kill'
-  )
-  .catch((err) => {
-    return _notifyError();
-  });
+  )();
 });
 
 // staging
@@ -55,6 +53,7 @@ gulp.task('staging', () => {
       .trim();
   }
   return gulp.series(
+    '_notifyCatchError',
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -73,10 +72,7 @@ gulp.task('staging', () => {
     '_open-appdir',
     '_notify',
     '_kill'
-  )
-  .catch((err) => {
-    return _notifyError();
-  });
+  )();
 });
 
 // store
@@ -85,6 +81,7 @@ gulp.task('store', () => {
     throw new Error('branch is selected');
   }
   return gulp.series(
+    '_notifyCatchError',
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -100,10 +97,7 @@ gulp.task('store', () => {
     '_open-appdir:store',
     '_notify',
     '_kill'
-  )
-  .catch((err) => {
-    return _notifyError();
-  });
+  )();
 });
 
 // workdir

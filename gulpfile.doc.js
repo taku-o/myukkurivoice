@@ -155,13 +155,13 @@ gulp.task('_releaseslog', gulp.parallel('_releaseslog:pdf'));
 gulp.task('_version', (cb) => {
   mkdirp('MYukkuriVoice-darwin-x64', (err) => {
     if (err) {
-      gulp.start('_notifyError');
+      _notifyError();
       cb(err);
       return;
     }
     fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
       if (err) {
-        gulp.start('_notifyError');
+        _notifyError();
       }
       cb(err);
     });
@@ -169,12 +169,6 @@ gulp.task('_version', (cb) => {
 });
 
 // _package-contents
-gulp.task('_package-contents', () => {
-  return gulp.series('_package-contents:cp', '_package-contents:rm')
-    .catch((err) => {
-      return _notifyError();
-    });
-});
 gulp.task('_package-contents:cp', () => {
   return gulp
     .src([
@@ -191,6 +185,7 @@ gulp.task('_package-contents:rm', () => {
     'MYukkuriVoice-darwin-x64/version',
   ]);
 });
+gulp.task('_package-contents', gulp.series('_notifyCatchError', '_package-contents:cp', '_package-contents:rm'));
 
 // doc
 gulp.task('doc', gulp.parallel('_readme', '_manual', '_releaseslog', '_version', '_package-contents'));

@@ -3,16 +3,17 @@ const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
 // tasks
-require('./gulpfile.about');
-require('./gulpfile.doc');
-require('./gulpfile.format');
-require('./gulpfile.less');
-require('./gulpfile.lint');
 require('./gulpfile.notify');
+require('./gulpfile.process');
+require('./gulpfile.about');
+require('./gulpfile.less');
+require('./gulpfile.format');
+require('./gulpfile.lint');
+require('./gulpfile.tsc');
+require('./gulpfile.doc');
 require('./gulpfile.package');
 require('./gulpfile.release');
 require('./gulpfile.test');
-require('./gulpfile.tsc');
 
 // default task
 gulp.task('default', (cb) => {
@@ -46,12 +47,7 @@ usage:
 });
 
 // all
-gulp.task('all', () => {
-  return gulp.series('format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill')
-    .catch((err) => {
-      return _notifyError();
-    });
-});
+gulp.task('all', gulp.series('_notifyCatchError', 'format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill'));
 
 // table of contents
 gulp.task('toc', () => {
@@ -63,18 +59,6 @@ gulp.task('toc', () => {
 
 // clean
 gulp.task('clean', gulp.parallel('_rm-js', '_rm-package', '_rm-workdir'));
-
-// kill
-// for fast exit
-gulp.task('_kill', () => {
-  gulp.on('stop', () => {
-    process.exit(0);
-  });
-  gulp.on('err', () => {
-    process.exit(1);
-  });
-  return true;
-});
 
 // run app
 gulp.task('app', gulp.series('tsc-debug', (cb) => {

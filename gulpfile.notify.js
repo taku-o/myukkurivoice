@@ -9,10 +9,18 @@ gulp.task('_notify', () => {
     sound: 'Glass',
   });
 });
-gulp.task('_notifyError', () => {
+function _notifyError() {
   return notifier.notify({
     title: 'gulp-task',
     message: 'error.',
     sound: 'Frog',
   });
+}
+gulp.task('_notifyCatchError', (cb) => {
+  gulp.on('err', () => {
+    _notifyError();
+  });
+  return cb();
 });
+
+
