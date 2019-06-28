@@ -12,9 +12,6 @@ const wrapper = require('gulp-wrapper');
 
 const APP_VERSION = require('./package.json').version;
 
-// task dependency
-var _notifyError = require('./gulpfile.notify')._notifyError;
-
 // readme
 gulp.task('_readme:html:css', () => {
   return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
@@ -166,13 +163,13 @@ gulp.task('_releaseslog', gulp.parallel('_releaseslog:pdf'));
 gulp.task('_version', (cb) => {
   mkdirp('MYukkuriVoice-darwin-x64', (err) => {
     if (err) {
-      _notifyError();
+      gulp.task('_notifyError')();
       cb(err);
       return;
     }
     fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
       if (err) {
-        _notifyError();
+        gulp.task('_notifyError')();
       }
       cb(err);
     });

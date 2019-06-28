@@ -10,13 +10,14 @@ gulp.task('_notify', (cb) => {
   });
   return cb();
 });
-function _notifyError() {
-  return notifier.notify({
+gulp.task('_notifyError', (cb) => {
+  notifier.notify({
     title: 'gulp-task',
     message: 'error.',
     sound: 'Frog',
   });
-}
+  return cb();
+});
 gulp.task('_handleError', (cb) => {
   //gulp.on('err', () => {
   //  _notifyError();
@@ -24,5 +25,3 @@ gulp.task('_handleError', (cb) => {
   return cb();
 });
 
-// exports
-exports._notifyError = _notifyError;

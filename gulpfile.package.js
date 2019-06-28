@@ -1,4 +1,5 @@
 const del = require('del');
+const ehandler = require('gulp-task-err-handler');
 const exec = require('child_process').exec;
 const fse = require('fs-extra');
 const gulp = require('gulp');
@@ -293,5 +294,8 @@ gulp.task('_package-debug', (cb) => {
 // package
 gulp.task(
   'package',
-  gulp.series('_handleError', 'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
+  ehandler(gulp.series('_handleError', 'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill'),
+  (err) => {
+    gulp.task('_notifyError')();
+  })
 );
