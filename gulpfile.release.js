@@ -1,4 +1,5 @@
 const argv = require('yargs').argv;
+const ehandler = require('gulp-task-err-handler');
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 const git = require('gulp-git');
@@ -197,8 +198,7 @@ gulp.task('_open-appdir:store', (cb) => {
 // release
 gulp.task(
   'release',
-  gulp.series(
-    '_handleError',
+  ehandler(gulp.series(
     _mustMasterBranch,
     '_rm-workdir',
     '_mk-workdir',
@@ -218,14 +218,16 @@ gulp.task(
     '_open-appdir',
     '_notify',
     '_kill'
-  )
+  ),
+  (err) => {
+    gulp.task('_notifyError')();
+  })
 );
 
 // staging
 gulp.task(
   'staging',
-  gulp.series(
-    '_handleError',
+  ehandler(gulp.series(
     _detectBranch,
     '_rm-workdir',
     '_mk-workdir',
@@ -245,14 +247,16 @@ gulp.task(
     '_open-appdir',
     '_notify',
     '_kill'
-  )
+  ),
+  (err) => {
+    gulp.task('_notifyError')();
+  })
 );
 
 // store
 gulp.task(
   'store',
-  gulp.series(
-    '_handleError',
+  ehandler(gulp.series(
     _mustMasterBranch,
     '_rm-workdir',
     '_mk-workdir',
@@ -269,5 +273,8 @@ gulp.task(
     '_open-appdir:store',
     '_notify',
     '_kill'
-  )
+  ),
+  (err) => {
+    gulp.task('_notifyError')();
+  })
 );

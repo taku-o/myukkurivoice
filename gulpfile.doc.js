@@ -1,4 +1,5 @@
 const del = require('del');
+const ehandler = require('gulp-task-err-handler');
 const finclude = require('gulp-file-include');
 const fs = require('fs');
 const gulp = require('gulp');
@@ -199,7 +200,11 @@ gulp.task('_package-contents:rm', () => {
     {allowEmpty: true}
   );
 });
-gulp.task('_package-contents', gulp.series('_handleError', '_package-contents:cp', '_package-contents:rm'));
+gulp.task('_package-contents', ehandler(gulp.series('_package-contents:cp', '_package-contents:rm'),
+  (err) => {
+    gulp.task('_notifyError')();
+  })
+);
 
 // doc
 gulp.task('doc', gulp.parallel('_readme', '_manual', '_releaseslog', '_version', '_package-contents'));

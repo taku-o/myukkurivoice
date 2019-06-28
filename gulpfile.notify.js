@@ -18,10 +18,4 @@ gulp.task('_notifyError', (cb) => {
   });
   return cb();
 });
-gulp.task('_handleError', (cb) => {
-  //gulp.on('err', () => {
-  //  _notifyError();
-  //});
-  return cb();
-});
 
