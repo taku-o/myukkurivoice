@@ -1,8 +1,8 @@
 const del = require('del');
-const ehandler = require('gulp-task-err-handler');
 const exec = require('child_process').exec;
 const fse = require('fs-extra');
 const gulp = require('gulp');
+const handleError = require('gulp-task-err-handler');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
@@ -49,13 +49,15 @@ gulp.task('_unpacked:cp', (cb) => {
 gulp.task('_unpacked:cp:store', (cb) => {
   copyUnpackedResources('mas', cb);
 });
-gulp.task('_unpacked', ehandler(gulp.series('_unpacked:mkdir', '_unpacked:cp'),
-  (err) => {
+gulp.task(
+  '_unpacked',
+  handleError(gulp.series('_unpacked:mkdir', '_unpacked:cp'), (err) => {
     gulp.task('_notifyError')();
   })
 );
-gulp.task('_unpacked:store', ehandler(gulp.series('_unpacked:mkdir:store', '_unpacked:cp:store'),
-  (err) => {
+gulp.task(
+  '_unpacked:store',
+  handleError(gulp.series('_unpacked:mkdir:store', '_unpacked:cp:store'), (err) => {
     gulp.task('_notifyError')();
   })
 );
@@ -302,8 +304,7 @@ gulp.task('_package-debug', (cb) => {
 // package
 gulp.task(
   'package',
-  ehandler(gulp.series('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill'),
-  (err) => {
+  handleError(gulp.series('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill'), (err) => {
     gulp.task('_notifyError')();
   })
 );
