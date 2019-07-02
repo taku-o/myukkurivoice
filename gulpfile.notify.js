@@ -10,11 +10,13 @@ gulp.task('_notify', (cb) => {
   });
   return cb();
 });
-gulp.task('_notifyError', (cb) => {
-  notifier.notify({
-    title: 'gulp-task',
-    message: 'error.',
-    sound: 'Frog',
+gulp.task('_notifyError', () => {
+  return new Promise((resolve, reject) => {
+    notifier.notify({
+      title: 'gulp-task',
+      message: 'error.',
+      sound: 'Frog',
+    });
+    resolve();
   });
-  return cb();
 });
