@@ -1,4 +1,4 @@
-const gulp = require('gulp');
+var gulp = gulp || require('gulp');
 const markdownHtml = require('gulp-markdown');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');

@@ -1,4 +1,4 @@
-const gulp = require('gulp');
+var gulp = gulp || require('gulp');
 const less = require('gulp-less');
 
 // less

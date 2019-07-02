@@ -1,5 +1,4 @@
-const gulp = require('gulp');
-const handleError = require('gulp-task-err-handler');
+var gulp = gulp || require('gulp');
 const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
@@ -48,12 +47,7 @@ usage:
 });
 
 // all
-gulp.task(
-  'all',
-  handleError(gulp.series('format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill'), (err) => {
-    gulp.task('_notifyError')();
-  })
-);
+gulp.task('all', gulp.series('_handleError', 'format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill'));
 
 // table of contents
 gulp.task('toc', () => {

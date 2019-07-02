@@ -1,8 +1,7 @@
+var gulp = gulp || require('gulp');
 const del = require('del');
 const finclude = require('gulp-file-include');
 const fs = require('fs');
-const gulp = require('gulp');
-const handleError = require('gulp-task-err-handler');
 const markdownPdf = require('gulp-markdown-pdf');
 const markdownHtml = require('gulp-markdown');
 const mkdirp = require('mkdirp');
@@ -200,12 +199,7 @@ gulp.task('_package-contents:rm', () => {
     {allowEmpty: true}
   );
 });
-gulp.task(
-  '_package-contents',
-  handleError(gulp.series('_package-contents:cp', '_package-contents:rm'), (err) => {
-    gulp.task('_notifyError')();
-  })
-);
+gulp.task('_package-contents', gulp.series('_handleError', '_package-contents:cp', '_package-contents:rm'));
 
 // doc
 gulp.task('doc', gulp.parallel('_readme', '_manual', '_releaseslog', '_version', '_package-contents'));

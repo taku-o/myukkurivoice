@@ -1,9 +1,8 @@
+var gulp = gulp || require('gulp');
 const argv = require('yargs').argv;
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 const git = require('gulp-git');
-const gulp = require('gulp');
-const handleError = require('gulp-task-err-handler');
 const install = require('gulp-install');
 const mkdirp = require('mkdirp');
 const path = require('path');
@@ -198,89 +197,77 @@ gulp.task('_open-appdir:store', (cb) => {
 // release
 gulp.task(
   'release',
-  handleError(
-    gulp.series(
-      _mustMasterBranch,
-      '_rm-workdir',
-      '_mk-workdir',
-      '_ch-workdir',
-      '_git-clone',
-      '_ch-repodir',
-      '_git-submodule',
-      '_npm-install',
-      'tsc',
-      '_rm-package',
-      '_package-release',
-      '_unpacked',
-      'doc',
-      '_zip-app',
-      '_codesign',
-      '_zip-app-signed',
-      '_open-appdir',
-      '_notify',
-      '_kill'
-    ),
-    (err) => {
-      gulp.task('_notifyError')();
-    }
+  gulp.series(
+    '_handleError',
+    _mustMasterBranch,
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release',
+    '_unpacked',
+    'doc',
+    '_zip-app',
+    '_codesign',
+    '_zip-app-signed',
+    '_open-appdir',
+    '_notify',
+    '_kill'
   )
 );
 
 // staging
 gulp.task(
   'staging',
-  handleError(
-    gulp.series(
-      _detectBranch,
-      '_rm-workdir',
-      '_mk-workdir',
-      '_ch-workdir',
-      '_git-clone',
-      '_ch-repodir',
-      '_git-submodule',
-      '_npm-install',
-      'tsc',
-      '_rm-package',
-      '_package-release',
-      '_unpacked',
-      'doc',
-      '_zip-app',
-      //'_codesign',
-      //'_zip-app-signed',
-      '_open-appdir',
-      '_notify',
-      '_kill'
-    ),
-    (err) => {
-      gulp.task('_notifyError')();
-    }
+  gulp.series(
+    '_handleError',
+    _detectBranch,
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release',
+    '_unpacked',
+    'doc',
+    '_zip-app',
+    //'_codesign',
+    //'_zip-app-signed',
+    '_open-appdir',
+    '_notify',
+    '_kill'
   )
 );
 
 // store
 gulp.task(
   'store',
-  handleError(
-    gulp.series(
-      _mustMasterBranch,
-      '_rm-workdir',
-      '_mk-workdir',
-      '_ch-workdir',
-      '_git-clone',
-      '_ch-repodir',
-      '_git-submodule',
-      '_npm-install',
-      'tsc',
-      '_rm-package',
-      '_package-release:store',
-      '_unpacked:store',
-      '_codesign:store',
-      '_open-appdir:store',
-      '_notify',
-      '_kill'
-    ),
-    (err) => {
-      gulp.task('_notifyError')();
-    }
+  gulp.series(
+    '_handleError',
+    _mustMasterBranch,
+    '_rm-workdir',
+    '_mk-workdir',
+    '_ch-workdir',
+    '_git-clone',
+    '_ch-repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    '_rm-package',
+    '_package-release:store',
+    '_unpacked:store',
+    '_codesign:store',
+    '_open-appdir:store',
+    '_notify',
+    '_kill'
   )
 );
