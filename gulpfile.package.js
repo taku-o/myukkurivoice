@@ -1,24 +1,13 @@
+var gulp = gulp || require('gulp');
 const del = require('del');
 const exec = require('child_process').exec;
 const fse = require('fs-extra');
-const gulp = require('gulp');
 const mkdirp = require('mkdirp');
 const path = require('path');
-const runSequence = require('run-sequence');
 
 const PACKAGER_CMD = path.join(__dirname, './node_modules/.bin/electron-packager');
 const ELECTRON_VERSION = require('./package.json').versions.electron;
 const APP_VERSION = require('./package.json').version;
-
-// package
-gulp.task('package', (cb) => {
-  runSequence('tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill', (err) => {
-    if (err) {
-      gulp.start('_notifyError');
-    }
-    cb(err);
-  });
-});
 
 // app.asar.unpacked
 function mkdirUnpacked(platform, cb) {
@@ -47,22 +36,6 @@ function copyUnpackedResources(platform, cb) {
       cb(err);
     });
 }
-gulp.task('_unpacked', (cb) => {
-  runSequence('_unpacked:mkdir', '_unpacked:cp', (err) => {
-    if (err) {
-      gulp.start('_notifyError');
-    }
-    cb(err);
-  });
-});
-gulp.task('_unpacked:store', (cb) => {
-  runSequence('_unpacked:mkdir:store', '_unpacked:cp:store', (err) => {
-    if (err) {
-      gulp.start('_notifyError');
-    }
-    cb(err);
-  });
-});
 gulp.task('_unpacked:mkdir', (cb) => {
   mkdirUnpacked('darwin', cb);
 });
@@ -75,6 +48,8 @@ gulp.task('_unpacked:cp', (cb) => {
 gulp.task('_unpacked:cp:store', (cb) => {
   copyUnpackedResources('mas', cb);
 });
+gulp.task('_unpacked', gulp.series('_handleError', '_unpacked:mkdir', '_unpacked:cp'));
+gulp.task('_unpacked:store', gulp.series('_handleError', '_unpacked:mkdir:store', '_unpacked:cp:store'));
 
 // package
 gulp.task('_rm-package', () => {
@@ -314,3 +289,9 @@ gulp.task('_package-debug', (cb) => {
     }
   );
 });
+
+// package
+gulp.task(
+  'package',
+  gulp.series('_handleError', 'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
+);

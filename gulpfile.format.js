@@ -1,11 +1,9 @@
+var gulp = gulp || require('gulp');
 const eslint = require('gulp-eslint');
-const gulp = require('gulp');
 const prettier = require('gulp-prettier');
 
 // format
-gulp.task('format', ['_format-json', '_format-js', '_format-ts', '_format-md', '_format-less']);
 // format-ts
-gulp.task('_format-ts', ['_format-ts-eslint', '_format-ts-test']);
 gulp.task('_format-ts-eslint', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
@@ -33,6 +31,7 @@ gulp.task('_format-ts-test', () => {
     )
     .pipe(gulp.dest('.'));
 });
+gulp.task('_format-ts', gulp.parallel('_format-ts-eslint', '_format-ts-test'));
 // format-js
 gulp.task('_format-js', () => {
   return gulp
@@ -113,3 +112,4 @@ gulp.task('_format-md', () => {
     )
     .pipe(gulp.dest('.'));
 });
+gulp.task('format', gulp.parallel('_format-json', '_format-js', '_format-ts', '_format-md', '_format-less'));
