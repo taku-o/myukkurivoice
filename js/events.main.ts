@@ -9,7 +9,7 @@ class MainShortcutEvent implements yubo.MainShortcutEvent {
     private reducer: yubo.MainReducer
   ) {}
   link(scope: ng.IScope): void {
-    ipcRenderer().on('shortcut', (event: Electron.Event, action: string) => {
+    ipcRenderer().on('shortcut', (event: Electron.Event, action: string, numKey: number) => {
       switch (action) {
         case 'play':
           document.getElementById('play').click();
@@ -37,6 +37,9 @@ class MainShortcutEvent implements yubo.MainShortcutEvent {
           break;
         case 'swichPreviousConfig':
           this.reducer.onShortcut(action);
+          break;
+        case 'swichNumberConfig':
+          this.reducer.onShortcut(action, numKey);
           break;
         case 'encode':
           document.getElementById('encode').click();

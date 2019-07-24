@@ -74,6 +74,37 @@ class FnWindow implements yubo.FnWindow {
       myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig');
     });
 
+    localShortcut().register(myApp.mainWindow, 'Command+0', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 0);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+1', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 1);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+2', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 2);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+3', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 3);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+4', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 4);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+5', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 5);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+6', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 6);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+7', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 7);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+8', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 8);
+    });
+    localShortcut().register(myApp.mainWindow, 'Command+9', () => {
+      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 9);
+    });
+
     // main window event
     myApp.mainWindow.webContents.on('did-finish-load', () => {
       // receive drop file to app icon event

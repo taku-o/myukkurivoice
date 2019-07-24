@@ -501,7 +501,7 @@ declare namespace yubo {
   export interface MainReducer extends yubo.Reducer {
     appCfg: yubo.AppCfg;
     //private AudioService: yubo.IAudioService;
-    onShortcut(action: string): void;
+    onShortcut(action: string, numKey?: number): void;
     onMenu(action: string): void;
     onDropTextFile(filePath: string): void;
     onRecentDocument(filePath: string): void;
