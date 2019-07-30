@@ -42,7 +42,7 @@ class MainReducer implements yubo.MainReducer {
   }
 
   // event
-  onShortcut(action: string): void {
+  onShortcut(action: string, numKey: number): void {
     switch (action) {
       case 'putVoiceName':
         this.putVoiceName();
@@ -66,6 +66,20 @@ class MainReducer implements yubo.MainReducer {
             this.store.curYvoice = this.store.yvoiceList[indexToP - 1];
           } else {
             this.store.curYvoice = this.store.yvoiceList[this.store.yvoiceList.length - 1];
+          }
+          this.store.display = 'main';
+          this.notifyUpdates({curYvoice: this.store.curYvoice, display: this.store.display});
+        }
+        break;
+      case 'swichNumberConfig':
+        {
+          if (numKey == undefined) {
+            break;
+          }
+          if (this.store.yvoiceList.length > numKey) {
+            this.store.curYvoice = this.store.yvoiceList[numKey];
+          } else {
+            break;
           }
           this.store.display = 'main';
           this.notifyUpdates({curYvoice: this.store.curYvoice, display: this.store.display});
