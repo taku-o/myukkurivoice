@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="dictApp" menu shortcut>
+<html ng-app="dictApp" menu shortcut shortcut-hint>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
   <link rel="stylesheet" href="node_modules/angular-ui-grid/ui-grid.min.css">
+  <link rel="stylesheet" href="css/shortcut-hint.css">
   <link rel="stylesheet" href="css/dict.css">
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/intro.js/minified/intro.min.js"></script>
@@ -23,6 +24,7 @@
   <script src="js/services.dict.js"></script>
   <script src="js/stores.dict.js"></script>
   <script src="js/reducers.dict.js"></script>
+  <script src="js/event.shortcut-hint.js"></script>
   <script src="js/events.dict.js"></script>
   <script src="js/ctrl.dict.js"></script>
   <script src="js/apps.dict.js"></script>
@@ -42,6 +44,7 @@
       <div class="btn-group pull-right">
         <button id="append-record" class="btn btn-large btn-default" ng-click="ctrl.add()">
           <span class="icon icon-plus-circled"></span>追加
+          <label class="shortcut-hint">N</label>
         </button>
         <button id="delete-record" class="btn btn-large btn-default" ng-click="ctrl.remove()">
           <span class="icon icon-minus-circled"></span>削除
@@ -57,7 +60,7 @@
       <div class="pane-sm sidebar">
         <ul class="list-group">
           <!-- save -->
-          <li class="list-group-item" id="save" ng-click="ctrl.save()">
+          <li class="list-group-item shortcut-hint-box" id="save" ng-click="ctrl.save()">
             <img class="img-circle media-object pull-left" src="images/twotone_save_black_36dp.png" width="32" height="32">
             <div class="media-body">
               <strong>Save</strong>
@@ -67,6 +70,7 @@
                 辞書は更新しません。
               </p>
             </div>
+            <label class="shortcut-hint">S</label>
           </li>
           <!-- cancel -->
           <li class="list-group-item" id="cancel" ng-click="ctrl.cancel()">

@@ -400,6 +400,7 @@ declare namespace yubo {
   export interface TxtDroppable extends ng.IDirective {}
   export interface StaticInclude extends ng.IDirective {}
   export interface AfterRender extends ng.IDirective {}
+  export interface ShortcutHintEvent extends ng.IDirective {}
   export interface MainShortcutEvent extends ng.IDirective {}
   export interface MainMenuEvent extends ng.IDirective {}
   export interface MainDropTextFileEvent extends ng.IDirective {}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="mainApp" shortcut menu drop-text-file recent-document after-render>
+<html ng-app="mainApp" shortcut shortcut-hint menu drop-text-file recent-document after-render>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
   <link rel="stylesheet" href="css/range.css">
+  <link rel="stylesheet" href="css/shortcut-hint.css">
   <link rel="stylesheet" href="css/main.css">
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/angular-input-highlight/angular-input-highlight.js"></script>
@@ -29,6 +30,7 @@
   <script src="js/directives.main.js"></script>
   <script src="js/stores.main.js"></script>
   <script src="js/reducers.main.js"></script>
+  <script src="js/event.shortcut-hint.js"></script>
   <script src="js/events.main.js"></script>
   <script src="js/ctrl.main.js"></script>
   <script src="js/apps.main.js"></script>
@@ -41,12 +43,15 @@
     <div class="btn-group" id="btn-group-audio">
       <button class="btn btn-large btn-default" id="play" ng-click="ctrl.play()" ng-disabled="(!ctrl.store.yinput.source) && (!ctrl.store.yinput.encoded)">
         <span class="icon icon-play"></span>再生
+        <label class="shortcut-hint">P</label>
       </button>
       <button class="btn btn-large btn-default" id="stop" ng-click="ctrl.stop()">
         <span class="icon icon-stop"></span>停止
+        <label class="shortcut-hint">W</label>
       </button>
       <button class="btn btn-large btn-default" id="record" ng-click="ctrl.record()" ng-disabled="(!ctrl.store.yinput.source) && (!ctrl.store.yinput.encoded)">
         <span class="icon icon-record"></span>記録
+        <label class="shortcut-hint">S</label>
       </button>
     </div>
 
@@ -79,7 +84,7 @@
       <li class="list-group-header">
         <input class="form-control" id="filter-text" type="search" ng-model='filterText.name' placeholder="設定一覧絞り込み">
       </li>
-      <li class="list-group-item voice-config-item" ng-repeat="yvoiceItem in ctrl.store.yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == ctrl.store.curYvoice.id}" ng-attr-id="{{yvoiceItem.id}}">
+      <li class="list-group-item voice-config-item shortcut-hint-box" ng-repeat="yvoiceItem in ctrl.store.yvoiceList | filter:filterText track by yvoiceItem.id" ng-class="{active:yvoiceItem.id == ctrl.store.curYvoice.id}" ng-attr-id="{{yvoiceItem.id}}">
         <div class="media-body" ng-click="ctrl.select($index)">
           <strong><span ng-bind="$index"></span>:<span ng-bind="yvoiceItem.name"></span></strong>
           <div class="btn-group pull-right">
@@ -91,6 +96,7 @@
             </button>
           </div>
         </div>
+        <label class="shortcut-hint" ng-bind="$index"></label>
       </li>
       <li class="list-group-item">
         <div class="btn-group pull-right">

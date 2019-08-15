@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html ng-app="helpApp" urls shortcut>
+<html ng-app="helpApp" urls shortcut shortcut-hint>
 <head>
   <meta charset="UTF-8">
   <meta name="fragment" content="!">
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
   <title>ヘルプビューワ</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
+  <link rel="stylesheet" href="css/shortcut-hint.css">
   <link rel="stylesheet" href="css/help.css">
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="js/directive.include.js"></script>
   <script src="js/stores.help.js"></script>
   <script src="js/reducers.help.js"></script>
+  <script src="js/event.shortcut-hint.js"></script>
   <script src="js/events.help.js"></script>
   <script src="js/ctrl.help.js"></script>
   <script src="js/apps.help.js"></script>
@@ -92,8 +94,9 @@
       <span class="nav-group-item navs-item" id="menu-expand" ng-class="{active:ctrl.store.display == 'expand'}" ng-click="ctrl.page('expand')">
         <span class="icon icon-map"></span>ヘルプを全て展開
       </span>
-      <span class="nav-group-item navs-item" id="menu-search" ng-click="ctrl.openSearchForm()">
+      <span class="nav-group-item navs-item shortcut-hint-box" id="menu-search" ng-click="ctrl.openSearchForm()">
         <span class="icon icon-search"></span>ヘルプ検索
+        <label class="shortcut-hint-helpmenu">F</label>
       </span>
     </nav>
   </div>
