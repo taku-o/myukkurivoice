@@ -9,13 +9,22 @@ class ShortcutHintEvent implements yubo.ShortcutHintEvent {
     window.addEventListener('keydown', (e) => {
       if (e.metaKey) {
         this.hintDisplayed = true;
-        document.documentElement.style.setProperty('--shortcut-hint-display', 'show');
+        document.documentElement.style.setProperty('--shortcut-hint-delay', '0.7s');
+        document.documentElement.style.setProperty('--shortcut-hint-opacity', '1');
       }
     });
     window.addEventListener('keyup', (e) => {
       if (this.hintDisplayed) {
         this.hintDisplayed = false;
-        document.documentElement.style.setProperty('--shortcut-hint-display', 'none');
+        document.documentElement.style.setProperty('--shortcut-hint-delay', '0s');
+        document.documentElement.style.setProperty('--shortcut-hint-opacity', '0');
+      }
+    });
+    window.addEventListener('blur', (e) => {
+      if (this.hintDisplayed) {
+        this.hintDisplayed = false;
+        document.documentElement.style.setProperty('--shortcut-hint-delay', '0s');
+        document.documentElement.style.setProperty('--shortcut-hint-opacity', '0');
       }
     });
   }

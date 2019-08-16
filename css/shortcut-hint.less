@@ -1,5 +1,6 @@
 :root {
-    --shortcut-hint-display: none;
+    --shortcut-hint-delay: 0.7s;
+    --shortcut-hint-opacity: 0;
 }
 
 .shortcut-hint-box {
@@ -18,7 +19,8 @@
     color: white;
     background-color: black;
     border-radius: 2px;
-    display: var(--shortcut-hint-display);
+    transition-delay: var(--shortcut-hint-delay);
+    opacity: var(--shortcut-hint-opacity);
 }
 .shortcut-hint-textarea {
     position: absolute;
@@ -33,7 +35,8 @@
     color: white;
     background-color: black;
     border-radius: 2px;
-    display: var(--shortcut-hint-display);
+    transition-delay: var(--shortcut-hint-delay);
+    opacity: var(--shortcut-hint-opacity);
 }
 .shortcut-hint-helpmenu {
     position: absolute;
@@ -48,5 +51,6 @@
     color: white;
     background-color: black;
     border-radius: 2px;
-    display: var(--shortcut-hint-display);
+    transition-delay: var(--shortcut-hint-delay);
+    opacity: var(--shortcut-hint-opacity);
 }
