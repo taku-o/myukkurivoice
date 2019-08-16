@@ -361,6 +361,10 @@ declare namespace yubo {
     //private correctBufferLength(buffer: Float32Array): number;
     //private buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer;
   }
+  // service.audio-analyser.ts
+  export interface AudioAnalyzerService {
+    report(data: Uint8Array): void;
+  }
   // service.subtitle.ts
   export interface TextSubtitleService {
     //private readonly waveExt: string;

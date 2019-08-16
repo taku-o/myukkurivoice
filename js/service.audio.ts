@@ -8,7 +8,7 @@ var _fcpxRoleEncoder: any, fcpxRoleEncoder = () => { _fcpxRoleEncoder = _fcpxRol
 var TEST = process.env.NODE_ENV == 'test';
 
 // angular audio service
-angular.module('AudioServices', ['MessageServices', 'UtilServices']);
+angular.module('AudioServices', ['MessageServices', 'AudioAnalyzerServices', 'UtilServices']);
 
 // Audio base AudioService
 class AudioService1 implements yubo.AudioService1 {
@@ -109,6 +109,7 @@ class AudioService2 implements yubo.AudioService2 {
   constructor(
     private $q: ng.IQService,
     private MessageService: yubo.MessageService,
+    private AudioAnalyzerService: yubo.AudioAnalyzerService,
     private AppUtilService: yubo.AppUtilService
   ) {}
 
@@ -177,6 +178,7 @@ class AudioService2 implements yubo.AudioService2 {
     const processNodeList: AudioNode[] = [];
     let sourceNode: AudioBufferSourceNode = null;
     let audioPlayNode: AudioBufferSourceNode = null;
+    let analyserNode: AnalyserNode = null;
     audioCtx.decodeAudioData(aBuffer).then((decodedData: AudioBuffer) => {
       // create long size OfflineAudioContext. trim this buffer length lator.
       const prate =
@@ -207,6 +209,9 @@ class AudioService2 implements yubo.AudioService2 {
       const gainNode: GainNode = offlineCtx.createGain();
       gainNode.gain.value = options.volume;
       processNodeList.push(gainNode);
+      // analyzer
+      analyserNode = offlineCtx.createAnalyser();
+      processNodeList.push(analyserNode);
 
       // connect
       let lastNode: AudioNode = sourceNode;
@@ -241,6 +246,11 @@ class AudioService2 implements yubo.AudioService2 {
       }); // offlineCtx.startRendering
     })
     .then((audioParams: {duration: number}) => {
+      // analyser
+      let data = new Uint8Array(analyserNode.frequencyBinCount);
+      analyserNode.getByteFrequencyData(data);
+      this.AudioAnalyzerService.report(data);
+
       this.runningNode = null;
       d.resolve(audioParams);
     })
@@ -287,6 +297,7 @@ class AudioService2 implements yubo.AudioService2 {
     const audioCtx = new window.AudioContext();
     const processNodeList: AudioNode[] = [];
     let sourceNode: AudioBufferSourceNode = null;
+    let analyserNode: AnalyserNode = null;
     audioCtx.decodeAudioData(aBuffer).then((decodedData: AudioBuffer) => {
       // create long size OfflineAudioContext. trim this buffer length lator.
       const prate =
@@ -317,6 +328,9 @@ class AudioService2 implements yubo.AudioService2 {
       const gainNode: GainNode = offlineCtx.createGain();
       gainNode.gain.value = options.volume;
       processNodeList.push(gainNode);
+      // analyzer
+      analyserNode = offlineCtx.createAnalyser();
+      processNodeList.push(analyserNode);
 
       // connect
       let lastNode: AudioNode = sourceNode;
@@ -365,6 +379,11 @@ class AudioService2 implements yubo.AudioService2 {
       }); // offlineCtx.startRendering
     })
     .then((audioParams: {duration: number}) => {
+      // analyser
+      let data = new Uint8Array(analyserNode.frequencyBinCount);
+      analyserNode.getByteFrequencyData(data);
+      this.AudioAnalyzerService.report(data);
+
       d.resolve(audioParams);
     })
     .catch((err: Error) => {
@@ -389,6 +408,7 @@ angular.module('AudioServices')
   .service('AudioService2', [
     '$q',
     'MessageService',
+    'AudioAnalyzerService',
     'AppUtilService',
     AudioService2,
   ]);

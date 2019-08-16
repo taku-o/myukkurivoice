@@ -3,6 +3,7 @@
 angular.module('mainServices', [
   'AquesServices',
   'AudioServices',
+  'AudioAnalyzerServices',
   'CommandServices',
   'DataServices',
   'IntroServices',
