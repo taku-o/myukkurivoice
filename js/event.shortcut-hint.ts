@@ -9,7 +9,7 @@ class ShortcutHintEvent implements yubo.ShortcutHintEvent {
     window.addEventListener('keydown', (e) => {
       if (e.metaKey) {
         this.hintDisplayed = true;
-        document.documentElement.style.setProperty('--shortcut-hint-delay', '0.7s');
+        document.documentElement.style.setProperty('--shortcut-hint-delay', '1s');
         document.documentElement.style.setProperty('--shortcut-hint-opacity', '1');
       }
     });

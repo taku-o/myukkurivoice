@@ -1,5 +1,5 @@
 :root {
-  --shortcut-hint-delay: 0.7s;
+  --shortcut-hint-delay: 1s;
   --shortcut-hint-opacity: 0;
 }
 .shortcut-hint-box {
