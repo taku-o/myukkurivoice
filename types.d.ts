@@ -363,6 +363,7 @@ declare namespace yubo {
   }
   // service.audio-analyser.ts
   export interface AudioAnalyzerService {
+    readonly FFT_SIZE: number;
     report(data: Uint8Array): void;
   }
   // service.subtitle.ts

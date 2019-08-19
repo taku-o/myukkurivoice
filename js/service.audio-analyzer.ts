@@ -4,10 +4,16 @@ angular.module('AudioAnalyzerServices', []);
 
 // Web Audio API base AudioService
 class AudioAnalyzerService implements yubo.AudioAnalyzerService {
+  public readonly FFT_SIZE: number = 1024;
   constructor(
   ) {}
 
-  report(data: Uint8Array): void {
+  report(audioData: Uint8Array): void {
+    // trim empty audio area
+    const length = this.trimmedLength(audioData);
+    const data = audioData.slice(0, length);
+
+    // draw canvas
     const canvas = document.getElementById('canvas') as any;
     const ctx = canvas.getContext('2d');
 
@@ -18,12 +24,12 @@ class AudioAnalyzerService implements yubo.AudioAnalyzerService {
     ctx.strokeStyle = 'rgb(0, 0, 0)';
 
     ctx.beginPath();
-    const sliceWidth = canvas.width * 1.0 / data.length;
+    const sliceWidth = canvas.width * 1.0 / length;
 
     let x = 0;
-    for (let i = 0; i < data.length; i++) {
-      let v = data[i] / 128.0;
-      let y = v * canvas.height / 2;
+    for (let i = 0; i < length; i++) {
+      let v = data[i] / this.FFT_SIZE;
+      let y = v * canvas.height;
 
       if (i === 0) {
         ctx.moveTo(x, y);
@@ -35,6 +41,17 @@ class AudioAnalyzerService implements yubo.AudioAnalyzerService {
 
     ctx.lineTo(canvas.width, canvas.height / 2);
     ctx.stroke();
+  }
+
+  private trimmedLength(buffer: Uint8Array): number {
+    let pos = 0;
+    for (let i = buffer.length - 1; i >= 0; i--) {
+      if (buffer[i] !== 0x00) {
+        pos = i;
+        break;
+      }
+    }
+    return pos;
   }
 }
 angular.module('AudioAnalyzerServices')

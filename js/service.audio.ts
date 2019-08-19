@@ -211,6 +211,7 @@ class AudioService2 implements yubo.AudioService2 {
       processNodeList.push(gainNode);
       // analyzer
       analyserNode = offlineCtx.createAnalyser();
+      analyserNode.fftSize = this.AudioAnalyzerService.FFT_SIZE;
       processNodeList.push(analyserNode);
 
       // connect
@@ -330,6 +331,7 @@ class AudioService2 implements yubo.AudioService2 {
       processNodeList.push(gainNode);
       // analyzer
       analyserNode = offlineCtx.createAnalyser();
+      analyserNode.fftSize = this.AudioAnalyzerService.FFT_SIZE;
       processNodeList.push(analyserNode);
 
       // connect
