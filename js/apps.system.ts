@@ -21,7 +21,7 @@ if (CONSOLELOG) {
 }
 
 // angular app
-angular.module('systemApp', ['systemControllers'])
+angular.module('systemApp', ['systemControllers', 'shortcutHintEvents'])
   // config
   .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);

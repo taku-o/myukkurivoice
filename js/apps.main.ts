@@ -13,7 +13,7 @@ if (DEBUG) {
 }
 
 // angular app
-angular.module('mainApp', ['mainControllers', 'mainEvents'])
+angular.module('mainApp', ['mainControllers', 'mainEvents', 'shortcutHintEvents'])
   // config
   .config(['$qProvider', '$compileProvider', ($qProvider: ng.IQProvider, $compileProvider: ng.ICompileProvider) => {
     $qProvider.errorOnUnhandledRejections(false);

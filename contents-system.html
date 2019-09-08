@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html ng-app="systemApp">
+<html ng-app="systemApp" shortcut-hint>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
   <title>環境設定</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
+  <link rel="stylesheet" href="css/shortcut-hint.css">
   <link rel="stylesheet" href="css/system.css">
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="js/service.license.js"></script>
   <script src="js/stores.system.js"></script>
   <script src="js/reducers.system.js"></script>
+  <script src="js/event.shortcut-hint.js"></script>
   <script src="js/ctrl.system.js"></script>
   <script src="js/apps.system.js"></script>
 </head>
@@ -67,7 +69,10 @@
 
 <footer class="toolbar toolbar-footer">
   <div class="toolbar-actions">
-    <button class="btn btn-large btn-default" id="cancel" ng-click="ctrl.cancel()">キャンセル・閉じる</button>
+    <button class="btn btn-large btn-default shortcut-hint-box" id="cancel" ng-click="ctrl.cancel()">
+      キャンセル・閉じる
+      <label class="shortcut-hint">W</label>
+    </button>
     <button class="btn btn-large btn-default" id="save" ng-click="ctrl.save()">更新</button>
     <button class="btn btn-large btn-default pull-right" id="reset" ng-click="ctrl.reset()">環境設定リセット</button>
   </div>
