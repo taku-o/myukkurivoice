@@ -1,6 +1,6 @@
 import {Application} from 'spectron';
 import {assert} from 'chai';
-import {position} from 'caller-position';
+import {position} from '@taku-o/caller-position';
 import * as rimraf from 'rimraf';
 import * as path from 'path';
 import * as fs from 'fs';

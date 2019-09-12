@@ -1,6 +1,6 @@
 import {Application} from 'spectron';
 import {assert} from 'chai';
-import {position} from 'caller-position';
+import {position} from '@taku-o/caller-position';
 import * as temp from 'temp';
 temp.track();
 

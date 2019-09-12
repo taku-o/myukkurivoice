@@ -1,6 +1,6 @@
 var _exec: any, exec         = () => { _exec = _exec || require('child_process').exec; return _exec; };
 var _cryptico: any, cryptico = () => { _cryptico = _cryptico || require('cryptico.js'); return _cryptico; };
-var _epath: any, epath       = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _epath: any, epath       = () => { _epath = _epath || require('@taku-o/electron-path'); return _epath; };
 
 var unpackedPath = epath().getUnpackedPath();
 

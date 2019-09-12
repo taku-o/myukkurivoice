@@ -3,7 +3,7 @@ import {app} from 'electron';
 var _crypto: any, crypto   = () => { _crypto = _crypto || require('crypto'); return _crypto; };
 var _Config: any, Config   = () => { _Config = _Config || require('electron-store'); return _Config; };
 var _log: any, log         = () => { _log = _log || require('electron-log'); return _log; };
-var _monitor: any, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _monitor: any, monitor = () => { _monitor = _monitor || require('@taku-o/electron-performance-monitor'); return _monitor; };
 
 // env
 const MONITOR = process.env.MONITOR != null;

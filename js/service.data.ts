@@ -2,7 +2,7 @@ var app = require('electron').remote.app;
 var _storage: any, storage   = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 var _lruCache: any, lruCache = () => { _lruCache = _lruCache || require('lru-cache'); return _lruCache; };
 var _log: any, log           = () => { _log = _log || require('electron-log'); return _log; };
-var _monitor: any, monitor   = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _monitor: any, monitor   = () => { _monitor = _monitor || require('@taku-o/electron-performance-monitor'); return _monitor; };
 
 var MONITOR = process.env.MONITOR != null;
 

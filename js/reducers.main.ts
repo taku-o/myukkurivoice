@@ -4,7 +4,7 @@ var _clipboard: any, clipboard     = () => { _clipboard = _clipboard || require(
 var _path: any, path               = () => { _path = _path || require('path'); return _path; };
 var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
-var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _monitor: any, monitor         = () => { _monitor = _monitor || require('@taku-o/electron-performance-monitor'); return _monitor; };
 var _waitUntil: any, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 // env
