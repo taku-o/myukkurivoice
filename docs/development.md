@@ -185,3 +185,22 @@
 ```
   convert  -scale 30%  -unsharp 2x1.4+0.5+0 -colors 65 -quality 100 readme-tutorial.png readme-tutorial-mini.png
 ```
+
+## related project links.
+
+- myukkurivoice (https://github.com/taku-o/myukkurivoice)
+  - myukkurivoice-keys (https://github.com/taku-o/myukkurivoice-keys)
+  - myukkurivoice-vendor (https://github.com/taku-o/myukkurivoice-vendor)
+    - myukkurivoice-secret (https://github.com/taku-o/myukkurivoice-secret)
+    - maquestalk1 (https://github.com/taku-o/maquestalk1)
+    - maquestalk1-ios (https://github.com/taku-o/maquestalk1-ios)
+  - electron-path (https://github.com/taku-o/electron-path)
+  - fcpx-audio-role-encoder (https://github.com/taku-o/fcpx-audio-role-encoder)
+  - github-version-compare (https://github.com/taku-o/github-version-compare)
+  - wav-audio-length (https://github.com/taku-o/wav-audio-length)
+  - caller-position (https://github.com/taku-o/caller-position)
+  - electron-performance-monitor (https://github.com/taku-o/electron-performance-monitor)
+  - wav-fmt-validator (https://github.com/taku-o/wav-fmt-validator)
+- fcpx-audio-role-workflow (https://github.com/taku-o/-audio-role-workflow)
+  - fcpx-audio-role-encoder (https://github.com/taku-o/fcpx-audio-role-encoder)
+
