@@ -341,7 +341,7 @@ class AquesService implements yubo.AquesService {
         },
         encoding: 'binary',
       };
-      const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
+      const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1-ios`;
       exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
         if (err) {
           log().info(`maquestalk1 failed. ${err}`);
