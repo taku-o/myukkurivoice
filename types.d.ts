@@ -190,6 +190,7 @@ declare namespace yubo {
     readonly name:     string;
     readonly version:  'talk1' | 'talk2' | 'talk10';
     readonly idVoice?: 0 | 1;
+    readonly catalina?: boolean;
     readonly path?:    string;
     readonly struct?:  {bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number};
   }
@@ -320,7 +321,11 @@ declare namespace yubo {
   export interface AquesTalk1Lib {
     //private release: string;
     readonly SUPPORTED_LAST_VERSION: string;
-    isSupported(version?: string): boolean;
+    readonly DEFAULT_GENERATOR_PATH: string;
+    readonly IOS_GENERATOR_PATH: string;
+    generator(version?): string;
+    isDefaultSupported(version?: string): boolean;
+    isSupportedPhont(phont: yubo.YPhont, version?: string): boolean;
   }
   export interface AquesTalk2Lib {
     synthe(koe: string, iSpeed: number, size: Buffer, phontDat: Buffer): Buffer;
@@ -460,7 +465,9 @@ declare namespace yubo {
     appCfg: yubo.AppCfg;
     aq10BasList: {[key: string]: any}[];
     isTest: boolean;
-    YPhontMasterList: yubo.YPhont[];
+    phontSelectionList: yubo.YPhont[];
+    //YPhontMasterList: yubo.YPhont[];
+    //YPhontMasterSelectionList: yubo.YPhont[];
     // state
     $onInit(): void;
     // selected text highlight

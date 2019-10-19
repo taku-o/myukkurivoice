@@ -4,6 +4,7 @@ var TEST = process.env.NODE_ENV == 'test';
 // controllers
 class MainController implements yubo.MainController {
   appCfg: yubo.AppCfg;
+  public readonly phontSelectionList: yubo.YPhont[];
   readonly aq10BasList: {[key: string]: any}[] = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
   readonly isTest: boolean = TEST;
 
@@ -12,10 +13,15 @@ class MainController implements yubo.MainController {
     private $timeout: ng.ITimeoutService,
     public store: yubo.MainStore,
     private reducer: yubo.MainReducer,
-    public YPhontMasterList: yubo.YPhont[]
+    aquesTalk1Lib: yubo.AquesTalk1Lib,
+    YPhontMasterList: yubo.YPhont[],
+    YPhontMasterSelectionList: yubo.YPhont[]
   ) {
     reducer.addObserver(this);
     this.appCfg = reducer.appCfg;
+
+    // remove not supported phont
+    this.phontSelectionList = aquesTalk1Lib.isDefaultSupported()? YPhontMasterList: YPhontMasterSelectionList;
 
     // run init
     reducer.init();
@@ -137,18 +143,23 @@ class MainController implements yubo.MainController {
     this.$timeout(() => {});
   }
 }
-angular.module('mainControllers', ['mainStores', 'mainReducers', 'mainDirectives', 'mainServices', 'mainModels', 'input-highlight'])
+angular.module('mainControllers',
+  ['mainStores', 'mainReducers', 'mainDirectives', 'mainServices', 'mainModels', 'input-highlight'])
   .controller('MainController', [
     '$scope',
     '$timeout',
     'MainStore',
     'MainReducer',
+    'AquesTalk1Lib',
     'YPhontMasterList',
+    'YPhontMasterSelectionList',
     (
       $scope: ng.IScope,
       $timeout: ng.ITimeoutService,
       store: yubo.MainStore,
       reducer: yubo.MainReducer,
-      YPhontMasterList: yubo.YPhont[]
-    ) => new MainController($scope, $timeout, store, reducer, YPhontMasterList),
+      aquesTalk1Lib: yubo.AquesTalk1Lib,
+      YPhontMasterList: yubo.YPhont[],
+      YPhontMasterSelectionList: yubo.YPhont[]
+    ) => new MainController($scope, $timeout, store, reducer, aquesTalk1Lib, YPhontMasterList, YPhontMasterSelectionList),
   ]);

@@ -74,17 +74,28 @@ angular.module('AquesServices')
 
 // AquesTalk1
 class AquesTalk1Lib implements yubo.AquesTalk1Lib {
-  readonly SUPPORTED_LAST_VERSION: string = '19.0.0'; // Mojave next
+  readonly SUPPORTED_LAST_VERSION: string = '19.0.0'; // Catalina
+  readonly DEFAULT_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
+  readonly IOS_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1-ios`;
+
   private release: string;
   constructor() {}
 
-  isSupported(version?: string): boolean {
+  generator(version?): string {
+    return this.isDefaultSupported(version)? this.DEFAULT_GENERATOR_PATH: this.IOS_GENERATOR_PATH;
+  }
+
+  isDefaultSupported(version?: string): boolean {
     if (version) {
       return semver().lt(version, this.SUPPORTED_LAST_VERSION);
     } else {
       this.release = this.release || os().release();
       return semver().lt(this.release, this.SUPPORTED_LAST_VERSION);
     }
+  }
+
+  isSupportedPhont(phont: yubo.YPhont, version?: string): boolean {
+    return this.isDefaultSupported(version)? true: phont.catalina;
   }
 }
 angular.module('AquesServices')
@@ -315,9 +326,10 @@ class AquesService implements yubo.AquesService {
 
     // version 1
     if (phont.version == 'talk1') {
-      if (!this.aquesTalk1Lib.isSupported()) {
-        this.MessageService.error('AquesTalk 1の音声再生機能はこのOSのバージョンではサポートされません。');
-        d.reject(new Error('AquesTalk 1の音声再生機能はこのOSのバージョンではサポートされません。')); return d.promise;
+      // not supported version validator
+      if (!this.aquesTalk1Lib.isSupportedPhont(phont)) {
+        this.MessageService.error('この声種はCatalina以降のOSではサポートされません。');
+        d.reject(new Error('この声種はCatalina以降のOSではサポートされません。')); return d.promise;
       }
 
       // write encoded to tempory file
@@ -341,7 +353,7 @@ class AquesService implements yubo.AquesService {
         },
         encoding: 'binary',
       };
-      const waverCmd = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
+      const waverCmd = this.aquesTalk1Lib.generator();
       exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
         if (err) {
           log().info(`maquestalk1 failed. ${err}`);

@@ -30,6 +30,7 @@
     <!-- models -->
     <div>YPhontMasterList
       <button id="get-yphont-master-list" ng-click="ctrl.getYPhontMasterList()"></button>
+      <button id="get-yphont-master-selection-list" ng-click="ctrl.getYPhontMasterSelectionList()"></button>
       <input id="get-yphont-master-list-result" type="text" ng-model="getYPhontMasterListResult">
     </div>
     <div>YVoice
@@ -160,8 +161,13 @@
     </div>
     <div>AquesService.AquesTalk1
       <input id="os-version" type="text" ng-model="osVersion">
-      <input id="is-supported-result" type="text" ng-model="isSupportedResult">
-      <button id="is-supported" ng-click="ctrl.isSupported()"></button>
+      <input id="phont-id" type="text" ng-model="phont_id">
+      <input id="generator-result" type="text" ng-model="generatorResult">
+      <input id="is-default-supported-result" type="text" ng-model="isDefaultSupportedResult">
+      <input id="is-supported-phont-result" type="text" ng-model="isSupportedPhontResult">
+      <button id="generator" ng-click="ctrl.generator()"></button>
+      <button id="is-default-supported" ng-click="ctrl.isDefaultSupported()"></button>
+      <button id="is-supported-phont" ng-click="ctrl.isSupportedPhont()"></button>
     </div>
     <div>AquesService
       <input id="source" type="text" ng-model="source">

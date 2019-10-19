@@ -62,7 +62,10 @@ macOS High Sierra(10.13)以降に対応しています。
   - 動作がおかしい場合はメニューから設定の初期化を実施するか、過去のバージョンを利用してください。
 - (2018/11/10) ユーザー辞書機能を追加。
 - (2018/11/28) 録音処理が劇的に高速化。超早くなった。
-- (NEW!! 2019/06/01) Final Cut Pro X のオーディオロール自動割り当て機能を利用できるようになりました。
+- (2019/06/01) Final Cut Pro X のオーディオロール自動割り当て機能を利用できるようになりました。
+- (NEW!! 2019/10/20) macOS Catalina 対応。Catalina 以降で再生できなくなっていた AquesTalk1 の音声を再生できるようになりました。
+  - 音声再生の仕組みが変わって、Catalina 以降では声種"m1 男声 1"を利用できなくなります。
+  - AquesTalk の使用ライセンス(永続)を使っている場合、Catalina 以降では必要なライセンスが変わります。
 
 <a name="アプリバージョン"></a>
 
@@ -70,7 +73,7 @@ macOS High Sierra(10.13)以降に対応しています。
 
 | バージョン | 開発ステータス   | リンク                                                                |
 | ---------- | ---------------- | --------------------------------------------------------------------- |
-| 0.11.\*    | 開発版           | [最新](https://github.com/taku-o/myukkurivoice/releases/latest)       |
+| 0.12.\*    | 開発版           | [最新](https://github.com/taku-o/myukkurivoice/releases/latest)       |
 | 0.10.\*    | テスト済・安定   | [0.10.5](https://github.com/taku-o/myukkurivoice/releases/tag/0.10.5) |
 | 0.8.\*     | 一世代前の安定版 | [0.8.1](https://github.com/taku-o/myukkurivoice/releases/tag/0.8.1)   |
 

@@ -27,6 +27,7 @@ function copyUnpackedResources(platform, cb) {
     fse.copy('vendor/aq_dic_large', `${UNPACK_DIR}/vendor/aq_dic_large`),
     fse.copy('vendor/phont', `${UNPACK_DIR}/vendor/phont`),
     fse.copy('vendor/maquestalk1', `${UNPACK_DIR}/vendor/maquestalk1`),
+    fse.copy('vendor/maquestalk1-ios', `${UNPACK_DIR}/vendor/maquestalk1-ios`),
     fse.copy('vendor/secret', `${UNPACK_DIR}/vendor/secret`),
   ])
     .then(() => {
