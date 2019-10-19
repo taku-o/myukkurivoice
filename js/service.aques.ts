@@ -79,12 +79,13 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
   constructor() {}
 
   isSupported(version?: string): boolean {
-    if (version) {
-      return semver().lt(version, this.SUPPORTED_LAST_VERSION);
-    } else {
-      this.release = this.release || os().release();
-      return semver().lt(this.release, this.SUPPORTED_LAST_VERSION);
-    }
+    return true;
+    //if (version) {
+    //  return semver().lt(version, this.SUPPORTED_LAST_VERSION);
+    //} else {
+    //  this.release = this.release || os().release();
+    //  return semver().lt(this.release, this.SUPPORTED_LAST_VERSION);
+    //}
   }
 }
 angular.module('AquesServices')
