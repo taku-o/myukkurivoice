@@ -16,7 +16,14 @@ function mkdirUnpacked(platform, cb) {
     cb(err);
   });
 }
-function copyUnpackedResources(platform, cb) {
+gulp.task('_unpacked:mkdir', (cb) => {
+  mkdirUnpacked('darwin', cb);
+});
+gulp.task('_unpacked:mkdir:store', (cb) => {
+  mkdirUnpacked('mas', cb);
+});
+gulp.task('_unpacked:cp', (cb) => {
+  const platform = 'darwin';
   const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
   Promise.all([
     fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`),
@@ -36,18 +43,27 @@ function copyUnpackedResources(platform, cb) {
     .catch((err) => {
       cb(err);
     });
-}
-gulp.task('_unpacked:mkdir', (cb) => {
-  mkdirUnpacked('darwin', cb);
-});
-gulp.task('_unpacked:mkdir:store', (cb) => {
-  mkdirUnpacked('mas', cb);
-});
-gulp.task('_unpacked:cp', (cb) => {
-  copyUnpackedResources('darwin', cb);
 });
 gulp.task('_unpacked:cp:store', (cb) => {
-  copyUnpackedResources('mas', cb);
+  const platform = 'mas';
+  const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
+  Promise.all([
+    fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`),
+    fse.copy('vendor/AqUsrDic.framework', `${UNPACK_DIR}/vendor/AqUsrDic.framework`),
+    //fse.copy('vendor/AquesTalk.framework', `${UNPACK_DIR}/vendor/AquesTalk.framework`),
+    fse.copy('vendor/AquesTalk2.framework', `${UNPACK_DIR}/vendor/AquesTalk2.framework`),
+    fse.copy('vendor/AquesTalk10.framework', `${UNPACK_DIR}/vendor/AquesTalk10.framework`),
+    fse.copy('vendor/aq_dic_large', `${UNPACK_DIR}/vendor/aq_dic_large`),
+    fse.copy('vendor/phont', `${UNPACK_DIR}/vendor/phont`),
+    //fse.copy('vendor/maquestalk1', `${UNPACK_DIR}/vendor/maquestalk1`),
+    fse.copy('vendor/secret', `${UNPACK_DIR}/vendor/secret`),
+  ])
+    .then(() => {
+      cb();
+    })
+    .catch((err) => {
+      cb(err);
+    });
 });
 gulp.task('_unpacked', gulp.series('_handleError', '_unpacked:mkdir', '_unpacked:cp'));
 gulp.task('_unpacked:store', gulp.series('_handleError', '_unpacked:mkdir:store', '_unpacked:cp:store'));
