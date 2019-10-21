@@ -189,12 +189,13 @@
 ## 実行ファイルから不要なアーキテクチャー(i386)を削る
 
 ```
-for i in
+for i in \
     AqKanji2Koe.framework/Versions/A/AqKanji2Koe \
     AquesTalk2.framework/AquesTalk2 \
     AquesTalk2.framework/Versions/Current/AquesTalk2 \
     AquesTalk2.framework/Versions/A/AquesTalk2 \
-    AquesTalk10.framework/Versions/A/AquesTalk
+    AquesTalk10.framework/Versions/A/AquesTalk \
+    AqUsrDic.framework/Versions/A/AqUsrDic
 do
     lipo -remove i386 -output $i $i
 done
