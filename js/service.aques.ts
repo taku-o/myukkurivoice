@@ -13,6 +13,10 @@ var _waitUntil: any, waitUntil   = () => { _waitUntil = _waitUntil || require('w
 
 var unpackedPath = epath().getUnpackedPath();
 
+// env
+var AQUESTALK1_MAC = process.env.AQUESTALK1_MAC != null;
+var AQUESTALK1_IOS = process.env.AQUESTALK1_IOS != null;
+
 // angular aques service
 angular.module('AquesServices', ['MessageServices', 'LicenseServices']);
 
@@ -86,6 +90,10 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
   }
 
   isDefaultSupported(version?: string): boolean {
+    // debug switch
+    if (AQUESTALK1_MAC) { return true; }
+    if (AQUESTALK1_IOS) { return true; }
+    // os version condition
     if (version) {
       return semver().lt(version, this.SUPPORTED_LAST_VERSION);
     } else {

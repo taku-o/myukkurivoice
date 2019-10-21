@@ -324,6 +324,41 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       }
       $scope.isSupportedPhontResult = AquesTalk1Lib.isSupportedPhont(phont, $scope.osVersion);
     };
+    // AquesService.AquesTalk1-mac
+    // AquesService.AquesTalk1-ios
+    ctrl.isDefaultSupportedPlay = function(): void {
+      // phont
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk1') {
+          phont = list[i]; break;
+        }
+      }
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      const poptions: yubo.PlayOptions = {
+        volume: TEST_VOLUME,
+        playbackRate: 1.0,
+        detune: 0,
+      };
+      // wave
+      AquesService.wave($scope.isDefaultSupportedPlayEncoded, phont, speed, woptions).then((bufWav) => {
+        // play
+        AudioService1.play(bufWav, poptions).then((value) => {
+          $scope.isDefaultSupportedPlayResult = 'ok';
+        })
+        .catch((err: Error) => {
+          $scope.isDefaultSupportedPlayResult = err.message;
+        });
+      })
+      .catch((err: Error) => {
+        $scope.isDefaultSupportedPlayResult = err.message;
+      });
+    };
     // AquesService
     ctrl.encode = function(): void {
       const r = AquesService.encode($scope.source);
