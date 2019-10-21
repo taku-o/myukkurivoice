@@ -186,6 +186,20 @@
   convert  -scale 30%  -unsharp 2x1.4+0.5+0 -colors 65 -quality 100 readme-tutorial.png readme-tutorial-mini.png
 ```
 
+## 実行ファイルから不要なアーキテクチャー(i386)を削る
+
+```
+for i in
+    AqKanji2Koe.framework/Versions/A/AqKanji2Koe \
+    AquesTalk2.framework/AquesTalk2 \
+    AquesTalk2.framework/Versions/Current/AquesTalk2 \
+    AquesTalk2.framework/Versions/A/AquesTalk2 \
+    AquesTalk10.framework/Versions/A/AquesTalk
+do
+    lipo -remove i386 -output $i $i
+done
+```
+
 ## related project links.
 
 - myukkurivoice (https://github.com/taku-o/myukkurivoice)
