@@ -34,7 +34,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
   })
   .controller('SpecController', ['$scope', '$timeout',
-      'YPhontMasterList', 'YPhontMasterSelectionList',
+      'YPhontMasterList', 'YPhontMasterIosEnvList',
       'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
       'KindList', 'KindHash',
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
@@ -45,7 +45,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       'AppUtilService', 'SeqFNameService',
       'AqUsrDicService',
     function($scope: any, $timeout: ng.ITimeoutService,
-      YPhontMasterList: yubo.YPhont[], YPhontMasterSelectionList: yubo.YPhont[],
+      YPhontMasterList: yubo.YPhont[], YPhontMasterIosEnvList: yubo.YPhont[],
       YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
       YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
       KindList, KindHash,
@@ -72,8 +72,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       const r = YPhontMasterList;
       $scope.getYPhontMasterListResult = JSON.stringify(r);
     };
-    ctrl.getYPhontMasterSelectionList = function(): void {
-      const r = YPhontMasterSelectionList;
+    ctrl.getYPhontMasterIosEnvList = function(): void {
+      const r = YPhontMasterIosEnvList;
       $scope.getYPhontMasterListResult = JSON.stringify(r);
     };
     // YVoice
@@ -308,11 +308,11 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       $scope.errorTableResult = AquesTalk10Lib.errorTable($scope.errorTableCode);
     };
     // AquesService.AquesTalk1
-    ctrl.generator = function(): void {
-      $scope.generatorResult = AquesTalk1Lib.generator($scope.osVersion);
+    ctrl.getGeneratorPath = function(): void {
+      $scope.getGeneratorPathResult = AquesTalk1Lib.getGeneratorPath($scope.osVersion);
     };
-    ctrl.isDefaultSupported = function(): void {
-      $scope.isDefaultSupportedResult = AquesTalk1Lib.isDefaultSupported($scope.osVersion);
+    ctrl.isI386Supported = function(): void {
+      $scope.isI386SupportedResult = AquesTalk1Lib.isI386Supported($scope.osVersion);
     };
     ctrl.isSupportedPhont = function(): void {
       const list = YPhontMasterList;
@@ -326,7 +326,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
     // AquesService.AquesTalk1-mac
     // AquesService.AquesTalk1-ios
-    ctrl.isDefaultSupportedPlay = function(): void {
+    ctrl.isI386SupportedPlay = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -346,17 +346,17 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.isDefaultSupportedPlayEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.isI386SupportedPlayEncoded, phont, speed, woptions).then((bufWav) => {
         // play
         AudioService1.play(bufWav, poptions).then((value) => {
-          $scope.isDefaultSupportedPlayResult = 'ok';
+          $scope.isI386SupportedPlayResult = 'ok';
         })
         .catch((err: Error) => {
-          $scope.isDefaultSupportedPlayResult = err.message;
+          $scope.isI386SupportedPlayResult = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.isDefaultSupportedPlayResult = err.message;
+        $scope.isI386SupportedPlayResult = err.message;
       });
     };
     // AquesService

@@ -99,10 +99,10 @@ describe('specWindow-model-YPhontMasterList', function() {
     );
   });
 
-  it('YPhontMasterSelectionList', function() {
+  it('YPhontMasterIosEnvList', function() {
     return (
       this.client
-        .click('#get-yphont-master-selection-list')
+        .click('#get-yphont-master-iosenv-list')
         .getValue('#get-yphont-master-list-result')
         .then((value: string) => {
           const parsed = JSON.parse(value);

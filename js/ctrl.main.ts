@@ -15,13 +15,13 @@ class MainController implements yubo.MainController {
     private reducer: yubo.MainReducer,
     aquesTalk1Lib: yubo.AquesTalk1Lib,
     YPhontMasterList: yubo.YPhont[],
-    YPhontMasterSelectionList: yubo.YPhont[]
+    YPhontMasterIosEnvList: yubo.YPhont[]
   ) {
     reducer.addObserver(this);
     this.appCfg = reducer.appCfg;
 
     // remove not supported phont
-    this.phontSelectionList = aquesTalk1Lib.isDefaultSupported()? YPhontMasterList: YPhontMasterSelectionList;
+    this.phontSelectionList = aquesTalk1Lib.isI386Supported()? YPhontMasterList: YPhontMasterIosEnvList;
 
     // run init
     reducer.init();
@@ -152,7 +152,7 @@ angular.module('mainControllers',
     'MainReducer',
     'AquesTalk1Lib',
     'YPhontMasterList',
-    'YPhontMasterSelectionList',
+    'YPhontMasterIosEnvList',
     (
       $scope: ng.IScope,
       $timeout: ng.ITimeoutService,
@@ -160,6 +160,6 @@ angular.module('mainControllers',
       reducer: yubo.MainReducer,
       aquesTalk1Lib: yubo.AquesTalk1Lib,
       YPhontMasterList: yubo.YPhont[],
-      YPhontMasterSelectionList: yubo.YPhont[]
-    ) => new MainController($scope, $timeout, store, reducer, aquesTalk1Lib, YPhontMasterList, YPhontMasterSelectionList),
+      YPhontMasterIosEnvList: yubo.YPhont[]
+    ) => new MainController($scope, $timeout, store, reducer, aquesTalk1Lib, YPhontMasterList, YPhontMasterIosEnvList),
   ]);

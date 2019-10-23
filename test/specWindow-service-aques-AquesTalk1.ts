@@ -34,62 +34,20 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     return this.client.close();
   });
 
-  it('generator', function() {
+  it('get-generator-path', function() {
     return (
       this.client
         .setValue('#os-version', '17.7.0')
-        .click('#generator')
-        .getValue('#generator-result')
+        .click('#get-generator-path')
+        .getValue('#get-generator-path-result')
         .then((value: string) => {
           assert(value.match(/maquestalk1$/), position());
         })
         .setValue('#os-version', '20.1.0')
-        .click('#generator')
-        .getValue('#generator-result')
+        .click('#get-generator-path')
+        .getValue('#get-generator-path-result')
         .then((value: string) => {
           assert(value.match(/maquestalk1-ios$/), position());
-        })
-        // catch error
-        .catch((err: Error) => {
-          assert.fail(err.message);
-        })
-        .getMainProcessLogs()
-        .then((logs: string[]) => {
-          logs.forEach((log) => {
-            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
-              /* eslint-disable-next-line no-console */
-              console.error(log);
-              assert.ok(false, position());
-            }
-          });
-        })
-        .getRenderProcessLogs()
-        .then((logs: WebdriverIO.LogEntry[]) => {
-          logs.forEach((log) => {
-            if (log.message.match(/error/i)) {
-              /* eslint-disable-next-line no-console */
-              console.error(log.message);
-              assert.ok(false, position());
-            }
-          });
-        })
-    );
-  });
-
-  it('isDefaultSupported', function() {
-    return (
-      this.client
-        .setValue('#os-version', '17.7.0')
-        .click('#is-default-supported')
-        .getValue('#is-default-supported-result')
-        .then((value: string) => {
-          assert.equal(value, 'true', position());
-        })
-        .setValue('#os-version', '20.1.0')
-        .click('#is-default-supported')
-        .getValue('#is-default-supported-result')
-        .then((value: string) => {
-          assert.equal(value, 'false', position());
         })
         // catch error
         .catch((err: Error) => {
@@ -175,4 +133,47 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
         })
     );
   });
+
+  it('isI386Supported', function() {
+    return (
+      this.client
+        .setValue('#os-version', '17.7.0')
+        .click('#is-i386-supported')
+        .getValue('#is-i386-supported-result')
+        .then((value: string) => {
+          assert.equal(value, 'true', position());
+        })
+        .setValue('#os-version', '20.1.0')
+        .click('#is-i386-supported')
+        .getValue('#is-i386-supported-result')
+        .then((value: string) => {
+          assert.equal(value, 'false', position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
 });

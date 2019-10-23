@@ -78,32 +78,42 @@ angular.module('AquesServices')
 
 // AquesTalk1
 class AquesTalk1Lib implements yubo.AquesTalk1Lib {
-  readonly SUPPORTED_LAST_VERSION: string = '19.0.0'; // Catalina
-  readonly DEFAULT_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
-  readonly IOS_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1-ios`;
+  private readonly I386_SUPPORTED_LAST_VERSION: string = '19.0.0'; // Catalina
+  private readonly I386_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
+  private readonly IOS_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1-ios`;
 
-  private release: string;
+  private generatorType?: 'i386' | 'ios';
   constructor() {}
 
-  generator(version?): string {
-    return this.isDefaultSupported(version)? this.DEFAULT_GENERATOR_PATH: this.IOS_GENERATOR_PATH;
+  getGeneratorPath(version?): string {
+    return this.isI386Supported(version)? this.I386_GENERATOR_PATH: this.IOS_GENERATOR_PATH;
+  }
+  isSupportedPhont(phont: yubo.YPhont, version?: string): boolean {
+    return this.isI386Supported(version)? true: phont.catalina;
   }
 
-  isDefaultSupported(version?: string): boolean {
-    // debug switch
+  isI386Supported(version?: string): boolean {
+    // for test switch
     if (AQUESTALK1_MAC) { return true; }
     if (AQUESTALK1_IOS) { return true; }
-    // os version condition
-    if (version) {
-      return semver().lt(version, this.SUPPORTED_LAST_VERSION);
-    } else {
-      this.release = this.release || os().release();
-      return semver().lt(this.release, this.SUPPORTED_LAST_VERSION);
-    }
-  }
 
-  isSupportedPhont(phont: yubo.YPhont, version?: string): boolean {
-    return this.isDefaultSupported(version)? true: phont.catalina;
+    // has cache
+    if (this.generatorType) {
+      return this.generatorType == 'i386';
+    }
+
+    // in MacAppleStore enviornment
+    if (process.mas == true) {
+      this.generatorType = 'ios'; return false;
+    }
+
+    // os version condition
+    let target_version = version || os().release();
+    if (semver().lt(target_version, this.I386_SUPPORTED_LAST_VERSION)) {
+      this.generatorType = 'i386'; return true;
+    } else {
+      this.generatorType = 'ios'; return false;
+    }
   }
 }
 angular.module('AquesServices')
@@ -361,7 +371,7 @@ class AquesService implements yubo.AquesService {
         },
         encoding: 'binary',
       };
-      const waverCmd = this.aquesTalk1Lib.generator();
+      const waverCmd = this.aquesTalk1Lib.getGeneratorPath();
       exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
         if (err) {
           log().info(`maquestalk1 failed. ${err}`);

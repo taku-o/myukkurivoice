@@ -34,15 +34,15 @@ describe('specWindow-service-AquesService-AquesTalk1-mac', function() {
     return this.client.close();
   });
 
-  it('isDefaultSupported-mac-play', function() {
+  it('isI386Supported-mac-play', function() {
     return (
       this.client
         // play aquestalk1 in mac env
-        .setValue('#is-default-supported-play-encoded', "テ'_スト")
-        .setValue('#is-default-supported-play-result', '')
-        .click('#is-default-supported-play')
-        .waitForValue('#is-default-supported-play-result', 5000)
-        .getValue('#is-default-supported-play-result')
+        .setValue('#is-i386-supported-play-encoded', "テ'_スト")
+        .setValue('#is-i386-supported-play-result', '')
+        .click('#is-i386-supported-play')
+        .waitForValue('#is-i386-supported-play-result', 5000)
+        .getValue('#is-i386-supported-play-result')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })

@@ -34,8 +34,8 @@ angular.module('mainModels', [])
       {id:'gVoice_R2',  name:'aq10-R2 ロボット2',         version:'talk10', struct:{bas:1, spd:70,  vol:100, pit:50,  acc:50,  lmd:50,  fsc:180}},
     ]
   )
-  // YPhontMasterSelectionList: yubo.YPhont[]
-  .constant('YPhontMasterSelectionList',
+  // YPhontMasterIosEnvList: yubo.YPhont[]
+  .constant('YPhontMasterIosEnvList',
     [
       {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0, catalina:true},
       //{id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1, catalina:false},
