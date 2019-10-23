@@ -376,6 +376,7 @@ class FnWindow implements yubo.FnWindow {
       css_path: path().join(__dirname, 'css/about.css'),
       package_json_dir: __dirname,
       open_devtools: false,
+      show_close_button: 'close',
     });
     if (myApp.mainWindow) { w.setParentWindow(myApp.mainWindow); }
     localShortcut().register(w, 'Command+W', () => {
