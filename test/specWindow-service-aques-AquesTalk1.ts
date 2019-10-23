@@ -34,7 +34,7 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     return this.client.close();
   });
 
-  it('get-generator-path', function() {
+  it('get-generator-path-17', function() {
     return (
       this.client
         .setValue('#os-version', '17.7.0')
@@ -43,6 +43,36 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
         .then((value: string) => {
           assert(value.match(/maquestalk1$/), position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('get-generator-path-20', function() {
+    return (
+      this.client
         .setValue('#os-version', '20.1.0')
         .click('#get-generator-path')
         .getValue('#get-generator-path-result')
@@ -76,7 +106,7 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     );
   });
 
-  it('isSupportedPhont', function() {
+  it('isSupportedPhont-17', function() {
     return (
       this.client
         .setValue('#os-version', '17.7.0')
@@ -93,6 +123,36 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
         .then((value: string) => {
           assert.equal(value, 'true', position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('isSupportedPhont-20', function() {
+    return (
+      this.client
         .setValue('#os-version', '20.1.0')
         .setValue('#phont-id', 'at1_f1')
         .click('#is-supported-phont')
@@ -134,7 +194,7 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     );
   });
 
-  it('isI386Supported', function() {
+  it('isI386Supported-17', function() {
     return (
       this.client
         .setValue('#os-version', '17.7.0')
@@ -143,6 +203,36 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
         .then((value: string) => {
           assert.equal(value, 'true', position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('isI386Supported-20', function() {
+    return (
+      this.client
         .setValue('#os-version', '20.1.0')
         .click('#is-i386-supported')
         .getValue('#is-i386-supported-result')
@@ -175,4 +265,5 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
         })
     );
   });
+
 });
