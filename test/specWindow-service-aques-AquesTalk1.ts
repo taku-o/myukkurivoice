@@ -265,5 +265,4 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
         })
     );
   });
-
 });

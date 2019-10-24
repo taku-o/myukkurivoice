@@ -38,6 +38,9 @@ usage:
     gulp test [--t=test/mainWindow.js]
     gulp test-rebuild [--t=test/mainWindow.js]
     gulp app
+    gulp app:default
+    gulp app:catalina
+    gulp app:store
     gulp package
     gulp release
     gulp staging [--branch=develop]
@@ -81,4 +84,28 @@ gulp.task(
       cb();
     });
   })
+);
+gulp.task(
+  'app:default',
+  gulp.series((cb) => {
+    const env = process.env;
+    env.RUNTIME_ENV = 'default';
+    cb();
+  }, 'app')
+);
+gulp.task(
+  'app:catalina',
+  gulp.series((cb) => {
+    const env = process.env;
+    env.RUNTIME_ENV = 'catalina';
+    cb();
+  }, 'app')
+);
+gulp.task(
+  'app:store',
+  gulp.series((cb) => {
+    const env = process.env;
+    env.RUNTIME_ENV = 'store';
+    cb();
+  }, 'app')
 );

@@ -14,8 +14,7 @@ var _waitUntil: any, waitUntil   = () => { _waitUntil = _waitUntil || require('w
 var unpackedPath = epath().getUnpackedPath();
 
 // env
-var AQUESTALK1_MAC = process.env.AQUESTALK1_MAC != null;
-var AQUESTALK1_IOS = process.env.AQUESTALK1_IOS != null;
+const RUNTIME_ENV: 'default' | 'catalina' | 'store' = process.env.RUNTIME_ENV as 'default' | 'catalina' | 'store';
 
 // angular aques service
 angular.module('AquesServices', ['MessageServices', 'LicenseServices']);
@@ -82,8 +81,19 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
   private readonly I386_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
   private readonly IOS_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1-ios`;
 
-  private generatorType?: 'i386' | 'ios';
-  constructor() {}
+  private generatorType?: 'i386' | 'ios' | 'mas' = null;
+  constructor() {
+    if (RUNTIME_ENV) {
+      switch (RUNTIME_ENV) {
+        case 'default':
+          this.generatorType = 'i386'; break;
+        case 'catalina':
+          this.generatorType = 'ios'; break;
+        case 'store':
+          this.generatorType = 'mas'; break;
+      }
+    }
+  }
 
   getGeneratorPath(version?): string {
     return this.isI386Supported(version)? this.I386_GENERATOR_PATH: this.IOS_GENERATOR_PATH;
@@ -93,10 +103,6 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
   }
 
   isI386Supported(version?: string): boolean {
-    // for test switch
-    if (AQUESTALK1_MAC) { return true; }
-    if (AQUESTALK1_IOS) { return true; }
-
     // has cache
     if (this.generatorType) {
       return this.generatorType == 'i386';
@@ -104,7 +110,7 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
 
     // in MacAppleStore enviornment
     if (process.mas == true) {
-      this.generatorType = 'ios'; return false;
+      this.generatorType = 'mas'; return false;
     }
 
     // os version condition
