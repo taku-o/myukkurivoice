@@ -64,9 +64,9 @@ macOS High Sierra(10.13)以降に対応しています。
 - (2018/11/28) 録音処理が劇的に高速化。超早くなった。
 - (2019/06/01) Final Cut Pro X のオーディオロール自動割り当て機能を利用できるようになりました。
 - (NEW!! 2019/10/20) macOS Catalina 対応。
-  - AquesTalk1 Mac の動作しない環境で、代わりに AquesTalk1 iOS を利用して音声再生するようにしました。
-    - 該当環境では、仕組みが変わって、声種"m1 男声 1"を利用できなくなります。
-    - これまで AquesTalk1 Mac の使用ライセンスを使っていた方は、該当環境では AquesTalk1 iOS のライセンスが必要になります。
+  - AquesTalk1 Mac の動作しない環境では、AquesTalk1 Macの代わりに、iPhone用のライブラリ AquesTalk1 iOSを利用して音声を再生します。
+    - 該当環境では、音声再生の仕組みが変わって、声種"m1 男声 1"を利用できなくなります。
+    - これまで AquesTalk1 Mac の使用ライセンスを利用していた方は、該当環境では AquesTalk1 iOS の使用ライセンスが必要になります。
       - [今、どちらの AquesTalk1 ライブラリを使用しているか](https://taku-o.github.io/myukkurivoice/help#!#catalina)
 
 <a name="アプリバージョン"></a>
