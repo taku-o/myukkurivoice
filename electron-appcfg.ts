@@ -17,7 +17,7 @@ class FnAppCfg implements FnAppCfg {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const appCfg: yubo.AppCfg = {
       mainWindow:       {width: 800, height: 665, x: null, y: null},
-      helpWindow:       {width: 700, height: 730},
+      helpWindow:       {width: 700, height: 750},
       helpSearchDialog: {width: 430, height: 120},
       systemWindow:     {width: 390, height: 550},
       dictWindow:       {width: 800, height: 600},
