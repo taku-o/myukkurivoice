@@ -216,6 +216,6 @@ done
   - caller-position (https://github.com/taku-o/caller-position)
   - electron-performance-monitor (https://github.com/taku-o/electron-performance-monitor)
   - wav-fmt-validator (https://github.com/taku-o/wav-fmt-validator)
-  - about-window (https://github.com/taku-o/electron-about-window)
+  - myukkurivoice-about-window (https://github.com/taku-o/myukkurivoice-about-window)
 - fcpx-audio-role-workflow (https://github.com/taku-o/-audio-role-workflow)
   - fcpx-audio-role-encoder (https://github.com/taku-o/fcpx-audio-role-encoder)
