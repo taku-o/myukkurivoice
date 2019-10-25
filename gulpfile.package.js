@@ -311,5 +311,5 @@ gulp.task('_package-debug', (cb) => {
 // package
 gulp.task(
   'package',
-  gulp.series('_handleError', 'tsc-debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
+  gulp.series('_handleError', 'tsc:debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
 );

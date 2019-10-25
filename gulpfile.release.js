@@ -197,9 +197,9 @@ gulp.task('_open-appdir:store', (cb) => {
   });
 });
 
-// release
+// build:release
 gulp.task(
-  'release',
+  'build:release',
   gulp.series(
     '_handleError',
     _mustMasterBranch,
@@ -224,9 +224,9 @@ gulp.task(
   )
 );
 
-// staging
+// build:staging
 gulp.task(
-  'staging',
+  'build:staging',
   gulp.series(
     '_handleError',
     _detectBranch,
@@ -251,9 +251,9 @@ gulp.task(
   )
 );
 
-// store
+// build:store
 gulp.task(
-  'store',
+  'build:store',
   gulp.series(
     '_handleError',
     _mustMasterBranch,
@@ -274,3 +274,7 @@ gulp.task(
     '_kill'
   )
 );
+
+// build
+gulp.task('build', gulp.series('build:staging'));
+ 

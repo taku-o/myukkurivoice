@@ -23,12 +23,12 @@ usage:
     gulp --tasks-simple
     gulp all
     gulp tsc
-    gulp tsc-debug
+    gulp tsc:debug
     gulp lint
-    gulp lint-ts
-    gulp lint-js
-    gulp lint-q
-    gulp lint-html
+    gulp lint:ts
+    gulp lint:js
+    gulp lint:q
+    gulp lint:html
     gulp less
     gulp format
     gulp toc
@@ -36,21 +36,22 @@ usage:
     gulp about
     gulp clean
     gulp test [--t=test/mainWindow.js]
-    gulp test-rebuild [--t=test/mainWindow.js]
+    gulp test:rebuild [--t=test/mainWindow.js]
     gulp app
     gulp app:default
     gulp app:catalina
     gulp app:store
     gulp package
-    gulp release
-    gulp staging [--branch=develop]
-    gulp store [--branch=develop]
+    gulp build
+    gulp build:release
+    gulp build:staging [--branch=develop]
+    gulp build:store [--branch=develop]
   `);
   return cb();
 });
 
 // all
-gulp.task('all', gulp.series('_handleError', 'format', 'less', 'tsc', 'lint', 'test', 'staging', '_kill'));
+gulp.task('all', gulp.series('_handleError', 'format', 'less', 'tsc', 'lint', 'test', 'build:staging', '_kill'));
 
 // table of contents
 gulp.task('toc', () => {
@@ -66,7 +67,7 @@ gulp.task('clean', gulp.parallel('_rm-js', '_rm-package', '_rm-workdir'));
 // run app
 gulp.task(
   'app',
-  gulp.series('tsc-debug', (cb) => {
+  gulp.series('tsc:debug', (cb) => {
     const env = process.env;
     env.DEBUG = 1;
     env.MONITOR = 1;
