@@ -30,6 +30,7 @@
     <!-- models -->
     <div>YPhontMasterList
       <button id="get-yphont-master-list" ng-click="ctrl.getYPhontMasterList()"></button>
+      <button id="get-yphont-master-iosenv-list" ng-click="ctrl.getYPhontMasterIosEnvList()"></button>
       <input id="get-yphont-master-list-result" type="text" ng-model="getYPhontMasterListResult">
     </div>
     <div>YVoice
@@ -160,8 +161,20 @@
     </div>
     <div>AquesService.AquesTalk1
       <input id="os-version" type="text" ng-model="osVersion">
-      <input id="is-supported-result" type="text" ng-model="isSupportedResult">
-      <button id="is-supported" ng-click="ctrl.isSupported()"></button>
+      <input id="phont-id" type="text" ng-model="phont_id">
+      <input id="get-generator-path-result" type="text" ng-model="getGeneratorPathResult">
+      <input id="is-i386-supported-result" type="text" ng-model="isI386SupportedResult">
+      <input id="is-supported-phont-result" type="text" ng-model="isSupportedPhontResult">
+      <button id="get-generator-path" ng-click="ctrl.getGeneratorPath()"></button>
+      <button id="is-i386-supported" ng-click="ctrl.isI386Supported()"></button>
+      <button id="is-supported-phont" ng-click="ctrl.isSupportedPhont()"></button>
+    </div>
+    <div>
+      AquesService.AquesTalk1-mac
+      AquesService.AquesTalk1-ios
+      <input id="is-i386-supported-play-encoded" type="text" ng-model="isI386SupportedPlayEncoded">
+      <input id="is-i386-supported-play-result" type="text" ng-model="isI386SupportedPlayResult">
+      <button id="is-i386-supported-play" ng-click="ctrl.isI386SupportedPlay()"></button>
     </div>
     <div>AquesService
       <input id="source" type="text" ng-model="source">

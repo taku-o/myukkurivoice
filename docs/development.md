@@ -186,6 +186,21 @@
   convert  -scale 30%  -unsharp 2x1.4+0.5+0 -colors 65 -quality 100 readme-tutorial.png readme-tutorial-mini.png
 ```
 
+## 実行ファイルから不要なアーキテクチャー(i386)を削る
+
+```
+for i in \
+    AqKanji2Koe.framework/Versions/A/AqKanji2Koe \
+    AquesTalk2.framework/AquesTalk2 \
+    AquesTalk2.framework/Versions/Current/AquesTalk2 \
+    AquesTalk2.framework/Versions/A/AquesTalk2 \
+    AquesTalk10.framework/Versions/A/AquesTalk \
+    AqUsrDic.framework/Versions/A/AqUsrDic
+do
+    lipo -remove i386 -output $i $i
+done
+```
+
 ## related project links.
 
 - myukkurivoice (https://github.com/taku-o/myukkurivoice)
@@ -201,6 +216,6 @@
   - caller-position (https://github.com/taku-o/caller-position)
   - electron-performance-monitor (https://github.com/taku-o/electron-performance-monitor)
   - wav-fmt-validator (https://github.com/taku-o/wav-fmt-validator)
+  - myukkurivoice-about-window (https://github.com/taku-o/myukkurivoice-about-window)
 - fcpx-audio-role-workflow (https://github.com/taku-o/-audio-role-workflow)
   - fcpx-audio-role-encoder (https://github.com/taku-o/fcpx-audio-role-encoder)
-

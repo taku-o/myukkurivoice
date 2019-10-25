@@ -32,7 +32,7 @@
 
     <div class="form-inline form-group">
       <select class="form-control" ng-model="ctrl.store.curYvoice.phont" id="phont" ng-change="ctrl.onChangePhont()">
-        <option ng-repeat="v in ::ctrl.YPhontMasterList track by v.id" ng-value="v.id" ng-bind="v.name"></option>
+        <option ng-repeat="v in ::ctrl.phontSelectionList track by v.id" ng-value="v.id" ng-bind="v.name"></option>
       </select>
     </div>
 

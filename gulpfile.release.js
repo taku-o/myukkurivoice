@@ -131,17 +131,20 @@ gulp.task('_codesign:store', (cb) => {
   execSync(
     `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AqUsrDic.framework/Versions/A/AqUsrDic"`
   );
-  execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AquesTalk.framework/Versions/A/AquesTalk"`
-  );
+  //execSync(
+  //  `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AquesTalk.framework/Versions/A/AquesTalk"`
+  //);
   execSync(
     `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AquesTalk10.framework/Versions/A/AquesTalk"`
   );
   execSync(
     `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AquesTalk2.framework/Versions/A/AquesTalk2"`
   );
+  //execSync(
+  //  `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/maquestalk1"`
+  //);
   execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/maquestalk1"`
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/maquestalk1-ios"`
   );
   execSync(
     `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/secret"`
@@ -194,9 +197,9 @@ gulp.task('_open-appdir:store', (cb) => {
   });
 });
 
-// release
+// build:release
 gulp.task(
-  'release',
+  'build:release',
   gulp.series(
     '_handleError',
     _mustMasterBranch,
@@ -221,9 +224,9 @@ gulp.task(
   )
 );
 
-// staging
+// build:staging
 gulp.task(
-  'staging',
+  'build:staging',
   gulp.series(
     '_handleError',
     _detectBranch,
@@ -248,12 +251,13 @@ gulp.task(
   )
 );
 
-// store
+// build:store
 gulp.task(
-  'store',
+  'build:store',
   gulp.series(
     '_handleError',
-    _mustMasterBranch,
+    //_mustMasterBranch,
+    _detectBranch,
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -271,3 +275,6 @@ gulp.task(
     '_kill'
   )
 );
+
+// build
+gulp.task('build', gulp.series('build:staging'));

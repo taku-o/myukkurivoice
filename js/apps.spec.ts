@@ -34,7 +34,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
   })
   .controller('SpecController', ['$scope', '$timeout',
-      'YPhontMasterList', 'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
+      'YPhontMasterList', 'YPhontMasterIosEnvList',
+      'YVoice', 'YVoiceInitialData', 'YInput', 'YInputInitialData', 'YCommandInput',
       'KindList', 'KindHash',
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
       'DataService', 'HistoryService',
@@ -44,7 +45,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       'AppUtilService', 'SeqFNameService',
       'AqUsrDicService',
     function($scope: any, $timeout: ng.ITimeoutService,
-      YPhontMasterList: yubo.YPhont[], YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
+      YPhontMasterList: yubo.YPhont[], YPhontMasterIosEnvList: yubo.YPhont[],
+      YVoice: yubo.YVoice, YVoiceInitialData: yubo.YVoice[],
       YInput: yubo.YInput, YInputInitialData: yubo.YInput, YCommandInput: yubo.YCommandInput,
       KindList, KindHash,
       LicenseService: yubo.LicenseService, IntroService: yubo.IntroService, MessageService: yubo.MessageService,
@@ -68,6 +70,10 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     // YPhontMasterList
     ctrl.getYPhontMasterList = function(): void {
       const r = YPhontMasterList;
+      $scope.getYPhontMasterListResult = JSON.stringify(r);
+    };
+    ctrl.getYPhontMasterIosEnvList = function(): void {
+      const r = YPhontMasterIosEnvList;
       $scope.getYPhontMasterListResult = JSON.stringify(r);
     };
     // YVoice
@@ -302,8 +308,56 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       $scope.errorTableResult = AquesTalk10Lib.errorTable($scope.errorTableCode);
     };
     // AquesService.AquesTalk1
-    ctrl.isSupported = function(): void {
-      $scope.isSupportedResult = AquesTalk1Lib.isSupported($scope.osVersion);
+    ctrl.getGeneratorPath = function(): void {
+      $scope.getGeneratorPathResult = AquesTalk1Lib.getGeneratorPath($scope.osVersion);
+    };
+    ctrl.isI386Supported = function(): void {
+      $scope.isI386SupportedResult = AquesTalk1Lib.isI386Supported($scope.osVersion);
+    };
+    ctrl.isSupportedPhont = function(): void {
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].id == $scope.phont_id) {
+          phont = list[i]; break;
+        }
+      }
+      $scope.isSupportedPhontResult = AquesTalk1Lib.isSupportedPhont(phont, $scope.osVersion);
+    };
+    // AquesService.AquesTalk1-mac
+    // AquesService.AquesTalk1-ios
+    ctrl.isI386SupportedPlay = function(): void {
+      // phont
+      const list = YPhontMasterList;
+      let phont;
+      for (let i = 0; i < list.length; i ++) {
+        if (list[i].version == 'talk1') {
+          phont = list[i]; break;
+        }
+      }
+      const speed = 100;
+      const woptions: yubo.WaveOptions = {
+        passPhrase: '',
+        aq10UseKeyEncrypted: '',
+      };
+      const poptions: yubo.PlayOptions = {
+        volume: TEST_VOLUME,
+        playbackRate: 1.0,
+        detune: 0,
+      };
+      // wave
+      AquesService.wave($scope.isI386SupportedPlayEncoded, phont, speed, woptions).then((bufWav) => {
+        // play
+        AudioService1.play(bufWav, poptions).then((value) => {
+          $scope.isI386SupportedPlayResult = 'ok';
+        })
+        .catch((err: Error) => {
+          $scope.isI386SupportedPlayResult = err.message;
+        });
+      })
+      .catch((err: Error) => {
+        $scope.isI386SupportedPlayResult = err.message;
+      });
     };
     // AquesService
     ctrl.encode = function(): void {
