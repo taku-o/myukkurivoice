@@ -1,13 +1,13 @@
 # 0.12.0
 
 - macOS Catalina 対応
-  - macOS Catalina 以降では、AquesTalk1 Mac 版が動作しないので、
-    - macOS Catalina 以降のバージョンでは、代わりに AquesTalk1 iOS 版を利用して音声を生成するように仕組みを切り替えます。
-    - AquesTalk1 iOS を利用する都合で、声種"m1 男声 1"は、macOS Catalina 以降で再生できなくなります。
+  - AquesTalk1 Mac 版が動作しない環境では、代わりに AquesTalk1 iOS 版を利用して音声を生成するように仕組みを切り替えます。
+    - AquesTalk1 iOS 版では、声種"m1 男声 1"を再生できなくなります。
       - "m1 男声 1"は、声種の選択リストからも消えます。
-    - AquesTalk の使用ライセンス(永続)を使っている場合、Catalina 以降では必要なライセンスが変わります。
-      - Mac 版 → iOS 版。もしくは商用ライセンス(1 年)に切り替える。
-  - macOS Catalina より前のバージョンでは、今までどおりに動作します。
+    - AquesTalk の使用ライセンス(永続)を使っている場合、該当環境では必要なライセンスも変わります。
+      - AquesTalk1 Mac 使用ライセンス → AquesTalk1 iOS 使用ライセンス
+      - もしくは、商用ライセンス(1 年)に切り替える必要があります。
+  - AquesTalk1 Mac 版が動作する環境では、今までどおりに動作します。
 - アプリ情報ウィンドウの表記修正
   - メニュー"About MYukkuriVoice"で表示される情報を修正。動作環境を特定するための情報を追加。
 
