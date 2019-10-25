@@ -256,7 +256,8 @@ gulp.task(
   'build:store',
   gulp.series(
     '_handleError',
-    _mustMasterBranch,
+    //_mustMasterBranch,
+    _detectBranch,
     '_rm-workdir',
     '_mk-workdir',
     '_ch-workdir',
@@ -277,4 +278,3 @@ gulp.task(
 
 // build
 gulp.task('build', gulp.series('build:staging'));
- 
