@@ -12,7 +12,7 @@ gulp.task('_tsc', () => {
     .pipe(tsProject())
     .js.pipe(gulp.dest('.'));
 });
-gulp.task('tsc-debug', () => {
+gulp.task('tsc:debug', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'test/*.ts'], {base: '.'})
     .pipe(sourcemaps.init())

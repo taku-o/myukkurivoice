@@ -43,6 +43,9 @@
       <span class="nav-group-item help-item" id="menu-license" ng-class="{active:ctrl.store.display == 'license'}" ng-click="ctrl.page('license')">
         <span class="icon icon-help-circled"></span>AquesTalkのライセンスについて
       </span>
+      <span class="nav-group-item help-item" id="menu-catalina" ng-class="{active:ctrl.store.display == 'catalina'}" ng-click="ctrl.page('catalina')">
+        <span class="icon icon-help-circled"></span>macOS Catalina 対応
+      </span>
       <span class="nav-group-item help-item" id="menu-contact" ng-class="{active:ctrl.store.display == 'contact'}" ng-click="ctrl.page('contact')">
         <span class="icon icon-help-circled"></span>連絡先
       </span>
@@ -108,6 +111,7 @@
   <div class="pane" id="uninstall-pane"  static-include template-path="_help/uninstall.html"  ng-if="ctrl.store.display == 'uninstall'"></div>
   <div class="pane" id="backup-pane"     static-include template-path="_help/backup.html"     ng-if="ctrl.store.display == 'backup'"></div>
   <div class="pane" id="license-pane"    static-include template-path="_help/license.html"    ng-if="ctrl.store.display == 'license'"></div>
+  <div class="pane" id="catalina-pane"   static-include template-path="_help/catalina.html"   ng-if="ctrl.store.display == 'catalina'"></div>
   <div class="pane" id="contact-pane"    static-include template-path="_help/contact.html"    ng-if="ctrl.store.display == 'contact'"></div>
 
   <div class="pane" id="funclist-pane"   static-include template-path="_help/funclist.html"   ng-if="ctrl.store.display == 'funclist'"></div>
@@ -132,6 +136,7 @@
     <div class="box" static-include template-path="_help/uninstall.html"></div>
     <div class="box" static-include template-path="_help/backup.html"></div>
     <div class="box" static-include template-path="_help/license.html"></div>
+    <div class="box" static-include template-path="_help/catalina.html"></div>
     <div class="box" static-include template-path="_help/contact.html"></div>
 
     <h2>各機能詳細</h2>

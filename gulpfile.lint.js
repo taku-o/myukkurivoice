@@ -4,19 +4,19 @@ const prettier = require('gulp-prettier');
 const using = require('gulp-using');
 
 // lint
-gulp.task('lint-ts', () => {
+gulp.task('lint:ts', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts'])
     .pipe(eslint({useEslintrc: true}))
     .pipe(eslint.format());
 });
-gulp.task('lint-js', () => {
+gulp.task('lint:js', () => {
   return gulp
     .src(['*.js', 'js/*.js', 'test/*.js'])
     .pipe(eslint({useEslintrc: true}))
     .pipe(eslint.format());
 });
-gulp.task('lint-q', () => {
+gulp.task('lint:q', () => {
   return gulp
     .src([
       '*.ts',
@@ -32,8 +32,8 @@ gulp.task('lint-q', () => {
     .pipe(eslint({useEslintrc: true, quiet: true}))
     .pipe(eslint.format());
 });
-// lint-html
-gulp.task('lint-html', () => {
+// lint:html
+gulp.task('lint:html', () => {
   return gulp
     .src(['*.html', 'docs/*.html', 'docs/_help/*.html'], {base: '.'})
     .pipe(using({}))
@@ -47,4 +47,4 @@ gulp.task('lint-html', () => {
       })
     );
 });
-gulp.task('lint', gulp.parallel('lint-q', 'lint-html'));
+gulp.task('lint', gulp.parallel('lint:q', 'lint:html'));

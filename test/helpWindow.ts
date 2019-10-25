@@ -38,7 +38,7 @@ describe('helpWindow', function() {
     return this.client
       .elements('.nav-group-item.help-item')
       .then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 8, position());
+        assert.equal(response.value.length, 9, position());
       })
       .elements('.nav-group-item.functions-item')
       .then((response: HTMLInputElement) => {
@@ -98,6 +98,10 @@ describe('helpWindow', function() {
           assert.ok(!isVisible, position());
         })
         .isVisible('#license-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(!isVisible, position());
+        })
+        .isVisible('#catalina-pane')
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
         })
@@ -181,6 +185,11 @@ describe('helpWindow', function() {
         })
         .click('#menu-license')
         .isVisible('#license-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        .click('#menu-catalina')
+        .isVisible('#catalina-pane')
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })

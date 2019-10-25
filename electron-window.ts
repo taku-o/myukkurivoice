@@ -3,7 +3,7 @@ import {BrowserWindow, dialog, shell} from 'electron';
 var _localShortcut: any, localShortcut     = () => { _localShortcut = _localShortcut || require('electron-localshortcut'); return _localShortcut; };
 var _log: any, log                         = () => { _log = _log || require('electron-log'); return _log; };
 var _path: any, path                       = () => { _path = _path || require('path'); return _path; };
-var _openAboutWindow: any, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('about-window').default; return _openAboutWindow; };
+var _openAboutWindow: any, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('myukkurivoice-about-window').default; return _openAboutWindow; };
 var _Version: any, Version                 = () => { _Version = _Version || require('github-version-compare').Version; return _Version; };
 
 // env
