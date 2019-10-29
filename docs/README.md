@@ -65,7 +65,7 @@ macOS High Sierra(10.13)以降に対応しています。
 - (2019/06/01) Final Cut Pro X のオーディオロール自動割り当て機能を利用できるようになりました。
 - (NEW!! 2019/11/01) macOS Catalina 対応。バージョン"0.12.0"より。
   - AquesTalk1 Mac の動作しない環境(macOS Catalina 以降など)で、AquesTalk1 Mac の代わりに、iPhone 用のライブラリ AquesTalk1 iOS を利用して音声を再生するようになりました。
-  - **商用利用する場合、AquesTalk1 iOS の使用ライセンスが追加で必要になります。**
+  - **商用利用で、個別に使用ライセンスを購入していた場合、AquesTalk1 iOS の使用ライセンスが追加で必要になります。**
     - もしくは、[使用ライセンス(商用コンテンツ向け)](https://store.a-quest.com/items/7413986)の利用に切り替えてください。
 
 <a name="アプリバージョン"></a>
