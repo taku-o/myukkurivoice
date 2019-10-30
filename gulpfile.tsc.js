@@ -35,6 +35,6 @@ gulp.task(
   })
 );
 
-gulp.task('_rm-js', () => {
+gulp.task('_rm:js', () => {
   return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js', '!gulpfile.*.js', '*.tsbuildinfo']);
 });

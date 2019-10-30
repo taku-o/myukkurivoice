@@ -68,7 +68,7 @@ gulp.task('_unpacked:cp', (cb) => {
 gulp.task('_unpacked', gulp.series('_handleError', '_unpacked:mkdir', '_unpacked:cp'));
 
 // package
-gulp.task('_rm-package', () => {
+gulp.task('_rm:package', () => {
   return del(['MYukkuriVoice-darwin-x64', 'MYukkuriVoice-mas-x64']);
 });
 
@@ -248,7 +248,7 @@ function getIgnoreFiles(forDebug) {
   }
   return ignores;
 }
-gulp.task('_package-release', (cb) => {
+gulp.task('_package:release', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
   if (!platform) {
     throw new Error('BUILD_PLATFORM not set.');
@@ -270,7 +270,7 @@ gulp.task('_package-release', (cb) => {
     }
   );
 });
-gulp.task('_package-debug', (cb) => {
+gulp.task('_package:debug', (cb) => {
   const platform = 'darwin';
   exec(
     PACKAGER_CMD +
@@ -297,8 +297,8 @@ gulp.task(
     '_handleError',
     '_platform:darwin',
     'tsc:debug',
-    '_rm-package',
-    '_package-debug',
+    '_rm:package',
+    '_package:debug',
     '_unpacked',
     '_notify',
     '_kill'

@@ -29,17 +29,17 @@ function _detectBranch(cb) {
 }
 
 // workdir
-gulp.task('_rm-workdir', (cb) => {
+gulp.task('_rm:workdir', (cb) => {
   rimraf(WORK_DIR, (err) => {
     cb(err);
   });
 });
-gulp.task('_mk-workdir', (cb) => {
+gulp.task('_mk:workdir', (cb) => {
   mkdirp(WORK_DIR, (err) => {
     cb(err);
   });
 });
-gulp.task('_ch-workdir', (cb) => {
+gulp.task('_ch:workdir', (cb) => {
   process.chdir(WORK_DIR);
   return cb();
 });
@@ -56,7 +56,7 @@ gulp.task('_git-submodule', (cb) => {
 });
 
 // repodir
-gulp.task('_ch-repodir', (cb) => {
+gulp.task('_ch:repodir', (cb) => {
   process.chdir(WORK_REPO_DIR);
   return cb();
 });
@@ -95,7 +95,7 @@ gulp.task('_zip-app-signed', (cb) => {
 });
 
 // open
-gulp.task('_open-appdir', (cb) => {
+gulp.task('_open:appdir', (cb) => {
   if (!process.env.BUILD_PLATFORM) {
     throw new Error('BUILD_PLATFORM not set.');
   }
@@ -112,22 +112,22 @@ gulp.task(
     '_handleError',
     '_platform:darwin',
     _mustMasterBranch,
-    '_rm-workdir',
-    '_mk-workdir',
-    '_ch-workdir',
+    '_rm:workdir',
+    '_mk:workdir',
+    '_ch:workdir',
     '_git-clone',
-    '_ch-repodir',
+    '_ch:repodir',
     '_git-submodule',
     '_npm-install',
     'tsc',
-    '_rm-package',
-    '_package-release',
+    '_rm:package',
+    '_package:release',
     '_unpacked',
     'doc',
     '_zip-app',
     '_codesign',
     '_zip-app-signed',
-    '_open-appdir',
+    '_open:appdir',
     '_notify',
     '_kill'
   )
@@ -140,22 +140,22 @@ gulp.task(
     '_handleError',
     '_platform:darwin',
     _detectBranch,
-    '_rm-workdir',
-    '_mk-workdir',
-    '_ch-workdir',
+    '_rm:workdir',
+    '_mk:workdir',
+    '_ch:workdir',
     '_git-clone',
-    '_ch-repodir',
+    '_ch:repodir',
     '_git-submodule',
     '_npm-install',
     'tsc',
-    '_rm-package',
-    '_package-release',
+    '_rm:package',
+    '_package:release',
     '_unpacked',
     'doc',
     '_zip-app',
     //'_codesign',
     //'_zip-app-signed',
-    '_open-appdir',
+    '_open:appdir',
     '_notify',
     '_kill'
   )
@@ -169,19 +169,19 @@ gulp.task(
     '_platform:mas',
     //_mustMasterBranch,
     _detectBranch,
-    '_rm-workdir',
-    '_mk-workdir',
-    '_ch-workdir',
+    '_rm:workdir',
+    '_mk:workdir',
+    '_ch:workdir',
     '_git-clone',
-    '_ch-repodir',
+    '_ch:repodir',
     '_git-submodule',
     '_npm-install',
     'tsc',
-    '_rm-package',
-    '_package-release',
+    '_rm:package',
+    '_package:release',
     '_unpacked',
     '_codesign:store',
-    '_open-appdir',
+    '_open:appdir',
     '_notify',
     '_kill'
   )

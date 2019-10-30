@@ -6,7 +6,7 @@ const mocha = require('gulp-mocha');
 function _buildAppIfNotExist(cb) {
   fs.access('MYukkuriVoice-darwin-x64/MYukkuriVoice.app', (err) => {
     if (err) {
-      gulp.series('_rm-package', '_package-debug', '_unpacked', (done) => {
+      gulp.series('_rm:package', '_package:debug', '_unpacked', (done) => {
         done();
         return cb();
       })();
@@ -24,5 +24,5 @@ gulp.task('_test', () => {
 gulp.task('test', gulp.series('_handleError', 'tsc:debug', _buildAppIfNotExist, '_test', '_notify', '_kill'));
 gulp.task(
   'test:rebuild',
-  gulp.series('_handleError', 'tsc:debug', '_rm-package', '_package-debug', '_unpacked', '_test', '_notify', '_kill')
+  gulp.series('_handleError', 'tsc:debug', '_rm:package', '_package:debug', '_unpacked', '_test', '_notify', '_kill')
 );

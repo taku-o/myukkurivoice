@@ -4,13 +4,13 @@ const prettier = require('gulp-prettier');
 
 // format
 // format-ts
-gulp.task('_format-ts-eslint', () => {
+gulp.task('_format:ts:eslint', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
     .pipe(eslint({useEslintrc: true, fix: true}))
     .pipe(gulp.dest('.'));
 });
-gulp.task('_format-ts-test', () => {
+gulp.task('_format:ts:test', () => {
   return gulp
     .src(['test/*.ts'], {base: '.'})
     .pipe(
@@ -31,9 +31,9 @@ gulp.task('_format-ts-test', () => {
     )
     .pipe(gulp.dest('.'));
 });
-gulp.task('_format-ts', gulp.parallel('_format-ts-eslint', '_format-ts-test'));
+gulp.task('_format:ts', gulp.parallel('_format:ts:eslint', '_format:ts:test'));
 // format-js
-gulp.task('_format-js', () => {
+gulp.task('_format:js', () => {
   return gulp
     .src(['gulpfile.js', 'gulpfile.*.js'], {base: '.'})
     .pipe(
@@ -54,7 +54,7 @@ gulp.task('_format-js', () => {
     .pipe(gulp.dest('.'));
 });
 // format-html
-gulp.task('_format-html', () => {
+gulp.task('_format:html', () => {
   return gulp
     .src(['*.html', 'docs/*.html', 'docs/_help/*.html'], {base: '.'})
     .pipe(
@@ -69,7 +69,7 @@ gulp.task('_format-html', () => {
     .pipe(gulp.dest('.'));
 });
 // format-json
-gulp.task('_format-json', () => {
+gulp.task('_format:json', () => {
   return gulp
     .src(['.eslintrc.json', 'tsconfig.json'], {base: '.'})
     .pipe(
@@ -84,7 +84,7 @@ gulp.task('_format-json', () => {
     .pipe(gulp.dest('.'));
 });
 // format-less
-gulp.task('_format-less', () => {
+gulp.task('_format:less', () => {
   return gulp
     .src(['css/*.less', 'docs/assets/css/*.less'], {base: '.'})
     .pipe(
@@ -99,7 +99,7 @@ gulp.task('_format-less', () => {
     .pipe(gulp.dest('.'));
 });
 // format-md
-gulp.task('_format-md', () => {
+gulp.task('_format:md', () => {
   return gulp
     .src(['docs/*.md'], {base: '.'})
     .pipe(
@@ -112,4 +112,4 @@ gulp.task('_format-md', () => {
     )
     .pipe(gulp.dest('.'));
 });
-gulp.task('format', gulp.parallel('_format-json', '_format-js', '_format-ts', '_format-md', '_format-less'));
+gulp.task('format', gulp.parallel('_format:json', '_format:js', '_format:ts', '_format:md', '_format:less'));

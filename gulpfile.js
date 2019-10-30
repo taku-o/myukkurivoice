@@ -63,7 +63,7 @@ gulp.task('toc', () => {
 });
 
 // clean
-gulp.task('clean', gulp.parallel('_rm-js', '_rm-package', '_rm-workdir'));
+gulp.task('clean', gulp.parallel('_rm:js', '_rm:package', '_rm:workdir'));
 
 // run app
 gulp.task(
