@@ -12,6 +12,7 @@ require('./gulpfile.lint');
 require('./gulpfile.tsc');
 require('./gulpfile.doc');
 require('./gulpfile.package');
+require('./gulpfile.sign');
 require('./gulpfile.release');
 require('./gulpfile.test');
 
