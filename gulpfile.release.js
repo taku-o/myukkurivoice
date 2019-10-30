@@ -96,8 +96,10 @@ gulp.task('_zip-app-signed', (cb) => {
 
 // open
 gulp.task('_open-appdir', (cb) => {
-  if (!process.env.BUILD_PLATFORM) { throw new Exception('BUILD_PLATFORM not set.'); }
-  const packageName = process.env.BUILD_PLATFORM == 'darwin'? APP_PACKAGE_NAME: MAS_APP_PACKAGE_NAME;
+  if (!process.env.BUILD_PLATFORM) {
+    throw new Error('BUILD_PLATFORM not set.');
+  }
+  const packageName = process.env.BUILD_PLATFORM == 'darwin' ? APP_PACKAGE_NAME : MAS_APP_PACKAGE_NAME;
   exec('open ' + packageName, (err, stdout, stderr) => {
     cb(err);
   });

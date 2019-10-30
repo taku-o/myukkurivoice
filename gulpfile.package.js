@@ -24,7 +24,9 @@ gulp.task('_platform:mas', (cb) => {
 // app.asar.unpacked
 gulp.task('_unpacked:mkdir', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
-  if (!platform) { throw new Exception('BUILD_PLATFORM not set.'); }
+  if (!platform) {
+    throw new Error('BUILD_PLATFORM not set.');
+  }
   const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
   mkdirp(`${UNPACK_DIR}/vendor`, (err) => {
     cb(err);
@@ -32,7 +34,9 @@ gulp.task('_unpacked:mkdir', (cb) => {
 });
 gulp.task('_unpacked:cp', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
-  if (!platform) { throw new Exception('BUILD_PLATFORM not set.'); }
+  if (!platform) {
+    throw new Error('BUILD_PLATFORM not set.');
+  }
   const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
   Promise.all([
     fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`),
@@ -44,22 +48,22 @@ gulp.task('_unpacked:cp', (cb) => {
     fse.copy('vendor/maquestalk1-ios', `${UNPACK_DIR}/vendor/maquestalk1-ios`),
     fse.copy('vendor/secret', `${UNPACK_DIR}/vendor/secret`),
   ])
-  .then(() => {
-    if (platform == 'darwin') {
-      return Promise.all([
-        fse.copy('vendor/AquesTalk.framework', `${UNPACK_DIR}/vendor/AquesTalk.framework`),
-        fse.copy('vendor/maquestalk1', `${UNPACK_DIR}/vendor/maquestalk1`),
-      ])
-    } else {
-      return Promise.resolve();
-    }
-  })
-  .then(() => {
-    cb();
-  })
-  .catch((err) => {
-    cb(err);
-  });
+    .then(() => {
+      if (platform == 'darwin') {
+        return Promise.all([
+          fse.copy('vendor/AquesTalk.framework', `${UNPACK_DIR}/vendor/AquesTalk.framework`),
+          fse.copy('vendor/maquestalk1', `${UNPACK_DIR}/vendor/maquestalk1`),
+        ]);
+      } else {
+        return Promise.resolve();
+      }
+    })
+    .then(() => {
+      cb();
+    })
+    .catch((err) => {
+      cb(err);
+    });
 });
 gulp.task('_unpacked', gulp.series('_handleError', '_unpacked:mkdir', '_unpacked:cp'));
 
@@ -246,7 +250,9 @@ function getIgnoreFiles(forDebug) {
 }
 gulp.task('_package-release', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
-  if (!platform) { throw new Exception('BUILD_PLATFORM not set.'); }
+  if (!platform) {
+    throw new Error('BUILD_PLATFORM not set.');
+  }
   exec(
     PACKAGER_CMD +
       ` . MYukkuriVoice \
@@ -287,5 +293,14 @@ gulp.task('_package-debug', (cb) => {
 // package
 gulp.task(
   'package',
-  gulp.series('_handleError', '_platform:darwin', 'tsc:debug', '_rm-package', '_package-debug', '_unpacked', '_notify', '_kill')
+  gulp.series(
+    '_handleError',
+    '_platform:darwin',
+    'tsc:debug',
+    '_rm-package',
+    '_package-debug',
+    '_unpacked',
+    '_notify',
+    '_kill'
+  )
 );
