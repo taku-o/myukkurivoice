@@ -5,6 +5,14 @@ const replace = require('gulp-replace');
 const toc = require('gulp-markdown-toc');
 const wrapper = require('gulp-wrapper');
 
+// table of contents
+gulp.task('toc', () => {
+  return gulp
+    .src('docs/README.md')
+    .pipe(toc())
+    .pipe(gulp.dest('docs'));
+});
+
 // about
 gulp.task('about', () => {
   return gulp

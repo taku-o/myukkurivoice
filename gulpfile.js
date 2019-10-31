@@ -22,7 +22,6 @@ gulp.task('default', (cb) => {
   console.log(`
 usage:
     gulp --tasks-simple
-    gulp all
     gulp tsc
     gulp tsc:debug
     gulp lint
@@ -49,17 +48,6 @@ usage:
     gulp build:store [--branch=develop]
   `);
   return cb();
-});
-
-// all
-gulp.task('all', gulp.series('_handleError', 'format', 'less', 'tsc', 'lint', 'test', 'build:staging', '_kill'));
-
-// table of contents
-gulp.task('toc', () => {
-  return gulp
-    .src('docs/README.md')
-    .pipe(toc())
-    .pipe(gulp.dest('docs'));
 });
 
 // clean
