@@ -111,6 +111,7 @@ gulp.task(
   gulp.series(
     '_handleError',
     '_platform:darwin',
+    '_target:release',
     _mustMasterBranch,
     '_rm:workdir',
     '_mk:workdir',
@@ -139,6 +140,7 @@ gulp.task(
   gulp.series(
     '_handleError',
     '_platform:darwin',
+    '_target:staging',
     _detectBranch,
     '_rm:workdir',
     '_mk:workdir',
@@ -167,6 +169,7 @@ gulp.task(
   gulp.series(
     '_handleError',
     '_platform:mas',
+    '_target:store',
     //_mustMasterBranch,
     _detectBranch,
     '_rm:workdir',
