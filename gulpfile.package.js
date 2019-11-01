@@ -83,6 +83,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/gulpfile\\..+\\.js$" \
     --ignore="^/icns" \
     --ignore="^/keys" \
+    --ignore="^/mas" \
     --ignore="^/release" \
     --ignore="^/test" \
     --ignore="^/vendor/aqk2k_mac" \
