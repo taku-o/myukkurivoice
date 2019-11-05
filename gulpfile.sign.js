@@ -14,14 +14,14 @@ const DEVELOPER_APPLE_ID = require('./mas/MacAppleStore.json').DEVELOPER_APPLE_I
 // notarize
 gulp.task('_notarize', () => {
   const platform = 'darwin';
-  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  const appZipPath = `MYukkuriVoice-${platform}-x64.zip`;
   const bundleId = 'jp.nanasi.myukkurivoice';
   const teamId = '52QJ97GWTE';
   const appleIdPassword = `@keychain:jp.nanasi.myukkurivoice.mac-app-store`;
 
   return notarize({
     bundleId,
-    APP_PATH,
+    appZipPath,
     DEVELOPER_APPLE_ID,
     appleIdPassword,
     teamId,

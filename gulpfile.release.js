@@ -128,8 +128,8 @@ gulp.task(
     'doc',
     '_zip-app',
     '_codesign',
-    '_notarize',
     '_zip-app-signed',
+    '_notarize',
     '_open:appdir',
     '_notify',
     '_kill'
@@ -158,8 +158,8 @@ gulp.task(
     'doc',
     '_zip-app',
     //'_codesign',
-    //'_notarize',
     //'_zip-app-signed',
+    //'_notarize',
     '_open:appdir',
     '_notify',
     '_kill'
