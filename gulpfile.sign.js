@@ -1,7 +1,7 @@
 var gulp = gulp || require('gulp');
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
-const notarize = require('electron-notarize');
+const notarize = require('electron-notarize').notarize;
 
 const DEVELOPER_ID_APPLICATION_KEY = require('./mas/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
 const DEVELOPER_INSTALLER_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPER_INSTALLER_3RD_KEY;
