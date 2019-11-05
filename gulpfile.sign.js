@@ -1,10 +1,32 @@
 var gulp = gulp || require('gulp');
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
+const notarize = require('electron-notarize');
 
 const DEVELOPER_ID_APPLICATION_KEY = require('./mas/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
 const DEVELOPER_INSTALLER_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPER_INSTALLER_3RD_KEY;
 const DEVELOPER_APPLICATION_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPER_APPLICATION_3RD_KEY;
+const DEVELOPER_APPLE_ID = require('./mas/MacAppleStore.json').DEVELOPER_APPLE_ID;
+
+//security add-generic-password -a "mail@nanasi.jp" -w "testtest" -s "jp.nanasi.myukkurivoice.mac-app-store"
+//security delete-generic-password -a "mail@nanasi.jp" -s "jp.nanasi.myukkurivoice.mac-app-store"
+
+// notarize
+gulp.task('_notarize', () => {
+  const platform = 'darwin';
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  const bundleId = 'jp.nanasi.myukkurivoice';
+  const teamId = '52QJ97GWTE';
+  const appleIdPassword = `@keychain:jp.nanasi.myukkurivoice.mac-app-store`;
+
+  return notarize({
+    bundleId,
+    APP_PATH,
+    DEVELOPER_APPLE_ID,
+    appleIdPassword,
+    teamId,
+  });
+});
 
 // codesign
 gulp.task('_codesign', (cb) => {
