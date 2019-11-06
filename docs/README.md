@@ -314,4 +314,3 @@ macOS High Sierra(10.13)以降に対応しています。
 [<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm35208451.png" width="400">](http://www.nicovideo.jp/watch/sm35208451)
 
 [<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm35896146.png" width="400">](http://www.nicovideo.jp/watch/sm35896146)
-
