@@ -9,9 +9,6 @@ const DEVELOPER_APPLICATION_3RD_KEY = require('./mas/MacAppleStore.json').DEVELO
 const DEVELOPER_APPLE_ID = require('./mas/MacAppleStore.json').DEVELOPER_APPLE_ID;
 const DEVELOPER_APPLE_ID_PASS = require('./mas/MacAppleStore.json').DEVELOPER_APPLE_ID_PASS;
 
-//security add-generic-password -a "mail@nanasi.jp" -w "testtest" -s "jp.nanasi.myukkurivoice.mac-app-store"
-//security delete-generic-password -a "mail@nanasi.jp" -s "jp.nanasi.myukkurivoice.mac-app-store"
-
 // notarize
 gulp.task('_notarize', () => {
   const platform = 'darwin';
