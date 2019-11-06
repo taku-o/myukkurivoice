@@ -80,14 +80,14 @@
 
 ## リリース
 
-- KeyChain Accessに、Apple developerアカウントを登録します。
+- (不要)KeyChain Accessに、Apple developerアカウントを登録します。
 
 ```
   security add-generic-password -a "mail@nanasi.jp" -w "AC_PASSWORD" -s "jp.nanasi.myukkurivoice.mac-app-store"
   security delete-generic-password -a "mail@nanasi.jp" -s "jp.nanasi.myukkurivoice.mac-app-store"
 ```
 
-- リリースコマンドで、リリース用のビルドの作成と、アップル公証、配布用zipファイルを作成します。
+- リリースコマンドで、リリース用のビルドの作成と、<del>アップル公証</del>、配布用zipファイルを作成します。
 
 ```
   gulp build:release
