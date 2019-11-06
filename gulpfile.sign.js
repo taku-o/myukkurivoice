@@ -7,6 +7,7 @@ const DEVELOPER_ID_APPLICATION_KEY = require('./mas/MacAppleStore.json').DEVELOP
 const DEVELOPER_INSTALLER_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPER_INSTALLER_3RD_KEY;
 const DEVELOPER_APPLICATION_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPER_APPLICATION_3RD_KEY;
 const DEVELOPER_APPLE_ID = require('./mas/MacAppleStore.json').DEVELOPER_APPLE_ID;
+const DEVELOPER_APPLE_ID_PASS = require('./mas/MacAppleStore.json').DEVELOPER_APPLE_ID_PASS;
 
 //security add-generic-password -a "mail@nanasi.jp" -w "testtest" -s "jp.nanasi.myukkurivoice.mac-app-store"
 //security delete-generic-password -a "mail@nanasi.jp" -s "jp.nanasi.myukkurivoice.mac-app-store"
@@ -14,16 +15,15 @@ const DEVELOPER_APPLE_ID = require('./mas/MacAppleStore.json').DEVELOPER_APPLE_I
 // notarize
 gulp.task('_notarize', () => {
   const platform = 'darwin';
-  const appZipPath = `MYukkuriVoice-${platform}-x64.zip`;
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const bundleId = 'jp.nanasi.myukkurivoice';
   const teamId = '52QJ97GWTE';
-  const appleIdPassword = `@keychain:jp.nanasi.myukkurivoice.mac-app-store`;
 
   return notarize({
     bundleId,
-    appZipPath,
+    APP_PATH,
     DEVELOPER_APPLE_ID,
-    appleIdPassword,
+    DEVELOPER_APPLE_ID_PASS,
     teamId,
   });
 });
@@ -35,6 +35,7 @@ gulp.task('_codesign', (cb) => {
   exec(
     '/usr/bin/codesign' +
       ` -s "${DEVELOPER_ID_APPLICATION_KEY}" \
+        --options runtime \
         --deep \
         --keychain "/Users/${process.env.USER}/Library/Keychains/login.keychain" \
         ${APP_PATH}`,
