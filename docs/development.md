@@ -29,6 +29,7 @@
     +-- aq_dic_large              AquesTalk辞書
     +-- aq_dic_large/aq_user.csv  AquesTalkユーザー辞書のマスターデータCSV
     +-- maquestalk1               AquesTalk1フレームワークbridge
+    +-- maquestalk1-ios           AquesTalk1 iOSフレームワークbridge
     +-- secret                    AquesTalk10ライセンスキー取得コード
 ```
 
@@ -71,16 +72,18 @@
   gulp app
 ```
 
-- 次のコマンドで Electron アプリをビルドします。
+- 次のコマンドで Electron アプリを簡易ビルドできます。
 
 ```
   gulp package
 ```
 
-- リリース用のアプリケーションを作成するにはリリース用のコマンドを実行します。
+## リリース
+
+- リリースコマンドで、リリース用のビルドの作成と、配布用zipファイルを作成します。
 
 ```
-  gulp release
+  gulp build:release
 ```
 
 ## 開発テスト
@@ -90,7 +93,7 @@
 - staging コマンドで特定のブランチを指定して、ビルドできます。
 
 ```
-  gulp staging --branch=develop
+  gulp build:staging --branch=staging
 ```
 
 ### 単体テスト
@@ -107,12 +110,14 @@
   gulp test
 ```
 
-### Lint
-
-- Lint ツールは次のコマンドで実行できます。
+### 開発関連の機能
 
 ```
+  gulp tsc
   gulp lint
+  gulp format
+  gulp less
+  gulp clean
 ```
 
 # 環境設定まわりの情報
