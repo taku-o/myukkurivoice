@@ -20,11 +20,11 @@ gulp.task('_notarize', () => {
   const teamId = '52QJ97GWTE';
 
   return notarize({
-    bundleId,
-    APP_PATH,
-    DEVELOPER_APPLE_ID,
-    DEVELOPER_APPLE_ID_PASS,
-    teamId,
+    appBundleId: bundleId,
+    appPath: APP_PATH,
+    appleId: DEVELOPER_APPLE_ID,
+    appleIdPassword: DEVELOPER_APPLE_ID_PASS,
+    ascProvider: teamId,
   });
 });
 
