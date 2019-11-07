@@ -39,15 +39,15 @@
 
 ```
   - ffi-napi 2.4.5
-    - bindings
-    - debug
-    - file-uri-to-path
-    - get-symbol-from-current-process-h
-    - get-uv-event-loop-napi-h
-    - ms
-    - node-addon-api
-    - ref-napi
-    - ref-struct-di
+    - bindings 1.5.0
+    - debug 4.1.1
+    - file-uri-to-path 1.0.0
+    - get-symbol-from-current-process-h 1.0.1
+    - get-uv-event-loop-napi-h 1.0.5
+    - ms 2.1.1
+    - node-addon-api 1.5.0
+    - ref-napi 1.4.2
+    - ref-struct-di 1.1.0
 ```
 
 ## 開発の進め方
