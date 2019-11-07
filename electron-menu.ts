@@ -32,7 +32,7 @@ class FnMenu implements yubo.FnMenu {
           {role: 'services'},
           {type: 'separator'},
           {role: 'hide'},
-          {role: 'hideOthers'},
+          {role: 'hideothers'},
           {role: 'unhide'},
           {type: 'separator'},
           {
@@ -50,25 +50,25 @@ class FnMenu implements yubo.FnMenu {
           {role: 'cut'},
           {role: 'copy'},
           {role: 'paste'},
-          {role: 'pasteAndMatchStyle'},
+          {role: 'pasteandmatchstyle'},
           {role: 'delete'},
-          {role: 'selectAll'},
+          {role: 'selectall'},
           {type: 'separator'},
           {label: 'Speech',
             submenu: [
-              {role: 'startSpeaking'},
-              {role: 'stopSpeaking'},
+              {role: 'startspeaking'},
+              {role: 'stopspeaking'},
             ],
           },
         ],
       },
       {
         label: '履歴',
-        role: 'recentDocuments',
+        role: 'recentDocuments' as any, /* bug in electron5 ? */
         submenu: [
           {
             label: '履歴のクリア',
-            role: 'clearRecentDocuments',
+            role: 'clearRecentDocuments' as any, /* bug in electron5 ? */
           },
         ],
       },
@@ -247,9 +247,9 @@ class FnMenu implements yubo.FnMenu {
           },
           {type: 'separator'},
           {role: 'reload'},
-          {role: 'zoomIn'},
-          {role: 'zoomOut'},
-          {role: 'resetZoom'},
+          {role: 'zoomin'},
+          {role: 'zoomout'},
+          {role: 'resetzoom'},
           {role: 'togglefullscreen'},
           {
             label: 'Bring All to Front',
@@ -322,7 +322,7 @@ class FnMenu implements yubo.FnMenu {
         {
           label: 'Debug',
           submenu: [
-            {role: 'toggleDevTools'},
+            {role: 'toggledevtools'},
             {
               label: 'Install Devtron',
               click() { myApp.mainWindow.webContents.send('menu', 'devtron'); },

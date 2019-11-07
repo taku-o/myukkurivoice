@@ -1,7 +1,6 @@
 import {Application} from 'spectron';
 import {assert} from 'chai';
 import {position} from 'caller-position';
-import * as path from 'path';
 import * as temp from 'temp';
 temp.track();
 
@@ -15,7 +14,6 @@ describe('dictWindow', function() {
     const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
-      args: [path.join(__dirname, '..')],
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
     });
     return this.app.start();

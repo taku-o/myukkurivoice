@@ -139,9 +139,9 @@
 ```
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
   nvm ls-remote
-  nvm install v12.4.0
-  nvm use v12.4.0
-  nvm alias default v12.4.0
+  nvm install v12.0.0
+  nvm use v12.0.0
+  nvm alias default v12.0.0
 ```
 
 ### Module version mismatch. Expected 50, got 51
