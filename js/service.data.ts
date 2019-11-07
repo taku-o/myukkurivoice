@@ -2,6 +2,7 @@ var app = require('electron').remote.app;
 var _storage: any, storage   = () => { _storage = _storage || require('electron-json-storage'); return _storage; };
 var _lruCache: any, lruCache = () => { _lruCache = _lruCache || require('lru-cache'); return _lruCache; };
 var _log: any, log           = () => { _log = _log || require('electron-log'); return _log; };
+var _uniqid: any, uniqid     = () => { _uniqid = _uniqid || require('uniqid'); return _uniqid; };
 var _monitor: any, monitor   = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 var MONITOR = process.env.MONITOR != null;
@@ -18,10 +19,6 @@ class DataService implements yubo.DataService {
     private YVoiceInitialData: yubo.YVoice[],
     private MessageService: yubo.MessageService
   ) {}
-
-  private uniqId(): string {
-    return ('0000' + (Math.random()*Math.pow(36, 4) << 0).toString(36)).slice(-4);
-  }
 
   load(ok: (dataList: yubo.YVoice[]) => void, ng: (err: Error) => void): ng.IPromise<yubo.YVoice[]> {
     if (MONITOR) { log().warn(monitor().format('srv.data', 'data load called')); }
@@ -55,13 +52,13 @@ class DataService implements yubo.DataService {
 
   create(): yubo.YVoice {
     const cloned = angular.copy(this.YVoice);
-    cloned['id'] = this.uniqId();
+    cloned['id'] = uniqid()();
     return cloned;
   }
 
   copy(original: yubo.YVoice): yubo.YVoice {
     const cloned = angular.copy(original);
-    cloned['id'] = this.uniqId();
+    cloned['id'] = uniqid()();
     return cloned;
   }
 
