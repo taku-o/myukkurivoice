@@ -38,14 +38,16 @@
 - native 関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
 
 ```
-  - bindings 1.5.0
-  - debug 4.1.1
-  - ffi 2.3.0
-  - ms 2.1.1
-  - nan 2.14.0
-  - natives 1.1.6
-  - ref 1.3.5
-  - ref-struct 1.1.0
+  - ffi-napi 2.4.5
+    - bindings
+    - debug
+    - file-uri-to-path
+    - get-symbol-from-current-process-h
+    - get-uv-event-loop-napi-h
+    - ms
+    - node-addon-api
+    - ref-napi
+    - ref-struct-di
 ```
 
 ## 開発の進め方
@@ -133,9 +135,9 @@
 ```
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
   nvm ls-remote
-  nvm install v10.2.1
-  nvm use v10.2.1
-  nvm alias default v10.2.1
+  nvm install v12.4.0
+  nvm use v12.4.0
+  nvm alias default v12.4.0
 ```
 
 ### Module version mismatch. Expected 50, got 51
