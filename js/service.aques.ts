@@ -5,7 +5,7 @@ var _ffi: any, ffi               = () => { _ffi = _ffi || require('ffi-napi'); r
 var _os: any, os                 = () => { _os = _os || require('os'); return _os; };
 var _ref: any, ref               = () => { _ref = _ref || require('ref-napi'); return _ref; };
 var _semver: any, semver         = () => { _semver = _semver || require('semver'); return _semver; };
-var _StructType: any, StructType = () => { _StructType = _StructType || require('ref-struct-di'); return _StructType; };
+var _StructType: any, StructType = () => { _StructType = _StructType || require('ref-struct-di')(ref()); return _StructType; };
 var _temp: any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
 var _exec: any, exec             = () => { _exec = _exec || require('child_process').exec; return _exec; };
 var _epath: any, epath           = () => { _epath = _epath || require('electron-path'); return _epath; };
