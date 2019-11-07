@@ -22,7 +22,7 @@
   "versions": {
     "electron": "6.1.4",
     "node": "v12.4.0",
-    "chrome": "66.0.3359.181",
+    "chrome": "76.0.3809.88",
     "xcode": "9.2"
   },
   "homepage": "https://github.com/taku-o/myukkurivoice",
