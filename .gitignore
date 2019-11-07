@@ -9,6 +9,7 @@ MYukkuriVoice-darwin-x64.zip
 !gulpfile.*.js
 tsconfig.tsbuildinfo
 !/docs/assets/js/*.js
+/node_modules/
 !/node_modules/bindings/
 !/node_modules/debug/
 !/node_modules/ffi-napi/
@@ -19,5 +20,4 @@ tsconfig.tsbuildinfo
 !/node_modules/node-addon-api/
 !/node_modules/ref-napi/
 !/node_modules/ref-struct-di/
-/node_modules/
 
