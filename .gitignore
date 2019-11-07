@@ -11,11 +11,13 @@ tsconfig.tsbuildinfo
 !/docs/assets/js/*.js
 !/node_modules/bindings/
 !/node_modules/debug/
-!/node_modules/ffi/
+!/node_modules/ffi-napi/
+!/node_modules/file-uri-to-path/
+!/node_modules/get-symbol-from-current-process-h/
+!/node_modules/get-uv-event-loop-napi-h/
 !/node_modules/ms/
-!/node_modules/nan/
-!/node_modules/natives/
-!/node_modules/ref/
-!/node_modules/ref-struct/
+!/node_modules/node-addon-api/
+!/node_modules/ref-napi/
+!/node_modules/ref-struct-di/
 /node_modules/
 
