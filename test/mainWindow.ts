@@ -14,6 +14,7 @@ describe('mainWindow', function() {
     const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
+      chromeDriverArgs: ['remote-debugging-port=9222'],
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
     });
     return this.app.start();
