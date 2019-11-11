@@ -402,7 +402,7 @@ class FnWindow implements yubo.FnWindow {
         defaultId: 0,
         cancelId: 0,
       };
-      const btnId: number = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+      const btnId: number = dialog.showMessageBoxSync(myApp.systemWindow, dialogOptions);
       if (btnId == 1) {
         shell.openExternal(version.latestReleaseUrl);
       }
@@ -417,7 +417,7 @@ class FnWindow implements yubo.FnWindow {
         defaultId: 0,
         cancelId: 0,
       };
-      const _void = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+      const _void = dialog.showMessageBoxSync(myApp.systemWindow, dialogOptions);
     });
   }
 
