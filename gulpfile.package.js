@@ -99,13 +99,12 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/vendor" \
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/MYukkuriVoice-mas-x64" \
+    --ignore="^/build/extend.plist$" \
+    --ignore="^/build/icns" \
+    --ignore="^/build/mas" \
     --ignore="^/docs" \
-    --ignore="^/extend.plist$" \
-    --ignore="^/gulpfile\\.js$" \
     --ignore="^/gulpfile\\..+\\.js$" \
-    --ignore="^/icns" \
-    --ignore="^/keys" \
-    --ignore="^/mas" \
+    --ignore="^/gulpfile\\.js$" \
     --ignore="^/release" \
     --ignore="^/test" \
     --ignore="^/vendor/aqk2k_mac" \
@@ -297,9 +296,9 @@ gulp.task('_package:release', (cb) => {
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
       --app-bundle-id=jp.nanasi.myukkurivoice \
-      --icon=icns/myukkurivoice.icns --overwrite --asar \
+      --icon=build/icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \
-      --extend-info=extend.plist \
+      --extend-info=build/extend.plist \
       --no-prune ` +
       getIgnoreFiles(false),
     (err, stdout, stderr) => {
@@ -316,9 +315,9 @@ gulp.task('_package:debug', (cb) => {
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
       --app-bundle-id=jp.nanasi.myukkurivoice \
-      --icon=icns/myukkurivoice.icns --overwrite --asar \
+      --icon=build/icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \
-      --extend-info=extend.plist \
+      --extend-info=build/extend.plist \
       --no-prune ` +
       getIgnoreFiles(true),
     (err, stdout, stderr) => {

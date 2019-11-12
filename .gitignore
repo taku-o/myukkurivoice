@@ -2,8 +2,9 @@
 *.swp
 Thumbs.db
 /release/
-/MYukkuriVoice-darwin-x64/
-MYukkuriVoice-darwin-x64.zip
+/MYukkuriVoice-*-x64/
+MYukkuriVoice-*-x64.zip
+MYukkuriVoice-*-x64.app
 !gulpfile.js
 *.js
 !gulpfile.*.js

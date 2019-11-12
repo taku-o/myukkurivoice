@@ -2,9 +2,9 @@ var gulp = gulp || require('gulp');
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 
-const DEVELOPER_ID_APPLICATION_KEY = require('./mas/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
-const DEVELOPER_INSTALLER_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPER_INSTALLER_3RD_KEY;
-const DEVELOPER_APPLICATION_3RD_KEY = require('./mas/MacAppleStore.json').DEVELOPER_APPLICATION_3RD_KEY;
+const DEVELOPER_ID_APPLICATION_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
+const DEVELOPER_INSTALLER_3RD_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_INSTALLER_3RD_KEY;
+const DEVELOPER_APPLICATION_3RD_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_APPLICATION_3RD_KEY;
 
 // codesign
 gulp.task('_codesign', (cb) => {
@@ -28,9 +28,9 @@ gulp.task('_codesign:store', (cb) => {
   const RESULT_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.pkg`;
   const FRAMEWORKS_PATH = `${APP_PATH}/Contents/Frameworks`;
   const APP = 'MYukkuriVoice';
-  const CHILD_PLIST = 'mas/store.child.plist';
-  const PARENT_PLIST = 'mas/store.parent.plist';
-  const LOGINHELPER_PLIST = 'mas/store.loginhelper.plist';
+  const CHILD_PLIST = 'build/mas/store.child.plist';
+  const PARENT_PLIST = 'build/mas/store.parent.plist';
+  const LOGINHELPER_PLIST = 'build/mas/store.loginhelper.plist';
 
   execSync(
     `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Electron Framework"`
