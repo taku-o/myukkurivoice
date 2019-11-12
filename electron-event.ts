@@ -42,8 +42,13 @@ class FnEvent implements yubo.FnEvent {
           {name: 'Wav File', extensions: ['wav']},
         ],
       };
-      const r = dialog.showSaveDialogSync(myApp.mainWindow, options);
-      event.sender.send('showSaveDialog', r);
+      dialog.showSaveDialog(myApp.mainWindow, options)
+      .then((result) => {
+        if (! result.canceled) {
+          const filePath = result.filePath;
+          event.sender.send('showSaveDialog', filePath);
+        }
+      });
     });
     
     // showDirDialog
@@ -53,8 +58,13 @@ class FnEvent implements yubo.FnEvent {
         properties: ['openDirectory' as 'openDirectory', 'createDirectory' as 'createDirectory'],
         defaultPath: defaultPath,
       };
-      const r = dialog.showOpenDialogSync(myApp.mainWindow, options);
-      event.sender.send('showDirDialog', r);
+      dialog.showOpenDialog(myApp.mainWindow, options)
+      .then((result) => {
+        if (! result.canceled) {
+          const filePaths = result.filePaths;
+          event.sender.send('showDirDialog', filePaths);
+        }
+      });
     });
     
     // drag out wav file
@@ -84,8 +94,11 @@ class FnEvent implements yubo.FnEvent {
         buttons: ['OK'],
         defaultId: 0,
       };
-      const r = dialog.showMessageBoxSync(myApp.systemWindow, dialogOptions);
-      event.sender.send('updateAppConfig', r);
+      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
+      .then((result) => {
+        const r = result.response;
+        event.sender.send('updateAppConfig', r);
+      });
       myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
       myApp.mainWindow.webContents.reload();
       if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
@@ -101,8 +114,11 @@ class FnEvent implements yubo.FnEvent {
         buttons: ['OK'],
         defaultId: 0,
       };
-      const r = dialog.showMessageBoxSync(myApp.systemWindow, dialogOptions);
-      event.sender.send('resetAppConfig', r);
+      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
+      .then((result) => {
+        const r = result.response;
+        event.sender.send('resetAppConfig', r);
+      });
       myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
       myApp.mainWindow.webContents.reload();
       if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
@@ -120,7 +136,10 @@ class FnEvent implements yubo.FnEvent {
       buttons: ['OK'],
       defaultId: 0,
     };
-    const _void = dialog.showMessageBoxSync(myApp.mainWindow, dialogOptions);
+    dialog.showMessageBox(myApp.mainWindow, dialogOptions)
+    .then((result) => {
+      // do nothing
+    });
     myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
     myApp.mainWindow.webContents.reload();
     if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }

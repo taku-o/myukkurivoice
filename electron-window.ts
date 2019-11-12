@@ -402,10 +402,13 @@ class FnWindow implements yubo.FnWindow {
         defaultId: 0,
         cancelId: 0,
       };
-      const btnId: number = dialog.showMessageBoxSync(myApp.systemWindow, dialogOptions);
-      if (btnId == 1) {
-        shell.openExternal(version.latestReleaseUrl);
-      }
+      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
+      .then((result) => {
+        const btnId: number = result.response;
+        if (btnId == 1) {
+          shell.openExternal(version.latestReleaseUrl);
+        }
+      });
     })
     .catch((err: Error) => {
       log().error(err);
@@ -417,7 +420,10 @@ class FnWindow implements yubo.FnWindow {
         defaultId: 0,
         cancelId: 0,
       };
-      const _void = dialog.showMessageBoxSync(myApp.systemWindow, dialogOptions);
+      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
+      .then((result) => {
+        // do nothing
+      });
     });
   }
 
