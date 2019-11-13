@@ -9,7 +9,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AudioService2', function() {
+describe('specWindow-service-AudioService2-44100', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;
@@ -43,6 +43,7 @@ describe('specWindow-service-AudioService2', function() {
     return (
       this.client
         // play aquestalk1
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#play-result-2', '')
         .click('#play2-aqver1')
@@ -52,6 +53,7 @@ describe('specWindow-service-AudioService2', function() {
           assert.equal(value, 'ok', position());
         })
         // play aquestalk2
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#play-result-2', '')
         .click('#play2-aqver2')
@@ -61,6 +63,7 @@ describe('specWindow-service-AudioService2', function() {
           assert.equal(value, 'ok', position());
         })
         // play aquestalk10
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#play-result-2', '')
         .click('#play2-aqver10')
@@ -100,6 +103,7 @@ describe('specWindow-service-AudioService2', function() {
     return (
       this.client
         // record aquestalk1
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
         .setValue('#record-result-2', '')
@@ -131,6 +135,7 @@ describe('specWindow-service-AudioService2', function() {
           });
         })
         // record aquestalk2
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
         .setValue('#record-result-2', '')
@@ -162,6 +167,7 @@ describe('specWindow-service-AudioService2', function() {
           });
         })
         // record aquestalk10
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
         .setValue('#record-result-2', '')
@@ -223,6 +229,7 @@ describe('specWindow-service-AudioService2', function() {
     return (
       this.client
         // record aquestalk1
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
         .setValue('#record-result-2', '')
@@ -256,6 +263,7 @@ describe('specWindow-service-AudioService2', function() {
           });
         })
         // record aquestalk2
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
         .setValue('#record-result-2', '')
@@ -289,6 +297,7 @@ describe('specWindow-service-AudioService2', function() {
           });
         })
         // record aquestalk10
+        .setValue('#play2-samplerate', '')
         .setValue('#play2-encoded', "テ'_スト")
         .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
         .setValue('#record-result-2', '')
