@@ -127,7 +127,7 @@ declare namespace yubo {
     helpSearchDialog?:   {width: number, height: number};
     systemWindow?:       {width: number, height: number};
     dictWindow?:         {width: number, height: number};
-    audioServVer:        'html5audio' | 'webaudioapi';
+    audioServVer:        'html5audio' | 'webaudioapi' | 'webaudioapi8';
     showMsgPane:         boolean;
     passPhrase:          string | null;
     aq10UseKeyEncrypted: string;
@@ -360,6 +360,7 @@ declare namespace yubo {
     //private audio: HTMLAudioElement;
   }
   export interface AudioService2 extends IAudioService {
+    sampleRate?: number;
     //private runningNode: AudioBufferSourceNode;
     //private toArrayBuffer(bufWav: Buffer): ArrayBuffer;
     //private correctFrameCount(audioBuffer: AudioBuffer): number;

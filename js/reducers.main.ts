@@ -16,7 +16,7 @@ var desktopDir = app.getPath('desktop');
 // action reducer
 class MainReducer implements yubo.MainReducer {
   appCfg: yubo.AppCfg = require('electron').remote.getGlobal('appCfg');
-  private AudioService: yubo.IAudioService = this.appCfg.audioServVer == 'html5audio'? this.audioServVer1: this.audioServVer2;
+  private AudioService: yubo.IAudioService = null;
 
   constructor(
     private $q: ng.IQService,
@@ -26,8 +26,8 @@ class MainReducer implements yubo.MainReducer {
     private DataService: yubo.DataService,
     private HistoryService: yubo.HistoryService,
     private AquesService: yubo.AquesService,
-    private audioServVer1: yubo.AudioService1,
-    private audioServVer2: yubo.AudioService2,
+    audioServVer1: yubo.AudioService1,
+    audioServVer2: yubo.AudioService2,
     private TextSubtitleService: yubo.TextSubtitleService,
     private SeqFNameService: yubo.SeqFNameService,
     private AppUtilService: yubo.AppUtilService,
@@ -39,6 +39,21 @@ class MainReducer implements yubo.MainReducer {
     this.store.yvoiceList = window.dataJson;
     this.store.curYvoice = window.dataJson.length > 0? window.dataJson[0]: null;
     delete window['dataJson'];
+
+    // audio service engine
+    switch (this.appCfg.audioServVer) {
+      case 'html5audio':
+        this.AudioService = audioServVer1;
+        break;
+      case 'webaudioapi':
+        this.AudioService = audioServVer2;
+        break;
+      case 'webaudioapi8':
+      default:
+        audioServVer2.sampleRate = 8000;
+        this.AudioService = audioServVer2;
+        break;
+    }
   }
 
   // event

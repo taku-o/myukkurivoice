@@ -105,6 +105,7 @@ angular.module('AudioServices')
 
 // Web Audio API base AudioService
 class AudioService2 implements yubo.AudioService2 {
+  public sampleRate?: number = null;
   private runningNode: AudioBufferSourceNode = null;
   constructor(
     private $q: ng.IQService,
@@ -173,7 +174,7 @@ class AudioService2 implements yubo.AudioService2 {
     const aBuffer = this.toArrayBuffer(bufWav);
 
     // @ts-ignore
-    const audioCtx = new window.AudioContext();
+    const audioCtx = this.sampleRate? new window.AudioContext({sampleRate: this.sampleRate}): new window.AudioContext();
     const processNodeList: AudioNode[] = [];
     let sourceNode: AudioBufferSourceNode = null;
     let audioPlayNode: AudioBufferSourceNode = null;
@@ -284,7 +285,7 @@ class AudioService2 implements yubo.AudioService2 {
     const aBuffer = this.toArrayBuffer(bufWav);
 
     // @ts-ignore
-    const audioCtx = new window.AudioContext();
+    const audioCtx = this.sampleRate? new window.AudioContext({sampleRate: this.sampleRate}): new window.AudioContext();
     const processNodeList: AudioNode[] = [];
     let sourceNode: AudioBufferSourceNode = null;
     audioCtx.decodeAudioData(aBuffer).then((decodedData: AudioBuffer) => {

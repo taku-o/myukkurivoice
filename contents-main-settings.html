@@ -5,7 +5,7 @@
       <input type="text" class="form-control" id="name2" ng-model="ctrl.store.curYvoice.name" placeholder="name">
     </div>
 
-    <div class="voice-tuna-box" id="voice-tuna-box" ng-show="ctrl.appCfg.audioServVer == 'webaudioapi'">
+    <div class="voice-tuna-box" id="voice-tuna-box" ng-show="['webaudioapi','webaudioapi8'].includes(ctrl.appCfg.audioServVer)">
       <div class="form-inline form-group">
         <small>playback rate:</small><input type="number" min="0.4" max="3" step="0.1" id="playback-rate" ng-model="ctrl.store.curYvoice.playbackRate">
         <small>detune:</small><input type="number" min="-1200" max="1200" step="50" id="detune" ng-model="ctrl.store.curYvoice.detune">
