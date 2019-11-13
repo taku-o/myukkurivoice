@@ -140,6 +140,7 @@ class AudioService2 implements yubo.AudioService2 {
         break;
       }
     }
+    pos ++;
     if (pos % 2 != 0) {
       pos += 1;
     }
