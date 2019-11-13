@@ -37,12 +37,12 @@ usage:
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test:rebuild [--t=test/mainWindow.js]
-    gulp app
+    gulp app (alias app:default)
     gulp app:default
     gulp app:catalina
     gulp app:store
     gulp package
-    gulp build
+    gulp build (alias build:staging)
     gulp build:release
     gulp build:staging [--branch=develop]
     gulp build:store [--branch=develop]
@@ -61,6 +61,9 @@ gulp.task(
     env.DEBUG = 1;
     env.MONITOR = 1;
     env.CONSOLELOG = 1;
+    if (!env.RUNTIME_ENV) {
+      env.RUNTIME_ENV = 'default';
+    }
     const run = spawn(__dirname + '/node_modules/.bin/electron', ['.'], {
       env: env,
     });
@@ -75,14 +78,7 @@ gulp.task(
     });
   })
 );
-gulp.task(
-  'app:default',
-  gulp.series((cb) => {
-    const env = process.env;
-    env.RUNTIME_ENV = 'default';
-    cb();
-  }, 'app')
-);
+gulp.task('app:default', gulp.series('app'));
 gulp.task(
   'app:catalina',
   gulp.series((cb) => {
