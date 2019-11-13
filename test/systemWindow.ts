@@ -51,9 +51,13 @@ describe('systemWindow', function() {
         .then((selected: boolean) => {
           assert.ok(!selected, position());
         })
-        .isSelected('#audio-serv-ver-webaudioapi')
+        .isSelected('#audio-serv-ver-webaudioapi8')
         .then((selected: boolean) => {
           assert.ok(selected, position());
+        })
+        .isSelected('#audio-serv-ver-webaudioapi')
+        .then((selected: boolean) => {
+          assert.ok(!selected, position());
         })
         .isSelected('#show-msg-pane')
         .then((selected: boolean) => {
