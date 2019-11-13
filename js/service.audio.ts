@@ -189,7 +189,8 @@ class AudioService2 implements yubo.AudioService2 {
         (!options.detune)? 1:
         (options.detune >= 0)? 1:
         2; // -1200
-      const bufFrameCount = decodedData.length * prate * drate;
+      const margin = 1.1;
+      const bufFrameCount = decodedData.length * prate * drate * margin;
       const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, bufFrameCount, decodedData.sampleRate);
 
       // source
@@ -299,7 +300,8 @@ class AudioService2 implements yubo.AudioService2 {
         (!options.detune)? 1:
         (options.detune >= 0)? 1:
         2; // -1200
-      const bufFrameCount = decodedData.length * prate * drate;
+      const margin = 1.1;
+      const bufFrameCount = decodedData.length * prate * drate * margin;
       const offlineCtx = new OfflineAudioContext(decodedData.numberOfChannels, bufFrameCount, decodedData.sampleRate);
 
       // source
