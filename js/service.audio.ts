@@ -11,7 +11,7 @@ var TEST = process.env.NODE_ENV == 'test';
 angular.module('AudioServices', ['MessageServices', 'UtilServices']);
 
 // Audio base AudioService
-class AudioService1 implements yubo.AudioService1 {
+class HTML5AudioService implements yubo.HTML5AudioService {
   private audio: HTMLAudioElement = null;
   constructor(
     private $q: ng.IQService,
@@ -96,15 +96,15 @@ class AudioService1 implements yubo.AudioService1 {
   }
 }
 angular.module('AudioServices')
-  .service('AudioService1', [
+  .service('HTML5AudioService', [
     '$q',
     'MessageService',
     'AppUtilService',
-    AudioService1,
+    HTML5AudioService,
   ]);
 
 // Web Audio API base AudioService
-class AudioService2 implements yubo.AudioService2 {
+class WebAPIAudioService implements yubo.WebAPIAudioService {
   public sampleRate?: number = null;
   private runningNode: AudioBufferSourceNode = null;
   constructor(
@@ -390,9 +390,9 @@ class AudioService2 implements yubo.AudioService2 {
   }
 }
 angular.module('AudioServices')
-  .service('AudioService2', [
+  .service('WebAPIAudioService', [
     '$q',
     'MessageService',
     'AppUtilService',
-    AudioService2,
+    WebAPIAudioService,
   ]);

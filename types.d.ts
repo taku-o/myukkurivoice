@@ -356,10 +356,10 @@ declare namespace yubo {
     stop(): void;
     record(wavFilePath: string, bufWav: Buffer, options: yubo.RecordOptions): ng.IPromise<{duration: number}>;
   }
-  export interface AudioService1 extends IAudioService {
+  export interface HTML5AudioService extends IAudioService {
     //private audio: HTMLAudioElement;
   }
-  export interface AudioService2 extends IAudioService {
+  export interface WebAPIAudioService extends IAudioService {
     sampleRate?: number;
     //private runningNode: AudioBufferSourceNode;
     //private toArrayBuffer(bufWav: Buffer): ArrayBuffer;

@@ -9,7 +9,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AudioService2-44100', function() {
+describe('specWindow-service-WebAPIAudioService-44100', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;

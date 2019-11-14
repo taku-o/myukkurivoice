@@ -40,7 +40,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       'LicenseService', 'IntroService', 'MessageService', 'CommandService',
       'DataService', 'HistoryService',
       'AqKanji2KoeLib', 'AquesTalk1Lib', 'AquesTalk2Lib', 'AquesTalk10Lib',
-      'AquesService', 'AudioService1', 'AudioService2',
+      'AquesService', 'HTML5AudioService', 'WebAPIAudioService',
       'TextSubtitleService',
       'AppUtilService', 'SeqFNameService',
       'AqUsrDicService',
@@ -53,7 +53,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       CommandService: yubo.CommandService,
       DataService: yubo.DataService, HistoryService: yubo.HistoryService,
       AqKanji2KoeLib: yubo.AqKanji2KoeLib, AquesTalk1Lib: yubo.AquesTalk1Lib, AquesTalk2Lib: yubo.AquesTalk2Lib, AquesTalk10Lib: yubo.AquesTalk10Lib,
-      AquesService: yubo.AquesService, AudioService1: yubo.AudioService1, AudioService2: yubo.AudioService2,
+      AquesService: yubo.AquesService, HTML5AudioService: yubo.HTML5AudioService, WebAPIAudioService: yubo.WebAPIAudioService,
       TextSubtitleService: yubo.TextSubtitleService,
       AppUtilService: yubo.AppUtilService, SeqFNameService: yubo.SeqFNameService,
       AqUsrDicService: yubo.AqUsrDicService
@@ -348,7 +348,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.isI386SupportedPlayEncoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, poptions).then((value) => {
+        HTML5AudioService.play(bufWav, poptions).then((value) => {
           $scope.isI386SupportedPlayResult = 'ok';
         })
         .catch((err: Error) => {
@@ -422,7 +422,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       });
     };
 
-    // AudioService1
+    // HTML5AudioService
     ctrl.play1AqVer1 = function(): void {
       // phont
       const list = YPhontMasterList;
@@ -445,7 +445,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, poptions).then((value) => {
+        HTML5AudioService.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -478,7 +478,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, poptions).then((value) => {
+        HTML5AudioService.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -511,7 +511,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService1.play(bufWav, poptions).then((value) => {
+        HTML5AudioService.play(bufWav, poptions).then((value) => {
           $scope.playResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -547,7 +547,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -582,7 +582,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -617,7 +617,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -652,7 +652,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -687,7 +687,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -722,7 +722,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService1.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
+        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
           $scope.recordResult1 = 'ok';
         })
         .catch((err: Error) => {
@@ -734,7 +734,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       });
     };
 
-    // AudioService2
+    // WebAPIAudioService
     ctrl.play2AqVer1 = function(): void {
       // phont
       const list = YPhontMasterList;
@@ -757,8 +757,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.play(bufWav, poptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -791,8 +791,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.play(bufWav, poptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -825,8 +825,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // play
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.play(bufWav, poptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.play(bufWav, poptions).then((value) => {
           $scope.playResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -862,8 +862,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -898,8 +898,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -934,8 +934,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -970,8 +970,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -1006,8 +1006,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {
@@ -1042,8 +1042,8 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       // wave
       AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        AudioService2.sampleRate = $scope.play2SampleRate;
-        AudioService2.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
+        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
           $scope.recordResult2 = 'ok';
         })
         .catch((err: Error) => {

@@ -26,8 +26,8 @@ class MainReducer implements yubo.MainReducer {
     private DataService: yubo.DataService,
     private HistoryService: yubo.HistoryService,
     private AquesService: yubo.AquesService,
-    audioServVer1: yubo.AudioService1,
-    audioServVer2: yubo.AudioService2,
+    html5AudioService: yubo.HTML5AudioService,
+    webAPIAudioService: yubo.WebAPIAudioService,
     private TextSubtitleService: yubo.TextSubtitleService,
     private SeqFNameService: yubo.SeqFNameService,
     private AppUtilService: yubo.AppUtilService,
@@ -43,15 +43,15 @@ class MainReducer implements yubo.MainReducer {
     // audio service engine
     switch (this.appCfg.audioServVer) {
       case 'html5audio':
-        this.AudioService = audioServVer1;
+        this.AudioService = html5AudioService;
         break;
       case 'webaudioapi':
-        this.AudioService = audioServVer2;
+        this.AudioService = webAPIAudioService;
         break;
       case 'webaudioapi8':
       default:
-        audioServVer2.sampleRate = 8000;
-        this.AudioService = audioServVer2;
+        webAPIAudioService.sampleRate = 8000;
+        this.AudioService = webAPIAudioService;
         break;
     }
   }
@@ -958,8 +958,8 @@ angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
     'DataService',
     'HistoryService',
     'AquesService',
-    'AudioService1',
-    'AudioService2',
+    'HTML5AudioService',
+    'WebAPIAudioService',
     'TextSubtitleService',
     'SeqFNameService',
     'AppUtilService',
