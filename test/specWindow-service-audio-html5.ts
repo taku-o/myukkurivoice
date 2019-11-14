@@ -43,29 +43,29 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // play aquestalk1
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#play-result-1', '')
-        .click('#play1-aqver1')
-        .waitForValue('#play-result-1', 5000)
-        .getValue('#play-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#play-result-html5', '')
+        .click('#playhtml5-aqver1')
+        .waitForValue('#play-result-html5', 5000)
+        .getValue('#play-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
         // play aquestalk2
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#play-result-1', '')
-        .click('#play1-aqver2')
-        .waitForValue('#play-result-1', 5000)
-        .getValue('#play-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#play-result-html5', '')
+        .click('#playhtml5-aqver2')
+        .waitForValue('#play-result-html5', 5000)
+        .getValue('#play-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
         // play aquestalk10
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#play-result-1', '')
-        .click('#play1-aqver10')
-        .waitForValue('#play-result-1', 5000)
-        .getValue('#play-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#play-result-html5', '')
+        .click('#playhtml5-aqver10')
+        .waitForValue('#play-result-html5', 5000)
+        .getValue('#play-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
@@ -100,12 +100,12 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // record aquestalk1
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#wav-file-path-1', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
-        .setValue('#record-result-1', '')
-        .click('#record1-aqver1')
-        .waitForValue('#record-result-1', 5000)
-        .getValue('#record-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
+        .setValue('#record-result-html5', '')
+        .click('#recordhtml5-aqver1')
+        .waitForValue('#record-result-html5', 5000)
+        .getValue('#record-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -131,12 +131,12 @@ describe('specWindow-service-HTML5AudioService', function() {
           });
         })
         // record aquestalk2
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#wav-file-path-1', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
-        .setValue('#record-result-1', '')
-        .click('#record1-aqver2')
-        .waitForValue('#record-result-1', 5000)
-        .getValue('#record-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
+        .setValue('#record-result-html5', '')
+        .click('#recordhtml5-aqver2')
+        .waitForValue('#record-result-html5', 5000)
+        .getValue('#record-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -162,12 +162,12 @@ describe('specWindow-service-HTML5AudioService', function() {
           });
         })
         // record aquestalk10
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#wav-file-path-1', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
-        .setValue('#record-result-1', '')
-        .click('#record1-aqver10')
-        .waitForValue('#record-result-1', 5000)
-        .getValue('#record-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
+        .setValue('#record-result-html5', '')
+        .click('#recordhtml5-aqver10')
+        .waitForValue('#record-result-html5', 5000)
+        .getValue('#record-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -223,13 +223,13 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // record aquestalk1
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#wav-file-path-1', `${dirPath}/_myukkurivoice_hogehoge_1_fcpx.wav`)
-        .setValue('#record-result-1', '')
-        .setValue('#record1-audio-role', 'tmp-track1-role')
-        .click('#record1-aqver1-fcpx')
-        .waitForValue('#record-result-1', 5000)
-        .getValue('#record-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_1_fcpx.wav`)
+        .setValue('#record-result-html5', '')
+        .setValue('#recordhtml5-audio-role', 'tmp-track1-role')
+        .click('#recordhtml5-aqver1-fcpx')
+        .waitForValue('#record-result-html5', 5000)
+        .getValue('#record-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -256,13 +256,13 @@ describe('specWindow-service-HTML5AudioService', function() {
           });
         })
         // record aquestalk2
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#wav-file-path-1', `${dirPath}/_myukkurivoice_hogehoge_2_fcpx.wav`)
-        .setValue('#record-result-1', '')
-        .setValue('#record1-audio-role', 'tmp-track2-role')
-        .click('#record1-aqver2-fcpx')
-        .waitForValue('#record-result-1', 5000)
-        .getValue('#record-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_2_fcpx.wav`)
+        .setValue('#record-result-html5', '')
+        .setValue('#recordhtml5-audio-role', 'tmp-track2-role')
+        .click('#recordhtml5-aqver2-fcpx')
+        .waitForValue('#record-result-html5', 5000)
+        .getValue('#record-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -289,13 +289,13 @@ describe('specWindow-service-HTML5AudioService', function() {
           });
         })
         // record aquestalk10
-        .setValue('#play1-encoded', "テ'_スト")
-        .setValue('#wav-file-path-1', `${dirPath}/_myukkurivoice_hogehoge_10_fcpx.wav`)
-        .setValue('#record-result-1', '')
-        .setValue('#record1-audio-role', 'tmp-track10-role')
-        .click('#record1-aqver10-fcpx')
-        .waitForValue('#record-result-1', 5000)
-        .getValue('#record-result-1')
+        .setValue('#playhtml5-encoded', "テ'_スト")
+        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_10_fcpx.wav`)
+        .setValue('#record-result-html5', '')
+        .setValue('#recordhtml5-audio-role', 'tmp-track10-role')
+        .click('#recordhtml5-aqver10-fcpx')
+        .waitForValue('#record-result-html5', 5000)
+        .getValue('#record-result-html5')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {

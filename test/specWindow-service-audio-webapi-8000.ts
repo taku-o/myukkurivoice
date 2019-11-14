@@ -9,7 +9,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AudioService2-8000', function() {
+describe('specWindow-service-WebAPIAudioService-8000', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;
@@ -43,32 +43,32 @@ describe('specWindow-service-AudioService2-8000', function() {
     return (
       this.client
         // play aquestalk1
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#play-result-2', '')
-        .click('#play2-aqver1')
-        .waitForValue('#play-result-2', 5000)
-        .getValue('#play-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#play-result-webapi', '')
+        .click('#playwebapi-aqver1')
+        .waitForValue('#play-result-webapi', 5000)
+        .getValue('#play-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
         // play aquestalk2
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#play-result-2', '')
-        .click('#play2-aqver2')
-        .waitForValue('#play-result-2', 5000)
-        .getValue('#play-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#play-result-webapi', '')
+        .click('#playwebapi-aqver2')
+        .waitForValue('#play-result-webapi', 5000)
+        .getValue('#play-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
         // play aquestalk10
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#play-result-2', '')
-        .click('#play2-aqver10')
-        .waitForValue('#play-result-2', 5000)
-        .getValue('#play-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#play-result-webapi', '')
+        .click('#playwebapi-aqver10')
+        .waitForValue('#play-result-webapi', 5000)
+        .getValue('#play-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
@@ -103,13 +103,13 @@ describe('specWindow-service-AudioService2-8000', function() {
     return (
       this.client
         // record aquestalk1
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
-        .setValue('#record-result-2', '')
-        .click('#record2-aqver1')
-        .waitForValue('#record-result-2', 5000)
-        .getValue('#record-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
+        .setValue('#record-result-webapi', '')
+        .click('#recordwebapi-aqver1')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -135,13 +135,13 @@ describe('specWindow-service-AudioService2-8000', function() {
           });
         })
         // record aquestalk2
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
-        .setValue('#record-result-2', '')
-        .click('#record2-aqver2')
-        .waitForValue('#record-result-2', 5000)
-        .getValue('#record-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
+        .setValue('#record-result-webapi', '')
+        .click('#recordwebapi-aqver2')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -167,13 +167,13 @@ describe('specWindow-service-AudioService2-8000', function() {
           });
         })
         // record aquestalk10
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
-        .setValue('#record-result-2', '')
-        .click('#record2-aqver10')
-        .waitForValue('#record-result-2', 5000)
-        .getValue('#record-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
+        .setValue('#record-result-webapi', '')
+        .click('#recordwebapi-aqver10')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -229,14 +229,14 @@ describe('specWindow-service-AudioService2-8000', function() {
     return (
       this.client
         // record aquestalk1
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
-        .setValue('#record-result-2', '')
-        .setValue('#record2-audio-role', 'tmp-track1-role')
-        .click('#record2-aqver1-fcpx')
-        .waitForValue('#record-result-2', 5000)
-        .getValue('#record-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
+        .setValue('#record-result-webapi', '')
+        .setValue('#recordwebapi-audio-role', 'tmp-track1-role')
+        .click('#recordwebapi-aqver1-fcpx')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -263,14 +263,14 @@ describe('specWindow-service-AudioService2-8000', function() {
           });
         })
         // record aquestalk2
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
-        .setValue('#record-result-2', '')
-        .setValue('#record2-audio-role', 'tmp-track2-role')
-        .click('#record2-aqver2-fcpx')
-        .waitForValue('#record-result-2', 5000)
-        .getValue('#record-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
+        .setValue('#record-result-webapi', '')
+        .setValue('#recordwebapi-audio-role', 'tmp-track2-role')
+        .click('#recordwebapi-aqver2-fcpx')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
@@ -297,14 +297,14 @@ describe('specWindow-service-AudioService2-8000', function() {
           });
         })
         // record aquestalk10
-        .setValue('#play2-samplerate', '8000')
-        .setValue('#play2-encoded', "テ'_スト")
-        .setValue('#wav-file-path-2', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
-        .setValue('#record-result-2', '')
-        .setValue('#record2-audio-role', 'tmp-track10-role')
-        .click('#record2-aqver10-fcpx')
-        .waitForValue('#record-result-2', 5000)
-        .getValue('#record-result-2')
+        .setValue('#playwebapi-samplerate', '8000')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
+        .setValue('#record-result-webapi', '')
+        .setValue('#recordwebapi-audio-role', 'tmp-track10-role')
+        .click('#recordwebapi-aqver10-fcpx')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {

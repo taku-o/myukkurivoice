@@ -423,7 +423,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
     };
 
     // HTML5AudioService
-    ctrl.play1AqVer1 = function(): void {
+    ctrl.playHTML5AqVer1 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -443,20 +443,20 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // play
         HTML5AudioService.play(bufWav, poptions).then((value) => {
-          $scope.playResult1 = 'ok';
+          $scope.playResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.playResult1 = err.message;
+          $scope.playResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.playResult1 = err.message;
+        $scope.playResultHTML5 = err.message;
       });
     };
-    ctrl.play1AqVer2 = function(): void {
+    ctrl.playHTML5AqVer2 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -476,20 +476,20 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // play
         HTML5AudioService.play(bufWav, poptions).then((value) => {
-          $scope.playResult1 = 'ok';
+          $scope.playResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.playResult1 = err.message;
+          $scope.playResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.playResult1 = err.message;
+        $scope.playResultHTML5 = err.message;
       });
     };
-    ctrl.play1AqVer10 = function(): void {
+    ctrl.playHTML5AqVer10 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -509,21 +509,21 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // play
         HTML5AudioService.play(bufWav, poptions).then((value) => {
-          $scope.playResult1 = 'ok';
+          $scope.playResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.playResult1 = err.message;
+          $scope.playResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.playResult1 = err.message;
+        $scope.playResultHTML5 = err.message;
       });
     };
 
-    ctrl.record1AqVer1 = function(): void {
+    ctrl.recordHTML5AqVer1 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -545,20 +545,20 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
-          $scope.recordResult1 = 'ok';
+        HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
+          $scope.recordResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult1 = err.message;
+          $scope.recordResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult1 = err.message;
+        $scope.recordResultHTML5 = err.message;
       });
     };
-    ctrl.record1AqVer1Fcpx = function(): void {
+    ctrl.recordHTML5AqVer1Fcpx = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -577,23 +577,23 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         playbackRate: 1.0,
         detune: 0,
         fcpxIxml: true,
-        fcpxIxmlOptions: {audioRole: $scope.record1AudioRole},
+        fcpxIxmlOptions: {audioRole: $scope.recordHTML5AudioRole},
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
-          $scope.recordResult1 = 'ok';
+        HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
+          $scope.recordResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult1 = err.message;
+          $scope.recordResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult1 = err.message;
+        $scope.recordResultHTML5 = err.message;
       });
     };
-    ctrl.record1AqVer2 = function(): void {
+    ctrl.recordHTML5AqVer2 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -615,20 +615,20 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
-          $scope.recordResult1 = 'ok';
+        HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
+          $scope.recordResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult1 = err.message;
+          $scope.recordResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult1 = err.message;
+        $scope.recordResultHTML5 = err.message;
       });
     };
-    ctrl.record1AqVer2Fcpx = function(): void {
+    ctrl.recordHTML5AqVer2Fcpx = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -647,23 +647,23 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         playbackRate: 1.0,
         detune: 0,
         fcpxIxml: true,
-        fcpxIxmlOptions: {audioRole: $scope.record1AudioRole},
+        fcpxIxmlOptions: {audioRole: $scope.recordHTML5AudioRole},
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
-          $scope.recordResult1 = 'ok';
+        HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
+          $scope.recordResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult1 = err.message;
+          $scope.recordResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult1 = err.message;
+        $scope.recordResultHTML5 = err.message;
       });
     };
-    ctrl.record1AqVer10 = function(): void {
+    ctrl.recordHTML5AqVer10 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -685,20 +685,20 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
-          $scope.recordResult1 = 'ok';
+        HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
+          $scope.recordResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult1 = err.message;
+          $scope.recordResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult1 = err.message;
+        $scope.recordResultHTML5 = err.message;
       });
     };
-    ctrl.record1AqVer10Fcpx = function(): void {
+    ctrl.recordHTML5AqVer10Fcpx = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -717,25 +717,25 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         playbackRate: 1.0,
         detune: 0,
         fcpxIxml: true,
-        fcpxIxmlOptions: {audioRole: $scope.record1AudioRole},
+        fcpxIxmlOptions: {audioRole: $scope.recordHTML5AudioRole},
       };
       // wave
-      AquesService.wave($scope.play1Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
         // record
-        HTML5AudioService.record($scope.wavFilePath1, bufWav, roptions).then((value) => {
-          $scope.recordResult1 = 'ok';
+        HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
+          $scope.recordResultHTML5 = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult1 = err.message;
+          $scope.recordResultHTML5 = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult1 = err.message;
+        $scope.recordResultHTML5 = err.message;
       });
     };
 
     // WebAPIAudioService
-    ctrl.play2AqVer1 = function(): void {
+    ctrl.playWebAPIAqVer1 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -755,21 +755,21 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // play
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.play(bufWav, poptions).then((value) => {
-          $scope.playResult2 = 'ok';
+          $scope.playResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.playResult2 = err.message;
+          $scope.playResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.playResult2 = err.message;
+        $scope.playResultWebAPI = err.message;
       });
     };
-    ctrl.play2AqVer2 = function(): void {
+    ctrl.playWebAPIAqVer2 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -789,21 +789,21 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // play
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.play(bufWav, poptions).then((value) => {
-          $scope.playResult2 = 'ok';
+          $scope.playResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.playResult2 = err.message;
+          $scope.playResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.playResult2 = err.message;
+        $scope.playResultWebAPI = err.message;
       });
     };
-    ctrl.play2AqVer10 = function(): void {
+    ctrl.playWebAPIAqVer10 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -823,22 +823,22 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // play
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.play(bufWav, poptions).then((value) => {
-          $scope.playResult2 = 'ok';
+          $scope.playResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.playResult2 = err.message;
+          $scope.playResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.playResult2 = err.message;
+        $scope.playResultWebAPI = err.message;
       });
     };
 
-    ctrl.record2AqVer1 = function(): void {
+    ctrl.recordWebAPIAqVer1 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -860,21 +860,21 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // record
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
-        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
-          $scope.recordResult2 = 'ok';
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
+        WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
+          $scope.recordResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult2 = err.message;
+          $scope.recordResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult2 = err.message;
+        $scope.recordResultWebAPI = err.message;
       });
     };
-    ctrl.record2AqVer1Fcpx = function(): void {
+    ctrl.recordWebAPIAqVer1Fcpx = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -893,24 +893,24 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         playbackRate: 1.0,
         detune: 0,
         fcpxIxml: true,
-        fcpxIxmlOptions: {audioRole: $scope.record2AudioRole},
+        fcpxIxmlOptions: {audioRole: $scope.recordWebAPIAudioRole},
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // record
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
-        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
-          $scope.recordResult2 = 'ok';
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
+        WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
+          $scope.recordResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult2 = err.message;
+          $scope.recordResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult2 = err.message;
+        $scope.recordResultWebAPI = err.message;
       });
     };
-    ctrl.record2AqVer2 = function(): void {
+    ctrl.recordWebAPIAqVer2 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -932,21 +932,21 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // record
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
-        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
-          $scope.recordResult2 = 'ok';
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
+        WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
+          $scope.recordResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult2 = err.message;
+          $scope.recordResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult2 = err.message;
+        $scope.recordResultWebAPI = err.message;
       });
     };
-    ctrl.record2AqVer2Fcpx = function(): void {
+    ctrl.recordWebAPIAqVer2Fcpx = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -965,24 +965,24 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         playbackRate: 1.0,
         detune: 0,
         fcpxIxml: true,
-        fcpxIxmlOptions: {audioRole: $scope.record2AudioRole},
+        fcpxIxmlOptions: {audioRole: $scope.recordWebAPIAudioRole},
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // record
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
-        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
-          $scope.recordResult2 = 'ok';
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
+        WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
+          $scope.recordResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult2 = err.message;
+          $scope.recordResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult2 = err.message;
+        $scope.recordResultWebAPI = err.message;
       });
     };
-    ctrl.record2AqVer10 = function(): void {
+    ctrl.recordWebAPIAqVer10 = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -1004,21 +1004,21 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // record
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
-        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
-          $scope.recordResult2 = 'ok';
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
+        WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
+          $scope.recordResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult2 = err.message;
+          $scope.recordResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult2 = err.message;
+        $scope.recordResultWebAPI = err.message;
       });
     };
-    ctrl.record2AqVer10Fcpx = function(): void {
+    ctrl.recordWebAPIAqVer10Fcpx = function(): void {
       // phont
       const list = YPhontMasterList;
       let phont;
@@ -1037,21 +1037,21 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         playbackRate: 1.0,
         detune: 0,
         fcpxIxml: true,
-        fcpxIxmlOptions: {audioRole: $scope.record2AudioRole},
+        fcpxIxmlOptions: {audioRole: $scope.recordWebAPIAudioRole},
       };
       // wave
-      AquesService.wave($scope.play2Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
         // record
-        WebAPIAudioService.sampleRate = $scope.play2SampleRate;
-        WebAPIAudioService.record($scope.wavFilePath2, bufWav, roptions).then((value) => {
-          $scope.recordResult2 = 'ok';
+        WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
+        WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
+          $scope.recordResultWebAPI = 'ok';
         })
         .catch((err: Error) => {
-          $scope.recordResult2 = err.message;
+          $scope.recordResultWebAPI = err.message;
         });
       })
       .catch((err: Error) => {
-        $scope.recordResult2 = err.message;
+        $scope.recordResultWebAPI = err.message;
       });
     };
 
