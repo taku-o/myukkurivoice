@@ -10,9 +10,7 @@ const tsProject = ts.createProject('./tsconfig.json');
 gulp.task('_minify:js', () => {
   return gulp
     .src(['electron*.js', 'js/*.js', 'docs/assets/js/*.js'], {base: '.'})
-    .pipe(terser({
-      keep_fnames: true,
-    }))
+    .pipe(terser())
     .pipe(gulp.dest('.'));
 });
 
