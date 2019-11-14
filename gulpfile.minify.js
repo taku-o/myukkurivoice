@@ -33,7 +33,7 @@ gulp.task('_minify:node_modules:js', () => {
     'angular-ui-grid',
     'async',
     'balanced-match',
-    'bindings',
+    //'bindings',
     'brace-expansion',
     'concat-map',
     'conf',
