@@ -21,7 +21,7 @@ gulp.task('_tsc', () => {
     .pipe(tsProject())
     .js.pipe(gulp.dest('.'));
 });
-gulp.task('tsc:debug', () => {
+gulp.task('_tsc:debug', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'test/*.ts'], {base: '.'})
     .pipe(sourcemaps.init())
@@ -29,6 +29,8 @@ gulp.task('tsc:debug', () => {
     .js.pipe(sourcemaps.write())
     .pipe(gulp.dest('.'));
 });
+
+gulp.task('tsc:debug', gulp.series('_tsc:debug', '_minify:js'));
 gulp.task(
   'tsc',
   gulp.series('_tsc', '_minify:js', () => {
