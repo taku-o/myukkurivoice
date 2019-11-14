@@ -323,7 +323,7 @@ declare namespace yubo {
     //private readonly I386_SUPPORTED_LAST_VERSION: string;
     //private readonly I386_GENERATOR_PATH: string;
     //private readonly IOS_GENERATOR_PATH: string;
-    getGeneratorPath(version?): string;
+    getGeneratorPath(version?: string): string;
     isSupportedPhont(phont: yubo.YPhont, version?: string): boolean;
     isI386Supported(version?: string): boolean;
   }

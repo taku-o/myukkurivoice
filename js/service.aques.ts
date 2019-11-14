@@ -95,7 +95,7 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
     }
   }
 
-  getGeneratorPath(version?): string {
+  getGeneratorPath(version?: string): string {
     return this.isI386Supported(version)? this.I386_GENERATOR_PATH: this.IOS_GENERATOR_PATH;
   }
   isSupportedPhont(phont: yubo.YPhont, version?: string): boolean {
