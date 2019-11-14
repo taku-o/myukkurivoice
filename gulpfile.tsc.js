@@ -1,18 +1,9 @@
 var gulp = gulp || require('gulp');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
-const terser = require('gulp-terser');
 const ts = require('gulp-typescript');
 
 const tsProject = ts.createProject('./tsconfig.json');
-
-// terser
-gulp.task('_minify:js', () => {
-  return gulp
-    .src(['electron*.js', 'js/*.js', 'docs/assets/js/*.js'], {base: '.'})
-    .pipe(terser())
-    .pipe(gulp.dest('.'));
-});
 
 // tsc
 gulp.task('_tsc', () => {
@@ -30,10 +21,10 @@ gulp.task('_tsc:debug', () => {
     .pipe(gulp.dest('.'));
 });
 
-gulp.task('tsc:debug', gulp.series('_tsc:debug', '_minify:js'));
+gulp.task('tsc:debug', gulp.series('_tsc:debug', 'minify:js'));
 gulp.task(
   'tsc',
-  gulp.series('_tsc', '_minify:js', () => {
+  gulp.series('_tsc', 'minify:js', () => {
     return gulp
       .src([
         'js/ctrl.help.js',

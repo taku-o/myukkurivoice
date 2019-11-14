@@ -6,6 +6,7 @@ const toc = require('gulp-markdown-toc');
 require('./gulpfile.notify');
 require('./gulpfile.process');
 require('./gulpfile.about');
+require('./gulpfile.minify');
 require('./gulpfile.less');
 require('./gulpfile.format');
 require('./gulpfile.lint');

@@ -1,14 +1,5 @@
 var gulp = gulp || require('gulp');
 const less = require('gulp-less');
-const cleanCSS = require('gulp-clean-css');
-
-// clean-css
-gulp.task('_minify:css', () => {
-  return gulp
-    .src(['css/*.css', 'docs/assets/css/*.css'], {base: '.'})
-    .pipe(cleanCSS())
-    .pipe(gulp.dest('.'));
-});
 
 // less
 gulp.task('_less', () => {
@@ -17,4 +8,4 @@ gulp.task('_less', () => {
     .pipe(less())
     .pipe(gulp.dest('.'));
 });
-gulp.task('less', gulp.series('_less', '_minify:css'));
+gulp.task('less', gulp.series('_less', 'minify:css'));
