@@ -150,6 +150,7 @@ gulp.task(
     '_git-submodule',
     '_npm-install',
     'tsc',
+    'minify:node_modules',
     '_rm:package',
     '_package:release',
     '_unpacked',
