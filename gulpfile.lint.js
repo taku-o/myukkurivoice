@@ -12,7 +12,7 @@ gulp.task('lint:ts', () => {
 });
 gulp.task('lint:js', () => {
   return gulp
-    .src(['*.js', 'js/*.js', 'test/*.js'])
+    .src(['gulpfile*.js'])
     .pipe(eslint({useEslintrc: true}))
     .pipe(eslint.format());
 });
@@ -24,10 +24,7 @@ gulp.task('lint:q', () => {
       'test/*.ts',
       'docs/assets/js/*.ts',
       '!types.d.ts',
-      '*.js',
-      'js/*.js',
-      'test/*.js',
-      'docs/assets/js/*.js',
+      'gulpfile*.js',
     ])
     .pipe(eslint({useEslintrc: true, quiet: true}))
     .pipe(eslint.format());
