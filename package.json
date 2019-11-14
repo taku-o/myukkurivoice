@@ -101,6 +101,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
     "gulp-sourcemaps": "^2.6.5",
+    "gulp-terser": "^1.2.0",
     "gulp-typescript": "^5.0.1",
     "gulp-using": "^0.1.1",
     "gulp-wrapper": "^1.0.0",
