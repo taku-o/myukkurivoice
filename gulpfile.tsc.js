@@ -21,10 +21,10 @@ gulp.task('_tsc:debug', () => {
     .pipe(gulp.dest('.'));
 });
 
-gulp.task('tsc:debug', gulp.series('_tsc:debug', 'minify:js'));
+gulp.task('tsc:debug', gulp.series('_tsc:debug'));
 gulp.task(
   'tsc',
-  gulp.series('_tsc', 'minify:js', () => {
+  gulp.series('_tsc', () => {
     return gulp
       .src([
         'js/ctrl.help.js',

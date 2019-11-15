@@ -8,4 +8,4 @@ gulp.task('_less', () => {
     .pipe(less())
     .pipe(gulp.dest('.'));
 });
-gulp.task('less', gulp.series('_less', 'minify:css'));
+gulp.task('less', gulp.series('_less'));

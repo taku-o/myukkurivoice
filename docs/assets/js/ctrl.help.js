@@ -1,1 +1,34 @@
-"use strict";class HelpController{constructor(e,r,t){this.$timeout=e,this.store=r,this.reducer=t,t.addObserver(this)}page(e){this.reducer.page(e)}openSearchForm(){this.reducer.openSearchForm()}browser(e){this.reducer.browser(e)}showItemInFolder(e){this.reducer.showItemInFolder(e)}showSystemWindow(){this.reducer.showSystemWindow()}update(e){this.$timeout(()=>{})}}angular.module("helpControllers",["helpStores","helpReducers","IncludeDirectives"]).controller("HelpController",["$timeout","HelpStore","HelpReducer",(e,r,t)=>new HelpController(e,r,t)]);
+"use strict";
+class HelpController {
+    constructor($timeout, store, reducer) {
+        this.$timeout = $timeout;
+        this.store = store;
+        this.reducer = reducer;
+        reducer.addObserver(this);
+    }
+    page(pageName) {
+        this.reducer.page(pageName);
+    }
+    openSearchForm() {
+        this.reducer.openSearchForm();
+    }
+    browser(url) {
+        this.reducer.browser(url);
+    }
+    showItemInFolder(path) {
+        this.reducer.showItemInFolder(path);
+    }
+    showSystemWindow() {
+        this.reducer.showSystemWindow();
+    }
+    update(objects) {
+        this.$timeout(() => { });
+    }
+}
+angular.module('helpControllers', ['helpStores', 'helpReducers', 'IncludeDirectives'])
+    .controller('HelpController', [
+    '$timeout',
+    'HelpStore',
+    'HelpReducer',
+    ($timeout, store, reducer) => new HelpController($timeout, store, reducer),
+]);

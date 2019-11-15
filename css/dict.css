@@ -1,1 +1,27 @@
-div.toolbar-actions span.icon.active{color:#00f}div.toolbar-actions div.button-group{padding-top:5px;padding-left:10px;padding-right:10px}li.list-group-item:hover{background-color:#9cf}li.list-group-item:active{background-color:#39f}li.list-group-item#export.disable{color:#ccc}li.list-group-item#export.disable img{opacity:.2}li.list-group-item p.small{font-size:10px}div.grid{width:100%;height:100%}
+div.toolbar-actions span.icon.active {
+  color: blue;
+}
+div.toolbar-actions div.button-group {
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+li.list-group-item:hover {
+  background-color: #99ccff;
+}
+li.list-group-item:active {
+  background-color: #3399ff;
+}
+li.list-group-item#export.disable {
+  color: #cccccc;
+}
+li.list-group-item#export.disable img {
+  opacity: 0.2;
+}
+li.list-group-item p.small {
+  font-size: 10px;
+}
+div.grid {
+  width: 100%;
+  height: 100%;
+}

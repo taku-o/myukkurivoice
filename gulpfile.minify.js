@@ -5,15 +5,19 @@ const terser = require('gulp-terser');
 // minify:js
 gulp.task('minify:js', () => {
   return gulp
-    .src(['electron*.js', 'js/*.js', 'docs/assets/js/*.js'], {base: '.'})
-    .pipe(terser())
+    .src(['electron*.js', 'js/*.js'], {base: '.'})
+    .pipe(terser({
+      compress: {
+        drop_console: true,
+      },
+    }))
     .pipe(gulp.dest('.'));
 });
 
 // minify:css
 gulp.task('minify:css', () => {
   return gulp
-    .src(['css/*.css', 'docs/assets/css/*.css'], {base: '.'})
+    .src(['css/*.css'], {base: '.'})
     .pipe(cleanCSS())
     .pipe(gulp.dest('.'));
 });
@@ -22,7 +26,11 @@ gulp.task('minify:css', () => {
 function minify_js_dir(target) {
   return gulp
     .src([`node_modules/${target}/**/*.js`], {base: '.'})
-    .pipe(terser())
+    .pipe(terser({
+      compress: {
+        drop_console: true,
+      },
+    }))
     .pipe(gulp.dest('.'));
 }
 gulp.task('_minify:node_modules:js', () => {
@@ -104,12 +112,13 @@ gulp.task('_minify:node_modules:js', () => {
   }
   return Promise.all(promises);
 });
-
 gulp.task('_minify:node_modules:css', () => {
   return gulp
     .src(['node_modules/**/*.css'], {base: '.'})
     .pipe(cleanCSS())
     .pipe(gulp.dest('.'));
 });
+gulp.task('minify:node_modules', gulp.parallel('_minify:node_modules:js', '_minify:node_modules:css'));
 
-gulp.task('minify:node_modules', gulp.series('_minify:node_modules:js', '_minify:node_modules:css'));
+gulp.task('minify:all', gulp.parallel('minify:js', 'minify:css', 'minify:node_modules'));
+
