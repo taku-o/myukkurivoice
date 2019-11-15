@@ -120,5 +120,5 @@ gulp.task('_minify:node_modules:css', () => {
 });
 gulp.task('minify:node_modules', gulp.parallel('_minify:node_modules:js', '_minify:node_modules:css'));
 
-gulp.task('minify:all', gulp.parallel('minify:js', 'minify:css', 'minify:node_modules'));
+gulp.task('minify', gulp.parallel('minify:js', 'minify:css', 'minify:node_modules'));
 

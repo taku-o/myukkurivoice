@@ -35,17 +35,21 @@ usage:
     gulp toc
     gulp doc
     gulp about
+    gulp minify
+    gulp minify:js
+    gulp minify:css
+    gulp minify:node_modules
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test:rebuild [--t=test/mainWindow.js]
-    gulp app (alias app:default)
+    gulp app
     gulp app:default
     gulp app:catalina
     gulp app:store
     gulp package
-    gulp build (alias build:staging)
-    gulp build:release
+    gulp build
     gulp build:staging [--branch=develop]
+    gulp build:release
     gulp build:store [--branch=develop]
   `);
   return cb();
