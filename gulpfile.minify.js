@@ -19,8 +19,7 @@ gulp.task('minify:css', () => {
 });
 
 // minify:node_modules
-function minify_js_dir(target)
-{
+function minify_js_dir(target) {
   return gulp
     .src([`node_modules/${target}/**/*.js`], {base: '.'})
     .pipe(terser())
@@ -114,4 +113,3 @@ gulp.task('_minify:node_modules:css', () => {
 });
 
 gulp.task('minify:node_modules', gulp.series('_minify:node_modules:js', '_minify:node_modules:css'));
-
