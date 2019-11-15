@@ -6,11 +6,7 @@ const terser = require('gulp-terser');
 gulp.task('minify:js', () => {
   return gulp
     .src(['electron*.js', 'js/*.js'], {base: '.'})
-    .pipe(terser({
-      compress: {
-        drop_console: true,
-      },
-    }))
+    .pipe(terser())
     .pipe(gulp.dest('.'));
 });
 
@@ -26,11 +22,7 @@ gulp.task('minify:css', () => {
 function minify_js_dir(target) {
   return gulp
     .src([`node_modules/${target}/**/*.js`], {base: '.'})
-    .pipe(terser({
-      compress: {
-        drop_console: true,
-      },
-    }))
+    .pipe(terser())
     .pipe(gulp.dest('.'));
 }
 gulp.task('_minify:node_modules:js', () => {
