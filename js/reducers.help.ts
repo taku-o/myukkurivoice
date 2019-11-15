@@ -22,6 +22,7 @@ class HelpReducer implements yubo.HelpReducer {
     'multivoice',
     'dictionary',
     'history',
+    'sysconfig',
     'shortcut',
     'help',
     'fcpx-ixml',

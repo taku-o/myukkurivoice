@@ -43,7 +43,7 @@ describe('helpWindow', function() {
       })
       .elements('.nav-group-item.functions-item')
       .then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 12, position());
+        assert.equal(response.value.length, 13, position());
       })
       .elements('.nav-group-item.navs-item')
       .then((response: HTMLInputElement) => {
@@ -142,6 +142,10 @@ describe('helpWindow', function() {
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
         })
+        .isVisible('#sysconfig-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(!isVisible, position());
+        })
         .isVisible('#shortcut-pane')
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
@@ -236,6 +240,11 @@ describe('helpWindow', function() {
         })
         .click('#menu-dictionary')
         .isVisible('#dictionary-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
+        .click('#menu-sysconfig')
+        .isVisible('#sysconfig-pane')
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })

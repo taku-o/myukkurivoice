@@ -1,0 +1,70 @@
+<div class="content">
+  <h3>環境設定の設定項目</h3>
+  <p>
+    メニューの<a class="show-system-window" ng-click="ctrl.showSystemWindow()">環境設定</a>で設定できる、
+    各項目の説明です。
+  </p>
+
+  <h4>ウィンドウサイズ</h4>
+  <p>
+    MYukkuriVoiceのメインウィンドウのサイズを指定できます。<br>
+    (ここで設定しなくても、メインウィンドウのサイズを変更後、アプリを終了すれば、
+    ウィンドウサイズは保存されます)
+  </p>
+
+  <h4>音声再生エンジン</h4>
+  <table class="table-striped">
+    <thead>
+      <tr>
+        <th>エンジン</th>
+        <th>説明</th>
+        <th>サンプリングレート</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>html5audio</td>
+        <td>
+          AquesTalkで生成した音声をそのまま再生、保存するエンジンです。<br>
+          無加工、というよりも加工したくてもできない、エンジン。
+        </td>
+        <td>8000Hz</td>
+      </tr>
+      <tr>
+        <td>webaudioapi8</td>
+        <td>
+          AquesTalkで生成した音声に、手を加えた後、再生保存できるエンジンです。<br>
+          いくつかの機能は、このエンジンでないと利用できません。
+          デフォルトのエンジン。
+        </td>
+        <td>8000Hz</td>
+      </tr>
+      <tr>
+        <td>webaudioapi</td>
+        <td>
+          webaudioapi8エンジンの旧バージョン。44100Hzで出力します。<br>
+          サンプリングレート変更の際、リサンプルが発生します。
+        </td>
+        <td>44100Hz</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>メッセージリストを表示する</h4>
+  <p>
+    メインウィンドウの下部に、アプリの作業状況やステータス、
+    音声の保存履歴などを表示する一覧を表示します。
+  </p>
+
+  <h4>拡張機能 (Final Cut Pro X)</h4>
+  <p>
+    <a ng-click="ctrl.page('fcpx-ixml')">オーディオロールの自動割り当て機能</a>を利用できるようになります。
+  </p>
+  
+  <h4>AquesTalk10 使用ライセンスキー</h4>
+  <p>
+    使用ライセンス(商用コンテンツ向け)、もしくはAquesTalk10のライセンスキーを登録出来ます。<br>
+    <a ng-click="ctrl.page('license')">→ ライセンスのまとめ</a>
+  </p>
+
+</div>
