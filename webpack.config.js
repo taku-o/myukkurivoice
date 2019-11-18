@@ -12,40 +12,43 @@ module.exports = [
     module: {
       rules: [{
         test: /\.js$/,
-        exclude: path.resolve(__dirname, 'node_modules'),
+        include: [
+          path.resolve(__dirname, "./"),
+        ],
+        exclude: /node_modules/,
       }],
     },
     target: 'electron-main',
   },
-  {
-    entry: {
-      main: './js/apps.main.js',
-      dict: './js/apps.dict.js',
-      help: './js/apps.help.js',
-      helpsearch: './js/apps.helpsearch.js',
-      system: './js/apps.system.js',
-      spec: './js/apps.spec.js',
-    },
-    //mode: 'production',
-    mode: 'development',
-    output: {
-      filename: 'renderer.[name].js',
-      path: path.resolve(__dirname, 'dist'),
-    },
-    module: {
-      rules: [
-        //{
-        //  test: /ctrl\.main\.js$/,
-        //  use: {
-        //    loader: 'script-loader',
-        //  },
-        //},
-        {
-          test: /\.js$/,
-          exclude: path.resolve(__dirname, 'node_modules'),
-        },
-      ],
-    },
-    target: 'electron-renderer',
-  },
+//  {
+//    entry: {
+//      main: './js/apps.main.js',
+//      dict: './js/apps.dict.js',
+//      help: './js/apps.help.js',
+//      helpsearch: './js/apps.helpsearch.js',
+//      system: './js/apps.system.js',
+//      spec: './js/apps.spec.js',
+//    },
+//    //mode: 'production',
+//    mode: 'development',
+//    output: {
+//      filename: 'renderer.[name].js',
+//      path: path.resolve(__dirname, 'dist'),
+//    },
+//    module: {
+//      rules: [
+//        //{
+//        //  test: /ctrl\.main\.js$/,
+//        //  use: {
+//        //    loader: 'script-loader',
+//        //  },
+//        //},
+//        {
+//          test: /\.js$/,
+//          exclude: path.resolve(__dirname, 'node_modules'),
+//        },
+//      ],
+//    },
+//    target: 'electron-renderer',
+//  },
 ];
