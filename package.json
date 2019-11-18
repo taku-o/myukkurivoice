@@ -8,7 +8,7 @@
     "tasks": "gulp --tasks-simple",
     "clean": "git checkout -- . && git clean -fd",
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log",
-    "main": "webpack --config webpack.main.js"
+    "webpack": "webpack"
   },
   "keywords": [
     "mac-osx",
