@@ -2,13 +2,13 @@
   "name": "MYukkuriVoice",
   "version": "0.12.4",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
-  "main": "electron.js",
+  "main": "dist/app.js",
   "types": "types.d.ts",
   "scripts": {
     "tasks": "gulp --tasks-simple",
     "clean": "git checkout -- . && git clean -fd",
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log",
-    "webpack": "webpack --verbose"
+    "webpack": "webpack"
   },
   "keywords": [
     "mac-osx",
