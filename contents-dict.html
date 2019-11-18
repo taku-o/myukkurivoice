@@ -2,7 +2,9 @@
 <html ng-app="dictApp" menu shortcut shortcut-hint>
 <head>
   <meta charset="UTF-8">
+  <!--
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  -->
   <title>辞書ツール</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
@@ -18,16 +20,8 @@
   <script src="node_modules/angular-ui-grid/ui-grid.resize-columns.min.js"></script>
   <script src="node_modules/angular-ui-grid/ui-grid.move-columns.min.js"></script>
   <script src="node_modules/angular-ui-grid/ui-grid.selection.min.js"></script>
-  <script src="js/models.dict.js"></script>
-  <script src="js/service.intro.js"></script>
   <script src="js/service.aqusrdic.js"></script>
-  <script src="js/services.dict.js"></script>
-  <script src="js/stores.dict.js"></script>
-  <script src="js/reducers.dict.js"></script>
-  <script src="js/event.shortcut-hint.js"></script>
-  <script src="js/events.dict.js"></script>
-  <script src="js/ctrl.dict.js"></script>
-  <script src="js/apps.dict.js"></script>
+  <script src="dist/renderer.dict.js"></script>
 </head>
 <body>
 <div class="window" ng-controller="DictController as ctrl">

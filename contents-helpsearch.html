@@ -2,18 +2,15 @@
 <html ng-app="helpSearchApp" event shortcut-hint>
 <head>
   <meta charset="UTF-8">
+  <!--
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  -->
   <title>検索ダイアログ</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="css/shortcut-hint.css">
   <link rel="stylesheet" href="css/helpsearch.css">
   <script src="node_modules/angular/angular.min.js"></script>
-  <script src="js/stores.helpsearch.js"></script>
-  <script src="js/reducers.helpsearch.js"></script>
-  <script src="js/event.shortcut-hint.js"></script>
-  <script src="js/events.helpsearch.js"></script>
-  <script src="js/ctrl.helpsearch.js"></script>
-  <script src="js/apps.helpsearch.js"></script>
+  <script src="dist/renderer.helpsearch.js"></script>
 </head>
 <body>
 <div class="window" ng-controller="HelpSearchController as ctrl">

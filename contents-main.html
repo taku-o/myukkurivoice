@@ -2,7 +2,9 @@
 <html ng-app="mainApp" shortcut shortcut-hint menu drop-text-file recent-document after-render>
 <head>
   <meta charset="UTF-8">
+  <!--
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  -->
   <title>MYukkuriVoice</title>
   <script src="js/apps.main.preload.js"></script>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
@@ -13,27 +15,8 @@
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/angular-input-highlight/angular-input-highlight.js"></script>
   <script src="node_modules/intro.js/minified/intro.min.js"></script>
-  <script src="js/models.main.js"></script>
   <script src="js/service.aques.js"></script>
-  <script src="js/service.audio.js"></script>
-  <script src="js/service.command.js"></script>
-  <script src="js/service.data.js"></script>
-  <script src="js/service.intro.js"></script>
-  <script src="js/service.license.js"></script>
-  <script src="js/service.message.js"></script>
-  <script src="js/service.subtitle.js"></script>
-  <script src="js/service.util.js"></script>
-  <script src="js/services.main.js"></script>
-  <script src="js/directive.include.js"></script>
-  <script src="js/directive.drag.js"></script>
-  <script src="js/directive.afterrender.js"></script>
-  <script src="js/directives.main.js"></script>
-  <script src="js/stores.main.js"></script>
-  <script src="js/reducers.main.js"></script>
-  <script src="js/event.shortcut-hint.js"></script>
-  <script src="js/events.main.js"></script>
-  <script src="js/ctrl.main.js"></script>
-  <script src="js/apps.main.js"></script>
+  <script src="dist/renderer.main.js"></script>
 </head>
 <body>
 <div class="window" ng-controller="MainController as ctrl">

@@ -1,4 +1,4 @@
-require('../node_modules/angular/angular.min.js');
+//require('../node_modules/angular/angular.min.js');
 require('../js/stores.helpsearch.js');
 require('../js/reducers.helpsearch.js');
 require('../js/event.shortcut-hint.js');

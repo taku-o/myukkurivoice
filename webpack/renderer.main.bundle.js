@@ -2,7 +2,7 @@
 //require('../node_modules/angular-input-highlight/angular-input-highlight.js');
 //require('../node_modules/intro.js/minified/intro.min.js');
 require('../js/models.main.js');
-require('../js/service.aques.js');
+//require('../js/service.aques.js');
 require('../js/service.audio.js');
 require('../js/service.command.js');
 require('../js/service.data.js');

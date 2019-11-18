@@ -1,4 +1,4 @@
-require('../node_modules/angular/angular.min.js');
+//require('../node_modules/angular/angular.min.js');
 require('../js/directive.include.js');
 require('../js/stores.help.js');
 require('../js/reducers.help.js');
