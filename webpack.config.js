@@ -37,12 +37,6 @@ module.exports = [
     },
     module: {
       rules: [
-        //{
-        //  test: /ctrl\.main\.js$/,
-        //  use: {
-        //    loader: 'script-loader',
-        //  },
-        //},
         {
           test: /\.js$/,
           exclude: path.resolve(__dirname, 'node_modules'),
