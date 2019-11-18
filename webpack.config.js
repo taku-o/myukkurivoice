@@ -22,12 +22,12 @@ module.exports = [
   },
   {
     entry: {
-      main: './js/apps.main.js',
-      dict: './js/apps.dict.js',
-      help: './js/apps.help.js',
-      helpsearch: './js/apps.helpsearch.js',
-      system: './js/apps.system.js',
-      spec: './js/apps.spec.js',
+      main: './webpack/renderer.main.bundle.js',
+      dict: './webpack/renderer.dict.bundle.js',
+      help: './webpack/renderer.help.bundle.js',
+      helpsearch: './webpack/renderer.helpsearch.bundle.js',
+      system: './webpack/renderer.system.bundle.js',
+      spec: './webpack/renderer.spec.bundle.js',
     },
     //mode: 'production',
     mode: 'development',

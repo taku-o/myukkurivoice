@@ -8,6 +8,7 @@ MYukkuriVoice-*-x64.app
 *.js
 !gulpfile*.js
 !webpack*.js
+!/webpack/*.js
 tsconfig.tsbuildinfo
 !/docs/assets/js/*.js
 /node_modules/
