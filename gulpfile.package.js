@@ -99,18 +99,12 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/vendor" \
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/MYukkuriVoice-mas-x64" \
-    --ignore="^/build/extend.plist$" \
-    --ignore="^/build/icns" \
-    --ignore="^/build/mas" \
+    --ignore="^/build" \
     --ignore="^/docs" \
     --ignore="^/gulpfile\\..+\\.js$" \
     --ignore="^/gulpfile\\.js$" \
     --ignore="^/release" \
     --ignore="^/test" \
-    --ignore="^/vendor/aqk2k_mac" \
-    --ignore="^/vendor/aqtk1-mac" \
-    --ignore="^/vendor/aqtk10-mac" \
-    --ignore="^/vendor/aqtk2-mac" \
     --ignore="/node_modules/@types" \
     --ignore="/node_modules/angular-ui-grid/css" \
     --ignore="/node_modules/angular-ui-grid/i18n" \
@@ -275,6 +269,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="/test\\.js$" \
     --ignore="/tsconfig\\.json$" \
     --ignore="/usage\\.txt$" \
+    --ignore="/webpack\\..+\\.js$" \
     --ignore="/yarn\\.lock$" `;
 
   if (!forDebug) {
