@@ -1,12 +1,12 @@
 var gulp = gulp || require('gulp');
 const spawn = require('child_process').spawn;
-const toc = require('gulp-markdown-toc');
 
 // tasks
 require('./gulpfile.notify');
 require('./gulpfile.process');
 require('./gulpfile.about');
 require('./gulpfile.minify');
+require('./gulpfile.webpack');
 require('./gulpfile.less');
 require('./gulpfile.format');
 require('./gulpfile.lint');
@@ -39,6 +39,7 @@ usage:
     gulp minify:js
     gulp minify:css
     gulp minify:node_modules
+    gulp webpack
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test:rebuild [--t=test/mainWindow.js]
