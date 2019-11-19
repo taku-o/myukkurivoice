@@ -1,6 +1,10 @@
 var gulp = gulp || require('gulp');
 const cleanCSS = require('gulp-clean-css');
+const path = require('path');
+const spawn = require('child_process').spawn;
 const terser = require('gulp-terser');
+
+const WEBPACK_CMD = path.join(__dirname, './node_modules/.bin/webpack');
 
 // minify:js
 gulp.task('minify:js', () => {
@@ -119,3 +123,30 @@ gulp.task('_minify:node_modules:css', () => {
 gulp.task('minify:node_modules', gulp.parallel('_minify:node_modules:js', '_minify:node_modules:css'));
 
 gulp.task('minify', gulp.parallel('minify:js', 'minify:css', 'minify:node_modules'));
+
+// webpack
+gulp.task('webpack', (cb) => {
+  const run = spawn(WEBPACK_CMD, ['--mode', 'production'], {});
+  run.stdout.on('data', (data) => {
+    process.stdout.write(data.toString('utf-8'));
+  });
+  run.stderr.on('data', (data) => {
+    process.stderr.write(data.toString('utf-8'));
+  });
+  run.on('close', (code) => {
+    cb();
+  });
+});
+gulp.task('webpack:debug', (cb) => {
+  const run = spawn(WEBPACK_CMD, [], {});
+  run.stdout.on('data', (data) => {
+    process.stdout.write(data.toString('utf-8'));
+  });
+  run.stderr.on('data', (data) => {
+    process.stderr.write(data.toString('utf-8'));
+  });
+  run.on('close', (code) => {
+    cb();
+  });
+});
+
