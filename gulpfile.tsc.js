@@ -38,5 +38,5 @@ gulp.task(
 );
 
 gulp.task('_rm:js', () => {
-  return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js', '!gulpfile.*.js', '*.tsbuildinfo']);
+  return del(['*.js', 'js/*.js', 'test/*.js', 'dist/*.js', '!gulpfile.js', '!gulpfile.*.js', '!webpack.config.js', '*.tsbuildinfo']);
 });
