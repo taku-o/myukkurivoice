@@ -96,21 +96,37 @@ gulp.task('_rm:package', () => {
 
 function getIgnoreFiles(forDebug) {
   let ignores = ` \
-    --ignore="^/vendor" \
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/MYukkuriVoice-mas-x64" \
-    --ignore="^/build/extend.plist$" \
-    --ignore="^/build/icns" \
-    --ignore="^/build/mas" \
+    --ignore="^/build" \
     --ignore="^/docs" \
+    --ignore="^/electron\\..+\\.js$" \
+    --ignore="^/electron\\.js$" \
     --ignore="^/gulpfile\\..+\\.js$" \
     --ignore="^/gulpfile\\.js$" \
     --ignore="^/release" \
     --ignore="^/test" \
-    --ignore="^/vendor/aqk2k_mac" \
-    --ignore="^/vendor/aqtk1-mac" \
-    --ignore="^/vendor/aqtk10-mac" \
-    --ignore="^/vendor/aqtk2-mac" \
+    --ignore="^/vendor" \
+    --ignore="^/webpack" \
+    --ignore="^/js/apps\\..+\\.ts$" \
+    --ignore="^/js/ctrl\\..+\\.ts$" \
+    --ignore="^/js/directive\\..+\\.ts$" \
+    --ignore="^/js/event\\..+\\.ts$" \
+    --ignore="^/js/models\\..+\\.ts$" \
+    --ignore="^/js/reducers\\..+\\.ts$" \
+    --ignore="^/js/service\\.audio\\.ts$" \
+    --ignore="^/js/service\\.command\\.ts$" \
+    --ignore="^/js/service\\.data\\.ts$" \
+    --ignore="^/js/service\\.intro\\.ts$" \
+    --ignore="^/js/service\\.license\\.ts$" \
+    --ignore="^/js/service\\.message\\.ts$" \
+    --ignore="^/js/service\\.subtitle\\.ts$" \
+    --ignore="^/js/service\\.util\\.ts$" \
+    --ignore="^/js/services\\.dict\\.ts$" \
+    --ignore="^/js/services\\.main\\.ts$" \
+    --ignore="^/js/stores\\..+\\.ts$" \
+    //--ignore="^/js/service\\.aques\\.ts$" \
+    //--ignore="^/js/service\\.aqusrdic\\.ts$" \
     --ignore="/node_modules/@types" \
     --ignore="/node_modules/angular-ui-grid/css" \
     --ignore="/node_modules/angular-ui-grid/i18n" \
@@ -275,11 +291,12 @@ function getIgnoreFiles(forDebug) {
     --ignore="/test\\.js$" \
     --ignore="/tsconfig\\.json$" \
     --ignore="/usage\\.txt$" \
+    --ignore="/webpack\\.config\\.js$" \
     --ignore="/yarn\\.lock$" `;
 
   if (!forDebug) {
     ignores += ` \
-        --ignore="^/js/apps.spec.js$" \
+        --ignore="^/dist/renderer.spec.js$" \
         --ignore="^/contents-spec.html$" `;
   }
   return ignores;
