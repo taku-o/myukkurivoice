@@ -1,15 +1,33 @@
 var gulp = gulp || require('gulp');
 const path = require('path');
-const exec = require('child_process').exec;
+const spawn = require('child_process').spawn;
 
 const WEBPACK_CMD = path.join(__dirname, './node_modules/.bin/webpack');
 
 // webpack
-gulp.task('webpack', (cb) => {
-  exec(WEBPACK_CMD,
-    (err, stdout, stderr) => {
-      cb(err);
-    }
-  );
+gulp.task('webpack:production', (cb) => {
+  const run = spawn(WEBPACK_CMD, ['--mode', 'production'], {});
+  run.stdout.on('data', (data) => {
+    process.stdout.write(data.toString('utf-8'));
+  });
+  run.stderr.on('data', (data) => {
+    process.stderr.write(data.toString('utf-8'));
+  });
+  run.on('close', (code) => {
+    cb();
+  });
 });
+gulp.task('webpack:development', (cb) => {
+  const run = spawn(WEBPACK_CMD, [], {});
+  run.stdout.on('data', (data) => {
+    process.stdout.write(data.toString('utf-8'));
+  });
+  run.stderr.on('data', (data) => {
+    process.stderr.write(data.toString('utf-8'));
+  });
+  run.on('close', (code) => {
+    cb();
+  });
+});
+gulp.task('webpack', gulp.series('webpack:development'));
 
