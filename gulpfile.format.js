@@ -35,7 +35,7 @@ gulp.task('_format:ts', gulp.parallel('_format:ts:eslint', '_format:ts:test'));
 // format-js
 gulp.task('_format:js', () => {
   return gulp
-    .src(['gulpfile.js', 'gulpfile.*.js'], {base: '.'})
+    .src(['gulpfile.js', 'gulpfile.*.js', 'webpack.config.js'], {base: '.'})
     .pipe(
       prettier({
         arrowParens: 'always',

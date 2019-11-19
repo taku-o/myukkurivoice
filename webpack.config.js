@@ -10,13 +10,13 @@ module.exports = [
       path: path.resolve(__dirname, 'dist'),
     },
     module: {
-      rules: [{
-        test: /\.js$/,
-        include: [
-          path.resolve(__dirname, "./"),
-        ],
-        exclude: /node_modules/,
-      }],
+      rules: [
+        {
+          test: /\.js$/,
+          include: [path.resolve(__dirname, './')],
+          exclude: /node_modules/,
+        },
+      ],
     },
     target: 'electron-main',
   },

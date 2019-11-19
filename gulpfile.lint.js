@@ -12,13 +12,13 @@ gulp.task('lint:ts', () => {
 });
 gulp.task('lint:js', () => {
   return gulp
-    .src(['gulpfile*.js'])
+    .src(['gulpfile*.js', 'webpack.config.js'])
     .pipe(eslint({useEslintrc: true}))
     .pipe(eslint.format());
 });
 gulp.task('lint:q', () => {
   return gulp
-    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts', 'gulpfile*.js'])
+    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts', 'gulpfile*.js', 'webpack.config.js'])
     .pipe(eslint({useEslintrc: true, quiet: true}))
     .pipe(eslint.format());
 });
