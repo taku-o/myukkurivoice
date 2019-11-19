@@ -2,6 +2,7 @@
 *.swp
 Thumbs.db
 /release/
+/dist/
 /MYukkuriVoice-*-x64/
 MYukkuriVoice-*-x64.zip
 MYukkuriVoice-*-x64.app
