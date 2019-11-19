@@ -99,6 +99,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/MYukkuriVoice-mas-x64" \
     --ignore="^/build" \
+    --ignore="^/css" \
     --ignore="^/docs" \
     --ignore="^/electron\\..+\\.js$" \
     --ignore="^/electron\\.js$" \
@@ -108,6 +109,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/test" \
     --ignore="^/vendor" \
     --ignore="^/webpack" \
+    --ignore="^/dist/style\\..+\\.js$" \
     --ignore="^/js/apps\\..+\\.js$" \
     --ignore="^/js/ctrl\\..+\\.js$" \
     --ignore="^/js/directive\\..+\\.js$" \
