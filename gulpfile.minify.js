@@ -126,7 +126,7 @@ gulp.task('minify', gulp.parallel('minify:js', 'minify:css', 'minify:node_module
 
 // webpack
 gulp.task('webpack', (cb) => {
-  const run = spawn(WEBPACK_CMD, ['--mode', 'production'], {});
+  const run = spawn(WEBPACK_CMD, ['--mode', 'production', '--display', 'errors-only', '--display-entrypoints'], {});
   run.stdout.on('data', (data) => {
     process.stdout.write(data.toString('utf-8'));
   });
@@ -138,7 +138,7 @@ gulp.task('webpack', (cb) => {
   });
 });
 gulp.task('webpack:debug', (cb) => {
-  const run = spawn(WEBPACK_CMD, [], {});
+  const run = spawn(WEBPACK_CMD, ['--display', 'errors-only', '--display-entrypoints'], {});
   run.stdout.on('data', (data) => {
     process.stdout.write(data.toString('utf-8'));
   });
