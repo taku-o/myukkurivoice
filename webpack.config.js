@@ -1,4 +1,6 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = [
   {
@@ -44,5 +46,34 @@ module.exports = [
       ],
     },
     target: 'electron-renderer',
+  },
+  {
+    entry: {
+      main: './webpack/style.main.bundle.js',
+      dict: './webpack/style.dict.bundle.js',
+      help: './webpack/style.help.bundle.js',
+      helpsearch: './webpack/style.helpsearch.bundle.js',
+      system: './webpack/style.system.bundle.js',
+    },
+    //mode: 'production',
+    mode: 'development',
+    output: {
+      filename: 'style.[name].js',
+      path: path.resolve(__dirname, 'dist'),
+    },
+    module: {
+      rules: [
+        {test: /\.css$/, use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader'
+        ]}
+      ],
+    },
+    plugins: [
+      new MiniCssExtractPlugin({filename: 'style.[name].css'}),
+    ],
+    optimization: {
+      minimizer: [new OptimizeCSSAssetsPlugin({})],
+    },
   },
 ];

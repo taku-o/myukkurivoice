@@ -1,5 +1,6 @@
 var gulp = gulp || require('gulp');
 const cleanCSS = require('gulp-clean-css');
+const del = require('del');
 const path = require('path');
 const spawn = require('child_process').spawn;
 const terser = require('gulp-terser');
@@ -150,3 +151,6 @@ gulp.task('webpack:debug', (cb) => {
   });
 });
 
+gulp.task('_rm:webpack', () => {
+  return del(['dist/*.js', 'dist/*.css']);
+});
