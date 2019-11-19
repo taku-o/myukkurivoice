@@ -15,9 +15,6 @@ const TEST = process.env.NODE_ENV == 'test';
 const CONSOLELOG = process.env.CONSOLELOG != null;
 const MONITOR = process.env.MONITOR != null;
 
-// suppress Insecure Content-Security-Policy warning
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
-
 // source-map-support
 if (DEBUG) {
   try {
