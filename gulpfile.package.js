@@ -110,7 +110,11 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/vendor" \
     --ignore="^/webpack" \
     --ignore="^/dist/style\\..+\\.js$" \
-    --ignore="^/js/apps\\..+\\.js$" \
+    --ignore="^/js/js/apps\\.dict\\.ts$" \
+    --ignore="^/js/js/apps\\.help\\.ts$" \
+    --ignore="^/js/js/apps\\.helpsearch\\.ts$" \
+    --ignore="^/js/js/apps\\.main\\.ts$" \
+    --ignore="^/js/js/apps\\.spec\\.ts$" \
     --ignore="^/js/ctrl\\..+\\.js$" \
     --ignore="^/js/directive\\..+\\.js$" \
     --ignore="^/js/directives\\..+\\.js$" \
@@ -128,6 +132,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/js/service\\.util\\.js$" \
     --ignore="^/js/services\\..+\\.js$" \
     --ignore="^/js/stores\\..+\\.js$" \
+    //--ignore="^/js/js/apps\\.main\\.preload\\.ts$" \
     //--ignore="^/js/service\\.aques\\.js$" \
     //--ignore="^/js/service\\.aqusrdic\\.js$" \
     --ignore="/node_modules/@types" \
