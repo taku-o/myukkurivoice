@@ -3,7 +3,6 @@ const spawn = require('child_process').spawn;
 
 // tasks
 require('./gulpfile.process');
-require('./gulpfile.about');
 require('./gulpfile.minify');
 require('./gulpfile.less');
 require('./gulpfile.format');
