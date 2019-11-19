@@ -9,6 +9,12 @@ gulp.task('minify:js', () => {
     .pipe(terser())
     .pipe(gulp.dest('.'));
 });
+gulp.task('minify:js:nowebpack', () => {
+  return gulp
+    .src(['js/apps.main.preload.js', 'js/service.aques.js', 'js/service.aqusrdic.js'], {base: '.'})
+    .pipe(terser())
+    .pipe(gulp.dest('.'));
+});
 
 // minify:css
 gulp.task('minify:css', () => {

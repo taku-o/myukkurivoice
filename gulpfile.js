@@ -37,6 +37,7 @@ usage:
     gulp about
     gulp minify
     gulp minify:js
+    gulp minify:js:nowebpack
     gulp minify:css
     gulp minify:node_modules
     gulp webpack
