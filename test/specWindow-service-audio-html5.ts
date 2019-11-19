@@ -10,7 +10,7 @@ temp.track();
 require('source-map-support').install();
 
 describe('specWindow-service-HTML5AudioService', function() {
-  this.timeout(10000);
+  this.timeout(30000);
 
   let dirPath: string | null = null;
   before(function() {
