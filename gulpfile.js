@@ -40,8 +40,7 @@ usage:
     gulp minify:css
     gulp minify:node_modules
     gulp webpack
-    gulp webpack:production
-    gulp webpack:develop
+    gulp webpack:debug
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test:rebuild [--t=test/mainWindow.js]
