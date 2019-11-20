@@ -63,7 +63,7 @@
 - 次のコマンドでアプリを実際に動かしてみましょう。
 
 ```
-  gulp app
+  npx gulp app
 ```
 
 ## リリース
@@ -71,7 +71,7 @@
 - リリースコマンドで、リリース用のビルドの作成と、配布用 zip ファイルを作成します。
 
 ```
-  gulp build:release
+  npx gulp build:release
 ```
 
 ## 開発
@@ -82,7 +82,7 @@
 - tsc コマンドでビルドします。
 
 ```
-  gulp tsc
+  npx gulp tsc
 ```
 
 ### 簡易パッケージング
@@ -90,7 +90,7 @@
 - 次のコマンドで Electron アプリを簡易ビルドできます。
 
 ```
-  gulp package
+  npx gulp package
 ```
 
 ### 特定バージョンのアプリのビルド
@@ -98,7 +98,7 @@
 - staging コマンドで特定のブランチを指定して、ビルドできます。
 
 ```
-  gulp build:staging --branch=staging
+  npx gulp build:staging --branch=staging
 ```
 
 ### 単体テスト
@@ -109,20 +109,21 @@
 
 ```
   # build app, and run test
-  gulp test-rebuild
+  npx gulp test-rebuild
 
   # run test already built app
-  gulp test
+  npx gulp test
 ```
 
 ### 開発関連の機能
 
 ```
-  gulp tsc
-  gulp lint
-  gulp format
-  gulp less
-  gulp clean
+  npx gulp tsc
+  npx gulp lint
+  npx gulp format
+  npx gulp less
+  npx gulp clean
+  npx gulp app
 ```
 
 # 環境設定まわりの情報
