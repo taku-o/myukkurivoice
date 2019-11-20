@@ -3,13 +3,10 @@ const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
 // tasks
-require('./gulpfile.notify');
 require('./gulpfile.process');
-require('./gulpfile.about');
 require('./gulpfile.minify');
 require('./gulpfile.less');
 require('./gulpfile.format');
-require('./gulpfile.lint');
 require('./gulpfile.tsc');
 require('./gulpfile.doc');
 require('./gulpfile.package');
