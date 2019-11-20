@@ -105,7 +105,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/gulpfile\\.js$" \
     --ignore="^/release" \
     --ignore="^/test" \
-    --ignore="/node_modules/@taku-o/myukkurivoice-vendor" \
+    --ignore="/node_modules/@taku-o" \
     --ignore="/node_modules/@types" \
     --ignore="/node_modules/angular-ui-grid/css" \
     --ignore="/node_modules/angular-ui-grid/i18n" \
@@ -247,7 +247,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="/\\.jshintrc$" \
     --ignore="/\\.keep$" \
     --ignore="/\\.npmignore$" \
-    --ignore="/\\.npmignore$" \
+    --ignore="/\\.npmrc$" \
     --ignore="/\\.prettierrc$" \
     --ignore="/\\.prettierrc\\.json$" \
     --ignore="/\\.prettierrc\\.yaml$" \
