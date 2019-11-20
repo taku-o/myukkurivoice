@@ -27,6 +27,7 @@ gulp.task('_codesign:store', (cb) => {
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const RESULT_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.pkg`;
   const FRAMEWORKS_PATH = `${APP_PATH}/Contents/Frameworks`;
+  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/node_modules/@taku-o/myukkurivoice-vendor`;
   const APP = 'MYukkuriVoice';
   const CHILD_PLIST = 'build/mas/store.child.plist';
   const PARENT_PLIST = 'build/mas/store.parent.plist';
@@ -52,28 +53,28 @@ gulp.task('_codesign:store', (cb) => {
   );
 
   execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe"`
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe"`
   );
   execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AqUsrDic.framework/Versions/A/AqUsrDic"`
-  );
-  //execSync(
-  //  `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AquesTalk.framework/Versions/A/AquesTalk"`
-  //);
-  execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AquesTalk10.framework/Versions/A/AquesTalk"`
-  );
-  execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/AquesTalk2.framework/Versions/A/AquesTalk2"`
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic"`
   );
   //execSync(
-  //  `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/maquestalk1"`
+  //  `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk"`
   //);
   execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/maquestalk1-ios"`
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AquesTalk10.framework/Versions/A/AquesTalk"`
   );
   execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor/secret"`
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2"`
+  );
+  //execSync(
+  //  `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/maquestalk1"`
+  //);
+  execSync(
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/maquestalk1-ios"`
+  );
+  execSync(
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/secret"`
   );
 
   execSync(

@@ -3,6 +3,7 @@ var _cryptico: any, cryptico = () => { _cryptico = _cryptico || require('cryptic
 var _epath: any, epath       = () => { _epath = _epath || require('electron-path'); return _epath; };
 
 var unpackedPath = epath().getUnpackedPath();
+var vendorPath = `${unpackedPath}/node_modules/@taku-o/myukkurivoice-vendor`;
 
 // angular license service
 class LicenseService implements yubo.LicenseService {
@@ -44,7 +45,7 @@ class LicenseService implements yubo.LicenseService {
 
     // get encrypted consumer key
     const cmdOptions = {};
-    const secretCmd = `${unpackedPath}/vendor/secret`;
+    const secretCmd = `${vendorPath}/secret`;
     // passPhrase
     exec()(`${secretCmd} -key=passPhrase`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
       if (err) {

@@ -49,8 +49,8 @@ gulp.task('_unpacked:mkdir', (cb) => {
   if (!platform) {
     throw new Error('BUILD_PLATFORM not set.');
   }
-  const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
-  mkdirp(`${UNPACK_DIR}/vendor`, (err) => {
+  const UNPACK_VENDOR_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked/node_modules/@taku-o/myukkurivoice-vendor`;
+  mkdirp(`${UNPACK_VENDOR_DIR}`, (err) => {
     cb(err);
   });
 });
@@ -59,22 +59,23 @@ gulp.task('_unpacked:cp', (cb) => {
   if (!platform) {
     throw new Error('BUILD_PLATFORM not set.');
   }
-  const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
+  const VENDOR_DIR = 'node_modules/@taku-o/myukkurivoice-vendor';
+  const UNPACK_VENDOR_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked/node_modules/@taku-o/myukkurivoice-vendor`;
   Promise.all([
-    fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`),
-    fse.copy('vendor/AqUsrDic.framework', `${UNPACK_DIR}/vendor/AqUsrDic.framework`),
-    fse.copy('vendor/AquesTalk2.framework', `${UNPACK_DIR}/vendor/AquesTalk2.framework`),
-    fse.copy('vendor/AquesTalk10.framework', `${UNPACK_DIR}/vendor/AquesTalk10.framework`),
-    fse.copy('vendor/aq_dic_large', `${UNPACK_DIR}/vendor/aq_dic_large`),
-    fse.copy('vendor/phont', `${UNPACK_DIR}/vendor/phont`),
-    fse.copy('vendor/maquestalk1-ios', `${UNPACK_DIR}/vendor/maquestalk1-ios`),
-    fse.copy('vendor/secret', `${UNPACK_DIR}/vendor/secret`),
+    fse.copy(`${VENDOR_DIR}/AqKanji2Koe.framework`, `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework`),
+    fse.copy(`${VENDOR_DIR}/AqUsrDic.framework`, `${UNPACK_VENDOR_DIR}/AqUsrDic.framework`),
+    fse.copy(`${VENDOR_DIR}/AquesTalk2.framework`, `${UNPACK_VENDOR_DIR}/AquesTalk2.framework`),
+    fse.copy(`${VENDOR_DIR}/AquesTalk10.framework`, `${UNPACK_VENDOR_DIR}/AquesTalk10.framework`),
+    fse.copy(`${VENDOR_DIR}/aq_dic_large`, `${UNPACK_VENDOR_DIR}/aq_dic_large`),
+    fse.copy(`${VENDOR_DIR}/phont`, `${UNPACK_VENDOR_DIR}/phont`),
+    fse.copy(`${VENDOR_DIR}/maquestalk1-ios`, `${UNPACK_VENDOR_DIR}/maquestalk1-ios`),
+    fse.copy(`${VENDOR_DIR}/secret`, `${UNPACK_VENDOR_DIR}/secret`),
   ])
     .then(() => {
       if (platform == 'darwin') {
         return Promise.all([
-          fse.copy('vendor/AquesTalk.framework', `${UNPACK_DIR}/vendor/AquesTalk.framework`),
-          fse.copy('vendor/maquestalk1', `${UNPACK_DIR}/vendor/maquestalk1`),
+          fse.copy(`${VENDOR_DIR}/AquesTalk.framework`, `${UNPACK_VENDOR_DIR}/AquesTalk.framework`),
+          fse.copy(`${VENDOR_DIR}/maquestalk1`, `${UNPACK_VENDOR_DIR}/maquestalk1`),
         ]);
       } else {
         return Promise.resolve();
@@ -96,7 +97,6 @@ gulp.task('_rm:package', () => {
 
 function getIgnoreFiles(forDebug) {
   let ignores = ` \
-    --ignore="^/vendor" \
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/MYukkuriVoice-mas-x64" \
     --ignore="^/build" \
@@ -105,6 +105,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/gulpfile\\.js$" \
     --ignore="^/release" \
     --ignore="^/test" \
+    --ignore="/node_modules/@taku-o/myukkurivoice-vendor" \
     --ignore="/node_modules/@types" \
     --ignore="/node_modules/angular-ui-grid/css" \
     --ignore="/node_modules/angular-ui-grid/i18n" \

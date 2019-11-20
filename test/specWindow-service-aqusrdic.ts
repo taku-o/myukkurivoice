@@ -43,7 +43,7 @@ describe('specWindow-service-AqUsrDicService', function() {
     fs.mkdirSync(`${dirPath}/userdict`);
     fs.closeSync(fs.openSync(`${dirPath}/userdict/aqdic.bin`, 'a+')); // create with 644 permission.
     fs.closeSync(fs.openSync(`${dirPath}/userdict/aq_user.csv`, 'a+')); // create with 644 permission.
-    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
+    const customDictPath = `${path.dirname(__dirname)}/node_modules/@taku-o/myukkurivoice-vendor/test/aq_dic_large`;
     fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
     fs.writeFileSync(`${dirPath}/userdict/aq_user.csv`, fs.readFileSync(`${customDictPath}/aq_user.csv`));
 
@@ -99,7 +99,7 @@ describe('specWindow-service-AqUsrDicService', function() {
     fs.mkdirSync(`${dirPath}/userdict`);
     fs.closeSync(fs.openSync(`${dirPath}/userdict/aqdic.bin`, 'a+')); // create with 644 permission.
     fs.closeSync(fs.openSync(`${dirPath}/userdict/aq_user.dic`, 'a+')); // create with 644 permission.
-    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
+    const customDictPath = `${path.dirname(__dirname)}/node_modules/@taku-o/myukkurivoice-vendor/test/aq_dic_large`;
     fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
     fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
 

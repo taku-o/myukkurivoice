@@ -56,8 +56,7 @@
   - 最初に動作に必要なモジュールを取り込んでください。
 
 ```
-  npm install
-  git submodule update --init
+  npm install --no-optional
 ```
 
 - 次のコマンドでアプリを実際に動かしてみましょう。

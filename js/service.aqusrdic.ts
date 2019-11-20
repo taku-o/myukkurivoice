@@ -2,6 +2,7 @@ var _fs: any, fs       = () => { _fs = _fs || require('fs'); return _fs; };
 var _ffi: any, ffi     = () => { _ffi = _ffi || require('ffi-napi'); return _ffi; };
 var _epath: any, epath = () => { _epath = _epath || require('electron-path'); return _epath; };
 var unpackedPath  = epath().getUnpackedPath();
+var vendorPath = `${unpackedPath}/node_modules/@taku-o/myukkurivoice-vendor`;
 
 // aquestalk dictionary service
 angular.module('AqUsrDicServices', []);
@@ -17,7 +18,7 @@ class AqUsrDicLib implements yubo.AqUsrDicLib {
   private fn_AqUsrDic_Check: (surface: string, yomi: string, posCode: number) => number;
   private fn_AqUsrDic_GetLastError: () => string;
   constructor() {
-    const frameworkPath: string = `${unpackedPath}/vendor/AqUsrDic.framework/Versions/A/AqUsrDic`;
+    const frameworkPath: string = `${vendorPath}/AqUsrDic.framework/Versions/A/AqUsrDic`;
     const ptr_AqUsrDic_Import       = ffi().DynamicLibrary(frameworkPath).get('AqUsrDic_Import');
     const ptr_AqUsrDic_Export       = ffi().DynamicLibrary(frameworkPath).get('AqUsrDic_Export');
     const ptr_AqUsrDic_Check        = ffi().DynamicLibrary(frameworkPath).get('AqUsrDic_Check');
