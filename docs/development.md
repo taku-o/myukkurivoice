@@ -58,7 +58,6 @@
 ```
   npm install
   git submodule update --init
-  npm install -g gulp-cli
 ```
 
 - 次のコマンドでアプリを実際に動かしてみましょう。
