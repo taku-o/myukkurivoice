@@ -1,6 +1,3 @@
 [submodule "vendor"]
 	path = vendor
 	url = git@github.com:taku-o/myukkurivoice-vendor.git
-[submodule "keys"]
-	path = keys
-	url = git@github.com:taku-o/myukkurivoice-keys.git
