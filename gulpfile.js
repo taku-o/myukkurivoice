@@ -22,12 +22,12 @@ usage:
     gulp --tasks-simple
     gulp tsc
     gulp tsc:debug
+    gulp less
     gulp lint
     gulp lint:ts
     gulp lint:js
     gulp lint:q
     gulp lint:html
-    gulp less
     gulp format
     gulp toc
     gulp doc
