@@ -44,7 +44,7 @@ gulp.task('_kill', (cb) => {
 });
 
 // platform
-// BUILD_PLATFORM
+// BUILD_PLATFORM (darwin, mas)
 gulp.task('_platform:darwin', (cb) => {
   const env = process.env;
   env.BUILD_PLATFORM = 'darwin';
@@ -57,7 +57,7 @@ gulp.task('_platform:mas', (cb) => {
 });
 
 // target
-// BUILD_TARGET
+// BUILD_TARGET (release, staging, store, debug)
 gulp.task('_target:release', (cb) => {
   const env = process.env;
   env.BUILD_TARGET = 'release';
@@ -80,7 +80,7 @@ gulp.task('_target:debug', (cb) => {
 });
 
 // runtime
-// RUNTIME_ENV
+// RUNTIME_ENV (default, catalina, store)
 gulp.task('_runtime:default', (cb) => {
   const env = process.env;
   env.RUNTIME_ENV = 'default';
