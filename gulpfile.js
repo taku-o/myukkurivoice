@@ -3,6 +3,7 @@ const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
 // tasks
+require('./gulpfile.env');
 require('./gulpfile.process');
 require('./gulpfile.minify');
 require('./gulpfile.less');
@@ -58,7 +59,7 @@ gulp.task('clean', gulp.parallel('_rm:js', '_rm:package', '_rm:workdir'));
 // run app
 gulp.task(
   'app',
-  gulp.series('tsc:debug', (cb) => {
+  gulp.series('tsc:debug', '_runtime:default', (cb) => {
     const env = process.env;
     env.DEBUG = 1;
     env.MONITOR = 1;
@@ -80,20 +81,7 @@ gulp.task(
     });
   })
 );
-gulp.task('app:default', gulp.series('app'));
-gulp.task(
-  'app:catalina',
-  gulp.series((cb) => {
-    const env = process.env;
-    env.RUNTIME_ENV = 'catalina';
-    cb();
-  }, 'app')
-);
-gulp.task(
-  'app:store',
-  gulp.series((cb) => {
-    const env = process.env;
-    env.RUNTIME_ENV = 'store';
-    cb();
-  }, 'app')
-);
+gulp.task('app:default', gulp.series('_runtime:default', 'app'));
+gulp.task('app:catalina', gulp.series('_runtime:catalina', 'app'));
+gulp.task('app:store', gulp.series('_runtime:store', 'app'));
+

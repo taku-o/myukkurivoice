@@ -9,40 +9,6 @@ const PACKAGER_CMD = path.join(__dirname, './node_modules/.bin/electron-packager
 const ELECTRON_VERSION = require('./package.json').versions.electron;
 const APP_VERSION = require('./package.json').version;
 
-// platform
-gulp.task('_platform:darwin', (cb) => {
-  const env = process.env;
-  env.BUILD_PLATFORM = 'darwin';
-  cb();
-});
-gulp.task('_platform:mas', (cb) => {
-  const env = process.env;
-  env.BUILD_PLATFORM = 'mas';
-  cb();
-});
-
-// target
-gulp.task('_target:release', (cb) => {
-  const env = process.env;
-  env.BUILD_TARGET = 'release';
-  cb();
-});
-gulp.task('_target:staging', (cb) => {
-  const env = process.env;
-  env.BUILD_TARGET = 'staging';
-  cb();
-});
-gulp.task('_target:store', (cb) => {
-  const env = process.env;
-  env.BUILD_TARGET = 'store';
-  cb();
-});
-gulp.task('_target:debug', (cb) => {
-  const env = process.env;
-  env.BUILD_TARGET = 'debug';
-  cb();
-});
-
 // app.asar.unpacked
 gulp.task('_unpacked:mkdir', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
