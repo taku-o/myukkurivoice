@@ -58,7 +58,7 @@ gulp.task('clean', gulp.parallel('_rm:js', '_rm:package', '_rm:workdir'));
 // run app
 gulp.task(
   'app',
-  gulp.series('tsc:debug', '_runtime:default', (cb) => {
+  gulp.series('tsc:debug', (cb) => {
     const env = process.env;
     env.DEBUG = 1;
     env.MONITOR = 1;
