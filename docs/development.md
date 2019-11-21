@@ -12,14 +12,14 @@
 - Final Cut Pro X 用フォルダーアクション
   - https://github.com/taku-o/fcpx-audio-role-workflow/releases
 
-## vendor
+## vendor library
 
 - ライセンスの関係上、公開されているソースコードに AquesTalk のライブラリは含まれていません。
 - レポジトリで公開されているコードを動作させるには、vendor ディレクトリに AquesTalk のライブラリを入れる必要があります。
 - ディレクトリ構成
 
 ```
-  vendor
+  node_modules/@taku-o/myukkurivoice-vendor/
     +-- AquesTalk.framework       AquesTalkフレームワーク
     +-- AquesTalk2.framework      AquesTalkフレームワーク
     +-- AquesTalk10.framework     AquesTalkフレームワーク
@@ -31,6 +31,17 @@
     +-- maquestalk1               AquesTalk1フレームワークbridge
     +-- maquestalk1-ios           AquesTalk1 iOSフレームワークbridge
     +-- secret                    AquesTalk10ライセンスキー取得コード
+```
+
+- これは GitHub Registry の private repository で管理されています。
+- 取り込むには、次のようにします。
+  - (権限が必要)
+
+```
+  # login to GitHub Registry
+  npm login --registry=https://npm.pkg.github.com
+
+  npm install
 ```
 
 ## library for binary
