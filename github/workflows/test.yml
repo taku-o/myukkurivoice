@@ -1,0 +1,26 @@
+name: MYukkuriVoice test
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macOS-10.14
+
+    strategy:
+      matrix:
+        node-version: [12.4.0]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install
+      run: |
+        npm install
+    - name: test
+      run: |
+        npx gulp test
+
