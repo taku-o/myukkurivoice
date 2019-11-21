@@ -1,11 +1,18 @@
-name: MYukkuriVoice test
+# require NPM_AUTH_TOKEN
+#   add GitHub npm token to Projects Secrets
 
-on: [push]
+name: MYukkuriVoice master test
+
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
 
     runs-on: macOS-10.14
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -17,6 +24,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
     - name: npm install
       run: |
         npm install
