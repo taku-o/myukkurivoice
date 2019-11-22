@@ -51,9 +51,6 @@ gulp.task('_git-clone', (cb) => {
     cb(err);
   });
 });
-gulp.task('_git-submodule', (cb) => {
-  git.updateSubmodule({args: '--init'}, cb);
-});
 
 // repodir
 gulp.task('_ch:repodir', (cb) => {
@@ -118,7 +115,6 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
-    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
@@ -148,7 +144,6 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
-    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
@@ -179,7 +174,6 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
-    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
