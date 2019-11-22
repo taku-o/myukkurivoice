@@ -1,7 +1,7 @@
 # require NPM_AUTH_TOKEN
 #   add GitHub npm token to Projects Secrets
 
-name: MYukkuriVoice master release
+name: MYukkuriVoice build:release
 
 on:
   push:
@@ -36,4 +36,5 @@ jobs:
       with:
         name: MYukkuriVoice-darwin-x64-nosigned.zip
         path: release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip
+
 
