@@ -1,0 +1,44 @@
+# require NPM_AUTH_TOKEN
+#   add GitHub npm token to Projects Secrets
+
+name: lint
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macOS-10.14
+    timeout-minutes: 10
+
+    strategy:
+      matrix:
+        node-version: [12.4.0]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Cache
+      id: cache-node
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+    - name: npm install
+      if: steps.cache-node.outputs.cache-hit != 'true'
+      run: |
+        npm install
+    - name: npm not install
+      if: steps.cache-node.outputs.cache-hit == 'true'
+      run: |
+        echo "cache hit"
+    - name: lint source code
+      run: |
+        npx gulp lint
+
