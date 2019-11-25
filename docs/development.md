@@ -164,7 +164,9 @@
 
 # その他
 
-## アプリアイコンの作成
+## 画像処理
+
+### アプリアイコンの作成
 
 - iconutil で作成します。
 - icns/myukkurivoice.iconset にアイコン画像を入れてコマンド実行してください
@@ -175,11 +177,11 @@
   iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
 ```
 
-## アイコンファイルの入手
+### アイコンファイルの入手
 
 - https://material.io/tools/icons/
 
-## README 用のアニメーション GIF の作成
+### README 用のアニメーション GIF の作成
 
 - animation GIF の作成
 
@@ -201,10 +203,19 @@
   convert readme-mini.gif -coalesce -scale 50% -deconstruct -fuzz 2% -dither none -layers optimize -matte -depth 8 \( -clone 0--1 -background none +append -quantize transparent  -colors 32  -unique-colors -write mpr:cmap +delete \) -map mpr:cmap readme-mini2.gif
 ```
 
+### 画像サイズ縮小
+
 - png ファイルのサイズを縮小する
 
 ```
   convert  -scale 30%  -unsharp 2x1.4+0.5+0 -colors 65 -quality 100 readme-tutorial.png readme-tutorial-mini.png
+```
+
+- WebP化
+  - download form https://developers.google.com/speed/webp/download
+
+```
+cwebp image.png -o image.webp
 ```
 
 ## 実行ファイルから不要なアーキテクチャー(i386)を削る
