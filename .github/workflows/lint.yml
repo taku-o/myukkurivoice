@@ -21,14 +21,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Cache
-      id: cache-node
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
     - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
     - name: npm install
       if: steps.cache-node.outputs.cache-hit != 'true'
@@ -38,6 +30,14 @@ jobs:
       if: steps.cache-node.outputs.cache-hit == 'true'
       run: |
         echo "cache hit"
+    - name: cache node environment
+      id: cache-node
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
     - name: lint source code
       run: |
         npx gulp lint
