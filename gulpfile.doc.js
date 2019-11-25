@@ -68,7 +68,7 @@ gulp.task('_readme:html:images:assets', () => {
   return gulp.src(['docs/assets/images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
 });
 gulp.task('_readme:html:images:app', () => {
-  return gulp.src(['images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
+  return gulp.src(['images/*.png', 'images/*.gif']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
 });
 gulp.task('_readme:pdf', () => {
   return gulp
