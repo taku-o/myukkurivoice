@@ -372,7 +372,7 @@ class FnWindow implements yubo.FnWindow {
   showAboutWindow(): void {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const w = openAboutWindow()({
-      icon_path: path().join(__dirname, 'images/icon_128x128.png'),
+      icon_path: path().join(__dirname, 'images/icon_128x128.webp'),
       css_path: path().join(__dirname, 'css/about.css'),
       package_json_dir: __dirname,
       open_devtools: false,
