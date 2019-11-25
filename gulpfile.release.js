@@ -47,12 +47,13 @@ gulp.task('_ch:workdir', (cb) => {
 // git
 gulp.task('_git-clone', (cb) => {
   const opts = argv && argv.branch ? {args: '-b ' + argv.branch} : {args: '-b master'};
-  git.clone('https://github.com/taku-o/myukkurivoice.git' /* git@github.com:taku-o/myukkurivoice.git */, opts, (err) => {
-    cb(err);
-  });
-});
-gulp.task('_git-submodule', (cb) => {
-  git.updateSubmodule({args: '--init'}, cb);
+  git.clone(
+    'https://github.com/taku-o/myukkurivoice.git' /* git@github.com:taku-o/myukkurivoice.git */,
+    opts,
+    (err) => {
+      cb(err);
+    }
+  );
 });
 
 // repodir
@@ -118,7 +119,6 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
-    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
@@ -148,7 +148,6 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
-    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
@@ -179,7 +178,6 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
-    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
