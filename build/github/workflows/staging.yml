@@ -28,6 +28,9 @@ jobs:
     - name: npm install
       run: |
         npm install
+    - name: lint source code
+      run: |
+        npx gulp lint
     - name: build application
       run: |
         npx gulp build:staging --branch=${GITHUB_ACTION#refs/heads/}
