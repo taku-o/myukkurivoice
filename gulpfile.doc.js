@@ -40,6 +40,12 @@ gulp.task('about', () => {
       )
     )
     .pipe(
+      replace(
+        /src="(.*?)\.png"/g,
+        'src="$1.webp"'
+      )
+    )
+    .pipe(
       wrapper({
         header: '<div class="content">',
         footer: '</div>',

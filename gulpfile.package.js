@@ -69,6 +69,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/docs" \
     --ignore="^/gulpfile\\..+\\.js$" \
     --ignore="^/gulpfile\\.js$" \
+    --ignore="^/images/.+.png$" \
     --ignore="^/release" \
     --ignore="^/test" \
     --ignore="/node_modules/@taku-o" \
