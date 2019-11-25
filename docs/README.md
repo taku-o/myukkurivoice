@@ -6,7 +6,7 @@
 macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、
 macOS High Sierra(10.13)以降に対応しています。
 
-<img src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/icon_256x256.png" class="noborder" loading="lazy">
+<img src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/icon_256x256.webp" class="noborder" loading="lazy">
 
 本ソフトは、(株)アクエストの音声合成ライブラリ AquesTalk を使用しており、その著作権は同社に帰属します。  
 本ソフトを営利目的で使用する場合は当該ライブラリの使用ライセンスが必要となります。ご注意ください。  
@@ -184,7 +184,7 @@ macOS High Sierra(10.13)以降に対応しています。
 
 - 動画制作向きのショートカットキーがいくつか定義されています
 
-<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-shortcut-play.png" width="400" loading="lazy">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-shortcut-play.webp" width="400" loading="lazy">
 
 <a name="ファイルの出力オプション"></a>
 
@@ -194,7 +194,7 @@ macOS High Sierra(10.13)以降に対応しています。
 音声ファイルを連番付きのファイル名で保存したり、  
 音声ファイルの元となったメッセージを保存する機能があります。
 
-<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-filewriteopt.png" width="400" loading="lazy">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-filewriteopt.webp" width="400" loading="lazy">
 
 <a name="選択した範囲のテキストのみの音声再生・録音"></a>
 
@@ -203,7 +203,7 @@ macOS High Sierra(10.13)以降に対応しています。
 - 選択した範囲のテキストを再生、録音する機能があります。
 - メッセージ入力欄、音記号列入力欄、どちらでも機能します。
 
-<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-select-encoded.png" width="400" loading="lazy">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-select-encoded.webp" width="400" loading="lazy">
 
 <a name="保存した音声ファイルをアプリから動画編集ソフトに直接ドラッグアンドドロップ"></a>
 
@@ -222,7 +222,7 @@ macOS High Sierra(10.13)以降に対応しています。
 - 設定すると、指定の語が来た時に、指定の読み方をするようになります。
 - またメッセージを音声記号列に変換する際、この辞書の定義が使われます。
 
-<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-aqdicedit.png" width="400" loading="lazy">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-aqdicedit.webp" width="400" loading="lazy">
 
 <a name="最近録音したファイルの一覧と入力の復元"></a>
 
@@ -231,11 +231,11 @@ macOS High Sierra(10.13)以降に対応しています。
 - 録音したファイルの一覧を記録しています。
 - 一覧には、アプリの下部と、Dock のアプリアイコンからアクセスします。
 
-<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-app-recent-line.png" width="400" loading="lazy">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-app-recent-line.webp" width="400" loading="lazy">
 
 - 一覧から選択すると、音声を録音した当時の入力情報を、アプリの入力欄に復元できます。
 
-<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-app-recent-edit.png" width="400" loading="lazy">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-app-recent-edit.webp" width="400" loading="lazy">
 
 ### 動画編集ソフト Final Cut Pro X 用機能
 
@@ -267,11 +267,11 @@ macOS High Sierra(10.13)以降に対応しています。
 
 - チュートリアル、ヘルプが用意されています
 
-<img src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-tutorial.png" width="400" loading="lazy">
+<img src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-tutorial.webp" width="400" loading="lazy">
 
 - AquesTalk10 から導入された音声の調節機能にも対応しています。(AquesTalk10 ベースの音声のみ)
 
-<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-editaq10voice.png" width="400" loading="lazy">
+<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/readme-editaq10voice.webp" width="400" loading="lazy">
 
 <a name="機能一覧"></a>
 
@@ -303,14 +303,14 @@ macOS High Sierra(10.13)以降に対応しています。
 
 ## 動画リンク
 
-[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30435205.png" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm30435205)
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30435205.webp" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm30435205)
 
-[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30826557.png" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm30826557)
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm30826557.webp" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm30826557)
 
-[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm32273442.png" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm32273442)
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm32273442.webp" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm32273442)
 
-[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm34217643.png" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm34217643)
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm34217643.webp" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm34217643)
 
-[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm35208451.png" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm35208451)
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm35208451.webp" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm35208451)
 
-[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm35896146.png" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm35896146)
+[<img class="border" src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/sm35896146.webp" width="400" loading="lazy">](http://www.nicovideo.jp/watch/sm35896146)
