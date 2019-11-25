@@ -39,12 +39,7 @@ gulp.task('about', () => {
         '<a ng-click="ctrl.browser(\'$1\')">$2<span class="icon icon-popup"></span></a>'
       )
     )
-    .pipe(
-      replace(
-        /src="(.*?)\.png"/g,
-        'src="$1.webp"'
-      )
-    )
+    .pipe(replace(/src="(.*?)\.png"/g, 'src="$1.webp"'))
     .pipe(
       wrapper({
         header: '<div class="content">',

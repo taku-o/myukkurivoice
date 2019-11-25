@@ -211,7 +211,7 @@
   convert  -scale 30%  -unsharp 2x1.4+0.5+0 -colors 65 -quality 100 readme-tutorial.png readme-tutorial-mini.png
 ```
 
-- WebP化
+- WebP 化
   - download form https://developers.google.com/speed/webp/download
 
 ```
