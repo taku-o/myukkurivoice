@@ -1,12 +1,12 @@
 # require NPM_AUTH_TOKEN
 #   add GitHub npm token to Projects Secrets
 
-name: build:release
+name: build:staging
 
 on:
   push:
     branches:
-    - master
+    - 'feature/el6'
 
 jobs:
   build:
@@ -30,12 +30,7 @@ jobs:
         npm install
     - name: build application
       run: |
-        npx gulp build:release
-    - name: upload release zip
-      uses: actions/upload-artifact@master
-      with:
-        name: MYukkuriVoice-darwin-x64.zip
-        path: release/myukkurivoice/MYukkuriVoice-darwin-x64.zip
+        npx gulp build:staging --branch=feature/el6
     - name: upload staging zip
       uses: actions/upload-artifact@master
       with:
