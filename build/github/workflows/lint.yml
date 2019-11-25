@@ -1,12 +1,14 @@
 # require NPM_AUTH_TOKEN
 #   add GitHub npm token to Projects Secrets
 
-name: build:staging
+name: lint
 
 on:
   push:
     branches:
-    - 'feature/el6'
+    - master
+    - 'staging'
+    - 'feature/*'
 
 jobs:
   build:
@@ -28,12 +30,7 @@ jobs:
     - name: npm install
       run: |
         npm install
-    - name: build application
+    - name: lint source code
       run: |
-        npx gulp build:staging --branch=${GITHUB_ACTION#refs/heads/}
-    - name: upload staging zip
-      uses: actions/upload-artifact@master
-      with:
-        name: MYukkuriVoice-darwin-x64-nosigned.zip
-        path: release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip
+        npx gulp lint
 

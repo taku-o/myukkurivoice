@@ -1,7 +1,7 @@
 # require NPM_AUTH_TOKEN
 #   add GitHub npm token to Projects Secrets
 
-name: MYukkuriVoice master test
+name: test
 
 on:
   push:
