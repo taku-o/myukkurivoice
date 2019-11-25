@@ -69,7 +69,7 @@ class FnEvent implements yubo.FnEvent {
     
     // drag out wav file
     ipcMain.on('ondragstartwav', (event: Electron.IpcMainEvent, filePath: string) => {
-      const imgPath = path().join(__dirname, '/images/ic_music_video_black_24dp_1x.webp');
+      const imgPath = path().join(__dirname, '/images/ic_music_video_black_24dp_1x.png');
       event.sender.startDrag({
         file: filePath,
         icon: imgPath,

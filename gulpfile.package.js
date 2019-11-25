@@ -69,7 +69,9 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/docs" \
     --ignore="^/gulpfile\\..+\\.js$" \
     --ignore="^/gulpfile\\.js$" \
-    --ignore="^/images/.+.png$" \
+    --ignore="^/images/sm.+.png$" \
+    --ignore="^/images/readme-.+.png$" \
+    --ignore="^/images/icon.+.png$" \
     --ignore="^/images/.+.gif$" \
     --ignore="^/release" \
     --ignore="^/test" \
