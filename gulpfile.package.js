@@ -208,6 +208,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="/\\.eslintrc\\.json$" \
     --ignore="/\\.eslintrc\\.yml$" \
     --ignore="/\\.git$" \
+    --ignore="/\\.github$" \
     --ignore="/\\.gitignore$" \
     --ignore="/\\.gitmodules$" \
     --ignore="/\\.hound.yml$" \
