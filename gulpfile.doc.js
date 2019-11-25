@@ -40,6 +40,7 @@ gulp.task('about', () => {
       )
     )
     .pipe(replace(/src="(.*?)\.png"/g, 'src="$1.webp"'))
+    .pipe(replace(/<img (.*?) src="(.*?)\.gif" (.*?)>/g, '<video autoplay loop muted playsinline $1 $3><source src="$2.webm" type="video/webm"></video>'))
     .pipe(
       wrapper({
         header: '<div class="content">',

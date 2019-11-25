@@ -215,7 +215,14 @@
   - download form https://developers.google.com/speed/webp/download
 
 ```
-cwebp image.png -o image.webp
+  cwebp image.png -o image.webp
+```
+
+- WebM 化
+
+```
+  brew install ffmpeg
+  ffmpeg -i readme.gif -c vp9 -b:v 0 -crf 20 readme.webm
 ```
 
 ## 実行ファイルから不要なアーキテクチャー(i386)を削る
