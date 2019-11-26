@@ -109,6 +109,7 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
   private runningNode: AudioBufferSourceNode = null;
   constructor(
     private $q: ng.IQService,
+    private $timeout: ng.ITimeoutService,
     private MessageService: yubo.MessageService,
     private AppUtilService: yubo.AppUtilService
   ) {}
@@ -253,18 +254,20 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     })
     .finally(() => {
       // close audio context
-      if (sourceNode) {
-        sourceNode.buffer = null;
-        sourceNode.disconnect();
-      }
-      angular.forEach(processNodeList, (node) => {
-        node.disconnect();
-      });
-      if (audioPlayNode) {
-        audioPlayNode.buffer = null;
-        audioPlayNode.disconnect();
-      }
-      audioCtx.close();
+      this.$timeout(() => {
+        if (sourceNode) {
+          sourceNode.buffer = null;
+          sourceNode.disconnect();
+        }
+        angular.forEach(processNodeList, (node) => {
+          node.disconnect();
+        });
+        if (audioPlayNode) {
+          audioPlayNode.buffer = null;
+          audioPlayNode.disconnect();
+        }
+        audioCtx.close();
+      }, 100, false);
     });
     return d.promise;
   }
@@ -377,14 +380,16 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     })
     .finally(() => {
       // close audio context
-      if (sourceNode) {
-        sourceNode.buffer = null;
-        sourceNode.disconnect();
-      }
-      angular.forEach(processNodeList, (node) => {
-        node.disconnect();
-      });
-      audioCtx.close();
+      this.$timeout(() => {
+        if (sourceNode) {
+          sourceNode.buffer = null;
+          sourceNode.disconnect();
+        }
+        angular.forEach(processNodeList, (node) => {
+          node.disconnect();
+        });
+        audioCtx.close();
+      }, 100, false);
     });
     return d.promise;
   }
@@ -392,6 +397,7 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
 angular.module('AudioServices')
   .service('WebAPIAudioService', [
     '$q',
+    '$timeout',
     'MessageService',
     'AppUtilService',
     WebAPIAudioService,
