@@ -1,9 +1,10 @@
 var gulp = gulp || require('gulp');
 const signAsync = require('electron-osx-sign').signAsync;
+const flatAsync = require('electron-osx-sign').flatAsync;
 const ELECTRON_VERSION = require('./package.json').versions.electron;
 
 // sign
-gulp.task('sign:developer', () => {
+gulp.task('_sign:developer', () => {
   const platform = 'darwin';
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
 
@@ -25,7 +26,7 @@ gulp.task('sign:developer', () => {
   });
 });
 
-gulp.task('sign:distribution', () => {
+gulp.task('_sign:distribution', () => {
   const platform = 'mas';
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
@@ -50,6 +51,19 @@ gulp.task('sign:distribution', () => {
   });
 });
 
+gulp.task('_flat:distribution', () => {
+  const platform = 'mas';
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
+  const PKG_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.pkg`;
+
+  return flatAsync({
+    app: APP_PATH,
+    install: '/Applications',
+    pkg: PKG_PATH,
+    platform: platform,
+  });
+});
 
 
 
