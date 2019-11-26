@@ -75,6 +75,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/images/.+.gif$" \
     --ignore="^/release" \
     --ignore="^/test" \
+    --ignore="^/vendor" \
     --ignore="/node_modules/@types" \
     --ignore="/node_modules/angular-ui-grid/css" \
     --ignore="/node_modules/angular-ui-grid/i18n" \
