@@ -19,7 +19,7 @@
 - ディレクトリ構成
 
 ```
-  node_modules/@taku-o/myukkurivoice-vendor/
+  vendor
     +-- AquesTalk.framework       AquesTalkフレームワーク
     +-- AquesTalk2.framework      AquesTalkフレームワーク
     +-- AquesTalk10.framework     AquesTalkフレームワーク
@@ -38,10 +38,7 @@
   - (権限が必要)
 
 ```
-  # login to GitHub Registry
-  npm login --registry=https://npm.pkg.github.com
-
-  npm install
+  git submodule update --init
 ```
 
 ## library for binary
@@ -243,7 +240,6 @@ done
 ## related project links.
 
 - myukkurivoice (https://github.com/taku-o/myukkurivoice)
-  - myukkurivoice-keys (https://github.com/taku-o/myukkurivoice-keys)
   - myukkurivoice-vendor (https://github.com/taku-o/myukkurivoice-vendor)
     - myukkurivoice-secret (https://github.com/taku-o/myukkurivoice-secret)
     - maquestalk1 (https://github.com/taku-o/maquestalk1)

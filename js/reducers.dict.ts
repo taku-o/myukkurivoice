@@ -8,7 +8,7 @@ var _epath: any, epath             = () => { _epath = _epath || require('electro
 var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 var unpackedPath = epath().getUnpackedPath();
-var vendorPath = `${unpackedPath}/node_modules/@taku-o/myukkurivoice-vendor`;
+var vendorPath = `${unpackedPath}/vendor`;
 
 // env
 var MONITOR = process.env.MONITOR != null;

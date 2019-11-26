@@ -57,7 +57,7 @@ jobs:
     - name: collect store built files
       run: |
         mkdir built
-        mv release/myukkurivoice/MYukkuriVoice-mas-x64/MYukkuriVoice.app built
+        mv release/myukkurivoice/MYukkuriVoice-mas-x64/MYukkuriVoice.pkg built
 
     - name: upload built files
       uses: actions/upload-artifact@master

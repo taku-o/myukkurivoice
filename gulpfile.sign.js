@@ -1,4 +1,67 @@
 var gulp = gulp || require('gulp');
+const signAsync = require('electron-osx-sign').signAsync;
+const ELECTRON_VERSION = require('./package.json').versions.electron;
+
+// sign
+gulp.task('sign:developer', () => {
+  const platform = 'darwin';
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+
+  return signAsync({
+    app: APP_PATH,
+    binaries: [
+      `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`,
+      `${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk10.framework/Versions/A/AquesTalk`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2`,
+      `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
+      `${UNPACK_VENDOR_DIR}/secret`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk`,
+      `${UNPACK_VENDOR_DIR}/maquestalk1`,
+    ],
+    version: ELECTRON_VERSION,
+    type: 'development',
+    platform: platform,
+  });
+});
+
+gulp.task('sign:distribution', () => {
+  const platform = 'mas';
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
+
+  return signAsync({
+    app: APP_PATH,
+    binaries: [
+      `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`,
+      `${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk10.framework/Versions/A/AquesTalk`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2`,
+      `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
+      `${UNPACK_VENDOR_DIR}/secret`,
+      //`${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk`,
+      //`${UNPACK_VENDOR_DIR}/maquestalk1`,
+    ],
+    entitlements: 'build/mas/store.parent.plist',
+    'entitlements-inherit': 'build/mas/store.child.plist',
+    version: ELECTRON_VERSION,
+    type: 'distribution',
+    platform: platform,
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 
@@ -27,7 +90,7 @@ gulp.task('_codesign:store', (cb) => {
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const RESULT_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.pkg`;
   const FRAMEWORKS_PATH = `${APP_PATH}/Contents/Frameworks`;
-  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/node_modules/@taku-o/myukkurivoice-vendor`;
+  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
   const APP = 'MYukkuriVoice';
   const CHILD_PLIST = 'build/mas/store.child.plist';
   const PARENT_PLIST = 'build/mas/store.parent.plist';

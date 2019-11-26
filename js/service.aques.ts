@@ -12,7 +12,7 @@ var _epath: any, epath           = () => { _epath = _epath || require('electron-
 var _waitUntil: any, waitUntil   = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 var unpackedPath = epath().getUnpackedPath();
-var vendorPath = `${unpackedPath}/node_modules/@taku-o/myukkurivoice-vendor`;
+var vendorPath = `${unpackedPath}/vendor`;
 
 // env
 const RUNTIME_ENV: 'default' | 'catalina' | 'store' = process.env.RUNTIME_ENV as 'default' | 'catalina' | 'store';

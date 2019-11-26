@@ -1,6 +1,6 @@
 var _epath: any, epath = () => { _epath = _epath || require('electron-path'); return _epath; };
 var unpackedPath = epath().getUnpackedPath();
-var vendorPath = `${unpackedPath}/node_modules/@taku-o/myukkurivoice-vendor`;
+var vendorPath = `${unpackedPath}/vendor`;
 
 // angular model
 angular.module('mainModels', [])

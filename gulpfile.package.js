@@ -15,7 +15,7 @@ gulp.task('_unpacked:mkdir', (cb) => {
   if (!platform) {
     throw new Error('BUILD_PLATFORM not set.');
   }
-  const UNPACK_VENDOR_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked/node_modules/@taku-o/myukkurivoice-vendor`;
+  const UNPACK_VENDOR_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked/vendor`;
   mkdirp(`${UNPACK_VENDOR_DIR}`, (err) => {
     cb(err);
   });
@@ -25,8 +25,8 @@ gulp.task('_unpacked:cp', (cb) => {
   if (!platform) {
     throw new Error('BUILD_PLATFORM not set.');
   }
-  const VENDOR_DIR = 'node_modules/@taku-o/myukkurivoice-vendor';
-  const UNPACK_VENDOR_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked/node_modules/@taku-o/myukkurivoice-vendor`;
+  const VENDOR_DIR = 'vendor';
+  const UNPACK_VENDOR_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked/vendor`;
   Promise.all([
     fse.copy(`${VENDOR_DIR}/AqKanji2Koe.framework`, `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework`),
     fse.copy(`${VENDOR_DIR}/AqUsrDic.framework`, `${UNPACK_VENDOR_DIR}/AqUsrDic.framework`),
@@ -75,7 +75,6 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/images/.+.gif$" \
     --ignore="^/release" \
     --ignore="^/test" \
-    --ignore="/node_modules/@taku-o" \
     --ignore="/node_modules/@types" \
     --ignore="/node_modules/angular-ui-grid/css" \
     --ignore="/node_modules/angular-ui-grid/i18n" \

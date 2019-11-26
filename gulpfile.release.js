@@ -55,6 +55,9 @@ gulp.task('_git-clone', (cb) => {
     }
   );
 });
+gulp.task('_git-submodule', (cb) => {
+  git.updateSubmodule({args: '--init'}, cb);
+});
 
 // repodir
 gulp.task('_ch:repodir', (cb) => {
@@ -119,6 +122,7 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
+    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
@@ -127,7 +131,8 @@ gulp.task(
     '_unpacked',
     'doc',
     '_zip-app',
-    '_codesign',
+    //'_codesign',
+    'sign:developer',
     '_zip-app-signed',
     '_open:appdir',
     '_notify',
@@ -148,6 +153,7 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
+    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
@@ -157,6 +163,7 @@ gulp.task(
     'doc',
     '_zip-app',
     //'_codesign',
+    //'sign:developer',
     //'_zip-app-signed',
     '_open:appdir',
     '_notify',
@@ -178,13 +185,15 @@ gulp.task(
     '_ch:workdir',
     '_git-clone',
     '_ch:repodir',
+    '_git-submodule',
     '_npm-install',
     'tsc',
     'minify',
     '_rm:package',
     '_package:release',
     '_unpacked',
-    '_codesign:store',
+    //'_codesign:store',
+    'sign:distribution',
     '_open:appdir',
     '_notify',
     '_kill'

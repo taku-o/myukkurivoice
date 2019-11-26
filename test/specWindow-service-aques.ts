@@ -86,7 +86,7 @@ describe('specWindow-service-AquesService', function() {
 
   it('encode with custom dictionary', function() {
     fs.mkdirSync(`${dirPath}/userdict`);
-    const customDictPath = `${path.dirname(__dirname)}/node_modules/@taku-o/myukkurivoice-vendor/test/aq_dic_large`;
+    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
     fs.closeSync(fs.openSync(`${dirPath}/userdict/aqdic.bin`, 'a+')); // create with 644 permission.
     fs.closeSync(fs.openSync(`${dirPath}/userdict/aq_user.dic`, 'a+')); // create with 644 permission.
     fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
