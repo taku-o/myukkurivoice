@@ -36,7 +36,7 @@ jobs:
     - name: lint source code
       run: |
         npx gulp lint
-    - name: build application
+    - name: build release application
       run: |
         npx gulp build:release
     - name: upload release zip
@@ -49,4 +49,7 @@ jobs:
       with:
         name: MYukkuriVoice-darwin-x64-nosigned.zip
         path: release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip
+    - name: build store application
+      run: |
+        npx gulp build:store
 

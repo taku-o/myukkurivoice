@@ -6,6 +6,7 @@ name: build:staging
 on:
   push:
     branches:
+    - 'staging'
     - 'feature/el6'
 
 jobs:
