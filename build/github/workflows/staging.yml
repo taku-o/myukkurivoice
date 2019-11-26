@@ -33,19 +33,27 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
+
     - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
     - name: npm install
       run: |
         npm install
+
     - name: lint source code
       run: |
         npx gulp lint
-    - name: build application
+
+    - name: build staging application
       run: |
         npx gulp build:staging --branch=${GITHUB_ACTION#refs/heads/}
-    - name: upload staging zip
+    - name: collect staging built files
+      run: |
+        mkdir built
+        mv release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip built
+
+    - name: upload built files
       uses: actions/upload-artifact@master
       with:
-        name: MYukkuriVoice-darwin-x64-nosigned.zip
-        path: release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip
+        name: built.zip
+        path: built
 

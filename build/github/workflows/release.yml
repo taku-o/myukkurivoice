@@ -3,7 +3,10 @@
 
 name: build:release
 
-on: [push]
+on:
+  push:
+    branches:
+    - master
 
 jobs:
   build:
@@ -29,27 +32,36 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
+
     - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
     - name: npm install
       run: |
         npm install
+
     - name: lint source code
       run: |
         npx gulp lint
+
     - name: build release application
       run: |
         npx gulp build:release
-    - name: upload release zip
-      uses: actions/upload-artifact@master
-      with:
-        name: MYukkuriVoice-darwin-x64.zip
-        path: release/myukkurivoice/MYukkuriVoice-darwin-x64.zip
-    - name: upload staging zip
-      uses: actions/upload-artifact@master
-      with:
-        name: MYukkuriVoice-darwin-x64-nosigned.zip
-        path: release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip
+    - name: collect release built files
+      run: |
+        mkdir built
+        mv release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip built
+        mv release/myukkurivoice/MYukkuriVoice-darwin-x64.zip built
+
     - name: build store application
       run: |
         npx gulp build:store
+    - name: collect store built files
+      run: |
+        mkdir built
+        mv release/myukkurivoice/MYukkuriVoice-mas-x64/MYukkuriVoice.app built
+
+    - name: upload built files
+      uses: actions/upload-artifact@master
+      with:
+        name: built.zip
+        path: built
 
