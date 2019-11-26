@@ -1,5 +1,8 @@
 # require NPM_AUTH_TOKEN
 #   add GitHub npm token to Projects Secrets
+# require SLACK_WEBHOOK
+#   add Slack incoming-webhooks URL to Projects Secrets
+#   https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
 
 name: build:release
 
