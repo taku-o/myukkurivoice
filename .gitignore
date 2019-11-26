@@ -5,6 +5,7 @@ Thumbs.db
 /MYukkuriVoice-*-x64/
 MYukkuriVoice-*-x64.zip
 MYukkuriVoice-*-x64.app
+MYukkuriVoice-*-x64.pkg
 *.js
 !gulpfile*.js
 tsconfig.tsbuildinfo
