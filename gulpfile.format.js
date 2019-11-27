@@ -177,4 +177,7 @@ gulp.task('_format:md', () => {
     )
     .pipe(gulp.dest('.'));
 });
-gulp.task('format', gulp.parallel('_format:json', '_format:js', '_format:ts', '_format:md', '_format:less', '_format:yaml'));
+gulp.task(
+  'format',
+  gulp.parallel('_format:json', '_format:js', '_format:ts', '_format:md', '_format:less', '_format:yaml')
+);
