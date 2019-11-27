@@ -254,6 +254,7 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     })
     .finally(() => {
       // close audio context
+      // (delay closing)
       this.$timeout(() => {
         if (sourceNode) {
           sourceNode.buffer = null;
@@ -267,7 +268,7 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
           audioPlayNode.disconnect();
         }
         audioCtx.close();
-      }, 100, false);
+      }, 500, false);
     });
     return d.promise;
   }
@@ -380,6 +381,7 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     })
     .finally(() => {
       // close audio context
+      // (delay closing)
       this.$timeout(() => {
         if (sourceNode) {
           sourceNode.buffer = null;
@@ -389,7 +391,7 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
           node.disconnect();
         });
         audioCtx.close();
-      }, 100, false);
+      }, 500, false);
     });
     return d.promise;
   }
