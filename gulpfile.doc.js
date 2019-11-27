@@ -12,6 +12,55 @@ const wrapper = require('gulp-wrapper');
 
 const APP_VERSION = require('./package.json').version;
 
+// table of contents
+gulp.task('toc', () => {
+  return gulp
+    .src('docs/README.md')
+    .pipe(toc())
+    .pipe(gulp.dest('docs'));
+});
+
+// about
+gulp.task('about', () => {
+  return gulp
+    .src('docs/README.md')
+    .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="images/'))
+    .pipe(
+      toc({
+        linkify: function(content) {
+          return content;
+        },
+      })
+    )
+    .pipe(markdownHtml())
+    .pipe(
+      replace(
+        /<a href="(.*?)">(.*?)<\/a>/g,
+        '<a ng-click="ctrl.browser(\'$1\')">$2<span class="icon icon-popup"></span></a>'
+      )
+    )
+    .pipe(replace(/src="(.*?)\.png"/g, 'src="$1.webp"'))
+    .pipe(
+      replace(
+        /<img (.*?) src="(.*?)\.gif" (.*?)>/g,
+        '<video autoplay loop muted playsinline $1 $3><source src="$2.webm" type="video/webm"></video>'
+      )
+    )
+    .pipe(
+      wrapper({
+        header: '<div class="content">',
+        footer: '</div>',
+      })
+    )
+    .pipe(
+      rename({
+        basename: 'about-app',
+        extname: '.html',
+      })
+    )
+    .pipe(gulp.dest('docs/_help'));
+});
+
 // readme
 gulp.task('_readme:html:css', () => {
   return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
@@ -20,7 +69,7 @@ gulp.task('_readme:html:images:assets', () => {
   return gulp.src(['docs/assets/images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
 });
 gulp.task('_readme:html:images:app', () => {
-  return gulp.src(['images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
+  return gulp.src(['images/*.png', 'images/*.gif']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
 });
 gulp.task('_readme:pdf', () => {
   return gulp

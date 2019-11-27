@@ -47,9 +47,13 @@ gulp.task('_ch:workdir', (cb) => {
 // git
 gulp.task('_git-clone', (cb) => {
   const opts = argv && argv.branch ? {args: '-b ' + argv.branch} : {args: '-b master'};
-  git.clone('git@github.com:taku-o/myukkurivoice.git', opts, (err) => {
-    cb(err);
-  });
+  git.clone(
+    'https://github.com/taku-o/myukkurivoice.git' /* git@github.com:taku-o/myukkurivoice.git */,
+    opts,
+    (err) => {
+      cb(err);
+    }
+  );
 });
 gulp.task('_git-submodule', (cb) => {
   git.updateSubmodule({args: '--init'}, cb);
@@ -121,12 +125,14 @@ gulp.task(
     '_git-submodule',
     '_npm-install',
     'tsc',
+    'minify',
     '_rm:package',
     '_package:release',
     '_unpacked',
     'doc',
     '_zip-app',
-    '_codesign',
+    //'_codesign',
+    '_sign:developer',
     '_zip-app-signed',
     '_open:appdir',
     '_notify',
@@ -150,12 +156,14 @@ gulp.task(
     '_git-submodule',
     '_npm-install',
     'tsc',
+    'minify',
     '_rm:package',
     '_package:release',
     '_unpacked',
     'doc',
     '_zip-app',
     //'_codesign',
+    //'_sign:developer',
     //'_zip-app-signed',
     '_open:appdir',
     '_notify',
@@ -180,10 +188,13 @@ gulp.task(
     '_git-submodule',
     '_npm-install',
     'tsc',
+    'minify',
     '_rm:package',
     '_package:release',
     '_unpacked',
-    '_codesign:store',
+    //'_codesign:store',
+    '_sign:distribution',
+    '_flat:distribution',
     '_open:appdir',
     '_notify',
     '_kill'

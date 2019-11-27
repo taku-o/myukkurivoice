@@ -8,6 +8,7 @@ var _epath: any, epath             = () => { _epath = _epath || require('electro
 var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 var unpackedPath = epath().getUnpackedPath();
+var vendorPath = `${unpackedPath}/vendor`;
 
 // env
 var MONITOR = process.env.MONITOR != null;
@@ -16,7 +17,7 @@ var MONITOR = process.env.MONITOR != null;
 class DictReducer implements yubo.DictReducer {
   private readonly htmlTitle: string = document.title;
   // AqDicEdit, MYukkuriVoice data dir
-  private readonly rscDictDir: string = `${unpackedPath}/vendor/aq_dic_large`;
+  private readonly rscDictDir: string = `${vendorPath}/aq_dic_large`;
   private readonly mAppDictDir: string = `${app.getPath('userData')}/userdict`;
   // ui-grid
   private gridApi: any/*IGridApi*/;

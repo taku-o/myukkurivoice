@@ -16,6 +16,9 @@ header div.btn-group {
   margin-bottom: 5px;
   margin-right: 5px;
 }
+div.pane-sm.sidebar {
+  overflow-y: auto;
+}
 span.nav-group-item span.icon {
   color: blue;
 }

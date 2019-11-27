@@ -2,7 +2,7 @@
 <html ng-app="systemApp" shortcut-hint>
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; style-src 'self' 'unsafe-inline'">
   <title>環境設定</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="css/shortcut-hint.css">
@@ -38,8 +38,14 @@
       </div>
       <div class="radio">
         <label>
-          <input type="radio" id="audio-serv-ver-webaudioapi" ng-model="ctrl.store.appCfg.audioServVer" value="webaudioapi">webaudioapi
+          <input type="radio" id="audio-serv-ver-webaudioapi8" ng-model="ctrl.store.appCfg.audioServVer" value="webaudioapi8">webaudioapi8
           <small>実験的エンジン。全ての機能を利用できる。</small>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" id="audio-serv-ver-webaudioapi" ng-model="ctrl.store.appCfg.audioServVer" value="webaudioapi">webaudioapi
+          <small>旧・実験エンジン。sampleRate:44100Hz</small>
         </label>
       </div>
     </div>

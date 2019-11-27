@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="fragment" content="!">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; style-src 'self' 'unsafe-inline'">
   <title>ヘルプビューワ</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="css/shortcut-hint.css">
@@ -81,6 +81,9 @@
       <span class="nav-group-item functions-item" id="menu-history" ng-class="{active:ctrl.store.display == 'history'}" ng-click="ctrl.page('history')">
         <span class="icon icon-help-circled"></span>最近録音したファイルの一覧
       </span>
+      <span class="nav-group-item functions-item" id="menu-sysconfig" ng-class="{active:ctrl.store.display == 'sysconfig'}" ng-click="ctrl.page('sysconfig')">
+        <span class="icon icon-help-circled"></span>環境設定の設定項目
+      </span>
       <span class="nav-group-item functions-item" id="menu-shortcut" ng-class="{active:ctrl.store.display == 'shortcut'}" ng-click="ctrl.page('shortcut')">
         <span class="icon icon-help-circled"></span>ショートカットキー
       </span>
@@ -124,6 +127,7 @@
   <div class="pane" id="multivoice-pane" static-include template-path="_help/multivoice.html" ng-if="ctrl.store.display == 'multivoice'"></div>
   <div class="pane" id="dictionary-pane" static-include template-path="_help/dictionary.html" ng-if="ctrl.store.display == 'dictionary'"></div>
   <div class="pane" id="history-pane"    static-include template-path="_help/history.html"    ng-if="ctrl.store.display == 'history'"></div>
+  <div class="pane" id="sysconfig-pane"  static-include template-path="_help/sysconfig.html"  ng-if="ctrl.store.display == 'sysconfig'"></div>
   <div class="pane" id="shortcut-pane"   static-include template-path="_help/shortcut.html"   ng-if="ctrl.store.display == 'shortcut'"></div>
   <div class="pane" id="help-pane"       static-include template-path="_help/help.html"       ng-if="ctrl.store.display == 'help'"></div>
 
@@ -150,6 +154,7 @@
     <div class="box" static-include template-path="_help/multivoice.html"></div>
     <div class="box" static-include template-path="_help/dictionary.html"></div>
     <div class="box" static-include template-path="_help/history.html"></div>
+    <div class="box" static-include template-path="_help/sysconfig.html"></div>
     <div class="box" static-include template-path="_help/shortcut.html"></div>
     <div class="box" static-include template-path="_help/help.html"></div>
 

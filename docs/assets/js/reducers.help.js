@@ -25,6 +25,7 @@ class HelpReducer {
             'multivoice',
             'dictionary',
             'history',
+            'sysconfig',
             'shortcut',
             'help',
             'fcpx-ixml',

@@ -14,6 +14,7 @@ describe('helpWindow', function() {
     const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
+      chromeDriverArgs: ['remote-debugging-port=9222'],
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
     });
     return this.app.start();
@@ -42,7 +43,7 @@ describe('helpWindow', function() {
       })
       .elements('.nav-group-item.functions-item')
       .then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 12, position());
+        assert.equal(response.value.length, 13, position());
       })
       .elements('.nav-group-item.navs-item')
       .then((response: HTMLInputElement) => {
@@ -51,7 +52,7 @@ describe('helpWindow', function() {
       .getMainProcessLogs()
       .then((logs: string[]) => {
         logs.forEach((log) => {
-          if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+          if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/)) {
             /* eslint-disable-next-line no-console */
             console.error(log);
             assert.ok(false, position());
@@ -138,6 +139,10 @@ describe('helpWindow', function() {
           assert.ok(!isVisible, position());
         })
         .isVisible('#dictionary-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(!isVisible, position());
+        })
+        .isVisible('#sysconfig-pane')
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
         })
@@ -238,6 +243,11 @@ describe('helpWindow', function() {
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
+        .click('#menu-sysconfig')
+        .isVisible('#sysconfig-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
         .click('#menu-shortcut')
         .isVisible('#shortcut-pane')
         .then((isVisible: boolean) => {
@@ -270,7 +280,7 @@ describe('helpWindow', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/)) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());
