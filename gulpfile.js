@@ -28,6 +28,7 @@ usage:
     gulp lint:js
     gulp lint:q
     gulp lint:html
+    gulp lint:yaml
     gulp format
     gulp toc
     gulp doc

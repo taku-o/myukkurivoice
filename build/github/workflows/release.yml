@@ -9,11 +9,10 @@ name: build:release
 on:
   push:
     branches:
-    - master
+      - master
 
 jobs:
   build:
-
     runs-on: macOS-10.14
     timeout-minutes: 10
 
@@ -22,49 +21,48 @@ jobs:
         node-version: [12.4.0]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: cache node environment
-      id: cache-node
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: cache node environment
+        id: cache-node
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
-    - name: npm install
-      run: |
-        npm install
+      - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+      - name: npm install
+        run: |
+          npm install
 
-    - name: lint source code
-      run: |
-        npx gulp lint
+      - name: lint source code
+        run: |
+          npx gulp lint
 
-    - name: build release application
-      run: |
-        npx gulp build:release
-    - name: collect release built files
-      run: |
-        mkdir built
-        mv release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip built
-        mv release/myukkurivoice/MYukkuriVoice-darwin-x64.zip built
+      - name: build release application
+        run: |
+          npx gulp build:release
+      - name: collect release built files
+        run: |
+          mkdir built
+          mv release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip built
+          mv release/myukkurivoice/MYukkuriVoice-darwin-x64.zip built
 
-    - name: build store application
-      run: |
-        npx gulp build:store
-    - name: collect store built files
-      run: |
-        mkdir built
-        mv release/myukkurivoice/MYukkuriVoice-mas-x64/MYukkuriVoice.pkg built
+      - name: build store application
+        run: |
+          npx gulp build:store
+      - name: collect store built files
+        run: |
+          mkdir built
+          mv release/myukkurivoice/MYukkuriVoice-mas-x64/MYukkuriVoice.pkg built
 
-    - name: upload built files
-      uses: actions/upload-artifact@master
-      with:
-        name: built.zip
-        path: built
-
+      - name: upload built files
+        uses: actions/upload-artifact@master
+        with:
+          name: built.zip
+          path: built
