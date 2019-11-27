@@ -4,7 +4,7 @@
 #   add Slack incoming-webhooks URL to Projects Secrets
 #   https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
 
-name: build:pull request
+name: build pull request
 
 on: [pull_request]
 
