@@ -123,12 +123,12 @@ gulp.task(
           footer: '</body></html>',
         })
       )
-      .pipe(
-        replace(
-          /<a href="http:\/\/www.nicovideo.jp\/watch\/(.*?)">(.*?)<\/a>/g,
-          '<iframe src="https://ext.nicovideo.jp/thumb_watch/$1?thumb_mode=html" style="border:none; width:400px; height:243px;" scrolling="no" frameborder="0"></iframe>'
-        )
-      )
+      //.pipe(
+      //  replace(
+      //    /<a href="http:\/\/www.nicovideo.jp\/watch\/(.*?)">(.*?)<\/a>/g,
+      //    '<iframe src="https://ext.nicovideo.jp/thumb_watch/$1?thumb_mode=html" style="border:none; width:400px; height:243px;" scrolling="no" frameborder="0"></iframe>'
+      //  )
+      //)
       .pipe(
         rename({
           basename: 'README',
