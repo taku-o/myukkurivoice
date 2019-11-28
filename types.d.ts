@@ -636,6 +636,7 @@ declare namespace yubo {
     browser(url: string): void;
     showItemInFolder(path: string): void;
     showSystemWindow(): void;
+    isOnline(): boolean;
   }
   export interface HelpReducer extends yubo.Reducer {
     //private readonly menuList: string[];

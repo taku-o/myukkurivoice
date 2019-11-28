@@ -24,6 +24,9 @@ class HelpController implements yubo.HelpController {
   showSystemWindow(): void {
     this.reducer.showSystemWindow();
   }
+  isOnline(): boolean {
+    return window.navigator.onLine;
+  }
 
   // store observer
   update(objects: {[key: string]: any}): void {
