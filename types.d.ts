@@ -415,6 +415,7 @@ declare namespace yubo {
   export interface DictMenuEvent extends ng.IDirective {}
   export interface HelpUrlEvent extends ng.IDirective {}
   export interface HelpShortcutEvent extends ng.IDirective {}
+  export interface HelpScrollEvent extends ng.IDirective {}
   export interface HelpSearchEvent extends ng.IDirective {}
 
   // observer

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="helpApp" urls shortcut shortcut-hint>
+<html ng-app="helpApp" urls shortcut scroll shortcut-hint>
 <head>
   <meta charset="UTF-8">
   <meta name="fragment" content="!">
@@ -22,7 +22,7 @@
 <div class="window-content">
 <div class="pane-group">
 
-  <div class="pane-sm sidebar">
+  <div class="pane-sm sidebar" id="help-sidebar">
     <nav class="nav-group">
       <h5 class="nav-group-title">ヘルプ</h5>
       <span class="nav-group-item help-item" id="menu-about" ng-class="{active:ctrl.store.display == 'about'}" ng-click="ctrl.page('about')">
