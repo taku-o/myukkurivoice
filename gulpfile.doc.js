@@ -40,12 +40,12 @@ gulp.task('about', () => {
         '<video autoplay loop muted playsinline $1 $3><source src="$2.webm" type="video/webm"></video>'
       )
     )
-    .pipe(
-      replace(
-        /<a href="http:\/\/www.nicovideo.jp\/watch\/(.*?)">(.*?)<\/a>/g,
-        '<iframe src="https://ext.nicovideo.jp/thumb_watch/$1?thumb_mode=html" style="border:none; width:400px; height:243px;" scrolling="no" frameborder="0" ng-if="ctrl.isOnline()"></iframe><a href="http://www.nicovideo.jp/watch/$1" ng-if="!ctrl.isOnline()"><img class="border" src="images/$1.webp" width="400" loading="lazy"></a>'
-      )
-    )
+    //.pipe(
+    //  replace(
+    //    /<a href="http:\/\/www.nicovideo.jp\/watch\/(.*?)">(.*?)<\/a>/g,
+    //    '<iframe src="https://ext.nicovideo.jp/thumb_watch/$1?thumb_mode=html" style="border:none; width:400px; height:243px;" scrolling="no" frameborder="0" ng-if="ctrl.isOnline()"></iframe><a href="http://www.nicovideo.jp/watch/$1" ng-if="!ctrl.isOnline()"><img class="border" src="images/$1.webp" width="400" loading="lazy"></a>'
+    //  )
+    //)
     .pipe(
       replace(
         /<a href="(.*?)"(.*?)>(.*?)<\/a>/g,
