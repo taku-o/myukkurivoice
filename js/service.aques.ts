@@ -280,16 +280,12 @@ class AquesService implements yubo.AquesService {
   private aquesTalk10DevKey: string = null;
   init(): void {
     const cancel = onIdle()(() => {
-      if (this.aqKanji2KoeDevKey == null) {
-        this.LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
-          this.aqKanji2KoeDevKey = licenseKey;
-        });
-      }
-      if (this.aquesTalk10DevKey == null) {
-        this.LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
-          this.aquesTalk10DevKey = licenseKey;
-        });
-      }
+      this.LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
+        this.aqKanji2KoeDevKey = licenseKey;
+      });
+      this.LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
+        this.aquesTalk10DevKey = licenseKey;
+      });
     });
   }
 

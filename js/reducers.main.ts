@@ -5,6 +5,7 @@ var _path: any, path               = () => { _path = _path || require('path'); r
 var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
 var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _onIdle: any, onIdle           = () => { _onIdle = _onIdle || require('on-idle'); return _onIdle; };
 var _waitUntil: any, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 // env
@@ -219,12 +220,14 @@ class MainReducer implements yubo.MainReducer {
     if (nextTask) { nextTask(); }
   }
   private loadHistory(): void {
-    this.HistoryService.load().then((cache) => {
-      this.store.generatedList = this.HistoryService.getList();
-      while (this.store.generatedList.length > 10) {
-        this.store.generatedList.pop();
-      }
-      this.notifyUpdates({generatedList: this.store.generatedList});
+    const cancel = onIdle()(() => {
+      this.HistoryService.load().then((cache) => {
+        this.store.generatedList = this.HistoryService.getList();
+        while (this.store.generatedList.length > 10) {
+          this.store.generatedList.pop();
+        }
+        this.notifyUpdates({generatedList: this.store.generatedList});
+      });
     });
   }
 
