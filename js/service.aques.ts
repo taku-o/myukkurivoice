@@ -9,6 +9,7 @@ var _StructType: any, StructType = () => { _StructType = _StructType || require(
 var _temp: any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
 var _exec: any, exec             = () => { _exec = _exec || require('child_process').exec; return _exec; };
 var _epath: any, epath           = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _onIdle: any, onIdle         = () => { _onIdle = _onIdle || require('on-idle'); return _onIdle; };
 var _waitUntil: any, waitUntil   = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 var unpackedPath = epath().getUnpackedPath();
@@ -278,14 +279,18 @@ class AquesService implements yubo.AquesService {
   private aqKanji2KoeDevKey: string = null;
   private aquesTalk10DevKey: string = null;
   init(): void {
-    this.$timeout(() => {
-      this.LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
-        this.aqKanji2KoeDevKey = licenseKey;
-      });
-      this.LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
-        this.aquesTalk10DevKey = licenseKey;
-      });
-    }, 0, false);
+    const cancel = onIdle()(() => {
+      if (this.aqKanji2KoeDevKey == null) {
+        this.LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
+          this.aqKanji2KoeDevKey = licenseKey;
+        });
+      }
+      if (this.aquesTalk10DevKey == null) {
+        this.LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
+          this.aquesTalk10DevKey = licenseKey;
+        });
+      }
+    });
   }
 
   private _isAqKanji2KoeDevkeySet: boolean = false;
@@ -299,7 +304,7 @@ class AquesService implements yubo.AquesService {
     // set developer key if is not set.
     if (! this._isAqKanji2KoeDevkeySet) {
       if (this.aqKanji2KoeDevKey == null) {
-        waitUntil()(300, 5, () => {
+        waitUntil()(300, 10, () => {
           return this.aqKanji2KoeDevKey != null;
         },
         () => {
@@ -425,7 +430,7 @@ class AquesService implements yubo.AquesService {
       // set license key if is not set.
       if (! this._isAquesTalk10LicensekeySet) {
         if (this.aquesTalk10DevKey == null) {
-          waitUntil()(300, 5, () => {
+          waitUntil()(300, 10, () => {
             return this.aquesTalk10DevKey != null;
           },
           () => {

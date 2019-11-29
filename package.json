@@ -63,6 +63,7 @@
     "ms": "^2.1.1",
     "myukkurivoice-about-window": "github:taku-o/myukkurivoice-about-window#v1.14.1",
     "node-addon-api": "^1.5.0",
+    "on-idle": "^3.1.4",
     "photon": "github:connors/photon#master",
     "ref-napi": "^1.4.2",
     "ref-struct-di": "^1.1.0",
