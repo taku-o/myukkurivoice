@@ -17,11 +17,11 @@ class FnAppCfg implements FnAppCfg {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const appCfg: yubo.AppCfg = {
       mainWindow:       {width: 800, height: 665, x: null, y: null},
-      helpWindow:       {width: 700, height: 750},
+      helpWindow:       {width: 655, height: 572},
       helpSearchDialog: {width: 430, height: 120},
-      systemWindow:     {width: 390, height: 550},
+      systemWindow:     {width: 390, height: 585},
       dictWindow:       {width: 800, height: 600},
-      audioServVer:     'webaudioapi', // html5audio or webaudioapi
+      audioServVer:     'webaudioapi8', // html5audio or webaudioapi or webaudioapi8
       showMsgPane:      true,
       passPhrase:       null,
       aq10UseKeyEncrypted: '',
@@ -83,7 +83,7 @@ class FnAppCfg implements FnAppCfg {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     myApp.config.set({
       mainWindow:          {width: 800, height: 665, x:null, y:null},
-      audioServVer:        'webaudioapi',
+      audioServVer:        'webaudioapi8',
       showMsgPane:         true,
       passPhrase:          crypto().randomBytes(16).toString('hex'),
       aq10UseKeyEncrypted: '',

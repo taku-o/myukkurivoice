@@ -3,12 +3,10 @@ const spawn = require('child_process').spawn;
 const toc = require('gulp-markdown-toc');
 
 // tasks
-require('./gulpfile.notify');
 require('./gulpfile.process');
-require('./gulpfile.about');
+require('./gulpfile.minify');
 require('./gulpfile.less');
 require('./gulpfile.format');
-require('./gulpfile.lint');
 require('./gulpfile.tsc');
 require('./gulpfile.doc');
 require('./gulpfile.package');
@@ -24,16 +22,21 @@ usage:
     gulp --tasks-simple
     gulp tsc
     gulp tsc:debug
+    gulp less
     gulp lint
     gulp lint:ts
     gulp lint:js
     gulp lint:q
     gulp lint:html
-    gulp less
+    gulp lint:yaml
     gulp format
     gulp toc
     gulp doc
     gulp about
+    gulp minify
+    gulp minify:js
+    gulp minify:css
+    gulp minify:node_modules
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test:rebuild [--t=test/mainWindow.js]
@@ -43,8 +46,8 @@ usage:
     gulp app:store
     gulp package
     gulp build
-    gulp build:release
     gulp build:staging [--branch=develop]
+    gulp build:release
     gulp build:store [--branch=develop]
   `);
   return cb();
@@ -61,6 +64,9 @@ gulp.task(
     env.DEBUG = 1;
     env.MONITOR = 1;
     env.CONSOLELOG = 1;
+    if (!env.RUNTIME_ENV) {
+      env.RUNTIME_ENV = 'default';
+    }
     const run = spawn(__dirname + '/node_modules/.bin/electron', ['.'], {
       env: env,
     });
@@ -75,27 +81,6 @@ gulp.task(
     });
   })
 );
-gulp.task(
-  'app:default',
-  gulp.series((cb) => {
-    const env = process.env;
-    env.RUNTIME_ENV = 'default';
-    cb();
-  }, 'app')
-);
-gulp.task(
-  'app:catalina',
-  gulp.series((cb) => {
-    const env = process.env;
-    env.RUNTIME_ENV = 'catalina';
-    cb();
-  }, 'app')
-);
-gulp.task(
-  'app:store',
-  gulp.series((cb) => {
-    const env = process.env;
-    env.RUNTIME_ENV = 'store';
-    cb();
-  }, 'app')
-);
+gulp.task('app:default', gulp.series('_runtime:default', 'app'));
+gulp.task('app:catalina', gulp.series('_runtime:catalina', 'app'));
+gulp.task('app:store', gulp.series('_runtime:store', 'app'));

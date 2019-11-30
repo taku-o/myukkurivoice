@@ -39,3 +39,28 @@ angular.module('helpEvents')
     'HelpReducer',
     (reducer) => new HelpShortcutEvent(reducer),
 ]);
+class HelpScrollEvent {
+    constructor($location) {
+        this.$location = $location;
+    }
+    link(scope) {
+        scope.$on('$locationChangeSuccess', (event) => {
+            const hash = this.$location.hash();
+            const menu = document.getElementById(`menu-${hash}`);
+            if (hash == 'about' || !menu) {
+                const sidebar = document.getElementById('help-sidebar');
+                sidebar.scrollTo(0, 0);
+            }
+            else {
+                menu.scrollIntoView({
+                    behavior: 'smooth',
+                });
+            }
+        });
+    }
+}
+angular.module('helpEvents')
+    .directive('scroll', [
+    '$location',
+    ($location) => new HelpScrollEvent($location),
+]);

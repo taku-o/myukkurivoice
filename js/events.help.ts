@@ -44,3 +44,29 @@ angular.module('helpEvents')
     'HelpReducer',
     (reducer: yubo.HelpReducer) => new HelpShortcutEvent(reducer),
   ]);
+
+// scroll
+class HelpScrollEvent implements yubo.HelpScrollEvent {
+  constructor(
+    private $location: ng.ILocationService,
+  ) {}
+  link(scope: ng.IScope): void {
+    scope.$on('$locationChangeSuccess', (event: ng.IAngularEvent) => {
+      const hash = this.$location.hash();
+      const menu = document.getElementById(`menu-${hash}`);
+      if (hash == 'about' || !menu) {
+        const sidebar = document.getElementById('help-sidebar');
+        sidebar.scrollTo(0, 0);
+      } else {
+        menu.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }
+    });
+  }
+}
+angular.module('helpEvents')
+  .directive('scroll', [
+    '$location',
+    ($location: ng.ILocationService) => new HelpScrollEvent($location),
+  ]);

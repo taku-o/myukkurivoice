@@ -12,6 +12,63 @@ const wrapper = require('gulp-wrapper');
 
 const APP_VERSION = require('./package.json').version;
 
+// table of contents
+gulp.task('toc', () => {
+  return gulp
+    .src('docs/README.md')
+    .pipe(toc())
+    .pipe(gulp.dest('docs'));
+});
+
+// about
+gulp.task('about', () => {
+  return (
+    gulp
+      .src('docs/README.md')
+      .pipe(replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="images/'))
+      .pipe(
+        toc({
+          linkify: function(content) {
+            return content;
+          },
+        })
+      )
+      .pipe(markdownHtml())
+      .pipe(replace(/src="(.*?)\.png"/g, 'src="$1.webp"'))
+      .pipe(
+        replace(
+          /<img (.*?) src="(.*?)\.gif" (.*?)>/g,
+          '<video autoplay loop muted playsinline $1 $3><source src="$2.webm" type="video/webm"></video>'
+        )
+      )
+      //.pipe(
+      //  replace(
+      //    /<a href="http:\/\/www.nicovideo.jp\/watch\/(.*?)">(.*?)<\/a>/g,
+      //    '<iframe src="https://ext.nicovideo.jp/thumb_watch/$1?thumb_mode=html" style="border:none; width:400px; height:243px;" scrolling="no" frameborder="0" ng-if="ctrl.isOnline()"></iframe><a href="http://www.nicovideo.jp/watch/$1" ng-if="!ctrl.isOnline()"><img class="border" src="images/$1.webp" width="400" loading="lazy"></a>'
+      //  )
+      //)
+      .pipe(
+        replace(
+          /<a href="(.*?)"(.*?)>(.*?)<\/a>/g,
+          '<a ng-click="ctrl.browser(\'$1\')"$2>$3<span class="icon icon-popup"></span></a>'
+        )
+      )
+      .pipe(
+        wrapper({
+          header: '<div class="content">',
+          footer: '</div>',
+        })
+      )
+      .pipe(
+        rename({
+          basename: 'about-app',
+          extname: '.html',
+        })
+      )
+      .pipe(gulp.dest('docs/_help'))
+  );
+});
+
 // readme
 gulp.task('_readme:html:css', () => {
   return gulp.src(['docs/assets/css/readme-html.css']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/css'));
@@ -20,7 +77,7 @@ gulp.task('_readme:html:images:assets', () => {
   return gulp.src(['docs/assets/images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
 });
 gulp.task('_readme:html:images:app', () => {
-  return gulp.src(['images/*']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
+  return gulp.src(['images/*.png', 'images/*.gif']).pipe(gulp.dest('MYukkuriVoice-darwin-x64/assets/images'));
 });
 gulp.task('_readme:pdf', () => {
   return gulp
@@ -49,15 +106,16 @@ gulp.task('_readme:pdf', () => {
 gulp.task(
   '_readme:html',
   gulp.series(gulp.parallel('_readme:html:css', '_readme:html:images:assets', '_readme:html:images:app'), () => {
-    return gulp
-      .src('docs/README.md')
-      .pipe(
-        replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="assets/images/')
-      )
-      .pipe(markdownHtml())
-      .pipe(
-        wrapper({
-          header: `<!DOCTYPE html>
+    return (
+      gulp
+        .src('docs/README.md')
+        .pipe(
+          replace('src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/', 'src="assets/images/')
+        )
+        .pipe(markdownHtml())
+        .pipe(
+          wrapper({
+            header: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -65,16 +123,23 @@ gulp.task(
   <link rel="stylesheet" href="assets/css/readme-html.css">
 </head>
 <body>`,
-          footer: '</body></html>',
-        })
-      )
-      .pipe(
-        rename({
-          basename: 'README',
-          extname: '.html',
-        })
-      )
-      .pipe(gulp.dest('MYukkuriVoice-darwin-x64'));
+            footer: '</body></html>',
+          })
+        )
+        //.pipe(
+        //  replace(
+        //    /<a href="http:\/\/www.nicovideo.jp\/watch\/(.*?)">(.*?)<\/a>/g,
+        //    '<iframe src="https://ext.nicovideo.jp/thumb_watch/$1?thumb_mode=html" style="border:none; width:400px; height:243px;" scrolling="no" frameborder="0"></iframe>'
+        //  )
+        //)
+        .pipe(
+          rename({
+            basename: 'README',
+            extname: '.html',
+          })
+        )
+        .pipe(gulp.dest('MYukkuriVoice-darwin-x64'))
+    );
   })
 );
 gulp.task('_readme', gulp.parallel('_readme:html'));

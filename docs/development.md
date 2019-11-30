@@ -12,7 +12,7 @@
 - Final Cut Pro X 用フォルダーアクション
   - https://github.com/taku-o/fcpx-audio-role-workflow/releases
 
-## vendor
+## vendor library
 
 - ライセンスの関係上、公開されているソースコードに AquesTalk のライブラリは含まれていません。
 - レポジトリで公開されているコードを動作させるには、vendor ディレクトリに AquesTalk のライブラリを入れる必要があります。
@@ -33,19 +33,29 @@
     +-- secret                    AquesTalk10ライセンスキー取得コード
 ```
 
+- これは GitHub Registry の private repository で管理されています。
+- 取り込むには、次のようにします。
+  - (権限が必要)
+
+```
+  git submodule update --init
+```
+
 ## library for binary
 
 - native 関連のバイナリのバージョン管理が厳しいものはレポジトリ内で直接管理しています。
 
 ```
-  - bindings 1.5.0
-  - debug 4.1.1
-  - ffi 2.3.0
-  - ms 2.1.1
-  - nan 2.14.0
-  - natives 1.1.6
-  - ref 1.3.5
-  - ref-struct 1.1.0
+  - ffi-napi 2.4.5
+    - bindings 1.5.0
+    - debug 4.1.1
+    - file-uri-to-path 1.0.0
+    - get-symbol-from-current-process-h 1.0.1
+    - get-uv-event-loop-napi-h 1.0.5
+    - ms 2.1.1
+    - node-addon-api 1.5.0
+    - ref-napi 1.4.2
+    - ref-struct-di 1.1.0
 ```
 
 ## 開発の進め方
@@ -54,46 +64,54 @@
   - 最初に動作に必要なモジュールを取り込んでください。
 
 ```
-  npm install
-  git submodule update --init
-  npm install -g gulp-cli
+  npm install --no-optional
 ```
 
-- ソースコードを修正します。ソースコードは typescript で記載されています。
-- tsc コマンドで typescript をビルドします。
+- 次のコマンドでアプリを実際に動かしてみましょう。
 
 ```
-  gulp tsc
+  npx gulp app
 ```
 
-- デバッグモードで動かして、動作を確認しましょう。
+## 修正したコードでビルドする
 
-```
-  gulp app
-```
-
-- 次のコマンドで Electron アプリを簡易ビルドできます。
-
-```
-  gulp package
-```
+- プライベートレポジトリのコードが含まれているので、コードを修正してもビルドできない。どうすれば？
+  - 簡単な修正なら、コードを修正して Pull Request を投げると、GitHub Actions でアプリがビルドされます。
+  - GitHub Actions の該当 Workflow の右上、Artifacts からビルドしたアプリを受け取れます。
 
 ## リリース
 
 - リリースコマンドで、リリース用のビルドの作成と、配布用 zip ファイルを作成します。
 
 ```
-  gulp build:release
+  npx gulp build:release
 ```
 
-## 開発テスト
+## 開発
+
+### ソースコードの修正
+
+- ソースコードは typescript で記載されています。
+- tsc コマンドでビルドします。
+
+```
+  npx gulp tsc
+```
+
+### 簡易パッケージング
+
+- 次のコマンドで Electron アプリを簡易ビルドできます。
+
+```
+  npx gulp package
+```
 
 ### 特定バージョンのアプリのビルド
 
 - staging コマンドで特定のブランチを指定して、ビルドできます。
 
 ```
-  gulp build:staging --branch=staging
+  npx gulp build:staging --branch=staging
 ```
 
 ### 単体テスト
@@ -104,20 +122,21 @@
 
 ```
   # build app, and run test
-  gulp test-rebuild
+  npx gulp test-rebuild
 
   # run test already built app
-  gulp test
+  npx gulp test
 ```
 
 ### 開発関連の機能
 
 ```
-  gulp tsc
-  gulp lint
-  gulp format
-  gulp less
-  gulp clean
+  npx gulp tsc
+  npx gulp lint
+  npx gulp format
+  npx gulp less
+  npx gulp clean
+  npx gulp app
 ```
 
 # 環境設定まわりの情報
@@ -133,9 +152,9 @@
 ```
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
   nvm ls-remote
-  nvm install v10.2.1
-  nvm use v10.2.1
-  nvm alias default v10.2.1
+  nvm install v12.4.0
+  nvm use v12.4.0
+  nvm alias default v12.4.0
 ```
 
 ### Module version mismatch. Expected 50, got 51
@@ -148,7 +167,9 @@
 
 # その他
 
-## アプリアイコンの作成
+## 画像処理
+
+### アプリアイコンの作成
 
 - iconutil で作成します。
 - icns/myukkurivoice.iconset にアイコン画像を入れてコマンド実行してください
@@ -159,11 +180,11 @@
   iconutil --convert icns --output myukkurivoice.icns myukkurivoice.iconset
 ```
 
-## アイコンファイルの入手
+### アイコンファイルの入手
 
 - https://material.io/tools/icons/
 
-## README 用のアニメーション GIF の作成
+### README 用のアニメーション GIF の作成
 
 - animation GIF の作成
 
@@ -185,10 +206,26 @@
   convert readme-mini.gif -coalesce -scale 50% -deconstruct -fuzz 2% -dither none -layers optimize -matte -depth 8 \( -clone 0--1 -background none +append -quantize transparent  -colors 32  -unique-colors -write mpr:cmap +delete \) -map mpr:cmap readme-mini2.gif
 ```
 
+### 画像サイズ縮小
+
 - png ファイルのサイズを縮小する
 
 ```
   convert  -scale 30%  -unsharp 2x1.4+0.5+0 -colors 65 -quality 100 readme-tutorial.png readme-tutorial-mini.png
+```
+
+- WebP 化
+  - download form https://developers.google.com/speed/webp/download
+
+```
+  cwebp image.png -o image.webp
+```
+
+- WebM 化
+
+```
+  brew install ffmpeg
+  ffmpeg -i readme.gif -c vp9 -b:v 0 -crf 20 readme.webm
 ```
 
 ## 実行ファイルから不要なアーキテクチャー(i386)を削る
@@ -209,7 +246,6 @@ done
 ## related project links.
 
 - myukkurivoice (https://github.com/taku-o/myukkurivoice)
-  - myukkurivoice-keys (https://github.com/taku-o/myukkurivoice-keys)
   - myukkurivoice-vendor (https://github.com/taku-o/myukkurivoice-vendor)
     - myukkurivoice-secret (https://github.com/taku-o/myukkurivoice-secret)
     - maquestalk1 (https://github.com/taku-o/maquestalk1)

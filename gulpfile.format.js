@@ -1,9 +1,60 @@
 var gulp = gulp || require('gulp');
 const eslint = require('gulp-eslint');
 const prettier = require('gulp-prettier');
+const using = require('gulp-using');
+
+// lint
+gulp.task('lint:ts', () => {
+  return gulp
+    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts'])
+    .pipe(eslint({useEslintrc: true}))
+    .pipe(eslint.format());
+});
+gulp.task('lint:js', () => {
+  return gulp
+    .src(['gulpfile*.js'])
+    .pipe(eslint({useEslintrc: true}))
+    .pipe(eslint.format());
+});
+gulp.task('lint:q', () => {
+  return gulp
+    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts', 'gulpfile*.js'])
+    .pipe(eslint({useEslintrc: true, quiet: true}))
+    .pipe(eslint.format());
+});
+// lint:html
+gulp.task('lint:html', () => {
+  return gulp
+    .src(['*.html', 'docs/*.html', 'docs/_help/*.html'], {base: '.'})
+    .pipe(using({}))
+    .pipe(
+      prettier({
+        parser: 'angular',
+        printWidth: 120,
+        proseWrap: 'preserve',
+        tabWidth: 2,
+        useTabs: false,
+      })
+    );
+});
+// lint:yaml
+gulp.task('lint:yaml', () => {
+  return gulp
+    .src(['github/workflows/*.yml', 'build/github/workflows/*.yml'], {base: '.'})
+    .pipe(using({}))
+    .pipe(
+      prettier({
+        parser: 'yaml',
+        proseWrap: 'preserve',
+        tabWidth: 2,
+        useTabs: false,
+      })
+    );
+});
+gulp.task('lint', gulp.parallel('lint:q', 'lint:html', 'lint:yaml'));
 
 // format
-// format-ts
+// format:ts
 gulp.task('_format:ts:eslint', () => {
   return gulp
     .src(['*.ts', 'js/*.ts', 'docs/assets/js/*.ts'], {base: '.'})
@@ -32,7 +83,7 @@ gulp.task('_format:ts:test', () => {
     .pipe(gulp.dest('.'));
 });
 gulp.task('_format:ts', gulp.parallel('_format:ts:eslint', '_format:ts:test'));
-// format-js
+// format:js
 gulp.task('_format:js', () => {
   return gulp
     .src(['gulpfile.js', 'gulpfile.*.js'], {base: '.'})
@@ -53,7 +104,7 @@ gulp.task('_format:js', () => {
     )
     .pipe(gulp.dest('.'));
 });
-// format-html
+// format:html
 gulp.task('_format:html', () => {
   return gulp
     .src(['*.html', 'docs/*.html', 'docs/_help/*.html'], {base: '.'})
@@ -68,7 +119,21 @@ gulp.task('_format:html', () => {
     )
     .pipe(gulp.dest('.'));
 });
-// format-json
+// format:yaml
+gulp.task('_format:yaml', () => {
+  return gulp
+    .src(['github/workflows/*.yml', 'build/github/workflows/*.yml'], {base: '.'})
+    .pipe(
+      prettier({
+        parser: 'yaml',
+        proseWrap: 'preserve',
+        tabWidth: 2,
+        useTabs: false,
+      })
+    )
+    .pipe(gulp.dest('.'));
+});
+// format:json
 gulp.task('_format:json', () => {
   return gulp
     .src(['.eslintrc.json', 'tsconfig.json'], {base: '.'})
@@ -83,7 +148,7 @@ gulp.task('_format:json', () => {
     )
     .pipe(gulp.dest('.'));
 });
-// format-less
+// format:less
 gulp.task('_format:less', () => {
   return gulp
     .src(['css/*.less', 'docs/assets/css/*.less'], {base: '.'})
@@ -98,7 +163,7 @@ gulp.task('_format:less', () => {
     )
     .pipe(gulp.dest('.'));
 });
-// format-md
+// format:md
 gulp.task('_format:md', () => {
   return gulp
     .src(['docs/*.md'], {base: '.'})
@@ -112,4 +177,7 @@ gulp.task('_format:md', () => {
     )
     .pipe(gulp.dest('.'));
 });
-gulp.task('format', gulp.parallel('_format:json', '_format:js', '_format:ts', '_format:md', '_format:less'));
+gulp.task(
+  'format',
+  gulp.parallel('_format:json', '_format:js', '_format:ts', '_format:md', '_format:less', '_format:yaml')
+);

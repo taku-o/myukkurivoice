@@ -2,7 +2,7 @@
 <html ng-app="dictApp" menu shortcut shortcut-hint>
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; style-src 'self' 'unsafe-inline'">
   <title>辞書ツール</title>
   <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css">
   <link rel="stylesheet" href="node_modules/intro.js/minified/introjs.min.css">
@@ -61,7 +61,7 @@
         <ul class="list-group">
           <!-- save -->
           <li class="list-group-item shortcut-hint-box" id="save" ng-click="ctrl.save()">
-            <img class="img-circle media-object pull-left" src="images/twotone_save_black_36dp.png" width="32" height="32">
+            <img class="img-circle media-object pull-left" src="images/twotone_save_black_36dp.webp" width="32" height="32">
             <div class="media-body">
               <strong>Save</strong>
               <p class="small">
@@ -74,7 +74,7 @@
           </li>
           <!-- cancel -->
           <li class="list-group-item" id="cancel" ng-click="ctrl.cancel()">
-            <img class="img-circle media-object pull-left" src="images/twotone_cancel_black_36dp.png" width="32" height="32">
+            <img class="img-circle media-object pull-left" src="images/twotone_cancel_black_36dp.webp" width="32" height="32">
             <div class="media-body">
               <strong>Cancel</strong>
               <p class="small">
@@ -86,7 +86,7 @@
           </li>
           <!-- export -->
           <li class="list-group-item" id="export" ng-click="ctrl.dump()" ng-class="{disable:ctrl.store.isInEditing}">
-            <img class="img-circle media-object pull-left" src="images/twotone_import_export_black_36dp.png" width="32" height="32">
+            <img class="img-circle media-object pull-left" src="images/twotone_import_export_black_36dp.webp" width="32" height="32">
             <div class="media-body">
               <strong>Export</strong>
               <p class="small">
@@ -100,7 +100,7 @@
           </li>
           <!-- reload -->
           <li class="list-group-item" id="reload" ng-click="ctrl.reload()">
-            <img class="img-circle media-object pull-left" src="images/twotone_cached_black_36dp.png" width="32" height="32">
+            <img class="img-circle media-object pull-left" src="images/twotone_cached_black_36dp.webp" width="32" height="32">
             <div class="media-body">
               <strong>Reload</strong>
               <p class="small">

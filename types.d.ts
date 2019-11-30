@@ -127,7 +127,7 @@ declare namespace yubo {
     helpSearchDialog?:   {width: number, height: number};
     systemWindow?:       {width: number, height: number};
     dictWindow?:         {width: number, height: number};
-    audioServVer:        'html5audio' | 'webaudioapi';
+    audioServVer:        'html5audio' | 'webaudioapi' | 'webaudioapi8';
     showMsgPane:         boolean;
     passPhrase:          string | null;
     aq10UseKeyEncrypted: string;
@@ -323,7 +323,7 @@ declare namespace yubo {
     //private readonly I386_SUPPORTED_LAST_VERSION: string;
     //private readonly I386_GENERATOR_PATH: string;
     //private readonly IOS_GENERATOR_PATH: string;
-    getGeneratorPath(version?): string;
+    getGeneratorPath(version?: string): string;
     isSupportedPhont(phont: yubo.YPhont, version?: string): boolean;
     isI386Supported(version?: string): boolean;
   }
@@ -356,10 +356,11 @@ declare namespace yubo {
     stop(): void;
     record(wavFilePath: string, bufWav: Buffer, options: yubo.RecordOptions): ng.IPromise<{duration: number}>;
   }
-  export interface AudioService1 extends IAudioService {
+  export interface HTML5AudioService extends IAudioService {
     //private audio: HTMLAudioElement;
   }
-  export interface AudioService2 extends IAudioService {
+  export interface WebAPIAudioService extends IAudioService {
+    sampleRate?: number;
     //private runningNode: AudioBufferSourceNode;
     //private toArrayBuffer(bufWav: Buffer): ArrayBuffer;
     //private correctFrameCount(audioBuffer: AudioBuffer): number;
@@ -414,6 +415,7 @@ declare namespace yubo {
   export interface DictMenuEvent extends ng.IDirective {}
   export interface HelpUrlEvent extends ng.IDirective {}
   export interface HelpShortcutEvent extends ng.IDirective {}
+  export interface HelpScrollEvent extends ng.IDirective {}
   export interface HelpSearchEvent extends ng.IDirective {}
 
   // observer
@@ -635,6 +637,7 @@ declare namespace yubo {
     browser(url: string): void;
     showItemInFolder(path: string): void;
     showSystemWindow(): void;
+    isOnline(): boolean;
   }
   export interface HelpReducer extends yubo.Reducer {
     //private readonly menuList: string[];

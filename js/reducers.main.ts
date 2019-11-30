@@ -5,6 +5,7 @@ var _path: any, path               = () => { _path = _path || require('path'); r
 var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
 var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
+var _onIdle: any, onIdle           = () => { _onIdle = _onIdle || require('on-idle'); return _onIdle; };
 var _waitUntil: any, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 // env
@@ -16,7 +17,7 @@ var desktopDir = app.getPath('desktop');
 // action reducer
 class MainReducer implements yubo.MainReducer {
   appCfg: yubo.AppCfg = require('electron').remote.getGlobal('appCfg');
-  private AudioService: yubo.IAudioService = this.appCfg.audioServVer == 'html5audio'? this.audioServVer1: this.audioServVer2;
+  private AudioService: yubo.IAudioService = null;
 
   constructor(
     private $q: ng.IQService,
@@ -26,8 +27,8 @@ class MainReducer implements yubo.MainReducer {
     private DataService: yubo.DataService,
     private HistoryService: yubo.HistoryService,
     private AquesService: yubo.AquesService,
-    private audioServVer1: yubo.AudioService1,
-    private audioServVer2: yubo.AudioService2,
+    html5AudioService: yubo.HTML5AudioService,
+    webAPIAudioService: yubo.WebAPIAudioService,
     private TextSubtitleService: yubo.TextSubtitleService,
     private SeqFNameService: yubo.SeqFNameService,
     private AppUtilService: yubo.AppUtilService,
@@ -39,6 +40,21 @@ class MainReducer implements yubo.MainReducer {
     this.store.yvoiceList = window.dataJson;
     this.store.curYvoice = window.dataJson.length > 0? window.dataJson[0]: null;
     delete window['dataJson'];
+
+    // audio service engine
+    switch (this.appCfg.audioServVer) {
+      case 'html5audio':
+        this.AudioService = html5AudioService;
+        break;
+      case 'webaudioapi':
+        this.AudioService = webAPIAudioService;
+        break;
+      case 'webaudioapi8':
+      default:
+        webAPIAudioService.sampleRate = 8000;
+        this.AudioService = webAPIAudioService;
+        break;
+    }
   }
 
   // event
@@ -204,12 +220,14 @@ class MainReducer implements yubo.MainReducer {
     if (nextTask) { nextTask(); }
   }
   private loadHistory(): void {
-    this.HistoryService.load().then((cache) => {
-      this.store.generatedList = this.HistoryService.getList();
-      while (this.store.generatedList.length > 10) {
-        this.store.generatedList.pop();
-      }
-      this.notifyUpdates({generatedList: this.store.generatedList});
+    const cancel = onIdle()(() => {
+      this.HistoryService.load().then((cache) => {
+        this.store.generatedList = this.HistoryService.getList();
+        while (this.store.generatedList.length > 10) {
+          this.store.generatedList.pop();
+        }
+        this.notifyUpdates({generatedList: this.store.generatedList});
+      });
     });
   }
 
@@ -943,8 +961,8 @@ angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
     'DataService',
     'HistoryService',
     'AquesService',
-    'AudioService1',
-    'AudioService2',
+    'HTML5AudioService',
+    'WebAPIAudioService',
     'TextSubtitleService',
     'SeqFNameService',
     'AppUtilService',

@@ -118,7 +118,7 @@ class HistoryService implements yubo.HistoryService {
   load(): ng.IPromise<LRUCache.Cache> {
     if (MONITOR) { log().warn(monitor().format('srv.data', 'hist load called')); }
     const d = this.$q.defer<LRUCache.Cache>();
-    this.$timeout(() => {
+    //this.$timeout(() => {
       const configPath = `${app.getPath('userData')}/history.json`;
       let data: yubo.IRecordMessage[] = null;
       try {
@@ -132,7 +132,7 @@ class HistoryService implements yubo.HistoryService {
       this.cache().load(data);
       this._loaded = true;
       d.resolve(this.cache());
-    }, 0, false);
+    //}, 0, false);
     return d.promise;
   }
 

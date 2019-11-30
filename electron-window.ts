@@ -128,11 +128,11 @@ class FnWindow implements yubo.FnWindow {
     myApp.mainWindow.on('closed', () => {
       myApp.mainWindow = null;
     });
-    myApp.mainWindow.on('unresponsive', (event) => {
+    myApp.mainWindow.on('unresponsive', (event: Event) => {
       log().warn('main:event:unresponsive');
       log().warn(event);
     });
-    myApp.mainWindow.webContents.on('crashed', (event) => {
+    myApp.mainWindow.webContents.on('crashed', (event: Event) => {
       log().error('main:event:crashed');
       log().error(event);
     });
@@ -195,11 +195,11 @@ class FnWindow implements yubo.FnWindow {
     myApp.helpWindow.on('closed', () => {
       myApp.helpWindow = null;
     });
-    myApp.helpWindow.on('unresponsive', (event) => {
+    myApp.helpWindow.on('unresponsive', (event: Event) => {
       log().warn('help:event:unresponsive');
       log().warn(event);
     });
-    myApp.helpWindow.webContents.on('crashed', (event) => {
+    myApp.helpWindow.webContents.on('crashed', (event: Event) => {
       log().error('help:event:crashed');
       log().error(event);
     });
@@ -254,11 +254,11 @@ class FnWindow implements yubo.FnWindow {
     myApp.helpSearchDialog.on('closed', () => {
       myApp.helpSearchDialog = null;
     });
-    myApp.helpSearchDialog.on('unresponsive', (event) => {
+    myApp.helpSearchDialog.on('unresponsive', (event: Event) => {
       log().warn('helpsearch:event:unresponsive');
       log().warn(event);
     });
-    myApp.helpSearchDialog.webContents.on('crashed', (event) => {
+    myApp.helpSearchDialog.webContents.on('crashed', (event: Event) => {
       log().error('helpsearch:event:crashed');
       log().error(event);
     });
@@ -301,11 +301,11 @@ class FnWindow implements yubo.FnWindow {
     myApp.systemWindow.on('closed', () => {
       myApp.systemWindow = null;
     });
-    myApp.systemWindow.on('unresponsive', (event) => {
+    myApp.systemWindow.on('unresponsive', (event: Event) => {
       log().warn('system:event:unresponsive');
       log().warn(event);
     });
-    myApp.systemWindow.webContents.on('crashed', (event) => {
+    myApp.systemWindow.webContents.on('crashed', (event: Event) => {
       log().error('system:event:crashed');
       log().error(event);
     });
@@ -358,11 +358,11 @@ class FnWindow implements yubo.FnWindow {
     myApp.dictWindow.on('closed', () => {
       myApp.dictWindow = null;
     });
-    myApp.dictWindow.on('unresponsive', (event) => {
+    myApp.dictWindow.on('unresponsive', (event: Event) => {
       log().warn('dict:event:unresponsive');
       log().warn(event);
     });
-    myApp.dictWindow.webContents.on('crashed', (event) => {
+    myApp.dictWindow.webContents.on('crashed', (event: Event) => {
       log().error('dict:event:crashed');
       log().error(event);
     });
@@ -372,7 +372,7 @@ class FnWindow implements yubo.FnWindow {
   showAboutWindow(): void {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const w = openAboutWindow()({
-      icon_path: path().join(__dirname, 'images/icon_128x128.png'),
+      icon_path: path().join(__dirname, 'images/icon_128x128.webp'),
       css_path: path().join(__dirname, 'css/about.css'),
       package_json_dir: __dirname,
       open_devtools: false,
@@ -402,10 +402,13 @@ class FnWindow implements yubo.FnWindow {
         defaultId: 0,
         cancelId: 0,
       };
-      const btnId: number = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
-      if (btnId == 1) {
-        shell.openExternal(version.latestReleaseUrl);
-      }
+      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
+      .then((result) => {
+        const btnId: number = result.response;
+        if (btnId == 1) {
+          shell.openExternal(version.latestReleaseUrl);
+        }
+      });
     })
     .catch((err: Error) => {
       log().error(err);
@@ -417,7 +420,10 @@ class FnWindow implements yubo.FnWindow {
         defaultId: 0,
         cancelId: 0,
       };
-      const _void = dialog.showMessageBox(myApp.systemWindow, dialogOptions);
+      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
+      .then((result) => {
+        // do nothing
+      });
     });
   }
 

@@ -21,6 +21,9 @@ class HelpController {
     showSystemWindow() {
         this.reducer.showSystemWindow();
     }
+    isOnline() {
+        return window.navigator.onLine;
+    }
     update(objects) {
         this.$timeout(() => { });
     }

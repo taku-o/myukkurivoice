@@ -9,48 +9,14 @@ const PACKAGER_CMD = path.join(__dirname, './node_modules/.bin/electron-packager
 const ELECTRON_VERSION = require('./package.json').versions.electron;
 const APP_VERSION = require('./package.json').version;
 
-// platform
-gulp.task('_platform:darwin', (cb) => {
-  const env = process.env;
-  env.BUILD_PLATFORM = 'darwin';
-  cb();
-});
-gulp.task('_platform:mas', (cb) => {
-  const env = process.env;
-  env.BUILD_PLATFORM = 'mas';
-  cb();
-});
-
-// target
-gulp.task('_target:release', (cb) => {
-  const env = process.env;
-  env.BUILD_TARGET = 'release';
-  cb();
-});
-gulp.task('_target:staging', (cb) => {
-  const env = process.env;
-  env.BUILD_TARGET = 'staging';
-  cb();
-});
-gulp.task('_target:store', (cb) => {
-  const env = process.env;
-  env.BUILD_TARGET = 'store';
-  cb();
-});
-gulp.task('_target:debug', (cb) => {
-  const env = process.env;
-  env.BUILD_TARGET = 'debug';
-  cb();
-});
-
 // app.asar.unpacked
 gulp.task('_unpacked:mkdir', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
   if (!platform) {
     throw new Error('BUILD_PLATFORM not set.');
   }
-  const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
-  mkdirp(`${UNPACK_DIR}/vendor`, (err) => {
+  const UNPACK_VENDOR_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked/vendor`;
+  mkdirp(`${UNPACK_VENDOR_DIR}`, (err) => {
     cb(err);
   });
 });
@@ -59,22 +25,23 @@ gulp.task('_unpacked:cp', (cb) => {
   if (!platform) {
     throw new Error('BUILD_PLATFORM not set.');
   }
-  const UNPACK_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked`;
+  const VENDOR_DIR = 'vendor';
+  const UNPACK_VENDOR_DIR = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app/Contents/Resources/app.asar.unpacked/vendor`;
   Promise.all([
-    fse.copy('vendor/AqKanji2Koe.framework', `${UNPACK_DIR}/vendor/AqKanji2Koe.framework`),
-    fse.copy('vendor/AqUsrDic.framework', `${UNPACK_DIR}/vendor/AqUsrDic.framework`),
-    fse.copy('vendor/AquesTalk2.framework', `${UNPACK_DIR}/vendor/AquesTalk2.framework`),
-    fse.copy('vendor/AquesTalk10.framework', `${UNPACK_DIR}/vendor/AquesTalk10.framework`),
-    fse.copy('vendor/aq_dic_large', `${UNPACK_DIR}/vendor/aq_dic_large`),
-    fse.copy('vendor/phont', `${UNPACK_DIR}/vendor/phont`),
-    fse.copy('vendor/maquestalk1-ios', `${UNPACK_DIR}/vendor/maquestalk1-ios`),
-    fse.copy('vendor/secret', `${UNPACK_DIR}/vendor/secret`),
+    fse.copy(`${VENDOR_DIR}/AqKanji2Koe.framework`, `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework`),
+    fse.copy(`${VENDOR_DIR}/AqUsrDic.framework`, `${UNPACK_VENDOR_DIR}/AqUsrDic.framework`),
+    fse.copy(`${VENDOR_DIR}/AquesTalk2.framework`, `${UNPACK_VENDOR_DIR}/AquesTalk2.framework`),
+    fse.copy(`${VENDOR_DIR}/AquesTalk10.framework`, `${UNPACK_VENDOR_DIR}/AquesTalk10.framework`),
+    fse.copy(`${VENDOR_DIR}/aq_dic_large`, `${UNPACK_VENDOR_DIR}/aq_dic_large`),
+    fse.copy(`${VENDOR_DIR}/phont`, `${UNPACK_VENDOR_DIR}/phont`),
+    fse.copy(`${VENDOR_DIR}/maquestalk1-ios`, `${UNPACK_VENDOR_DIR}/maquestalk1-ios`),
+    fse.copy(`${VENDOR_DIR}/secret`, `${UNPACK_VENDOR_DIR}/secret`),
   ])
     .then(() => {
       if (platform == 'darwin') {
         return Promise.all([
-          fse.copy('vendor/AquesTalk.framework', `${UNPACK_DIR}/vendor/AquesTalk.framework`),
-          fse.copy('vendor/maquestalk1', `${UNPACK_DIR}/vendor/maquestalk1`),
+          fse.copy(`${VENDOR_DIR}/AquesTalk.framework`, `${UNPACK_VENDOR_DIR}/AquesTalk.framework`),
+          fse.copy(`${VENDOR_DIR}/maquestalk1`, `${UNPACK_VENDOR_DIR}/maquestalk1`),
         ]);
       } else {
         return Promise.resolve();
@@ -96,23 +63,19 @@ gulp.task('_rm:package', () => {
 
 function getIgnoreFiles(forDebug) {
   let ignores = ` \
-    --ignore="^/vendor" \
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/MYukkuriVoice-mas-x64" \
+    --ignore="^/build" \
     --ignore="^/docs" \
-    --ignore="^/extend.plist$" \
-    --ignore="^/gulpfile\\.js$" \
     --ignore="^/gulpfile\\..+\\.js$" \
-    --ignore="^/icns" \
-    --ignore="^/keys" \
-    --ignore="^/mas" \
+    --ignore="^/gulpfile\\.js$" \
+    --ignore="^/images/sm.+.png$" \
+    --ignore="^/images/readme-.+.png$" \
+    --ignore="^/images/icon.+.png$" \
+    --ignore="^/images/.+.gif$" \
     --ignore="^/release" \
     --ignore="^/test" \
-    --ignore="^/vendor/aqk2k_mac" \
-    --ignore="^/vendor/aqtk1-mac" \
-    --ignore="^/vendor/aqtk10-mac" \
-    --ignore="^/vendor/aqtk2-mac" \
-    --ignore="/ffi/deps/" \
+    --ignore="^/vendor" \
     --ignore="/node_modules/@types" \
     --ignore="/node_modules/angular-ui-grid/css" \
     --ignore="/node_modules/angular-ui-grid/i18n" \
@@ -160,6 +123,11 @@ function getIgnoreFiles(forDebug) {
     --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
     --ignore="/node_modules/angular/index\\.js$" \
     --ignore="/node_modules/angular/package\\.json$" \
+    --ignore="/node_modules/cryptico.js/src/" \
+    --ignore="/node_modules/ffi-napi/build/Release/.deps/Release/obj.target/ffi/deps/libffi/src/" \
+    --ignore="/node_modules/ffi-napi/build/Release/.deps/Release/obj.target/ffi_bindings/src/" \
+    --ignore="/node_modules/ffi-napi/build/Release/.deps/Release/obj.target/node-addon-api/src/" \
+    --ignore="/node_modules/ffi-napi/deps/libffi/" \
     --ignore="/node_modules/intro\\.js/intro\\.js$" \
     --ignore="/node_modules/intro\\.js/introjs-rtl\\.css$" \
     --ignore="/node_modules/intro\\.js/introjs\\.css$" \
@@ -169,6 +137,9 @@ function getIgnoreFiles(forDebug) {
     --ignore="/node_modules/photon/_config\\.yml$" \
     --ignore="/node_modules/photon/dist/template-app/" \
     --ignore="/node_modules/photon/fonts/" \
+    --ignore="/node_modules/ref-napi/build/Release/.deps/Release/obj.target/binding/src/" \
+    --ignore="/node_modules/ref-napi/build/Release/.deps/Release/obj.target/nothing/node_modules/node-addon-api/src/" \
+    --ignore="/node_modules/ref-struct-di/.nyc_output/" \
     --ignore="/docs/" \
     --ignore="/example/" \
     --ignore="/examples/" \
@@ -178,31 +149,38 @@ function getIgnoreFiles(forDebug) {
     --ignore="/test/" \
     --ignore="/tests/" \
     --ignore="/.+\\.Makefile$" \
+    --ignore="/.+\\.c$" \
     --ignore="/.+\\.cc$" \
     --ignore="/.+\\.coffee$" \
     --ignore="/.+\\.coveralls.yml$" \
+    --ignore="/.+\\.cpp$" \
     --ignore="/.+\\.gyp$" \
     --ignore="/.+\\.h$" \
+    --ignore="/.+\\.hpp$" \
     --ignore="/.+\\.js\\.gzip$" \
     --ignore="/.+\\.js\\.map$" \
     --ignore="/.+\\.jst$" \
     --ignore="/.+\\.less$" \
+    --ignore="/.+\\.m$" \
     --ignore="/.+\\.markdown$" \
     --ignore="/.+\\.md$" \
+    --ignore="/.+\\.mm$" \
     --ignore="/.+\\.o$" \
+    --ignore="/.+\\.obj$" \
     --ignore="/.+\\.py$" \
     --ignore="/.+\\.scss$" \
     --ignore="/.+\\.swp$" \
     --ignore="/.+\\.target\\.mk$" \
-    --ignore="/.+\\.tsbuildinfo$" \
     --ignore="/.+\\.tgz$" \
     --ignore="/.+\\.ts$" \
+    --ignore="/.+\\.tsbuildinfo$" \
     --ignore="/AUTHORS$" \
     --ignore="/CHANGELOG$" \
     --ignore="/CHANGES$" \
     --ignore="/CONTRIBUTE$" \
     --ignore="/CONTRIBUTING$" \
     --ignore="/ChangeLog$" \
+    --ignore="/Doxyfile$" \
     --ignore="/Gruntfile\\.js$" \
     --ignore="/HISTORY$" \
     --ignore="/History$" \
@@ -233,13 +211,14 @@ function getIgnoreFiles(forDebug) {
     --ignore="/\\.eslintrc\\.json$" \
     --ignore="/\\.eslintrc\\.yml$" \
     --ignore="/\\.git$" \
+    --ignore="/\\.github$" \
     --ignore="/\\.gitignore$" \
     --ignore="/\\.gitmodules$" \
     --ignore="/\\.hound.yml$" \
     --ignore="/\\.jshintrc$" \
     --ignore="/\\.keep$" \
     --ignore="/\\.npmignore$" \
-    --ignore="/\\.npmignore$" \
+    --ignore="/\\.npmrc$" \
     --ignore="/\\.prettierrc$" \
     --ignore="/\\.prettierrc\\.json$" \
     --ignore="/\\.prettierrc\\.yaml$" \
@@ -262,6 +241,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="/test\\.js$" \
     --ignore="/tsconfig\\.json$" \
     --ignore="/usage\\.txt$" \
+    --ignore="/webpack\\..+\\.js$" \
     --ignore="/yarn\\.lock$" `;
 
   if (!forDebug) {
@@ -283,9 +263,9 @@ gulp.task('_package:release', (cb) => {
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
       --app-bundle-id=jp.nanasi.myukkurivoice \
-      --icon=icns/myukkurivoice.icns --overwrite --asar \
+      --icon=build/icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \
-      --extend-info=extend.plist \
+      --extend-info=build/extend.plist \
       --no-prune ` +
       getIgnoreFiles(false),
     (err, stdout, stderr) => {
@@ -302,9 +282,9 @@ gulp.task('_package:debug', (cb) => {
       --app-version=${APP_VERSION} \
       --electron-version=${ELECTRON_VERSION} \
       --app-bundle-id=jp.nanasi.myukkurivoice \
-      --icon=icns/myukkurivoice.icns --overwrite --asar \
+      --icon=build/icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \
-      --extend-info=extend.plist \
+      --extend-info=build/extend.plist \
       --no-prune ` +
       getIgnoreFiles(true),
     (err, stdout, stderr) => {

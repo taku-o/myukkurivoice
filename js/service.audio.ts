@@ -11,7 +11,7 @@ var TEST = process.env.NODE_ENV == 'test';
 angular.module('AudioServices', ['MessageServices', 'UtilServices']);
 
 // Audio base AudioService
-class AudioService1 implements yubo.AudioService1 {
+class HTML5AudioService implements yubo.HTML5AudioService {
   private audio: HTMLAudioElement = null;
   constructor(
     private $q: ng.IQService,
@@ -96,18 +96,20 @@ class AudioService1 implements yubo.AudioService1 {
   }
 }
 angular.module('AudioServices')
-  .service('AudioService1', [
+  .service('HTML5AudioService', [
     '$q',
     'MessageService',
     'AppUtilService',
-    AudioService1,
+    HTML5AudioService,
   ]);
 
 // Web Audio API base AudioService
-class AudioService2 implements yubo.AudioService2 {
+class WebAPIAudioService implements yubo.WebAPIAudioService {
+  public sampleRate?: number = null;
   private runningNode: AudioBufferSourceNode = null;
   constructor(
     private $q: ng.IQService,
+    private $timeout: ng.ITimeoutService,
     private MessageService: yubo.MessageService,
     private AppUtilService: yubo.AppUtilService
   ) {}
@@ -174,7 +176,7 @@ class AudioService2 implements yubo.AudioService2 {
     const aBuffer = this.toArrayBuffer(bufWav);
 
     // @ts-ignore
-    const audioCtx = new window.AudioContext();
+    const audioCtx = this.sampleRate? new window.AudioContext({sampleRate: this.sampleRate}): new window.AudioContext();
     const processNodeList: AudioNode[] = [];
     let sourceNode: AudioBufferSourceNode = null;
     let audioPlayNode: AudioBufferSourceNode = null;
@@ -252,18 +254,21 @@ class AudioService2 implements yubo.AudioService2 {
     })
     .finally(() => {
       // close audio context
-      if (sourceNode) {
-        sourceNode.buffer = null;
-        sourceNode.disconnect();
-      }
-      angular.forEach(processNodeList, (node) => {
-        node.disconnect();
-      });
-      if (audioPlayNode) {
-        audioPlayNode.buffer = null;
-        audioPlayNode.disconnect();
-      }
-      audioCtx.close();
+      // (delay closing)
+      this.$timeout(() => {
+        if (sourceNode) {
+          sourceNode.buffer = null;
+          sourceNode.disconnect();
+        }
+        angular.forEach(processNodeList, (node) => {
+          node.disconnect();
+        });
+        if (audioPlayNode) {
+          audioPlayNode.buffer = null;
+          audioPlayNode.disconnect();
+        }
+        audioCtx.close();
+      }, 500, false);
     });
     return d.promise;
   }
@@ -286,7 +291,7 @@ class AudioService2 implements yubo.AudioService2 {
     const aBuffer = this.toArrayBuffer(bufWav);
 
     // @ts-ignore
-    const audioCtx = new window.AudioContext();
+    const audioCtx = this.sampleRate? new window.AudioContext({sampleRate: this.sampleRate}): new window.AudioContext();
     const processNodeList: AudioNode[] = [];
     let sourceNode: AudioBufferSourceNode = null;
     audioCtx.decodeAudioData(aBuffer).then((decodedData: AudioBuffer) => {
@@ -376,22 +381,26 @@ class AudioService2 implements yubo.AudioService2 {
     })
     .finally(() => {
       // close audio context
-      if (sourceNode) {
-        sourceNode.buffer = null;
-        sourceNode.disconnect();
-      }
-      angular.forEach(processNodeList, (node) => {
-        node.disconnect();
-      });
-      audioCtx.close();
+      // (delay closing)
+      this.$timeout(() => {
+        if (sourceNode) {
+          sourceNode.buffer = null;
+          sourceNode.disconnect();
+        }
+        angular.forEach(processNodeList, (node) => {
+          node.disconnect();
+        });
+        audioCtx.close();
+      }, 500, false);
     });
     return d.promise;
   }
 }
 angular.module('AudioServices')
-  .service('AudioService2', [
+  .service('WebAPIAudioService', [
     '$q',
+    '$timeout',
     'MessageService',
     'AppUtilService',
-    AudioService2,
+    WebAPIAudioService,
   ]);

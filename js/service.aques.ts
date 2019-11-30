@@ -1,17 +1,19 @@
 var app = require('electron').remote.app;
 var _log: any, log               = () => { _log = _log || require('electron-log'); return _log; };
 var _fs: any, fs                 = () => { _fs = _fs || require('fs'); return _fs; };
-var _ffi: any, ffi               = () => { _ffi = _ffi || require('ffi'); return _ffi; };
+var _ffi: any, ffi               = () => { _ffi = _ffi || require('ffi-napi'); return _ffi; };
 var _os: any, os                 = () => { _os = _os || require('os'); return _os; };
-var _ref: any, ref               = () => { _ref = _ref || require('ref'); return _ref; };
+var _ref: any, ref               = () => { _ref = _ref || require('ref-napi'); return _ref; };
 var _semver: any, semver         = () => { _semver = _semver || require('semver'); return _semver; };
-var _StructType: any, StructType = () => { _StructType = _StructType || require('ref-struct'); return _StructType; };
+var _StructType: any, StructType = () => { _StructType = _StructType || require('ref-struct-di')(ref()); return _StructType; };
 var _temp: any, temp             = () => { _temp = _temp || require('temp').track(); return _temp; };
 var _exec: any, exec             = () => { _exec = _exec || require('child_process').exec; return _exec; };
 var _epath: any, epath           = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _onIdle: any, onIdle         = () => { _onIdle = _onIdle || require('on-idle'); return _onIdle; };
 var _waitUntil: any, waitUntil   = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 var unpackedPath = epath().getUnpackedPath();
+var vendorPath = `${unpackedPath}/vendor`;
 
 // env
 const RUNTIME_ENV: 'default' | 'catalina' | 'store' = process.env.RUNTIME_ENV as 'default' | 'catalina' | 'store';
@@ -34,7 +36,7 @@ class AqKanji2KoeLib implements yubo.AqKanji2KoeLib {
     const ptr_int  = ref().refType(ref().types.int);
     const ptr_char = ref().refType(ref().types.char);
 
-    const frameworkPath: string = `${unpackedPath}/vendor/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`;
+    const frameworkPath: string = `${vendorPath}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`;
     const ptr_AqKanji2Koe_Create    = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Create');
     const ptr_AqKanji2Koe_Release   = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Release');
     const ptr_AqKanji2Koe_Convert   = ffi().DynamicLibrary(frameworkPath).get('AqKanji2Koe_Convert');
@@ -78,8 +80,8 @@ angular.module('AquesServices')
 // AquesTalk1
 class AquesTalk1Lib implements yubo.AquesTalk1Lib {
   private readonly I386_SUPPORTED_LAST_VERSION: string = '19.0.0'; // Catalina
-  private readonly I386_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1`;
-  private readonly IOS_GENERATOR_PATH = `${unpackedPath.replace(' ', '\\ ')}/vendor/maquestalk1-ios`;
+  private readonly I386_GENERATOR_PATH = `${vendorPath.replace(' ', '\\ ')}/maquestalk1`;
+  private readonly IOS_GENERATOR_PATH = `${vendorPath.replace(' ', '\\ ')}/maquestalk1-ios`;
 
   private generatorType?: 'i386' | 'ios' | 'mas' = null;
   constructor() {
@@ -95,7 +97,7 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
     }
   }
 
-  getGeneratorPath(version?): string {
+  getGeneratorPath(version?: string): string {
     return this.isI386Supported(version)? this.I386_GENERATOR_PATH: this.IOS_GENERATOR_PATH;
   }
   isSupportedPhont(phont: yubo.YPhont, version?: string): boolean {
@@ -138,7 +140,7 @@ class AquesTalk2Lib implements yubo.AquesTalk2Lib {
     const ptr_int   = ref().refType(ref().types.int);
     const ptr_uchar = ref().refType(ref().types.uchar);
 
-    const frameworkPath = `${unpackedPath}/vendor/AquesTalk2.framework/Versions/A/AquesTalk2`;
+    const frameworkPath = `${vendorPath}/AquesTalk2.framework/Versions/A/AquesTalk2`;
     const ptr_AquesTalk2_Synthe_Utf8 = ffi().DynamicLibrary(frameworkPath).get('AquesTalk2_Synthe_Utf8');
     const ptr_AquesTalk2_FreeWave    = ffi().DynamicLibrary(frameworkPath).get('AquesTalk2_FreeWave');
     this.fn_AquesTalk2_Synthe_Utf8   = ffi().ForeignFunction(ptr_AquesTalk2_Synthe_Utf8, ptr_uchar, ['string', 'int', ptr_int, ptr_void]);
@@ -206,7 +208,7 @@ class AquesTalk10Lib implements yubo.AquesTalk10Lib {
     });
     const ptr_AQTK_VOICE = ref().refType(this.AQTK_VOICE);
 
-    const frameworkPath = `${unpackedPath}/vendor/AquesTalk10.framework/Versions/A/AquesTalk`;
+    const frameworkPath = `${vendorPath}/AquesTalk10.framework/Versions/A/AquesTalk`;
     const ptr_AquesTalk10_Synthe_Utf8 = ffi().DynamicLibrary(frameworkPath).get('AquesTalk_Synthe_Utf8');
     const ptr_AquesTalk10_FreeWave    = ffi().DynamicLibrary(frameworkPath).get('AquesTalk_FreeWave');
     const ptr_AquesTalk10_SetDevKey   = ffi().DynamicLibrary(frameworkPath).get('AquesTalk_SetDevKey');
@@ -252,7 +254,7 @@ angular.module('AquesServices')
 
 // AquesTalk frontend
 class AquesService implements yubo.AquesService {
-  private aqDictPath: string = `${unpackedPath}/vendor/aq_dic_large`;
+  private aqDictPath: string = `${vendorPath}/aq_dic_large`;
 
   constructor(
     private $q: ng.IQService,
@@ -277,14 +279,14 @@ class AquesService implements yubo.AquesService {
   private aqKanji2KoeDevKey: string = null;
   private aquesTalk10DevKey: string = null;
   init(): void {
-    this.$timeout(() => {
+    const cancel = onIdle()(() => {
       this.LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
         this.aqKanji2KoeDevKey = licenseKey;
       });
       this.LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
         this.aquesTalk10DevKey = licenseKey;
       });
-    }, 0, false);
+    });
   }
 
   private _isAqKanji2KoeDevkeySet: boolean = false;
@@ -298,7 +300,7 @@ class AquesService implements yubo.AquesService {
     // set developer key if is not set.
     if (! this._isAqKanji2KoeDevkeySet) {
       if (this.aqKanji2KoeDevKey == null) {
-        waitUntil()(300, 5, () => {
+        waitUntil()(300, 10, () => {
           return this.aqKanji2KoeDevKey != null;
         },
         () => {
@@ -424,7 +426,7 @@ class AquesService implements yubo.AquesService {
       // set license key if is not set.
       if (! this._isAquesTalk10LicensekeySet) {
         if (this.aquesTalk10DevKey == null) {
-          waitUntil()(300, 5, () => {
+          waitUntil()(300, 10, () => {
             return this.aquesTalk10DevKey != null;
           },
           () => {

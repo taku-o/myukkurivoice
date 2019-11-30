@@ -14,6 +14,7 @@ describe('specWindow-service-AquesService-AquesTalk2', function() {
     const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
+      chromeDriverArgs: ['remote-debugging-port=9222'],
       env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
     });
     return this.app.start();
@@ -56,7 +57,7 @@ describe('specWindow-service-AquesService-AquesTalk2', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/)) {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/)) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());
