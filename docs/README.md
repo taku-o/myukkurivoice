@@ -5,6 +5,7 @@
 入力した日本語メッセージから音声ファイルを作成できます。  
 macOSX El Capitan (10.11)、macOS X Sierra (10.12)、および、
 macOS High Sierra(10.13)以降に対応しています。
+x
 
 <img src="https://raw.githubusercontent.com/taku-o/myukkurivoice/master/images/icon_256x256.png" class="noborder" loading="lazy">
 
