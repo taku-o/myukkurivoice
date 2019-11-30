@@ -45,7 +45,7 @@ jobs:
 
       - name: build staging application
         run: |
-          npx gulp build:staging --branch=${GITHUB_ACTION#refs/heads/}
+          npx gulp build:staging --branch=${GITHUB_REF#refs/heads/}
       - name: collect staging built files
         run: |
           mkdir built
