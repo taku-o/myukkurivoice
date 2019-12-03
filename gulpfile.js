@@ -47,6 +47,7 @@ usage:
     gulp package
     gulp build
     gulp build:staging [--branch=develop]
+    gulp build:pr [--pull_request=pull/999/merge]
     gulp build:release
     gulp build:store [--branch=develop]
   `);

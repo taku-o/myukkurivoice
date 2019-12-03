@@ -58,6 +58,14 @@ gulp.task('_git-clone', (cb) => {
 gulp.task('_git-submodule', (cb) => {
   git.updateSubmodule({args: '--init'}, cb);
 });
+gulp.task('_git-pull-pr', function(){
+  if (argv && argv.pull_request) {
+    throw new Error('pull request is selected');
+  }
+  git.pull('origin', argv.pull_request, {args: '--rebase'}, (err) => {
+    cb(err);
+  });
+});
 
 // repodir
 gulp.task('_ch:repodir', (cb) => {
@@ -152,6 +160,37 @@ gulp.task(
     '_mk:workdir',
     '_ch:workdir',
     '_git-clone',
+    '_ch:repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    'minify',
+    '_rm:package',
+    '_package:release',
+    '_unpacked',
+    'doc',
+    '_zip-app',
+    //'_codesign',
+    //'_sign:developer',
+    //'_zip-app-signed',
+    '_open:appdir',
+    '_notify',
+    '_kill'
+  )
+);
+
+// build:pr
+gulp.task(
+  'build:pr',
+  gulp.series(
+    '_handleError',
+    '_platform:darwin',
+    '_target:staging',
+    _mustMasterBranch,
+    '_rm:workdir',
+    '_mk:workdir',
+    '_ch:workdir',
+    '_git-pull-pr',
     '_ch:repodir',
     '_git-submodule',
     '_npm-install',

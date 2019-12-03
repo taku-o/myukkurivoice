@@ -41,10 +41,6 @@ jobs:
         run: |
           npm install
 
-      - name: lint source code
-        run: |
-          npx gulp lint
-
       - name: build staging application
         run: |
           npx gulp build:staging --branch=${GITHUB_REF#refs/heads/}
