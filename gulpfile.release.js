@@ -58,7 +58,7 @@ gulp.task('_git-clone', (cb) => {
 gulp.task('_git-submodule', (cb) => {
   git.updateSubmodule({args: '--init'}, cb);
 });
-gulp.task('_git-pull-pr', function(){
+gulp.task('_git-pull-pr', (cb) => {
   if (!argv || !argv.pull_request) {
     throw new Error('pull request is selected');
   }
