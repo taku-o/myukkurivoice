@@ -48,7 +48,7 @@ gulp.task('_ch:workdir', (cb) => {
 gulp.task('_git-clone', (cb) => {
   const opts = argv && argv.branch ? {args: '-b ' + argv.branch} : {args: '-b master'};
   git.clone(
-    'git@github.com:taku-o/myukkurivoice.git',
+    'https://github.com/taku-o/myukkurivoice.git' /* git@github.com:taku-o/myukkurivoice.git */,
     opts,
     (err) => {
       cb(err);
