@@ -40,7 +40,7 @@ gulp.task('lint:html', () => {
 // lint:yaml
 gulp.task('lint:yaml', () => {
   return gulp
-    .src(['github/workflows/*.yml', 'build/github/workflows/*.yml'], {base: '.'})
+    .src(['.github/workflows/*.yml', 'build/github/workflows/*.yml'], {base: '.'})
     .pipe(using({}))
     .pipe(
       prettier({
