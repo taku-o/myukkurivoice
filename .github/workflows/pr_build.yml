@@ -29,7 +29,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: cache node environment
         id: cache-node
-        uses: actions/cache@v1
+        uses: taku-o/github-actions-cache/cache@v1
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
