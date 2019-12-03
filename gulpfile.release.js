@@ -59,7 +59,7 @@ gulp.task('_git-submodule', (cb) => {
   git.updateSubmodule({args: '--init'}, cb);
 });
 gulp.task('_git-pull-pr', function(){
-  if (argv && argv.pull_request) {
+  if (!argv || !argv.pull_request) {
     throw new Error('pull request is selected');
   }
   git.pull('origin', argv.pull_request, {args: '--rebase'}, (err) => {
