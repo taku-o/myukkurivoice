@@ -190,6 +190,7 @@ gulp.task(
     '_rm:workdir',
     '_mk:workdir',
     '_ch:workdir',
+    '_git-clone',
     '_git-pull-pr',
     '_ch:repodir',
     '_git-submodule',
