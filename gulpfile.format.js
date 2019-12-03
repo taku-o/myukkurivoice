@@ -122,7 +122,7 @@ gulp.task('_format:html', () => {
 // format:yaml
 gulp.task('_format:yaml', () => {
   return gulp
-    .src(['github/workflows/*.yml', 'build/github/workflows/*.yml'], {base: '.'})
+    .src(['.github/workflows/*.yml', 'build/github/workflows/*.yml'], {base: '.'})
     .pipe(
       prettier({
         parser: 'yaml',

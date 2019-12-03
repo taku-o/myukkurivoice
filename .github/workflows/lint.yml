@@ -62,4 +62,3 @@ jobs:
       - name: git status -s wc
         run: |
           test 0 -ge `git status -s | wc -l`
-
