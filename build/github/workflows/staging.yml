@@ -3,6 +3,8 @@
 # require SLACK_WEBHOOK
 #   add Slack incoming-webhooks URL to Projects Secrets
 #   https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
+# request SSH_KEY, SSH_KEY_PUBLIC, SSH_KNOWN_HOSTS
+#   add ssh configuration
 
 name: build:staging
 
@@ -40,6 +42,13 @@ jobs:
       - name: npm install
         run: |
           npm install
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v1
+        with:
+          private-key: ${{ secrets.SSH_KEY }}
+          public-key: ${{ secrets.SSH_KEY_PUBLIC }}
+          known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
       - name: build staging application
         run: |
