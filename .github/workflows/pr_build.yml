@@ -59,5 +59,5 @@ jobs:
       - name: upload built files
         uses: actions/upload-artifact@master
         with:
-          name: built.zip
+          name: built
           path: built
