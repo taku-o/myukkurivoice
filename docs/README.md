@@ -1,5 +1,7 @@
 # MYukkuriVoice
 
+add test code.
+
 [MYukkuriVoice](https://taku-o.github.io/myukkurivoice/)は、AquesTalk を利用した Mac OSX 向けの  
 動画制作向けに調整された合成音声生成アプリケーションです。  
 入力した日本語メッセージから音声ファイルを作成できます。  
