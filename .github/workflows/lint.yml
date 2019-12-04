@@ -35,7 +35,7 @@ jobs:
 
       - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
       - name: npm install
-        #if: steps.cache-node.outputs.cache-hit != 'true'
+        if: steps.cache-node.outputs.cache-hit != 'true'
         run: |
           npm install
       - name: npm not install
