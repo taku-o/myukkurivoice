@@ -35,6 +35,7 @@ usage:
     gulp about
     gulp minify
     gulp minify:js
+    gulp minify:json
     gulp minify:css
     gulp minify:node_modules
     gulp clean
