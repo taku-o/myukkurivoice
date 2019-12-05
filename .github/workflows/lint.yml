@@ -87,4 +87,3 @@ jobs:
           mkdir ~/.npm_bk2
           mv ~/.npm/[@A-Z_][a-l]* ~/.npm_bk1
           mv ~/.npm/[m]* ~/.npm_bk2
-
