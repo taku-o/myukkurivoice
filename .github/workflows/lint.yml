@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-node-bk1
       - name: cache node environment bk2
         id: cache-node-bk2
-        uses: actions/cache@v1
+        uses: taku-o/github-actions-cache@v1.0.3
         with:
           path: ~/.npm_bk2
           key: ${{ runner.os }}-node-bk2-${{ hashFiles('**/package-lock.json') }}
@@ -76,9 +76,9 @@ jobs:
         run: |
           npx gulp about
 
-      - name: git status -s wc
-        run: |
-          test 0 -ge `git status -s | wc -l`
+      #- name: git status -s wc
+      #  run: |
+      #    test 0 -ge `git status -s | wc -l`
 
       - name: backup cache node environment bk1, bk2
         if: steps.cache-node-bk1.outputs.cache-hit != 'true'
