@@ -27,38 +27,24 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: cache node environment bk1
-        id: cache-node-bk1
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm_bk1
-          key: ${{ runner.os }}-node-bk1-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-bk1
-      - name: cache node environment bk2
-        id: cache-node-bk2
-        uses: taku-o/github-actions-cache@v1.0.3
-        with:
-          path: ~/.npm_bk2
-          key: ${{ runner.os }}-node-bk2-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-bk2
-      - name: restore cache node environment bk1, bk2
-        if: steps.cache-node-bk1.outputs.cache-hit == 'true'
-        run: |
-          mkdir -p ~/.npm
-          rsync -a -v ~/.npm_bk1/* ~/.npm
-          rsync -a -v ~/.npm_bk2/* ~/.npm
+      #- name: cache node environment
+      #  id: cache-node
+      #  uses: taku-o/github-actions-cache@v1.0.4
+      #  with:
+      #    path: ~/.npm
+      #    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      #    restore-keys: |
+      #      ${{ runner.os }}-node-
 
       - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
       - name: npm install
-        if: steps.cache-node-bk1.outputs.cache-hit != 'true'
+        #if: steps.cache-node.outputs.cache-hit != 'true'
         run: |
           npm install
-      - name: npm not install
-        if: steps.cache-node-bk1.outputs.cache-hit == 'true'
-        run: |
-          echo "cache hit"
+      #- name: npm not install
+      #  if: steps.cache-node.outputs.cache-hit == 'true'
+      #  run: |
+      #    echo "cache hit"
 
       - name: gulp lint
         run: |
@@ -76,14 +62,6 @@ jobs:
         run: |
           npx gulp about
 
-      #- name: git status -s wc
-      #  run: |
-      #    test 0 -ge `git status -s | wc -l`
-
-      - name: backup cache node environment bk1, bk2
-        if: steps.cache-node-bk1.outputs.cache-hit != 'true'
+      - name: git status -s wc
         run: |
-          mkdir ~/.npm_bk1
-          mkdir ~/.npm_bk2
-          mv ~/.npm/[@A-Z_][a-l]* ~/.npm_bk1
-          mv ~/.npm/[m]* ~/.npm_bk2
+          test 0 -ge `git status -s | wc -l`
