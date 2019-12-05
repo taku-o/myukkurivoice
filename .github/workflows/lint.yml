@@ -46,9 +46,9 @@ jobs:
       - name: restore cache node environment bk1, bk2
         if: steps.cache-node-bk1.outputs.cache-hit == 'true'
         run: |
-          mkdir ~/.npm
-          mv ~/.npm_bk1/* ~/.npm
-          mv ~/.npm_bk2/* ~/.npm
+          mkdir -p ~/.npm
+          rsync -a -v ~/.npm_bk1/* ~/.npm
+          rsync -a -v ~/.npm_bk2/* ~/.npm
 
       - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
       - name: npm install
