@@ -27,24 +27,20 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      #- name: cache node environment
-      #  id: cache-node
-      #  uses: taku-o/github-actions-cache@v1.0.4
-      #  with:
-      #    path: ~/.npm
-      #    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      #    restore-keys: |
-      #      ${{ runner.os }}-node-
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
 
       - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
       - name: npm install
-        #if: steps.cache-node.outputs.cache-hit != 'true'
         run: |
           npm install
-      #- name: npm not install
-      #  if: steps.cache-node.outputs.cache-hit == 'true'
-      #  run: |
-      #    echo "cache hit"
 
       - name: gulp lint
         run: |
