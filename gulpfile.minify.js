@@ -125,6 +125,9 @@ gulp.task('_minify:node_modules:css', () => {
     .pipe(cleanCSS())
     .pipe(gulp.dest('.'));
 });
-gulp.task('minify:node_modules', gulp.parallel('_minify:node_modules:js', '_minify:node_modules:json', '_minify:node_modules:css'));
+gulp.task(
+  'minify:node_modules',
+  gulp.parallel('_minify:node_modules:js', '_minify:node_modules:json', '_minify:node_modules:css')
+);
 
 gulp.task('minify', gulp.parallel('minify:js', 'minify:json', 'minify:css', 'minify:node_modules'));
