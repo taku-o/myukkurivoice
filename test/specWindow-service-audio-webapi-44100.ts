@@ -79,7 +79,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/)) {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/) && !log.match(/media_internals.cc/)) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());
@@ -205,7 +205,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/)) {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/) && !log.match(/media_internals.cc/)) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());
@@ -337,7 +337,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/)) {
+            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/) && !log.match(/media_internals.cc/)) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());
