@@ -1,6 +1,6 @@
 {
   "name": "MYukkuriVoice",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
   "types": "types.d.ts",
@@ -20,9 +20,9 @@
     "movie"
   ],
   "versions": {
-    "electron": "6.1.4",
+    "electron": "6.1.7",
     "node": "v12.4.0",
-    "chrome": "76.0.3809.88",
+    "chrome": "76.0.3809.146",
     "xcode": "9.2"
   },
   "homepage": "https://github.com/taku-o/myukkurivoice",
@@ -82,7 +82,7 @@
     "chai": "^4.2.0",
     "del": "^5.1.0",
     "devtron": "^1.4.0",
-    "electron": "^6.1.4",
+    "electron": "^6.1.7",
     "electron-packager": "^14.1.0",
     "electron-performance-monitor": "github:taku-o/electron-performance-monitor#0.2.2",
     "electron-rebuild": "^1.8.6",
