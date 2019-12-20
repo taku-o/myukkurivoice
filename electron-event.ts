@@ -41,6 +41,7 @@ class FnEvent implements yubo.FnEvent {
         filters: [
           {name: 'Wav File', extensions: ['wav']},
         ],
+        securityScopedBookmarks: process.mas,
       };
       dialog.showSaveDialog(myApp.mainWindow, options)
       .then((result) => {
@@ -57,6 +58,7 @@ class FnEvent implements yubo.FnEvent {
         title: 'select wav save directory',
         properties: ['openDirectory' as 'openDirectory', 'createDirectory' as 'createDirectory'],
         defaultPath: defaultPath,
+        securityScopedBookmarks: process.mas,
       };
       dialog.showOpenDialog(myApp.mainWindow, options)
       .then((result) => {
