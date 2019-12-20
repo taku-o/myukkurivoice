@@ -41,7 +41,6 @@ class FnEvent implements yubo.FnEvent {
         filters: [
           {name: 'Wav File', extensions: ['wav']},
         ],
-        securityScopedBookmarks: process.mas,
       };
       dialog.showSaveDialog(myApp.mainWindow, options)
       .then((result) => {
@@ -64,6 +63,9 @@ class FnEvent implements yubo.FnEvent {
       .then((result) => {
         if (! result.canceled) {
           const filePaths = result.filePaths;
+          if (process.mas && result.bookmarks && result.bookmarks.length) {
+            myApp.config.set('bookmarks', result.bookmarks);
+          }
           event.sender.send('showDirDialog', filePaths);
         }
       });

@@ -26,6 +26,7 @@ class FnAppCfg implements FnAppCfg {
       passPhrase:       null,
       aq10UseKeyEncrypted: '',
       extensions:       {},
+      bookmarks:        null,
     };
 
     setTimeout(() => {

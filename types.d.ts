@@ -132,6 +132,7 @@ declare namespace yubo {
     passPhrase:          string | null;
     aq10UseKeyEncrypted: string;
     extensions:          {fcpx?: boolean};
+    bookmarks:           string[];
   }
 
   // electron.ts
