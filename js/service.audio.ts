@@ -33,7 +33,7 @@ class HTML5AudioService implements yubo.HTML5AudioService {
     temp().open(fsprefix, (err: Error, info: temp.FileDescriptor) => {
       if (err) {
         this.MessageService.syserror('一時作業ファイルを作れませんでした。', err);
-        d.reject(err); return;
+        return d.reject(err);
       }
 
       // report duration
@@ -41,6 +41,10 @@ class HTML5AudioService implements yubo.HTML5AudioService {
       this.AppUtilService.reportDuration(wavSec);
 
       fs().promises.writeFile(info.path, bufWav)
+      .catch((err: Error) => {
+        this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
+        return d.reject(err);
+      })
       .then(() => {
         this.audio = new Audio('');
         this.audio.autoplay = false;
@@ -49,13 +53,9 @@ class HTML5AudioService implements yubo.HTML5AudioService {
           this.audio.volume = options.volume;
         }
         this.audio.onended = () => {
-          d.resolve({duration: wavSec});
+          return d.resolve({duration: wavSec});
         };
         this.audio.play();
-      })
-      .catcH((err: Error) => {
-        this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-        d.reject(err); return;
       });
     });
     return d.promise;
@@ -90,12 +90,12 @@ class HTML5AudioService implements yubo.HTML5AudioService {
     .then(() => {
       return fs().promises.writeFile(wavFilePath, rBufWav);
     })
-    .then(() => {
-      d.resolve({duration: wavSec});
-    })
     .catch((err: Error) => {
       this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
-      d.reject(err); return;
+      return d.reject(err);
+    })
+    .then(() => {
+      return d.resolve({duration: wavSec});
     });
     return d.promise;
   }
@@ -185,7 +185,10 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     const processNodeList: AudioNode[] = [];
     let sourceNode: AudioBufferSourceNode = null;
     let audioPlayNode: AudioBufferSourceNode = null;
-    audioCtx.decodeAudioData(aBuffer).then((decodedData: AudioBuffer) => {
+
+    // decodeAudioData
+    audioCtx.decodeAudioData(aBuffer)
+    .then((decodedData: AudioBuffer) => {
       // create long size OfflineAudioContext. trim this buffer length lator.
       const prate =
         (!options.playbackRate)? 1:
@@ -228,34 +231,35 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
       sourceNode.start(0);
 
       // rendering
-      return offlineCtx.startRendering().then((renderedBuffer: AudioBuffer) => {
-        // trim unused empty buffer.
-        const nAudioBuffer = this.buildCorrectAudioBuffer(renderedBuffer);
-
-        // report duration
-        this.AppUtilService.reportDuration(nAudioBuffer.duration);
-
-        const dInPlay = this.$q.defer<{duration: number}>();
-        // play voice
-        audioPlayNode = audioCtx.createBufferSource();
-        audioPlayNode.buffer = nAudioBuffer;
-        audioPlayNode.connect(audioCtx.destination);
-        audioPlayNode.onended = () => {
-          dInPlay.resolve({duration: nAudioBuffer.duration});
-        };
-        audioPlayNode.start(0);
-
-        this.runningNode = audioPlayNode;
-        return dInPlay.promise;
-      }); // offlineCtx.startRendering
+      return offlineCtx.startRendering();
     })
-    .then((audioParams: {duration: number}) => {
-      this.runningNode = null;
-      d.resolve(audioParams);
+    .then((renderedBuffer: AudioBuffer) => {
+      // trim unused empty buffer.
+      const nAudioBuffer = this.buildCorrectAudioBuffer(renderedBuffer);
+
+      // report duration
+      this.AppUtilService.reportDuration(nAudioBuffer.duration);
+
+      const dInPlay = this.$q.defer<{duration: number}>();
+      // play voice
+      audioPlayNode = audioCtx.createBufferSource();
+      audioPlayNode.buffer = nAudioBuffer;
+      audioPlayNode.connect(audioCtx.destination);
+      audioPlayNode.onended = () => {
+        return dInPlay.resolve({duration: nAudioBuffer.duration});
+      };
+      audioPlayNode.start(0);
+
+      this.runningNode = audioPlayNode;
+      return dInPlay.promise;
     })
     .catch((err: Error) => {
       this.MessageService.syserror('音源の再生に失敗しました。', err);
-      d.reject(err); return;
+      return d.reject(err);
+    })
+    .then((audioParams: {duration: number}) => {
+      this.runningNode = null;
+      return d.resolve(audioParams);
     })
     .finally(() => {
       // close audio context
@@ -299,7 +303,10 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     const audioCtx = this.sampleRate? new window.AudioContext({sampleRate: this.sampleRate}): new window.AudioContext();
     const processNodeList: AudioNode[] = [];
     let sourceNode: AudioBufferSourceNode = null;
-    audioCtx.decodeAudioData(aBuffer).then((decodedData: AudioBuffer) => {
+    let generatedAudioBuffer: AudioBuffer = null;
+    // decodeAudioData
+    audioCtx.decodeAudioData(aBuffer)
+    .then((decodedData: AudioBuffer) => {
       // create long size OfflineAudioContext. trim this buffer length lator.
       const prate =
         (!options.playbackRate)? 1:
@@ -342,51 +349,45 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
       sourceNode.start(0);
 
       // rendering
-      return offlineCtx.startRendering().then((renderedBuffer: AudioBuffer) => {
-        // trim unused empty buffer.
-        const nAudioBuffer = this.buildCorrectAudioBuffer(renderedBuffer);
-
-        // report duration
-        this.AppUtilService.reportDuration(nAudioBuffer.duration);
-
-        // create audioData parameter for wav-encoder
-        const audioData: WavEncoder.AudioData = {
-          sampleRate: nAudioBuffer.sampleRate,
-          channelData: [],
-        };
-        for (let i = 0; i < nAudioBuffer.numberOfChannels; i++) {
-          audioData.channelData[i] = nAudioBuffer.getChannelData(i);
-        }
-        // create wav file.
-        const dInEncode = this.$q.defer<{duration: number}>();
-        WavEncoder().encode(audioData).then((buffer: ArrayBuffer) => {
-          const inBufWav = Buffer.from(buffer);
-
-          // extensions.fcpx
-          let rBufWav = options.fcpxIxml?
-            new (fcpxRoleEncoder())().encodeSync(inBufWav, options.fcpxIxmlOptions.audioRole):
-            inBufWav;
-
-          fs().promises.mkdir(path().dirname(wavFilePath), {recursive: true})
-          .then(() => {
-            return fs().promises.writeFile(wavFilePath, rBufWav, 'binary')
-          })
-          .then(() => {
-            dInEncode.resolve({duration: nAudioBuffer.duration});
-          })
-          .catcH((err: Error) => {
-            dInEncode.reject(err); return;
-          });
-        });
-        return dInEncode.promise;
-      }); // offlineCtx.startRendering
+      return offlineCtx.startRendering();
     })
-    .then((audioParams: {duration: number}) => {
-      d.resolve(audioParams);
+    .then((renderedBuffer: AudioBuffer) => {
+      // trim unused empty buffer.
+      generatedAudioBuffer = this.buildCorrectAudioBuffer(renderedBuffer);
+
+      // report duration
+      this.AppUtilService.reportDuration(generatedAudioBuffer.duration);
+
+      // create audioData parameter for wav-encoder
+      const audioData: WavEncoder.AudioData = {
+        sampleRate: generatedAudioBuffer.sampleRate,
+        channelData: [],
+      };
+      for (let i = 0; i < generatedAudioBuffer.numberOfChannels; i++) {
+        audioData.channelData[i] = generatedAudioBuffer.getChannelData(i);
+      }
+      // create wav file.
+      return WavEncoder().encode(audioData);
+    })
+    .then((buffer: ArrayBuffer) => {
+      const inBufWav = Buffer.from(buffer);
+
+      // extensions.fcpx
+      let rBufWav = options.fcpxIxml?
+        new (fcpxRoleEncoder())().encodeSync(inBufWav, options.fcpxIxmlOptions.audioRole):
+        inBufWav;
+
+      return fs().promises.mkdir(path().dirname(wavFilePath), {recursive: true})
+      .then(() => {
+        return fs().promises.writeFile(wavFilePath, rBufWav, 'binary');
+      });
     })
     .catch((err: Error) => {
       this.MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-      d.reject(err); return;
+      return d.reject(err);
+    })
+    .then(() => {
+      return d.resolve({duration: generatedAudioBuffer.duration});
     })
     .finally(() => {
       // close audio context

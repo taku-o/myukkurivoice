@@ -27,12 +27,12 @@ class TextSubtitleService implements yubo.TextSubtitleService {
     .then(() => {
       return fs().promises.writeFile(filePath, sourceText, 'utf-8');
     })
-    .then(() => {
-      d.resolve(filePath);
-    })
     .catch((err: Error) => {
       this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
-      d.reject(err); return;
+      return d.reject(err);
+    })
+    .then(() => {
+      return d.resolve(filePath);
     });
     return d.promise;
   }

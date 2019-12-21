@@ -20,8 +20,8 @@ class SecurityService implements yubo.SecurityService {
 
     this.BookmarkService.add(filePath, bookmark)
     .then((result: boolean) => {
-      if (DEBUG) { log().info(`in saveBookmark(), add bookmark.`); }
-      d.resolve(result); return d.promise;
+      if (DEBUG) { log().info('in saveBookmark(), add bookmark.'); }
+      return d.resolve(result);
     });
     return d.promise;
   }
@@ -36,13 +36,13 @@ class SecurityService implements yubo.SecurityService {
     this.BookmarkService.get(filePath)
     .then((bookmark: string) => {
       if (!bookmark) {
-        if (DEBUG) { log().info(`in startAccessingSecurityScopedResource(), can not get bookmark.`); }
-        d.resolve(() => {}); return d.promise;
+        if (DEBUG) { log().info('in startAccessingSecurityScopedResource(), can not get bookmark.'); }
+        return d.resolve(() => {});
       }
 
-      if (DEBUG) { log().info(`in startAccessingSecurityScopedResource(), get bookmark.`); }
+      if (DEBUG) { log().info('in startAccessingSecurityScopedResource(), get bookmark.'); }
       const stopAccessingSecurityScopedResource = app.startAccessingSecurityScopedResource(bookmark);
-      d.resolve(stopAccessingSecurityScopedResource); return d.promise;
+      return d.resolve(stopAccessingSecurityScopedResource);
     });
     return d.promise;
   }

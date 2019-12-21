@@ -36,10 +36,10 @@ class DataService implements yubo.DataService {
       if (MONITOR) { log().warn(monitor().format('srv.data', 'data load done')); }
       if (Object.keys(data).length === 0) {
         if (ok) { ok([]); }
-        d.resolve([]);
+        return d.resolve([]);
       } else {
         if (ok) { ok(data); }
-        d.resolve(data);
+        return d.resolve(data);
       }
     }, 0, false);
     return d.promise;
@@ -67,10 +67,10 @@ class DataService implements yubo.DataService {
     storage().set('data', dataList, (error: Error) => {
       if (error) {
         this.MessageService.syserror('ボイス設定の保存に失敗しました。', error);
-        d.reject(error); return;
+        return d.reject(error);
       }
       this.MessageService.info('ボイス設定を保存しました。');
-      d.resolve(true);
+      return d.resolve(true);
     });
     return d.promise;
   }
@@ -80,10 +80,10 @@ class DataService implements yubo.DataService {
     storage().remove('data', (error: Error) => {
       if (error) {
         this.MessageService.syserror('ボイス設定の削除に失敗しました。', error);
-        d.reject(error); return;
+        return d.reject(error);
       }
       this.MessageService.info('ボイス設定を削除しました。');
-      d.resolve(true);
+      return d.resolve(true);
     });
     return d.promise;
   }
@@ -145,9 +145,9 @@ class HistoryService implements yubo.HistoryService {
     const data = this.cache().dump();
     storage().set('history', data, (err: Error) => {
       if (err) {
-        d.reject(err); return;
+        return d.reject(err);
       }
-      d.resolve(true);
+      return d.resolve(true);
     });
     return d.promise;
   }
@@ -157,9 +157,9 @@ class HistoryService implements yubo.HistoryService {
     this.cache().reset();
     storage().remove('history', (err: Error) => {
       if (err) {
-        d.reject(err); return;
+        return d.reject(err);
       }
-      d.resolve(true);
+      return d.resolve(true);
     });
     return d.promise;
   }
@@ -204,16 +204,16 @@ class BookmarkService implements yubo.BookmarkService {
     const d = this.$q.defer<boolean>();
     storage().get('bookmark', (error, bookmarkMap) => {
       if (error) {
-        d.reject(error); return;
+        return d.reject(error);
       }
 
       bookmarkMap = bookmarkMap || {};
       bookmarkMap[filePath] = bookmark;
       storage().set('bookmark', bookmarkMap, (error: Error) => {
         if (error) {
-          d.reject(error); return;
+          return d.reject(error);
         }
-        d.resolve(true);
+        return d.resolve(true);
       });
     });
     return d.promise;
@@ -223,9 +223,9 @@ class BookmarkService implements yubo.BookmarkService {
     const d = this.$q.defer<string>();
     storage().get('bookmark', (error, bookmarkMap) => {
       if (error) {
-        d.reject(error); return;
+        return d.reject(error);
       }
-      d.resolve(bookmarkMap[filePath]);
+      return d.resolve(bookmarkMap[filePath]);
     });
     return d.promise;
   }
@@ -234,16 +234,16 @@ class BookmarkService implements yubo.BookmarkService {
     const d = this.$q.defer<boolean>();
     storage().get('bookmark', (error, bookmarkMap) => {
       if (error) {
-        d.reject(error); return;
+        return d.reject(error);
       }
 
       bookmarkMap = bookmarkMap || {};
       delete bookmarkMap[filePath];
       storage().set('bookmark', bookmarkMap, (error: Error) => {
         if (error) {
-          d.reject(error); return;
+          return d.reject(error);
         }
-        d.resolve(true);
+        return d.resolve(true);
       });
     });
     return d.promise;
@@ -253,9 +253,9 @@ class BookmarkService implements yubo.BookmarkService {
     const d = this.$q.defer<boolean>();
     storage().remove('bookmark', (error) => {
       if (error) {
-        d.reject(error); return;
+        return d.reject(error);
       }
-      d.resolve(true);
+      return d.resolve(true);
     });
     return d.promise;
   }

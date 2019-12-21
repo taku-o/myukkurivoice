@@ -280,10 +280,13 @@ class AquesService implements yubo.AquesService {
   private aquesTalk10DevKey: string = null;
   init(): void {
     const cancel = onIdle()(() => {
-      this.LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
+      this.LicenseService.consumerKey('aqKanji2KoeDevKey')
+      .then((licenseKey) => {
         this.aqKanji2KoeDevKey = licenseKey;
       });
-      this.LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
+
+      this.LicenseService.consumerKey('aquesTalk10DevKey')
+      .then((licenseKey) => {
         this.aquesTalk10DevKey = licenseKey;
       });
     });
@@ -363,13 +366,13 @@ class AquesService implements yubo.AquesService {
       temp().open(fsprefix, (err: Error, info: temp.FileDescriptor) => {
         if (err) {
           this.MessageService.syserror('一時作業ファイルを作れませんでした。', err);
-          d.reject(err); return;
+          return d.reject(err);
         }
 
       fs().writeFile(info.path, encoded, (err: Error) => {
         if (err) {
           this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-          d.reject(err); return;
+          return d.reject(err);
         }
 
       const cmdOptions: yubo.CmdOptions = {
@@ -383,11 +386,11 @@ class AquesService implements yubo.AquesService {
       exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
         if (err) {
           log().info(`maquestalk1 failed. ${err}`);
-          d.reject(err); return;
+          return d.reject(err);
         }
         // @ts-ignore
         const bufWav = Buffer.from(stdout, 'binary');
-        d.resolve(bufWav);
+        return d.resolve(bufWav);
       }).on('close', (statusCode: number) => {
         if (statusCode < 0) {
           const errorCode = statusCode * -1; // maquestalk1 library result
@@ -403,7 +406,7 @@ class AquesService implements yubo.AquesService {
       fs().readFile(phont.path, (err: Error, phontData: Buffer) => {
         if (err) {
           this.MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
-          d.reject(err); return;
+          return d.reject(err);
         }
 
         const allocInt = ref().alloc('int');
@@ -412,13 +415,13 @@ class AquesService implements yubo.AquesService {
           const errorCode = allocInt.deref();
           this.MessageService.syserror(this.aquesTalk2Lib.errorTable(errorCode));
           log().info(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${this.aquesTalk2Lib.errorTable(errorCode)}`);
-          d.reject(new Error(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${this.aquesTalk2Lib.errorTable(errorCode)}`)); return;
+          return d.reject(new Error(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${this.aquesTalk2Lib.errorTable(errorCode)}`));
         }
 
         const bufWav = ref().reinterpret(r, allocInt.deref(), 0);
         const managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
         this.aquesTalk2Lib.freeWave(r);
-        d.resolve(managedBuf);
+        return d.resolve(managedBuf);
       });
 
     // version 10

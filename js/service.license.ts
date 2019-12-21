@@ -49,19 +49,19 @@ class LicenseService implements yubo.LicenseService {
     // passPhrase
     exec()(`${secretCmd} -key=passPhrase`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
       if (err) {
-        d.reject(err); return;
+        return d.reject(err);
       }
       const devPassPhrase = stdout;
     // licenseKey
     exec()(`${secretCmd} -key=${licenseType}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
       if (err) {
-        d.reject(err); return;
+        return d.reject(err);
       }
       const encryptedKey = stdout;
 
       const decrypted = this.decrypt(devPassPhrase, encryptedKey);
       this.consumerKeyCache[licenseType] = decrypted; // set cache
-      d.resolve(decrypted);
+      return d.resolve(decrypted);
     });
     });
     return d.promise;
