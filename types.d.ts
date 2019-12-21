@@ -478,6 +478,7 @@ declare namespace yubo {
     appCfg: yubo.AppCfg;
     aq10BasList: {[key: string]: any}[];
     isTest: boolean;
+    mas: boolean;
     phontSelectionList: yubo.YPhont[];
     //YPhontMasterList: yubo.YPhont[];
     //YPhontMasterIosEnvList: yubo.YPhont[];
