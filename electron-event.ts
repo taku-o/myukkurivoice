@@ -45,8 +45,8 @@ class FnEvent implements yubo.FnEvent {
       dialog.showSaveDialog(myApp.mainWindow, options)
       .then((result) => {
         if (! result.canceled) {
-          const filePath = result.filePath;
-          event.sender.send('showSaveDialog', filePath);
+          const filePath: string = result.filePath;
+          event.sender.send('showSaveDialog', {filePath: filePath});
         }
       });
     });
@@ -62,11 +62,9 @@ class FnEvent implements yubo.FnEvent {
       dialog.showOpenDialog(myApp.mainWindow, options)
       .then((result) => {
         if (! result.canceled) {
-          const filePaths = result.filePaths;
-          if (process.mas && result.bookmarks && result.bookmarks.length) {
-            myApp.config.set('bookmarks', result.bookmarks);
-          }
-          event.sender.send('showDirDialog', filePaths);
+          const filePaths: string[] = result.filePaths;
+          const bookmarks: string[] = result.bookmarks;
+          event.sender.send('showDirDialog', {filePaths: filePaths, bookmarks: bookmarks});
         }
       });
     });

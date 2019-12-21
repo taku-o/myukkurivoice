@@ -193,3 +193,76 @@ angular.module('DataServices')
     '$timeout',
     HistoryService,
   ]);
+
+// BookmarkService
+class BookmarkService implements yubo.BookmarkService {
+  constructor(
+    private $q: ng.IQService,
+  ) {}
+
+  add(filePath: string, bookmark: string): ng.IPromise<boolean> {
+    const d = this.$q.defer<boolean>();
+    storage().get('bookmark', (error, bookmarkMap) => {
+      if (error) {
+        d.reject(error); return;
+      }
+
+      bookmarkMap = bookmarkMap || {};
+      bookmarkMap[filePath] = bookmark;
+      storage().set('bookmark', bookmarkMap, (error: Error) => {
+        if (error) {
+          d.reject(error); return;
+        }
+        d.resolve(true);
+      });
+    });
+    return d.promise;
+  }
+
+  get(filePath: string): ng.IPromise<string> {
+    const d = this.$q.defer<string>();
+    storage().get('bookmark', (error, bookmarkMap) => {
+      if (error) {
+        d.reject(error); return;
+      }
+      d.resolve(bookmarkMap[filePath]);
+    });
+    return d.promise;
+  }
+
+  remove(filePath: string): ng.IPromise<boolean> {
+    const d = this.$q.defer<boolean>();
+    storage().get('bookmark', (error, bookmarkMap) => {
+      if (error) {
+        d.reject(error); return;
+      }
+
+      bookmarkMap = bookmarkMap || {};
+      delete bookmarkMap[filePath];
+      storage().set('bookmark', bookmarkMap, (error: Error) => {
+        if (error) {
+          d.reject(error); return;
+        }
+        d.resolve(true);
+      });
+    });
+    return d.promise;
+  }
+
+  clear(): ng.IPromise<boolean> {
+    const d = this.$q.defer<boolean>();
+    storage().remove('bookmark', (error) => {
+      if (error) {
+        d.reject(error); return;
+      }
+      d.resolve(true);
+    });
+    return d.promise;
+  }
+}
+angular.module('DataServices')
+  .service('BookmarkService', [
+    '$q',
+    BookmarkService,
+  ]);
+

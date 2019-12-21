@@ -132,7 +132,6 @@ declare namespace yubo {
     passPhrase:          string | null;
     aq10UseKeyEncrypted: string;
     extensions:          {fcpx?: boolean};
-    bookmarks:           string[];
   }
 
   // electron.ts
@@ -311,6 +310,12 @@ declare namespace yubo {
     add(record: yubo.IRecordMessage): void;
     getList(): yubo.IRecordMessage[];
   }
+  export interface BookmarkService {
+    add(filePath: string, bookmark: string): ng.IPromise<boolean>;
+    get(filePath: string): ng.IPromise<string>;
+    remove(filePath: string): ng.IPromise<boolean>;
+    clear(): ng.IPromise<boolean>;
+  }
   // service.aques.ts
   export interface AqKanji2KoeLib {
     create(pathDic: string, pErr: Buffer): Buffer;
@@ -367,6 +372,11 @@ declare namespace yubo {
     //private correctFrameCount(audioBuffer: AudioBuffer): number;
     //private correctBufferLength(buffer: Float32Array): number;
     //private buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer;
+  }
+  // service.security.ts
+  export interface SecurityService {
+    saveBookmark(filePath: string, bookmark: string): ng.IPromise<boolean>;
+    startAccessingSecurityScopedResource(filePath: string): ng.IPromise<Function>;
   }
   // service.subtitle.ts
   export interface TextSubtitleService {

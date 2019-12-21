@@ -7,7 +7,8 @@
   "scripts": {
     "tasks": "gulp --tasks-simple",
     "clean": "git checkout -- . && git clean -fd",
-    "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
+    "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log",
+    "log:store": "less `echo $HOME`/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Logs/MYukkuriVoice/log.log"
   },
   "keywords": [
     "mac-osx",
