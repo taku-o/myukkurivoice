@@ -22,12 +22,17 @@ class TextSubtitleService implements yubo.TextSubtitleService {
 
   save(filePath: string, sourceText: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
-    fs().writeFile(filePath, sourceText, 'utf-8', (err: Error) => {
-      if (err) {
-        this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
-        d.reject(err); return;
-      }
+
+    fs().promises.mkdir(path().dirname(filePath), {recursive: true})
+    .then(() => {
+      return fs().promises.writeFile(filePath, sourceText, 'utf-8');
+    })
+    .then(() => {
       d.resolve(filePath);
+    })
+    .catch((err: Error) => {
+      this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
+      d.reject(err); return;
     });
     return d.promise;
   }

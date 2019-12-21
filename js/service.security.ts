@@ -1,6 +1,9 @@
 var app = require('electron').remote.app;
 var _log: any, log = () => { _log = _log || require('electron-log'); return _log; };
 
+// env
+var DEBUG = process.env.DEBUG != null;
+
 // angular security service
 class SecurityService implements yubo.SecurityService {
   constructor(
@@ -9,9 +12,7 @@ class SecurityService implements yubo.SecurityService {
   ) {}
 
   saveBookmark(filePath: string, bookmark: string): ng.IPromise<boolean> {
-alert(`save bookmark: ${filePath}, ${bookmark}`);
-console.log(`save bookmark: ${filePath}, ${bookmark}`);
-log().warn(`save bookmark: ${filePath}, ${bookmark}`);
+    if (DEBUG) { log().info(`call saveBookmark(): ${filePath}, ${bookmark}`); }
     const d = this.$q.defer();
     if (!process.mas) {
       d.resolve(true); return d.promise;
@@ -19,15 +20,14 @@ log().warn(`save bookmark: ${filePath}, ${bookmark}`);
 
     this.BookmarkService.add(filePath, bookmark)
     .then((result: boolean) => {
+      if (DEBUG) { log().info(`in saveBookmark(), add bookmark.`); }
       d.resolve(result); return d.promise;
     });
     return d.promise;
   }
 
   startAccessingSecurityScopedResource(filePath: string): ng.IPromise<Function> {
-alert(`call startAccessingSecurityScopedResource`);
-console.log(`call startAccessingSecurityScopedResource`);
-log().warn(`call startAccessingSecurityScopedResource`);
+    if (DEBUG) { log().info(`call startAccessingSecurityScopedResource(): ${filePath}`); }
     const d = this.$q.defer();
     if (!process.mas) {
       d.resolve(() => {}); return d.promise;
@@ -35,12 +35,12 @@ log().warn(`call startAccessingSecurityScopedResource`);
 
     this.BookmarkService.get(filePath)
     .then((bookmark: string) => {
-alert(`retribe bookmark: ${filePath}, ${bookmark}`);
-console.log(`retribe bookmark: ${filePath}, ${bookmark}`);
-log().warn(`retribe bookmark: ${filePath}, ${bookmark}`);
       if (!bookmark) {
+        if (DEBUG) { log().info(`in startAccessingSecurityScopedResource(), can not get bookmark.`); }
         d.resolve(() => {}); return d.promise;
       }
+
+      if (DEBUG) { log().info(`in startAccessingSecurityScopedResource(), get bookmark.`); }
       const stopAccessingSecurityScopedResource = app.startAccessingSecurityScopedResource(bookmark);
       d.resolve(stopAccessingSecurityScopedResource); return d.promise;
     });

@@ -1,4 +1,5 @@
 var _fs: any, fs                           = () => { _fs = _fs || require('fs'); return _fs; };
+var _path: any, path                       = () => { _path = _path || require('path'); return _path; };
 var _temp: any, temp                       = () => { _temp = _temp || require('temp').track(); return _temp; };
 var _WavEncoder: any, WavEncoder           = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
 var _wavDuration: any, wavDuration         = () => { _wavDuration = _wavDuration || require('wav-audio-length').default; return _wavDuration; };
@@ -39,12 +40,8 @@ class HTML5AudioService implements yubo.HTML5AudioService {
       const wavSec = wavDuration()(bufWav);
       this.AppUtilService.reportDuration(wavSec);
 
-      fs().writeFile(info.path, bufWav, (err: Error) => {
-        if (err) {
-          this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-          d.reject(err); return;
-        }
-
+      fs().promises.writeFile(info.path, bufWav)
+      .then(() => {
         this.audio = new Audio('');
         this.audio.autoplay = false;
         this.audio.src = info.path;
@@ -55,6 +52,10 @@ class HTML5AudioService implements yubo.HTML5AudioService {
           d.resolve({duration: wavSec});
         };
         this.audio.play();
+      })
+      .catcH((err: Error) => {
+        this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
+        d.reject(err); return;
       });
     });
     return d.promise;
@@ -85,12 +86,16 @@ class HTML5AudioService implements yubo.HTML5AudioService {
       new (fcpxRoleEncoder())().encodeSync(bufWav, options.fcpxIxmlOptions.audioRole):
       bufWav;
 
-    fs().writeFile(wavFilePath, rBufWav, (err: Error) => {
-      if (err) {
-        this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
-        d.reject(err); return;
-      }
+    fs().promises.mkdir(path().dirname(wavFilePath), {recursive: true})
+    .then(() => {
+      return fs().promises.writeFile(wavFilePath, rBufWav);
+    })
+    .then(() => {
       d.resolve({duration: wavSec});
+    })
+    .catch((err: Error) => {
+      this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
+      d.reject(err); return;
     });
     return d.promise;
   }
@@ -362,11 +367,15 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
             new (fcpxRoleEncoder())().encodeSync(inBufWav, options.fcpxIxmlOptions.audioRole):
             inBufWav;
 
-          fs().writeFile(wavFilePath, rBufWav, 'binary', (err: Error) => {
-            if (err) {
-              dInEncode.reject(err); return;
-            }
+          fs().promises.mkdir(path().dirname(wavFilePath), {recursive: true})
+          .then(() => {
+            return fs().promises.writeFile(wavFilePath, rBufWav, 'binary')
+          })
+          .then(() => {
             dInEncode.resolve({duration: nAudioBuffer.duration});
+          })
+          .catcH((err: Error) => {
+            dInEncode.reject(err); return;
           });
         });
         return dInEncode.promise;

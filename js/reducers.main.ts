@@ -12,7 +12,7 @@ var _waitUntil: any, waitUntil     = () => { _waitUntil = _waitUntil || require(
 var MONITOR = process.env.MONITOR != null;
 
 // application settings
-var desktopDir = app.getPath('desktop');
+var defaultSaveDir = process.mas? `${app.getPath('music')}/MYukkuriVoice`: app.getPath('desktop');
 
 // action reducer
 class MainReducer implements yubo.MainReducer {
@@ -470,18 +470,12 @@ class MainReducer implements yubo.MainReducer {
       let dir = this.store.curYvoice.seqWriteOptions.dir;
       const prefix = this.store.curYvoice.seqWriteOptions.prefix;
       if (!dir) {
-        dir = desktopDir;
+        dir = defaultSaveDir;
       }
 
       // file permission
-alert(`use startAccessingSecurityScopedResource func`);
-console.log(`use startAccessingSecurityScopedResource func`);
-log().warn(`use startAccessingSecurityScopedResource func`);
-      let stopAccessingSecurityScopedResource: Function;
       this.SecurityService.startAccessingSecurityScopedResource(dir)
-      .then((finallyResourceFnc: Function) => {
-        stopAccessingSecurityScopedResource = finallyResourceFnc;
-
+      .then((stopAccessingSecurityScopedResource: Function) => {
         // record
         const parsedList = this.CommandService.parseInput(encoded, this.store.yvoiceList, this.store.curYvoice);
         let sourceFname: string = null;
@@ -512,8 +506,8 @@ log().warn(`use startAccessingSecurityScopedResource func`);
         }, this.$q.defer<{wavFilePath: string, duration: number}>())
         // record source message
         .then((audioParams: {wavFilePath: string, duration: number}) => {
-          if (!sourceFname) { return; }
-          this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
+          if (!sourceFname) { return null; }
+          return this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
             this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
               {
                 srcTextPath: sourceFname,
@@ -525,9 +519,9 @@ log().warn(`use startAccessingSecurityScopedResource func`);
             this.MessageService.error('メッセージファイルを作成できませんでした。', err);
           });
         })
-      })
-      .finally(() => {
-        stopAccessingSecurityScopedResource();
+        .finally(() => {
+          stopAccessingSecurityScopedResource();
+        });
       });
 
     // 通常保存
@@ -592,8 +586,8 @@ log().warn(`use startAccessingSecurityScopedResource func`);
         }, this.$q.defer<{wavFilePath: string, duration: number}>())
         // record source message
         .then((audioParams: {wavFilePath: string, duration: number}) => {
-          if (!sourceFname) { return; }
-          this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
+          if (!sourceFname) { return null; }
+          return this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
             this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
               {
                 srcTextPath: sourceFname,
@@ -929,9 +923,6 @@ log().warn(`use startAccessingSecurityScopedResource func`);
         return;
       }
 
-alert(`use saveBookmark func`);
-console.log(`use saveBookmark func`);
-log().warn(`use saveBookmark func`);
       this.SecurityService.saveBookmark(dirs[0], selector.bookmarks[0])
       .then((result: boolean) => {
         this.store.curYvoice.seqWriteOptions.dir = dirs[0];
@@ -939,7 +930,7 @@ log().warn(`use saveBookmark func`);
       });
     });
     let optDir = this.store.curYvoice.seqWriteOptions.dir;
-    if (!optDir) { optDir = desktopDir; }
+    if (!optDir) { optDir = defaultSaveDir; }
     ipcRenderer().send('showDirDialog', optDir);
   }
 
