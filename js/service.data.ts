@@ -196,55 +196,60 @@ angular.module('DataServices')
 
 // BookmarkService
 class BookmarkService implements yubo.BookmarkService {
+  private isLoaded: boolean = false;
+  private bookmarkMap: {[key: string]: string} = {};
   constructor(
     private $q: ng.IQService,
   ) {}
 
-  add(filePath: string, bookmark: string): ng.IPromise<boolean> {
+  load(): ng.IPromise<boolean> {
     const d = this.$q.defer<boolean>();
-    storage().get('bookmark', (error, bookmarkMap) => {
+    if (this.isLoaded) {
+      d.resolve(true); return d.promise;
+    }
+
+    storage().get('bookmark', (error, data) => {
       if (error) {
         d.reject(error); return;
       }
+      if (data) {
+        this.bookmarkMap = data;
+      }
+      this.isLoaded = true;
+      d.resolve(true);
+    });
+    return d.promise;
+  }
 
-      bookmarkMap = bookmarkMap || {};
-      bookmarkMap[filePath] = bookmark;
-      storage().set('bookmark', bookmarkMap, (error: Error) => {
-        if (error) {
-          d.reject(error); return;
-        }
-        d.resolve(true);
-      });
+  add(filePath: string, bookmark: string): ng.IPromise<boolean> {
+    const d = this.$q.defer<boolean>();
+    if (!bookmark) {
+      d.resolve(true); return d.promise;
+    }
+
+    Promise.resolve(true).then(() => {
+      return this.isLoaded?
+        true:
+        this.load();
+    })
+    .then(() => {
+      this.bookmarkMap[filePath] = bookmark;
+      d.resolve(true);
     });
     return d.promise;
   }
 
   get(filePath: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
-    storage().get('bookmark', (error, bookmarkMap) => {
-      if (error) {
-        d.reject(error); return;
-      }
-      d.resolve(bookmarkMap[filePath]);
-    });
-    return d.promise;
-  }
 
-  remove(filePath: string): ng.IPromise<boolean> {
-    const d = this.$q.defer<boolean>();
-    storage().get('bookmark', (error, bookmarkMap) => {
-      if (error) {
-        d.reject(error); return;
-      }
-
-      bookmarkMap = bookmarkMap || {};
-      delete bookmarkMap[filePath];
-      storage().set('bookmark', bookmarkMap, (error: Error) => {
-        if (error) {
-          d.reject(error); return;
-        }
-        d.resolve(true);
-      });
+    Promise.resolve(true).then(() => {
+      return this.isLoaded?
+        true:
+        this.load();
+    })
+    .then(() => {
+      const bookmark: string = this.bookmarkMap[filePath];
+      d.resolve(bookmark);
     });
     return d.promise;
   }
@@ -255,7 +260,36 @@ class BookmarkService implements yubo.BookmarkService {
       if (error) {
         d.reject(error); return;
       }
+      this.bookmarkMap = {};
       d.resolve(true);
+    });
+    return d.promise;
+  }
+
+  prune(filePaths: string[]): ng.IPromise<boolean> {
+    const d = this.$q.defer<boolean>();
+
+    Promise.resolve(true).then(() => {
+      return this.isLoaded?
+        true:
+        this.load();
+    })
+    .then(() => {
+      const resultMap = {};
+      for (let fp of filePaths) {
+        const bookmark = this.bookmarkMap[fp];
+        if (bookmark) {
+          resultMap[fp] = bookmark;
+        }
+      }
+
+      storage().set('bookmark', resultMap, (error: Error) => {
+        if (error) {
+          d.reject(error); return;
+        }
+        this.bookmarkMap = resultMap;
+        d.resolve(true);
+      });
     });
     return d.promise;
   }

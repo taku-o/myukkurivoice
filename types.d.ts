@@ -311,10 +311,11 @@ declare namespace yubo {
     getList(): yubo.IRecordMessage[];
   }
   export interface BookmarkService {
+    load(): ng.IPromise<boolean>;
     add(filePath: string, bookmark: string): ng.IPromise<boolean>;
     get(filePath: string): ng.IPromise<string>;
-    remove(filePath: string): ng.IPromise<boolean>;
     clear(): ng.IPromise<boolean>;
+    prune(filePaths: string[]): ng.IPromise<boolean>;
   }
   // service.aques.ts
   export interface AqKanji2KoeLib {
@@ -375,7 +376,9 @@ declare namespace yubo {
   }
   // service.security.ts
   export interface SecurityService {
-    saveBookmark(filePath: string, bookmark: string): ng.IPromise<boolean>;
+    addBookmark(filePath: string, bookmark: string): ng.IPromise<boolean>;
+    clearBookmark(): ng.IPromise<boolean>;
+    saveBookmark(yvoiceList: yubo.YVoice[]): ng.IPromise<boolean>;
     startAccessingSecurityScopedResource(filePath: string): ng.IPromise<Function>;
   }
   // service.subtitle.ts

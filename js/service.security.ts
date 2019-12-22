@@ -11,8 +11,8 @@ class SecurityService implements yubo.SecurityService {
     private BookmarkService: yubo.BookmarkService,
   ) {}
 
-  saveBookmark(filePath: string, bookmark: string): ng.IPromise<boolean> {
-    if (DEBUG) { log().info(`call saveBookmark(): ${filePath}, ${bookmark}`); }
+  addBookmark(filePath: string, bookmark: string): ng.IPromise<boolean> {
+    if (DEBUG) { log().info(`call addBookmark(): ${filePath}, ${bookmark}`); }
     const d = this.$q.defer();
     if (!process.mas) {
       d.resolve(true); return d.promise;
@@ -20,8 +20,29 @@ class SecurityService implements yubo.SecurityService {
 
     this.BookmarkService.add(filePath, bookmark)
     .then((result: boolean) => {
-      if (DEBUG) { log().info('in saveBookmark(), add bookmark.'); }
+      if (DEBUG) { log().info('in addBookmark(), add bookmark.'); }
       return d.resolve(result);
+    });
+    return d.promise;
+  }
+
+  clearBookmark(): ng.IPromise<boolean> {
+    if (DEBUG) { log().info(`call clearBookmark()`); }
+    return this.BookmarkService.clear();
+  }
+
+  saveBookmark(yvoiceList: yubo.YVoice[]): ng.IPromise<boolean> {
+    if (DEBUG) { log().info(`call saveBookmark()`); }
+    const d = this.$q.defer();
+    const dirs = [];
+    for (let yvoice of yvoiceList) {
+      let dir = yvoice.seqWriteOptions.dir;
+      dirs.push(dir);
+    }
+    this.BookmarkService.prune(dirs)
+    .then((result: boolean) => {
+      if (DEBUG) { log().info(`in saveBookmark(), prune bookmarks`); }
+      d.resolve(result);
     });
     return d.promise;
   }

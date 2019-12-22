@@ -801,11 +801,14 @@ class MainReducer implements yubo.MainReducer {
   save(): void {
     this.MessageService.action('save voice config.');
     this.DataService.save(this.store.yvoiceList);
+    this.SecurityService.saveBookmark(this.store.yvoiceList);
   }
   reset(): void {
     this.MessageService.action('reset all voice config data.');
     // voice data clear
     this.DataService.clear();
+    // bookmark data clear
+    this.SecurityService.clearBookmark();
     // set initial data
     this.store.yvoiceList = this.DataService.initialData();
     this.store.curYvoice = this.store.yvoiceList[0];
@@ -933,7 +936,7 @@ class MainReducer implements yubo.MainReducer {
         return;
       }
 
-      this.SecurityService.saveBookmark(dirs[0], selector.bookmarks[0])
+      this.SecurityService.addBookmark(dirs[0], selector.bookmarks[0])
       .then((result: boolean) => {
         this.store.curYvoice.seqWriteOptions.dir = dirs[0];
         this.notifyUpdates({curYvoice: this.store.curYvoice});
