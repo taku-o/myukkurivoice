@@ -213,7 +213,7 @@ declare namespace yubo {
     rhythmOn:     boolean,
     sourceWrite:  boolean;
     seqWrite:     boolean;
-    seqWriteOptions: {dir: string, prefix: string};
+    seqWriteOptions: {dir: string, prefix: string, bookmark: string};
     fcpxIxml:     boolean;
     fcpxIxmlOptions: {audioRole?: string;};
   }
@@ -373,13 +373,6 @@ declare namespace yubo {
     //private correctFrameCount(audioBuffer: AudioBuffer): number;
     //private correctBufferLength(buffer: Float32Array): number;
     //private buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer;
-  }
-  // service.security.ts
-  export interface SecurityService {
-    addBookmark(filePath: string, bookmark: string): ng.IPromise<boolean>;
-    clearBookmark(): ng.IPromise<boolean>;
-    saveBookmark(yvoiceList: yubo.YVoice[]): ng.IPromise<boolean>;
-    startAccessingSecurityScopedResource(filePath: string): ng.IPromise<Function>;
   }
   // service.subtitle.ts
   export interface TextSubtitleService {
