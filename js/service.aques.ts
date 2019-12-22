@@ -111,7 +111,7 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
     }
 
     // in MacAppleStore enviornment
-    if (process.mas == true) {
+    if (process.mas) {
       this.generatorType = 'mas'; return false;
     }
 
@@ -366,13 +366,13 @@ class AquesService implements yubo.AquesService {
       temp().open(fsprefix, (err: Error, info: temp.FileDescriptor) => {
         if (err) {
           this.MessageService.syserror('一時作業ファイルを作れませんでした。', err);
-          return d.reject(err);
+          d.reject(err); return;
         }
 
       fs().writeFile(info.path, encoded, (err: Error) => {
         if (err) {
           this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-          return d.reject(err);
+          d.reject(err); return;
         }
 
       const cmdOptions: yubo.CmdOptions = {
@@ -386,11 +386,11 @@ class AquesService implements yubo.AquesService {
       exec()(`cat ${info.path} | VOICE=${phont.idVoice} SPEED=${speed} ${waverCmd}`, cmdOptions, (err: Error, stdout: string, stderr: string) => {
         if (err) {
           log().info(`maquestalk1 failed. ${err}`);
-          return d.reject(err);
+          d.reject(err); return;
         }
         // @ts-ignore
         const bufWav = Buffer.from(stdout, 'binary');
-        return d.resolve(bufWav);
+        d.resolve(bufWav);
       }).on('close', (statusCode: number) => {
         if (statusCode < 0) {
           const errorCode = statusCode * -1; // maquestalk1 library result
@@ -406,7 +406,7 @@ class AquesService implements yubo.AquesService {
       fs().readFile(phont.path, (err: Error, phontData: Buffer) => {
         if (err) {
           this.MessageService.syserror('phontファイルの読み込みに失敗しました。', err);
-          return d.reject(err);
+          d.reject(err); return;
         }
 
         const allocInt = ref().alloc('int');
@@ -415,13 +415,13 @@ class AquesService implements yubo.AquesService {
           const errorCode = allocInt.deref();
           this.MessageService.syserror(this.aquesTalk2Lib.errorTable(errorCode));
           log().info(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${this.aquesTalk2Lib.errorTable(errorCode)}`);
-          return d.reject(new Error(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${this.aquesTalk2Lib.errorTable(errorCode)}`));
+          d.reject(new Error(`fn_AquesTalk2_Synthe_Utf8 raise error. error_code:${this.aquesTalk2Lib.errorTable(errorCode)}`)); return;
         }
 
         const bufWav = ref().reinterpret(r, allocInt.deref(), 0);
         const managedBuf = Buffer.from(bufWav); // copy bufWav to managed buffer
         this.aquesTalk2Lib.freeWave(r);
-        return d.resolve(managedBuf);
+        d.resolve(managedBuf);
       });
 
     // version 10

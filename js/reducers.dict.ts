@@ -1,14 +1,17 @@
 var app = require('electron').remote.app;
+var _customError: any, customError = () => { _customError = _customError || require('custom-error'); return _customError; };
+var _epath: any, epath             = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
-var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 var _parse: any, parse             = () => { _parse = _parse || require('csv-parse/lib/sync'); return _parse; };
 var _stringify: any, stringify     = () => { _stringify = _stringify || require('csv-stringify/lib/sync'); return _stringify; };
-var _epath: any, epath             = () => { _epath = _epath || require('electron-path'); return _epath; };
-var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 var unpackedPath = epath().getUnpackedPath();
 var vendorPath = `${unpackedPath}/vendor`;
+
+var BreakChain = customError()('BreakChain');
 
 // env
 var MONITOR = process.env.MONITOR != null;
@@ -123,7 +126,7 @@ class DictReducer implements yubo.DictReducer {
       if (err) {
         fs().writeFileSync(`${this.mAppDictDir}/aq_user.csv`, fs().readFileSync(`${this.rscDictDir}/aq_user.csv`));
       }
-      return d.resolve('ok');
+      d.resolve('ok');
     });
     });
     return d.promise;
@@ -132,7 +135,7 @@ class DictReducer implements yubo.DictReducer {
     const d = this.$q.defer<yubo.DictRecord[]>();
     fs().readFile(`${this.mAppDictDir}/aq_user.csv`, 'utf-8', (err: Error, data: Buffer) => {
       if (err) {
-        return d.reject(err);
+        d.reject(err); return;
       }
       const records: yubo.DictRecord[] = (parse())(data, {
         columns: [
@@ -142,7 +145,7 @@ class DictReducer implements yubo.DictReducer {
         ],
         skip_empty_lines: true,
       });
-      return d.resolve(records);
+      d.resolve(records);
     });
     return d.promise;
   }
@@ -203,6 +206,7 @@ class DictReducer implements yubo.DictReducer {
     .catch((err: Error) => {
       this.store.message = 'エラー。不正な作業データが残っています。修正するまで保存できません。';
       this.notifyUpdates({message: this.store.message});
+      throw BreakChain();
     })
     .then(() => {
       const data = (stringify())(this.store.gridOptions.data, {
@@ -236,6 +240,7 @@ class DictReducer implements yubo.DictReducer {
     .catch((err: Error) => {
       this.store.message = 'エラー。不正な作業データが残っています。修正するまでエクスポートできません。';
       this.notifyUpdates({message: this.store.message});
+      throw BreakChain();
     })
     .then(() => {
       // copy resource
@@ -286,7 +291,7 @@ class DictReducer implements yubo.DictReducer {
       // check errorRows that is really error ?
       for (let row of errorRows) {
         if (row.error) {
-          return d.reject(new Error('error data found.'));
+          d.reject(new Error('error data found.')); return;
         }
       }
       // fix error rows to clean.
@@ -294,7 +299,7 @@ class DictReducer implements yubo.DictReducer {
       return d.resolve(true);
     })
     .catch((err: Error) => {
-      return d.reject(err);
+      d.reject(err);
     });
     return d.promise;
   }

@@ -1,5 +1,8 @@
-var _fs: any, fs     = () => { _fs = _fs || require('fs'); return _fs; };
-var _path: any, path = () => { _path = _path || require('path'); return _path; };
+var _customError: any, customError = () => { _customError = _customError || require('custom-error'); return _customError; };
+var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _path: any, path               = () => { _path = _path || require('path'); return _path; };
+
+var BreakChain = customError()('BreakChain');
 
 // angular subtitle service
 angular.module('SubtitleServices', ['MessageServices']);
@@ -29,7 +32,7 @@ class TextSubtitleService implements yubo.TextSubtitleService {
     })
     .catch((err: Error) => {
       this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then(() => {
       return d.resolve(filePath);

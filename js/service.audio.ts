@@ -1,12 +1,18 @@
+var _WavEncoder: any, WavEncoder           = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
+var _customError: any, customError         = () => { _customError = _customError || require('custom-error'); return _customError; };
+var _fcpxRoleEncoder: any, fcpxRoleEncoder = () => { _fcpxRoleEncoder = _fcpxRoleEncoder || require('fcpx-audio-role-encoder').default; return _fcpxRoleEncoder; };
 var _fs: any, fs                           = () => { _fs = _fs || require('fs'); return _fs; };
 var _path: any, path                       = () => { _path = _path || require('path'); return _path; };
 var _temp: any, temp                       = () => { _temp = _temp || require('temp').track(); return _temp; };
-var _WavEncoder: any, WavEncoder           = () => { _WavEncoder = _WavEncoder || require('wav-encoder'); return _WavEncoder; };
 var _wavDuration: any, wavDuration         = () => { _wavDuration = _wavDuration || require('wav-audio-length').default; return _wavDuration; };
-var _fcpxRoleEncoder: any, fcpxRoleEncoder = () => { _fcpxRoleEncoder = _fcpxRoleEncoder || require('fcpx-audio-role-encoder').default; return _fcpxRoleEncoder; };
+
+var BreakChain = customError()('BreakChain');
 
 // env
 var TEST = process.env.NODE_ENV == 'test';
+
+// application settings
+var defaultSaveDir = process.mas? `${app.getPath('music')}/MYukkuriVoice`: app.getPath('desktop');
 
 // angular audio service
 angular.module('AudioServices', ['MessageServices', 'UtilServices']);
@@ -33,7 +39,7 @@ class HTML5AudioService implements yubo.HTML5AudioService {
     temp().open(fsprefix, (err: Error, info: temp.FileDescriptor) => {
       if (err) {
         this.MessageService.syserror('一時作業ファイルを作れませんでした。', err);
-        return d.reject(err);
+        d.reject(err); throw BreakChain();
       }
 
       // report duration
@@ -43,7 +49,7 @@ class HTML5AudioService implements yubo.HTML5AudioService {
       fs().promises.writeFile(info.path, bufWav)
       .catch((err: Error) => {
         this.MessageService.syserror('一時作業ファイルの書き込みに失敗しました。', err);
-        return d.reject(err);
+        d.reject(err); throw BreakChain();
       })
       .then(() => {
         this.audio = new Audio('');
@@ -53,7 +59,7 @@ class HTML5AudioService implements yubo.HTML5AudioService {
           this.audio.volume = options.volume;
         }
         this.audio.onended = () => {
-          return d.resolve({duration: wavSec});
+          d.resolve({duration: wavSec});
         };
         this.audio.play();
       });
@@ -86,13 +92,17 @@ class HTML5AudioService implements yubo.HTML5AudioService {
       new (fcpxRoleEncoder())().encodeSync(bufWav, options.fcpxIxmlOptions.audioRole):
       bufWav;
 
-    fs().promises.mkdir(path().dirname(wavFilePath), {recursive: true})
+    Promise.resolve(true).then(() => {
+      return process.mas && path().dirname(wavFilePath) == defaultSaveDir?
+        fs().promises.mkdir(path().dirname(wavFilePath), {recursive: true}):
+        true;
+    })
     .then(() => {
       return fs().promises.writeFile(wavFilePath, rBufWav);
     })
     .catch((err: Error) => {
       this.MessageService.syserror('音声ファイルの書き込みに失敗しました。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then(() => {
       return d.resolve({duration: wavSec});
@@ -255,7 +265,7 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     })
     .catch((err: Error) => {
       this.MessageService.syserror('音源の再生に失敗しました。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then((audioParams: {duration: number}) => {
       this.runningNode = null;
@@ -377,14 +387,18 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
         new (fcpxRoleEncoder())().encodeSync(inBufWav, options.fcpxIxmlOptions.audioRole):
         inBufWav;
 
-      return fs().promises.mkdir(path().dirname(wavFilePath), {recursive: true})
+      return Promise.resolve(true).then(() => {
+        return process.mas && path().dirname(wavFilePath) == defaultSaveDir?
+          fs().promises.mkdir(path().dirname(wavFilePath), {recursive: true}):
+          true;
+      })
       .then(() => {
         return fs().promises.writeFile(wavFilePath, rBufWav, 'binary');
+      })
+      .catch((err: Error) => {
+        this.MessageService.syserror('音声ファイルの作成に失敗しました。', err);
+        d.reject(err); throw BreakChain();
       });
-    })
-    .catch((err: Error) => {
-      this.MessageService.syserror('音声ファイルの作成に失敗しました。', err);
-      return d.reject(err);
     })
     .then(() => {
       return d.resolve({duration: generatedAudioBuffer.duration});

@@ -1,12 +1,15 @@
 var app = require('electron').remote.app;
-var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _clipboard: any, clipboard     = () => { _clipboard = _clipboard || require('electron').clipboard; return _clipboard; };
-var _path: any, path               = () => { _path = _path || require('path'); return _path; };
+var _customError: any, customError = () => { _customError = _customError || require('custom-error'); return _customError; };
 var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
 var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 var _onIdle: any, onIdle           = () => { _onIdle = _onIdle || require('on-idle'); return _onIdle; };
+var _path: any, path               = () => { _path = _path || require('path'); return _path; };
 var _waitUntil: any, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
+
+var BreakChain = customError()('BreakChain');
 
 // env
 var MONITOR = process.env.MONITOR != null;
@@ -396,15 +399,17 @@ class MainReducer implements yubo.MainReducer {
 
     this.AquesService.wave(encoded, phont, speed, waveOptions)
     .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
       this.MessageService.error('音声データを作成できませんでした。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then((bufWav: Buffer) => {
       return this.AudioService.play(bufWav, playOptions);
     })
     .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
       this.MessageService.error('音声データを再生できませんでした。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then((audioParams: {duration: number}) => {
       return d.resolve(audioParams);
@@ -513,10 +518,11 @@ class MainReducer implements yubo.MainReducer {
         // record source message
         .then((audioParams: {wavFilePath: string, duration: number}) => {
           if (!sourceFname) { return null; }
-          return this.TextSubtitleService.save(sourceFname, loggingSourceText);
-        })
-        .catch((err: Error) => {
-          this.MessageService.error('メッセージファイルを作成できませんでした。', err);
+          return this.TextSubtitleService.save(sourceFname, loggingSourceText)
+          .catch((err: Error) => {
+            this.MessageService.error('メッセージファイルを作成できませんでした。', err);
+            throw BreakChain();
+          });
         })
         .then(() => {
           this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
@@ -580,10 +586,11 @@ class MainReducer implements yubo.MainReducer {
         // record source message
         .then((audioParams: {wavFilePath: string, duration: number}) => {
           if (!sourceFname) { return null; }
-          return this.TextSubtitleService.save(sourceFname, loggingSourceText);
-        })
-        .catch((err: Error) => {
-          this.MessageService.error('メッセージファイルを作成できませんでした。', err);
+          return this.TextSubtitleService.save(sourceFname, loggingSourceText)
+          .catch((err: Error) => {
+            this.MessageService.error('メッセージファイルを作成できませんでした。', err);
+            throw BreakChain();
+          });
         })
         .then(() => {
           this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
@@ -644,15 +651,17 @@ class MainReducer implements yubo.MainReducer {
 
     this.AquesService.wave(encoded, phont, speed, waveOptions)
     .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
       this.MessageService.error('音声データを作成できませんでした。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then((bufWav: Buffer) => {
       return this.AudioService.record(filePath, bufWav, recordOptions);
     })
     .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
       this.MessageService.error('音声データを記録できませんでした。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then((audioParams: {duration: number}) => {
       return d.resolve({wavFilePath: filePath, duration: audioParams.duration});
@@ -712,15 +721,17 @@ class MainReducer implements yubo.MainReducer {
       return this.AquesService.wave(encoded, phont, speed, waveOptions);
     })
     .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
       this.MessageService.error('音声データを作成できませんでした。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then((bufWav: Buffer) => {
       return this.AudioService.record(filePath, bufWav, recordOptions);
     })
     .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
       this.MessageService.error('音声データを記録できませんでした。', err);
-      return d.reject(err);
+      d.reject(err); throw BreakChain();
     })
     .then((audioParams: {duration: number}) => {
       return d.resolve({wavFilePath: filePath, duration: audioParams.duration});

@@ -1,5 +1,9 @@
+var app = require('electron').remote.app;
 var _fs: any, fs     = () => { _fs = _fs || require('fs'); return _fs; };
 var _path: any, path = () => { _path = _path || require('path'); return _path; };
+
+// application settings
+var defaultSaveDir = process.mas? `${app.getPath('music')}/MYukkuriVoice`: app.getPath('desktop');
 
 // angular util service
 angular.module('UtilServices', ['MessageServices']);
@@ -32,8 +36,11 @@ class SeqFNameService implements yubo.SeqFNameService {
     const d = this.$q.defer<number>();
     fs().readdir(dir, (err: Error, files: string[]) => {
       if (err) {
+        if (process.mas && dir == defaultSaveDir) {
+          d.resolve(0); return;
+        }
         this.MessageService.syserror('ディレクトリを参照できませんでした。', err);
-        return d.reject(err);
+        d.reject(err);
       }
 
       const pattern = new RegExp(`^${prefix}(${this.numPattern})${this.ext}$`);
