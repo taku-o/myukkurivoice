@@ -638,6 +638,8 @@ declare namespace yubo {
 
   // apps.help.ts
   export interface HelpController extends yubo.StoreObserver {
+    darwin: boolean;
+    mas: boolean;
     store: yubo.HelpStore;
     // action
     page(pageName: string): void;
