@@ -14,10 +14,15 @@
         <td>GitHubから手動でダウンロードして入れ替え</td>
         <td>AppStoreから更新する</td>
       </tr>
-      <tr>
+      <tr ng-if="ctrl.darwin">
         <th>設定ファイルの置き場所</th>
         <td><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a></td>
         <td><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application\ Support/MYukkuriVoice/')">$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a></td>
+      </tr>
+      <tr ng-if="!ctrl.darwin">
+        <th>設定ファイルの置き場所</th>
+        <td>$HOME/Library/Application Support/MYukkuriVoice</td>
+        <td>$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice</td>
       </tr>
       <tr>
         <th>連番出力時のデフォルトの出力先</th>
@@ -47,7 +52,7 @@
     通常版からAppStore版への移行では、連番出力機能がそのままでは動かないので、<br>
     出力先ディレクトリをもう一度選択してから、設定データを保存してください。
   </p>
-  <table class="table-striped">
+  <table class="table-striped" ng-if="ctrl.darwin">
     <tbody>
       <tr>
         <th>通常版</th>
@@ -56,6 +61,18 @@
       <tr>
         <th>AppStore版</th>
         <td><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table-striped" ng-if="!ctrl.darwin">
+    <tbody>
+      <tr>
+        <th>通常版</th>
+        <td>$HOME/Library/Application Support/MYukkuriVoice</td>
+      </tr>
+      <tr>
+        <th>AppStore版</th>
+        <td>$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice</td>
       </tr>
     </tbody>
   </table>

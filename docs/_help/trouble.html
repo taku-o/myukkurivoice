@@ -95,7 +95,7 @@
     設定ファイルの構造には互換があるので、コピーすればほぼ復旧します。
     <a ng-click="ctrl.page('sandbox')">→ 通常版とAppStore版の違い</a>
   </p>
-  <table class="table-striped">
+  <table class="table-striped" ng-if="ctrl.darwin">
     <tbody>
       <tr>
         <th>通常版</th>
@@ -104,6 +104,18 @@
       <tr>
         <th>AppStore版</th>
         <td><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table-striped" ng-if="!ctrl.darwin">
+    <tbody>
+      <tr>
+        <th>通常版</th>
+        <td>$HOME/Library/Application Support/MYukkuriVoice</td>
+      </tr>
+      <tr>
+        <th>AppStore版</th>
+        <td>$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice</td>
       </tr>
     </tbody>
   </table>

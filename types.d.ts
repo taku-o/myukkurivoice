@@ -567,7 +567,6 @@ declare namespace yubo {
     switchMainView(): void;
     switchMessageListType(): void;
     switchAlwaysOnTop(): void;
-    showItemInFolder(path: string): void;
   }
   export interface WaveOptions {
     passPhrase:          string;
