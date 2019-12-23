@@ -7,6 +7,7 @@ var _log: any, log                 = () => { _log = _log || require('electron-lo
 var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 var _onIdle: any, onIdle           = () => { _onIdle = _onIdle || require('on-idle'); return _onIdle; };
 var _path: any, path               = () => { _path = _path || require('path'); return _path; };
+var _shell: any, shell             = () => { _shell = _shell || require('electron').shell; return _shell; };
 var _waitUntil: any, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
 
 var BreakChain = customError()('BreakChain');
@@ -120,6 +121,13 @@ class MainReducer implements yubo.MainReducer {
           const indexForCP = this.store.yvoiceList.indexOf(this.store.curYvoice);
           this.copy(indexForCP);
           this.notifyUpdates({});
+        }
+        break;
+      case 'openConfigDir':
+        if (process.mas) {
+          this.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/');
+        } else {
+          this.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/');
         }
         break;
       case 'reset':
@@ -964,6 +972,11 @@ class MainReducer implements yubo.MainReducer {
     this.MessageService.info(`switch alwaysOnTop option ${newflg?'ON':'OFF'}`);
     this.store.alwaysOnTop = newflg;
     curwindow.setAlwaysOnTop(newflg);
+  }
+  showItemInFolder(dir: string): void {
+    const homeDir = app.getPath('home');
+    const expanded = dir.replace('$HOME', homeDir);
+    shell().showItemInFolder(expanded);
   }
 
   // store observer

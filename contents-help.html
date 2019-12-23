@@ -46,6 +46,9 @@
       <span class="nav-group-item help-item" id="menu-license" ng-class="{active:ctrl.store.display == 'license'}" ng-click="ctrl.page('license')">
         <span class="icon icon-help-circled"></span>AquesTalkのライセンスについて
       </span>
+      <span class="nav-group-item help-item" id="menu-sandbox" ng-class="{active:ctrl.store.display == 'sandbox'}" ng-click="ctrl.page('sandbox')">
+        <span class="icon icon-help-circled"></span>通常版とAppStore版の違い
+      </span>
       <span class="nav-group-item help-item" id="menu-catalina" ng-class="{active:ctrl.store.display == 'catalina'}" ng-click="ctrl.page('catalina')">
         <span class="icon icon-help-circled"></span>macOS Catalina 対応
       </span>
@@ -115,6 +118,7 @@
   <div class="pane" id="uninstall-pane"  static-include template-path="_help/uninstall.html"  ng-if="ctrl.store.display == 'uninstall'"></div>
   <div class="pane" id="backup-pane"     static-include template-path="_help/backup.html"     ng-if="ctrl.store.display == 'backup'"></div>
   <div class="pane" id="license-pane"    static-include template-path="_help/license.html"    ng-if="ctrl.store.display == 'license'"></div>
+  <div class="pane" id="sandbox-pane"    static-include template-path="_help/sandbox.html"    ng-if="ctrl.store.display == 'sandbox'"></div>
   <div class="pane" id="catalina-pane"   static-include template-path="_help/catalina.html"   ng-if="ctrl.store.display == 'catalina'"></div>
   <div class="pane" id="contact-pane"    static-include template-path="_help/contact.html"    ng-if="ctrl.store.display == 'contact'"></div>
 
@@ -141,6 +145,7 @@
     <div class="box" static-include template-path="_help/uninstall.html"></div>
     <div class="box" static-include template-path="_help/backup.html"></div>
     <div class="box" static-include template-path="_help/license.html"></div>
+    <div class="box" static-include template-path="_help/sandbox.html"></div>
     <div class="box" static-include template-path="_help/catalina.html"></div>
     <div class="box" static-include template-path="_help/contact.html"></div>
 

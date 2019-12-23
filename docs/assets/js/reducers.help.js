@@ -14,6 +14,7 @@ class HelpReducer {
             'uninstall',
             'backup',
             'license',
+            'sandbox',
             'catalina',
             'contact',
             'funclist',
