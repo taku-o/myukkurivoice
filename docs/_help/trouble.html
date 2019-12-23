@@ -88,11 +88,12 @@
 
   <h4>アプリを更新したら設定データが消えた！？</h4>
   <p>
-    通常版とAppStore版のアプリで、設定データの保存場所が違います。
-    そのため、それまでインストールしいていたのと違う側をインストールすると、
-    設定が消えたように見えてしまう。
-
+    通常版とAppStore版のアプリで、設定データの保存場所が違います。<br>
+    そのため、それまでインストールしいていたのと違う側をインストールすると、<br>
+    設定が消えたように見えてしまう現象がおきます。<br>
+    <br>
     設定ファイルの構造には互換があるので、コピーすればほぼ復旧します。
+    <a ng-click="ctrl.page('sandbox')">→ 通常版とAppStore版の違い</a>
   </p>
   <table class="table-striped">
     <tbody>
@@ -102,17 +103,17 @@
       </tr>
       <tr>
         <th>AppStore版</th>
-        <td><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a></td>
+        <td><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a></td>
       </tr>
     </tbody>
   </table>
 
   <h4>音声保存時に「音声データを作成できませんでした。EPERM: operation not permitted」と表示される</h4>
   <p>
-    サンドボックス版アプリで、連番ファイル出力時のエラーなのであれば、
-    許諾済みのパーミッションが消失した可能性。
-    ボイスの設定画面で出力先ディレクトリを再選択した後、ボイス設定を保存すれば、
-    新しいパーミッション情報がボイス設定ファイルに記録されます。
+    AppStore版アプリで、連番ファイル出力時のエラーなのであれば、<br>
+    許諾済みのパーミッションが消失した可能性があります。<br>
+    ボイスの設定画面で出力先ディレクトリを再選択した後、ボイス設定を保存すれば、<br>
+    新しいパーミッション情報がボイス設定ファイルに記録され、エラーが修正されます。
   </p>
 
 </div>
