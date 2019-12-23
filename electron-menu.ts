@@ -166,11 +166,6 @@ class FnMenu implements yubo.FnMenu {
           },
           {type: 'separator'},
           {
-            label: '設定ファイルディレクトリを開く',
-            click() { myApp.mainWindow.webContents.send('menu', 'openConfigDir'); },
-          },
-          {type: 'separator'},
-          {
             label: 'ボイス設定オールリセット',
             click() { myApp.mainWindow.webContents.send('menu', 'reset'); },
           },

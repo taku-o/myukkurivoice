@@ -123,13 +123,6 @@ class MainReducer implements yubo.MainReducer {
           this.notifyUpdates({});
         }
         break;
-      case 'openConfigDir':
-        if (process.mas) {
-          this.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/');
-        } else {
-          this.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/');
-        }
-        break;
       case 'reset':
         this.reset();
         break;
@@ -972,11 +965,6 @@ class MainReducer implements yubo.MainReducer {
     this.MessageService.info(`switch alwaysOnTop option ${newflg?'ON':'OFF'}`);
     this.store.alwaysOnTop = newflg;
     curwindow.setAlwaysOnTop(newflg);
-  }
-  showItemInFolder(dir: string): void {
-    const homeDir = app.getPath('home');
-    const expanded = dir.replace('$HOME', homeDir);
-    shell().showItemInFolder(expanded);
   }
 
   // store observer

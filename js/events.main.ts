@@ -95,9 +95,6 @@ class MainMenuEvent implements yubo.MainMenuEvent {
         case 'switchAlwaysOnTop':
           this.reducer.onMenu(action);
           break;
-        case 'openConfigDir':
-          this.reducer.onMenu(action);
-          break;
         case 'devtron':
           require('devtron').install();
           break;
