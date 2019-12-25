@@ -100,14 +100,78 @@ class FnEvent implements yubo.FnEvent {
       .then((result) => {
         const r = result.response;
         event.sender.send('updateAppConfig', r);
+
+        myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
+        myApp.mainWindow.webContents.reload();
+        if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
       });
-      myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
-      myApp.mainWindow.webContents.reload();
-      if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
     });
     
     // resetAppConfig
     ipcMain.on('resetAppConfig', (event: Electron.IpcMainEvent, message: string) => {
+      // confirm
+      const confirmOptions = {
+        type: 'warning',
+        title: 'application config initialization.',
+        message: '環境設定を初期化します。よろしいですか？',
+        buttons: ['キャンセル', '初期化'],
+        defaultId: 0,
+      };
+      dialog.showMessageBox(myApp.systemWindow, confirmOptions)
+      .then((result) => {
+        const pushed = result.response;
+        if (pushed == 0) {
+          throw new Error('cancel resetAppConfig');
+        }
+      })
+      // reset
+      .then(() => {
+        myApp.resetAppConfig();
+        const dialogOptions = {
+          type: 'info',
+          title: 'application config initialized.',
+          message: '環境設定を初期化しました。アプリケーションを更新します。',
+          buttons: ['OK'],
+          defaultId: 0,
+        };
+        return dialog.showMessageBox(myApp.systemWindow, dialogOptions)
+      })
+      .then((result) => {
+        const r = result.response;
+        event.sender.send('resetAppConfig', r);
+
+        myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
+        myApp.mainWindow.webContents.reload();
+        if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
+      })
+      .catch((err: Error) => {
+        // cancel resetAppConfig()
+        // do nothing
+      });
+    });
+  }
+
+  // call from menu
+  resetAppConfigOnMain(): void {
+    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
+
+    // confirm
+    const confirmOptions = {
+      type: 'warning',
+      title: 'application config initialization.',
+      message: '環境設定を初期化します。よろしいですか？',
+      buttons: ['キャンセル', '初期化'],
+      defaultId: 0,
+    };
+    dialog.showMessageBox(myApp.mainWindow, confirmOptions)
+    .then((result) => {
+      const pushed = result.response;
+      if (pushed == 0) {
+        throw new Error('cancel resetAppConfigOnMain');
+      }
+    })
+    // reset
+    .then(() => {
       myApp.resetAppConfig();
       const dialogOptions = {
         type: 'info',
@@ -116,35 +180,100 @@ class FnEvent implements yubo.FnEvent {
         buttons: ['OK'],
         defaultId: 0,
       };
-      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
-      .then((result) => {
-        const r = result.response;
-        event.sender.send('resetAppConfig', r);
-      });
+      return dialog.showMessageBox(myApp.mainWindow, dialogOptions);
+    })
+    .then((result) => {
       myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
       myApp.mainWindow.webContents.reload();
       if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
+    })
+    .catch((err: Error) => {
+      // cancel resetAppConfigOnMain()
+      // do nothing
     });
   }
 
   // call from menu
-  resetAppConfigOnMain(): void {
+  resetVoiceDataOnMain(): void {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
-    myApp.resetAppConfig();
-    const dialogOptions = {
-      type: 'info',
-      title: 'application config initialized.',
-      message: '環境設定を初期化しました。アプリケーションを更新します。',
-      buttons: ['OK'],
+
+    // confirm
+    const confirmOptions = {
+      type: 'warning',
+      title: 'voice config data initialization.',
+      message: 'ボイス設定を初期化します。よろしいですか？',
+      buttons: ['キャンセル', '初期化'],
       defaultId: 0,
     };
-    dialog.showMessageBox(myApp.mainWindow, dialogOptions)
+    dialog.showMessageBox(myApp.mainWindow, confirmOptions)
+    .then((result) => {
+      const pushed = result.response;
+      if (pushed == 0) {
+        throw new Error('cancel resetVoiceDataOnMain');
+      }
+    })
+    // reset
+    .then(() => {
+      myApp.mainWindow.webContents.send('menu', 'reset');
+      const dialogOptions = {
+        type: 'info',
+        title: 'voice config data initialized.',
+        message: 'ボイス設定を初期化しました。',
+        buttons: ['OK'],
+        defaultId: 0,
+      };
+      return dialog.showMessageBox(myApp.mainWindow, dialogOptions);
+    })
     .then((result) => {
       // do nothing
+    })
+    .catch((err: Error) => {
+      // cancel resetVoiceDataOnMain()
+      // do nothing
     });
-    myApp.mainWindow.setSize(myApp.appCfg.mainWindow.width, myApp.appCfg.mainWindow.height);
-    myApp.mainWindow.webContents.reload();
-    if (myApp.systemWindow) { myApp.systemWindow.webContents.reload(); }
+  }
+
+  // call from menu
+  resetDictionaryData(): void {
+    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
+    if (!myApp.dictWindow) { return; }
+
+    // confirm
+    const confirmOptions = {
+      type: 'warning',
+      title: 'reset dictionary data ?',
+      message: '辞書データを初期化します。よろしいですか？',
+      buttons: ['キャンセル', '初期化'],
+      defaultId: 0,
+    };
+    dialog.showMessageBox(myApp.dictWindow, confirmOptions)
+    .then((result) => {
+      const pushed = result.response;
+      if (pushed == 0) {
+        throw new Error('cancel resetDictionaryData');
+      }
+    })
+    // reset
+    .then(() => {
+      if (!myApp.dictWindow) { throw new Error('cancel resetDictionaryData in illegal state'); }
+      myApp.dictWindow.webContents.send('menu', 'reset'); 
+      const dialogOptions = {
+        type: 'info',
+        title: 'reset dictionary data.',
+        message: '辞書データを初期化しました。',
+        buttons: ['OK'],
+        defaultId: 0,
+      };
+      return dialog.showMessageBox(myApp.dictWindow, dialogOptions);
+    })
+    .then((result) => {
+      // do nothing
+    })
+    .catch((err: Error) => {
+      // cancel resetDictionaryData
+      // cancel resetDictionaryData in illegal state'
+      // do nothing
+    });
   }
 }
 

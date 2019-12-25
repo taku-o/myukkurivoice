@@ -182,6 +182,8 @@ declare namespace yubo {
     //private registerMainAppEvents(): void;
     //private registerSystemAppEvents(): void;
     resetAppConfigOnMain(): void;
+    resetVoiceDataOnMain(): void;
+    resetDictionaryData(): void;
   }
 
   // models.main.ts

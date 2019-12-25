@@ -167,7 +167,7 @@ class FnMenu implements yubo.FnMenu {
           {type: 'separator'},
           {
             label: 'ボイス設定オールリセット',
-            click() { myApp.mainWindow.webContents.send('menu', 'reset'); },
+            click() { myApp.resetVoiceDataOnMain(); },
           },
         ],
       },
@@ -233,7 +233,7 @@ class FnMenu implements yubo.FnMenu {
             id: 'dict-reset',
             enabled: false,
             label: '辞書オールリセット',
-            click() { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'reset'); } },
+            click() { if (myApp.dictWindow) { myApp.resetDictionaryData(); } },
           },
         ],
       },
