@@ -39,7 +39,7 @@ describe('helpWindow', function() {
     return this.client
       .elements('.nav-group-item.help-item')
       .then((response: HTMLInputElement) => {
-        assert.equal(response.value.length, 9, position());
+        assert.equal(response.value.length, 10, position());
       })
       .elements('.nav-group-item.functions-item')
       .then((response: HTMLInputElement) => {
@@ -52,7 +52,12 @@ describe('helpWindow', function() {
       .getMainProcessLogs()
       .then((logs: string[]) => {
         logs.forEach((log) => {
-          if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/)) {
+          if (
+            log.match(/error/i) &&
+            !log.match(/gles2_cmd_decoder.cc/) &&
+            !log.match(/shared_image_manager.cc/) &&
+            !log.match(/media_internals.cc/)
+          ) {
             /* eslint-disable-next-line no-console */
             console.error(log);
             assert.ok(false, position());
@@ -99,6 +104,10 @@ describe('helpWindow', function() {
           assert.ok(!isVisible, position());
         })
         .isVisible('#license-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(!isVisible, position());
+        })
+        .isVisible('#sandbox-pane')
         .then((isVisible: boolean) => {
           assert.ok(!isVisible, position());
         })
@@ -193,6 +202,11 @@ describe('helpWindow', function() {
         .then((isVisible: boolean) => {
           assert.ok(isVisible, position());
         })
+        .click('#menu-sandbox')
+        .isVisible('#sandbox-pane')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
+        })
         .click('#menu-catalina')
         .isVisible('#catalina-pane')
         .then((isVisible: boolean) => {
@@ -280,7 +294,12 @@ describe('helpWindow', function() {
         .getMainProcessLogs()
         .then((logs: string[]) => {
           logs.forEach((log) => {
-            if (log.match(/error/i) && !log.match(/gles2_cmd_decoder.cc/) && !log.match(/shared_image_manager.cc/)) {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
               /* eslint-disable-next-line no-console */
               console.error(log);
               assert.ok(false, position());

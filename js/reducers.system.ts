@@ -25,13 +25,14 @@ class SystemReducer implements yubo.SystemReducer {
     const aq10UseKeyEncrypted = this.store.aq10UseKey?
       this.LicenseService.encrypt(this.store.appCfg.passPhrase, this.store.aq10UseKey):
       '';
+    const extensions = this.store.appCfg.extensions;
     const options = {
       'mainWindow': this.store.appCfg.mainWindow,
       'audioServVer': this.store.appCfg.audioServVer,
       'showMsgPane': this.store.appCfg.showMsgPane,
       'passPhrase': this.store.appCfg.passPhrase,
       'aq10UseKeyEncrypted': aq10UseKeyEncrypted,
-      'extensions': this.store.appCfg.extensions,
+      'extensions': extensions,
     };
     ipcRenderer().send('updateAppConfig', options);
   }

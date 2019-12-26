@@ -17,8 +17,14 @@
   <h4>ユーザー辞書の場所</h4>
   <p>
     ユーザー辞書のファイルは次の場所に置いてあります。<br>
-    <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict<span class="icon icon-folder"></span></a><br>
-    <br>
+    <span ng-if="ctrl.darwin">
+      (通常版) <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict<span class="icon icon-folder"></span></a><br>
+      <br>
+    </span>
+    <span ng-if="ctrl.mas">
+      (AppStore版) $HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/userdict<br>
+      <br>
+    </span>
     aq_user.dic、aqdic.binがMYukkuriVoiceで使用している辞書データで、
     aq_user.csvには編集中の辞書のデータがCSV形式で入っています。<br>
     (ユーザー辞書が存在しない場合は、アプリに組み込まれたデフォルトの辞書を利用します)
@@ -34,9 +40,14 @@
     編集中のデータ(aq_user.csv)は初期化されてしまいますので、ご注意ください。<br>
   </p>
 
-  <h4>一括でユーザー辞書のデータを登録・編集したい場合</h4>
+  <h4>一括でユーザー辞書のデータを登録・編集<br>したい場合</h4>
   <p>
     aq_user.csvをテキストエディタで直接編集してください。<br>
-    <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict/aq_user.csv<span class="icon icon-folder"></span></a><br>
+    <span ng-if="ctrl.darwin">
+      (通常版) <a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict/aq_user.csv<span class="icon icon-folder"></span></a><br>
+    </span>
+    <span ng-if="ctrl.mas">
+      (AppStore版) $HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/userdict/aq_user.csv<br>
+    </span>
   </p>
 </div>

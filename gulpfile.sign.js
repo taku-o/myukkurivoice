@@ -1,6 +1,7 @@
 var gulp = gulp || require('gulp');
-const signAsync = require('electron-osx-sign').signAsync;
+const execSync = require('child_process').execSync;
 const flatAsync = require('electron-osx-sign').flatAsync;
+const signAsync = require('electron-osx-sign').signAsync;
 
 const ELECTRON_VERSION = require('./package.json').versions.electron;
 const DEVELOPER_ID_APPLICATION_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
@@ -34,6 +35,7 @@ gulp.task('_sign:developer', () => {
 
 gulp.task('_sign:distribution', () => {
   const platform = 'mas';
+  const APP = 'MYukkuriVoice';
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
 
@@ -41,21 +43,111 @@ gulp.task('_sign:distribution', () => {
     app: APP_PATH,
     identity: DEVELOPER_APPLICATION_3RD_KEY,
     binaries: [
+      `${APP_PATH}/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework`,
+      `${APP_PATH}/Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libEGL.dylib`,
+      `${APP_PATH}/Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libswiftshader_libEGL.dylib`,
+      `${APP_PATH}/Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libGLESv2.dylib`,
+      `${APP_PATH}/Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libswiftshader_libGLESv2.dylib`,
+      `${APP_PATH}/Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib`,
+      `${APP_PATH}/Contents/Frameworks/Electron Framework.framework`,
+      `${APP_PATH}/Contents/Frameworks/${APP} Helper (GPU).app/Contents/MacOS/${APP} Helper (GPU)`,
+      `${APP_PATH}/Contents/Frameworks/${APP} Helper (GPU).app`,
+      `${APP_PATH}/Contents/Frameworks/${APP} Helper (Plugin).app/Contents/MacOS/${APP} Helper (Plugin)`,
+      `${APP_PATH}/Contents/Frameworks/${APP} Helper (Plugin).app`,
+      `${APP_PATH}/Contents/Frameworks/${APP} Helper (Renderer).app/Contents/MacOS/${APP} Helper (Renderer)`,
+      `${APP_PATH}/Contents/Frameworks/${APP} Helper (Renderer).app`,
+      `${APP_PATH}/Contents/Frameworks/${APP} Helper.app/Contents/MacOS/${APP} Helper`,
+      `${APP_PATH}/Contents/Frameworks/${APP} Helper.app`,
       `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`,
+      `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework`,
       `${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic`,
+      `${UNPACK_VENDOR_DIR}/AqUsrDic.framework`,
       `${UNPACK_VENDOR_DIR}/AquesTalk10.framework/Versions/A/AquesTalk`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk10.framework`,
       `${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk2.framework`,
       `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
       `${UNPACK_VENDOR_DIR}/secret`,
       //`${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk`,
+      //`${UNPACK_VENDOR_DIR}/AquesTalk.framework`,
       //`${UNPACK_VENDOR_DIR}/maquestalk1`,
     ],
+
     entitlements: 'build/mas/store.parent.plist',
     'entitlements-inherit': 'build/mas/store.child.plist',
+    'gatekeeper-assess': false,
     version: ELECTRON_VERSION,
     type: 'distribution',
     platform: platform,
   });
+});
+
+// electron-osx-sign not using version.
+gulp.task('_sign:distribution:direct', (cb) => {
+  const platform = 'mas';
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  const FRAMEWORKS_PATH = `${APP_PATH}/Contents/Frameworks`;
+  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
+  const APP = 'MYukkuriVoice';
+  const CHILD_PLIST = 'build/mas/store.child.plist';
+  const PARENT_PLIST = 'build/mas/store.parent.plist';
+  const LOGINHELPER_PLIST = 'build/mas/store.loginhelper.plist';
+
+  let child_list = [
+    `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Electron Framework`,
+    `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libEGL.dylib`,
+    `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libswiftshader_libEGL.dylib`,
+    `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libGLESv2.dylib`,
+    `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libswiftshader_libGLESv2.dylib`,
+    `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib`,
+    `${FRAMEWORKS_PATH}/Electron Framework.framework`,
+    `${FRAMEWORKS_PATH}/${APP} Helper (GPU).app/Contents/MacOS/${APP} Helper (GPU)`,
+    `${FRAMEWORKS_PATH}/${APP} Helper (GPU).app`,
+    `${FRAMEWORKS_PATH}/${APP} Helper (Plugin).app/Contents/MacOS/${APP} Helper (Plugin)`,
+    `${FRAMEWORKS_PATH}/${APP} Helper (Plugin).app`,
+    `${FRAMEWORKS_PATH}/${APP} Helper (Renderer).app/Contents/MacOS/${APP} Helper (Renderer)`,
+    `${FRAMEWORKS_PATH}/${APP} Helper (Renderer).app`,
+    `${FRAMEWORKS_PATH}/${APP} Helper.app/Contents/MacOS/${APP} Helper`,
+    `${FRAMEWORKS_PATH}/${APP} Helper.app`,
+    `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`,
+    `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework`,
+    `${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic`,
+    `${UNPACK_VENDOR_DIR}/AqUsrDic.framework`,
+    `${UNPACK_VENDOR_DIR}/AquesTalk10.framework/Versions/A/AquesTalk`,
+    `${UNPACK_VENDOR_DIR}/AquesTalk10.framework`,
+    `${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2`,
+    `${UNPACK_VENDOR_DIR}/AquesTalk2.framework`,
+    `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
+    `${UNPACK_VENDOR_DIR}/secret`,
+    //`${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk`,
+    //`${UNPACK_VENDOR_DIR}/AquesTalk.framework`,
+    //`${UNPACK_VENDOR_DIR}/maquestalk1`,
+  ];
+  let loginhelper_list = [
+    `${APP_PATH}/Contents/Library/LoginItems/${APP} Login Helper.app/Contents/MacOS/${APP} Login Helper`,
+    `${APP_PATH}/Contents/Library/LoginItems/${APP} Login Helper.app/`,
+  ];
+  let app_binary = `${APP_PATH}/Contents/MacOS/${APP}`;
+  let app_top = `${APP_PATH}`;
+
+  for (let i = 0; i < child_list.length; i++) {
+    execSync(
+      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${child_list[i]}"`
+    );
+  }
+  for (let i = 0; i < loginhelper_list.length; i++) {
+    execSync(
+      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${LOGINHELPER_PLIST}" "${loginhelper_list[i]}"`
+    );
+  }
+  execSync(
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${app_binary}"`
+  );
+  execSync(
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${PARENT_PLIST}" "${app_binary}"`
+  );
+
+  cb();
 });
 
 gulp.task('_flat:distribution', () => {
@@ -71,94 +163,3 @@ gulp.task('_flat:distribution', () => {
     platform: platform,
   });
 });
-
-//const exec = require('child_process').exec;
-//const execSync = require('child_process').execSync;
-//
-//// codesign
-//gulp.task('_codesign', (cb) => {
-//  const platform = 'darwin';
-//  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
-//  exec(
-//    '/usr/bin/codesign' +
-//      ` -s "${DEVELOPER_ID_APPLICATION_KEY}" \
-//        --deep \
-//        --keychain "/Users/${process.env.USER}/Library/Keychains/login.keychain" \
-//        ${APP_PATH}`,
-//    (err, stdout, stderr) => {
-//      cb(err);
-//    }
-//  );
-//});
-//
-//gulp.task('_codesign:store', (cb) => {
-//  const platform = 'mas';
-//  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
-//  const RESULT_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.pkg`;
-//  const FRAMEWORKS_PATH = `${APP_PATH}/Contents/Frameworks`;
-//  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
-//  const APP = 'MYukkuriVoice';
-//  const CHILD_PLIST = 'build/mas/store.child.plist';
-//  const PARENT_PLIST = 'build/mas/store.parent.plist';
-//  const LOGINHELPER_PLIST = 'build/mas/store.loginhelper.plist';
-//
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Electron Framework"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libnode.dylib"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${FRAMEWORKS_PATH}/Electron Framework.framework"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${FRAMEWORKS_PATH}/${APP} Helper.app/Contents/MacOS/${APP} Helper"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${FRAMEWORKS_PATH}/${APP} Helper.app/"`
-//  );
-//
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic"`
-//  );
-//  //execSync(
-//  //  `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk"`
-//  //);
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AquesTalk10.framework/Versions/A/AquesTalk"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2"`
-//  );
-//  //execSync(
-//  //  `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/maquestalk1"`
-//  //);
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/maquestalk1-ios"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${UNPACK_VENDOR_DIR}/secret"`
-//  );
-//
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${LOGINHELPER_PLIST}" "${APP_PATH}/Contents/Library/LoginItems/${APP} Login Helper.app/Contents/MacOS/${APP} Login Helper"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${LOGINHELPER_PLIST}" "${APP_PATH}/Contents/Library/LoginItems/${APP} Login Helper.app/"`
-//  );
-//  execSync(
-//    `/usr/bin/codesign --deep -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${APP_PATH}/Contents/MacOS/${APP}"`
-//  );
-//  execSync(`/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${PARENT_PLIST}" "${APP_PATH}"`);
-//
-//  execSync(
-//    `/usr/bin/productbuild --component "${APP_PATH}" /Applications --sign "${DEVELOPER_INSTALLER_3RD_KEY}" "${RESULT_PATH}"`
-//  );
-//  cb();
-//});

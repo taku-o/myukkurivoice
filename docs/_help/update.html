@@ -1,8 +1,17 @@
 <div class="content">
-  <h4>アプリを更新するには</h4>
-  <p>
+  <h4 ng-if="ctrl.darwin">アプリを更新するには (通常版)</h4>
+  <p ng-if="ctrl.darwin">
     <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/releases')">releasesから最新のアプリをダウンロード<span class="icon icon-popup"></span></a>して
     現在使用中のアプリと入れ替えてください。<br>
+    <span class="warn"><small>
+      ※ 入れ替えると、互換性の問題で、現在アプリに設定している情報が消える可能性があります。
+      消えると困る設定はメモを取っておいてください
+    </small></span>
+  </p>
+
+  <h4 ng-if="ctrl.mas">アプリを更新するには (AppStore版)</h4>
+  <p ng-if="ctrl.mas">
+    AppStoreから更新します。<br>
     <span class="warn"><small>
       ※ 入れ替えると、互換性の問題で、現在アプリに設定している情報が消える可能性があります。
       消えると困る設定はメモを取っておいてください

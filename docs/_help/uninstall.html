@@ -1,9 +1,15 @@
 <div class="content">
-  <h4>アンインストールするには</h4>
-  <ul>
+  <h4 ng-if="ctrl.darwin">アンインストールするには (通常版)</h4>
+  <ul ng-if="ctrl.darwin">
     <li>MYukkuriVoice.app アプリケーションを削除してください</li>
     <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a> フォルダを削除してください</li>
     <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Logs/MYukkuriVoice/')">$HOME/Library/Logs/MYukkuriVoice<span class="icon icon-folder"></span></a> フォルダを削除してください</li>
+  </ul>
+
+  <h4 ng-if="ctrl.mas">アンインストールするには (AppStore版)</h4>
+  <ul ng-if="ctrl.mas">
+    <li>MYukkuriVoice.app アプリケーションを削除してください</li>
+    <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/')">$HOME/Library/Containers/jp.nanasi.myukkurivoice<span class="icon icon-folder"></span></a> フォルダを削除してください</li>
   </ul>
 
   <h4>アンインストール機能はないのか</h4>

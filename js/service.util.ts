@@ -1,5 +1,9 @@
+var app = require('electron').remote.app;
 var _fs: any, fs     = () => { _fs = _fs || require('fs'); return _fs; };
 var _path: any, path = () => { _path = _path || require('path'); return _path; };
+
+// application settings
+var defaultSaveDir = process.mas? `${app.getPath('music')}/MYukkuriVoice`: app.getPath('desktop');
 
 // angular util service
 angular.module('UtilServices', ['MessageServices']);
@@ -32,8 +36,11 @@ class SeqFNameService implements yubo.SeqFNameService {
     const d = this.$q.defer<number>();
     fs().readdir(dir, (err: Error, files: string[]) => {
       if (err) {
+        if (process.mas && dir == defaultSaveDir) {
+          d.resolve(0); return;
+        }
         this.MessageService.syserror('ディレクトリを参照できませんでした。', err);
-        d.reject(err); return;
+        d.reject(err);
       }
 
       const pattern = new RegExp(`^${prefix}(${this.numPattern})${this.ext}$`);
@@ -48,21 +55,21 @@ class SeqFNameService implements yubo.SeqFNameService {
         } catch(err) {
           if (err.code != 'ENOENT') {
             this.MessageService.syserror('ファイル参照時にエラーが起きました。', err);
-            d.reject(err); return;
+            return d.reject(err);
           }
         }
       });
       if (npList.length < 1) {
-        d.resolve(0); return;
+        return d.resolve(0);
       }
 
       const maxNum = Math.max.apply(null, npList);
       if (maxNum >= this.limit) {
         this.MessageService.syserror(`${this.limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`);
-        d.reject(new Error(`${this.limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`)); return;
+        return d.reject(new Error(`${this.limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`));
       }
       const next = maxNum + 1;
-      d.resolve(next);
+      return d.resolve(next);
     });
     return d.promise;
   }

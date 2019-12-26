@@ -1,13 +1,14 @@
 {
   "name": "MYukkuriVoice",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
   "types": "types.d.ts",
   "scripts": {
     "tasks": "gulp --tasks-simple",
     "clean": "git checkout -- . && git clean -fd",
-    "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
+    "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log",
+    "log:store": "less `echo $HOME`/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Logs/MYukkuriVoice/log.log"
   },
   "keywords": [
     "mac-osx",
@@ -20,9 +21,9 @@
     "movie"
   ],
   "versions": {
-    "electron": "6.1.4",
+    "electron": "6.1.7",
     "node": "v12.4.0",
-    "chrome": "76.0.3809.88",
+    "chrome": "76.0.3809.146",
     "xcode": "9.2"
   },
   "homepage": "https://github.com/taku-o/myukkurivoice",
@@ -46,6 +47,7 @@
     "cryptico.js": "^1.2.0",
     "csv-parse": "^3.2.0",
     "csv-stringify": "^4.3.1",
+    "custom-error": "^0.2.1",
     "debug": "^4.1.1",
     "electron-json-storage": "^2.1.1",
     "electron-localshortcut": "^1.1.1",
@@ -82,7 +84,7 @@
     "chai": "^4.2.0",
     "del": "^5.1.0",
     "devtron": "^1.4.0",
-    "electron": "^6.1.4",
+    "electron": "^6.1.7",
     "electron-packager": "^14.1.0",
     "electron-performance-monitor": "github:taku-o/electron-performance-monitor#0.2.2",
     "electron-rebuild": "^1.8.6",

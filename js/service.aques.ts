@@ -111,7 +111,7 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
     }
 
     // in MacAppleStore enviornment
-    if (process.mas == true) {
+    if (process.mas) {
       this.generatorType = 'mas'; return false;
     }
 
@@ -280,10 +280,13 @@ class AquesService implements yubo.AquesService {
   private aquesTalk10DevKey: string = null;
   init(): void {
     const cancel = onIdle()(() => {
-      this.LicenseService.consumerKey('aqKanji2KoeDevKey').then((licenseKey) => {
+      this.LicenseService.consumerKey('aqKanji2KoeDevKey')
+      .then((licenseKey) => {
         this.aqKanji2KoeDevKey = licenseKey;
       });
-      this.LicenseService.consumerKey('aquesTalk10DevKey').then((licenseKey) => {
+
+      this.LicenseService.consumerKey('aquesTalk10DevKey')
+      .then((licenseKey) => {
         this.aquesTalk10DevKey = licenseKey;
       });
     });

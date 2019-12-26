@@ -18,7 +18,7 @@ macOS High Sierra(10.13)以降に対応しています。
 
 - [開発ステータス](#%E9%96%8B%E7%99%BA%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9)
 - [アプリバージョン](#%E3%82%A2%E3%83%97%E3%83%AA%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3)
-- [MYukkuriVoice の導入](#myukkurivoice-%E3%81%AE%E5%B0%8E%E5%85%A5)
+- [MYukkuriVoice の導入(通常版)](#myukkurivoice-%E3%81%AE%E5%B0%8E%E5%85%A5%E9%80%9A%E5%B8%B8%E7%89%88)
   - [ダウンロード](#%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89)
   - [インストール](#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)
   - [アンインストール](#%E3%82%A2%E3%83%B3%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)
@@ -78,9 +78,9 @@ macOS High Sierra(10.13)以降に対応しています。
 | 0.11.\*    | テスト済・安定   | [0.11.4](https://github.com/taku-o/myukkurivoice/releases/tag/0.11.4) |
 | 0.10.\*    | 一世代前の安定版 | [0.10.5](https://github.com/taku-o/myukkurivoice/releases/tag/0.10.5) |
 
-<a name="myukkurivoiceの導入"></a>
+<a name="myukkurivoice の導入"></a>
 
-## MYukkuriVoice の導入
+## MYukkuriVoice の導入(通常版)
 
 <a name="ダウンロード"></a>
 
@@ -111,7 +111,7 @@ macOS High Sierra(10.13)以降に対応しています。
   - ~/Application Support/MYukkuriVoice フォルダ
   - ~/Library/Logs/MYukkuriVoice フォルダ
 
-<a name="myukkurivoiceに関して"></a>
+<a name="myukkurivoice に関して"></a>
 
 ## MYukkuriVoice に関して
 
@@ -165,7 +165,7 @@ macOS High Sierra(10.13)以降に対応しています。
 - バグ報告は[こちら(課題リスト)](https://github.com/taku-o/myukkurivoice/issues)に登録お願いいたします。
 - 連絡する際はこちら(mail@nanasi.jp)までお願いします。
 
-<a name="myukkurivoiceの主な特徴"></a>
+<a name="myukkurivoice の主な特徴"></a>
 
 ## MYukkuriVoice の主な特徴
 

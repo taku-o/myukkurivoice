@@ -83,6 +83,7 @@ angular.module('mainModels', [])
       seqWriteOptions: {
         dir: '',
         prefix: '',
+        bookmark: '',
       },
     }
   )
@@ -104,6 +105,7 @@ angular.module('mainModels', [])
         seqWriteOptions: {
           dir: '',
           prefix: '',
+          bookmark: '',
         },
       },
       {
@@ -121,6 +123,7 @@ angular.module('mainModels', [])
         seqWriteOptions: {
           dir: '',
           prefix: '',
+          bookmark: '',
         },
       },
       {
@@ -138,6 +141,7 @@ angular.module('mainModels', [])
         seqWriteOptions: {
           dir: '',
           prefix: '',
+          bookmark: '',
         },
       },
       {
@@ -162,6 +166,7 @@ angular.module('mainModels', [])
         seqWriteOptions: {
           dir: '',
           prefix: '',
+          bookmark: '',
         },
       },
     ]

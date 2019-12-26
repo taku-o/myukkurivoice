@@ -4,6 +4,8 @@ class HelpController {
         this.$timeout = $timeout;
         this.store = store;
         this.reducer = reducer;
+        this.darwin = (typeof process !== 'undefined') ? !process.mas : true;
+        this.mas = (typeof process !== 'undefined') ? process.mas : true;
         reducer.addObserver(this);
     }
     page(pageName) {

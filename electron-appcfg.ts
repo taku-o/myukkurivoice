@@ -25,7 +25,7 @@ class FnAppCfg implements FnAppCfg {
       showMsgPane:      true,
       passPhrase:       null,
       aq10UseKeyEncrypted: '',
-      extensions:       {},
+      extensions:       {fcpx: false},
     };
 
     setTimeout(() => {
@@ -87,7 +87,7 @@ class FnAppCfg implements FnAppCfg {
       showMsgPane:         true,
       passPhrase:          crypto().randomBytes(16).toString('hex'),
       aq10UseKeyEncrypted: '',
-      extensions:          {},
+      extensions:          {fcpx: false},
     });
     ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'extensions'].forEach((k: string) => {
       if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
