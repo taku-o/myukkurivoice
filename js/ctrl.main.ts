@@ -7,6 +7,7 @@ class MainController implements yubo.MainController {
   public readonly phontSelectionList: yubo.YPhont[];
   readonly aq10BasList: {[key: string]: any}[] = [{name:'F1E', id:0}, {name:'F2E', id:1}, {name:'M1E', id:2}];
   readonly isTest: boolean = TEST;
+  readonly mas: boolean = process.mas;
 
   constructor(
     private $scope: ng.IScope,

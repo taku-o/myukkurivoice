@@ -182,6 +182,8 @@ declare namespace yubo {
     //private registerMainAppEvents(): void;
     //private registerSystemAppEvents(): void;
     resetAppConfigOnMain(): void;
+    resetVoiceDataOnMain(): void;
+    resetDictionaryData(): void;
   }
 
   // models.main.ts
@@ -213,7 +215,7 @@ declare namespace yubo {
     rhythmOn:     boolean,
     sourceWrite:  boolean;
     seqWrite:     boolean;
-    seqWriteOptions: {dir: string, prefix: string};
+    seqWriteOptions: {dir: string, prefix: string, bookmark: string};
     fcpxIxml:     boolean;
     fcpxIxmlOptions: {audioRole?: string;};
   }
@@ -309,6 +311,13 @@ declare namespace yubo {
     get(wavFilePath: string): yubo.IRecordMessage;
     add(record: yubo.IRecordMessage): void;
     getList(): yubo.IRecordMessage[];
+  }
+  export interface BookmarkService {
+    load(): ng.IPromise<boolean>;
+    add(filePath: string, bookmark: string): ng.IPromise<boolean>;
+    get(filePath: string): ng.IPromise<string>;
+    clear(): ng.IPromise<boolean>;
+    prune(filePaths: string[]): ng.IPromise<boolean>;
   }
   // service.aques.ts
   export interface AqKanji2KoeLib {
@@ -467,6 +476,7 @@ declare namespace yubo {
     appCfg: yubo.AppCfg;
     aq10BasList: {[key: string]: any}[];
     isTest: boolean;
+    mas: boolean;
     phontSelectionList: yubo.YPhont[];
     //YPhontMasterList: yubo.YPhont[];
     //YPhontMasterIosEnvList: yubo.YPhont[];
@@ -630,6 +640,8 @@ declare namespace yubo {
 
   // apps.help.ts
   export interface HelpController extends yubo.StoreObserver {
+    darwin: boolean;
+    mas: boolean;
     store: yubo.HelpStore;
     // action
     page(pageName: string): void;

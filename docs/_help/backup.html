@@ -1,11 +1,21 @@
 <div class="content">
-  <h4>設定をバックアップするには</h4>
-  <p>
+  <h4 ng-if="ctrl.darwin">設定をバックアップするには (通常版)</h4>
+  <p ng-if="ctrl.darwin">
     次にあげるファイルとフォルダをどこかに逃がしてください。
   </p>
-  <ul>
+  <ul ng-if="ctrl.darwin">
     <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice/data.json<span class="icon icon-folder"></span></a></li>
     <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice/config.json<span class="icon icon-folder"></span></a></li>
     <li><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/userdict')">$HOME/Library/Application Support/MYukkuriVoice/userdict<span class="icon icon-folder"></span></a></li>
+  </ul>
+
+  <h4 ng-if="ctrl.mas">設定をバックアップするには (AppStore版)</h4>
+  <p ng-if="ctrl.mas">
+    次にあげるファイルとフォルダをどこかに逃がしてください。
+  </p>
+  <ul ng-if="ctrl.mas">
+    <li>$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/data.json</li>
+    <li>$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/config.json</li>
+    <li>$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/userdict</li>
   </ul>
 </div>

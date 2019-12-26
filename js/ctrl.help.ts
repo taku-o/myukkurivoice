@@ -1,5 +1,7 @@
 // controllers
 class HelpController implements yubo.HelpController {
+  readonly darwin: boolean = (typeof process !== 'undefined')? !process.mas: true;
+  readonly mas: boolean = (typeof process !== 'undefined')? process.mas: true;
   constructor(
     private $timeout: ng.ITimeoutService,
     public store: yubo.HelpStore,

@@ -46,7 +46,7 @@
         <button class="btn btn-large btn-default" id="directory" ng-click="ctrl.directory()">
           <span class="icon icon-folder"></span>出力先ディレクトリ選択
         </button>
-        <small>dir: <span ng-bind="ctrl.store.curYvoice.seqWriteOptions.dir || '未選択時はデスクトップを使用'"></span></small>
+        <small>dir: <span ng-bind="ctrl.store.curYvoice.seqWriteOptions.dir || (ctrl.mas? '未選択時はミュージックフォルダを使用': '未選択時はデスクトップを使用')"></span></small>
       </div>
     </div>
 

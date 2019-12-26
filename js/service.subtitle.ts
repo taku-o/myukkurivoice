@@ -1,5 +1,8 @@
-var _fs: any, fs     = () => { _fs = _fs || require('fs'); return _fs; };
-var _path: any, path = () => { _path = _path || require('path'); return _path; };
+var _customError: any, customError = () => { _customError = _customError || require('custom-error'); return _customError; };
+var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _path: any, path               = () => { _path = _path || require('path'); return _path; };
+
+var BreakChain = customError()('BreakChain');
 
 // angular subtitle service
 angular.module('SubtitleServices', ['MessageServices']);
@@ -22,12 +25,17 @@ class TextSubtitleService implements yubo.TextSubtitleService {
 
   save(filePath: string, sourceText: string): ng.IPromise<string> {
     const d = this.$q.defer<string>();
-    fs().writeFile(filePath, sourceText, 'utf-8', (err: Error) => {
-      if (err) {
-        this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
-        d.reject(err); return;
-      }
-      d.resolve(filePath);
+
+    fs().promises.mkdir(path().dirname(filePath), {recursive: true})
+    .then(() => {
+      return fs().promises.writeFile(filePath, sourceText, 'utf-8');
+    })
+    .catch((err: Error) => {
+      this.MessageService.syserror('メッセージファイルの書き込みに失敗しました。', err);
+      d.reject(err); throw BreakChain();
+    })
+    .then(() => {
+      return d.resolve(filePath);
     });
     return d.promise;
   }

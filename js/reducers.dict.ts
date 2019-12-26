@@ -1,14 +1,17 @@
 var app = require('electron').remote.app;
+var _customError: any, customError = () => { _customError = _customError || require('custom-error'); return _customError; };
+var _epath: any, epath             = () => { _epath = _epath || require('electron-path'); return _epath; };
+var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
 var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
-var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 var _parse: any, parse             = () => { _parse = _parse || require('csv-parse/lib/sync'); return _parse; };
 var _stringify: any, stringify     = () => { _stringify = _stringify || require('csv-stringify/lib/sync'); return _stringify; };
-var _epath: any, epath             = () => { _epath = _epath || require('electron-path'); return _epath; };
-var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 var unpackedPath = epath().getUnpackedPath();
 var vendorPath = `${unpackedPath}/vendor`;
+
+var BreakChain = customError()('BreakChain');
 
 // env
 var MONITOR = process.env.MONITOR != null;
@@ -33,13 +36,15 @@ class DictReducer implements yubo.DictReducer {
 
   // $onInit
   init(): void {
-    this.setup().then(() => {
-      return this.loadCsv().then((records: yubo.DictRecord[]) => {
-        this.store.gridOptions.data = records;
-        this.notifyUpdates({gridOptions: this.store.gridOptions});
-        if (MONITOR) { log().warn(monitor().format('apps.dict', 'record loaded')); }
-        return true;
-      });
+    this.setup()
+    .then(() => {
+      return this.loadCsv();
+    })
+    .then((records: yubo.DictRecord[]) => {
+      this.store.gridOptions.data = records;
+      this.notifyUpdates({gridOptions: this.store.gridOptions});
+      if (MONITOR) { log().warn(monitor().format('apps.dict', 'record loaded')); }
+      return true;
     });
   }
   onLoad($scope: ng.IScope): void {
@@ -60,16 +65,16 @@ class DictReducer implements yubo.DictReducer {
           const d = this.$q.defer<string>();
           this.toIsInEditing();
           this.gridApi.rowEdit.setSavePromise(rowEntity, d.promise);
-
+ 
           if (!rowEntity.source) {
             rowEntity.error = '表記が入力されていません';
-            return this.$q.reject(new Error('source is empty.'));
+            this.$q.reject(new Error('source is empty.')); return d.promise;
           }
           if (!rowEntity.encoded) {
             rowEntity.error = '読みが入力されていません';
             d.reject(new Error('encoded is empty.')); return d.promise;
           }
-
+ 
           const r = this.AqUsrDicService.validateInput(rowEntity.source, rowEntity.encoded, rowEntity.kind);
           if (!r.success) {
             rowEntity.error = r.message;
@@ -197,7 +202,13 @@ class DictReducer implements yubo.DictReducer {
     }
   }
   save(): void {
-    this.validateData().then(() => {
+    this.validateData()
+    .catch((err: Error) => {
+      this.store.message = 'エラー。不正な作業データが残っています。修正するまで保存できません。';
+      this.notifyUpdates({message: this.store.message});
+      throw BreakChain();
+    })
+    .then(() => {
       const data = (stringify())(this.store.gridOptions.data, {
         columns: [
           'source',
@@ -210,14 +221,11 @@ class DictReducer implements yubo.DictReducer {
       this.clearInEditing();
       this.store.message = '作業データを保存しました。';
       this.notifyUpdates({});
-    })
-    .catch((err: Error) => {
-      this.store.message = 'エラー。不正な作業データが残っています。修正するまで保存できません。';
-      this.notifyUpdates({message: this.store.message});
     });
   }
   cancel(): ng.IPromise<boolean> {
-    return this.loadCsv().then((records: yubo.DictRecord[]) => {
+    return this.loadCsv()
+    .then((records: yubo.DictRecord[]) => {
       this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
       this.store.gridOptions.data = records;
       this.clearInEditing();
@@ -228,7 +236,13 @@ class DictReducer implements yubo.DictReducer {
   }
   dump(): void {
     if (this.store.isInEditing) { return; }
-    this.validateData().then(() => {
+    this.validateData()
+    .catch((err: Error) => {
+      this.store.message = 'エラー。不正な作業データが残っています。修正するまでエクスポートできません。';
+      this.notifyUpdates({message: this.store.message});
+      throw BreakChain();
+    })
+    .then(() => {
       // copy resource
       fs().stat(`${this.mAppDictDir}/aqdic.bin`, (err: Error, stats: fs.Stats) => {
         if (err) {
@@ -244,10 +258,6 @@ class DictReducer implements yubo.DictReducer {
         this.store.message = 'ユーザー辞書を更新しました。';
         this.notifyUpdates({message: this.store.message});
       });
-    })
-    .catch((err: Error) => {
-      this.store.message = 'エラー。不正な作業データが残っています。修正するまでエクスポートできません。';
-      this.notifyUpdates({message: this.store.message});
     });
   }
   reset(): ng.IPromise<boolean> {
@@ -255,13 +265,14 @@ class DictReducer implements yubo.DictReducer {
     // reset csv
     fs().writeFileSync(`${this.mAppDictDir}/aq_user.csv`, fs().readFileSync(`${this.rscDictDir}/aq_user.csv`));
     // and load
-    this.loadCsv().then((records: yubo.DictRecord[]) => {
+    this.loadCsv()
+    .then((records: yubo.DictRecord[]) => {
       this.gridApi.rowEdit.setRowsClean(this.store.gridOptions.data);
       this.store.gridOptions.data = records;
       this.clearInEditing();
       this.store.message = 'マスター辞書データで作業データをリセットしました。';
       this.notifyUpdates({});
-      d.resolve(true);
+      return d.resolve(true);
     });
     return d.promise;
   }
@@ -271,21 +282,21 @@ class DictReducer implements yubo.DictReducer {
   }
   private validateData(): ng.IPromise<boolean> {
     const d = this.$q.defer<boolean>();
-    this.gridApi.rowEdit.flushDirtyRows(this.gridApi.grid).then(() => {
+    this.gridApi.rowEdit.flushDirtyRows(this.gridApi.grid)
+    .then(() => {
       const errorRows = this.gridApi.rowEdit.getErrorRows(this.gridApi.grid);
       if (errorRows.length < 1) {
-        d.resolve(true); return;
+        return d.resolve(true);
       }
       // check errorRows that is really error ?
       for (let row of errorRows) {
         if (row.error) {
-          d.reject(new Error('error data found.'));
-          return;
+          d.reject(new Error('error data found.')); return;
         }
       }
       // fix error rows to clean.
       this.gridApi.rowEdit.setRowsClean(errorRows);
-      d.resolve(true);
+      return d.resolve(true);
     })
     .catch((err: Error) => {
       d.reject(err);

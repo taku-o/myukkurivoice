@@ -30,7 +30,7 @@
     これは、そういうものだと思ってください。<br>
   </p>
 
-  <h4>Command + Wでアプリのウィンドウが閉じない</h4>
+  <h4>Command + Wでアプリのウィンドウが<br>閉じない</h4>
   <p>
     メインウィンドウでは、<br>
     Command + Wは音声の再生停止に割り当てています。<br>
@@ -46,7 +46,7 @@
     既存の設定は消えるので、残しておきたい設定はメモしておいてください。
   </p>
 
-  <h4>アプリのウィンドウがどこかに行ってしまいました</h4>
+  <h4>アプリのウィンドウがどこかに<br>行ってしまいました</h4>
   <p>
     MYukkuriVoiceはアプリを終了した時のウィンドウの位置を覚えておいて、
     次回起動時に、同じ場所にウィンドウを表示する機能があります。<br>
@@ -55,14 +55,14 @@
     困った時は、メニューから「ウィンドウ位置リセット」を選択してください。
   </p>
 
-  <h4>ソースコードが公開されているが実行するとエラー<br>になる</h4>
+  <h4>ソースコードが公開されているが<br>実行するとエラーになる</h4>
   <p>
     ライセンスの関係上、公開されているソースコードにAquesTalkのライブラリは含まれていません。<br>
     株式会社アクエスト様からライブラリのライセンスを購入して組み込むか、
     評価版を使用する必要があります。
   </p>
 
-  <h4>MYukkuriVoiceで作った音声を使った動画を<br>Youtubeなどに広告付きで投稿してお金を貰うには<br>ライセンスが要る？</h4>
+  <h4>MYukkuriVoiceで作った音声を使った動画を<br>Youtubeなどに広告付きで投稿してお金を貰う<br>にはライセンスが要る？</h4>
   <p>
     AquesTalkの使用ライセンスが必要です。<br>
     <a ng-click="ctrl.browser('https://store.a-quest.com/')">アクエストオンラインストア<span class="icon icon-popup"></span></a>で
@@ -79,10 +79,53 @@
     問題を報告して頂けるだけでも助かります。
   </p>
 
-  <h4>Chromeで「一般的にダウンロードされておらず、<br>危険を及ぼす可能性があります」と表示される</h4>
+  <h4>Chromeで「一般的にダウンロードされておら<br>ず、危険を及ぼす可能性があります」と表示<br>される</h4>
   <p>
     <a ng-click="ctrl.browser('https://github.com/taku-o/myukkurivoice/releases')">releasesからアプリをダウンロード<span class="icon icon-popup"></span></a>した際に、
     Chromeで「一般的にダウンロードされておらず、危険を及ぼす可能性があります」と表示される現象。<br>
     zipファイルのダウンロード件数が少ない時に表示されます。問題はないのでそのままダウンロードを進めてください。
   </p>
+
+  <h4>アプリを更新したら設定データが消えた！？</h4>
+  <p>
+    通常版とAppStore版のアプリで、設定データの保存場所が違います。<br>
+    そのため、それまでインストールしいていたのと違う側をインストールすると、<br>
+    設定が消えたように見えてしまう現象がおきます。<br>
+    <br>
+    設定ファイルの構造には互換があるので、コピーすればほぼ復旧します。
+    <a ng-click="ctrl.page('sandbox')">→ 通常版とAppStore版の違い</a>
+  </p>
+  <table class="table-striped" ng-if="ctrl.darwin">
+    <tbody>
+      <tr>
+        <th>通常版</th>
+        <td><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a></td>
+      </tr>
+      <tr>
+        <th>AppStore版</th>
+        <td><a class="show-item-in-folder" ng-click="ctrl.showItemInFolder('$HOME/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Application Support/MYukkuriVoice/')">$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice<span class="icon icon-folder"></span></a></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table-striped" ng-if="!ctrl.darwin">
+    <tbody>
+      <tr>
+        <th>通常版</th>
+        <td>$HOME/Library/Application Support/MYukkuriVoice</td>
+      </tr>
+      <tr>
+        <th>AppStore版</th>
+        <td>$HOME/Library/Containers/jp.nanasi.myukkurivoice/<br>Data/Library/Application Support/MYukkuriVoice</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>音声保存時に「音声データを作成できません<br>でした。EPERM: operation not permitted」<br>と表示される</h4>
+  <p>
+    AppStore版アプリで、連番ファイル出力時のエラーなのであれば、<br>
+    許諾済みのパーミッションが消失した可能性があります。<br>
+    ボイスの設定画面で出力先ディレクトリを再選択した後、ボイス設定を保存すれば、<br>
+    新しいパーミッション情報がボイス設定ファイルに記録され、エラーが修正されます。
+  </p>
+
 </div>

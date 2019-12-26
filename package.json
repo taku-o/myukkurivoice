@@ -7,7 +7,8 @@
   "scripts": {
     "tasks": "gulp --tasks-simple",
     "clean": "git checkout -- . && git clean -fd",
-    "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log"
+    "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log",
+    "log:store": "less `echo $HOME`/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Logs/MYukkuriVoice/log.log"
   },
   "keywords": [
     "mac-osx",
@@ -46,6 +47,7 @@
     "cryptico.js": "^1.2.0",
     "csv-parse": "^3.2.0",
     "csv-stringify": "^4.3.1",
+    "custom-error": "^0.2.1",
     "debug": "^4.1.1",
     "electron-json-storage": "^2.1.1",
     "electron-localshortcut": "^1.1.1",

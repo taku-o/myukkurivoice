@@ -1,18 +1,22 @@
 var app = require('electron').remote.app;
-var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _clipboard: any, clipboard     = () => { _clipboard = _clipboard || require('electron').clipboard; return _clipboard; };
-var _path: any, path               = () => { _path = _path || require('path'); return _path; };
+var _customError: any, customError = () => { _customError = _customError || require('custom-error'); return _customError; };
 var _fs: any, fs                   = () => { _fs = _fs || require('fs'); return _fs; };
+var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || require('electron').ipcRenderer; return _ipcRenderer; };
 var _log: any, log                 = () => { _log = _log || require('electron-log'); return _log; };
 var _monitor: any, monitor         = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 var _onIdle: any, onIdle           = () => { _onIdle = _onIdle || require('on-idle'); return _onIdle; };
+var _path: any, path               = () => { _path = _path || require('path'); return _path; };
+var _shell: any, shell             = () => { _shell = _shell || require('electron').shell; return _shell; };
 var _waitUntil: any, waitUntil     = () => { _waitUntil = _waitUntil || require('wait-until'); return _waitUntil; };
+
+var BreakChain = customError()('BreakChain');
 
 // env
 var MONITOR = process.env.MONITOR != null;
 
 // application settings
-var desktopDir = app.getPath('desktop');
+var defaultSaveDir = process.mas? `${app.getPath('music')}/MYukkuriVoice`: app.getPath('desktop');
 
 // action reducer
 class MainReducer implements yubo.MainReducer {
@@ -221,7 +225,8 @@ class MainReducer implements yubo.MainReducer {
   }
   private loadHistory(): void {
     const cancel = onIdle()(() => {
-      this.HistoryService.load().then((cache) => {
+      return this.HistoryService.load()
+      .then((cache) => {
         this.store.generatedList = this.HistoryService.getList();
         while (this.store.generatedList.length > 10) {
           this.store.generatedList.pop();
@@ -348,7 +353,8 @@ class MainReducer implements yubo.MainReducer {
         p.resolve();
         p = p.promise;
       }
-      return (p as ng.IPromise<{duration: number}>).then((audioParams: {duration: number}) => {
+      return (p as ng.IPromise<{duration: number}>)
+      .then((audioParams: {duration: number}) => {
         return this.playEach(cinput);
       });
     }, this.$q.defer<{duration: number}>());
@@ -391,18 +397,22 @@ class MainReducer implements yubo.MainReducer {
       detune: yvoice.detune,
     };
 
-    this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
-      return this.AudioService.play(bufWav, playOptions).then((audioParams: {duration: number}) => {
-        d.resolve(audioParams);
-      })
-      .catch((err: Error) => {
-        this.MessageService.error('音声データを再生できませんでした。', err);
-        d.reject(err);
-      });
+    this.AquesService.wave(encoded, phont, speed, waveOptions)
+    .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
+      this.MessageService.error('音声データを作成できませんでした。', err);
+      d.reject(err); throw BreakChain();
+    })
+    .then((bufWav: Buffer) => {
+      return this.AudioService.play(bufWav, playOptions);
     })
     .catch((err: Error) => {
-      this.MessageService.error('音声データを作成できませんでした。', err);
-      d.reject(err);
+      if (err instanceof BreakChain) { throw err; }
+      this.MessageService.error('音声データを再生できませんでした。', err);
+      d.reject(err); throw BreakChain();
+    })
+    .then((audioParams: {duration: number}) => {
+      return d.resolve(audioParams);
     });
     return d.promise;
   }
@@ -468,9 +478,15 @@ class MainReducer implements yubo.MainReducer {
     if (this.store.curYvoice.seqWrite) {
       let dir = this.store.curYvoice.seqWriteOptions.dir;
       const prefix = this.store.curYvoice.seqWriteOptions.prefix;
+      const bookmark = this.store.curYvoice.seqWriteOptions.bookmark;
       if (!dir) {
-        dir = desktopDir;
+        dir = defaultSaveDir;
       }
+
+      // file permission on sandbox
+      const stopAccessingSecurityScopedResource = (!process.mas || !bookmark)?
+        () => {}:
+        app.startAccessingSecurityScopedResource(bookmark);
 
       // record
       const parsedList = this.CommandService.parseInput(encoded, this.store.yvoiceList, this.store.curYvoice);
@@ -481,44 +497,52 @@ class MainReducer implements yubo.MainReducer {
           p.resolve();
           p = p.promise;
         }
-        return (p as ng.IPromise<{wavFilePath: string, duration: number}>).then((audioParams: {wavFilePath: string, duration: number}) => {
-          return this.recordEach(cinput, dir, prefix)
-            .then((audioParams: {wavFilePath: string, duration: number}) => {
-              if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
-              }
-              this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
-                {
-                  wavFilePath: audioParams.wavFilePath,
-                  srcTextPath: sourceFname,
-                  source: loggingSourceText,
-                  encoded: cinput.text,
-                  duration: audioParams.duration,
-                }
-              );
-              return audioParams;
-            });
+
+        return (p as ng.IPromise<{wavFilePath: string, duration: number}>)
+        .then((audioParams: {wavFilePath: string, duration: number}) => {
+          return this.recordEach(cinput, dir, prefix);
+        })
+        .then((audioParams: {wavFilePath: string, duration: number}) => {
+          if (this.store.curYvoice.sourceWrite && !sourceFname) {
+            sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
+          }
+          this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
+            {
+              wavFilePath: audioParams.wavFilePath,
+              srcTextPath: sourceFname,
+              source: loggingSourceText,
+              encoded: cinput.text,
+              duration: audioParams.duration,
+            }
+          );
+          return audioParams;
         });
       }, this.$q.defer<{wavFilePath: string, duration: number}>())
       // record source message
       .then((audioParams: {wavFilePath: string, duration: number}) => {
-        if (!sourceFname) { return; }
-        this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
-          this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
-            {
-              srcTextPath: sourceFname,
-              source: loggingSourceText,
-            }
-          );
-        })
+        if (!sourceFname) { return null; }
+        return this.TextSubtitleService.save(sourceFname, loggingSourceText)
         .catch((err: Error) => {
           this.MessageService.error('メッセージファイルを作成できませんでした。', err);
+          throw BreakChain();
         });
+      })
+      .then(() => {
+        this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
+          {
+            srcTextPath: sourceFname,
+            source: loggingSourceText,
+          }
+        );
+      })
+      .finally(() => {
+        stopAccessingSecurityScopedResource();
       });
 
     // 通常保存
     } else {
-      ipcRenderer().once('showSaveDialog', (event: Electron.Event, filePath: string) => {
+      ipcRenderer().once('showSaveDialog', (event: Electron.Event, selector: {filePath: string}) => {
+        const filePath = selector.filePath;
         if (!filePath) {
           this.MessageService.error('保存先が指定されませんでした。');
           return;
@@ -537,58 +561,46 @@ class MainReducer implements yubo.MainReducer {
             p.resolve();
             p = p.promise;
           }
-          return (p as ng.IPromise<{wavFilePath: string, duration: number}>).then((audioParams: {wavFilePath: string, duration: number}) => {
+          return (p as ng.IPromise<{wavFilePath: string, duration: number}>)
+          .then((audioParams: {wavFilePath: string, duration: number}) => {
             if (containsCommand) {
-              return this.recordEach(cinput, dir, prefix)
-                .then((audioParams: {wavFilePath: string, duration: number}) => {
-                  if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                    sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
-                  }
-                  this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
-                    {
-                      wavFilePath: audioParams.wavFilePath,
-                      srcTextPath: sourceFname,
-                      source: loggingSourceText,
-                      encoded: cinput.text,
-                      duration: audioParams.duration,
-                    }
-                  );
-                  return audioParams;
-                });
+              return this.recordEach(cinput, dir, prefix);
             } else {
-              return this.recordSolo(cinput, filePath)
-                .then((audioParams: {wavFilePath: string, duration: number}) => {
-                  if (this.store.curYvoice.sourceWrite && !sourceFname) {
-                    sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
-                  }
-                  this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
-                    {
-                      wavFilePath: audioParams.wavFilePath,
-                      srcTextPath: sourceFname,
-                      source: loggingSourceText,
-                      encoded: cinput.text,
-                      duration: audioParams.duration,
-                    }
-                  );
-                  return audioParams;
-                });
+              return this.recordSolo(cinput, filePath);
             }
+          })
+          .then((audioParams: {wavFilePath: string, duration: number}) => {
+            if (this.store.curYvoice.sourceWrite && !sourceFname) {
+              sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
+            }
+            this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
+              {
+                wavFilePath: audioParams.wavFilePath,
+                srcTextPath: sourceFname,
+                source: loggingSourceText,
+                encoded: cinput.text,
+                duration: audioParams.duration,
+              }
+            );
+            return audioParams;
           });
         }, this.$q.defer<{wavFilePath: string, duration: number}>())
         // record source message
         .then((audioParams: {wavFilePath: string, duration: number}) => {
-          if (!sourceFname) { return; }
-          this.TextSubtitleService.save(sourceFname, loggingSourceText).then(() => {
-            this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
-              {
-                srcTextPath: sourceFname,
-                source: loggingSourceText,
-              }
-            );
-          })
+          if (!sourceFname) { return null; }
+          return this.TextSubtitleService.save(sourceFname, loggingSourceText)
           .catch((err: Error) => {
             this.MessageService.error('メッセージファイルを作成できませんでした。', err);
+            throw BreakChain();
           });
+        })
+        .then(() => {
+          this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
+            {
+              srcTextPath: sourceFname,
+              source: loggingSourceText,
+            }
+          );
         });
       });
       ipcRenderer().send('showSaveDialog', 'wav');
@@ -639,18 +651,22 @@ class MainReducer implements yubo.MainReducer {
       recordOptions.fcpxIxmlOptions = {audioRole: yvoice.fcpxIxmlOptions.audioRole};
     }
 
-    this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
-      return this.AudioService.record(filePath, bufWav, recordOptions).then((audioParams: {duration: number}) => {
-        d.resolve({wavFilePath: filePath, duration: audioParams.duration});
-      })
-      .catch((err: Error) => {
-        this.MessageService.error('音声データを記録できませんでした。', err);
-        d.reject(err);
-      });
+    this.AquesService.wave(encoded, phont, speed, waveOptions)
+    .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
+      this.MessageService.error('音声データを作成できませんでした。', err);
+      d.reject(err); throw BreakChain();
+    })
+    .then((bufWav: Buffer) => {
+      return this.AudioService.record(filePath, bufWav, recordOptions);
     })
     .catch((err: Error) => {
-      this.MessageService.error('音声データを作成できませんでした。', err);
-      d.reject(err);
+      if (err instanceof BreakChain) { throw err; }
+      this.MessageService.error('音声データを記録できませんでした。', err);
+      d.reject(err); throw BreakChain();
+    })
+    .then((audioParams: {duration: number}) => {
+      return d.resolve({wavFilePath: filePath, duration: audioParams.duration});
     });
     return d.promise;
   }
@@ -699,23 +715,28 @@ class MainReducer implements yubo.MainReducer {
       recordOptions.fcpxIxmlOptions = {audioRole: yvoice.fcpxIxmlOptions.audioRole};
     }
 
-    this.SeqFNameService.nextNumber(dir, fnameprefix).then((nextNum) => {
+    let filePath;
+    this.SeqFNameService.nextNumber(dir, fnameprefix)
+    .then((nextNum) => {
       const nextFname = this.SeqFNameService.nextFname(fnameprefix, nextNum);
-      const filePath = path().join(dir, nextFname);
-
-      this.AquesService.wave(encoded, phont, speed, waveOptions).then((bufWav) => {
-        return this.AudioService.record(filePath, bufWav, recordOptions).then((audioParams: {duration: number}) => {
-          d.resolve({wavFilePath: filePath, duration: audioParams.duration});
-        })
-        .catch((err: Error) => {
-          this.MessageService.error('音声データを記録できませんでした。', err);
-          d.reject(err);
-        });
-      })
-      .catch((err: Error) => {
-        this.MessageService.error('音声データを作成できませんでした。', err);
-        d.reject(err);
-      });
+      filePath = path().join(dir, nextFname);
+      return this.AquesService.wave(encoded, phont, speed, waveOptions);
+    })
+    .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
+      this.MessageService.error('音声データを作成できませんでした。', err);
+      d.reject(err); throw BreakChain();
+    })
+    .then((bufWav: Buffer) => {
+      return this.AudioService.record(filePath, bufWav, recordOptions);
+    })
+    .catch((err: Error) => {
+      if (err instanceof BreakChain) { throw err; }
+      this.MessageService.error('音声データを記録できませんでした。', err);
+      d.reject(err); throw BreakChain();
+    })
+    .then((audioParams: {duration: number}) => {
+      return d.resolve({wavFilePath: filePath, duration: audioParams.duration});
     });
     return d.promise;
   }
@@ -908,15 +929,21 @@ class MainReducer implements yubo.MainReducer {
       return;
     }
 
-    ipcRenderer().once('showDirDialog', (event: Electron.Event, dirs: string[]) => {
+    ipcRenderer().once('showDirDialog', (event: Electron.Event, selector: {filePaths: string[], bookmarks: string[]}) => {
+      const dirs = selector.filePaths;
+      const bookmarks = selector.bookmarks;
       if (!dirs || dirs.length < 1) {
         return;
       }
+
       this.store.curYvoice.seqWriteOptions.dir = dirs[0];
+      if (bookmarks && bookmarks.length > 0 && bookmarks[0]) {
+        this.store.curYvoice.seqWriteOptions.bookmark = bookmarks[0];
+      }
       this.notifyUpdates({curYvoice: this.store.curYvoice});
     });
     let optDir = this.store.curYvoice.seqWriteOptions.dir;
-    if (!optDir) { optDir = desktopDir; }
+    if (!optDir) { optDir = defaultSaveDir; }
     ipcRenderer().send('showDirDialog', optDir);
   }
 

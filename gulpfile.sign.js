@@ -130,14 +130,22 @@ gulp.task('_sign:distribution:direct', (cb) => {
   let app_binary = `${APP_PATH}/Contents/MacOS/${APP}`;
   let app_top = `${APP_PATH}`;
 
-  for (let i = 0; i < child_list.length; i++ ) {
-    execSync(`/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${child_list[i]}"`);
+  for (let i = 0; i < child_list.length; i++) {
+    execSync(
+      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${child_list[i]}"`
+    );
   }
-  for (let i = 0; i < loginhelper_list.length; i++ ) {
-    execSync(`/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${LOGINHELPER_PLIST}" "${loginhelper_list[i]}"`);
+  for (let i = 0; i < loginhelper_list.length; i++) {
+    execSync(
+      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${LOGINHELPER_PLIST}" "${loginhelper_list[i]}"`
+    );
   }
-  execSync(`/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${app_binary}"`);
-  execSync(`/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${PARENT_PLIST}" "${app_binary}"`);
+  execSync(
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${app_binary}"`
+  );
+  execSync(
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${PARENT_PLIST}" "${app_binary}"`
+  );
 
   cb();
 });
@@ -155,4 +163,3 @@ gulp.task('_flat:distribution', () => {
     platform: platform,
   });
 });
-

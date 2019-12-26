@@ -11,6 +11,7 @@ class HelpReducer implements yubo.HelpReducer {
     'uninstall',
     'backup',
     'license',
+    'sandbox',
     'catalina',
     'contact',
     'funclist',
