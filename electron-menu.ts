@@ -350,7 +350,7 @@ class FnMenu implements yubo.FnMenu {
           },
           {type: 'separator'},
           {
-            label: 'Learn More',
+            label: 'もっと詳しく知る',
             click() { shell.openExternal('https://taku-o.github.io/myukkurivoice/'); },
           },
         ],
@@ -404,7 +404,7 @@ class FnMenu implements yubo.FnMenu {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const dockMenuList: Electron.MenuItemConstructorOptions[] = [
       {
-        label: 'About MYukkuriVoice',
+        label: 'MYukkuriVoiceについて',
         click() { myApp.showAboutWindow(); },
       },
       {
