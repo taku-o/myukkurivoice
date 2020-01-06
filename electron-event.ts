@@ -134,7 +134,7 @@ class FnEvent implements yubo.FnEvent {
           buttons: ['OK'],
           defaultId: 0,
         };
-        return dialog.showMessageBox(myApp.systemWindow, dialogOptions)
+        return dialog.showMessageBox(myApp.systemWindow, dialogOptions);
       })
       .then((result) => {
         const r = result.response;

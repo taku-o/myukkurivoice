@@ -15,7 +15,7 @@ class FnMenu implements yubo.FnMenu {
         label: 'MYukkuriVoice',
         submenu: [
           {
-            label: 'About MYukkuriVoice',
+            label: 'MYukkuriVoiceについて',
             click() { myApp.showAboutWindow(); },
           },
           {type: 'separator'},
@@ -29,14 +29,27 @@ class FnMenu implements yubo.FnMenu {
             click() { myApp.resetAppConfigOnMain(); },
           },
           {type: 'separator'},
-          {role: 'services'},
+          {
+            role: 'services',
+            label: 'サービス',
+          },
           {type: 'separator'},
-          {role: 'hide'},
-          {role: 'hideOthers'},
-          {role: 'unhide'},
+          {
+            role: 'hide',
+            label: 'MYukkuriVoiceを隠す',
+          },
+          {
+            role: 'hideOthers',
+            label: '他を隠す',
+          },
+          {
+            role: 'unhide',
+            label: 'すべてを表示',
+          },
           {type: 'separator'},
           {
             role: 'quit',
+            label: 'MYukkuriVoiceを終了',
             accelerator: 'Command+Q',
           },
         ],
@@ -44,20 +57,50 @@ class FnMenu implements yubo.FnMenu {
       {
         label: '編集',
         submenu: [
-          {role: 'undo'},
-          {role: 'redo'},
+          {
+            role: 'undo',
+            label: '元に戻す',
+          },
+          {
+            role: 'redo',
+            label: 'やり直す',
+          },
           {type: 'separator'},
-          {role: 'cut'},
-          {role: 'copy'},
-          {role: 'paste'},
-          {role: 'pasteAndMatchStyle'},
-          {role: 'delete'},
-          {role: 'selectAll'},
+          {
+            role: 'cut',
+            label: '切り取り',
+          },
+          {
+            role: 'copy',
+            label: 'コピー',
+          },
+          {
+            role: 'paste',
+            label: 'ペースト',
+          },
+          {
+            role: 'pasteAndMatchStyle',
+            label: 'ペースとしてスタイルを合わせる',
+          },
+          {
+            role: 'delete',
+            label: '削除',
+          },
+          {
+            role: 'selectAll',
+            label: 'すべてを選択',
+          },
           {type: 'separator'},
-          {label: 'Speech',
+          {label: 'スピーチ',
             submenu: [
-              {role: 'startSpeaking'},
-              {role: 'stopSpeaking'},
+              {
+                role: 'startSpeaking',
+                label: '読み上げを開始',
+              },
+              {
+                role: 'stopSpeaking',
+                label: '読み上げを停止',
+              },
             ],
           },
         ],
@@ -246,13 +289,28 @@ class FnMenu implements yubo.FnMenu {
             click() { myApp.mainWindow.webContents.send('menu', 'switchAlwaysOnTop'); },
           },
           {type: 'separator'},
-          {role: 'reload'},
-          {role: 'zoomIn'},
-          {role: 'zoomOut'},
-          {role: 'resetZoom'},
-          {role: 'togglefullscreen'},
           {
-            label: 'Bring All to Front',
+            role: 'reload',
+            label: 'リロード',
+          },
+          {
+            role: 'zoomIn',
+            label: '拡大',
+          },
+          {
+            role: 'zoomOut',
+            label: '縮小',
+          },
+          {
+            role: 'resetZoom',
+            label: '拡大縮小解除',
+          },
+          {
+            role: 'togglefullscreen',
+            label: 'フルスクリーン化・解除',
+          },
+          {
+            label: 'すべてを手前に移動',
             role: 'front',
           },
           {type: 'separator'},
@@ -292,7 +350,7 @@ class FnMenu implements yubo.FnMenu {
           },
           {type: 'separator'},
           {
-            label: 'Learn More',
+            label: 'もっと詳しく知る',
             click() { shell.openExternal('https://taku-o.github.io/myukkurivoice/'); },
           },
         ],
@@ -346,7 +404,7 @@ class FnMenu implements yubo.FnMenu {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     const dockMenuList: Electron.MenuItemConstructorOptions[] = [
       {
-        label: 'About MYukkuriVoice',
+        label: 'MYukkuriVoiceについて',
         click() { myApp.showAboutWindow(); },
       },
       {
