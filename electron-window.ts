@@ -1,6 +1,5 @@
 'use strict';
 import {BrowserWindow, dialog, shell} from 'electron';
-var _localShortcut: any, localShortcut     = () => { _localShortcut = _localShortcut || require('electron-localshortcut'); return _localShortcut; };
 var _log: any, log                         = () => { _log = _log || require('electron-log'); return _log; };
 var _path: any, path                       = () => { _path = _path || require('path'); return _path; };
 var _openAboutWindow: any, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('myukkurivoice-about-window').default; return _openAboutWindow; };
@@ -42,68 +41,9 @@ class FnWindow implements yubo.FnWindow {
     });
     myApp.mainWindow.loadFile('./contents-main.html');
 
-    // shortcut
-    localShortcut().register(myApp.mainWindow, 'Command+P', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'play');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+W', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'stop');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+S', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'record');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+Up', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'moveToSource');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+Down', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'moveToEncoded');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+Right', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'encode');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+D', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'fromClipboard');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+N', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'putVoiceName');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+Left', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNextConfig');
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+Shift+Left', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichPreviousConfig');
-    });
-
-    localShortcut().register(myApp.mainWindow, 'Command+0', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 0);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+1', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 1);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+2', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 2);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+3', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 3);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+4', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 4);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+5', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 5);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+6', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 6);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+7', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 7);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+8', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 8);
-    });
-    localShortcut().register(myApp.mainWindow, 'Command+9', () => {
-      myApp.mainWindow.webContents.send('shortcut', 'swichNumberConfig', 9);
-    });
+    // shortcut key, touch bar
+    myApp.registerMainWindowShortcut(myApp.mainWindow);
+    myApp.mainWindow.setTouchBar(myApp.getMainWindowTouchBar());
 
     // main window event
     myApp.mainWindow.webContents.on('did-finish-load', () => {
@@ -164,25 +104,9 @@ class FnWindow implements yubo.FnWindow {
     });
     myApp.helpWindow.loadFile('./contents-help.html');
 
-    // shortcut
-    localShortcut().register(myApp.helpWindow, 'Command+W', () => {
-      if (myApp.helpWindow) { myApp.helpWindow.close(); }
-    });
-    localShortcut().register(myApp.helpWindow, 'Up', () => {
-      myApp.helpWindow.webContents.send('shortcut', 'moveToPreviousHelp');
-    });
-    localShortcut().register(myApp.helpWindow, 'Down', () => {
-      myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp');
-    });
-    localShortcut().register(myApp.helpWindow, 'Command+Left', () => {
-      myApp.helpWindow.webContents.goBack();
-    });
-    localShortcut().register(myApp.helpWindow, 'Command+Right', () => {
-      myApp.helpWindow.webContents.goForward();
-    });
-    localShortcut().register(myApp.helpWindow, 'Command+F', () => {
-      myApp.helpWindow.webContents.send('shortcut', 'openSearchForm');
-    });
+    // shortcut key, touch bar
+    myApp.registerHelpWindowShortcut(myApp.helpWindow);
+    myApp.helpWindow.setTouchBar(myApp.getHelpWindowTouchBar());
 
     // event
     myApp.helpWindow.webContents.on('did-finish-load', () => {
@@ -238,10 +162,9 @@ class FnWindow implements yubo.FnWindow {
     });
     myApp.helpSearchDialog.loadFile('./contents-helpsearch.html');
 
-    // shortcut
-    localShortcut().register(myApp.helpSearchDialog, 'Command+W', () => {
-      if (myApp.helpSearchDialog) { myApp.helpSearchDialog.hide(); }
-    });
+    // shortcut key, touch bar
+    myApp.registerHelpSearchDialogShortcut(myApp.helpSearchDialog);
+    myApp.helpSearchDialog.setTouchBar(myApp.getMinimalTouchBar());
 
     // event
     myApp.helpSearchDialog.webContents.on('did-finish-load', () => {
@@ -289,10 +212,9 @@ class FnWindow implements yubo.FnWindow {
     });
     myApp.systemWindow.loadFile('./contents-system.html');
 
-    // shortcut
-    localShortcut().register(myApp.systemWindow, 'Command+W', () => {
-      if (myApp.systemWindow) { myApp.systemWindow.close(); }
-    });
+    // shortcut key, touch bar
+    myApp.registerSystemWindowShortcut(myApp.systemWindow);
+    myApp.systemWindow.setTouchBar(myApp.getMinimalTouchBar());
 
     // event
     myApp.systemWindow.webContents.on('did-finish-load', () => {
@@ -336,16 +258,9 @@ class FnWindow implements yubo.FnWindow {
     });
     myApp.dictWindow.loadFile('./contents-dict.html');
 
-    // shortcut
-    localShortcut().register(myApp.dictWindow, 'Command+W', () => {
-      if (myApp.dictWindow) { myApp.dictWindow.close(); }
-    });
-    localShortcut().register(myApp.dictWindow, 'Command+S', () => {
-      myApp.dictWindow.webContents.send('shortcut', 'save');
-    });
-    localShortcut().register(myApp.dictWindow, 'Command+N', () => {
-      myApp.dictWindow.webContents.send('shortcut', 'add');
-    });
+    // shortcut key, touch bar
+    myApp.registerDictWindowShortcut(myApp.dictWindow);
+    myApp.dictWindow.setTouchBar(myApp.getDictWindowTouchBar());
 
     // window event
     myApp.dictWindow.webContents.on('did-finish-load', () => {
@@ -378,9 +293,10 @@ class FnWindow implements yubo.FnWindow {
       open_devtools: false,
     });
     if (myApp.mainWindow) { w.setParentWindow(myApp.mainWindow); }
-    localShortcut().register(w, 'Command+W', () => {
-      if (w) { w.close(); }
-    });
+
+    // shortcut key, touch bar
+    myApp.registerAboutWindowShortcut(w);
+    w.setTouchBar(myApp.getMinimalTouchBar());
   }
 
   // showVersionDialog
