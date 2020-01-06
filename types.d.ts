@@ -135,7 +135,7 @@ declare namespace yubo {
   }
 
   // electron.ts
-  export interface IMYukkuriVoice extends FnAppCfg, FnLaunch, FnMenu, FnWindow, FnEvent {
+  export interface IMYukkuriVoice extends FnAppCfg, FnLaunch, FnMenu, FnTouchBar, FnWindow, FnShortcut, FnEvent {
     launchArgs:       {filePath: string}
     appCfg:           yubo.AppCfg;
     config:           ElectronStore.Config;
@@ -166,6 +166,12 @@ declare namespace yubo {
     enableHelpMenu(): void;
     disableHelpMenu(): void;
   }
+  export interface FnTouchBar {
+    getMainWindowTouchBar(): Electron.TouchBar;
+    getHelpWindowTouchBar(): Electron.TouchBar;
+    getDictWindowTouchBar(): Electron.TouchBar;
+    getMinimalTouchBar(): Electron.TouchBar;
+  }
   export interface FnWindow {
     showMainWindow(): void;
     showHelpWindow(): void;
@@ -175,6 +181,14 @@ declare namespace yubo {
     showAboutWindow(): void;
     showVersionDialog(): void;
     showSpecWindow(): void;
+  }
+  export interface FnShortcut {
+    registerMainWindowShortcut(mainWindow: Electron.BrowserWindow): void;
+    registerHelpWindowShortcut(helpWindow: Electron.BrowserWindow): void;
+    registerHelpSearchDialogShortcut(helpSearchDialog: Electron.BrowserWindow): void;
+    registerSystemWindowShortcut(systemWindow: Electron.BrowserWindow): void;
+    registerDictWindowShortcut(dictWindow: Electron.BrowserWindow): void;
+    registerAboutWindowShortcut(aboutWindow: Electron.BrowserWindow): void;
   }
   export interface FnEvent {
     acceptEvents(): void;

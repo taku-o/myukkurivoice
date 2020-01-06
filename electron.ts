@@ -4,7 +4,9 @@ var _log: any, log         = () => { _log = _log || require('electron-log'); ret
 var _monitor: any, monitor = () => { _monitor = _monitor || require('electron-performance-monitor'); return _monitor; };
 
 import Menu from './electron-menu';
+import TouchBar from './electron-touchbar';
 import Pane from './electron-window';
+import Shortcut from './electron-shortcut';
 import Launch from './electron-launch';
 import AppConfig from './electron-appcfg';
 import EventHandler from './electron-event';
@@ -53,8 +55,8 @@ const MYukkuriVoice = function(): void {
 };
 const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 // set prototype
-// MYukkuriVoice.prototype.fnc = (Pane, Menu, Launch, AppConfig, EventHandler).prototype.fnc
-[Pane, Menu, Launch, AppConfig, EventHandler].forEach(baseCtor => {
+// MYukkuriVoice.prototype.fnc = (Pane, Menu, TouchBar, Shortcut, Launch, AppConfig, EventHandler).prototype.fnc
+[Pane, Menu, TouchBar, Shortcut, Launch, AppConfig, EventHandler].forEach(baseCtor => {
   Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
     if (name != 'constructor') {
       Object.defineProperty(MYukkuriVoice.prototype, name, Object.getOwnPropertyDescriptor(baseCtor.prototype, name));
