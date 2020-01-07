@@ -4,7 +4,7 @@ var _localShortcut: any, localShortcut = () => { _localShortcut = _localShortcut
 class FnShortcut implements yubo.FnShortcut {
   constructor() {}
 
-  registerMainWindowShortcut(mainWindow: Electron.BrowserWindow): void {
+  registerMainShortcut(mainWindow: Electron.BrowserWindow): void {
     localShortcut().register(mainWindow, 'Command+P', () => {
       mainWindow.webContents.send('shortcut', 'play');
     });
@@ -68,7 +68,7 @@ class FnShortcut implements yubo.FnShortcut {
     });
   }
 
-  registerHelpWindowShortcut(helpWindow: Electron.BrowserWindow): void {
+  registerHelpShortcut(helpWindow: Electron.BrowserWindow): void {
     localShortcut().register(helpWindow, 'Command+W', () => {
       if (helpWindow) { helpWindow.close(); }
     });
@@ -89,19 +89,19 @@ class FnShortcut implements yubo.FnShortcut {
     });
   }
 
-  registerHelpSearchDialogShortcut(helpSearchDialog: Electron.BrowserWindow): void {
+  registerHelpSearchShortcut(helpSearchDialog: Electron.BrowserWindow): void {
     localShortcut().register(helpSearchDialog, 'Command+W', () => {
       if (helpSearchDialog) { helpSearchDialog.hide(); }
     });
   }
 
-  registerSystemWindowShortcut(systemWindow: Electron.BrowserWindow): void {
+  registerSystemShortcut(systemWindow: Electron.BrowserWindow): void {
     localShortcut().register(systemWindow, 'Command+W', () => {
       if (systemWindow) { systemWindow.close(); }
     });
   }
 
-  registerDictWindowShortcut(dictWindow: Electron.BrowserWindow): void {
+  registerDictShortcut(dictWindow: Electron.BrowserWindow): void {
     localShortcut().register(dictWindow, 'Command+W', () => {
       if (dictWindow) { dictWindow.close(); }
     });
@@ -113,11 +113,12 @@ class FnShortcut implements yubo.FnShortcut {
     });
   }
 
-  registerAboutWindowShortcut(aboutWindow: Electron.BrowserWindow): void {
+  registerAboutShortcut(aboutWindow: Electron.BrowserWindow): void {
     localShortcut().register(aboutWindow, 'Command+W', () => {
       if (aboutWindow) { aboutWindow.close(); }
     });
   }
+
 }
 
 export default FnShortcut;

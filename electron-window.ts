@@ -42,8 +42,8 @@ class FnWindow implements yubo.FnWindow {
     myApp.mainWindow.loadFile('./contents-main.html');
 
     // shortcut key, touch bar
-    myApp.registerMainWindowShortcut(myApp.mainWindow);
-    myApp.mainWindow.setTouchBar(myApp.getMainWindowTouchBar());
+    myApp.registerMainShortcut(myApp.mainWindow);
+    myApp.mainWindow.setTouchBar(myApp.getMainTouchBar());
 
     // main window event
     myApp.mainWindow.webContents.on('did-finish-load', () => {
@@ -105,8 +105,8 @@ class FnWindow implements yubo.FnWindow {
     myApp.helpWindow.loadFile('./contents-help.html');
 
     // shortcut key, touch bar
-    myApp.registerHelpWindowShortcut(myApp.helpWindow);
-    myApp.helpWindow.setTouchBar(myApp.getHelpWindowTouchBar());
+    myApp.registerHelpShortcut(myApp.helpWindow);
+    myApp.helpWindow.setTouchBar(myApp.getHelpTouchBar());
 
     // event
     myApp.helpWindow.webContents.on('did-finish-load', () => {
@@ -163,7 +163,7 @@ class FnWindow implements yubo.FnWindow {
     myApp.helpSearchDialog.loadFile('./contents-helpsearch.html');
 
     // shortcut key, touch bar
-    myApp.registerHelpSearchDialogShortcut(myApp.helpSearchDialog);
+    myApp.registerHelpSearchShortcut(myApp.helpSearchDialog);
     myApp.helpSearchDialog.setTouchBar(myApp.getMinimalTouchBar());
 
     // event
@@ -213,7 +213,7 @@ class FnWindow implements yubo.FnWindow {
     myApp.systemWindow.loadFile('./contents-system.html');
 
     // shortcut key, touch bar
-    myApp.registerSystemWindowShortcut(myApp.systemWindow);
+    myApp.registerSystemShortcut(myApp.systemWindow);
     myApp.systemWindow.setTouchBar(myApp.getMinimalTouchBar());
 
     // event
@@ -259,8 +259,8 @@ class FnWindow implements yubo.FnWindow {
     myApp.dictWindow.loadFile('./contents-dict.html');
 
     // shortcut key, touch bar
-    myApp.registerDictWindowShortcut(myApp.dictWindow);
-    myApp.dictWindow.setTouchBar(myApp.getDictWindowTouchBar());
+    myApp.registerDictShortcut(myApp.dictWindow);
+    myApp.dictWindow.setTouchBar(myApp.getDictTouchBar());
 
     // window event
     myApp.dictWindow.webContents.on('did-finish-load', () => {
@@ -295,7 +295,7 @@ class FnWindow implements yubo.FnWindow {
     if (myApp.mainWindow) { w.setParentWindow(myApp.mainWindow); }
 
     // shortcut key, touch bar
-    myApp.registerAboutWindowShortcut(w);
+    myApp.registerAboutShortcut(w);
     w.setTouchBar(myApp.getMinimalTouchBar());
   }
 

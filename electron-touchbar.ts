@@ -6,20 +6,24 @@ class FnTouchBar implements yubo.FnTouchBar {
   constructor() {}
 
   private _mainTouchBar: Electron.TouchBar = null;
-  getMainWindowTouchBar(): Electron.TouchBar {
+  getMainTouchBar(): Electron.TouchBar {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     this._mainTouchBar = this._mainTouchBar || new TouchBar({
       items: [
         new TouchBarButton({
-          label: '\u{1F5E3}',
+          icon: 'images/icon_32x32@2x.png' as any,
+          backgroundColor: '#000000',
+        }),
+        new TouchBarButton({
+          label: '\u{25B6}',
           click: () => { myApp.mainWindow.webContents.send('shortcut', 'play'); },
         }),
         new TouchBarButton({
-          label: '\u{1F507}',
+          label: '\u{25A0}',
           click: () => { myApp.mainWindow.webContents.send('shortcut', 'stop'); },
         }),
         new TouchBarButton({
-          label: '\u{26AA}',
+          label: '\u{25CF}',
           click: () => { myApp.mainWindow.webContents.send('shortcut', 'record'); },
         }),
         new TouchBarButton({
@@ -40,10 +44,16 @@ class FnTouchBar implements yubo.FnTouchBar {
   }
 
   private _helpTouchBar: Electron.TouchBar = null;
-  getHelpWindowTouchBar(): Electron.TouchBar {
+  getHelpTouchBar(): Electron.TouchBar {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     this._helpTouchBar = this._helpTouchBar || new TouchBar({
       items: [
+        new TouchBarButton({
+          label: 'ヘルプ',
+          icon: 'images/icon_32x32@2x.png' as any,
+          iconPosition: 'left',
+          backgroundColor: '#000000',
+        }),
         new TouchBarButton({
           label: '\u{1F50D}',
           click: () => { myApp.helpWindow.webContents.send('shortcut', 'openSearchForm'); },
@@ -66,10 +76,16 @@ class FnTouchBar implements yubo.FnTouchBar {
   }
 
   private _dictTouchBar: Electron.TouchBar = null;
-  getDictWindowTouchBar(): Electron.TouchBar {
+  getDictTouchBar(): Electron.TouchBar {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
     this._dictTouchBar = this._dictTouchBar || new TouchBar({
       items: [
+        new TouchBarButton({
+          label: '辞書',
+          icon: 'images/icon_32x32@2x.png' as any,
+          iconPosition: 'left',
+          backgroundColor: '#000000',
+        }),
         new TouchBarButton({
           label: '＋',
           click: () => { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'add'); } },
@@ -105,6 +121,10 @@ class FnTouchBar implements yubo.FnTouchBar {
     this._minTouchBar = this._minTouchBar || new TouchBar({
       items: [
         new TouchBarButton({
+          icon: 'images/icon_32x32@2x.png' as any,
+          backgroundColor: '#000000',
+        }),
+        new TouchBarButton({
           label: '\u{1F4D6}',
           click: () => { myApp.showDictWindow(); },
         }),
@@ -116,6 +136,7 @@ class FnTouchBar implements yubo.FnTouchBar {
     });
     return this._minTouchBar;
   }
+
 }
 
 export default FnTouchBar;
