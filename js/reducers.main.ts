@@ -520,7 +520,7 @@ class MainReducer implements yubo.MainReducer {
       }, this.$q.defer<{wavFilePath: string, duration: number}>())
       // record source message
       .then((audioParams: {wavFilePath: string, duration: number}) => {
-        if (!sourceFname) { return null; }
+        if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
         return this.TextSubtitleService.save(sourceFname, loggingSourceText)
         .catch((err: Error) => {
           this.MessageService.error('メッセージファイルを作成できませんでした。', err);
@@ -528,6 +528,7 @@ class MainReducer implements yubo.MainReducer {
         });
       })
       .then(() => {
+        if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
         this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
           {
             srcTextPath: sourceFname,
@@ -587,7 +588,7 @@ class MainReducer implements yubo.MainReducer {
         }, this.$q.defer<{wavFilePath: string, duration: number}>())
         // record source message
         .then((audioParams: {wavFilePath: string, duration: number}) => {
-          if (!sourceFname) { return null; }
+          if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
           return this.TextSubtitleService.save(sourceFname, loggingSourceText)
           .catch((err: Error) => {
             this.MessageService.error('メッセージファイルを作成できませんでした。', err);
@@ -595,6 +596,7 @@ class MainReducer implements yubo.MainReducer {
           });
         })
         .then(() => {
+          if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
           this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
             {
               srcTextPath: sourceFname,
