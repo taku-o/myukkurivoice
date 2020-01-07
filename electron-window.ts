@@ -43,7 +43,7 @@ class FnWindow implements yubo.FnWindow {
 
     // shortcut key, touch bar
     myApp.registerMainShortcut(myApp.mainWindow);
-    myApp.mainWindow.setTouchBar(myApp.getMainTouchBar());
+    myApp.mainWindow.setTouchBar(myApp.getMainTouchBar(myApp.mainWindow));
 
     // main window event
     myApp.mainWindow.webContents.on('did-finish-load', () => {
@@ -106,7 +106,7 @@ class FnWindow implements yubo.FnWindow {
 
     // shortcut key, touch bar
     myApp.registerHelpShortcut(myApp.helpWindow);
-    myApp.helpWindow.setTouchBar(myApp.getHelpTouchBar());
+    myApp.helpWindow.setTouchBar(myApp.getHelpTouchBar(myApp.helpWindow));
 
     // event
     myApp.helpWindow.webContents.on('did-finish-load', () => {
@@ -164,7 +164,7 @@ class FnWindow implements yubo.FnWindow {
 
     // shortcut key, touch bar
     myApp.registerHelpSearchShortcut(myApp.helpSearchDialog);
-    myApp.helpSearchDialog.setTouchBar(myApp.getMinimalTouchBar());
+    myApp.helpSearchDialog.setTouchBar(myApp.getMinimalHideExitTouchBar(myApp.helpSearchDialog));
 
     // event
     myApp.helpSearchDialog.webContents.on('did-finish-load', () => {
@@ -214,7 +214,7 @@ class FnWindow implements yubo.FnWindow {
 
     // shortcut key, touch bar
     myApp.registerSystemShortcut(myApp.systemWindow);
-    myApp.systemWindow.setTouchBar(myApp.getMinimalTouchBar());
+    myApp.systemWindow.setTouchBar(myApp.getMinimalCloseExitTouchBar(myApp.systemWindow));
 
     // event
     myApp.systemWindow.webContents.on('did-finish-load', () => {
@@ -260,7 +260,7 @@ class FnWindow implements yubo.FnWindow {
 
     // shortcut key, touch bar
     myApp.registerDictShortcut(myApp.dictWindow);
-    myApp.dictWindow.setTouchBar(myApp.getDictTouchBar());
+    myApp.dictWindow.setTouchBar(myApp.getDictTouchBar(myApp.dictWindow));
 
     // window event
     myApp.dictWindow.webContents.on('did-finish-load', () => {
@@ -296,7 +296,7 @@ class FnWindow implements yubo.FnWindow {
 
     // shortcut key, touch bar
     myApp.registerAboutShortcut(w);
-    w.setTouchBar(myApp.getMinimalTouchBar());
+    w.setTouchBar(myApp.getMinimalCloseExitTouchBar(w));
   }
 
   // showVersionDialog

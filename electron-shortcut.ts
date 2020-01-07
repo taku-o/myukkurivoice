@@ -4,118 +4,118 @@ var _localShortcut: any, localShortcut = () => { _localShortcut = _localShortcut
 class FnShortcut implements yubo.FnShortcut {
   constructor() {}
 
-  registerMainShortcut(mainWindow: Electron.BrowserWindow): void {
-    localShortcut().register(mainWindow, 'Command+P', () => {
-      mainWindow.webContents.send('shortcut', 'play');
+  registerMainShortcut(win: Electron.BrowserWindow): void {
+    localShortcut().register(win, 'Command+P', () => {
+      win.webContents.send('shortcut', 'play');
     });
-    localShortcut().register(mainWindow, 'Command+W', () => {
-      mainWindow.webContents.send('shortcut', 'stop');
+    localShortcut().register(win, 'Command+W', () => {
+      win.webContents.send('shortcut', 'stop');
     });
-    localShortcut().register(mainWindow, 'Command+S', () => {
-      mainWindow.webContents.send('shortcut', 'record');
+    localShortcut().register(win, 'Command+S', () => {
+      win.webContents.send('shortcut', 'record');
     });
-    localShortcut().register(mainWindow, 'Command+Up', () => {
-      mainWindow.webContents.send('shortcut', 'moveToSource');
+    localShortcut().register(win, 'Command+Up', () => {
+      win.webContents.send('shortcut', 'moveToSource');
     });
-    localShortcut().register(mainWindow, 'Command+Down', () => {
-      mainWindow.webContents.send('shortcut', 'moveToEncoded');
+    localShortcut().register(win, 'Command+Down', () => {
+      win.webContents.send('shortcut', 'moveToEncoded');
     });
-    localShortcut().register(mainWindow, 'Command+Right', () => {
-      mainWindow.webContents.send('shortcut', 'encode');
+    localShortcut().register(win, 'Command+Right', () => {
+      win.webContents.send('shortcut', 'encode');
     });
-    localShortcut().register(mainWindow, 'Command+D', () => {
-      mainWindow.webContents.send('shortcut', 'fromClipboard');
+    localShortcut().register(win, 'Command+D', () => {
+      win.webContents.send('shortcut', 'fromClipboard');
     });
-    localShortcut().register(mainWindow, 'Command+N', () => {
-      mainWindow.webContents.send('shortcut', 'putVoiceName');
+    localShortcut().register(win, 'Command+N', () => {
+      win.webContents.send('shortcut', 'putVoiceName');
     });
-    localShortcut().register(mainWindow, 'Command+Left', () => {
-      mainWindow.webContents.send('shortcut', 'swichNextConfig');
+    localShortcut().register(win, 'Command+Left', () => {
+      win.webContents.send('shortcut', 'swichNextConfig');
     });
-    localShortcut().register(mainWindow, 'Command+Shift+Left', () => {
-      mainWindow.webContents.send('shortcut', 'swichPreviousConfig');
+    localShortcut().register(win, 'Command+Shift+Left', () => {
+      win.webContents.send('shortcut', 'swichPreviousConfig');
     });
 
-    localShortcut().register(mainWindow, 'Command+0', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 0);
+    localShortcut().register(win, 'Command+0', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 0);
     });
-    localShortcut().register(mainWindow, 'Command+1', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 1);
+    localShortcut().register(win, 'Command+1', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 1);
     });
-    localShortcut().register(mainWindow, 'Command+2', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 2);
+    localShortcut().register(win, 'Command+2', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 2);
     });
-    localShortcut().register(mainWindow, 'Command+3', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 3);
+    localShortcut().register(win, 'Command+3', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 3);
     });
-    localShortcut().register(mainWindow, 'Command+4', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 4);
+    localShortcut().register(win, 'Command+4', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 4);
     });
-    localShortcut().register(mainWindow, 'Command+5', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 5);
+    localShortcut().register(win, 'Command+5', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 5);
     });
-    localShortcut().register(mainWindow, 'Command+6', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 6);
+    localShortcut().register(win, 'Command+6', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 6);
     });
-    localShortcut().register(mainWindow, 'Command+7', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 7);
+    localShortcut().register(win, 'Command+7', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 7);
     });
-    localShortcut().register(mainWindow, 'Command+8', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 8);
+    localShortcut().register(win, 'Command+8', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 8);
     });
-    localShortcut().register(mainWindow, 'Command+9', () => {
-      mainWindow.webContents.send('shortcut', 'swichNumberConfig', 9);
+    localShortcut().register(win, 'Command+9', () => {
+      win.webContents.send('shortcut', 'swichNumberConfig', 9);
     });
   }
 
-  registerHelpShortcut(helpWindow: Electron.BrowserWindow): void {
-    localShortcut().register(helpWindow, 'Command+W', () => {
-      if (helpWindow) { helpWindow.close(); }
+  registerHelpShortcut(win: Electron.BrowserWindow): void {
+    localShortcut().register(win, 'Command+W', () => {
+      win.close();
     });
-    localShortcut().register(helpWindow, 'Up', () => {
-      helpWindow.webContents.send('shortcut', 'moveToPreviousHelp');
+    localShortcut().register(win, 'Up', () => {
+      win.webContents.send('shortcut', 'moveToPreviousHelp');
     });
-    localShortcut().register(helpWindow, 'Down', () => {
-      helpWindow.webContents.send('shortcut', 'moveToNextHelp');
+    localShortcut().register(win, 'Down', () => {
+      win.webContents.send('shortcut', 'moveToNextHelp');
     });
-    localShortcut().register(helpWindow, 'Command+Left', () => {
-      helpWindow.webContents.goBack();
+    localShortcut().register(win, 'Command+Left', () => {
+      win.webContents.goBack();
     });
-    localShortcut().register(helpWindow, 'Command+Right', () => {
-      helpWindow.webContents.goForward();
+    localShortcut().register(win, 'Command+Right', () => {
+      win.webContents.goForward();
     });
-    localShortcut().register(helpWindow, 'Command+F', () => {
-      helpWindow.webContents.send('shortcut', 'openSearchForm');
-    });
-  }
-
-  registerHelpSearchShortcut(helpSearchDialog: Electron.BrowserWindow): void {
-    localShortcut().register(helpSearchDialog, 'Command+W', () => {
-      if (helpSearchDialog) { helpSearchDialog.hide(); }
+    localShortcut().register(win, 'Command+F', () => {
+      win.webContents.send('shortcut', 'openSearchForm');
     });
   }
 
-  registerSystemShortcut(systemWindow: Electron.BrowserWindow): void {
-    localShortcut().register(systemWindow, 'Command+W', () => {
-      if (systemWindow) { systemWindow.close(); }
+  registerHelpSearchShortcut(win: Electron.BrowserWindow): void {
+    localShortcut().register(win, 'Command+W', () => {
+      win.hide();
     });
   }
 
-  registerDictShortcut(dictWindow: Electron.BrowserWindow): void {
-    localShortcut().register(dictWindow, 'Command+W', () => {
-      if (dictWindow) { dictWindow.close(); }
-    });
-    localShortcut().register(dictWindow, 'Command+S', () => {
-      dictWindow.webContents.send('shortcut', 'save');
-    });
-    localShortcut().register(dictWindow, 'Command+N', () => {
-      dictWindow.webContents.send('shortcut', 'add');
+  registerSystemShortcut(win: Electron.BrowserWindow): void {
+    localShortcut().register(win, 'Command+W', () => {
+      win.close();
     });
   }
 
-  registerAboutShortcut(aboutWindow: Electron.BrowserWindow): void {
-    localShortcut().register(aboutWindow, 'Command+W', () => {
-      if (aboutWindow) { aboutWindow.close(); }
+  registerDictShortcut(win: Electron.BrowserWindow): void {
+    localShortcut().register(win, 'Command+W', () => {
+      win.close();
+    });
+    localShortcut().register(win, 'Command+S', () => {
+      win.webContents.send('shortcut', 'save');
+    });
+    localShortcut().register(win, 'Command+N', () => {
+      win.webContents.send('shortcut', 'add');
+    });
+  }
+
+  registerAboutShortcut(win: Electron.BrowserWindow): void {
+    localShortcut().register(win, 'Command+W', () => {
+      win.close();
     });
   }
 

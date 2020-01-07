@@ -167,10 +167,11 @@ declare namespace yubo {
     disableHelpMenu(): void;
   }
   export interface FnTouchBar {
-    getMainTouchBar(): Electron.TouchBar;
-    getHelpTouchBar(): Electron.TouchBar;
-    getDictTouchBar(): Electron.TouchBar;
-    getMinimalTouchBar(): Electron.TouchBar;
+    getMainTouchBar(win: Electron.BrowserWindow): Electron.TouchBar;
+    getHelpTouchBar(win: Electron.BrowserWindow): Electron.TouchBar;
+    getDictTouchBar(win: Electron.BrowserWindow): Electron.TouchBar;
+    getMinimalCloseExitTouchBar(win: Electron.BrowserWindow): Electron.TouchBar;
+    getMinimalHideExitTouchBar(win: Electron.BrowserWindow): Electron.TouchBar;
   }
   export interface FnWindow {
     showMainWindow(): void;
@@ -183,12 +184,12 @@ declare namespace yubo {
     showSpecWindow(): void;
   }
   export interface FnShortcut {
-    registerMainShortcut(mainWindow: Electron.BrowserWindow): void;
-    registerHelpShortcut(helpWindow: Electron.BrowserWindow): void;
-    registerHelpSearchShortcut(helpSearchDialog: Electron.BrowserWindow): void;
-    registerSystemShortcut(systemWindow: Electron.BrowserWindow): void;
-    registerDictShortcut(dictWindow: Electron.BrowserWindow): void;
-    registerAboutShortcut(aboutWindow: Electron.BrowserWindow): void;
+    registerMainShortcut(win: Electron.BrowserWindow): void;
+    registerHelpShortcut(win: Electron.BrowserWindow): void;
+    registerHelpSearchShortcut(win: Electron.BrowserWindow): void;
+    registerSystemShortcut(win: Electron.BrowserWindow): void;
+    registerDictShortcut(win: Electron.BrowserWindow): void;
+    registerAboutShortcut(win: Electron.BrowserWindow): void;
   }
   export interface FnEvent {
     acceptEvents(): void;

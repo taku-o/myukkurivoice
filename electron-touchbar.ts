@@ -5,10 +5,9 @@ const {TouchBarButton} = TouchBar;
 class FnTouchBar implements yubo.FnTouchBar {
   constructor() {}
 
-  private _mainTouchBar: Electron.TouchBar = null;
-  getMainTouchBar(): Electron.TouchBar {
+  getMainTouchBar(win: Electron.BrowserWindow): Electron.TouchBar {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
-    this._mainTouchBar = this._mainTouchBar || new TouchBar({
+    const touchBar = new TouchBar({
       items: [
         new TouchBarButton({
           icon: 'images/icon_32x32@2x.png' as any,
@@ -16,19 +15,19 @@ class FnTouchBar implements yubo.FnTouchBar {
         }),
         new TouchBarButton({
           label: '\u{25B6}',
-          click: () => { myApp.mainWindow.webContents.send('shortcut', 'play'); },
+          click: () => { win.webContents.send('shortcut', 'play'); },
         }),
         new TouchBarButton({
           label: '\u{25A0}',
-          click: () => { myApp.mainWindow.webContents.send('shortcut', 'stop'); },
+          click: () => { win.webContents.send('shortcut', 'stop'); },
         }),
         new TouchBarButton({
           label: '\u{25CF}',
-          click: () => { myApp.mainWindow.webContents.send('shortcut', 'record'); },
+          click: () => { win.webContents.send('shortcut', 'record'); },
         }),
         new TouchBarButton({
           label: '音記号列変換',
-          click: () => { myApp.mainWindow.webContents.send('shortcut', 'encode'); },
+          click: () => { win.webContents.send('shortcut', 'encode'); },
         }),
         new TouchBarButton({
           label: '\u{1F4D6}',
@@ -40,89 +39,97 @@ class FnTouchBar implements yubo.FnTouchBar {
         }),
       ],
     });
-    return this._mainTouchBar;
+    return touchBar;
   }
 
-  private _helpTouchBar: Electron.TouchBar = null;
-  getHelpTouchBar(): Electron.TouchBar {
+  getHelpTouchBar(win: Electron.BrowserWindow): Electron.TouchBar {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
-    this._helpTouchBar = this._helpTouchBar || new TouchBar({
+    const touchBar = new TouchBar({
       items: [
         new TouchBarButton({
           label: 'ヘルプ',
           icon: 'images/icon_32x32@2x.png' as any,
           iconPosition: 'left',
           backgroundColor: '#000000',
+          click: () => { win.hide(); },
         }),
         new TouchBarButton({
           label: '\u{1F50D}',
-          click: () => { myApp.helpWindow.webContents.send('shortcut', 'openSearchForm'); },
+          click: () => { win.webContents.send('shortcut', 'openSearchForm'); },
         }),
         new TouchBarButton({
           label: '\u{2B06}',
-          click: () => { myApp.helpWindow.webContents.send('shortcut', 'moveToPreviousHelp'); },
+          click: () => { win.webContents.send('shortcut', 'moveToPreviousHelp'); },
         }),
         new TouchBarButton({
           label: '\u{2B07}',
-          click: () => { myApp.helpWindow.webContents.send('shortcut', 'moveToNextHelp'); },
+          click: () => { win.webContents.send('shortcut', 'moveToNextHelp'); },
         }),
         new TouchBarButton({
           label: '\u{1F4D6}',
           click: () => { myApp.showDictWindow(); },
         }),
+        new TouchBarButton({
+          label: '\u{2716}',
+          click: () => { win.close(); },
+        }),
       ],
     });
-    return this._helpTouchBar;
+    return touchBar;
   }
 
-  private _dictTouchBar: Electron.TouchBar = null;
-  getDictTouchBar(): Electron.TouchBar {
+  getDictTouchBar(win: Electron.BrowserWindow): Electron.TouchBar {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
-    this._dictTouchBar = this._dictTouchBar || new TouchBar({
+    const touchBar = new TouchBar({
       items: [
         new TouchBarButton({
           label: '辞書',
           icon: 'images/icon_32x32@2x.png' as any,
           iconPosition: 'left',
           backgroundColor: '#000000',
+          click: () => { win.hide(); },
         }),
         new TouchBarButton({
           label: '＋',
-          click: () => { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'add'); } },
+          click: () => { win.webContents.send('menu', 'add'); },
         }),
         new TouchBarButton({
           label: 'ー',
-          click: () => { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'delete'); } },
+          click: () => { win.webContents.send('menu', 'delete'); },
         }),
         new TouchBarButton({
-          label: '編集保存',
-          click: () => { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'save'); } },
+          label: 'Save',
+          click: () => { win.webContents.send('menu', 'save'); },
         }),
         new TouchBarButton({
-          label: '編集キャンセル',
-          click: () => { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'cancel'); } },
+          label: 'Cancel',
+          click: () => { win.webContents.send('menu', 'cancel'); },
         }),
         new TouchBarButton({
-          label: 'エクスポート',
-          click: () => { if (myApp.dictWindow) { myApp.dictWindow.webContents.send('menu', 'export'); } },
+          label: 'Export',
+          click: () => { win.webContents.send('menu', 'export'); },
         }),
         new TouchBarButton({
           label: '\u{2754}',
           click: () => { myApp.showHelpWindow(); },
         }),
+        new TouchBarButton({
+          label: '\u{2716}',
+          click: () => { win.close(); },
+        }),
       ],
     });
-    return this._dictTouchBar;
+    return touchBar;
   }
 
-  private _minTouchBar: Electron.TouchBar = null;
-  getMinimalTouchBar(): Electron.TouchBar {
+  getMinimalCloseExitTouchBar(win: Electron.BrowserWindow): Electron.TouchBar {
     const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
-    this._minTouchBar = this._minTouchBar || new TouchBar({
+    const touchBar = new TouchBar({
       items: [
         new TouchBarButton({
           icon: 'images/icon_32x32@2x.png' as any,
           backgroundColor: '#000000',
+          click: () => { win.hide(); },
         }),
         new TouchBarButton({
           label: '\u{1F4D6}',
@@ -132,9 +139,39 @@ class FnTouchBar implements yubo.FnTouchBar {
           label: '\u{2754}',
           click: () => { myApp.showHelpWindow(); },
         }),
+        new TouchBarButton({
+          label: '\u{2716}',
+          click: () => { win.close(); },
+        }),
       ],
     });
-    return this._minTouchBar;
+    return touchBar;
+  }
+
+  getMinimalHideExitTouchBar(win: Electron.BrowserWindow): Electron.TouchBar {
+    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
+    const touchBar = new TouchBar({
+      items: [
+        new TouchBarButton({
+          icon: 'images/icon_32x32@2x.png' as any,
+          backgroundColor: '#000000',
+          click: () => { win.hide(); },
+        }),
+        new TouchBarButton({
+          label: '\u{1F4D6}',
+          click: () => { myApp.showDictWindow(); },
+        }),
+        new TouchBarButton({
+          label: '\u{2754}',
+          click: () => { myApp.showHelpWindow(); },
+        }),
+        new TouchBarButton({
+          label: '\u{2716}',
+          click: () => { win.hide(); },
+        }),
+      ],
+    });
+    return touchBar;
   }
 
 }
