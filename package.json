@@ -8,7 +8,9 @@
     "tasks": "gulp --tasks-simple",
     "clean": "git checkout -- . && git clean -fd",
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log",
-    "log:store": "less `echo $HOME`/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Logs/MYukkuriVoice/log.log"
+    "log:store": "less `echo $HOME`/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Logs/MYukkuriVoice/log.log",
+    "add:keychain": "security add-generic-password -a 'mail@nanasi.jp' -w 'xxxx-xxxx-xxxx-xxxx' -s 'jp.nanasi.myukkurivoice.mac-app-store'",
+    "delete:keychain": "security delete-generic-password -a 'mail@nanasi.jp' -s 'jp.nanasi.myukkurivoice.mac-app-store'"
   },
   "keywords": [
     "mac-osx",
@@ -24,7 +26,7 @@
     "electron": "6.1.7",
     "node": "v12.4.0",
     "chrome": "76.0.3809.146",
-    "xcode": "9.2"
+    "xcode": "10.1"
   },
   "homepage": "https://github.com/taku-o/myukkurivoice",
   "bugs": {
@@ -85,6 +87,7 @@
     "del": "^5.1.0",
     "devtron": "^1.4.0",
     "electron": "^6.1.7",
+    "electron-notarize": "^0.2.1",
     "electron-packager": "^14.1.0",
     "electron-performance-monitor": "github:taku-o/electron-performance-monitor#0.2.2",
     "electron-rebuild": "^1.8.6",
@@ -111,6 +114,7 @@
     "gulp-typescript": "^5.0.1",
     "gulp-using": "^0.1.1",
     "gulp-wrapper": "^1.0.0",
+    "keychain": "^1.3.0",
     "mocha": "^4.1.0",
     "node-notifier": "^5.4.0",
     "source-map-support": "^0.5.16",
