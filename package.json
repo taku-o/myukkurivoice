@@ -10,7 +10,9 @@
     "log": "less `echo $HOME`/Library/Logs/MYukkuriVoice/log.log",
     "log:store": "less `echo $HOME`/Library/Containers/jp.nanasi.myukkurivoice/Data/Library/Logs/MYukkuriVoice/log.log",
     "add:keychain": "security add-generic-password -a 'mail@nanasi.jp' -w 'xxxx-xxxx-xxxx-xxxx' -s 'jp.nanasi.myukkurivoice.mac-app-store'",
-    "delete:keychain": "security delete-generic-password -a 'mail@nanasi.jp' -s 'jp.nanasi.myukkurivoice.mac-app-store'"
+    "delete:keychain": "security delete-generic-password -a 'mail@nanasi.jp' -s 'jp.nanasi.myukkurivoice.mac-app-store'",
+    "notarize:history": "xcrun altool --notarization-history 0 -u 'mail@nanasi.jp' -p 'xxxx-xxxx-xxxx-xxxx'",
+    "notarize:validate": "xcrun stapler validate -v release/myukkurivoice/MYukkuriVoice-darwin-x64/MYukkuriVoice.app"
   },
   "keywords": [
     "mac-osx",
