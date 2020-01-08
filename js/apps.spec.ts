@@ -163,6 +163,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
           source: msg,
           encoded: msg,
           duration: 1.44,
+          bookmark: null,
         }
       );
     };
@@ -173,6 +174,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         {
           srcTextPath: srcTextPath,
           source: msg,
+          bookmark: null,
         }
       );
     };

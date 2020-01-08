@@ -25,6 +25,7 @@ class MainReducer implements yubo.MainReducer {
 
   constructor(
     private $q: ng.IQService,
+    private $timeout: ng.ITimeoutService,
     private $document: ng.IDocumentService,
     private store: yubo.MainStore,
     private MessageService: yubo.MessageService,
@@ -513,6 +514,7 @@ class MainReducer implements yubo.MainReducer {
               source: loggingSourceText,
               encoded: cinput.text,
               duration: audioParams.duration,
+              bookmark: bookmark,
             }
           );
           return audioParams;
@@ -533,6 +535,7 @@ class MainReducer implements yubo.MainReducer {
           {
             srcTextPath: sourceFname,
             source: loggingSourceText,
+            bookmark: bookmark,
           }
         );
       })
@@ -542,8 +545,9 @@ class MainReducer implements yubo.MainReducer {
 
     // 通常保存
     } else {
-      ipcRenderer().once('showSaveDialog', (event: Electron.Event, selector: {filePath: string}) => {
+      ipcRenderer().once('showSaveDialog', (event: Electron.Event, selector: {filePath: string, bookmark: string}) => {
         const filePath = selector.filePath;
+        const bookmark = selector.bookmark;
         if (!filePath) {
           this.MessageService.error('保存先が指定されませんでした。');
           return;
@@ -581,6 +585,7 @@ class MainReducer implements yubo.MainReducer {
                 source: loggingSourceText,
                 encoded: cinput.text,
                 duration: audioParams.duration,
+                bookmark: bookmark,
               }
             );
             return audioParams;
@@ -601,6 +606,7 @@ class MainReducer implements yubo.MainReducer {
             {
               srcTextPath: sourceFname,
               source: loggingSourceText,
+              bookmark: bookmark,
             }
           );
         });
@@ -821,11 +827,23 @@ class MainReducer implements yubo.MainReducer {
   quickLookMessage(message: yubo.IWriteMessage): void {
     if (message.type != 'record' && message.type != 'source') { return; }
     const quickLookPath = message.quickLookPath;
+    const bookmark = message.bookmark;
     fs().stat(quickLookPath, (err: Error, stats: fs.Stats) => {
       if (err) { return; }
       //this.MessageService.action(`open with Quick Look. file: ${wavFilePath}`);
-      const win = require('electron').remote.getCurrentWindow();
-      win.previewFile(quickLookPath);
+
+      // file permission on sandbox
+      const stopAccessingSecurityScopedResource = (!process.mas || !bookmark)?
+        () => {}:
+        app.startAccessingSecurityScopedResource(bookmark);
+      try {
+        const win = require('electron').remote.getCurrentWindow();
+        win.previewFile(quickLookPath);
+      } finally {
+        this.$timeout(() => {
+          stopAccessingSecurityScopedResource();
+        }, 5000, false);
+      }
     });
   }
   recentDocument(message: yubo.IRecordMessage): void {
@@ -984,6 +1002,7 @@ class MainReducer implements yubo.MainReducer {
 angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
   .service('MainReducer', [
     '$q',
+    '$timeout',
     '$document',
     'MainStore',
     'MessageService',
