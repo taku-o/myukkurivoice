@@ -506,8 +506,6 @@ class MainReducer implements yubo.MainReducer {
           if (this.store.curYvoice.sourceWrite && !sourceFname) {
             sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
           }
-alert('recordVoice seq');
-alert(bookmark);
           this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
             {
               wavFilePath: audioParams.wavFilePath,
@@ -532,8 +530,6 @@ alert(bookmark);
       })
       .then(() => {
         if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
-alert('recordSource seq');
-alert(bookmark);
         this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
           {
             srcTextPath: sourceFname,
@@ -551,8 +547,6 @@ alert(bookmark);
       ipcRenderer().once('showSaveDialog', (event: Electron.Event, selector: {filePath: string, bookmark: string}) => {
         const filePath = selector.filePath;
         const bookmark = selector.bookmark;
-alert('showSaveDialog');
-alert(bookmark);
         if (!filePath) {
           this.MessageService.error('保存先が指定されませんでした。');
           return;
@@ -583,8 +577,6 @@ alert(bookmark);
             if (this.store.curYvoice.sourceWrite && !sourceFname) {
               sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
             }
-alert('recordVoice');
-alert(bookmark);
             this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
               {
                 wavFilePath: audioParams.wavFilePath,
@@ -609,8 +601,6 @@ alert(bookmark);
         })
         .then(() => {
           if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
-alert('recordSource');
-alert(bookmark);
           this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
             {
               srcTextPath: sourceFname,
