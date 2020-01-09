@@ -1,6 +1,7 @@
 'use strict';
 import {TouchBar} from 'electron';
 const {TouchBarButton} = TouchBar;
+var _path: any, path = () => { _path = _path || require('path'); return _path; };
 
 class FnTouchBar implements yubo.FnTouchBar {
   constructor() {}
@@ -10,8 +11,9 @@ class FnTouchBar implements yubo.FnTouchBar {
     const touchBar = new TouchBar({
       items: [
         new TouchBarButton({
-          icon: 'images/icon_32x32@2x.png' as any,
+          icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           backgroundColor: '#000000',
+          click: () => { win.minimize(); },
         }),
         new TouchBarButton({
           label: '\u{25B6}',
@@ -48,7 +50,7 @@ class FnTouchBar implements yubo.FnTouchBar {
       items: [
         new TouchBarButton({
           label: 'ヘルプ',
-          icon: 'images/icon_32x32@2x.png' as any,
+          icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           iconPosition: 'left',
           backgroundColor: '#000000',
           click: () => { win.hide(); },
@@ -84,7 +86,7 @@ class FnTouchBar implements yubo.FnTouchBar {
       items: [
         new TouchBarButton({
           label: '辞書',
-          icon: 'images/icon_32x32@2x.png' as any,
+          icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           iconPosition: 'left',
           backgroundColor: '#000000',
           click: () => { win.hide(); },
@@ -127,7 +129,7 @@ class FnTouchBar implements yubo.FnTouchBar {
     const touchBar = new TouchBar({
       items: [
         new TouchBarButton({
-          icon: 'images/icon_32x32@2x.png' as any,
+          icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           backgroundColor: '#000000',
           click: () => { win.hide(); },
         }),
@@ -153,7 +155,7 @@ class FnTouchBar implements yubo.FnTouchBar {
     const touchBar = new TouchBar({
       items: [
         new TouchBarButton({
-          icon: 'images/icon_32x32@2x.png' as any,
+          icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           backgroundColor: '#000000',
           click: () => { win.hide(); },
         }),
