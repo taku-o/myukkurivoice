@@ -41,6 +41,7 @@ class FnEvent implements yubo.FnEvent {
         filters: [
           {name: 'Wav File', extensions: ['wav']},
         ],
+        securityScopedBookmarks: process.mas,
       };
       dialog.showSaveDialog(myApp.mainWindow, options)
       .then((result) => {
