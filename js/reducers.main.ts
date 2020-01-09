@@ -25,7 +25,6 @@ class MainReducer implements yubo.MainReducer {
 
   constructor(
     private $q: ng.IQService,
-    private $timeout: ng.ITimeoutService,
     private $document: ng.IDocumentService,
     private store: yubo.MainStore,
     private MessageService: yubo.MessageService,
@@ -507,6 +506,8 @@ class MainReducer implements yubo.MainReducer {
           if (this.store.curYvoice.sourceWrite && !sourceFname) {
             sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
           }
+alert('recordVoice seq');
+alert(bookmark);
           this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
             {
               wavFilePath: audioParams.wavFilePath,
@@ -531,6 +532,8 @@ class MainReducer implements yubo.MainReducer {
       })
       .then(() => {
         if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
+alert('recordSource seq');
+alert(bookmark);
         this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
           {
             srcTextPath: sourceFname,
@@ -548,6 +551,8 @@ class MainReducer implements yubo.MainReducer {
       ipcRenderer().once('showSaveDialog', (event: Electron.Event, selector: {filePath: string, bookmark: string}) => {
         const filePath = selector.filePath;
         const bookmark = selector.bookmark;
+alert('showSaveDialog');
+alert(bookmark);
         if (!filePath) {
           this.MessageService.error('保存先が指定されませんでした。');
           return;
@@ -578,6 +583,8 @@ class MainReducer implements yubo.MainReducer {
             if (this.store.curYvoice.sourceWrite && !sourceFname) {
               sourceFname = this.TextSubtitleService.sourceFname(audioParams.wavFilePath);
             }
+alert('recordVoice');
+alert(bookmark);
             this.MessageService.record(`${'音声ファイルを保存しました。path: '}${audioParams.wavFilePath}`,
               {
                 wavFilePath: audioParams.wavFilePath,
@@ -602,6 +609,8 @@ class MainReducer implements yubo.MainReducer {
         })
         .then(() => {
           if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
+alert('recordSource');
+alert(bookmark);
           this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
             {
               srcTextPath: sourceFname,
@@ -831,8 +840,7 @@ class MainReducer implements yubo.MainReducer {
     fs().stat(quickLookPath, (err: Error, stats: fs.Stats) => {
       if (err) { return; }
       //this.MessageService.action(`open with Quick Look. file: ${wavFilePath}`);
-
-      // file permission on sandbox
+      // quickLook. set file permission if on sandbox.
       const stopAccessingSecurityScopedResource = (!process.mas || !bookmark)?
         () => {}:
         app.startAccessingSecurityScopedResource(bookmark);
@@ -840,9 +848,7 @@ class MainReducer implements yubo.MainReducer {
         const win = require('electron').remote.getCurrentWindow();
         win.previewFile(quickLookPath);
       } finally {
-        //this.$timeout(() => {
-          stopAccessingSecurityScopedResource();
-        //}, 5000, false);
+        stopAccessingSecurityScopedResource();
       }
     });
   }
@@ -1002,7 +1008,6 @@ class MainReducer implements yubo.MainReducer {
 angular.module('mainReducers', ['mainStores', 'mainServices', 'mainModels'])
   .service('MainReducer', [
     '$q',
-    '$timeout',
     '$document',
     'MainStore',
     'MessageService',

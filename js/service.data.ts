@@ -170,6 +170,9 @@ class HistoryService implements yubo.HistoryService {
   }
 
   add(record: yubo.IRecordMessage): void {
+alert('History record');
+alert(record);
+alert(record.bookmark);
     this.cache().set(record.wavFilePath, record, this.MS_MAX_AGE);
   }
 
