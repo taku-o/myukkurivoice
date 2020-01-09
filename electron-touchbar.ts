@@ -53,7 +53,7 @@ class FnTouchBar implements yubo.FnTouchBar {
           icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           iconPosition: 'left',
           backgroundColor: '#000000',
-          click: () => { win.hide(); },
+          click: () => { win.minimize(); },
         }),
         new TouchBarButton({
           label: '\u{1F50D}',
@@ -89,7 +89,7 @@ class FnTouchBar implements yubo.FnTouchBar {
           icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           iconPosition: 'left',
           backgroundColor: '#000000',
-          click: () => { win.hide(); },
+          click: () => { win.minimize(); },
         }),
         new TouchBarButton({
           label: '＋',
@@ -131,7 +131,7 @@ class FnTouchBar implements yubo.FnTouchBar {
         new TouchBarButton({
           icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           backgroundColor: '#000000',
-          click: () => { win.hide(); },
+          click: () => { win.minimize(); },
         }),
         new TouchBarButton({
           label: '\u{1F4D6}',
@@ -157,7 +157,7 @@ class FnTouchBar implements yubo.FnTouchBar {
         new TouchBarButton({
           icon: path().join(__dirname, 'images/icon_32x32@2x.png') as any,
           backgroundColor: '#000000',
-          click: () => { win.hide(); },
+          click: () => { win.minimize(); },
         }),
         new TouchBarButton({
           label: '\u{1F4D6}',
