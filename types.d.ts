@@ -275,8 +275,8 @@ declare namespace yubo {
   // service.message.ts
   export interface MessageService {
     action(message: string): void;
-    record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string, duration: number}): void;
-    recordSource(message: string, opts: {srcTextPath: string, source: string}): void;
+    record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string, duration: number, bookmark: string}): void;
+    recordSource(message: string, opts: {srcTextPath: string, source: string, bookmark: string}): void;
     info(message: string): void;
     error(message: string, err?: Error): void;
     syserror(message: string, err?: Error): void;
@@ -290,6 +290,7 @@ declare namespace yubo {
     readonly created: Date;
     readonly body: string;
     readonly quickLookPath: string;
+    readonly bookmark: string;
     readonly type: string;
   }
   export interface IRecordMessage extends IWriteMessage {
@@ -326,13 +327,6 @@ declare namespace yubo {
     get(wavFilePath: string): yubo.IRecordMessage;
     add(record: yubo.IRecordMessage): void;
     getList(): yubo.IRecordMessage[];
-  }
-  export interface BookmarkService {
-    load(): ng.IPromise<boolean>;
-    add(filePath: string, bookmark: string): ng.IPromise<boolean>;
-    get(filePath: string): ng.IPromise<string>;
-    clear(): ng.IPromise<boolean>;
-    prune(filePaths: string[]): ng.IPromise<boolean>;
   }
   // service.aques.ts
   export interface AqKanji2KoeLib {

@@ -41,12 +41,14 @@ class FnEvent implements yubo.FnEvent {
         filters: [
           {name: 'Wav File', extensions: ['wav']},
         ],
+        securityScopedBookmarks: process.mas,
       };
       dialog.showSaveDialog(myApp.mainWindow, options)
       .then((result) => {
         if (! result.canceled) {
           const filePath: string = result.filePath;
-          event.sender.send('showSaveDialog', {filePath: filePath});
+          const bookmark: string = result.bookmark;
+          event.sender.send('showSaveDialog', {filePath: filePath, bookmark: bookmark});
         }
       });
     });
