@@ -840,9 +840,9 @@ class MainReducer implements yubo.MainReducer {
         const win = require('electron').remote.getCurrentWindow();
         win.previewFile(quickLookPath);
       } finally {
-        this.$timeout(() => {
+        //this.$timeout(() => {
           stopAccessingSecurityScopedResource();
-        }, 5000, false);
+        //}, 5000, false);
       }
     });
   }
