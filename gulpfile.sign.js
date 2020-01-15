@@ -10,7 +10,7 @@ const DEVELOPER_APPLICATION_3RD_KEY = require('./build/mas/MacAppleStore.json').
 
 // sign
 gulp.task('_sign:developer', () => {
-  const platform = 'darwin';
+  const platform = process.env.BUILD_PLATFORM;
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
 
@@ -34,7 +34,7 @@ gulp.task('_sign:developer', () => {
 });
 
 gulp.task('_sign:distribution', () => {
-  const platform = 'mas';
+  const platform = process.env.BUILD_PLATFORM;
   const APP = 'MYukkuriVoice';
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
@@ -84,7 +84,7 @@ gulp.task('_sign:distribution', () => {
 
 // electron-osx-sign not using version.
 gulp.task('_sign:distribution:direct', (cb) => {
-  const platform = 'mas';
+  const platform = process.env.BUILD_PLATFORM;
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const FRAMEWORKS_PATH = `${APP_PATH}/Contents/Frameworks`;
   const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
@@ -151,7 +151,7 @@ gulp.task('_sign:distribution:direct', (cb) => {
 });
 
 gulp.task('_flat:distribution', () => {
-  const platform = 'mas';
+  const platform = process.env.BUILD_PLATFORM;
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const PKG_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.pkg`;
 

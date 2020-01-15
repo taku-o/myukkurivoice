@@ -274,7 +274,7 @@ gulp.task('_package:release', (cb) => {
   );
 });
 gulp.task('_package:debug', (cb) => {
-  const platform = 'darwin';
+  const platform = process.env.BUILD_PLATFORM;
   exec(
     PACKAGER_CMD +
       ` . MYukkuriVoice \
