@@ -7,7 +7,7 @@
     "alwaysStrict": true,
     "charset": "utf8",
     "diagnostics": false,
-    "incremental": true,
+    "incremental": false,
     "listEmittedFiles": false,
     "listFiles": false,
     "noEmitOnError": true,
