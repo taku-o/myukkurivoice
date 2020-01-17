@@ -35,14 +35,10 @@
           <input type="radio" id="audio-serv-ver-html5audio" ng-model="ctrl.store.appCfg.audioServVer" value="html5audio">html5audio
           <small>安定確実エンジン。一部機能に制限がある。</small>
         </label>
-      </div>
-      <div class="radio">
         <label>
           <input type="radio" id="audio-serv-ver-webaudioapi8" ng-model="ctrl.store.appCfg.audioServVer" value="webaudioapi8">webaudioapi8
           <small>実験的エンジン。全ての機能を利用できる。</small>
         </label>
-      </div>
-      <div class="radio">
         <label>
           <input type="radio" id="audio-serv-ver-webaudioapi" ng-model="ctrl.store.appCfg.audioServVer" value="webaudioapi">webaudioapi
           <small>旧・実験エンジン。sampleRate:44100Hz</small>
@@ -51,23 +47,22 @@
     </div>
 
     <div class="box">
+      機能ON/OFF
       <div class="checkbox">
-        <label><input type="checkbox" id="show-msg-pane" ng-model="ctrl.store.appCfg.showMsgPane">メッセージリストを表示する</label>
-      </div>
-    </div>
-
-    <div class="box">
-      拡張機能 <small>(実験的機能、もしくは一部環境でのみ動作)</small>
-      <div class="checkbox">
-        <label><input type="checkbox" id="extensions.fcpx" ng-model="ctrl.store.appCfg.extensions.fcpx">Final Cut Pro X</label>
+        <label><input type="checkbox" id="show-msg-pane" ng-model="ctrl.store.appCfg.showMsgPane"><small>メッセージリストを表示する</small></label>
+        <label><input type="checkbox" id="extensions.fcpx" ng-model="ctrl.store.appCfg.extensions.fcpx"><small>[実験的機能] iXMLによるAudioロール自動設定 (Final Cut Pro X用)</small></label>
       </div>
     </div>
 
     <div class="box">
       <div class="form-group">
         <label>AquesTalk10 使用ラインセンスキー<small>(optional)</small></label>
-        <input type="text" class="form-control" id="aq10-use-key" ng-model="ctrl.store.aq10UseKey" placeholder="XXXX-XXXX-XXXX-XXXX">
+        <input type="text" class="form-control" id="aq10-use-key" ng-model="ctrl.store.aq10UseKey" ng-class="{empty:ctrl.store.aq10UseKey==''}" placeholder="XXXX-XXXX-XXXX-XXXX">
         <small>AquesTalk10の機能を個人かつ非営利以外の用途で使う場合は、AquesTalk10の使用ライセンスキー(Mac用)、もしくは使用ライセンスキー(商用コンテンツ向け)を設定してください</small>
+      </div>
+      <div class="form-group">
+        <label>ラインセンスキータイマー<small>(optional)</small></label>
+        <input type="date" class="form-control" id="license-key-limit" ng-model="ctrl.store.licenseKeyLimit" ng-class="{empty:!(ctrl.store.licenseKeyLimit)}">
       </div>
     </div>
   </form>

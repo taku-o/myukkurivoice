@@ -14,6 +14,7 @@ class SystemReducer implements yubo.SystemReducer {
     this.store.aq10UseKey = appCfg.aq10UseKeyEncrypted?
       this.LicenseService.decrypt(appCfg.passPhrase, appCfg.aq10UseKeyEncrypted):
       '';
+    this.store.licenseKeyLimit = appCfg.licenseKeyLimit? new Date(appCfg.licenseKeyLimit): null;
   }
 
   cancel(): void {
@@ -25,6 +26,7 @@ class SystemReducer implements yubo.SystemReducer {
     const aq10UseKeyEncrypted = this.store.aq10UseKey?
       this.LicenseService.encrypt(this.store.appCfg.passPhrase, this.store.aq10UseKey):
       '';
+    const licenseKeyLimit = this.store.licenseKeyLimit? this.store.licenseKeyLimit: null;
     const extensions = this.store.appCfg.extensions;
     const options = {
       'mainWindow': this.store.appCfg.mainWindow,
@@ -32,6 +34,7 @@ class SystemReducer implements yubo.SystemReducer {
       'showMsgPane': this.store.appCfg.showMsgPane,
       'passPhrase': this.store.appCfg.passPhrase,
       'aq10UseKeyEncrypted': aq10UseKeyEncrypted,
+      'licenseKeyLimit': licenseKeyLimit,
       'extensions': extensions,
     };
     ipcRenderer().send('updateAppConfig', options);

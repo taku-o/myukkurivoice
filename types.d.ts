@@ -131,6 +131,7 @@ declare namespace yubo {
     showMsgPane:         boolean;
     passPhrase:          string | null;
     aq10UseKeyEncrypted: string;
+    licenseKeyLimit:     string;
     extensions:          {fcpx?: boolean};
   }
 
@@ -462,8 +463,9 @@ declare namespace yubo {
     generatedList:       IRecordMessage[];
   }
   export interface SystemStore {
-    appCfg:     AppCfg;
-    aq10UseKey: string;
+    appCfg:          AppCfg;
+    aq10UseKey:      string;
+    licenseKeyLimit: Date;
   }
   export interface DictStore {
     isInEditing: boolean;

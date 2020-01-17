@@ -19,12 +19,13 @@ class FnAppCfg implements FnAppCfg {
       mainWindow:       {width: 800, height: 665, x: null, y: null},
       helpWindow:       {width: 655, height: 572},
       helpSearchDialog: {width: 430, height: 120},
-      systemWindow:     {width: 390, height: 585},
+      systemWindow:     {width: 390, height: 605},
       dictWindow:       {width: 800, height: 600},
       audioServVer:     'webaudioapi8', // html5audio or webaudioapi or webaudioapi8
       showMsgPane:      true,
       passPhrase:       null,
       aq10UseKeyEncrypted: '',
+      licenseKeyLimit:  null,
       extensions:       {fcpx: false},
     };
 
@@ -39,7 +40,8 @@ class FnAppCfg implements FnAppCfg {
       delete require.cache[configPath];
 
       const config = new (Config())({defaults: stored}) as ElectronStore.Config;
-      ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'extensions'].forEach((k: string) => {
+      ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'licenseKeyLimit', 'extensions']
+      .forEach((k: string) => {
         if (config.has(k)) { appCfg[k] = config.get(k); }
       });
       // if passPhrase not exists, record passPhrase.
@@ -70,9 +72,11 @@ class FnAppCfg implements FnAppCfg {
       showMsgPane:         options.showMsgPane,
       passPhrase:          options.passPhrase,
       aq10UseKeyEncrypted: options.aq10UseKeyEncrypted,
+      licenseKeyLimit:     options.licenseKeyLimit,
       extensions:          options.extensions,
     });
-    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'extensions'].forEach((k: string) => {
+    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'licenseKeyLimit', 'extensions']
+    .forEach((k: string) => {
       if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
     });
     global.appCfg = myApp.appCfg;
@@ -87,9 +91,10 @@ class FnAppCfg implements FnAppCfg {
       showMsgPane:         true,
       passPhrase:          crypto().randomBytes(16).toString('hex'),
       aq10UseKeyEncrypted: '',
+      licenseKeyLimit:     null,
       extensions:          {fcpx: false},
     });
-    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'extensions'].forEach((k: string) => {
+    ['mainWindow', 'audioServVer', 'showMsgPane', 'passPhrase', 'aq10UseKeyEncrypted', 'licenseKeyLimit', 'extensions'].forEach((k: string) => {
       if (myApp.config.has(k)) { myApp.appCfg[k] = myApp.config.get(k); }
     });
     global.appCfg = myApp.appCfg;
