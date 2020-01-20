@@ -208,6 +208,7 @@ class MainReducer implements yubo.MainReducer {
   afterRender(): void {
     this.loadHistory();
     this.AquesService.init(); // initialize AquesService
+    this.validateLicenseLimit();
   }
 
   private loadData(nextTask: () => void): void {
@@ -233,6 +234,19 @@ class MainReducer implements yubo.MainReducer {
         }
         this.notifyUpdates({generatedList: this.store.generatedList});
       });
+    });
+  }
+  private validateLicenseLimit(): void {
+    const cancel = onIdle()(() => {
+      const licenseKeyLimit = this.appCfg.licenseKeyLimit;
+      if (!licenseKeyLimit) {
+        return;
+      }
+      const limit = new Date(licenseKeyLimit);
+      limit.setDate(limit.getDate() + 1);
+      if (limit.getTime() < Date.now()) {
+        this.MessageService.warn('環境設定：ライセンスキータイマーの期日が過ぎています。');
+      }
     });
   }
 

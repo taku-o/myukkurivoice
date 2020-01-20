@@ -279,6 +279,7 @@ declare namespace yubo {
     record(message: string, opts: {wavFilePath: string, srcTextPath: string, source: string, encoded: string, duration: number, bookmark: string}): void;
     recordSource(message: string, opts: {srcTextPath: string, source: string, bookmark: string}): void;
     info(message: string): void;
+    warn(message: string, err?: Error): void;
     error(message: string, err?: Error): void;
     syserror(message: string, err?: Error): void;
   }
@@ -541,6 +542,7 @@ declare namespace yubo {
     afterRender(): void;
     //private loadData(nextTask: () => void): void;
     //private loadHistory(): void;
+    //private validateLicenseLimit(): void;
     //private selectedSource(): string;
     //private selectedEncoded(): string;
     blurOnSource(): void;

@@ -94,6 +94,9 @@ table.message-list tr.error td {
 table.message-list tr.syserror td {
   color: red;
 }
+table.message-list tr.warn td {
+  color: darkgreen;
+}
 table.message-list th.message-item-wavFileName {
   width: 150px;
 }
