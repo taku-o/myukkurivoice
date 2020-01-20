@@ -182,6 +182,10 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       const msg = 'info message';
       MessageService.info(msg);
     };
+    ctrl.warn = function(): void {
+      const msg = 'warn message';
+      MessageService.warn(msg);
+    };
     ctrl.error = function(): void {
       const msg = 'error message';
       const err = new Error('err');
