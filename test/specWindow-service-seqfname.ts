@@ -8,7 +8,7 @@ temp.track();
 require('source-map-support').install();
 
 describe('specWindow-service-SeqFNameService', function() {
-  this.timeout(10000);
+  this.timeout(20000);
 
   let dirPath: string | null = null;
   before(function() {
@@ -122,8 +122,7 @@ describe('specWindow-service-SeqFNameService', function() {
     );
   });
 
-  // TODO why do not pass this test from 0.13.5 ?
-  it.skip('nextNumber', function() {
+  it('nextNumber', function() {
     const prefixP1 = 'prefix';
     const prefixP2 = 'some';
     const prefixP3 = 'hoge';
