@@ -203,5 +203,4 @@ describe('specWindow-service-SeqFNameService', function() {
         })
     );
   });
-
 });
