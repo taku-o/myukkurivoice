@@ -237,6 +237,9 @@ class MainReducer implements yubo.MainReducer {
     });
   }
   private validateLicenseLimit(): void {
+    if (!this.appCfg.licenseKeyLimit || !this.appCfg.showMsgPane) {
+      return;
+    }
     const cancel = onIdle()(() => {
       const licenseKeyLimit = this.appCfg.licenseKeyLimit;
       if (!licenseKeyLimit) {
