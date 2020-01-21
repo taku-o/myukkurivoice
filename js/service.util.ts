@@ -40,7 +40,7 @@ class SeqFNameService implements yubo.SeqFNameService {
           d.resolve(0); return;
         }
         this.MessageService.syserror('ディレクトリを参照できませんでした。', err);
-        d.reject(err);
+        d.reject(err); return;
       }
 
       const pattern = new RegExp(`^${prefix}(${this.numPattern})${this.ext}$`);
@@ -55,21 +55,21 @@ class SeqFNameService implements yubo.SeqFNameService {
         } catch(err) {
           if (err.code != 'ENOENT') {
             this.MessageService.syserror('ファイル参照時にエラーが起きました。', err);
-            return d.reject(err);
+            d.reject(err); return;
           }
         }
       });
       if (npList.length < 1) {
-        return d.resolve(0);
+        d.resolve(0); return;
       }
 
       const maxNum = Math.max.apply(null, npList);
       if (maxNum >= this.limit) {
         this.MessageService.syserror(`${this.limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`);
-        return d.reject(new Error(`${this.limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`));
+        d.reject(new Error(`${this.limit}${'までファイルが作られているので、これ以上ファイルを作成できません。'}`)); return;
       }
       const next = maxNum + 1;
-      return d.resolve(next);
+      d.resolve(next); return;
     });
     return d.promise;
   }
