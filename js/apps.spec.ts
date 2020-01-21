@@ -1119,6 +1119,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
       SeqFNameService.nextNumber($scope.nextNumberDir, $scope.nextNumberPrefix)
       .then((n: number) => {
         $scope.nextNumberResult = n;
+        $timeout(() => { $scope.$apply(); });
       });
     };
 
