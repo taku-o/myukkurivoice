@@ -59,6 +59,18 @@ class MessageService implements yubo.MessageService {
     this.$rootScope.$broadcast('message', post);
   }
 
+  warn(message: string, err: Error | null = null): void {
+    if (err) {
+      message = message + err.message;
+    }
+    const post: yubo.IMessage = {
+      created: new Date(),
+      body: message,
+      type: 'warn',
+    };
+    this.$rootScope.$broadcast('message', post);
+  }
+
   error(message: string, err: Error | null = null): void {
     if (err) {
       message = message + err.message;

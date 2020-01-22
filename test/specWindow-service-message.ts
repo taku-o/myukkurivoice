@@ -239,6 +239,51 @@ describe('specWindow-service-MessageService', function() {
     );
   });
 
+  it('warn', function() {
+    return (
+      this.client
+        .setValue('#message-service-post', '')
+        .click('#warn')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('warn message', parsed.body, position());
+          assert.equal('warn', parsed.type, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
   it('error', function() {
     return (
       this.client

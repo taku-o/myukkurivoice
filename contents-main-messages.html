@@ -10,7 +10,7 @@
       <th class="message-item-type">type</th>
       <th class="message-item-body">message</th>
     </tr>
-    <tr class="message-item" ng-repeat="message in ctrl.store.messageList track by $index" ng-class="{error:message.type=='error', syserror:message.type=='syserror',record:message.type=='record',source:message.type=='source'}">
+    <tr class="message-item" ng-repeat="message in ctrl.store.messageList track by $index" ng-class="message.type">
       <td class="message-item-created" ng-bind="message.created | date: 'yyyy/M/d HH:mm:ss'"></td>
       <td class="message-item-type" ng-bind="message.type"></td>
       <td class="message-item-body" ng-click="ctrl.quickLookMessage(message)"><span ng-show="message.type=='record'" class="icon icon-music"></span><span ng-bind="message.body"></span></td>
