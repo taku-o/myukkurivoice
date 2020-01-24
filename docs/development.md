@@ -58,13 +58,14 @@
     - ref-struct-di 1.1.0
 ```
 
-## 開発の進め方
+## 開発の進め方(簡易)
 
 - セットアップ
   - 最初に動作に必要なモジュールを取り込んでください。
 
 ```
-  npm install --no-optional
+  git submodule update --init
+  npm install
 ```
 
 - 次のコマンドでアプリを実際に動かしてみましょう。
@@ -78,14 +79,6 @@
 - プライベートレポジトリのコードが含まれているので、コードを修正してもビルドできない。どうすれば？
   - 簡単な修正なら、コードを修正して Pull Request を投げると、GitHub Actions でアプリがビルドされます。
   - GitHub Actions の該当 Workflow の右上、Artifacts からビルドしたアプリを受け取れます。
-
-## リリース
-
-- リリースコマンドで、リリース用のビルドの作成と、配布用 zip ファイルを作成します。
-
-```
-  npx gulp build:release
-```
 
 ## 開発
 
@@ -139,12 +132,27 @@
   npx gulp app
 ```
 
+## リリース
+
+### GitHub 版
+
+```
+  npx gulp build:release
+```
+
+### AppStore 版
+
+```
+  npx gulp build:store
+```
+
 # 環境設定まわりの情報
 
 ## install xcode
 
 ```
   xcode-select --install
+  xcode-select $XCODE_APP_PATH
 ```
 
 ## install node
