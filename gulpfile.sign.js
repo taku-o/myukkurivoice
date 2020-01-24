@@ -91,6 +91,7 @@ gulp.task('_sign:distribution:direct', (cb) => {
   const APP = 'MYukkuriVoice';
   const CHILD_PLIST = 'build/mas/store.child.plist';
   const PARENT_PLIST = 'build/mas/store.parent.plist';
+  const YUBO_EXE_PLIST = 'build/mas/store.yubo_exe.plist';
   const LOGINHELPER_PLIST = 'build/mas/store.loginhelper.plist';
 
   let child_list = [
@@ -117,11 +118,13 @@ gulp.task('_sign:distribution:direct', (cb) => {
     `${UNPACK_VENDOR_DIR}/AquesTalk10.framework`,
     `${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2`,
     `${UNPACK_VENDOR_DIR}/AquesTalk2.framework`,
+  ];
+  let yubo_exe_list = [
     `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
     `${UNPACK_VENDOR_DIR}/secret`,
+    //`${UNPACK_VENDOR_DIR}/maquestalk1`,
     //`${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk`,
     //`${UNPACK_VENDOR_DIR}/AquesTalk.framework`,
-    //`${UNPACK_VENDOR_DIR}/maquestalk1`,
   ];
   let loginhelper_list = [
     `${APP_PATH}/Contents/Library/LoginItems/${APP} Login Helper.app/Contents/MacOS/${APP} Login Helper`,
@@ -133,6 +136,11 @@ gulp.task('_sign:distribution:direct', (cb) => {
   for (let i = 0; i < child_list.length; i++) {
     execSync(
       `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${child_list[i]}"`
+    );
+  }
+  for (let i = 0; i < yubo_exe_list.length; i++) {
+    execSync(
+      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${YUBO_EXE_PLIST}" "${yubo_exe_list[i]}"`
     );
   }
   for (let i = 0; i < loginhelper_list.length; i++) {
