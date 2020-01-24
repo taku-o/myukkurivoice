@@ -165,6 +165,20 @@
   ./node_modules/.bin/electron-rebuild
 ```
 
+### ビルドした pkg をクリックしてもアプリがインストールされない
+
+- Package Installer が過去にインストールしたアプリの情報を持っている。
+- 他の場所に MYukkuriVoice.app があると、/Application にインストールせずに、そのアプリを置き換えようとする。
+  - そのアプリを消せば、/Application にインストールするようになる。
+  - 主に次の場所の、MYukkuriVoice.app を消し忘れやすい。
+    - MYukkuriVoice-darwin-x64/MYukkuriVoice.app
+    - release/myukkurivoice/MYukkuriVoice-mas-x64/MYukkuriVoice.app
+
+```
+  # Package Installerが持つアプリの情報を消すコマンド
+  sudo pkgutil --forget jp.nanasi.myukkurivoice
+```
+
 # その他
 
 ## 画像処理
