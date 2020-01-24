@@ -140,6 +140,8 @@ gulp.task(
     'doc',
     '_zip-app',
     '_sign:developer',
+    //'_sign:developer:direct',
+    //'_notarize',
     '_zip-app-signed',
     '_open:appdir',
     '_notify',
