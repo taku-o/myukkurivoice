@@ -134,6 +134,9 @@
 
 ## リリース
 
+- まず最初に KeyChain に AppStore 用のパスワードを登録。
+- 次にリリースコマンドで、リリース用のビルドの作成と、配布用 zip ファイルを作成します。
+
 ### GitHub 版
 
 ```
@@ -148,7 +151,21 @@
 
 # 環境設定まわりの情報
 
-## install xcode
+## KeyChain への AppStore パスワード登録
+
+- リリースビルドで、AppStore でのアップル公証時に利用する。
+  - staging ビルドでは不要
+
+```
+  security add-generic-password -a "mail@nanasi.jp" -w "xxxx-xxxx-xxxx-xxxx" -s "jp.nanasi.myukkurivoice.mac-app-store"
+  security delete-generic-password -a "mail@nanasi.jp" -s "jp.nanasi.myukkurivoice.mac-app-store"
+```
+
+## install Xcode
+
+- リリースビルドは Xcode 10.1 以降が必要。
+  - つまり、macOS 10.13 以降でないと、リリースビルドを作れない。
+  - staging ビルドでは、Xcode のバージョンが低くても問題ありません。
 
 ```
   xcode-select --install
