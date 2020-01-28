@@ -89,9 +89,9 @@ gulp.task('_sign:distribution:direct', (cb) => {
   const FRAMEWORKS_PATH = `${APP_PATH}/Contents/Frameworks`;
   const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
   const APP = 'MYukkuriVoice';
-  const CHILD_PLIST = 'build/mas/store.child.plist';
-  const PARENT_PLIST = 'build/mas/store.parent.plist';
-  const YUBO_EXE_PLIST = 'build/mas/store.yubo_exe.plist';
+  const APP_PLIST = 'build/mas/store.app.plist';
+  const APP_CHILD_PLIST = 'build/mas/store.app-child.plist';
+  const EXE_PLIST = 'build/mas/store.exe.plist';
   const LOGINHELPER_PLIST = 'build/mas/store.loginhelper.plist';
 
   let child_list = [
@@ -135,12 +135,12 @@ gulp.task('_sign:distribution:direct', (cb) => {
 
   for (let i = 0; i < child_list.length; i++) {
     execSync(
-      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${child_list[i]}"`
+      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${APP_CHILD_PLIST}" "${child_list[i]}"`
     );
   }
   for (let i = 0; i < yubo_exe_list.length; i++) {
     execSync(
-      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${YUBO_EXE_PLIST}" "${yubo_exe_list[i]}"`
+      `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${EXE_PLIST}" "${yubo_exe_list[i]}"`
     );
   }
   for (let i = 0; i < loginhelper_list.length; i++) {
@@ -149,11 +149,9 @@ gulp.task('_sign:distribution:direct', (cb) => {
     );
   }
   execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${CHILD_PLIST}" "${app_binary}"`
+    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${APP_CHILD_PLIST}" "${app_binary}"`
   );
-  execSync(
-    `/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${PARENT_PLIST}" "${app_binary}"`
-  );
+  execSync(`/usr/bin/codesign -s "${DEVELOPER_APPLICATION_3RD_KEY}" -f --entitlements "${APP_PLIST}" "${app_binary}"`);
 
   cb();
 });
