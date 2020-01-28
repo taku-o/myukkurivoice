@@ -1,12 +1,15 @@
 var gulp = gulp || require('gulp');
 const execSync = require('child_process').execSync;
 const flatAsync = require('electron-osx-sign').flatAsync;
+const keychain = require('keychain');
+const notarize = require('electron-notarize').notarize;
 const signAsync = require('electron-osx-sign').signAsync;
 
 const ELECTRON_VERSION = require('./package.json').versions.electron;
 const DEVELOPER_ID_APPLICATION_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
 const DEVELOPER_INSTALLER_3RD_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_INSTALLER_3RD_KEY;
 const DEVELOPER_APPLICATION_3RD_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_APPLICATION_3RD_KEY;
+const DEVELOPER_APPLE_ID = require('./build/mas/MacAppleStore.json').DEVELOPER_APPLE_ID;
 
 // sign
 //gulp.task('_sign:developer', () => {
@@ -98,14 +101,10 @@ gulp.task('_sign:developer:direct', (cb) => {
     );
   }
   for (let i = 0; i < exe_child_list.length; i++) {
-    execSync(
-      `/usr/bin/codesign --options runtime -s "${identity}" -f "${exe_child_list[i]}"`
-    );
+    execSync(`/usr/bin/codesign --options runtime -s "${identity}" -f "${exe_child_list[i]}"`);
   }
   for (let i = 0; i < exe_list.length; i++) {
-    execSync(
-      `/usr/bin/codesign --options runtime -s "${identity}" -f "${exe_list[i]}"`
-    );
+    execSync(`/usr/bin/codesign --options runtime -s "${identity}" -f "${exe_list[i]}"`);
   }
   execSync(`/usr/bin/codesign --options runtime -s "${identity}" -f --entitlements "${CHILD_PLIST}" "${app_binary}"`);
   execSync(`/usr/bin/codesign --options runtime -s "${identity}" -f --entitlements "${PARENT_PLIST}" "${app_binary}"`);
@@ -215,23 +214,15 @@ gulp.task('_sign:distribution:direct', (cb) => {
   let app_top = `${APP_PATH}`;
 
   for (let i = 0; i < child_list.length; i++) {
-    execSync(
-      `/usr/bin/codesign -s "${identity}" -f --entitlements "${APP_CHILD_PLIST}" "${child_list[i]}"`
-    );
+    execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${APP_CHILD_PLIST}" "${child_list[i]}"`);
   }
   for (let i = 0; i < exe_list.length; i++) {
-    execSync(
-      `/usr/bin/codesign -s "${identity}" -f --entitlements "${EXE_PLIST}" "${exe_list[i]}"`
-    );
+    execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${EXE_PLIST}" "${exe_list[i]}"`);
   }
   for (let i = 0; i < loginhelper_list.length; i++) {
-    execSync(
-      `/usr/bin/codesign -s "${identity}" -f --entitlements "${LOGINHELPER_PLIST}" "${loginhelper_list[i]}"`
-    );
+    execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${LOGINHELPER_PLIST}" "${loginhelper_list[i]}"`);
   }
-  execSync(
-    `/usr/bin/codesign -s "${identity}" -f --entitlements "${APP_CHILD_PLIST}" "${app_binary}"`
-  );
+  execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${APP_CHILD_PLIST}" "${app_binary}"`);
   execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${APP_PLIST}" "${app_binary}"`);
 
   cb();
@@ -250,3 +241,51 @@ gulp.task('_flat:distribution', () => {
     platform: platform,
   });
 });
+
+// notarize
+gulp.task('_appleIdPass', (cb) => {
+  const appleId = DEVELOPER_APPLE_ID;
+  const keychainEntry = 'jp.nanasi.myukkurivoice.mac-app-store';
+
+  keychain.getPassword({account: appleId, service: keychainEntry}, (err, pass) => {
+    if (err) {
+      cb(err);
+      return;
+    }
+    const env = process.env;
+    env.AC_PASSWORD = pass;
+    cb();
+  });
+});
+gulp.task(
+  '_notarize',
+  gulp.series('_appleIdPass', () => {
+    const platform = process.env.BUILD_PLATFORM;
+    const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+    const bundleId = 'jp.nanasi.myukkurivoice';
+    const teamId = '52QJ97GWTE';
+
+    const appleId = DEVELOPER_APPLE_ID;
+    const env = process.env;
+    const password = env.AC_PASSWORD;
+
+    return notarize({
+      appBundleId: bundleId,
+      appPath: APP_PATH,
+      appleId: appleId,
+      appleIdPassword: password,
+      ascProvider: teamId,
+    });
+  })
+);
+
+// verify sign
+gulp.task('_verify:sign', (cb) => {
+  const platform = process.env.BUILD_PLATFORM;
+  const APP_PATH = `release/myukkurivoice/MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  execSync(`/usr/bin/codesign -vvvv -d "${APP_PATH}"`);
+  execSync(`/usr/sbin/spctl --assess -vvvv "${APP_PATH}"`);
+  cb();
+});
+gulp.task('verify:release', gulp.series('_handleError', '_platform:darwin', '_target:release', '_verify:sign'));
+gulp.task('verify:store', gulp.series('_handleError', '_platform:mas', '_target:store', '_verify:sign'));
