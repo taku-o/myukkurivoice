@@ -92,22 +92,22 @@ gulp.task('_sign:developer:direct', (cb) => {
 
   for (let i = 0; i < child_list.length; i++) {
     execSync(
-      `/usr/bin/codesign --options runtime -s "${identity}" -f --entitlements "${CHILD_PLIST}" "${child_list[i]}"`
+      `/usr/bin/codesign --options runtime --timestamp -s "${identity}" -f --entitlements "${CHILD_PLIST}" "${child_list[i]}"`
     );
   }
   for (let i = 0; i < opt_framework_list.length; i++) {
     execSync(
-      `/usr/bin/codesign --deep --options runtime -s "${identity}" -f --entitlements "${CHILD_PLIST}" "${opt_framework_list[i]}"`
+      `/usr/bin/codesign --deep --options runtime --timestamp -s "${identity}" -f --entitlements "${CHILD_PLIST}" "${opt_framework_list[i]}"`
     );
   }
   for (let i = 0; i < exe_child_list.length; i++) {
-    execSync(`/usr/bin/codesign --options runtime -s "${identity}" -f "${exe_child_list[i]}"`);
+    execSync(`/usr/bin/codesign --options runtime --timestamp -s "${identity}" -f "${exe_child_list[i]}"`);
   }
   for (let i = 0; i < exe_list.length; i++) {
-    execSync(`/usr/bin/codesign --options runtime -s "${identity}" -f "${exe_list[i]}"`);
+    execSync(`/usr/bin/codesign --options runtime --timestamp -s "${identity}" -f "${exe_list[i]}"`);
   }
-  execSync(`/usr/bin/codesign --options runtime -s "${identity}" -f --entitlements "${CHILD_PLIST}" "${app_binary}"`);
-  execSync(`/usr/bin/codesign --options runtime -s "${identity}" -f --entitlements "${PARENT_PLIST}" "${app_binary}"`);
+  execSync(`/usr/bin/codesign --options runtime --timestamp -s "${identity}" -f --entitlements "${CHILD_PLIST}" "${app_binary}"`);
+  execSync(`/usr/bin/codesign --options runtime --timestamp -s "${identity}" -f --entitlements "${PARENT_PLIST}" "${app_binary}"`);
 
   cb();
 });
