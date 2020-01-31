@@ -853,7 +853,8 @@ class MainReducer implements yubo.MainReducer {
         app.startAccessingSecurityScopedResource(bookmark);
       try {
         const win = require('electron').remote.getCurrentWindow();
-        win.previewFile(quickLookPath);
+        const basename = path().basename(quickLookPath);
+        win.previewFile(quickLookPath, basename);
       } finally {
         stopAccessingSecurityScopedResource();
       }
