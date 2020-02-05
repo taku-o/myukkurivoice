@@ -78,6 +78,7 @@ gulp.task('_sign:developer:direct', (cb) => {
     `${FRAMEWORKS_PATH}/ReactiveCocoa.framework/Versions/A`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Squirrel`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A`,
+    `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Squirrel`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Resources/ShipIt`,
   ];
   let exe_list = [
