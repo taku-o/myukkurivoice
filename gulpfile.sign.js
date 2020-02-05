@@ -110,9 +110,8 @@ gulp.task('_sign:developer:direct', (cb) => {
     `/usr/bin/codesign --options runtime --timestamp -s "${identity}" -f --entitlements "${CHILD_PLIST}" "${app_binary}"`
   );
   execSync(
-    `/usr/bin/codesign --options runtime --timestamp -s "${identity}" -f --entitlements "${PARENT_PLIST}" "${app_binary}"`
+    `/usr/bin/codesign --options runtime --timestamp -s "${identity}" -f --entitlements "${PARENT_PLIST}" "${app_top}"`
   );
-
   cb();
 });
 
@@ -177,8 +176,7 @@ gulp.task('_sign:distribution:direct', (cb) => {
     execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${LOGINHELPER_PLIST}" "${loginhelper_list[i]}"`);
   }
   execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${APP_CHILD_PLIST}" "${app_binary}"`);
-  execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${APP_PLIST}" "${app_binary}"`);
-
+  execSync(`/usr/bin/codesign -s "${identity}" -f --entitlements "${APP_PLIST}" "${app_top}"`);
   cb();
 });
 
