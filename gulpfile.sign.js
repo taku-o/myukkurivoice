@@ -12,29 +12,29 @@ const DEVELOPER_APPLICATION_3RD_KEY = require('./build/mas/MacAppleStore.json').
 const DEVELOPER_APPLE_ID = require('./build/mas/MacAppleStore.json').DEVELOPER_APPLE_ID;
 
 // sign
-//gulp.task('_sign:developer', () => {
-//  const platform = process.env.BUILD_PLATFORM;
-//  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
-//  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
-//
-//  return signAsync({
-//    app: APP_PATH,
-//    identity: DEVELOPER_ID_APPLICATION_KEY,
-//    binaries: [
-//      `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`,
-//      `${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic`,
-//      `${UNPACK_VENDOR_DIR}/AquesTalk10.framework/Versions/A/AquesTalk`,
-//      `${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2`,
-//      `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
-//      `${UNPACK_VENDOR_DIR}/secret`,
-//      `${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk`,
-//      `${UNPACK_VENDOR_DIR}/maquestalk1`,
-//    ],
-//    version: ELECTRON_VERSION,
-//    type: 'development',
-//    platform: platform,
-//  });
-//});
+gulp.task('_sign:developer', () => {
+  const platform = process.env.BUILD_PLATFORM;
+  const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
+
+  return signAsync({
+    app: APP_PATH,
+    identity: DEVELOPER_ID_APPLICATION_KEY,
+    binaries: [
+      `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`,
+      `${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk10.framework/Versions/A/AquesTalk`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk2.framework/Versions/A/AquesTalk2`,
+      `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
+      `${UNPACK_VENDOR_DIR}/secret`,
+      `${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk`,
+      `${UNPACK_VENDOR_DIR}/maquestalk1`,
+    ],
+    version: ELECTRON_VERSION,
+    type: 'development',
+    platform: platform,
+  });
+});
 gulp.task('_sign:developer:direct', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
@@ -77,9 +77,9 @@ gulp.task('_sign:developer:direct', (cb) => {
     `${FRAMEWORKS_PATH}/ReactiveCocoa.framework/ReactiveCocoa`,
     `${FRAMEWORKS_PATH}/ReactiveCocoa.framework/Versions/A`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Squirrel`,
+    //`${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Resources/ShipIt`,
+    //`${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Squirrel`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A`,
-    `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Squirrel`,
-    `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Resources/ShipIt`,
   ];
   let exe_list = [
     `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
