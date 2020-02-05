@@ -76,8 +76,8 @@ gulp.task('_sign:developer:direct', (cb) => {
     `${FRAMEWORKS_PATH}/Mantle.framework/Versions/A`,
     `${FRAMEWORKS_PATH}/ReactiveCocoa.framework/ReactiveCocoa`,
     `${FRAMEWORKS_PATH}/ReactiveCocoa.framework/Versions/A`,
+    `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Resources/ShipIt`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Squirrel`,
-    //`${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Resources/ShipIt`,
     //`${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Squirrel`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A`,
   ];
