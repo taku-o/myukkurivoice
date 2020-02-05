@@ -41,6 +41,8 @@ usage:
     gulp clean
     gulp test [--t=test/mainWindow.js]
     gulp test:rebuild [--t=test/mainWindow.js]
+    gulp verify:release
+    gulp verify:store
     gulp app
     gulp app:default
     gulp app:catalina
