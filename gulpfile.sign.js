@@ -52,6 +52,7 @@ gulp.task('_sign:developer:direct', (cb) => {
     `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libGLESv2.dylib`,
     `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libswiftshader_libGLESv2.dylib`,
     `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib`,
+    `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Resources/crashpad_handler`,
     `${FRAMEWORKS_PATH}/Electron Framework.framework`,
     `${FRAMEWORKS_PATH}/${APP} Helper (GPU).app/Contents/MacOS/${APP} Helper (GPU)`,
     `${FRAMEWORKS_PATH}/${APP} Helper (GPU).app`,
@@ -77,6 +78,7 @@ gulp.task('_sign:developer:direct', (cb) => {
     `${FRAMEWORKS_PATH}/ReactiveCocoa.framework/Versions/A`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Squirrel`,
     `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A`,
+    `${FRAMEWORKS_PATH}/Squirrel.framework/Versions/A/Resources/ShipIt`,
   ];
   let exe_list = [
     `${UNPACK_VENDOR_DIR}/maquestalk1-ios`,
