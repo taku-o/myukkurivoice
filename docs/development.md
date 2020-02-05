@@ -7,7 +7,7 @@
 | ファイル名                            | 説明                                                     |
 | :------------------------------------ | :------------------------------------------------------- |
 | **MYukkuriVoice-darwin-x64.zip**      | MYukkuriVoice アプリ。**これをダウンロードしましょう。** |
-| MYukkuriVoice-darwin-x64-nosigned.zip | MYukkuriVoice アプリ(未署名版)                           |
+| MYukkuriVoice-darwin-x64-nosigned.zip | MYukkuriVoice アプリ(未署名版、↑ が動かない時に)         |
 
 - Final Cut Pro X 用フォルダーアクション
   - https://github.com/taku-o/fcpx-audio-role-workflow/releases
