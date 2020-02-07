@@ -302,7 +302,7 @@ class AquesService implements yubo.AquesService {
 
     // set developer key if is not set.
     if (! this._isAqKanji2KoeDevkeySet) {
-      if (this.aqKanji2KoeDevKey == null) {
+      if (! this.aqKanji2KoeDevKey) {
         waitUntil()(300, 10, () => {
           return this.aqKanji2KoeDevKey != null;
         },
@@ -310,7 +310,7 @@ class AquesService implements yubo.AquesService {
           // wait
         });
       }
-      if (this.aqKanji2KoeDevKey == null) {
+      if (! this.aqKanji2KoeDevKey) {
         this.MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
         return '';
       }
@@ -428,7 +428,7 @@ class AquesService implements yubo.AquesService {
     } else if (phont.version == 'talk10') {
       // set license key if is not set.
       if (! this._isAquesTalk10LicensekeySet) {
-        if (this.aquesTalk10DevKey == null) {
+        if (! this.aquesTalk10DevKey) {
           waitUntil()(300, 10, () => {
             return this.aquesTalk10DevKey != null;
           },
@@ -436,7 +436,7 @@ class AquesService implements yubo.AquesService {
             // wait
           });
         }
-        if (this.aquesTalk10DevKey == null) {
+        if (! this.aquesTalk10DevKey) {
           this.MessageService.syserror('まだ初期化処理が完了していないので1秒ほど待ってください。');
           d.reject(new Error('まだ初期化処理が完了していないので1秒ほど待ってください。')); return d.promise;
         }
