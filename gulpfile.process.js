@@ -96,3 +96,18 @@ gulp.task('_runtime:store', (cb) => {
   env.RUNTIME_ENV = 'store';
   cb();
 });
+
+// _update:packagejson
+gulp.task('_update:packagejson', (cb) => {
+  const packagejson = require('./package.json');
+  const env = process.env;
+  packagejson.envs.platform = env.BUILD_PLATFORM;
+  packagejson.envs.target   = env.BUILD_TARGET;
+
+  fs.writeFile('package.json', JSON.stringify(packagejson, null, '  '), (err) => {
+    if (err) {
+      gulp.task('_notifyError')();
+    }
+    cb(err);
+  });
+});
