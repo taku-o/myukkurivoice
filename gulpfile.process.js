@@ -1,4 +1,5 @@
 var gulp = gulp || require('gulp');
+const fs = require('fs');
 const notifier = require('node-notifier');
 
 // notify
