@@ -1,4 +1,5 @@
 var gulp = gulp || require('gulp');
+const execSync = require('child_process').execSync;
 const fs = require('fs');
 const notifier = require('node-notifier');
 
@@ -101,9 +102,21 @@ gulp.task('_runtime:store', (cb) => {
 // _update:packagejson
 gulp.task('_update:packagejson', (cb) => {
   const packagejson = require('./package.json');
+
+  // process.env
   const env = process.env;
-  packagejson.envs.platform = env.BUILD_PLATFORM;
-  packagejson.envs.target   = env.BUILD_TARGET;
+  packagejson.build_envs.platform = env.BUILD_PLATFORM;
+  packagejson.build_envs.target = env.BUILD_TARGET;
+
+  // git
+  const branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
+    .toString()
+    .trim();
+  const hash = execSync('/usr/bin/git rev-parse HEAD')
+    .toString()
+    .trim();
+  packagejson.build_envs.branch = branch ? branch : 'master';
+  packagejson.build_envs.hash = hash;
 
   fs.writeFile('package.json', JSON.stringify(packagejson, null, '  '), (err) => {
     if (err) {

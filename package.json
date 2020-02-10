@@ -28,9 +28,11 @@
     "chrome": "76.0.3809.146",
     "xcode": "9.2"
   },
-  "envs": {
+  "build_envs": {
     "platform": "darwin",
-    "target": "debug"
+    "target": "debug",
+    "branch": "",
+    "hash": ""
   },
   "homepage": "https://github.com/taku-o/myukkurivoice",
   "bugs": {
