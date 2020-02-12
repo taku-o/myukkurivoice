@@ -105,8 +105,8 @@ gulp.task('_update:packagejson', (cb) => {
 
   // process.env
   const env = process.env;
-  packagejson.build_envs.platform = env.BUILD_PLATFORM;
-  packagejson.build_envs.target = env.BUILD_TARGET;
+  packagejson.build_status.platform = env.BUILD_PLATFORM;
+  packagejson.build_status.target = env.BUILD_TARGET;
 
   // git
   const branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
@@ -115,8 +115,8 @@ gulp.task('_update:packagejson', (cb) => {
   const hash = execSync('/usr/bin/git rev-parse HEAD')
     .toString()
     .trim();
-  packagejson.build_envs.branch = branch ? branch : 'master';
-  packagejson.build_envs.hash = hash;
+  packagejson.build_status.branch = branch ? branch : 'master';
+  packagejson.build_status.hash = hash;
 
   fs.writeFile('package.json', JSON.stringify(packagejson, null, '  '), (err) => {
     if (err) {
