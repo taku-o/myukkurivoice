@@ -28,7 +28,7 @@
     "chrome": "76.0.3809.146",
     "xcode": "9.2"
   },
-  "build_status": {
+  "build_settings": {
     "platform": "darwin",
     "target": "debug",
     "branch": "",
