@@ -28,6 +28,12 @@
     "chrome": "76.0.3809.146",
     "xcode": "9.2"
   },
+  "build_settings": {
+    "platform": "darwin",
+    "target": "debug",
+    "branch": "",
+    "hash": ""
+  },
   "homepage": "https://github.com/taku-o/myukkurivoice",
   "bugs": {
     "url": "https://github.com/taku-o/myukkurivoice/issues",

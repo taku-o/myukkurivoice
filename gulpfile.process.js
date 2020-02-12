@@ -1,4 +1,6 @@
 var gulp = gulp || require('gulp');
+const execSync = require('child_process').execSync;
+const fs = require('fs');
 const notifier = require('node-notifier');
 
 // notify
@@ -95,4 +97,31 @@ gulp.task('_runtime:store', (cb) => {
   const env = process.env;
   env.RUNTIME_ENV = 'store';
   cb();
+});
+
+// _update:packagejson
+gulp.task('_update:packagejson', (cb) => {
+  const packagejson = require('./package.json');
+
+  // process.env
+  const env = process.env;
+  packagejson.build_settings.platform = env.BUILD_PLATFORM;
+  packagejson.build_settings.target = env.BUILD_TARGET;
+
+  // git
+  const branch = execSync('/usr/bin/git symbolic-ref --short HEAD')
+    .toString()
+    .trim();
+  const hash = execSync('/usr/bin/git rev-parse HEAD')
+    .toString()
+    .trim();
+  packagejson.build_settings.branch = branch ? branch : 'master';
+  packagejson.build_settings.hash = hash;
+
+  fs.writeFile('package.json', JSON.stringify(packagejson, null, '  '), (err) => {
+    if (err) {
+      gulp.task('_notifyError')();
+    }
+    cb(err);
+  });
 });
