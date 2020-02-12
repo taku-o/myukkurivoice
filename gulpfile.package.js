@@ -77,6 +77,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/test" \
     --ignore="^/vendor" \
     --ignore="/node_modules/@types" \
+    --ignore="/node_modules/angular-input-highlight/index.html$" \
     --ignore="/node_modules/angular-ui-grid/css" \
     --ignore="/node_modules/angular-ui-grid/i18n" \
     --ignore="/node_modules/angular-ui-grid/index.js$" \
@@ -123,6 +124,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="/node_modules/angular/angular\\.min\\.js\\.gzip$" \
     --ignore="/node_modules/angular/index\\.js$" \
     --ignore="/node_modules/angular/package\\.json$" \
+    --ignore="/node_modules/cryptico.js/dist/cryptico.min.js$" \
     --ignore="/node_modules/cryptico.js/src/" \
     --ignore="/node_modules/ffi-napi/build/Release/.deps/Release/obj.target/ffi/deps/libffi/src/" \
     --ignore="/node_modules/ffi-napi/build/Release/.deps/Release/obj.target/ffi_bindings/src/" \
@@ -210,6 +212,7 @@ function getIgnoreFiles(forDebug) {
     --ignore="/\\.eslintrc$" \
     --ignore="/\\.eslintrc\\.json$" \
     --ignore="/\\.eslintrc\\.yml$" \
+    --ignore="/\\.forge-meta$" \
     --ignore="/\\.git$" \
     --ignore="/\\.github$" \
     --ignore="/\\.gitignore$" \
