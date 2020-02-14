@@ -28,19 +28,24 @@
     "chrome": "76.0.3809.146",
     "xcode": "9.2"
   },
-  "build_settings": {
+  "build_status": {
     "platform": "darwin",
     "target": "debug",
     "branch": "",
     "hash": ""
   },
-  "homepage": "https://github.com/taku-o/myukkurivoice",
+  "homepage": "https://taku-o.github.io/myukkurivoice/",
   "bugs": {
     "url": "https://github.com/taku-o/myukkurivoice/issues",
     "email": "mail@nanasi.jp"
   },
   "author": "taku-o <mail@nanasi.jp> (https://nanasi.jp/)",
   "license": "MIT",
+  "repository" : {
+    "type" : "git",
+    "url" : "git@github.com:taku-o/myukkurivoice.git"
+  },
+  "os" : ["darwin"],
   "dependencies": {
     "@types/angular": "^1.6.54",
     "@types/intro.js": "^2.4.4",
