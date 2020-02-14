@@ -41,11 +41,13 @@
   },
   "author": "taku-o <mail@nanasi.jp> (https://nanasi.jp/)",
   "license": "MIT",
-  "repository" : {
-    "type" : "git",
-    "url" : "git@github.com:taku-o/myukkurivoice.git"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:taku-o/myukkurivoice.git"
   },
-  "os" : ["darwin"],
+  "os": [
+    "darwin"
+  ],
   "dependencies": {
     "@types/angular": "^1.6.54",
     "@types/intro.js": "^2.4.4",
@@ -76,7 +78,7 @@
     "intro.js": "^2.9.3",
     "lru-cache": "^5.1.1",
     "ms": "^2.1.1",
-    "myukkurivoice-about-window": "github:taku-o/myukkurivoice-about-window#v1.14.1",
+    "myukkurivoice-about-window": "github:taku-o/myukkurivoice-about-window#v1.14.2",
     "node-addon-api": "^1.5.0",
     "on-idle": "^3.1.4",
     "photon": "github:connors/photon#master",
