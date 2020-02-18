@@ -10,7 +10,7 @@ temp.track();
 require('source-map-support').install();
 
 describe('specWindow-service-WebAPIAudioService-8000', function() {
-  this.timeout(30000);
+  this.timeout(10000);
 
   let dirPath: string | null = null;
   before(function() {
@@ -39,7 +39,7 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
     return this.client.close();
   });
 
-  it('play', function() {
+  it('play-aquestalk1', function() {
     return (
       this.client
         // play aquestalk1
@@ -52,6 +52,41 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('play-aquestalk2', function() {
+    return (
+      this.client
         // play aquestalk2
         .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
@@ -62,6 +97,41 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('play-aquestalk10', function() {
+    return (
+      this.client
         // play aquestalk10
         .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
@@ -104,7 +174,7 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
     );
   });
 
-  it('record', function() {
+  it('record-aquestalk1', function() {
     return (
       this.client
         // record aquestalk1
@@ -139,6 +209,41 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
             });
           });
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('record-aquestalk2', function() {
+    return (
+      this.client
         // record aquestalk2
         .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
@@ -171,6 +276,41 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
             });
           });
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('record-aquestalk10', function() {
+    return (
+      this.client
         // record aquestalk10
         .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
@@ -235,7 +375,7 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
     );
   });
 
-  it('record with fcpx audio role', function() {
+  it('record with fcpx audio role (aquestalk1)', function() {
     return (
       this.client
         // record aquestalk1
@@ -272,6 +412,41 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
             });
           });
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('record with fcpx audio role (aquestalk2)', function() {
+    return (
+      this.client
         // record aquestalk2
         .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
@@ -306,6 +481,41 @@ describe('specWindow-service-WebAPIAudioService-8000', function() {
             });
           });
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('record with fcpx audio role (aquestalk10)', function() {
+    return (
+      this.client
         // record aquestalk10
         .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")

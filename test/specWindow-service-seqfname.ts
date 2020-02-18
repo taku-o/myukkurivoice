@@ -8,7 +8,7 @@ temp.track();
 require('source-map-support').install();
 
 describe('specWindow-service-SeqFNameService', function() {
-  this.timeout(20000);
+  this.timeout(10000);
 
   let dirPath: string | null = null;
   before(function() {
@@ -122,7 +122,7 @@ describe('specWindow-service-SeqFNameService', function() {
     );
   });
 
-  it('nextNumber', function() {
+  it('nextNumber-simple', function() {
     const prefixP1 = 'prefix';
     const prefixP2 = 'some';
     const prefixP3 = 'hoge';
@@ -146,6 +146,52 @@ describe('specWindow-service-SeqFNameService', function() {
         .then((value: number) => {
           assert.equal(102, value, position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('nextNumber-countup', function() {
+    const prefixP1 = 'prefix';
+    const prefixP2 = 'some';
+    const prefixP3 = 'hoge';
+    const prefixP4 = 'phlx';
+    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
+    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
+    const fileP3 = `${dirPath}/${prefixP3}.wav`;
+    fs.closeSync(fs.openSync(fileP1, 'w'));
+    fs.closeSync(fs.openSync(fileP2, 'w'));
+    fs.closeSync(fs.openSync(fileP3, 'w'));
+
+    return (
+      this.client
         // count up
         .setValue('#next-number-result', '')
         .setValue('#next-number-dir', dirPath)
@@ -156,6 +202,52 @@ describe('specWindow-service-SeqFNameService', function() {
         .then((value: number) => {
           assert.equal(1, value, position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('nextNumber-newly', function() {
+    const prefixP1 = 'prefix';
+    const prefixP2 = 'some';
+    const prefixP3 = 'hoge';
+    const prefixP4 = 'phlx';
+    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
+    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
+    const fileP3 = `${dirPath}/${prefixP3}.wav`;
+    fs.closeSync(fs.openSync(fileP1, 'w'));
+    fs.closeSync(fs.openSync(fileP2, 'w'));
+    fs.closeSync(fs.openSync(fileP3, 'w'));
+
+    return (
+      this.client
         // newly
         .setValue('#next-number-result', '')
         .setValue('#next-number-dir', dirPath)
@@ -166,6 +258,52 @@ describe('specWindow-service-SeqFNameService', function() {
         .then((value: number) => {
           assert.equal(0, value, position());
         })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('nextNumber-notexists', function() {
+    const prefixP1 = 'prefix';
+    const prefixP2 = 'some';
+    const prefixP3 = 'hoge';
+    const prefixP4 = 'phlx';
+    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
+    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
+    const fileP3 = `${dirPath}/${prefixP3}.wav`;
+    fs.closeSync(fs.openSync(fileP1, 'w'));
+    fs.closeSync(fs.openSync(fileP2, 'w'));
+    fs.closeSync(fs.openSync(fileP3, 'w'));
+
+    return (
+      this.client
         // not exists
         .setValue('#next-number-result', '')
         .setValue('#next-number-dir', dirPath)
