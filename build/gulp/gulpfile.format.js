@@ -1,5 +1,4 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
 const eslint = require('gulp-eslint');
 const prettier = require('gulp-prettier');
 const using = require('gulp-using');
@@ -13,13 +12,21 @@ gulp.task('lint:ts', () => {
 });
 gulp.task('lint:js', () => {
   return gulp
-    .src(['gulpfile*.js'])
+    .src(['gulpfile.js', 'build/gulp/gulpfile.*.js'])
     .pipe(eslint({useEslintrc: true}))
     .pipe(eslint.format());
 });
 gulp.task('lint:q', () => {
   return gulp
-    .src(['*.ts', 'js/*.ts', 'test/*.ts', 'docs/assets/js/*.ts', '!types.d.ts', 'gulpfile*.js'])
+    .src([
+      '*.ts',
+      'js/*.ts',
+      'test/*.ts',
+      'docs/assets/js/*.ts',
+      '!types.d.ts',
+      'gulpfile.js',
+      'build/gulp/gulpfile.*.js',
+    ])
     .pipe(eslint({useEslintrc: true, quiet: true}))
     .pipe(eslint.format());
 });
@@ -87,7 +94,7 @@ gulp.task('_format:ts', gulp.parallel('_format:ts:eslint', '_format:ts:test'));
 // format:js
 gulp.task('_format:js', () => {
   return gulp
-    .src(['gulpfile.js', 'gulpfile.*.js'], {base: '.'})
+    .src(['gulpfile.js', 'build/gulp/gulpfile.*.js'], {base: '.'})
     .pipe(
       prettier({
         arrowParens: 'always',

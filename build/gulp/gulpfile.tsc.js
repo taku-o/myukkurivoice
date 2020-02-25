@@ -1,5 +1,4 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const ts = require('gulp-typescript');
@@ -39,5 +38,5 @@ gulp.task(
 );
 
 gulp.task('_rm:js', () => {
-  return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js', '!gulpfile.*.js', '*.tsbuildinfo']);
+  return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js', '!build/gulp/gulpfile.*.js', '*.tsbuildinfo']);
 });

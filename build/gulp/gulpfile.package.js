@@ -68,7 +68,6 @@ function getIgnoreFiles(forDebug) {
     --ignore="^/MYukkuriVoice-mas-x64" \
     --ignore="^/build" \
     --ignore="^/docs" \
-    --ignore="^/gulpfile\\..+\\.js$" \
     --ignore="^/gulpfile\\.js$" \
     --ignore="^/images/sm.+.png$" \
     --ignore="^/images/readme-.+.png$" \

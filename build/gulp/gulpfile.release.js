@@ -9,8 +9,8 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 const rimraf = require('rimraf');
 
-const WORK_DIR = path.join(__dirname, './release');
-const WORK_REPO_DIR = path.join(__dirname, './release/myukkurivoice');
+const WORK_DIR = path.join(__root, './release');
+const WORK_REPO_DIR = path.join(__root, './release/myukkurivoice');
 const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
 const MAS_APP_PACKAGE_NAME = 'MYukkuriVoice-mas-x64';
 

@@ -1,5 +1,4 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
 const execSync = require('child_process').execSync;
 const fs = require('fs');
 const notifier = require('node-notifier');

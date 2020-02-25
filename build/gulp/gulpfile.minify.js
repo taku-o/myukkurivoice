@@ -1,5 +1,4 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
 const cleanCSS = require('gulp-clean-css');
 const jsonminify = require('gulp-jsonminify');
 const terser = require('gulp-terser');

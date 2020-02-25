@@ -1,5 +1,4 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
 const argv = require('yargs').argv;
 const fs = require('fs');
 const mocha = require('gulp-mocha');
