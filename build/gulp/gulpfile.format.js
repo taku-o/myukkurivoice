@@ -1,4 +1,5 @@
 var gulp = gulp || require('gulp');
+var __root = require('path').join(__dirname, '../../');
 const eslint = require('gulp-eslint');
 const prettier = require('gulp-prettier');
 const using = require('gulp-using');

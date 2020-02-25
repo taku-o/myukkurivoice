@@ -1,13 +1,14 @@
 var gulp = gulp || require('gulp');
+var __root = require('path').join(__dirname, '../../');
 const del = require('del');
 const exec = require('child_process').exec;
 const fse = require('fs-extra');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
-const PACKAGER_CMD = path.join(__dirname, './node_modules/.bin/electron-packager');
-const ELECTRON_VERSION = require('./package.json').versions.electron;
-const APP_VERSION = require('./package.json').version;
+const PACKAGER_CMD = path.join(__dirname, `${__root}/node_modules/.bin/electron-packager`);
+const ELECTRON_VERSION = require(`${__root}/package.json`).versions.electron;
+const APP_VERSION = require(`${__root}/package.json`).version;
 
 // app.asar.unpacked
 gulp.task('_unpacked:mkdir', (cb) => {

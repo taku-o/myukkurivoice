@@ -1,4 +1,5 @@
 var gulp = gulp || require('gulp');
+var __root = require('path').join(__dirname, '../../');
 const del = require('del');
 const finclude = require('gulp-file-include');
 const fs = require('fs');
@@ -10,7 +11,7 @@ const replace = require('gulp-replace');
 const toc = require('gulp-markdown-toc');
 const wrapper = require('gulp-wrapper');
 
-const APP_VERSION = require('./package.json').version;
+const APP_VERSION = require(`${__root}/package.json`).version;
 
 // table of contents
 gulp.task('toc', () => {

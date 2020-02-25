@@ -1,4 +1,5 @@
 var gulp = gulp || require('gulp');
+var __root = require('path').join(__dirname, '../../');
 const argv = require('yargs').argv;
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;

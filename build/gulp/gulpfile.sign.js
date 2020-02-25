@@ -1,15 +1,16 @@
 var gulp = gulp || require('gulp');
+var __root = require('path').join(__dirname, '../../');
 const execSync = require('child_process').execSync;
 const flatAsync = require('electron-osx-sign').flatAsync;
 const keychain = require('keychain');
 const notarize = require('electron-notarize').notarize;
 const signAsync = require('electron-osx-sign').signAsync;
 
-const ELECTRON_VERSION = require('./package.json').versions.electron;
-const DEVELOPER_ID_APPLICATION_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_ID_APPLICATION_KEY;
-const DEVELOPER_INSTALLER_3RD_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_INSTALLER_3RD_KEY;
-const DEVELOPER_APPLICATION_3RD_KEY = require('./build/mas/MacAppleStore.json').DEVELOPER_APPLICATION_3RD_KEY;
-const DEVELOPER_APPLE_ID = require('./build/mas/MacAppleStore.json').DEVELOPER_APPLE_ID;
+const ELECTRON_VERSION = require(`${__root}/package.json`).versions.electron;
+const DEVELOPER_ID_APPLICATION_KEY = require(`${__root}/build/mas/MacAppleStore.json`).DEVELOPER_ID_APPLICATION_KEY;
+const DEVELOPER_INSTALLER_3RD_KEY = require(`${__root}/build/mas/MacAppleStore.json`).DEVELOPER_INSTALLER_3RD_KEY;
+const DEVELOPER_APPLICATION_3RD_KEY = require(`${__root}/build/mas/MacAppleStore.json`).DEVELOPER_APPLICATION_3RD_KEY;
+const DEVELOPER_APPLE_ID = require(`${__root}/build/mas/MacAppleStore.json`).DEVELOPER_APPLE_ID;
 
 // sign
 gulp.task('_sign:developer', () => {
