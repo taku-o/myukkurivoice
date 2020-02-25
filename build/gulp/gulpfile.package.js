@@ -6,7 +6,7 @@ const fse = require('fs-extra');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
-const PACKAGER_CMD = path.join(__dirname, `${__root}/node_modules/.bin/electron-packager`);
+const PACKAGER_CMD = path.join(__root, './node_modules/.bin/electron-packager');
 const ELECTRON_VERSION = require(`${__root}/package.json`).versions.electron;
 const APP_VERSION = require(`${__root}/package.json`).version;
 

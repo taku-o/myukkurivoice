@@ -1,9 +1,10 @@
 var gulp = gulp || require('gulp');
+var __root = require('path').join(__dirname, '../../');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const ts = require('gulp-typescript');
 
-const tsProject = ts.createProject('./tsconfig.json');
+const tsProject = ts.createProject(`${__root}/tsconfig.json`);
 
 // tsc
 gulp.task('_tsc', () => {
