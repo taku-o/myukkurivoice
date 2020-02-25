@@ -2,6 +2,9 @@ var gulp = gulp || require('gulp');
 var __root = require('path').join(__dirname, '../../');
 const spawn = require('child_process').spawn;
 
+// clean
+gulp.task('clean', gulp.parallel('_rm:js', '_rm:package', '_rm:workdir'));
+
 // run app
 gulp.task(
   'app',
