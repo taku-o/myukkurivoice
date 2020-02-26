@@ -7,7 +7,7 @@ temp.track();
 require('source-map-support').install();
 
 describe('specWindow-service-LicenseService', function() {
-  this.timeout(10000);
+  this.timeout(30000);
 
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
@@ -56,7 +56,8 @@ describe('specWindow-service-LicenseService', function() {
               log.match(/error/i) &&
               !log.match(/gles2_cmd_decoder.cc/) &&
               !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/)
+              !log.match(/media_internals.cc/) &&
+              !log.match(/logger.cc/)
             ) {
               /* eslint-disable-next-line no-console */
               console.error(log);
@@ -102,7 +103,8 @@ describe('specWindow-service-LicenseService', function() {
               log.match(/error/i) &&
               !log.match(/gles2_cmd_decoder.cc/) &&
               !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/)
+              !log.match(/media_internals.cc/) &&
+              !log.match(/logger.cc/)
             ) {
               /* eslint-disable-next-line no-console */
               console.error(log);
@@ -150,7 +152,8 @@ describe('specWindow-service-LicenseService', function() {
               log.match(/error/i) &&
               !log.match(/gles2_cmd_decoder.cc/) &&
               !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/)
+              !log.match(/media_internals.cc/) &&
+              !log.match(/logger.cc/)
             ) {
               /* eslint-disable-next-line no-console */
               console.error(log);
@@ -199,7 +202,8 @@ describe('specWindow-service-LicenseService', function() {
               log.match(/error/i) &&
               !log.match(/gles2_cmd_decoder.cc/) &&
               !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/)
+              !log.match(/media_internals.cc/) &&
+              !log.match(/logger.cc/)
             ) {
               /* eslint-disable-next-line no-console */
               console.error(log);

@@ -55,7 +55,8 @@ describe('specWindow-service-IntroService-shortcut', function() {
               log.match(/error/i) &&
               !log.match(/gles2_cmd_decoder.cc/) &&
               !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/)
+              !log.match(/media_internals.cc/) &&
+              !log.match(/logger.cc/)
             ) {
               /* eslint-disable-next-line no-console */
               console.error(log);
