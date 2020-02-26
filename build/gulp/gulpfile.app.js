@@ -1,5 +1,5 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
+var config = require('./config');
 const spawn = require('child_process').spawn;
 
 // clean
@@ -16,7 +16,7 @@ gulp.task(
     if (!env.RUNTIME_ENV) {
       env.RUNTIME_ENV = 'default';
     }
-    const run = spawn(`${__root}/node_modules/.bin/electron`, ['.'], {
+    const run = spawn(config.cmd.electron, ['.'], {
       env: env,
     });
     run.stdout.on('data', (data) => {

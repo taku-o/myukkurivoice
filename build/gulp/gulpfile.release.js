@@ -1,5 +1,5 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
+var config = require('./config');
 const argv = require('yargs').argv;
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
@@ -8,11 +8,6 @@ const install = require('gulp-install');
 const mkdirp = require('mkdirp');
 const path = require('path');
 const rimraf = require('rimraf');
-
-const WORK_DIR = path.join(__root, './release');
-const WORK_REPO_DIR = path.join(__root, './release/myukkurivoice');
-const APP_PACKAGE_NAME = 'MYukkuriVoice-darwin-x64';
-const MAS_APP_PACKAGE_NAME = 'MYukkuriVoice-mas-x64';
 
 function _mustMasterBranch(cb) {
   if (argv && argv.branch) {
@@ -31,17 +26,17 @@ function _detectBranch(cb) {
 
 // workdir
 gulp.task('_rm:workdir', (cb) => {
-  rimraf(WORK_DIR, (err) => {
+  rimraf(config.dir.workDir, (err) => {
     cb(err);
   });
 });
 gulp.task('_mk:workdir', (cb) => {
-  mkdirp(WORK_DIR, (err) => {
+  mkdirp(config.dir.workDir, (err) => {
     cb(err);
   });
 });
 gulp.task('_ch:workdir', (cb) => {
-  process.chdir(WORK_DIR);
+  process.chdir(config.dir.workDir);
   return cb();
 });
 
@@ -70,15 +65,15 @@ gulp.task('_git-pull-pr', (cb) => {
 
 // repodir
 gulp.task('_ch:repodir', (cb) => {
-  process.chdir(WORK_REPO_DIR);
+  process.chdir(config.dir.repoDir);
   return cb();
 });
 
 // npm
 gulp.task('_npm-install', (cb) => {
   gulp
-    .src(['./package.json'])
-    .pipe(gulp.dest('./'))
+    .src([`${config.dir.repoDir}/package.json`])
+    .pipe(gulp.dest(config.dir.repoDir))
     .pipe(
       install(
         {
@@ -91,20 +86,18 @@ gulp.task('_npm-install', (cb) => {
 
 // zip
 gulp.task('_zip-app', (cb) => {
-  exec(
-    'ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '-nosigned.zip',
-    (err, stdout, stderr) => {
-      cb(err);
-    }
-  );
+  const platform = process.env.BUILD_PLATFORM;
+  const packageName = `MYukkuriVoice-${platform}-x64`;
+  exec(`ditto -c -k --sequesterRsrc --keepParent ${packageName} ${packageName}-nosigned.zip`, (err, stdout, stderr) => {
+    cb(err);
+  });
 });
 gulp.task('_zip-app-signed', (cb) => {
-  exec(
-    'ditto -c -k --sequesterRsrc --keepParent ' + APP_PACKAGE_NAME + ' ' + APP_PACKAGE_NAME + '.zip',
-    (err, stdout, stderr) => {
-      cb(err);
-    }
-  );
+  const platform = process.env.BUILD_PLATFORM;
+  const packageName = `MYukkuriVoice-${platform}-x64`;
+  exec(`ditto -c -k --sequesterRsrc --keepParent ${packageName} ${packageName}.zip`, (err, stdout, stderr) => {
+    cb(err);
+  });
 });
 
 // open
@@ -112,8 +105,9 @@ gulp.task('_open:appdir', (cb) => {
   if (!process.env.BUILD_PLATFORM) {
     throw new Error('BUILD_PLATFORM not set.');
   }
-  const packageName = process.env.BUILD_PLATFORM == 'darwin' ? APP_PACKAGE_NAME : MAS_APP_PACKAGE_NAME;
-  exec('open ' + packageName, (err, stdout, stderr) => {
+  const platform = process.env.BUILD_PLATFORM;
+  const packageName = `MYukkuriVoice-${platform}-x64`;
+  exec(`open ${packageName}`, (err, stdout, stderr) => {
     cb(err);
   });
 });

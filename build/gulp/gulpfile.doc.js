@@ -1,5 +1,5 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
+var config = require('./config');
 const del = require('del');
 const finclude = require('gulp-file-include');
 const fs = require('fs');
@@ -10,8 +10,6 @@ const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const toc = require('gulp-markdown-toc');
 const wrapper = require('gulp-wrapper');
-
-const APP_VERSION = require(`${__root}/package.json`).version;
 
 // table of contents
 gulp.task('toc', () => {
@@ -233,7 +231,7 @@ gulp.task('_version', (cb) => {
       cb(err);
       return;
     }
-    fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', APP_VERSION, (err) => {
+    fs.writeFile('MYukkuriVoice-darwin-x64/version.txt', config.packageJson.version, (err) => {
       if (err) {
         gulp.task('_notifyError')();
       }

@@ -1,14 +1,10 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
+var config = require('./config');
 const del = require('del');
 const exec = require('child_process').exec;
 const fse = require('fs-extra');
 const mkdirp = require('mkdirp');
 const path = require('path');
-
-const PACKAGER_CMD = path.join(__root, './node_modules/.bin/electron-packager');
-const ELECTRON_VERSION = require(`${__root}/package.json`).versions.electron;
-const APP_VERSION = require(`${__root}/package.json`).version;
 
 // app.asar.unpacked
 gulp.task('_unpacked:mkdir', (cb) => {
@@ -260,11 +256,11 @@ gulp.task('_package:release', (cb) => {
     throw new Error('BUILD_PLATFORM not set.');
   }
   exec(
-    PACKAGER_CMD +
+    config.cmd.electronPackager +
       ` . MYukkuriVoice \
       --platform=${platform} --arch=x64 \
-      --app-version=${APP_VERSION} \
-      --electron-version=${ELECTRON_VERSION} \
+      --app-version=${config.packageJson.version} \
+      --electron-version=${config.packageJson.versions.electron} \
       --app-bundle-id=jp.nanasi.myukkurivoice \
       --icon=build/icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \
@@ -279,11 +275,11 @@ gulp.task('_package:release', (cb) => {
 gulp.task('_package:debug', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
   exec(
-    PACKAGER_CMD +
+    config.cmd.electronPackager +
       ` . MYukkuriVoice \
       --platform=${platform} --arch=x64 \
-      --app-version=${APP_VERSION} \
-      --electron-version=${ELECTRON_VERSION} \
+      --app-version=${config.packageJson.version} \
+      --electron-version=${config.packageJson.versions.electron} \
       --app-bundle-id=jp.nanasi.myukkurivoice \
       --icon=build/icns/myukkurivoice.icns --overwrite --asar \
       --protocol-name=myukkurivoice --protocol=myukkurivoice \

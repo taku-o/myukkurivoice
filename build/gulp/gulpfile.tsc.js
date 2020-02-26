@@ -1,10 +1,10 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
+var config = require('./config');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const ts = require('gulp-typescript');
 
-const tsProject = ts.createProject(`${__root}/tsconfig.json`);
+const tsProject = ts.createProject(`${config.dir.rootDir}/tsconfig.json`);
 
 // tsc
 gulp.task('_tsc', () => {
@@ -39,5 +39,5 @@ gulp.task(
 );
 
 gulp.task('_rm:js', () => {
-  return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js', '!build/gulp/gulpfile.*.js', '*.tsbuildinfo']);
+  return del(['*.js', 'js/*.js', 'test/*.js', '!gulpfile.js', '*.tsbuildinfo']);
 });

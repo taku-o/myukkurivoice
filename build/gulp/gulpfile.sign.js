@@ -1,16 +1,10 @@
 var gulp = gulp || require('gulp');
-var __root = require('path').join(__dirname, '../../');
+var config = require('./config');
 const execSync = require('child_process').execSync;
 const flatAsync = require('electron-osx-sign').flatAsync;
 const keychain = require('keychain');
 const notarize = require('electron-notarize').notarize;
 const signAsync = require('electron-osx-sign').signAsync;
-
-const ELECTRON_VERSION = require(`${__root}/package.json`).versions.electron;
-const DEVELOPER_ID_APPLICATION_KEY = require(`${__root}/build/mas/MacAppleStore.json`).DEVELOPER_ID_APPLICATION_KEY;
-const DEVELOPER_INSTALLER_3RD_KEY = require(`${__root}/build/mas/MacAppleStore.json`).DEVELOPER_INSTALLER_3RD_KEY;
-const DEVELOPER_APPLICATION_3RD_KEY = require(`${__root}/build/mas/MacAppleStore.json`).DEVELOPER_APPLICATION_3RD_KEY;
-const DEVELOPER_APPLE_ID = require(`${__root}/build/mas/MacAppleStore.json`).DEVELOPER_APPLE_ID;
 
 // sign
 gulp.task('_sign:developer', () => {
@@ -20,7 +14,7 @@ gulp.task('_sign:developer', () => {
 
   return signAsync({
     app: APP_PATH,
-    identity: DEVELOPER_ID_APPLICATION_KEY,
+    identity: config.mas.DEVELOPER_ID_APPLICATION_KEY,
     binaries: [
       `${UNPACK_VENDOR_DIR}/AqKanji2Koe.framework/Versions/A/AqKanji2Koe`,
       `${UNPACK_VENDOR_DIR}/AqUsrDic.framework/Versions/A/AqUsrDic`,
@@ -31,7 +25,7 @@ gulp.task('_sign:developer', () => {
       `${UNPACK_VENDOR_DIR}/AquesTalk.framework/Versions/A/AquesTalk`,
       `${UNPACK_VENDOR_DIR}/maquestalk1`,
     ],
-    version: ELECTRON_VERSION,
+    version: config.packageJson.versions.electron,
     type: 'development',
     platform: platform,
   });
@@ -44,7 +38,7 @@ gulp.task('_sign:developer:direct', (cb) => {
   const APP = 'MYukkuriVoice';
   const CHILD_PLIST = 'build/mas/darwin.app-child.plist';
   const PARENT_PLIST = 'build/mas/darwin.app.plist';
-  const identity = DEVELOPER_ID_APPLICATION_KEY;
+  const identity = config.mas.DEVELOPER_ID_APPLICATION_KEY;
 
   let child_list = [
     `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Electron Framework`,
@@ -128,7 +122,7 @@ gulp.task('_sign:distribution:direct', (cb) => {
   const APP_CHILD_PLIST = 'build/mas/store.app-child.plist';
   const EXE_PLIST = 'build/mas/store.exe.plist';
   const LOGINHELPER_PLIST = 'build/mas/store.loginhelper.plist';
-  const identity = DEVELOPER_APPLICATION_3RD_KEY;
+  const identity = config.mas.DEVELOPER_APPLICATION_3RD_KEY;
 
   let child_list = [
     `${FRAMEWORKS_PATH}/Electron Framework.framework/Versions/A/Electron Framework`,
@@ -187,7 +181,7 @@ gulp.task('_flat:distribution', () => {
   const platform = process.env.BUILD_PLATFORM;
   const APP_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
   const PKG_PATH = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.pkg`;
-  const identity = DEVELOPER_INSTALLER_3RD_KEY;
+  const identity = config.mas.DEVELOPER_INSTALLER_3RD_KEY;
 
   return flatAsync({
     app: APP_PATH,
@@ -200,7 +194,7 @@ gulp.task('_flat:distribution', () => {
 
 // notarize
 gulp.task('_appleIdPass', (cb) => {
-  const appleId = DEVELOPER_APPLE_ID;
+  const appleId = config.mas.DEVELOPER_APPLE_ID;
   const keychainEntry = 'jp.nanasi.myukkurivoice.mac-app-store';
 
   keychain.getPassword({account: appleId, service: keychainEntry}, (err, pass) => {
@@ -221,7 +215,7 @@ gulp.task(
     const bundleId = 'jp.nanasi.myukkurivoice';
     const teamId = '52QJ97GWTE';
 
-    const appleId = DEVELOPER_APPLE_ID;
+    const appleId = config.mas.DEVELOPER_APPLE_ID;
     const env = process.env;
     const password = env.AC_PASSWORD;
 
