@@ -7,7 +7,8 @@ MYukkuriVoice-*-x64.zip
 MYukkuriVoice-*-x64.app
 MYukkuriVoice-*-x64.pkg
 *.js
-!gulpfile*.js
+!gulpfile.js
+!build/gulp/*.js
 tsconfig.tsbuildinfo
 !/docs/assets/js/*.js
 /node_modules/
