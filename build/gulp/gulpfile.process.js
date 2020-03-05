@@ -60,7 +60,7 @@ gulp.task('_platform:mas', (cb) => {
 });
 
 // target
-// BUILD_TARGET (release, staging, store, debug)
+// BUILD_TARGET (release, staging, mas, debug)
 gulp.task('_target:release', (cb) => {
   const env = process.env;
   env.BUILD_TARGET = 'release';
@@ -71,9 +71,9 @@ gulp.task('_target:staging', (cb) => {
   env.BUILD_TARGET = 'staging';
   cb();
 });
-gulp.task('_target:store', (cb) => {
+gulp.task('_target:mas', (cb) => {
   const env = process.env;
-  env.BUILD_TARGET = 'store';
+  env.BUILD_TARGET = 'mas';
   cb();
 });
 gulp.task('_target:debug', (cb) => {
@@ -83,7 +83,7 @@ gulp.task('_target:debug', (cb) => {
 });
 
 // runtime
-// RUNTIME_ENV (default, catalina, store)
+// RUNTIME_ENV (default, catalina, mas)
 gulp.task('_runtime:default', (cb) => {
   const env = process.env;
   env.RUNTIME_ENV = 'default';
@@ -94,9 +94,9 @@ gulp.task('_runtime:catalina', (cb) => {
   env.RUNTIME_ENV = 'catalina';
   cb();
 });
-gulp.task('_runtime:store', (cb) => {
+gulp.task('_runtime:mas', (cb) => {
   const env = process.env;
-  env.RUNTIME_ENV = 'store';
+  env.RUNTIME_ENV = 'mas';
   cb();
 });
 

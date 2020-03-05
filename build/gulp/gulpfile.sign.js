@@ -118,10 +118,10 @@ gulp.task('_sign:distribution:direct', (cb) => {
   const FRAMEWORKS_PATH = `${APP_PATH}/Contents/Frameworks`;
   const UNPACK_VENDOR_DIR = `${APP_PATH}/Contents/Resources/app.asar.unpacked/vendor`;
   const APP = 'MYukkuriVoice';
-  const APP_PLIST = 'build/mas/store.app.plist';
-  const APP_CHILD_PLIST = 'build/mas/store.app-child.plist';
-  const EXE_PLIST = 'build/mas/store.exe.plist';
-  const LOGINHELPER_PLIST = 'build/mas/store.loginhelper.plist';
+  const APP_PLIST = 'build/mas/mas.app.plist';
+  const APP_CHILD_PLIST = 'build/mas/mas.app-child.plist';
+  const EXE_PLIST = 'build/mas/mas.exe.plist';
+  const LOGINHELPER_PLIST = 'build/mas/mas.loginhelper.plist';
   const identity = config.mas.DEVELOPER_APPLICATION_3RD_KEY;
 
   let child_list = [
@@ -238,4 +238,4 @@ gulp.task('_verify:sign', (cb) => {
   cb();
 });
 gulp.task('verify:release', gulp.series('_handleError', '_platform:darwin', '_target:release', '_verify:sign'));
-gulp.task('verify:store', gulp.series('_handleError', '_platform:mas', '_target:store', '_verify:sign'));
+gulp.task('verify:mas', gulp.series('_handleError', '_platform:mas', '_target:mas', '_verify:sign'));

@@ -209,13 +209,13 @@ gulp.task(
   )
 );
 
-// build:store
+// build:mas
 gulp.task(
-  'build:store',
+  'build:mas',
   gulp.series(
     '_handleError',
     '_platform:mas',
-    '_target:store',
+    '_target:mas',
     //_mustMasterBranch,
     _detectBranch,
     '_rm:workdir',

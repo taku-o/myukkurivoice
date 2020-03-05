@@ -41,17 +41,17 @@ usage:
     gulp test [--t=test/mainWindow.js]
     gulp test:rebuild [--t=test/mainWindow.js]
     gulp verify:release
-    gulp verify:store
+    gulp verify:mas
     gulp app
     gulp app:default
     gulp app:catalina
-    gulp app:store
+    gulp app:mas
     gulp package
     gulp build
     gulp build:staging [--branch=develop]
     gulp build:pr [--pull_request=pull/999/merge]
     gulp build:release
-    gulp build:store [--branch=develop]
+    gulp build:mas [--branch=develop]
   `);
   return cb();
 });

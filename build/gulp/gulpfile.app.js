@@ -32,4 +32,4 @@ gulp.task(
 );
 gulp.task('app:default', gulp.series('_runtime:default', 'app'));
 gulp.task('app:catalina', gulp.series('_runtime:catalina', 'app'));
-gulp.task('app:store', gulp.series('_runtime:store', 'app'));
+gulp.task('app:mas', gulp.series('_runtime:mas', 'app'));
