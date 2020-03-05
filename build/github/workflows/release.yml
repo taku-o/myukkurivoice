@@ -66,10 +66,10 @@ jobs:
           mv release/myukkurivoice/MYukkuriVoice-darwin-x64-nosigned.zip built
           mv release/myukkurivoice/MYukkuriVoice-darwin-x64.zip built
 
-      - name: build store application
+      - name: build mas application
         run: |
-          npx gulp build:store
-      - name: collect store built files
+          npx gulp build:mas
+      - name: collect mas built files
         run: |
           mkdir built
           mv release/myukkurivoice/MYukkuriVoice-mas-x64/MYukkuriVoice.pkg built
