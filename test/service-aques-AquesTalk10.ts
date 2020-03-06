@@ -6,8 +6,8 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-model-YVoice', function() {
-  this.timeout(10000);
+describe('service-AquesService-AquesTalk10', function() {
+  this.timeout(20000);
 
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
@@ -35,26 +35,20 @@ describe('specWindow-model-YVoice', function() {
     return this.client.close();
   });
 
-  it('YVoice', function() {
+  it('errorTable', function() {
     return (
       this.client
-        .click('#get-yvoice')
-        .getValue('#get-yvoice-result')
+        .setValue('#error-table-code', '104')
+        .click('#error-table-aquestalk10')
+        .getValue('#error-table-result')
         .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.equal(null, parsed.id, position());
-          assert.equal('f1 女声1(ゆっくり)', parsed.name, position());
-          assert.equal('at1_f1', parsed.phont, position());
-          assert.equal('talk1', parsed.version, position());
-          assert.equal(100, parsed.speed, position());
-          assert.equal(1.0, parsed.playbackRate, position());
-          assert.equal(0, parsed.detune, position());
-          assert.equal(1.0, parsed.volume, position());
-          assert.equal(true, parsed.rhythmOn, position());
-          assert.equal(false, parsed.sourceWrite, position());
-          assert.equal(false, parsed.seqWrite, position());
-          assert.equal('', parsed.seqWriteOptions.dir, position());
-          assert.equal('', parsed.seqWriteOptions.prefix, position());
+          assert.equal(value, '音声記号列に有効な読みがない', position());
+        })
+        .setValue('#error-table-code', '105')
+        .click('#error-table-aquestalk10')
+        .getValue('#error-table-result')
+        .then((value: string) => {
+          assert.equal(value, '音声記号列に未定義の読み記号が指定された', position());
         })
         // catch error
         .catch((err: Error) => {

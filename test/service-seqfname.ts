@@ -1,17 +1,19 @@
 import {Application} from 'spectron';
 import {assert} from 'chai';
 import {position} from 'caller-position';
+import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-MessageService', function() {
+describe('service-SeqFNameService', function() {
   this.timeout(10000);
 
+  let dirPath: string | null = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    const dirPath = temp.mkdirSync(fsprefix);
+    dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       chromeDriverArgs: ['remote-debugging-port=9222'],
@@ -35,18 +37,15 @@ describe('specWindow-service-MessageService', function() {
     return this.client.close();
   });
 
-  it('action', function() {
+  it('nextFname', function() {
     return (
       this.client
-        .setValue('#message-service-post', '')
-        .click('#action')
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
+        .setValue('#prefix', 'foo')
+        .setValue('#num', '200')
+        .click('#next-fname')
+        .getValue('#next-fname-result')
         .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('action message', parsed.body, position());
-          assert.equal('action', parsed.type, position());
+          assert.equal(value, 'foo0200.wav', position());
         })
         // catch error
         .catch((err: Error) => {
@@ -81,39 +80,16 @@ describe('specWindow-service-MessageService', function() {
     );
   });
 
-  it('record', function() {
+  it('splitFname', function() {
     return (
       this.client
-        .setValue('#message-service-post', '')
-        .setValue('#last-wav-file', '')
-        .click('#record')
-        // event on message
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
+        .setValue('#split-fname-filepath', '/tmp/hoge/foo.txt')
+        .click('#split-fname')
+        .getValue('#split-fname-result')
         .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('record message', parsed.body, position());
-          assert.equal('record', parsed.type, position());
-          assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
-          assert.equal('hoge.wav', parsed.wavFileName, position());
-          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
-          assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
-          assert.equal(1.44, parsed.duration, position());
-        })
-        // event on wavGenerated
-        .waitForValue('#last-wav-file', 5000)
-        .getValue('#last-wav-file')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('record message', parsed.body, position());
-          assert.equal('record', parsed.type, position());
-          assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
-          assert.equal('hoge.wav', parsed.wavFileName, position());
-          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
-          assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
-          assert.equal(1.44, parsed.duration, position());
+          const r = JSON.parse(value);
+          assert.equal('/tmp/hoge', r.dir, position());
+          assert.equal('foo.txt', r.basename, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -148,21 +124,29 @@ describe('specWindow-service-MessageService', function() {
     );
   });
 
-  it('recordSource', function() {
+  it('nextNumber-simple', function() {
+    const prefixP1 = 'prefix';
+    const prefixP2 = 'some';
+    const prefixP3 = 'hoge';
+    const prefixP4 = 'phlx';
+    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
+    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
+    const fileP3 = `${dirPath}/${prefixP3}.wav`;
+    fs.closeSync(fs.openSync(fileP1, 'w'));
+    fs.closeSync(fs.openSync(fileP2, 'w'));
+    fs.closeSync(fs.openSync(fileP3, 'w'));
+
     return (
       this.client
-        .setValue('#message-service-post', '')
-        .click('#record-source')
-        // event on message
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('record source', parsed.body, position());
-          assert.equal('source', parsed.type, position());
-          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
-          assert.equal('/tmp/hoge.txt', parsed.quickLookPath, position());
+        // get simply next number
+        .setValue('#next-number-result', '')
+        .setValue('#next-number-dir', dirPath)
+        .setValue('#next-number-prefix', prefixP1)
+        .click('#next-number')
+        .waitForValue('#next-number-result', 5000)
+        .getValue('#next-number-result')
+        .then((value: number) => {
+          assert.equal(102, value, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -197,18 +181,29 @@ describe('specWindow-service-MessageService', function() {
     );
   });
 
-  it('info', function() {
+  it('nextNumber-countup', function() {
+    const prefixP1 = 'prefix';
+    const prefixP2 = 'some';
+    const prefixP3 = 'hoge';
+    const prefixP4 = 'phlx';
+    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
+    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
+    const fileP3 = `${dirPath}/${prefixP3}.wav`;
+    fs.closeSync(fs.openSync(fileP1, 'w'));
+    fs.closeSync(fs.openSync(fileP2, 'w'));
+    fs.closeSync(fs.openSync(fileP3, 'w'));
+
     return (
       this.client
-        .setValue('#message-service-post', '')
-        .click('#info')
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('info message', parsed.body, position());
-          assert.equal('info', parsed.type, position());
+        // count up
+        .setValue('#next-number-result', '')
+        .setValue('#next-number-dir', dirPath)
+        .setValue('#next-number-prefix', prefixP2)
+        .click('#next-number')
+        .waitForValue('#next-number-result', 5000)
+        .getValue('#next-number-result')
+        .then((value: number) => {
+          assert.equal(1, value, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -243,18 +238,29 @@ describe('specWindow-service-MessageService', function() {
     );
   });
 
-  it('warn', function() {
+  it('nextNumber-newly', function() {
+    const prefixP1 = 'prefix';
+    const prefixP2 = 'some';
+    const prefixP3 = 'hoge';
+    const prefixP4 = 'phlx';
+    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
+    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
+    const fileP3 = `${dirPath}/${prefixP3}.wav`;
+    fs.closeSync(fs.openSync(fileP1, 'w'));
+    fs.closeSync(fs.openSync(fileP2, 'w'));
+    fs.closeSync(fs.openSync(fileP3, 'w'));
+
     return (
       this.client
-        .setValue('#message-service-post', '')
-        .click('#warn')
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('warn message', parsed.body, position());
-          assert.equal('warn', parsed.type, position());
+        // newly
+        .setValue('#next-number-result', '')
+        .setValue('#next-number-dir', dirPath)
+        .setValue('#next-number-prefix', prefixP3)
+        .click('#next-number')
+        .waitForValue('#next-number-result', 5000)
+        .getValue('#next-number-result')
+        .then((value: number) => {
+          assert.equal(0, value, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -289,88 +295,29 @@ describe('specWindow-service-MessageService', function() {
     );
   });
 
-  it('error', function() {
-    return (
-      this.client
-        // with error
-        .setValue('#message-service-post', '')
-        .click('#error')
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('error message' + 'err', parsed.body, position());
-          assert.equal('error', parsed.type, position());
-        })
-        // with no error
-        .setValue('#message-service-post', '')
-        .click('#error-null')
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('error message', parsed.body, position());
-          assert.equal('error', parsed.type, position());
-        })
-        // catch error
-        .catch((err: Error) => {
-          assert.fail(err.message);
-        })
-        .getMainProcessLogs()
-        .then((logs: string[]) => {
-          logs.forEach((log) => {
-            if (
-              log.match(/error/i) &&
-              !log.match(/gles2_cmd_decoder.cc/) &&
-              !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/) &&
-              !log.match(/logger.cc/)
-            ) {
-              /* eslint-disable-next-line no-console */
-              console.error(log);
-              assert.ok(false, position());
-            }
-          });
-        })
-        .getRenderProcessLogs()
-        .then((logs: WebdriverIO.LogEntry[]) => {
-          logs.forEach((log) => {
-            if (log.message.match(/error/i)) {
-              /* eslint-disable-next-line no-console */
-              console.error(log.message);
-              assert.ok(false, position());
-            }
-          });
-        })
-    );
-  });
+  it('nextNumber-notexists', function() {
+    const prefixP1 = 'prefix';
+    const prefixP2 = 'some';
+    const prefixP3 = 'hoge';
+    const prefixP4 = 'phlx';
+    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
+    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
+    const fileP3 = `${dirPath}/${prefixP3}.wav`;
+    fs.closeSync(fs.openSync(fileP1, 'w'));
+    fs.closeSync(fs.openSync(fileP2, 'w'));
+    fs.closeSync(fs.openSync(fileP3, 'w'));
 
-  it('syserror', function() {
     return (
       this.client
-        // with error
-        .setValue('#message-service-post', '')
-        .click('#syserror')
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('syserror message' + 'err', parsed.body, position());
-          assert.equal('syserror', parsed.type, position());
-        })
-        // with no error
-        .setValue('#message-service-post', '')
-        .click('#syserror-null')
-        .waitForValue('#message-service-post', 5000)
-        .getValue('#message-service-post')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.created, position());
-          assert.equal('syserror message', parsed.body, position());
-          assert.equal('syserror', parsed.type, position());
+        // not exists
+        .setValue('#next-number-result', '')
+        .setValue('#next-number-dir', dirPath)
+        .setValue('#next-number-prefix', prefixP4)
+        .click('#next-number')
+        .waitForValue('#next-number-result', 5000)
+        .getValue('#next-number-result')
+        .then((value: number) => {
+          assert.equal(0, value, position());
         })
         // catch error
         .catch((err: Error) => {

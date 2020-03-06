@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-models-dict', function() {
+describe('model-YVoice', function() {
   this.timeout(10000);
 
   before(function() {
@@ -35,62 +35,26 @@ describe('specWindow-models-dict', function() {
     return this.client.close();
   });
 
-  it('KindList', function() {
+  it('YVoice', function() {
     return (
       this.client
-        .click('#get-kind-list')
-        .getValue('#get-kind-list-result')
+        .click('#get-yvoice')
+        .getValue('#get-yvoice-result')
         .then((value: string) => {
           const parsed = JSON.parse(value);
-          assert.equal(parsed.length, 28, position());
-          for (let i = 0; i < parsed.length; i++) {
-            assert.equal(i, parsed[i].id, position());
-            assert.ok(parsed[i].kind, position());
-          }
-        })
-        // catch error
-        .catch((err: Error) => {
-          assert.fail(err.message);
-        })
-        .getMainProcessLogs()
-        .then((logs: string[]) => {
-          logs.forEach((log) => {
-            if (
-              log.match(/error/i) &&
-              !log.match(/gles2_cmd_decoder.cc/) &&
-              !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/) &&
-              !log.match(/logger.cc/)
-            ) {
-              /* eslint-disable-next-line no-console */
-              console.error(log);
-              assert.ok(false, position());
-            }
-          });
-        })
-        .getRenderProcessLogs()
-        .then((logs: WebdriverIO.LogEntry[]) => {
-          logs.forEach((log) => {
-            if (log.message.match(/error/i)) {
-              /* eslint-disable-next-line no-console */
-              console.error(log.message);
-              assert.ok(false, position());
-            }
-          });
-        })
-    );
-  });
-
-  it('KindHash', function() {
-    return (
-      this.client
-        .click('#get-kind-hash')
-        .getValue('#get-kind-hash-result')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          for (let i = 0; i < 28; i++) {
-            assert.ok(parsed[i], position());
-          }
+          assert.equal(null, parsed.id, position());
+          assert.equal('f1 女声1(ゆっくり)', parsed.name, position());
+          assert.equal('at1_f1', parsed.phont, position());
+          assert.equal('talk1', parsed.version, position());
+          assert.equal(100, parsed.speed, position());
+          assert.equal(1.0, parsed.playbackRate, position());
+          assert.equal(0, parsed.detune, position());
+          assert.equal(1.0, parsed.volume, position());
+          assert.equal(true, parsed.rhythmOn, position());
+          assert.equal(false, parsed.sourceWrite, position());
+          assert.equal(false, parsed.seqWrite, position());
+          assert.equal('', parsed.seqWriteOptions.dir, position());
+          assert.equal('', parsed.seqWriteOptions.prefix, position());
         })
         // catch error
         .catch((err: Error) => {

@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-HistoryService', function() {
+describe('service-HistoryService', function() {
   this.timeout(30000);
 
   let dirPath: string | null = null;

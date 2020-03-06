@@ -1,19 +1,17 @@
 import {Application} from 'spectron';
 import {assert} from 'chai';
 import {position} from 'caller-position';
-import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-DataService', function() {
-  this.timeout(10000);
+describe('service-AquesService-AquesTalk1', function() {
+  this.timeout(20000);
 
-  let dirPath: string | null = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    dirPath = temp.mkdirSync(fsprefix);
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       chromeDriverArgs: ['remote-debugging-port=9222'],
@@ -37,18 +35,14 @@ describe('specWindow-service-DataService', function() {
     return this.client.close();
   });
 
-  it('load', function() {
+  it('get-generator-path-17', function() {
     return (
       this.client
-        .click('#load')
-        .waitForValue('#load-result', 2000)
-        .getValue('#load-result')
+        .setValue('#os-version', '17.7.0')
+        .click('#get-generator-path')
+        .getValue('#get-generator-path-result')
         .then((value: string) => {
-          assert.ok(value, position());
-        })
-        .getValue('#load-err')
-        .then((value: string) => {
-          assert.ok(!value, position());
+          assert(value.match(/maquestalk1$/), position());
         })
         // catch error
         .catch((err: Error) => {
@@ -83,15 +77,14 @@ describe('specWindow-service-DataService', function() {
     );
   });
 
-  it('initialData', function() {
+  it('get-generator-path-20', function() {
     return (
       this.client
-        .click('#initial-data')
-        .getValue('#initial-data-result')
+        .setValue('#os-version', '20.1.0')
+        .click('#get-generator-path')
+        .getValue('#get-generator-path-result')
         .then((value: string) => {
-          assert.ok(value, position());
-          const parsed = JSON.parse(value);
-          assert.equal(parsed.length, 4, position());
+          assert(value.match(/maquestalk1-ios$/), position());
         })
         // catch error
         .catch((err: Error) => {
@@ -126,15 +119,22 @@ describe('specWindow-service-DataService', function() {
     );
   });
 
-  it('create', function() {
+  it('isSupportedPhont-17', function() {
     return (
       this.client
-        .click('#create')
-        .getValue('#create-result')
+        .setValue('#os-version', '17.7.0')
+        .setValue('#phont-id', 'at1_f1')
+        .click('#is-supported-phont')
+        .getValue('#is-supported-phont-result')
         .then((value: string) => {
-          assert.ok(value, position());
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.id, position());
+          assert.equal(value, 'true', position());
+        })
+        .setValue('#os-version', '17.7.0')
+        .setValue('#phont-id', 'at1_m1')
+        .click('#is-supported-phont')
+        .getValue('#is-supported-phont-result')
+        .then((value: string) => {
+          assert.equal(value, 'true', position());
         })
         // catch error
         .catch((err: Error) => {
@@ -169,15 +169,22 @@ describe('specWindow-service-DataService', function() {
     );
   });
 
-  it('copy', function() {
+  it('isSupportedPhont-20', function() {
     return (
       this.client
-        .click('#copy')
-        .getValue('#copy-result')
+        .setValue('#os-version', '20.1.0')
+        .setValue('#phont-id', 'at1_f1')
+        .click('#is-supported-phont')
+        .getValue('#is-supported-phont-result')
         .then((value: string) => {
-          assert.ok(value, position());
-          const parsed = JSON.parse(value);
-          assert.ok(parsed.id, position());
+          assert.equal(value, 'true', position());
+        })
+        .setValue('#os-version', '20.1.0')
+        .setValue('#phont-id', 'at1_m1')
+        .click('#is-supported-phont')
+        .getValue('#is-supported-phont-result')
+        .then((value: string) => {
+          assert.equal(value, 'false', position());
         })
         // catch error
         .catch((err: Error) => {
@@ -212,23 +219,14 @@ describe('specWindow-service-DataService', function() {
     );
   });
 
-  it('save', function() {
+  it('isI386Supported-17', function() {
     return (
       this.client
-        .getValue('#save-data-result')
+        .setValue('#os-version', '17.7.0')
+        .click('#is-i386-supported')
+        .getValue('#is-i386-supported-result')
         .then((value: string) => {
-          assert.equal('', value, position());
-          const isExists = fs.existsSync(`${dirPath}/data.json`);
-          assert.ok(!isExists, position());
-        })
-        .click('#save-data')
-        .waitForValue('#save-data-result', 2000)
-        .getValue('#save-data-result')
-        .then((value: string) => {
-          assert.equal('ok', value, position());
-          const data = fs.readFileSync(`${dirPath}/data.json`);
-          const parsed = JSON.parse(data.toString());
-          assert.equal(parsed.length, 4, position());
+          assert.equal(value, 'true', position());
         })
         // catch error
         .catch((err: Error) => {
@@ -263,33 +261,14 @@ describe('specWindow-service-DataService', function() {
     );
   });
 
-  it('clear', function() {
+  it('isI386Supported-20', function() {
     return (
       this.client
-        // before test, save data
-        .click('#save-data')
-        .waitForValue('#save-data-result', 2000)
-        .getValue('#save-data-result')
+        .setValue('#os-version', '20.1.0')
+        .click('#is-i386-supported')
+        .getValue('#is-i386-supported-result')
         .then((value: string) => {
-          assert.equal('ok', value, position());
-        })
-        // test
-        .getValue('#clear-result')
-        .then((value: string) => {
-          assert.equal('', value, position());
-          const isExists = fs.existsSync(`${dirPath}/data.json`);
-          assert.ok(isExists, position());
-          const data = fs.readFileSync(`${dirPath}/data.json`);
-          const parsed = JSON.parse(data.toString());
-          assert.equal(parsed.length, 4, position());
-        })
-        .click('#clear')
-        .waitForValue('#clear-result', 2000)
-        .getValue('#clear-result')
-        .then((value: string) => {
-          assert.equal('ok', value, position());
-          const isExists = fs.existsSync(`${dirPath}/data.json`);
-          assert.ok(!isExists, position());
+          assert.equal(value, 'false', position());
         })
         // catch error
         .catch((err: Error) => {

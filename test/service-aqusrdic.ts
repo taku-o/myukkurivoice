@@ -1,17 +1,21 @@
 import {Application} from 'spectron';
 import {assert} from 'chai';
 import {position} from 'caller-position';
+import * as rimraf from 'rimraf';
+import * as path from 'path';
+import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-CommandService', function() {
-  this.timeout(10000);
+describe('service-AqUsrDicService', function() {
+  this.timeout(20000);
 
+  let dirPath: string | null = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    const dirPath = temp.mkdirSync(fsprefix);
+    dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       chromeDriverArgs: ['remote-debugging-port=9222'],
@@ -35,44 +39,34 @@ describe('specWindow-service-CommandService', function() {
     return this.client.close();
   });
 
-  it('containsCommand', function() {
-    const isCmd = 'aq_yukkuri(サンプル設定2)＞test';
-    const isNotCmd = 'notaq_yukkuri(サンプル設定2)＞test';
-    const isCmdML1 = 'test\naq_yukkuri(サンプル設定2)＞test';
-    const isCmdML2 = 'aq_yukkuri(サンプル設定2)＞test\ntest';
-    const isCmdML3 = 'test\naq_yukkuri(サンプル設定2)＞test\ntest';
+  it('generateUserDict', function() {
+    fs.mkdirSync(`${dirPath}/userdict`);
+    fs.closeSync(fs.openSync(`${dirPath}/userdict/aqdic.bin`, 'a+')); // create with 644 permission.
+    fs.closeSync(fs.openSync(`${dirPath}/userdict/aq_user.csv`, 'a+')); // create with 644 permission.
+    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
+    fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
+    fs.writeFileSync(`${dirPath}/userdict/aq_user.csv`, fs.readFileSync(`${customDictPath}/aq_user.csv`));
 
     return (
       this.client
-        .setValue('#contains-command-input', isCmd)
-        .click('#contains-command')
-        .getValue('#contains-command-result')
+        .setValue('#csv-path', `${dirPath}/userdict/aq_user.csv`)
+        .setValue('#user-dic-path', `${dirPath}/userdict/aq_user.dic`)
+        .setValue('#generate-user-dict-result', '')
+        .click('#generate-user-dict')
+        .waitForValue('#generate-user-dict-result', 5000)
+        .getValue('#generate-user-dict-result')
         .then((value: string) => {
-          assert.equal('true', value, 'isCmd ' + position());
+          assert.equal(value, 'ok', position());
+          return new Promise((resolve, reject) => {
+            fs.readFile(`${dirPath}/userdict/aq_user.dic`, 'binary', (err, data) => {
+              assert.ok(!err, position());
+              assert.ok(data, position());
+              resolve();
+            });
+          });
         })
-        .setValue('#contains-command-input', isNotCmd)
-        .click('#contains-command')
-        .getValue('#contains-command-result')
-        .then((value: string) => {
-          assert.equal('false', value, 'isNotCmd ' + position());
-        })
-        .setValue('#contains-command-input', isCmdML1)
-        .click('#contains-command')
-        .getValue('#contains-command-result')
-        .then((value: string) => {
-          assert.equal('true', value, 'isCmdML1 ' + position());
-        })
-        .setValue('#contains-command-input', isCmdML2)
-        .click('#contains-command')
-        .getValue('#contains-command-result')
-        .then((value: string) => {
-          assert.equal('true', value, 'isCmdML2 ' + position());
-        })
-        .setValue('#contains-command-input', isCmdML3)
-        .click('#contains-command')
-        .getValue('#contains-command-result')
-        .then((value: string) => {
-          assert.equal('true', value, 'isCmdML3 ' + position());
+        .then(() => {
+          rimraf(`${dirPath}/userdict`, (err: Error) => {});
         })
         // catch error
         .catch((err: Error) => {
@@ -107,41 +101,34 @@ describe('specWindow-service-CommandService', function() {
     );
   });
 
-  it('parseInput', function() {
-    const simple = 'aq_yukkuri(サンプル設定2)＞test';
-    const empty = 'test';
-    const defaultAnd = 'test\naq_yukkuri(サンプル設定2)＞test2';
+  it('generateCSV', function() {
+    fs.mkdirSync(`${dirPath}/userdict`);
+    fs.closeSync(fs.openSync(`${dirPath}/userdict/aqdic.bin`, 'a+')); // create with 644 permission.
+    fs.closeSync(fs.openSync(`${dirPath}/userdict/aq_user.dic`, 'a+')); // create with 644 permission.
+    const customDictPath = `${path.dirname(__dirname)}/vendor/test/aq_dic_large`;
+    fs.writeFileSync(`${dirPath}/userdict/aqdic.bin`, fs.readFileSync(`${customDictPath}/aqdic.bin`));
+    fs.writeFileSync(`${dirPath}/userdict/aq_user.dic`, fs.readFileSync(`${customDictPath}/aq_user.dic`));
 
     return (
       this.client
-        .setValue('#parse-input-input', simple)
-        .click('#parse-input')
-        .getValue('#parse-input-result')
+        .setValue('#csv-path', `${dirPath}/userdict/aq_user.csv`)
+        .setValue('#user-dic-path', `${dirPath}/userdict/aq_user.dic`)
+        .setValue('#generate-user-dict-result', '')
+        .click('#generate-csv')
+        .waitForValue('#generate-csv-result', 5000)
+        .getValue('#generate-csv-result')
         .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.equal(1, parsed.length, position());
-          assert.equal('aq_yukkuri(サンプル設定2)', parsed[0].name, position());
-          assert.equal('test', parsed[0].text, position());
+          assert.equal(value, 'ok', position());
+          return new Promise((resolve, reject) => {
+            fs.readFile(`${dirPath}/userdict/aq_user.csv`, 'binary', (err, data) => {
+              assert.ok(!err, position());
+              assert.ok(data, position());
+              resolve();
+            });
+          });
         })
-        .setValue('#parse-input-input', empty)
-        .click('#parse-input')
-        .getValue('#parse-input-result')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.equal(1, parsed.length, position());
-          assert.equal('f1 女声1(ゆっくり)', parsed[0].name, position());
-          assert.equal('test', parsed[0].text, position());
-        })
-        .setValue('#parse-input-input', defaultAnd)
-        .click('#parse-input')
-        .getValue('#parse-input-result')
-        .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.equal(2, parsed.length, position());
-          assert.equal('f1 女声1(ゆっくり)', parsed[0].name, position());
-          assert.equal('test', parsed[0].text, position());
-          assert.equal('aq_yukkuri(サンプル設定2)', parsed[1].name, position());
-          assert.equal('test2', parsed[1].text, position());
+        .then(() => {
+          rimraf(`${dirPath}/userdict`, (err: Error) => {});
         })
         // catch error
         .catch((err: Error) => {
@@ -176,21 +163,28 @@ describe('specWindow-service-CommandService', function() {
     );
   });
 
-  it('detectVoiceConfig', function() {
-    const cmdInput = {
-      name: 'aq_yukkuri(サンプル設定2)',
-      text: 'test',
-    };
+  it('validateInput', function() {
     return (
       this.client
-        .setValue('#command-input-source', JSON.stringify(cmdInput))
-        .click('#detect-voice-config')
-        .getValue('#detect-voice-config-result')
+        .setValue('#surface', '日本')
+        .setValue('#yomi', 'ニホン')
+        .setValue('#pos-code', '1')
+        .setValue('#validate-input-result', '')
+        .click('#validate-input')
+        .waitForValue('#validate-input-result', 5000)
+        .getValue('#validate-input-result')
         .then((value: string) => {
-          const parsed = JSON.parse(value);
-          assert.equal('sample_2', parsed.id, position());
-          assert.equal('aq_yukkuri(サンプル設定2)', parsed.name, position());
-          assert.equal('talk2', parsed.version, position());
+          assert.equal(value, 'ok', position());
+        })
+        .setValue('#surface', '日本')
+        .setValue('#yomi', 'xxxx')
+        .setValue('#pos-code', '1')
+        .setValue('#validate-input-result', '')
+        .click('#validate-input')
+        .waitForValue('#validate-input-result', 5000)
+        .getValue('#validate-input-result')
+        .then((value: string) => {
+          assert.notEqual(value, 'ok', position());
         })
         // catch error
         .catch((err: Error) => {
@@ -225,31 +219,24 @@ describe('specWindow-service-CommandService', function() {
     );
   });
 
-  it('toString', function() {
-    const cmdInputList = [
-      {
-        name: 'aq_yukkuri(サンプル設定2)',
-        text: 'test',
-      },
-      {
-        name: 'f1 女声1(ゆっくり)',
-        text: 'test1',
-      },
-      {
-        name: 'aq_yukkuri(サンプル設定2)',
-        text: 'test2',
-      },
-    ];
-    const cmdInputListToString =
-      'aq_yukkuri(サンプル設定2)＞test\n' + 'f1 女声1(ゆっくり)＞test1\n' + 'aq_yukkuri(サンプル設定2)＞test2\n';
-
+  it('getLastError', function() {
     return (
       this.client
-        .setValue('#command-input-list', JSON.stringify(cmdInputList))
-        .click('#to-string')
-        .getValue('#to-string-result')
+        .setValue('#surface', '日本')
+        .setValue('#yomi', 'xxxx')
+        .setValue('#pos-code', '1')
+        .setValue('#validate-input-result', '')
+        .click('#validate-input')
+        .waitForValue('#validate-input-result', 5000)
+        .getValue('#validate-input-result')
         .then((value: string) => {
-          assert.equal(cmdInputListToString, value, position());
+          assert.notEqual(value, 'ok', position());
+        })
+        .click('#get-last-error')
+        .waitForValue('#get-last-error-result', 5000)
+        .getValue('#get-last-error-result')
+        .then((value: string) => {
+          assert.equal(value, '0:読みに定義外の文字が指定されている', position());
         })
         // catch error
         .catch((err: Error) => {

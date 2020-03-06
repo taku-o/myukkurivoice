@@ -1,23 +1,21 @@
 import {Application} from 'spectron';
 import {assert} from 'chai';
 import {position} from 'caller-position';
-import * as fs from 'fs';
 import * as temp from 'temp';
 temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-TextSubtitleService', function() {
-  this.timeout(10000);
+describe('service-AquesService-AquesTalk1-default', function() {
+  this.timeout(20000);
 
-  let dirPath: string | null = null;
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
-    dirPath = temp.mkdirSync(fsprefix);
+    const dirPath = temp.mkdirSync(fsprefix);
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       chromeDriverArgs: ['remote-debugging-port=9222'],
-      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
+      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath, RUNTIME_ENV: 'default'},
     });
     return this.app.start();
   });
@@ -37,14 +35,17 @@ describe('specWindow-service-TextSubtitleService', function() {
     return this.client.close();
   });
 
-  it('sourceFname', function() {
+  it('isI386Supported-default-play', function() {
     return (
       this.client
-        .setValue('#wav-file-path', '/tmp/_myukkurivoice_hogehoge.wav')
-        .click('#source-fname')
-        .getValue('#source-fname-result')
+        // play aquestalk1 in default env
+        .setValue('#is-i386-supported-play-encoded', "テ'_スト")
+        .setValue('#is-i386-supported-play-result', '')
+        .click('#is-i386-supported-play')
+        .waitForValue('#is-i386-supported-play-result', 5000)
+        .getValue('#is-i386-supported-play-result')
         .then((value: string) => {
-          assert.equal(value, '/tmp/_myukkurivoice_hogehoge.txt', position());
+          assert.equal(value, 'ok', position());
         })
         // catch error
         .catch((err: Error) => {
@@ -79,21 +80,13 @@ describe('specWindow-service-TextSubtitleService', function() {
     );
   });
 
-  it('save', function() {
-    const txtfile = `${dirPath}/_myukkurivoice_hogehoge.txt`;
+  it('get-generator-path', function() {
     return (
       this.client
-        .setValue('#file-path', txtfile)
-        .setValue('#source-text', 'hogehoge')
-        .click('#save')
-        .waitForValue('#save-result', 5000)
-        .getValue('#save-result')
+        .click('#get-generator-path')
+        .getValue('#get-generator-path-result')
         .then((value: string) => {
-          assert.ok(value, position());
-          fs.readFile(txtfile, 'utf8', (err, text) => {
-            assert.ok(!err, position());
-            assert.equal('hogehoge', text, position());
-          });
+          assert(value.match(/maquestalk1$/), position());
         })
         // catch error
         .catch((err: Error) => {

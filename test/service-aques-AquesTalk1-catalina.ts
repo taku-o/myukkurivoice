@@ -6,8 +6,8 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AquesService-AquesTalk1-default', function() {
-  this.timeout(10000);
+describe('service-AquesService-AquesTalk1-catalina', function() {
+  this.timeout(20000);
 
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
@@ -15,7 +15,7 @@ describe('specWindow-service-AquesService-AquesTalk1-default', function() {
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       chromeDriverArgs: ['remote-debugging-port=9222'],
-      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath, RUNTIME_ENV: 'default'},
+      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath, RUNTIME_ENV: 'catalina'},
     });
     return this.app.start();
   });
@@ -35,10 +35,10 @@ describe('specWindow-service-AquesService-AquesTalk1-default', function() {
     return this.client.close();
   });
 
-  it('isI386Supported-default-play', function() {
+  it('isI386Supported-catalina-play', function() {
     return (
       this.client
-        // play aquestalk1 in default env
+        // play aquestalk1 in catalina env
         .setValue('#is-i386-supported-play-encoded', "テ'_スト")
         .setValue('#is-i386-supported-play-result', '')
         .click('#is-i386-supported-play')
@@ -86,7 +86,7 @@ describe('specWindow-service-AquesService-AquesTalk1-default', function() {
         .click('#get-generator-path')
         .getValue('#get-generator-path-result')
         .then((value: string) => {
-          assert(value.match(/maquestalk1$/), position());
+          assert(value.match(/maquestalk1-ios$/), position());
         })
         // catch error
         .catch((err: Error) => {

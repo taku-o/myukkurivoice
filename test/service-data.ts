@@ -7,7 +7,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-SeqFNameService', function() {
+describe('service-DataService', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;
@@ -37,59 +37,18 @@ describe('specWindow-service-SeqFNameService', function() {
     return this.client.close();
   });
 
-  it('nextFname', function() {
+  it('load', function() {
     return (
       this.client
-        .setValue('#prefix', 'foo')
-        .setValue('#num', '200')
-        .click('#next-fname')
-        .getValue('#next-fname-result')
+        .click('#load')
+        .waitForValue('#load-result', 2000)
+        .getValue('#load-result')
         .then((value: string) => {
-          assert.equal(value, 'foo0200.wav', position());
+          assert.ok(value, position());
         })
-        // catch error
-        .catch((err: Error) => {
-          assert.fail(err.message);
-        })
-        .getMainProcessLogs()
-        .then((logs: string[]) => {
-          logs.forEach((log) => {
-            if (
-              log.match(/error/i) &&
-              !log.match(/gles2_cmd_decoder.cc/) &&
-              !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/) &&
-              !log.match(/logger.cc/)
-            ) {
-              /* eslint-disable-next-line no-console */
-              console.error(log);
-              assert.ok(false, position());
-            }
-          });
-        })
-        .getRenderProcessLogs()
-        .then((logs: WebdriverIO.LogEntry[]) => {
-          logs.forEach((log) => {
-            if (log.message.match(/error/i)) {
-              /* eslint-disable-next-line no-console */
-              console.error(log.message);
-              assert.ok(false, position());
-            }
-          });
-        })
-    );
-  });
-
-  it('splitFname', function() {
-    return (
-      this.client
-        .setValue('#split-fname-filepath', '/tmp/hoge/foo.txt')
-        .click('#split-fname')
-        .getValue('#split-fname-result')
+        .getValue('#load-err')
         .then((value: string) => {
-          const r = JSON.parse(value);
-          assert.equal('/tmp/hoge', r.dir, position());
-          assert.equal('foo.txt', r.basename, position());
+          assert.ok(!value, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -124,29 +83,15 @@ describe('specWindow-service-SeqFNameService', function() {
     );
   });
 
-  it('nextNumber-simple', function() {
-    const prefixP1 = 'prefix';
-    const prefixP2 = 'some';
-    const prefixP3 = 'hoge';
-    const prefixP4 = 'phlx';
-    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
-    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
-    const fileP3 = `${dirPath}/${prefixP3}.wav`;
-    fs.closeSync(fs.openSync(fileP1, 'w'));
-    fs.closeSync(fs.openSync(fileP2, 'w'));
-    fs.closeSync(fs.openSync(fileP3, 'w'));
-
+  it('initialData', function() {
     return (
       this.client
-        // get simply next number
-        .setValue('#next-number-result', '')
-        .setValue('#next-number-dir', dirPath)
-        .setValue('#next-number-prefix', prefixP1)
-        .click('#next-number')
-        .waitForValue('#next-number-result', 5000)
-        .getValue('#next-number-result')
-        .then((value: number) => {
-          assert.equal(102, value, position());
+        .click('#initial-data')
+        .getValue('#initial-data-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+          const parsed = JSON.parse(value);
+          assert.equal(parsed.length, 4, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -181,29 +126,15 @@ describe('specWindow-service-SeqFNameService', function() {
     );
   });
 
-  it('nextNumber-countup', function() {
-    const prefixP1 = 'prefix';
-    const prefixP2 = 'some';
-    const prefixP3 = 'hoge';
-    const prefixP4 = 'phlx';
-    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
-    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
-    const fileP3 = `${dirPath}/${prefixP3}.wav`;
-    fs.closeSync(fs.openSync(fileP1, 'w'));
-    fs.closeSync(fs.openSync(fileP2, 'w'));
-    fs.closeSync(fs.openSync(fileP3, 'w'));
-
+  it('create', function() {
     return (
       this.client
-        // count up
-        .setValue('#next-number-result', '')
-        .setValue('#next-number-dir', dirPath)
-        .setValue('#next-number-prefix', prefixP2)
-        .click('#next-number')
-        .waitForValue('#next-number-result', 5000)
-        .getValue('#next-number-result')
-        .then((value: number) => {
-          assert.equal(1, value, position());
+        .click('#create')
+        .getValue('#create-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.id, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -238,29 +169,15 @@ describe('specWindow-service-SeqFNameService', function() {
     );
   });
 
-  it('nextNumber-newly', function() {
-    const prefixP1 = 'prefix';
-    const prefixP2 = 'some';
-    const prefixP3 = 'hoge';
-    const prefixP4 = 'phlx';
-    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
-    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
-    const fileP3 = `${dirPath}/${prefixP3}.wav`;
-    fs.closeSync(fs.openSync(fileP1, 'w'));
-    fs.closeSync(fs.openSync(fileP2, 'w'));
-    fs.closeSync(fs.openSync(fileP3, 'w'));
-
+  it('copy', function() {
     return (
       this.client
-        // newly
-        .setValue('#next-number-result', '')
-        .setValue('#next-number-dir', dirPath)
-        .setValue('#next-number-prefix', prefixP3)
-        .click('#next-number')
-        .waitForValue('#next-number-result', 5000)
-        .getValue('#next-number-result')
-        .then((value: number) => {
-          assert.equal(0, value, position());
+        .click('#copy')
+        .getValue('#copy-result')
+        .then((value: string) => {
+          assert.ok(value, position());
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.id, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -295,29 +212,84 @@ describe('specWindow-service-SeqFNameService', function() {
     );
   });
 
-  it('nextNumber-notexists', function() {
-    const prefixP1 = 'prefix';
-    const prefixP2 = 'some';
-    const prefixP3 = 'hoge';
-    const prefixP4 = 'phlx';
-    const fileP1 = `${dirPath}/${prefixP1}0101.wav`;
-    const fileP2 = `${dirPath}/${prefixP2}0000.wav`;
-    const fileP3 = `${dirPath}/${prefixP3}.wav`;
-    fs.closeSync(fs.openSync(fileP1, 'w'));
-    fs.closeSync(fs.openSync(fileP2, 'w'));
-    fs.closeSync(fs.openSync(fileP3, 'w'));
-
+  it('save', function() {
     return (
       this.client
-        // not exists
-        .setValue('#next-number-result', '')
-        .setValue('#next-number-dir', dirPath)
-        .setValue('#next-number-prefix', prefixP4)
-        .click('#next-number')
-        .waitForValue('#next-number-result', 5000)
-        .getValue('#next-number-result')
-        .then((value: number) => {
-          assert.equal(0, value, position());
+        .getValue('#save-data-result')
+        .then((value: string) => {
+          assert.equal('', value, position());
+          const isExists = fs.existsSync(`${dirPath}/data.json`);
+          assert.ok(!isExists, position());
+        })
+        .click('#save-data')
+        .waitForValue('#save-data-result', 2000)
+        .getValue('#save-data-result')
+        .then((value: string) => {
+          assert.equal('ok', value, position());
+          const data = fs.readFileSync(`${dirPath}/data.json`);
+          const parsed = JSON.parse(data.toString());
+          assert.equal(parsed.length, 4, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/) &&
+              !log.match(/logger.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('clear', function() {
+    return (
+      this.client
+        // before test, save data
+        .click('#save-data')
+        .waitForValue('#save-data-result', 2000)
+        .getValue('#save-data-result')
+        .then((value: string) => {
+          assert.equal('ok', value, position());
+        })
+        // test
+        .getValue('#clear-result')
+        .then((value: string) => {
+          assert.equal('', value, position());
+          const isExists = fs.existsSync(`${dirPath}/data.json`);
+          assert.ok(isExists, position());
+          const data = fs.readFileSync(`${dirPath}/data.json`);
+          const parsed = JSON.parse(data.toString());
+          assert.equal(parsed.length, 4, position());
+        })
+        .click('#clear')
+        .waitForValue('#clear-result', 2000)
+        .getValue('#clear-result')
+        .then((value: string) => {
+          assert.equal('ok', value, position());
+          const isExists = fs.existsSync(`${dirPath}/data.json`);
+          assert.ok(!isExists, position());
         })
         // catch error
         .catch((err: Error) => {

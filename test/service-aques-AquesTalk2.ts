@@ -6,8 +6,8 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-IntroService-shortcut', function() {
-  this.timeout(10000);
+describe('service-AquesService-AquesTalk2', function() {
+  this.timeout(20000);
 
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
@@ -35,16 +35,22 @@ describe('specWindow-service-IntroService-shortcut', function() {
     return this.client.close();
   });
 
-  it('shortcut', function() {
+  it('errorTable', function() {
     return (
       this.client
-        .click('#shortcut')
-        .waitForVisible('.introjs-tooltip', 5000)
-        .isVisible('.introjs-tooltip')
-        .then((isVisible: boolean) => {
-          assert.ok(isVisible, position());
+        .setValue('#error-table-code', '106')
+        .click('#error-table-aquestalk2')
+        .getValue('#error-table-result')
+        .then((value: string) => {
+          assert.equal(value, '音記号列のタグの指定が正しくない', position());
         })
-        // error
+        .setValue('#error-table-code', '108')
+        .click('#error-table-aquestalk2')
+        .getValue('#error-table-result')
+        .then((value: string) => {
+          assert.equal(value, 'タグ内の値の指定が正しくない', position());
+        })
+        // catch error
         .catch((err: Error) => {
           assert.fail(err.message);
         })

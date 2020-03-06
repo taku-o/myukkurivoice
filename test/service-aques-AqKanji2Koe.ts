@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-IntroService-main', function() {
+describe('service-AquesService-AqKanji2Koe', function() {
   this.timeout(10000);
 
   before(function() {
@@ -35,16 +35,22 @@ describe('specWindow-service-IntroService-main', function() {
     return this.client.close();
   });
 
-  it('mainTutorial', function() {
+  it('errorTable', function() {
     return (
       this.client
-        .click('#main-tutorial')
-        .waitForVisible('.introjs-tooltip', 5000)
-        .isVisible('.introjs-tooltip')
-        .then((isVisible: boolean) => {
-          assert.ok(isVisible, position());
+        .setValue('#error-table-code', '105')
+        .click('#error-table-aqkanji2koe')
+        .getValue('#error-table-result')
+        .then((value: string) => {
+          assert.equal(value, '入力テキストが長すぎる', position());
         })
-        // error
+        .setValue('#error-table-code', '107')
+        .click('#error-table-aqkanji2koe')
+        .getValue('#error-table-result')
+        .then((value: string) => {
+          assert.equal(value, '変換できない文字コードが含まれている', position());
+        })
+        // catch error
         .catch((err: Error) => {
           assert.fail(err.message);
         })

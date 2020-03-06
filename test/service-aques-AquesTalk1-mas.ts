@@ -6,8 +6,8 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AquesService-AquesTalk10', function() {
-  this.timeout(10000);
+describe('service-AquesService-AquesTalk1-mas', function() {
+  this.timeout(20000);
 
   before(function() {
     const fsprefix = `_myubo_test${Date.now().toString(36)}`;
@@ -15,7 +15,7 @@ describe('specWindow-service-AquesService-AquesTalk10', function() {
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       chromeDriverArgs: ['remote-debugging-port=9222'],
-      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
+      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath, RUNTIME_ENV: 'mas'},
     });
     return this.app.start();
   });
@@ -35,20 +35,58 @@ describe('specWindow-service-AquesService-AquesTalk10', function() {
     return this.client.close();
   });
 
-  it('errorTable', function() {
+  it('isI386Supported-mas-play', function() {
     return (
       this.client
-        .setValue('#error-table-code', '104')
-        .click('#error-table-aquestalk10')
-        .getValue('#error-table-result')
+        // play aquestalk1 in mas env
+        .setValue('#is-i386-supported-play-encoded', "テ'_スト")
+        .setValue('#is-i386-supported-play-result', '')
+        .click('#is-i386-supported-play')
+        .waitForValue('#is-i386-supported-play-result', 5000)
+        .getValue('#is-i386-supported-play-result')
         .then((value: string) => {
-          assert.equal(value, '音声記号列に有効な読みがない', position());
+          assert.equal(value, 'ok', position());
         })
-        .setValue('#error-table-code', '105')
-        .click('#error-table-aquestalk10')
-        .getValue('#error-table-result')
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/) &&
+              !log.match(/logger.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('get-generator-path', function() {
+    return (
+      this.client
+        .click('#get-generator-path')
+        .getValue('#get-generator-path-result')
         .then((value: string) => {
-          assert.equal(value, '音声記号列に未定義の読み記号が指定された', position());
+          assert(value.match(/maquestalk1-ios$/), position());
         })
         // catch error
         .catch((err: Error) => {

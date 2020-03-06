@@ -16,7 +16,7 @@ var unpackedPath = epath().getUnpackedPath();
 var vendorPath = `${unpackedPath}/vendor`;
 
 // env
-const RUNTIME_ENV: 'default' | 'catalina' | 'store' = process.env.RUNTIME_ENV as 'default' | 'catalina' | 'store';
+const RUNTIME_ENV: 'default' | 'catalina' | 'mas' = process.env.RUNTIME_ENV as 'default' | 'catalina' | 'mas';
 
 // angular aques service
 angular.module('AquesServices', ['MessageServices', 'LicenseServices']);
@@ -91,7 +91,7 @@ class AquesTalk1Lib implements yubo.AquesTalk1Lib {
           this.generatorType = 'i386'; break;
         case 'catalina':
           this.generatorType = 'ios'; break;
-        case 'store':
+        case 'mas':
           this.generatorType = 'mas'; break;
       }
     }

@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-LicenseService', function() {
+describe('service-LicenseService', function() {
   this.timeout(30000);
 
   before(function() {

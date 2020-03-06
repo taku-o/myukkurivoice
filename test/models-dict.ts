@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-model-YPhontMasterList', function() {
+describe('models-dict', function() {
   this.timeout(10000);
 
   before(function() {
@@ -35,42 +35,17 @@ describe('specWindow-model-YPhontMasterList', function() {
     return this.client.close();
   });
 
-  it('YPhontMasterList', function() {
+  it('KindList', function() {
     return (
       this.client
-        .click('#get-yphont-master-list')
-        .getValue('#get-yphont-master-list-result')
+        .click('#get-kind-list')
+        .getValue('#get-kind-list-result')
         .then((value: string) => {
           const parsed = JSON.parse(value);
-          assert.equal(parsed.length, 26, position());
-
+          assert.equal(parsed.length, 28, position());
           for (let i = 0; i < parsed.length; i++) {
-            const version = parsed[i].version;
-            switch (version) {
-              case 'talk1':
-                assert.ok(parsed[i].id, position());
-                assert.ok(parsed[i].name, position());
-                assert.ok('idVoice' in parsed[i], position());
-                break;
-              case 'talk2':
-                assert.ok(parsed[i].id, position());
-                assert.ok(parsed[i].name, position());
-                assert.ok(parsed[i].path, position());
-                break;
-              case 'talk10':
-                assert.ok(parsed[i].id, position());
-                assert.ok(parsed[i].name, position());
-                assert.ok('bas' in parsed[i].struct, position());
-                assert.ok('spd' in parsed[i].struct, position());
-                assert.ok('vol' in parsed[i].struct, position());
-                assert.ok('pit' in parsed[i].struct, position());
-                assert.ok('acc' in parsed[i].struct, position());
-                assert.ok('lmd' in parsed[i].struct, position());
-                assert.ok('fsc' in parsed[i].struct, position());
-                break;
-              default:
-                assert.fail('unknown version');
-            }
+            assert.equal(i, parsed[i].id, position());
+            assert.ok(parsed[i].kind, position());
           }
         })
         // catch error
@@ -106,43 +81,15 @@ describe('specWindow-model-YPhontMasterList', function() {
     );
   });
 
-  it('YPhontMasterIosEnvList', function() {
+  it('KindHash', function() {
     return (
       this.client
-        .click('#get-yphont-master-iosenv-list')
-        .getValue('#get-yphont-master-list-result')
+        .click('#get-kind-hash')
+        .getValue('#get-kind-hash-result')
         .then((value: string) => {
           const parsed = JSON.parse(value);
-          assert.equal(parsed.length, 25, position());
-
-          for (let i = 0; i < parsed.length; i++) {
-            const version = parsed[i].version;
-            switch (version) {
-              case 'talk1':
-                assert.ok(parsed[i].id, position());
-                assert.ok(parsed[i].name, position());
-                assert.ok('idVoice' in parsed[i], position());
-                assert.ok(parsed[i].catalina, position());
-                break;
-              case 'talk2':
-                assert.ok(parsed[i].id, position());
-                assert.ok(parsed[i].name, position());
-                assert.ok(parsed[i].path, position());
-                break;
-              case 'talk10':
-                assert.ok(parsed[i].id, position());
-                assert.ok(parsed[i].name, position());
-                assert.ok('bas' in parsed[i].struct, position());
-                assert.ok('spd' in parsed[i].struct, position());
-                assert.ok('vol' in parsed[i].struct, position());
-                assert.ok('pit' in parsed[i].struct, position());
-                assert.ok('acc' in parsed[i].struct, position());
-                assert.ok('lmd' in parsed[i].struct, position());
-                assert.ok('fsc' in parsed[i].struct, position());
-                break;
-              default:
-                assert.fail('unknown version');
-            }
+          for (let i = 0; i < 28; i++) {
+            assert.ok(parsed[i], position());
           }
         })
         // catch error

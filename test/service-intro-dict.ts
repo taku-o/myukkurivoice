@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AquesService-AquesTalk1-store', function() {
+describe('service-IntroService-dict', function() {
   this.timeout(10000);
 
   before(function() {
@@ -15,7 +15,7 @@ describe('specWindow-service-AquesService-AquesTalk1-store', function() {
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       chromeDriverArgs: ['remote-debugging-port=9222'],
-      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath, RUNTIME_ENV: 'store'},
+      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
     });
     return this.app.start();
   });
@@ -35,60 +35,16 @@ describe('specWindow-service-AquesService-AquesTalk1-store', function() {
     return this.client.close();
   });
 
-  it('isI386Supported-store-play', function() {
+  it('dictTutorial', function() {
     return (
       this.client
-        // play aquestalk1 in store env
-        .setValue('#is-i386-supported-play-encoded', "テ'_スト")
-        .setValue('#is-i386-supported-play-result', '')
-        .click('#is-i386-supported-play')
-        .waitForValue('#is-i386-supported-play-result', 5000)
-        .getValue('#is-i386-supported-play-result')
-        .then((value: string) => {
-          assert.equal(value, 'ok', position());
+        .click('#dict-tutorial')
+        .waitForVisible('.introjs-tooltip', 5000)
+        .isVisible('.introjs-tooltip')
+        .then((isVisible: boolean) => {
+          assert.ok(isVisible, position());
         })
-        // catch error
-        .catch((err: Error) => {
-          assert.fail(err.message);
-        })
-        .getMainProcessLogs()
-        .then((logs: string[]) => {
-          logs.forEach((log) => {
-            if (
-              log.match(/error/i) &&
-              !log.match(/gles2_cmd_decoder.cc/) &&
-              !log.match(/shared_image_manager.cc/) &&
-              !log.match(/media_internals.cc/) &&
-              !log.match(/logger.cc/)
-            ) {
-              /* eslint-disable-next-line no-console */
-              console.error(log);
-              assert.ok(false, position());
-            }
-          });
-        })
-        .getRenderProcessLogs()
-        .then((logs: WebdriverIO.LogEntry[]) => {
-          logs.forEach((log) => {
-            if (log.message.match(/error/i)) {
-              /* eslint-disable-next-line no-console */
-              console.error(log.message);
-              assert.ok(false, position());
-            }
-          });
-        })
-    );
-  });
-
-  it('get-generator-path', function() {
-    return (
-      this.client
-        .click('#get-generator-path')
-        .getValue('#get-generator-path-result')
-        .then((value: string) => {
-          assert(value.match(/maquestalk1-ios$/), position());
-        })
-        // catch error
+        // error
         .catch((err: Error) => {
           assert.fail(err.message);
         })

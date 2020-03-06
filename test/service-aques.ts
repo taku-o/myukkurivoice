@@ -9,7 +9,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AquesService', function() {
+describe('service-AquesService', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;

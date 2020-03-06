@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AquesService-AquesTalk1', function() {
+describe('service-MessageService', function() {
   this.timeout(10000);
 
   before(function() {
@@ -35,14 +35,18 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     return this.client.close();
   });
 
-  it('get-generator-path-17', function() {
+  it('action', function() {
     return (
       this.client
-        .setValue('#os-version', '17.7.0')
-        .click('#get-generator-path')
-        .getValue('#get-generator-path-result')
+        .setValue('#message-service-post', '')
+        .click('#action')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
         .then((value: string) => {
-          assert(value.match(/maquestalk1$/), position());
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('action message', parsed.body, position());
+          assert.equal('action', parsed.type, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -77,14 +81,39 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     );
   });
 
-  it('get-generator-path-20', function() {
+  it('record', function() {
     return (
       this.client
-        .setValue('#os-version', '20.1.0')
-        .click('#get-generator-path')
-        .getValue('#get-generator-path-result')
+        .setValue('#message-service-post', '')
+        .setValue('#last-wav-file', '')
+        .click('#record')
+        // event on message
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
         .then((value: string) => {
-          assert(value.match(/maquestalk1-ios$/), position());
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('record message', parsed.body, position());
+          assert.equal('record', parsed.type, position());
+          assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
+          assert.equal('hoge.wav', parsed.wavFileName, position());
+          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+          assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
+          assert.equal(1.44, parsed.duration, position());
+        })
+        // event on wavGenerated
+        .waitForValue('#last-wav-file', 5000)
+        .getValue('#last-wav-file')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('record message', parsed.body, position());
+          assert.equal('record', parsed.type, position());
+          assert.equal('/tmp/hoge.wav', parsed.wavFilePath, position());
+          assert.equal('hoge.wav', parsed.wavFileName, position());
+          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+          assert.equal('/tmp/hoge.wav', parsed.quickLookPath, position());
+          assert.equal(1.44, parsed.duration, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -119,22 +148,21 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     );
   });
 
-  it('isSupportedPhont-17', function() {
+  it('recordSource', function() {
     return (
       this.client
-        .setValue('#os-version', '17.7.0')
-        .setValue('#phont-id', 'at1_f1')
-        .click('#is-supported-phont')
-        .getValue('#is-supported-phont-result')
+        .setValue('#message-service-post', '')
+        .click('#record-source')
+        // event on message
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
         .then((value: string) => {
-          assert.equal(value, 'true', position());
-        })
-        .setValue('#os-version', '17.7.0')
-        .setValue('#phont-id', 'at1_m1')
-        .click('#is-supported-phont')
-        .getValue('#is-supported-phont-result')
-        .then((value: string) => {
-          assert.equal(value, 'true', position());
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('record source', parsed.body, position());
+          assert.equal('source', parsed.type, position());
+          assert.equal('/tmp/hoge.txt', parsed.srcTextPath, position());
+          assert.equal('/tmp/hoge.txt', parsed.quickLookPath, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -169,22 +197,18 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     );
   });
 
-  it('isSupportedPhont-20', function() {
+  it('info', function() {
     return (
       this.client
-        .setValue('#os-version', '20.1.0')
-        .setValue('#phont-id', 'at1_f1')
-        .click('#is-supported-phont')
-        .getValue('#is-supported-phont-result')
+        .setValue('#message-service-post', '')
+        .click('#info')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
         .then((value: string) => {
-          assert.equal(value, 'true', position());
-        })
-        .setValue('#os-version', '20.1.0')
-        .setValue('#phont-id', 'at1_m1')
-        .click('#is-supported-phont')
-        .getValue('#is-supported-phont-result')
-        .then((value: string) => {
-          assert.equal(value, 'false', position());
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('info message', parsed.body, position());
+          assert.equal('info', parsed.type, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -219,14 +243,18 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     );
   });
 
-  it('isI386Supported-17', function() {
+  it('warn', function() {
     return (
       this.client
-        .setValue('#os-version', '17.7.0')
-        .click('#is-i386-supported')
-        .getValue('#is-i386-supported-result')
+        .setValue('#message-service-post', '')
+        .click('#warn')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
         .then((value: string) => {
-          assert.equal(value, 'true', position());
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('warn message', parsed.body, position());
+          assert.equal('warn', parsed.type, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -261,14 +289,88 @@ describe('specWindow-service-AquesService-AquesTalk1', function() {
     );
   });
 
-  it('isI386Supported-20', function() {
+  it('error', function() {
     return (
       this.client
-        .setValue('#os-version', '20.1.0')
-        .click('#is-i386-supported')
-        .getValue('#is-i386-supported-result')
+        // with error
+        .setValue('#message-service-post', '')
+        .click('#error')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
         .then((value: string) => {
-          assert.equal(value, 'false', position());
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('error message' + 'err', parsed.body, position());
+          assert.equal('error', parsed.type, position());
+        })
+        // with no error
+        .setValue('#message-service-post', '')
+        .click('#error-null')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('error message', parsed.body, position());
+          assert.equal('error', parsed.type, position());
+        })
+        // catch error
+        .catch((err: Error) => {
+          assert.fail(err.message);
+        })
+        .getMainProcessLogs()
+        .then((logs: string[]) => {
+          logs.forEach((log) => {
+            if (
+              log.match(/error/i) &&
+              !log.match(/gles2_cmd_decoder.cc/) &&
+              !log.match(/shared_image_manager.cc/) &&
+              !log.match(/media_internals.cc/) &&
+              !log.match(/logger.cc/)
+            ) {
+              /* eslint-disable-next-line no-console */
+              console.error(log);
+              assert.ok(false, position());
+            }
+          });
+        })
+        .getRenderProcessLogs()
+        .then((logs: WebdriverIO.LogEntry[]) => {
+          logs.forEach((log) => {
+            if (log.message.match(/error/i)) {
+              /* eslint-disable-next-line no-console */
+              console.error(log.message);
+              assert.ok(false, position());
+            }
+          });
+        })
+    );
+  });
+
+  it('syserror', function() {
+    return (
+      this.client
+        // with error
+        .setValue('#message-service-post', '')
+        .click('#syserror')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('syserror message' + 'err', parsed.body, position());
+          assert.equal('syserror', parsed.type, position());
+        })
+        // with no error
+        .setValue('#message-service-post', '')
+        .click('#syserror-null')
+        .waitForValue('#message-service-post', 5000)
+        .getValue('#message-service-post')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.ok(parsed.created, position());
+          assert.equal('syserror message', parsed.body, position());
+          assert.equal('syserror', parsed.type, position());
         })
         // catch error
         .catch((err: Error) => {

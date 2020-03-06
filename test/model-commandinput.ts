@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AquesService-AqKanji2Koe', function() {
+describe('model-YCommandInput', function() {
   this.timeout(10000);
 
   before(function() {
@@ -35,20 +35,15 @@ describe('specWindow-service-AquesService-AqKanji2Koe', function() {
     return this.client.close();
   });
 
-  it('errorTable', function() {
+  it('YCommandInput', function() {
     return (
       this.client
-        .setValue('#error-table-code', '105')
-        .click('#error-table-aqkanji2koe')
-        .getValue('#error-table-result')
+        .click('#get-ycommand-input')
+        .getValue('#get-ycommand-input-result')
         .then((value: string) => {
-          assert.equal(value, '入力テキストが長すぎる', position());
-        })
-        .setValue('#error-table-code', '107')
-        .click('#error-table-aqkanji2koe')
-        .getValue('#error-table-result')
-        .then((value: string) => {
-          assert.equal(value, '変換できない文字コードが含まれている', position());
+          const parsed = JSON.parse(value);
+          assert.equal('', parsed.name, position());
+          assert.equal('', parsed.text, position());
         })
         // catch error
         .catch((err: Error) => {

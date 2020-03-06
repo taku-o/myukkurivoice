@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-IntroService-dict', function() {
+describe('service-IntroService-main', function() {
   this.timeout(10000);
 
   before(function() {
@@ -35,10 +35,10 @@ describe('specWindow-service-IntroService-dict', function() {
     return this.client.close();
   });
 
-  it('dictTutorial', function() {
+  it('mainTutorial', function() {
     return (
       this.client
-        .click('#dict-tutorial')
+        .click('#main-tutorial')
         .waitForVisible('.introjs-tooltip', 5000)
         .isVisible('.introjs-tooltip')
         .then((isVisible: boolean) => {

@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-model-YInput', function() {
+describe('model-YInput', function() {
   this.timeout(10000);
 
   before(function() {

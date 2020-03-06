@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-AquesService-AquesTalk1-catalina', function() {
+describe('service-AppUtilService', function() {
   this.timeout(10000);
 
   before(function() {
@@ -15,7 +15,7 @@ describe('specWindow-service-AquesService-AquesTalk1-catalina', function() {
     this.app = new Application({
       path: 'MYukkuriVoice-darwin-x64/MYukkuriVoice.app/Contents/MacOS/MYukkuriVoice',
       chromeDriverArgs: ['remote-debugging-port=9222'],
-      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath, RUNTIME_ENV: 'catalina'},
+      env: {DEBUG: 1, NODE_ENV: 'test', userData: dirPath},
     });
     return this.app.start();
   });
@@ -35,17 +35,29 @@ describe('specWindow-service-AquesService-AquesTalk1-catalina', function() {
     return this.client.close();
   });
 
-  it('isI386Supported-catalina-play', function() {
+  it('disableRhythm', function() {
     return (
       this.client
-        // play aquestalk1 in catalina env
-        .setValue('#is-i386-supported-play-encoded', "テ'_スト")
-        .setValue('#is-i386-supported-play-result', '')
-        .click('#is-i386-supported-play')
-        .waitForValue('#is-i386-supported-play-result', 5000)
-        .getValue('#is-i386-supported-play-result')
+        // disableRhythm
+        .setValue('#rhythm-text', "test' val/ue")
+        .click('#disable-rhythm')
+        .getValue('#disable-rhythm-result')
         .then((value: string) => {
-          assert.equal(value, 'ok', position());
+          assert.equal(value, 'test value', position());
+        })
+        // disableRhythm not contains
+        .setValue('#rhythm-text', 'this is not a rhythm text')
+        .click('#disable-rhythm')
+        .getValue('#disable-rhythm-result')
+        .then((value: string) => {
+          assert.equal(value, 'this is not a rhythm text', position());
+        })
+        // disableRhythm empty
+        .setValue('#rhythm-text', '')
+        .click('#disable-rhythm')
+        .getValue('#disable-rhythm-result')
+        .then((value: string) => {
+          assert.ok(!value, position());
         })
         // catch error
         .catch((err: Error) => {
@@ -80,13 +92,15 @@ describe('specWindow-service-AquesService-AquesTalk1-catalina', function() {
     );
   });
 
-  it('get-generator-path', function() {
+  it('reportDuration', function() {
     return (
       this.client
-        .click('#get-generator-path')
-        .getValue('#get-generator-path-result')
-        .then((value: string) => {
-          assert(value.match(/maquestalk1-ios$/), position());
+        .setValue('#duration', 340)
+        .click('#report-duration')
+        .waitForValue('#report-duration-result', 5000)
+        .getValue('#report-duration-result')
+        .then((value: number) => {
+          assert.equal(340, value, position());
         })
         // catch error
         .catch((err: Error) => {

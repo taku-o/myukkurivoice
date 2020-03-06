@@ -6,7 +6,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-IntroService-settings', function() {
+describe('model-YInputInitialData', function() {
   this.timeout(10000);
 
   before(function() {
@@ -35,16 +35,17 @@ describe('specWindow-service-IntroService-settings', function() {
     return this.client.close();
   });
 
-  it('settingsTutorial', function() {
+  it('YInputInitialData', function() {
     return (
       this.client
-        .click('#settings-tutorial')
-        .waitForVisible('.introjs-tooltip', 5000)
-        .isVisible('.introjs-tooltip')
-        .then((isVisible: boolean) => {
-          assert.ok(isVisible, position());
+        .click('#get-yinput-initial-data')
+        .getValue('#get-yinput-initial-data-result')
+        .then((value: string) => {
+          const parsed = JSON.parse(value);
+          assert.equal('エムユックリボイスへようこそ。ゆっくりしていってね！', parsed.source, position());
+          assert.equal("エムユックリボ'イスエ/ヨ'ーコソ。ユック'リ/シテイッテ'ネ、", parsed.encoded, position());
         })
-        // error
+        // catch error
         .catch((err: Error) => {
           assert.fail(err.message);
         })

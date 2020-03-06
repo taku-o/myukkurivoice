@@ -9,7 +9,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-WebAPIAudioService-44100', function() {
+describe('service-WebAPIAudioService-8000', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;
@@ -43,7 +43,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // play aquestalk1
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#play-result-webapi', '')
         .click('#playwebapi-aqver1')
@@ -89,7 +89,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // play aquestalk2
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#play-result-webapi', '')
         .click('#playwebapi-aqver2')
@@ -135,7 +135,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // play aquestalk10
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#play-result-webapi', '')
         .click('#playwebapi-aqver10')
@@ -181,7 +181,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // record aquestalk1
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
         .setValue('#record-result-webapi', '')
@@ -249,7 +249,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // record aquestalk2
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
         .setValue('#record-result-webapi', '')
@@ -317,7 +317,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // record aquestalk10
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
         .setValue('#record-result-webapi', '')
@@ -385,7 +385,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // record aquestalk1
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
         .setValue('#record-result-webapi', '')
@@ -455,7 +455,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // record aquestalk2
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
         .setValue('#record-result-webapi', '')
@@ -525,7 +525,7 @@ describe('specWindow-service-WebAPIAudioService-44100', function() {
     return (
       this.client
         // record aquestalk10
-        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-samplerate', '8000')
         .setValue('#playwebapi-encoded', "テ'_スト")
         .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
         .setValue('#record-result-webapi', '')

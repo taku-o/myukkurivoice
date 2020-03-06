@@ -9,7 +9,7 @@ temp.track();
 
 require('source-map-support').install();
 
-describe('specWindow-service-HTML5AudioService', function() {
+describe('service-WebAPIAudioService-44100', function() {
   this.timeout(10000);
 
   let dirPath: string | null = null;
@@ -43,11 +43,12 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // play aquestalk1
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#play-result-html5', '')
-        .click('#playhtml5-aqver1')
-        .waitForValue('#play-result-html5', 5000)
-        .getValue('#play-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#play-result-webapi', '')
+        .click('#playwebapi-aqver1')
+        .waitForValue('#play-result-webapi', 5000)
+        .getValue('#play-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
@@ -88,11 +89,12 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // play aquestalk2
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#play-result-html5', '')
-        .click('#playhtml5-aqver2')
-        .waitForValue('#play-result-html5', 5000)
-        .getValue('#play-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#play-result-webapi', '')
+        .click('#playwebapi-aqver2')
+        .waitForValue('#play-result-webapi', 5000)
+        .getValue('#play-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
@@ -133,11 +135,12 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // play aquestalk10
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#play-result-html5', '')
-        .click('#playhtml5-aqver10')
-        .waitForValue('#play-result-html5', 5000)
-        .getValue('#play-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#play-result-webapi', '')
+        .click('#playwebapi-aqver10')
+        .waitForValue('#play-result-webapi', 5000)
+        .getValue('#play-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
         })
@@ -178,19 +181,20 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // record aquestalk1
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
-        .setValue('#record-result-html5', '')
-        .click('#recordhtml5-aqver1')
-        .waitForValue('#record-result-html5', 5000)
-        .getValue('#record-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
+        .setValue('#record-result-webapi', '')
+        .click('#recordwebapi-aqver1')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
             fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_1.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
-              assert.ok(wavValidator(data), position());
+              assert.ok(wavValidator(data));
 
               const riff = Riff.from(data);
               let isContainIxml = false;
@@ -245,19 +249,20 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // record aquestalk2
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
-        .setValue('#record-result-html5', '')
-        .click('#recordhtml5-aqver2')
-        .waitForValue('#record-result-html5', 5000)
-        .getValue('#record-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
+        .setValue('#record-result-webapi', '')
+        .click('#recordwebapi-aqver2')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
             fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_2.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
-              assert.ok(wavValidator(data), position());
+              assert.ok(wavValidator(data));
 
               const riff = Riff.from(data);
               let isContainIxml = false;
@@ -312,19 +317,20 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // record aquestalk10
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
-        .setValue('#record-result-html5', '')
-        .click('#recordhtml5-aqver10')
-        .waitForValue('#record-result-html5', 5000)
-        .getValue('#record-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
+        .setValue('#record-result-webapi', '')
+        .click('#recordwebapi-aqver10')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
             fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_10.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
-              assert.ok(wavValidator(data), position());
+              assert.ok(wavValidator(data));
 
               const riff = Riff.from(data);
               let isContainIxml = false;
@@ -379,20 +385,21 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // record aquestalk1
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_1_fcpx.wav`)
-        .setValue('#record-result-html5', '')
-        .setValue('#recordhtml5-audio-role', 'tmp-track1-role')
-        .click('#recordhtml5-aqver1-fcpx')
-        .waitForValue('#record-result-html5', 5000)
-        .getValue('#record-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_1.wav`)
+        .setValue('#record-result-webapi', '')
+        .setValue('#recordwebapi-audio-role', 'tmp-track1-role')
+        .click('#recordwebapi-aqver1-fcpx')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
-            fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_1_fcpx.wav`, (err, data) => {
+            fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_1.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
-              assert.ok(wavValidator(data), position());
+              assert.ok(wavValidator(data));
 
               const riff = Riff.from(data);
               let isContainIxml = false;
@@ -448,20 +455,21 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // record aquestalk2
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_2_fcpx.wav`)
-        .setValue('#record-result-html5', '')
-        .setValue('#recordhtml5-audio-role', 'tmp-track2-role')
-        .click('#recordhtml5-aqver2-fcpx')
-        .waitForValue('#record-result-html5', 5000)
-        .getValue('#record-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_2.wav`)
+        .setValue('#record-result-webapi', '')
+        .setValue('#recordwebapi-audio-role', 'tmp-track2-role')
+        .click('#recordwebapi-aqver2-fcpx')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
-            fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_2_fcpx.wav`, (err, data) => {
+            fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_2.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
-              assert.ok(wavValidator(data), position());
+              assert.ok(wavValidator(data));
 
               const riff = Riff.from(data);
               let isContainIxml = false;
@@ -517,20 +525,21 @@ describe('specWindow-service-HTML5AudioService', function() {
     return (
       this.client
         // record aquestalk10
-        .setValue('#playhtml5-encoded', "テ'_スト")
-        .setValue('#wav-file-path-html5', `${dirPath}/_myukkurivoice_hogehoge_10_fcpx.wav`)
-        .setValue('#record-result-html5', '')
-        .setValue('#recordhtml5-audio-role', 'tmp-track10-role')
-        .click('#recordhtml5-aqver10-fcpx')
-        .waitForValue('#record-result-html5', 5000)
-        .getValue('#record-result-html5')
+        .setValue('#playwebapi-samplerate', '')
+        .setValue('#playwebapi-encoded', "テ'_スト")
+        .setValue('#wav-file-path-webapi', `${dirPath}/_myukkurivoice_hogehoge_10.wav`)
+        .setValue('#record-result-webapi', '')
+        .setValue('#recordwebapi-audio-role', 'tmp-track10-role')
+        .click('#recordwebapi-aqver10-fcpx')
+        .waitForValue('#record-result-webapi', 5000)
+        .getValue('#record-result-webapi')
         .then((value: string) => {
           assert.equal(value, 'ok', position());
           return new Promise((resolve, reject) => {
-            fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_10_fcpx.wav`, (err, data) => {
+            fs.readFile(`${dirPath}/_myukkurivoice_hogehoge_10.wav`, (err, data) => {
               assert.ok(!err, position());
               assert.ok(data, position());
-              assert.ok(wavValidator(data), position());
+              assert.ok(wavValidator(data));
 
               const riff = Riff.from(data);
               let isContainIxml = false;
