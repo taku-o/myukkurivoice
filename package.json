@@ -31,6 +31,7 @@
   "build_status": {
     "platform": "darwin",
     "target": "debug",
+    "signed": "none",
     "branch": "",
     "hash": ""
   },

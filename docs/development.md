@@ -140,7 +140,7 @@
 ### GitHub 版
 
 ```
-  npx gulp build:release
+  npx gulp build:deploy
 ```
 
 ### AppStore 版

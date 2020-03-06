@@ -87,15 +87,13 @@ gulp.task('_npm-install', (cb) => {
 // zip
 gulp.task('_zip-app', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
+  const signedType = process.env.SIGNED_TYPE;
   const packageName = `MYukkuriVoice-${platform}-x64`;
-  exec(`ditto -c -k --sequesterRsrc --keepParent ${packageName} ${packageName}-nosigned.zip`, (err, stdout, stderr) => {
-    cb(err);
-  });
-});
-gulp.task('_zip-app-signed', (cb) => {
-  const platform = process.env.BUILD_PLATFORM;
-  const packageName = `MYukkuriVoice-${platform}-x64`;
-  exec(`ditto -c -k --sequesterRsrc --keepParent ${packageName} ${packageName}.zip`, (err, stdout, stderr) => {
+  const zipName =
+    signedType == 'developer'? `${packageName}.zip`:
+    signedType == 'none'? `${packageName}-nosigned.zip`:
+    `${packageName}-unknown.zip`;
+  exec(`ditto -c -k --sequesterRsrc --keepParent ${packageName} ${zipName}`, (err, stdout, stderr) => {
     cb(err);
   });
 });
@@ -112,6 +110,52 @@ gulp.task('_open:appdir', (cb) => {
   });
 });
 
+// build:deploy
+gulp.task(
+  'build:deploy',
+  gulp.series(
+    '_handleError',
+    '_platform:darwin',
+    '_target:release',
+    //'_signed_type:developer',
+    //_mustMasterBranch,
+    _detectBranch,
+    '_rm:workdir',
+    '_mk:workdir',
+    '_ch:workdir',
+    '_git-clone',
+    '_ch:repodir',
+    '_git-submodule',
+    '_npm-install',
+    'tsc',
+    'minify',
+    //
+    // staging
+    '_signed_type:none',
+    '_rm:package',
+    '_update:packagejson',
+    '_package:release',
+    '_unpacked',
+    'doc',
+    '_zip-app',
+    //
+    // release
+    '_signed_type:developer',
+    '_rm:package',
+    '_update:packagejson',
+    '_package:release',
+    '_unpacked',
+    'doc',
+    '_sign:developer:direct',
+    '_notarize',
+    '_zip-app',
+    //
+    '_open:appdir',
+    '_notify',
+    '_kill'
+  )
+);
+
 // build:release
 gulp.task(
   'build:release',
@@ -119,6 +163,7 @@ gulp.task(
     '_handleError',
     '_platform:darwin',
     '_target:release',
+    '_signed_type:developer',
     //_mustMasterBranch,
     _detectBranch,
     '_rm:workdir',
@@ -135,11 +180,10 @@ gulp.task(
     '_package:release',
     '_unpacked',
     'doc',
-    '_zip-app',
     //'_sign:developer',
     '_sign:developer:direct',
     '_notarize',
-    '_zip-app-signed',
+    '_zip-app',
     '_open:appdir',
     '_notify',
     '_kill'
@@ -153,6 +197,7 @@ gulp.task(
     '_handleError',
     '_platform:darwin',
     '_target:staging',
+    '_signed_type:none',
     _detectBranch,
     '_rm:workdir',
     '_mk:workdir',
@@ -168,9 +213,8 @@ gulp.task(
     '_package:release',
     '_unpacked',
     'doc',
-    '_zip-app',
     //'_sign:developer',
-    //'_zip-app-signed',
+    '_zip-app',
     '_open:appdir',
     '_notify',
     '_kill'
@@ -184,6 +228,7 @@ gulp.task(
     '_handleError',
     '_platform:darwin',
     '_target:staging',
+    '_signed_type:none',
     _mustMasterBranch,
     '_rm:workdir',
     '_mk:workdir',
@@ -200,9 +245,8 @@ gulp.task(
     '_package:release',
     '_unpacked',
     'doc',
-    '_zip-app',
     //'_sign:developer',
-    //'_zip-app-signed',
+    '_zip-app',
     '_open:appdir',
     '_notify',
     '_kill'
@@ -216,6 +260,7 @@ gulp.task(
     '_handleError',
     '_platform:mas',
     '_target:mas',
+    '_signed_type:3rdparty',
     //_mustMasterBranch,
     _detectBranch,
     '_rm:workdir',

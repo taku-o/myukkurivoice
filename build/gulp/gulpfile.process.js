@@ -100,6 +100,24 @@ gulp.task('_runtime:mas', (cb) => {
   cb();
 });
 
+// signed_type
+// SIGNED_TYPE (none, signed, mas)
+gulp.task('_signed_type:none', (cb) => {
+  const env = process.env;
+  env.SIGNED_TYPE = 'none';
+  cb();
+});
+gulp.task('_signed_type:developer', (cb) => {
+  const env = process.env;
+  env.SIGNED_TYPE = 'developer';
+  cb();
+});
+gulp.task('_signed_type:3rdparty', (cb) => {
+  const env = process.env;
+  env.SIGNED_TYPE = '3rdparty';
+  cb();
+});
+
 // _update:packagejson
 gulp.task('_update:packagejson', (cb) => {
   const packageJson = config.packageJson;
@@ -108,6 +126,7 @@ gulp.task('_update:packagejson', (cb) => {
   const env = process.env;
   packageJson.build_status.platform = env.BUILD_PLATFORM;
   packageJson.build_status.target = env.BUILD_TARGET;
+  packageJson.build_status.signed = env.SIGNED_TYPE;
 
   // git
   const branch = execSync('/usr/bin/git symbolic-ref --short HEAD')

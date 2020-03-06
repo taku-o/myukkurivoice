@@ -51,6 +51,7 @@ usage:
     gulp build:staging [--branch=develop]
     gulp build:pr [--pull_request=pull/999/merge]
     gulp build:release
+    gulp build:deploy
     gulp build:mas [--branch=develop]
   `);
   return cb();
