@@ -1,5 +1,6 @@
 var gulp = gulp || require('gulp');
 var config = require('./config');
+const appZip = require('electron-installer-zip');
 const argv = require('yargs').argv;
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
@@ -85,7 +86,7 @@ gulp.task('_npm-install', (cb) => {
 });
 
 // zip
-gulp.task('_zip-app', (cb) => {
+gulp.task('_zip-package', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
   const signedType = process.env.SIGNED_TYPE;
   const packageName = `MYukkuriVoice-${platform}-x64`;
@@ -94,6 +95,18 @@ gulp.task('_zip-app', (cb) => {
     signedType == 'none'? `${packageName}-nosigned.zip`:
     `${packageName}-unknown.zip`;
   exec(`ditto -c -k --sequesterRsrc --keepParent ${packageName} ${zipName}`, (err, stdout, stderr) => {
+    cb(err);
+  });
+});
+gulp.task('_zip-app', (cb) => {
+  const platform = process.env.BUILD_PLATFORM;
+  const appPath = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+
+  const opts = {
+    dir: appPath,
+    out: './',
+  };
+  appZip(opts, (err, response) => {
     cb(err);
   });
 });
@@ -137,7 +150,7 @@ gulp.task(
     '_package:release',
     '_unpacked',
     'doc',
-    '_zip-app',
+    '_zip-package',
     //
     // release
     '_signed_type:developer',
@@ -148,6 +161,7 @@ gulp.task(
     'doc',
     '_sign:developer:direct',
     '_notarize',
+    '_zip-package',
     '_zip-app',
     //
     '_open:appdir',
@@ -183,7 +197,7 @@ gulp.task(
     //'_sign:developer',
     '_sign:developer:direct',
     '_notarize',
-    '_zip-app',
+    '_zip-package',
     '_open:appdir',
     '_notify',
     '_kill'
@@ -214,7 +228,7 @@ gulp.task(
     '_unpacked',
     'doc',
     //'_sign:developer',
-    '_zip-app',
+    '_zip-package',
     '_open:appdir',
     '_notify',
     '_kill'
@@ -246,7 +260,7 @@ gulp.task(
     '_unpacked',
     'doc',
     //'_sign:developer',
-    '_zip-app',
+    '_zip-package',
     '_open:appdir',
     '_notify',
     '_kill'
