@@ -146,7 +146,7 @@
 ### AppStore 版
 
 ```
-  npx gulp build:store
+  npx gulp build:mas
 ```
 
 # 環境設定まわりの情報
