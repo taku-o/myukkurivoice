@@ -370,7 +370,7 @@ class FnMenu implements yubo.FnMenu {
       (menuList[0].submenu as Electron.MenuItemConstructorOptions[]).splice(1, 0,
         {
           label: 'アップデートを確認する',
-          click() { myApp.showVersionDialog(); },
+          click() { myApp.checkForUpdates(); },
         },
       );
     }

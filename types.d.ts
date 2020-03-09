@@ -136,7 +136,7 @@ declare namespace yubo {
   }
 
   // electron.ts
-  export interface IMYukkuriVoice extends FnAppCfg, FnLaunch, FnMenu, FnTouchBar, FnWindow, FnShortcut, FnEvent {
+  export interface IMYukkuriVoice extends FnAppCfg, FnLaunch, FnMenu, FnTouchBar, FnWindow, FnShortcut, FnEvent, FnUpdater {
     launchArgs:       {filePath: string}
     appCfg:           yubo.AppCfg;
     config:           ElectronStore.Config;
@@ -200,6 +200,10 @@ declare namespace yubo {
     resetAppConfigOnMain(): void;
     resetVoiceDataOnMain(): void;
     resetDictionaryData(): void;
+  }
+  export interface FnUpdater {
+    checkForUpdates(): void;
+    //private registerUpdaterEvents(): void;
   }
 
   // models.main.ts

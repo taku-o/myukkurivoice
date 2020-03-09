@@ -10,6 +10,7 @@ import Shortcut from './electron-shortcut';
 import Launch from './electron-launch';
 import AppConfig from './electron-appcfg';
 import EventHandler from './electron-event';
+import AppUpdater from './electron-updater';
 
 // env
 const DEBUG = process.env.DEBUG != null;
@@ -55,8 +56,8 @@ const MYukkuriVoice = function(): void {
 };
 const myApp = new MYukkuriVoice() as yubo.IMYukkuriVoice;
 // set prototype
-// MYukkuriVoice.prototype.fnc = (Pane, Menu, TouchBar, Shortcut, Launch, AppConfig, EventHandler).prototype.fnc
-[Pane, Menu, TouchBar, Shortcut, Launch, AppConfig, EventHandler].forEach(baseCtor => {
+// MYukkuriVoice.prototype.fnc = (Pane, Menu, TouchBar, Shortcut, Launch, AppConfig, EventHandler, AppUpdater).prototype.fnc
+[Pane, Menu, TouchBar, Shortcut, Launch, AppConfig, EventHandler, AppUpdater].forEach(baseCtor => {
   Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
     if (name != 'constructor') {
       Object.defineProperty(MYukkuriVoice.prototype, name, Object.getOwnPropertyDescriptor(baseCtor.prototype, name));
