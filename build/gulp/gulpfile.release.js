@@ -4,6 +4,7 @@ const appZip = require('electron-installer-zip');
 const argv = require('yargs').argv;
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
+const fse = require('fs-extra');
 const git = require('gulp-git');
 const install = require('gulp-install');
 const mkdirp = require('mkdirp');
@@ -91,25 +92,39 @@ gulp.task('_zip-package', (cb) => {
   const signedType = process.env.SIGNED_TYPE;
   const packageName = `MYukkuriVoice-${platform}-x64`;
   const zipName =
-    signedType == 'developer'? `${packageName}.zip`:
-    signedType == 'none'? `${packageName}-nosigned.zip`:
-    `${packageName}-unknown.zip`;
+    signedType == 'developer'
+      ? `${packageName}.zip`
+      : signedType == 'none'
+      ? `${packageName}-nosigned.zip`
+      : `${packageName}-unknown.zip`;
   exec(`ditto -c -k --sequesterRsrc --keepParent ${packageName} ${zipName}`, (err, stdout, stderr) => {
     cb(err);
   });
 });
-gulp.task('_zip-app', (cb) => {
-  const platform = process.env.BUILD_PLATFORM;
-  const appPath = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
 
-  const opts = {
-    dir: appPath,
-    out: './',
-  };
-  appZip(opts, (err, response) => {
+gulp.task('_zip-app:mkdir', (cb) => {
+  mkdirp('MYukkuriVoice', (err) => {
     cb(err);
   });
 });
+gulp.task('_zip-app:cp-app', () => {
+  const platform = process.env.BUILD_PLATFORM;
+  const appPath = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
+  const distPath = 'MYukkuriVoice/MYukkuriVoice.app';
+  return fse.copy(appPath, distPath);
+});
+gulp.task(
+  '_zip-app',
+  gulp.series('_zip-app:mkdir', '_zip-app:cp-app', (cb) => {
+    const opts = {
+      dir: 'MYukkuriVoice/MYukkuriVoice.app',
+      out: 'MYukkuriVoice.zip',
+    };
+    appZip(opts, (err, response) => {
+      cb(err);
+    });
+  })
+);
 
 // open
 gulp.task('_open:appdir', (cb) => {
@@ -198,6 +213,7 @@ gulp.task(
     '_sign:developer:direct',
     '_notarize',
     '_zip-package',
+    '_zip-app',
     '_open:appdir',
     '_notify',
     '_kill'
