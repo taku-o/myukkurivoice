@@ -14,15 +14,15 @@ class FnUpdater implements yubo.FnUpdater {
 
   checkForUpdates(): void {
     if (SIGNED) {
-      const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
-      myApp.showVersionDialog(); 
-    } else {
       const server = 'https://update.electronjs.org';
       const feed = `${server}/taku-o/myukkurivoice/${process.platform}-${process.arch}/${app.getVersion()}`;
       autoUpdater.setFeedURL({
         url: feed,
       });
       autoUpdater.checkForUpdates();
+    } else {
+      const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
+      myApp.showVersionDialog(); 
     }
   }
 
