@@ -1,10 +1,8 @@
 var gulp = gulp || require('gulp');
 var config = require('./config');
-const appZip = require('electron-installer-zip');
 const argv = require('yargs').argv;
 const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
-const fse = require('fs-extra');
 const git = require('gulp-git');
 const install = require('gulp-install');
 const mkdirp = require('mkdirp');

@@ -101,7 +101,6 @@
     "del": "^5.1.0",
     "devtron": "^1.4.0",
     "electron": "^6.1.7",
-    "electron-installer-zip": "^0.1.2",
     "electron-notarize": "^0.2.1",
     "electron-packager": "^14.1.0",
     "electron-performance-monitor": "github:taku-o/electron-performance-monitor#0.2.2",
