@@ -1,5 +1,5 @@
 'use strict';
-import {dialog, autoUpdater} from 'electron';
+import {app, dialog, autoUpdater} from 'electron';
 var _log: any, log = () => { _log = _log || require('electron-log'); return _log; };
 var packagejson: any = require('./package.json');
 
