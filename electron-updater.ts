@@ -18,6 +18,7 @@ class FnUpdater implements yubo.FnUpdater {
       const feed = `${server}/taku-o/myukkurivoice/${process.platform}-${process.arch}/${app.getVersion()}`;
       autoUpdater.setFeedURL({
         url: feed,
+        serverType: 'json',
       });
       autoUpdater.checkForUpdates();
     } else {
