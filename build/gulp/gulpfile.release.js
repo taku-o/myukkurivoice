@@ -91,7 +91,7 @@ gulp.task('_zip-package', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
   const packageName = `MYukkuriVoice-${platform}-x64`;
   const signedType = process.env.SIGNED_TYPE;
-  if (!['developer', 'none'].include(signedType)) {
+  if (!['developer', 'none'].includes(signedType)) {
     throw new Error(`unknown signedType: ${signedType}`);
   }
 
