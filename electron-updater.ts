@@ -89,7 +89,7 @@ class FnUpdater implements yubo.FnUpdater {
       buttons: ['Restart', 'Later'],
       title: 'Application Update',
       message: releaseName,
-      detail: '新しいアプリをダウンロードしました。アプリを再起動して更新を適用します。',
+      detail: '新しいアプリのダウンロードが完了しました。アプリを再起動して更新を適用します。',
     };
     dialog.showMessageBox(dialogOpts).then((returnValue) => {
       if (returnValue.response === 0) {
