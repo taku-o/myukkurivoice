@@ -6,21 +6,28 @@ var packagejson: any = require('./package.json');
 var SIGNED = packagejson.build_status.signed == 'developer';
 
 class FnUpdater implements yubo.FnUpdater {
-  constructor() {
-    if (SIGNED) {
-      this.registerUpdaterEvents();
-    }
-  }
+  private updaterInitialized = false;
+  constructor() {}
 
   checkForUpdates(): void {
     if (SIGNED) {
-      const server = 'https://update.electronjs.org';
-      const feed = `${server}/taku-o/myukkurivoice-updater/${process.platform}-${process.arch}/${app.getVersion()}`;
-      autoUpdater.setFeedURL({
-        url: feed,
-        serverType: 'json',
-      });
+      if (! this.updaterInitialized) {
+        this.updaterInitialized = true;
+
+        // setFeedURL
+        const server = 'https://update.electronjs.org';
+        const feed = `${server}/taku-o/myukkurivoice-updater/${process.platform}-${process.arch}/${app.getVersion()}`;
+        autoUpdater.setFeedURL({
+          url: feed,
+          serverType: 'json',
+        });
+
+        // register event
+        this.registerUpdaterEvents();
+      }
+
       autoUpdater.checkForUpdates();
+
     } else {
       const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
       myApp.showVersionDialog(); 
