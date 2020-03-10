@@ -89,42 +89,22 @@ gulp.task('_npm-install', (cb) => {
 // zip
 gulp.task('_zip-package', (cb) => {
   const platform = process.env.BUILD_PLATFORM;
-  const signedType = process.env.SIGNED_TYPE;
   const packageName = `MYukkuriVoice-${platform}-x64`;
+  const signedType = process.env.SIGNED_TYPE;
+  if (!['developer', 'none'].include(signedType)) {
+    throw new Error(`unknown signedType: ${signedType}`);
+  }
+
   const zipName =
     signedType == 'developer'
-      ? `${packageName}.zip`
+      ? `MYukkuriVoice-${platform}-x64.zip`
       : signedType == 'none'
-      ? `${packageName}-nosigned.zip`
-      : `${packageName}-unknown.zip`;
+      ? `MYukkuriVoice-nosigned.zip`
+      : 'MYukkuriVoice-unknown.zip';
   exec(`ditto -c -k --sequesterRsrc --keepParent ${packageName} ${zipName}`, (err, stdout, stderr) => {
     cb(err);
   });
 });
-
-gulp.task('_zip-app:mkdir', (cb) => {
-  mkdirp('MYukkuriVoice', (err) => {
-    cb(err);
-  });
-});
-gulp.task('_zip-app:cp-app', () => {
-  const platform = process.env.BUILD_PLATFORM;
-  const appPath = `MYukkuriVoice-${platform}-x64/MYukkuriVoice.app`;
-  const distPath = 'MYukkuriVoice/MYukkuriVoice.app';
-  return fse.copy(appPath, distPath);
-});
-gulp.task(
-  '_zip-app',
-  gulp.series('_zip-app:mkdir', '_zip-app:cp-app', (cb) => {
-    const opts = {
-      dir: 'MYukkuriVoice/MYukkuriVoice.app',
-      out: 'MYukkuriVoice.zip',
-    };
-    appZip(opts, (err, response) => {
-      cb(err);
-    });
-  })
-);
 
 // open
 gulp.task('_open:appdir', (cb) => {
@@ -177,7 +157,6 @@ gulp.task(
     '_sign:developer:direct',
     '_notarize',
     '_zip-package',
-    '_zip-app',
     //
     '_open:appdir',
     '_notify',
@@ -213,7 +192,6 @@ gulp.task(
     '_sign:developer:direct',
     '_notarize',
     '_zip-package',
-    '_zip-app',
     '_open:appdir',
     '_notify',
     '_kill'

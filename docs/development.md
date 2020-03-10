@@ -4,10 +4,10 @@
 
 - GitHub releases の最後に、ファイルの説明を入れる。
 
-| ファイル名                            | 署名         | 説明                               |
-| :------------------------------------ | :----------- | :--------------------------------- |
-| **MYukkuriVoice-darwin-x64.zip**      | アップル公証 | **これをダウンロードしましょう。** |
-| MYukkuriVoice-darwin-x64-nosigned.zip | なし         | 未署名版。↑ が動かない時に         |
+| ファイル名                       | 署名         | 説明                               |
+| :------------------------------- | :----------- | :--------------------------------- |
+| **MYukkuriVoice-darwin-x64.zip** | アップル公証 | **これをダウンロードしましょう。** |
+| MYukkuriVoice-nosigned.zip       | なし         | 未署名版。↑ が動かない時に         |
 
 - Final Cut Pro X 用フォルダーアクション
   - https://github.com/taku-o/fcpx-audio-role-workflow/releases

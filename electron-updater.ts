@@ -3,8 +3,7 @@ import {app, dialog, autoUpdater} from 'electron';
 var _log: any, log = () => { _log = _log || require('electron-log'); return _log; };
 var packagejson: any = require('./package.json');
 
-//var SIGNED = packagejson.build_status.signed == 'developer';
-var SIGNED = true;
+var SIGNED = packagejson.build_status.signed == 'developer';
 
 class FnUpdater implements yubo.FnUpdater {
   constructor() {
@@ -16,7 +15,7 @@ class FnUpdater implements yubo.FnUpdater {
   checkForUpdates(): void {
     if (SIGNED) {
       const server = 'https://update.electronjs.org';
-      const feed = `${server}/taku-o/myukkurivoice/${process.platform}-${process.arch}/${app.getVersion()}`;
+      const feed = `${server}/taku-o/myukkurivoice-updater/${process.platform}-${process.arch}/${app.getVersion()}`;
       autoUpdater.setFeedURL({
         url: feed,
         serverType: 'json',
