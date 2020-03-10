@@ -1,9 +1,8 @@
 'use strict';
-import {BrowserWindow, dialog, shell} from 'electron';
+import {BrowserWindow, dialog} from 'electron';
 var _log: any, log                         = () => { _log = _log || require('electron-log'); return _log; };
 var _path: any, path                       = () => { _path = _path || require('path'); return _path; };
 var _openAboutWindow: any, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('myukkurivoice-about-window').default; return _openAboutWindow; };
-var _Version: any, Version                 = () => { _Version = _Version || require('github-version-compare').Version; return _Version; };
 
 // env
 const DEBUG = process.env.DEBUG != null;
@@ -297,50 +296,6 @@ class FnWindow implements yubo.FnWindow {
     // shortcut key, touch bar
     myApp.registerAboutShortcut(w);
     w.setTouchBar(myApp.getMinimalCloseExitTouchBar(w));
-  }
-
-  // showVersionDialog
-  showVersionDialog(): void {
-    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
-    const repository = 'taku-o/myukkurivoice';
-    const packagejson = require('./package.json');
-
-    const vobj: GithubVersionCompare.IVersion = new (Version())(repository, packagejson);
-    vobj.pull().then((version: GithubVersionCompare.IVersion) => {
-      const message = version.hasLatestVersion()? '新しいバージョンのアプリがあります': 'バージョンは最新です';
-      const buttons = version.hasLatestVersion()? ['CLOSE', 'Open Release Page']: ['OK'];
-
-      const dialogOptions = {
-        type: 'info',
-        title: 'application version check.',
-        message: message,
-        buttons: buttons,
-        defaultId: 0,
-        cancelId: 0,
-      };
-      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
-      .then((result) => {
-        const btnId: number = result.response;
-        if (btnId == 1) {
-          shell.openExternal(version.latestReleaseUrl);
-        }
-      });
-    })
-    .catch((err: Error) => {
-      log().error(err);
-      const dialogOptions = {
-        type: 'error',
-        title: 'application version check error.',
-        message: 'バージョン情報の取得に失敗しました。',
-        buttons: ['OK'],
-        defaultId: 0,
-        cancelId: 0,
-      };
-      dialog.showMessageBox(myApp.systemWindow, dialogOptions)
-      .then((result) => {
-        // do nothing
-      });
-    });
   }
 
   // application spec window

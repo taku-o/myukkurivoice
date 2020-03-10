@@ -181,7 +181,6 @@ declare namespace yubo {
     showSystemWindow(): void;
     showDictWindow(): void;
     showAboutWindow(): void;
-    showVersionDialog(): void;
     showSpecWindow(): void;
   }
   export interface FnShortcut {
@@ -203,7 +202,13 @@ declare namespace yubo {
   }
   export interface FnUpdater {
     checkForUpdates(): void;
-    //private registerUpdaterEvents(): void;
+    //private registerAppUpdaterEvents(): void;
+    //private checkAppVersion(): void;
+    //private showNewVersionFoundDialog(): void;
+    //private showIsLatestVersionDialog(): void;
+    //private showQuitAndInstallDialog(releaseName: string): void;
+    //private showVersionCheckResultDialog(version: GithubVersionCompare.IVersion): void;
+    //private showUpdaterErrorDialog(message: string, err: Error): void;
   }
 
   // models.main.ts
