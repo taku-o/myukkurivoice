@@ -202,12 +202,11 @@ declare namespace yubo {
   }
   export interface FnUpdater {
     checkForUpdates(): void;
-    //private registerAppUpdaterEvents(): void;
     //private checkAppVersion(): void;
-    //private showNewVersionFoundDialog(): void;
-    //private showIsLatestVersionDialog(): void;
+    //private showIsLatestAppDialog(): void;
+    //private showUpdateConfirmDialog(version: GithubVersionCompare.IVersion): void;
+    //private startAutoUpdaterEvents(): void;
     //private showQuitAndInstallDialog(releaseName: string): void;
-    //private showVersionCheckResultDialog(version: GithubVersionCompare.IVersion): void;
     //private showUpdaterErrorDialog(message: string, err: Error): void;
   }
 
