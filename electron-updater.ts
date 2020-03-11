@@ -78,7 +78,7 @@ class FnUpdater implements yubo.FnUpdater {
 
     // setup feed url
     const server = 'https://update.electronjs.org';
-    const feed = `${server}/taku-o/myukkurivoice-updater/${process.platform}-${process.arch}/${app.getVersion()}`;
+    const feed = `${server}/taku-o/myukkurivoice/${process.platform}-${process.arch}/${app.getVersion()}`;
     autoUpdater.setFeedURL({
       url: feed,
       serverType: 'json',
