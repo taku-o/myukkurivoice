@@ -32,7 +32,7 @@ class FnUpdater implements yubo.FnUpdater {
     const dialogOptions = {
       type: 'info',
       title: 'Application Version Check.',
-      message: 'アプリのバージョンは最新です',
+      message: 'アプリのバージョンは最新です。',
       buttons: ['OK'],
       defaultId: 0,
       cancelId: 0,
@@ -47,7 +47,7 @@ class FnUpdater implements yubo.FnUpdater {
     const dialogOptions = {
       type: 'info',
       title: 'Application Version Check.',
-      message: '新しいバージョンのアプリがあります。',
+      message: '新しいバージョンのアプリが見つかりました。',
       buttons: buttons,
       defaultId: 0,
       cancelId: 0,
