@@ -545,7 +545,7 @@ class MainReducer implements yubo.MainReducer {
           throw BreakChain();
         });
       })
-      .then(() => {
+      .then((): void => {
         if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
         this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
           {
@@ -616,7 +616,7 @@ class MainReducer implements yubo.MainReducer {
             throw BreakChain();
           });
         })
-        .then(() => {
+        .then((): void => {
           if (!this.store.curYvoice.sourceWrite || !sourceFname) { return null; }
           this.MessageService.recordSource(`${'メッセージファイルを保存しました。path: '}${sourceFname}`,
             {
@@ -739,7 +739,7 @@ class MainReducer implements yubo.MainReducer {
       recordOptions.fcpxIxmlOptions = {audioRole: yvoice.fcpxIxmlOptions.audioRole};
     }
 
-    let filePath;
+    let filePath: string;
     this.SeqFNameService.nextNumber(dir, fnameprefix)
     .then((nextNum) => {
       const nextFname = this.SeqFNameService.nextFname(fnameprefix, nextNum);
@@ -751,7 +751,7 @@ class MainReducer implements yubo.MainReducer {
       this.MessageService.error('音声データを作成できませんでした。', err);
       d.reject(err); throw BreakChain();
     })
-    .then((bufWav: Buffer) => {
+    .then((bufWav: Buffer): ng.IPromise<{duration: number}> => {
       return this.AudioService.record(filePath, bufWav, recordOptions);
     })
     .catch((err: Error) => {
