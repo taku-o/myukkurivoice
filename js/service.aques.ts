@@ -258,7 +258,6 @@ class AquesService implements yubo.AquesService {
 
   constructor(
     private $q: ng.IQService,
-    private $timeout: ng.ITimeoutService,
     private MessageService: yubo.MessageService,
     private LicenseService: yubo.LicenseService,
     private aqKanji2KoeLib: yubo.AqKanji2KoeLib,
@@ -500,7 +499,6 @@ class AquesService implements yubo.AquesService {
 angular.module('AquesServices')
   .service('AquesService', [
     '$q',
-    '$timeout',
     'MessageService',
     'LicenseService',
     'AqKanji2KoeLib',

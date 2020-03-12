@@ -104,7 +104,6 @@ class HistoryService implements yubo.HistoryService {
   private _cache: LRUCache.Cache;
   constructor(
     private $q: ng.IQService,
-    private $timeout: ng.ITimeoutService
   ) {}
 
   private cache(): LRUCache.Cache {
@@ -190,7 +189,6 @@ class HistoryService implements yubo.HistoryService {
 angular.module('DataServices')
   .service('HistoryService', [
     '$q',
-    '$timeout',
     HistoryService,
   ]);
 

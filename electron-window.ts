@@ -1,5 +1,5 @@
 'use strict';
-import {BrowserWindow, dialog} from 'electron';
+import {BrowserWindow} from 'electron';
 var _log: any, log                         = () => { _log = _log || require('electron-log'); return _log; };
 var _path: any, path                       = () => { _path = _path || require('path'); return _path; };
 var _openAboutWindow: any, openAboutWindow = () => { _openAboutWindow = _openAboutWindow || require('myukkurivoice-about-window').default; return _openAboutWindow; };
