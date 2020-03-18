@@ -35,6 +35,7 @@ class FnWindow implements yubo.FnWindow {
       opacity: opacity,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
         devTools: DEBUG,
       },
     });
@@ -98,6 +99,7 @@ class FnWindow implements yubo.FnWindow {
       opacity: opacity,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
         devTools: DEBUG,
       },
     });
@@ -156,6 +158,7 @@ class FnWindow implements yubo.FnWindow {
       opacity: opacity,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
         devTools: DEBUG,
       },
     });
@@ -206,6 +209,7 @@ class FnWindow implements yubo.FnWindow {
       opacity: opacity,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
         devTools: DEBUG,
       },
     });
@@ -252,6 +256,7 @@ class FnWindow implements yubo.FnWindow {
       opacity: opacity,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
         devTools: DEBUG,
       },
     });
@@ -311,6 +316,7 @@ class FnWindow implements yubo.FnWindow {
       opacity: opacity,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
         devTools: DEBUG,
       },
     });
