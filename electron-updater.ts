@@ -42,8 +42,8 @@ class FnUpdater implements yubo.FnUpdater {
 
   private showUpdateConfirmDialog(version: GithubVersionCompare.IVersion): void {
     const buttons = SIGNED?
-      ['Close', 'Open Release Page', 'Download And Install']:
-      ['Close', 'Open Release Page'];
+      ['Close', 'Show Download Page', 'Download And Install']:
+      ['Close', 'Show Download Page'];
     const dialogOptions = {
       type: 'info',
       title: 'Application Version Check.',
@@ -92,7 +92,7 @@ class FnUpdater implements yubo.FnUpdater {
     const dialogOptions = {
       type: 'info',
       buttons: ['Restart', 'Later'],
-      title: 'Application Update',
+      title: 'Application Updated.',
       message: releaseName,
       detail: '新しいアプリのダウンロードが完了しました。アプリを再起動して更新を適用します。',
     };
