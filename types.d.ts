@@ -248,6 +248,7 @@ declare namespace yubo {
     encoded: string;
   }
   export interface YCommandInput {
+    id?: string;
     name: string;
     text: string;
   }
