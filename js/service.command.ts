@@ -41,6 +41,7 @@ class CommandService implements yubo.CommandService {
       // command line
       if (matched) {
         const ycinputForC = angular.copy(this.YCommandInput);
+        ycinputForC.id = null;
         ycinputForC.name = matched[1];
         ycinputForC.text = matched[2];
         parsed.push(ycinputForC);
@@ -48,6 +49,7 @@ class CommandService implements yubo.CommandService {
       } else {
         if (parsed.length < 1) {
           const ycinputForNotC = angular.copy(this.YCommandInput);
+          ycinputForNotC.id = currentYvoice.id;
           ycinputForNotC.name = currentYvoice.name;
           ycinputForNotC.text = line;
           parsed.push(ycinputForNotC);
@@ -63,7 +65,10 @@ class CommandService implements yubo.CommandService {
 
   detectVoiceConfig(commandInput: yubo.YCommandInput, yvoiceList: yubo.YVoice[]): yubo.YVoice | null {
     for (let i=0; i<yvoiceList.length; i++) {
-      if (yvoiceList[i].name == commandInput.name) {
+      if (commandInput.id && yvoiceList[i].id == commandInput.id) {
+        return yvoiceList[i];
+      }
+      if (!commandInput.id && yvoiceList[i].name == commandInput.name) {
         return yvoiceList[i];
       }
     }
