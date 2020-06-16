@@ -285,10 +285,10 @@ done
 ## related project links.
 
 - myukkurivoice (https://github.com/taku-o/myukkurivoice)
-  - myukkurivoice-vendor (https://github.com/taku-o/myukkurivoice-vendor)
-    - myukkurivoice-secret (https://github.com/taku-o/myukkurivoice-secret)
-    - maquestalk1 (https://github.com/taku-o/maquestalk1)
-    - maquestalk1-ios (https://github.com/taku-o/maquestalk1-ios)
+  - myukkurivoice-vendor (https://github.com/myukkurivoice/myukkurivoice-vendor)
+    - myukkurivoice-secret (https://github.com/myukkurivoice/myukkurivoice-secret)
+    - maquestalk1 (https://github.com/myukkurivoice/maquestalk1)
+    - maquestalk1-ios (https://github.com/myukkurivoice/maquestalk1-ios)
   - electron-path (https://github.com/taku-o/electron-path)
   - fcpx-audio-role-encoder (https://github.com/taku-o/fcpx-audio-role-encoder)
   - github-version-compare (https://github.com/taku-o/github-version-compare)
