@@ -188,6 +188,7 @@ angular.module('mainModels', [])
   // YCommandInput: yubo.YCommandInput
   .constant('YCommandInput',
     {
+      id: null,
       name: '',
       text: '',
     }
