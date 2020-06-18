@@ -207,6 +207,7 @@ declare namespace yubo {
     //private showUpdateConfirmDialog(version: GithubVersionCompare.IVersion): void;
     //private startAutoUpdaterEvents(): void;
     //private showQuitAndInstallDialog(releaseName: string): void;
+    //private showProgressMessage(progress: number, message: string): void;
     //private showUpdaterErrorDialog(message: string, err: Error): void;
   }
 
@@ -248,6 +249,7 @@ declare namespace yubo {
     encoded: string;
   }
   export interface YCommandInput {
+    id?: string;
     name: string;
     text: string;
   }
@@ -435,6 +437,7 @@ declare namespace yubo {
   export interface StaticInclude extends ng.IDirective {}
   export interface AfterRender extends ng.IDirective {}
   export interface ShortcutHintEvent extends ng.IDirective {}
+  export interface MainMessageEvent extends ng.IDirective {}
   export interface MainShortcutEvent extends ng.IDirective {}
   export interface MainMenuEvent extends ng.IDirective {}
   export interface MainDropTextFileEvent extends ng.IDirective {}
@@ -541,6 +544,7 @@ declare namespace yubo {
   export interface MainReducer extends yubo.Reducer {
     appCfg: yubo.AppCfg;
     //private AudioService: yubo.IAudioService;
+    onMessage(level: string, message: string): void;
     onShortcut(action: string, numKey?: number): void;
     onMenu(action: string): void;
     onDropTextFile(filePath: string): void;
