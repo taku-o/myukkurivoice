@@ -1,6 +1,6 @@
 {
   "name": "MYukkuriVoice",
-  "version": "0.13.9",
+  "version": "0.13.10",
   "description": "動画作成用ゆっくりボイス App for Mac OSX.",
   "main": "electron.js",
   "types": "types.d.ts",
