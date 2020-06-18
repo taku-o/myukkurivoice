@@ -3,6 +3,23 @@ var _ipcRenderer: any, ipcRenderer = () => { _ipcRenderer = _ipcRenderer || requ
 // event listeners
 angular.module('mainEvents', ['mainReducers']);
 
+// message
+class MainMessageEvent implements yubo.MainMessageEvent {
+  constructor(
+    private reducer: yubo.MainReducer
+  ) {}
+  link(scope: ng.IScope): void {
+    ipcRenderer().on('info', (event: Electron.Event, message: string) => {
+      this.reducer.onMessage('info', message);
+    });
+  }
+}
+angular.module('mainEvents')
+  .directive('message', [
+    'MainReducer',
+    (reducer: yubo.MainReducer) => new MainMessageEvent(reducer),
+  ]);
+
 // shortcut
 class MainShortcutEvent implements yubo.MainShortcutEvent {
   constructor(

@@ -62,6 +62,12 @@ class MainReducer implements yubo.MainReducer {
   }
 
   // event
+  onMessage(level: string, message: string): void {
+    switch (level) {
+      case 'info':
+        this.MessageService.info(message);
+    }
+  }
   onShortcut(action: string, numKey: number): void {
     switch (action) {
       case 'putVoiceName':
