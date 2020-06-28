@@ -62,6 +62,7 @@ function getIgnoreFiles(forDebug) {
   let ignores = ` \
     --ignore="^/MYukkuriVoice-darwin-x64" \
     --ignore="^/MYukkuriVoice-mas-x64" \
+    --ignore="^/MYukkuriVoice-nosigned" \
     --ignore="^/build" \
     --ignore="^/docs" \
     --ignore="^/gulpfile\\.js$" \

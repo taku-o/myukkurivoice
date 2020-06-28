@@ -6,6 +6,13 @@ var packagejson: any = require('./package.json');
 
 var SIGNED = packagejson.build_status.signed == 'developer';
 
+// progress
+// 1. checking version.
+// 2. found new latest version.
+// 3. downloading new app.
+// 4. new app downloaded.
+// 5. update application.
+
 class FnUpdater implements yubo.FnUpdater {
   constructor() {}
 
@@ -24,8 +31,10 @@ class FnUpdater implements yubo.FnUpdater {
       }
     })
     .catch((err: Error) => {
+      this.showProgressMessage(-1, 'バージョン情報の取得に失敗しました。');
       this.showUpdaterErrorDialog('バージョン情報の取得に失敗しました。', err);
     });
+    this.showProgressMessage(0.2, '最新バージョンがあるか確認しています (1/5)');
   }
 
   private showIsLatestAppDialog(): void {
@@ -38,6 +47,7 @@ class FnUpdater implements yubo.FnUpdater {
       cancelId: 0,
     };
     dialog.showMessageBox(dialogOptions);
+    this.showProgressMessage(-1, 'アプリのバージョンは最新です。');
   }
 
   private showUpdateConfirmDialog(version: GithubVersionCompare.IVersion): void {
@@ -62,6 +72,11 @@ class FnUpdater implements yubo.FnUpdater {
         this.startAutoUpdaterEvents();
       }
     });
+    if (SIGNED) {
+      this.showProgressMessage(0.4, '新しいバージョンのアプリが見つかりました。(2/5)');
+    } else {
+      this.showProgressMessage(-1, '新しいバージョンのアプリが見つかりました。');
+    }
   }
 
   private startAutoUpdaterEvents(): void {
@@ -71,9 +86,11 @@ class FnUpdater implements yubo.FnUpdater {
     });
     autoUpdater.on('update-not-available', () => {
       this.showUpdaterErrorDialog('最新版のアプリの取得に失敗しました。', null);
+      this.showProgressMessage(-1, '最新版のアプリの取得に失敗しました。');
     });
     autoUpdater.on('error', (err: Error) => {
       this.showUpdaterErrorDialog('アプリのアップデート中にエラーが発生しました。', err);
+      this.showProgressMessage(-1, 'アプリのアップデート中にエラーが発生しました。');
     });
 
     // setup feed url
@@ -86,6 +103,7 @@ class FnUpdater implements yubo.FnUpdater {
 
     // update
     autoUpdater.checkForUpdates();
+    this.showProgressMessage(0.6, '最新版のアプリをダウンロードします。(3/5)');
   }
 
   private showQuitAndInstallDialog(releaseName: string): void {
@@ -101,8 +119,18 @@ class FnUpdater implements yubo.FnUpdater {
       const btnId: number = result.response;
       if (btnId === 0) {
         autoUpdater.quitAndInstall();
+        this.showProgressMessage(1.0, 'アプリを再起動して更新を適用します。(5/5)');
       }
     });
+    this.showProgressMessage(0.8, '新しいアプリのダウンロードが完了しました。(4/5)');
+  }
+
+  private showProgressMessage(progress: number, message: string): void {
+    const myApp = ((this as unknown) as yubo.IMYukkuriVoice);
+    if (myApp.mainWindow) {
+      myApp.mainWindow.webContents.send('info', message);
+      myApp.mainWindow.setProgressBar(progress);
+    }
   }
 
   private showUpdaterErrorDialog(message: string, err: Error): void {
