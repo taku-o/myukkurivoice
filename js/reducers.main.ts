@@ -310,6 +310,9 @@ class MainReducer implements yubo.MainReducer {
     });
     if (!phont) { return; }
     this.store.curYvoice.version = phont.version;
+    if (phont.version == 'talk1') {
+      this.store.curYvoice.smooth = phont.smooth;
+    }
     if (phont.version == 'talk10') {
       this.store.curYvoice.bas = phont.struct.bas;
       this.store.curYvoice.pit = phont.struct.pit;
@@ -414,8 +417,9 @@ class MainReducer implements yubo.MainReducer {
       aquesOptions.lmd = yvoice.lmd;
       aquesOptions.fsc = yvoice.fsc;
     }
+    const smooth = this.appCfg.audioServVer == 'webaudioapi' && yvoice.smooth;
     const playOptions: yubo.PlayOptions = {
-      smooth: true, // TODO
+      smooth: smooth,
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
@@ -669,8 +673,9 @@ class MainReducer implements yubo.MainReducer {
       aquesOptions.lmd = yvoice.lmd;
       aquesOptions.fsc = yvoice.fsc;
     }
+    const smooth = this.appCfg.audioServVer == 'webaudioapi' && yvoice.smooth;
     const recordOptions: yubo.RecordOptions = {
-      smooth: true, // TODO
+      smooth: smooth,
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
@@ -734,8 +739,9 @@ class MainReducer implements yubo.MainReducer {
       aquesOptions.lmd = yvoice.lmd;
       aquesOptions.fsc = yvoice.fsc;
     }
+    const smooth = this.appCfg.audioServVer == 'webaudioapi' && yvoice.smooth;
     const recordOptions: yubo.RecordOptions = {
-      smooth: true, // TODO
+      smooth: smooth,
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,

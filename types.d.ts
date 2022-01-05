@@ -213,13 +213,14 @@ declare namespace yubo {
 
   // models.main.ts
   export interface YPhont {
-    readonly id:       string;
-    readonly name:     string;
-    readonly version:  'talk1' | 'talk2' | 'talk10';
-    readonly idVoice?: 0 | 1;
+    readonly id:        string;
+    readonly name:      string;
+    readonly version:   'talk1' | 'talk2' | 'talk10';
+    readonly idVoice?:  0 | 1;
     readonly catalina?: boolean;
-    readonly path?:    string;
-    readonly struct?:  {bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number};
+    readonly smooth?:   boolean;
+    readonly path?:     string;
+    readonly struct?:   {bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number};
   }
   export interface YVoice {
     id?:          string;
@@ -236,6 +237,7 @@ declare namespace yubo {
     speed:        number;
     playbackRate: number;
     detune:       number;
+    smooth?:      boolean;
     volume:       number;
     rhythmOn:     boolean,
     sourceWrite:  boolean;
