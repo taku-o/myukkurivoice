@@ -163,6 +163,23 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     }
     return pos;
   }
+  private toSmoothAudioBuffer(bufWav: Buffer): Buffer {
+    for (let i = 0; i < bufWav.length; i++) {
+      if (i === 0) {
+        continue;
+      }
+      if (i % 5 === 0) {
+        const sv = bufWav[i - 5];
+        const ev = bufWav[i];
+        const diffvS = (ev - sv) / 5;
+        bufWav[i - 4] = sv + diffvS * 1
+        bufWav[i - 3] = sv + diffvS * 2
+        bufWav[i - 2] = sv + diffvS * 3
+        bufWav[i - 1] = sv + diffvS * 4
+      }
+    }
+    return bufWav;
+  }
   private buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer {
     const frameCount = this.correctFrameCount(audioBuffer);
     const nAudioBuffer = new AudioBuffer({
