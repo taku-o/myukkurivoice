@@ -80,7 +80,7 @@ class FnMenu implements yubo.FnMenu {
           },
           {
             role: 'pasteAndMatchStyle',
-            label: 'ペースとしてスタイルを合わせる',
+            label: 'ペーストしてスタイルを合わせる',
           },
           {
             role: 'delete',
