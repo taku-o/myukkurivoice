@@ -378,7 +378,7 @@ declare namespace yubo {
     //private _isAquesTalk10LicensekeySet: boolean;
     init(): void;
     encode(source: string): string;
-    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<Buffer>;
+    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.AquesOptions): ng.IPromise<Buffer>;
   }
   // service.audio.ts
   export interface IAudioService {
@@ -595,7 +595,7 @@ declare namespace yubo {
     switchMessageListType(): void;
     switchAlwaysOnTop(): void;
   }
-  export interface WaveOptions {
+  export interface AquesOptions {
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
     bas?:                number;
@@ -605,11 +605,13 @@ declare namespace yubo {
     fsc?:                number;
   }
   export interface PlayOptions {
+    smooth:       boolean;
     volume:       number;
     playbackRate: number;
     detune:       number;
   }
   export interface RecordOptions {
+    smooth:       boolean;
     volume:       number;
     playbackRate: number;
     detune:       number;

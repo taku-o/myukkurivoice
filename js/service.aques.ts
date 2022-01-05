@@ -345,7 +345,7 @@ class AquesService implements yubo.AquesService {
     return encoded;
   }
 
-  wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<Buffer> {
+  wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.AquesOptions): ng.IPromise<Buffer> {
     const d = this.$q.defer<Buffer>();
     if (!encoded) {
       this.MessageService.syserror('音記号列が入力されていません。');

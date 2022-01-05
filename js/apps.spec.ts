@@ -342,17 +342,18 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.isI386SupportedPlayEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.isI386SupportedPlayEncoded, phont, speed, aoptions).then((bufWav) => {
         // play
         HTML5AudioService.play(bufWav, poptions).then((value) => {
           $scope.isI386SupportedPlayResult = 'ok';
@@ -379,7 +380,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const options: yubo.WaveOptions = {
+      const options: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
@@ -399,7 +400,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const options: yubo.WaveOptions = {
+      const options: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
@@ -439,17 +440,18 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // play
         HTML5AudioService.play(bufWav, poptions).then((value) => {
           $scope.playResultHTML5 = 'ok';
@@ -472,17 +474,18 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // play
         HTML5AudioService.play(bufWav, poptions).then((value) => {
           $scope.playResultHTML5 = 'ok';
@@ -505,17 +508,18 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // play
         HTML5AudioService.play(bufWav, poptions).then((value) => {
           $scope.playResultHTML5 = 'ok';
@@ -539,11 +543,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -551,7 +556,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // record
         HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
           $scope.recordResultHTML5 = 'ok';
@@ -574,11 +579,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -586,7 +592,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {audioRole: $scope.recordHTML5AudioRole},
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // record
         HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
           $scope.recordResultHTML5 = 'ok';
@@ -609,11 +615,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -621,7 +628,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // record
         HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
           $scope.recordResultHTML5 = 'ok';
@@ -644,11 +651,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -656,7 +664,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {audioRole: $scope.recordHTML5AudioRole},
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // record
         HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
           $scope.recordResultHTML5 = 'ok';
@@ -679,11 +687,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -691,7 +700,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // record
         HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
           $scope.recordResultHTML5 = 'ok';
@@ -714,11 +723,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -726,7 +736,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {audioRole: $scope.recordHTML5AudioRole},
       };
       // wave
-      AquesService.wave($scope.playHTML5Encoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playHTML5Encoded, phont, speed, aoptions).then((bufWav) => {
         // record
         HTML5AudioService.record($scope.wavFilePathHTML5, bufWav, roptions).then((value) => {
           $scope.recordResultHTML5 = 'ok';
@@ -751,17 +761,18 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // play
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.play(bufWav, poptions).then((value) => {
@@ -785,17 +796,18 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // play
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.play(bufWav, poptions).then((value) => {
@@ -819,17 +831,18 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const poptions: yubo.PlayOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // play
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.play(bufWav, poptions).then((value) => {
@@ -854,11 +867,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -866,7 +880,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // record
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
@@ -890,11 +904,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -902,7 +917,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {audioRole: $scope.recordWebAPIAudioRole},
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // record
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
@@ -926,11 +941,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -938,7 +954,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // record
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
@@ -962,11 +978,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: '',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -974,7 +991,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {audioRole: $scope.recordWebAPIAudioRole},
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // record
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
@@ -998,11 +1015,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -1010,7 +1028,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {},
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // record
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {
@@ -1034,11 +1052,12 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         }
       }
       const speed = 100;
-      const woptions: yubo.WaveOptions = {
+      const aoptions: yubo.AquesOptions = {
         passPhrase: 'xxxxxxx',
         aq10UseKeyEncrypted: '',
       };
       const roptions: yubo.RecordOptions = {
+        smooth: false,
         volume: TEST_VOLUME,
         playbackRate: 1.0,
         detune: 0,
@@ -1046,7 +1065,7 @@ angular.module('specApp', ['mainModels', 'dictModels', 'mainServices', 'dictServ
         fcpxIxmlOptions: {audioRole: $scope.recordWebAPIAudioRole},
       };
       // wave
-      AquesService.wave($scope.playWebAPIEncoded, phont, speed, woptions).then((bufWav) => {
+      AquesService.wave($scope.playWebAPIEncoded, phont, speed, aoptions).then((bufWav) => {
         // record
         WebAPIAudioService.sampleRate = $scope.playWebAPISampleRate;
         WebAPIAudioService.record($scope.wavFilePathWebAPI, bufWav, roptions).then((value) => {

@@ -163,24 +163,7 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     }
     return pos;
   }
-  private toSmoothAudioBuffer(bufWav: Buffer): Buffer {
-    for (let i = 0; i < bufWav.length; i++) {
-      if (i === 0) {
-        continue;
-      }
-      if (i % 5 === 0) {
-        const sv = bufWav[i - 5];
-        const ev = bufWav[i];
-        const diffvS = (ev - sv) / 5;
-        bufWav[i - 4] = sv + diffvS * 1
-        bufWav[i - 3] = sv + diffvS * 2
-        bufWav[i - 2] = sv + diffvS * 3
-        bufWav[i - 1] = sv + diffvS * 4
-      }
-    }
-    return bufWav;
-  }
-  private buildCorrectAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer {
+  private buildCorrectSizeAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer {
     const frameCount = this.correctFrameCount(audioBuffer);
     const nAudioBuffer = new AudioBuffer({
       numberOfChannels: audioBuffer.numberOfChannels,
@@ -191,6 +174,39 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
       const buffer = audioBuffer.getChannelData(i);
       const trimmed = buffer.slice(0, frameCount);
+      nAudioBuffer.copyToChannel(trimmed, i, 0);
+    }
+    return nAudioBuffer;
+  }
+
+  private toSmoothAudioBuffer(bufWav: Float32Array): Float32Array {
+    for (let i = 0; i < bufWav.length; i++) {
+      if (i === 0) {
+        continue;
+      }
+      if (i % 5 === 0) {
+        const sv = bufWav[i - 5];
+        const ev = bufWav[i];
+        const diffvS = (ev - sv) / 5;
+        bufWav[i - 4] = sv + diffvS * 1;
+        bufWav[i - 3] = sv + diffvS * 2;
+        bufWav[i - 2] = sv + diffvS * 3;
+        bufWav[i - 1] = sv + diffvS * 4;
+      }
+    }
+    return bufWav;
+  }
+  private buildSmoothAudioBuffer(audioBuffer: AudioBuffer): AudioBuffer {
+    const nAudioBuffer = new AudioBuffer({
+      numberOfChannels: audioBuffer.numberOfChannels,
+      length: audioBuffer.length,
+      sampleRate: audioBuffer.sampleRate,
+    });
+
+    for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+      const buffer = audioBuffer.getChannelData(i);
+      const smoothBuffer = this.toSmoothAudioBuffer(buffer);
+      const trimmed = smoothBuffer.slice(0, audioBuffer.length);
       nAudioBuffer.copyToChannel(trimmed, i, 0);
     }
     return nAudioBuffer;
@@ -262,7 +278,11 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     })
     .then((renderedBuffer: AudioBuffer) => {
       // trim unused empty buffer.
-      const nAudioBuffer = this.buildCorrectAudioBuffer(renderedBuffer);
+      let nAudioBuffer = this.buildCorrectSizeAudioBuffer(renderedBuffer);
+      // update to smooth audio.
+      if (options.smooth) {
+        nAudioBuffer = this.buildSmoothAudioBuffer(nAudioBuffer);
+      }
 
       // report duration
       this.AppUtilService.reportDuration(nAudioBuffer.duration);
@@ -380,7 +400,11 @@ class WebAPIAudioService implements yubo.WebAPIAudioService {
     })
     .then((renderedBuffer: AudioBuffer) => {
       // trim unused empty buffer.
-      generatedAudioBuffer = this.buildCorrectAudioBuffer(renderedBuffer);
+      generatedAudioBuffer = this.buildCorrectSizeAudioBuffer(renderedBuffer);
+      // update to smooth audio.
+      if (options.smooth) {
+        generatedAudioBuffer = this.buildSmoothAudioBuffer(generatedAudioBuffer);
+      }
 
       // report duration
       this.AppUtilService.reportDuration(generatedAudioBuffer.duration);
