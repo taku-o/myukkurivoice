@@ -7,8 +7,9 @@ angular.module('mainModels', [])
   // YPhontMasterList: yubo.YPhont[]
   .constant('YPhontMasterList',
     [
-      {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0, catalina:true},
-      {id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1, catalina:false},
+      {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0, catalina:true, smooth:false},
+      {id:'at1_f1_sm',  name:'f1 女声1(ゆっくり)-smooth', version:'talk1',  idVoice:0, catalina:true, smooth:true},
+      {id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1, catalina:false, smooth:false},
       {id:'aq_f1c',     name:'f1c 女声',                  version:'talk2',  path:`${vendorPath}/phont/aq_f1c.phont`},
       {id:'aq_f3a',     name:'f3a 女声',                  version:'talk2',  path:`${vendorPath}/phont/aq_f3a.phont`},
       {id:'aq_huskey',  name:'huskey ハスキー',           version:'talk2',  path:`${vendorPath}/phont/aq_huskey.phont`},
@@ -38,8 +39,9 @@ angular.module('mainModels', [])
   // YPhontMasterIosEnvList: yubo.YPhont[]
   .constant('YPhontMasterIosEnvList',
     [
-      {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0, catalina:true},
-      //{id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1, catalina:false},
+      {id:'at1_f1',     name:'f1 女声1(ゆっくり)',        version:'talk1',  idVoice:0, catalina:true, smooth:false},
+      {id:'at1_f1_sm',  name:'f1 女声1(ゆっくり)-smooth', version:'talk1',  idVoice:0, catalina:true, smooth:true},
+      //{id:'at1_m1',     name:'m1 男声1',                  version:'talk1',  idVoice:1, catalina:false, smooth:false},
       {id:'aq_f1c',     name:'f1c 女声',                  version:'talk2',  path:`${vendorPath}/phont/aq_f1c.phont`},
       {id:'aq_f3a',     name:'f3a 女声',                  version:'talk2',  path:`${vendorPath}/phont/aq_f3a.phont`},
       {id:'aq_huskey',  name:'huskey ハスキー',           version:'talk2',  path:`${vendorPath}/phont/aq_huskey.phont`},
@@ -76,6 +78,7 @@ angular.module('mainModels', [])
       speed: 100,
       playbackRate: 1.0,
       detune: 0,
+      smooth: false,
       volume: 1.0,
       rhythmOn: true,
       sourceWrite: false,
@@ -92,12 +95,13 @@ angular.module('mainModels', [])
     [
       {
         id: 'sample_1',
-        name: 'f1 女声1(ゆっくり)',
+        name: 'f1 女声1(ゆっくり)-smooth',
         phont: 'at1_f1',
         version: 'talk1',
         speed: 100,
         playbackRate: 1.0,
         detune: 0,
+        smooth: true,
         volume: 1.0,
         rhythmOn: true,
         sourceWrite: false,

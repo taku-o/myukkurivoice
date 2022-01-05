@@ -310,6 +310,9 @@ class MainReducer implements yubo.MainReducer {
     });
     if (!phont) { return; }
     this.store.curYvoice.version = phont.version;
+    if (phont.version == 'talk1') {
+      this.store.curYvoice.smooth = phont.smooth;
+    }
     if (phont.version == 'talk10') {
       this.store.curYvoice.bas = phont.struct.bas;
       this.store.curYvoice.pit = phont.struct.pit;
@@ -403,24 +406,26 @@ class MainReducer implements yubo.MainReducer {
     }
 
     const speed = yvoice.speed;
-    const waveOptions: yubo.WaveOptions = {
+    const aquesOptions: yubo.AquesOptions = {
       passPhrase: this.appCfg.passPhrase,
       aq10UseKeyEncrypted: this.appCfg.aq10UseKeyEncrypted,
     };
     if (phont.version == 'talk10') {
-      waveOptions.bas = yvoice.bas;
-      waveOptions.pit = yvoice.pit;
-      waveOptions.acc = yvoice.acc;
-      waveOptions.lmd = yvoice.lmd;
-      waveOptions.fsc = yvoice.fsc;
+      aquesOptions.bas = yvoice.bas;
+      aquesOptions.pit = yvoice.pit;
+      aquesOptions.acc = yvoice.acc;
+      aquesOptions.lmd = yvoice.lmd;
+      aquesOptions.fsc = yvoice.fsc;
     }
+    const smooth = this.appCfg.audioServVer == 'webaudioapi' && yvoice.smooth;
     const playOptions: yubo.PlayOptions = {
+      smooth: smooth,
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
     };
 
-    this.AquesService.wave(encoded, phont, speed, waveOptions)
+    this.AquesService.wave(encoded, phont, speed, aquesOptions)
     .catch((err: Error) => {
       if (err instanceof BreakChain) { throw err; }
       this.MessageService.error('音声データを作成できませんでした。', err);
@@ -657,18 +662,20 @@ class MainReducer implements yubo.MainReducer {
     }
 
     const speed = yvoice.speed;
-    const waveOptions: yubo.WaveOptions = {
+    const aquesOptions: yubo.AquesOptions = {
       passPhrase: this.appCfg.passPhrase,
       aq10UseKeyEncrypted: this.appCfg.aq10UseKeyEncrypted,
     };
     if (phont.version == 'talk10') {
-      waveOptions.bas = yvoice.bas;
-      waveOptions.pit = yvoice.pit;
-      waveOptions.acc = yvoice.acc;
-      waveOptions.lmd = yvoice.lmd;
-      waveOptions.fsc = yvoice.fsc;
+      aquesOptions.bas = yvoice.bas;
+      aquesOptions.pit = yvoice.pit;
+      aquesOptions.acc = yvoice.acc;
+      aquesOptions.lmd = yvoice.lmd;
+      aquesOptions.fsc = yvoice.fsc;
     }
+    const smooth = this.appCfg.audioServVer == 'webaudioapi' && yvoice.smooth;
     const recordOptions: yubo.RecordOptions = {
+      smooth: smooth,
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
@@ -681,7 +688,7 @@ class MainReducer implements yubo.MainReducer {
       recordOptions.fcpxIxmlOptions = {audioRole: yvoice.fcpxIxmlOptions.audioRole};
     }
 
-    this.AquesService.wave(encoded, phont, speed, waveOptions)
+    this.AquesService.wave(encoded, phont, speed, aquesOptions)
     .catch((err: Error) => {
       if (err instanceof BreakChain) { throw err; }
       this.MessageService.error('音声データを作成できませんでした。', err);
@@ -721,18 +728,20 @@ class MainReducer implements yubo.MainReducer {
     }
 
     const speed = yvoice.speed;
-    const waveOptions: yubo.WaveOptions = {
+    const aquesOptions: yubo.AquesOptions = {
       passPhrase: this.appCfg.passPhrase,
       aq10UseKeyEncrypted: this.appCfg.aq10UseKeyEncrypted,
     };
     if (phont.version == 'talk10') {
-      waveOptions.bas = yvoice.bas;
-      waveOptions.pit = yvoice.pit;
-      waveOptions.acc = yvoice.acc;
-      waveOptions.lmd = yvoice.lmd;
-      waveOptions.fsc = yvoice.fsc;
+      aquesOptions.bas = yvoice.bas;
+      aquesOptions.pit = yvoice.pit;
+      aquesOptions.acc = yvoice.acc;
+      aquesOptions.lmd = yvoice.lmd;
+      aquesOptions.fsc = yvoice.fsc;
     }
+    const smooth = this.appCfg.audioServVer == 'webaudioapi' && yvoice.smooth;
     const recordOptions: yubo.RecordOptions = {
+      smooth: smooth,
       volume: yvoice.volume,
       playbackRate: yvoice.playbackRate,
       detune: yvoice.detune,
@@ -750,7 +759,7 @@ class MainReducer implements yubo.MainReducer {
     .then((nextNum) => {
       const nextFname = this.SeqFNameService.nextFname(fnameprefix, nextNum);
       filePath = path().join(dir, nextFname);
-      return this.AquesService.wave(encoded, phont, speed, waveOptions);
+      return this.AquesService.wave(encoded, phont, speed, aquesOptions);
     })
     .catch((err: Error) => {
       if (err instanceof BreakChain) { throw err; }

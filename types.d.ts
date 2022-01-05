@@ -213,13 +213,14 @@ declare namespace yubo {
 
   // models.main.ts
   export interface YPhont {
-    readonly id:       string;
-    readonly name:     string;
-    readonly version:  'talk1' | 'talk2' | 'talk10';
-    readonly idVoice?: 0 | 1;
+    readonly id:        string;
+    readonly name:      string;
+    readonly version:   'talk1' | 'talk2' | 'talk10';
+    readonly idVoice?:  0 | 1;
     readonly catalina?: boolean;
-    readonly path?:    string;
-    readonly struct?:  {bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number};
+    readonly smooth?:   boolean;
+    readonly path?:     string;
+    readonly struct?:   {bas: number, spd: number, vol: number, pit: number, acc: number, lmd: number, fsc: number};
   }
   export interface YVoice {
     id?:          string;
@@ -236,6 +237,7 @@ declare namespace yubo {
     speed:        number;
     playbackRate: number;
     detune:       number;
+    smooth?:      boolean;
     volume:       number;
     rhythmOn:     boolean,
     sourceWrite:  boolean;
@@ -378,7 +380,7 @@ declare namespace yubo {
     //private _isAquesTalk10LicensekeySet: boolean;
     init(): void;
     encode(source: string): string;
-    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.WaveOptions): ng.IPromise<Buffer>;
+    wave(encoded: string, phont: yubo.YPhont, speed: number, options: yubo.AquesOptions): ng.IPromise<Buffer>;
   }
   // service.audio.ts
   export interface IAudioService {
@@ -595,7 +597,7 @@ declare namespace yubo {
     switchMessageListType(): void;
     switchAlwaysOnTop(): void;
   }
-  export interface WaveOptions {
+  export interface AquesOptions {
     passPhrase:          string;
     aq10UseKeyEncrypted: string;
     bas?:                number;
@@ -605,11 +607,13 @@ declare namespace yubo {
     fsc?:                number;
   }
   export interface PlayOptions {
+    smooth:       boolean;
     volume:       number;
     playbackRate: number;
     detune:       number;
   }
   export interface RecordOptions {
+    smooth:       boolean;
     volume:       number;
     playbackRate: number;
     detune:       number;

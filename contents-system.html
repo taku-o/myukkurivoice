@@ -33,15 +33,15 @@
       <div class="radio">
         <label>
           <input type="radio" id="audio-serv-ver-html5audio" ng-model="ctrl.store.appCfg.audioServVer" value="html5audio">html5audio
-          <small>安定確実エンジン。一部機能に制限がある。</small>
+          <small>A:安定確実エンジン。一部機能に制限がある。</small>
         </label>
         <label>
           <input type="radio" id="audio-serv-ver-webaudioapi8" ng-model="ctrl.store.appCfg.audioServVer" value="webaudioapi8">webaudioapi8
-          <small>実験的エンジン。全ての機能を利用できる。</small>
+          <small>B:通常音声エンジン。sampleRate:8000Hz</small>
         </label>
         <label>
           <input type="radio" id="audio-serv-ver-webaudioapi" ng-model="ctrl.store.appCfg.audioServVer" value="webaudioapi">webaudioapi
-          <small>旧・実験エンジン。sampleRate:44100Hz</small>
+          <small>C:通常音声エンジン。sampleRate:44100Hz</small>
         </label>
       </div>
     </div>
