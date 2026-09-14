@@ -23,3 +23,87 @@ tsconfig.tsbuildinfo
 !/node_modules/ref-napi/
 !/node_modules/ref-struct-di/
 
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Claude Code
+.claude/worktrees/
+
+# Serena
+.serena/cache/
+.serena/logs/
+.serena/storage/
+.serena/db/
+.serena/auth.json
+.serena/*.log
+.serena/tmp/
+
+# Misc
+.env
+.env.local
+
+# cc-sdd
+.claude/skills/kiro-debug/
+.claude/skills/kiro-discovery/
+.claude/skills/kiro-impl/
+.claude/skills/kiro-review/
+.claude/skills/kiro-spec-batch/
+.claude/skills/kiro-spec-design/
+.claude/skills/kiro-spec-init/
+.claude/skills/kiro-spec-quick/
+.claude/skills/kiro-spec-requirements/
+.claude/skills/kiro-spec-status/
+.claude/skills/kiro-spec-tasks/
+.claude/skills/kiro-steering-custom/
+.claude/skills/kiro-steering/
+.claude/skills/kiro-validate-design/
+.claude/skills/kiro-validate-gap/
+.claude/skills/kiro-validate-impl/
+.claude/skills/kiro-verify-completion/
+
+# Project Files
+.cursor/hooks/stop_words_rules.json
+.cursor/hooks/stop_words.sh
+.cursor/hooks/stop_commands.sh
+.cursor/hooks/stop_commands_rules.json
+.cursor/hooks.json
+.cursor/rules/cursor-local.mdc
+.cursor/commands/sdd-fix-plan.md
+.serenaignore
+.claude/rules/development-style.md
+.claude/settings.json
+.claude/hooks/stop_words_rules.json
+.claude/hooks/block-multiedit.sh
+.claude/hooks/stop_words.sh
+.claude/hooks/stop_commands.sh
+.claude/hooks/stop_commands_rules.json
+.claude/commands/after-merged.md
+.claude/commands/continue-task.md
+.claude/commands/kiro-approve-design.md
+.claude/commands/kiro-approve-req.md
+.claude/commands/kiro-approve-tasks.md
+.claude/commands/kiro-check-survey-gap.md
+.claude/commands/kiro-complete-tasks.md
+.claude/commands/kiro-review-impl.md
+.claude/commands/kiro-review-spec.md
+.claude/commands/kiro-review-feature.md
+.claude/commands/serena-initialize.md
+.claude/commands/simplify-loop.md
+.claude/skills/jj-new/
+.claude/skills/prevent-auto-commit/
+.claude/skills/prevent-cc-sdd-auto-progress/
+.claude/skills/rm-file/
+.claude/skills/write-claude-code-fnc/
+CLAUDE.local.md
+
