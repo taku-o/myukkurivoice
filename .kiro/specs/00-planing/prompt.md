@@ -34,5 +34,26 @@ intro.jsも一応頑張ってバージョンを上げてみる方針で。
 intro.jsのバージョンアップ対応はチュートリアルUIの変更も試みる。
 他も大幅にはUIを変えたくないが、多少ならバージョンアップによるUI変更を許容する。
 
+調査スペックって何？
+>AquesTalk 新 SDK と FFI / Electron の調査スペック作成指示を出す
 
+AquesTalkは新しいバージョンがあるけど、お金がかかるからまず現行版が動かす方向で。
+動かない時は対応を考える。
+> AquesTalk 新 SDK — 入手できるか、API・パス・サンプリングレートが現行と合うか
+
+こちらは調査が必要か。
+> FFI — ffi-napi の代わり（koffi など）で音声生成が呼べるか
+> Electron — その FFI が動き、公証できる版はどれか
+
+現行利用しているAquesTalkはApple Siliconに対応していない？
+なら更新必要か。
+今までどおりなら、開発では、AquesTalkのテスト版が出てると思うのでそれを利用しましょう。
+
+https://github.com/taku-o/maquestalk1
+https://github.com/taku-o/maquestalk1-ios
+はこちらで開発しているライブラリ
+
+secret
+https://github.com/myukkurivoice/myukkurivoice-secret
+もこちらで開発しているライブラリ。
 
