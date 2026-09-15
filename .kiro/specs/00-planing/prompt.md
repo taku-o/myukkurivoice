@@ -55,5 +55,34 @@ https://github.com/taku-o/maquestalk1-ios
 
 secret
 https://github.com/myukkurivoice/myukkurivoice-secret
-もこちらで開発しているライブラリ。
+もこちらで開発しているライブラリ。!
+
+~/Desktopに
+https://github.com/taku-o/maquestalk1
+https://github.com/taku-o/maquestalk1-ios
+https://github.com/myukkurivoice/myukkurivoice-secret
+のレポジトリをcloneしておいた。
+必要なら使ってください。
+
+このあと、どのように作業を進めれば良い？
+    調査
+    設計が成立するかを先に確かめる。
+
+    アクエストの評価版 SDK（AquesTalk1 / 2 / 10、AqKanji2Koe）を入手し、パス・API・サンプリングレートを見る
+    Desktop の maquestalk1 / maquestalk1-ios を評価版で arm64 ビルドできるか
+    myukkurivoice-secret を go build で arm64 にできるか（SDK とは独立なので、ここだけ先にできる）
+    koffi 等で評価版の Synthe / FreeWave が呼べるか
+    その FFI が動き、公証できる Electron の版
+    スペック分割
+    調査結果を見て、作業を複数スペックに分ける。1スペックずつ requirements → design → tasks → 実装。工程ごとに承認する。
+
+    実装の順番
+    vendor（評価版＋自作 CLI）→ FFI → electron.remote → Electron / Node → arm64 パッケージング → Playwright → CI → 独立ライブラリ
+
+    最初に必要なのは、評価版 SDK の入手です。こちらでは公式サイトの利用規約同意やダウンロードは代行できません。入手できたら Desktop か vendor の場所を教えてください。
+
+
+
+
+
 
