@@ -110,7 +110,7 @@ WAV と JSON は `/tmp/applecpu-now-survey/` にだけ書いた。store / git �
 - **`maquestalk1` は捨てる / 置き換える。** 直さない
 - **`maquestalk1-ios` は使わない。** Mac AT1 直呼びが足りないと証明されたときだけ戻す。今回その条件は出ていない
 
-THEN の 1 番は「CLI を新 API で書き直す」ではない。「talk1 を koffi 直呼びに載せ、CLI を外す」。
+THEN 2 は「CLI を新 API で書き直す」ではない。「talk1 を koffi 直呼びに載せ、CLI を外す」。THEN 1 は vendor ファイル投入（先に置く）。
 
 ## やっていないこと
 

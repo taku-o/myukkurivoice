@@ -186,3 +186,27 @@ Claude Codeと情報を共有したいから、Cursor側で持っている情報
 
 git stagingにあがっているファイルをcommit、pushしてください。
 
+この作業をするには、まずmyukkurivoice-vendorの更新が必要じゃない？
+> 1. maquestalk1 / maquestalk1-ios を捨てて、AT1 を AT2 / AT10 と同じ koffi 直呼びに載せる（CLI は書き直さない）
+
+なので、
+2. myukkurivoice-vendor（評価版 SDK、AT1 の声種 dylib、secret、talk2 の追加 3 phont。maquestalk1 バイナリは入れない）
+1. maquestalk1 / maquestalk1-ios を捨てて、AT1 を AT2 / AT10 と同じ koffi 直呼びに載せる（CLI は書き直さない）
+の順で作業をしなければいけないのでは？
+
+
+この作業がよくわからない。
+2はコードを変更して、
+3はライブラリを更新する作業？
+> 2. maquestalk1 / maquestalk1-ios を捨てて、AT1 を AT2 / AT10 と同じ koffi 直呼びに載せる（CLI は書き直さない）
+> 3. FFI を koffi に置き換え（アプリ側。talk1 も含む）
+
+文章の前後で矛盾が生じている箇所があると思う。
+
+例えば、upcoming-work.mdの"やらないこと（この段階）"
+> maquestalk1 / アプリの書き換え（実装は工程 7。Claude Code。taku-o が {task_number} を出すまで入らない。Cursor は始めない）
+
+実装は工程 7とあるけど、
+7は、"テスト（Playwright 化は許可が必要）"になってるじゃない？
+
+

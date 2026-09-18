@@ -90,7 +90,9 @@ Apple Silicon では、現行コードは必ず iOS CLI 側に落ちる。それ
 
 ## アプリ側で後から直すこと（実装はしていない）
 
-機能追加ではない。現行 talk1 を Mac AT1 で成立させるための差分。
+**後の決定:** このリストは CLI を直す前提で書いた。新版では **CLI は書き直さない。捨てる。** 作業は THEN 2（アプリの直呼び）。THEN 1 は vendor ファイル。詳細は [survey-at1-direct.md](./survey-at1-direct.md)。
+
+リンク試験時点で見えた差分（記録。今は実行しない）:
 
 1. `maquestalk1` を arm64 にし、`AquesTalk1-mac.h` + 声種 dylib をリンクする
 2. `SyntheMV` をやめ、`AquesTalk_Synthe_Utf8` + `FreeWave` にする
