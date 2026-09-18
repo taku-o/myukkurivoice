@@ -1,6 +1,52 @@
 # MYukkuriVoice Apple Silicon 対応とライブラリ更新 計画
 
-作業を中断したあとの再開は `.kiro/specs/00-planing/resume.md` から。
+作業を中断したあとの再開は `.kiro/specs/00-planing/resume.md` から。詳細方針の正本はこのファイル。
+
+## いまここ（2026-09-18）
+
+実装には入っていない。`requirements.md` / `design.md` / `tasks.md` / `spec.json` は、指示があるまで作らない。
+
+**進め方（taku-o）:** 開発の前に調査する。アプリ全体を作らないと確かめられない調査は後回し。短い一覧は Project store の `docs/upcoming-work.md`。
+
+**決まったこと**
+
+- 評価版 SDK: `~/Desktop/myukkurivoice-lib`（実体 `/Users/taku-o/Desktop/myukkurivoice-lib`）。git に入れない
+- Mac 評価版は **dylib**。`.framework` は無い
+- AquesTalk1 は **Mac 評価版を使う**。iOS は、Mac AT1 が足りないと証明されたときだけの最後の手段。iOS SDK は今は取らない
+- `maquestalk1` は現行のままでは呼べない。新 API が要る: `AquesTalk_Synthe_Utf8` + 声種ごとの dylib。`SyntheMV` は無い
+- `maquestalk1-ios` は今は使わない
+
+**調査の状態**
+
+| 項目 | 状態 |
+| --- | --- |
+| 調査 1 SDK 棚卸し | 実施済み。Mac 4 本は dylib / arm64。iOS は drop に無い |
+| 調査 2 talk1 リンク試験 | 実施済み。判定は要作業（SDK は足りる。現行 CLI はそのままでは不可） |
+| talk2 古い 3 phont（`aq_defo1` / `aq_momo1` / `aq_teto1`） | 実施済み。公式評価版には無い（アプリが後から足した）。新評価版へコピーして Synthe すると **3つとも works** |
+| NOW: `secret` arm64 `go build` / koffi 最小 Synthe・FreeWave / `electron.remote` 棚卸し | 小さい調査。これから |
+| LATER: 公証できる Electron の版決め、本番 renderer の FFI、本番 MAS、Playwright 移行そのもの | 後回し（アプリ全体が要る） |
+
+**これからやること（順序）**
+
+NOW（スニペット / CLI 1本）:
+
+1. `myukkurivoice-secret` の arm64 `go build`（SDK 非依存）
+2. 評価版 dylib を koffi（または同等）で Synthe / FreeWave（`/tmp` のみ。AT2 と/または AT10、AT1 f1）
+3. 現行 `electron.remote` の棚卸し（上げない。`@electron/remote` への置換は THEN）
+
+THEN（調査のあと。実装）:
+
+1. `maquestalk1` を Mac AT1 新 API 向けに直す
+2. `myukkurivoice-vendor`（評価版 SDK、自作 CLI、talk2 の追加 3 phont）
+3. FFI を koffi に置き換え
+4. `electron.remote` を `@electron/remote` に置き換え
+5. Electron / Node を上げる
+6. arm64 パッケージ・署名・公証・MAS
+7. テスト（Playwright 化は許可が必要）
+8. CI
+9. 独立ライブラリを 1 件ずつ
+
+LATER（今はやらない）: アプリをパッケージして公証できる Electron を決めること。本番 renderer の中だけで分かる FFI。本番の MAS / 署名。Playwright へのテスト移行そのもの。
 
 ## 1. 目的
 
@@ -20,7 +66,7 @@
 - ドキュメントにない機能は作らない。将来の拡張も考慮しない。
 - 最適化、フォールバック機能は入れない。
 - 既存の音声生成・録音・設定・辞書・動画連携の機能範囲は維持する。機能追加ではない。
-- **AquesTalk は Apple Silicon 対応版へ更新する。** 現行 vendor に arm64 は含まれない。vendor 自体は自作リポジトリ（`myukkurivoice-vendor`）。開発ではアクエスト公開の評価版 SDK を使う（従来どおり）。製品配布用の有償ライセンスは、評価版では足りないと分かった時点で決める。評価版の再配布はしない。
+- **AquesTalk は Apple Silicon 対応版へ更新する。** 現行 vendor に arm64 は含まれない。vendor 自体は自作リポジトリ（`myukkurivoice-vendor`）。開発ではアクエスト公開の評価版 SDK を使う（従来どおり）。置き場は `~/Desktop/myukkurivoice-lib`。形式は **dylib**（`.framework` ではない）。**AquesTalk1 は Mac 評価版。** iOS は最後の手段。製品配布用の有償ライセンスは、評価版では足りないと分かった時点で決める。評価版の再配布はしない。
 - **独立ライブラリは上げる。** 同じメジャー / パッチは上げる。メジャーが飛ぶもの（`intro.js` を含む）は可能なら上げる。干渉して動かない場合は報告し、その時点で対応を決める。一括更新はしない。
 - **UI 変更の許容範囲。** バージョンアップに伴う多少の UI 変化は許容する。大幅な UI 変更はしない。`intro.js` だけは例外で、チュートリアル UI の変更も試みる。新しいチュートリアル機能は足さない。
 - **Git ブランチ。** 自前プロジェクトの機能変更は、`develop` があればそこから、なければ `master` から作業ブランチを切る。ブランチ名は本体 `myukkurivoice` の作業ブランチに合わせる。今回は `feature/applecpu/master`。`develop` / `master` 上では直接作業しない。
@@ -106,29 +152,30 @@ Apple Silicon 対応は、まずこの vendor リポジトリを更新する作�
 
 arm64 の Electron プロセスは、x86_64 / i386 の dylib を `dlopen` できない。アプリを arm64 のみにするなら **AquesTalk 側の更新は必要** である。
 
-AquesTalk2 / 10 / 辞書は FFI で framework を直接呼ぶ。AquesTalk1 は `maquestalk1` / `maquestalk1-ios` を、ライセンスキーは `secret` を、それぞれ外部コマンドとして実行する。Catalina 以降は i386 の Mac 版 AquesTalk1 が動かないため、iOS 版 bridge に切り替えている。
+AquesTalk2 / 10 / 辞書は FFI で framework を直接呼ぶ。AquesTalk1 は `maquestalk1` / `maquestalk1-ios` を、ライセンスキーは `secret` を、それぞれ外部コマンドとして実行する。Catalina 以降は i386 の Mac 版 AquesTalk1 が動かないため、**現行アプリ**は iOS 版 bridge に切り替えている。新版では Mac AT1 評価版を正本にする。iOS は最後の手段。
 
-開発では、従来どおりアクエストの **評価版 SDK** を使う。評価版は公式サイトから入手できる（調査時点）。
+開発では、従来どおりアクエストの **評価版 SDK** を使う。入手済みの置き場は `~/Desktop/myukkurivoice-lib`。
 
-| 製品 | 評価版（調査時点） |
-| --- | --- |
-| AquesTalk10 Mac | 1.1.1（2025-04-28）Apple Silicon 対応 |
-| AquesTalk2 Mac | 2.4.1（2025-04-27）Apple Silicon 対応 |
-| AquesTalk1 Mac | 2.0.1（2025-04-23）Apple Silicon 対応 |
-| AqKanji2Koe-A Mac | 4.1.1（2025-04-26）Apple Silicon 対応 |
+| 製品 | 評価版（調査時点） | この drop |
+| --- | --- | --- |
+| AquesTalk10 Mac | 1.1.1（2025-04-28）Apple Silicon 対応 | dylib、arm64 + x86_64 |
+| AquesTalk2 Mac | 2.4.1（2025-04-27）Apple Silicon 対応 | dylib（`libAquesTalk2Eva.dylib`）、arm64 + x86_64 |
+| AquesTalk1 Mac | 2.0.1（2025-04-23）Apple Silicon 対応 | 声種ごとの dylib、arm64 のみ |
+| AqKanji2Koe-A Mac | 4.1.1（2025-04-26）Apple Silicon 対応 | dylib、arm64 のみ |
 
-評価版の制限は「ナ行・マ行がヌになる」。開発ライセンスキーを入れない状態。評価版パッケージの再配布は禁止。配布アプリには入れない。
+評価版の制限は「ナ行・マ行がヌになる」。開発ライセンスキーを入れない状態。評価版パッケージの再配布は禁止。配布アプリには入れない。形式は全部 **dylib**。`.framework` は評価版側に無い。**AquesTalk1 iOS は取らない**（Mac AT1 が足りないと証明されたときだけ戻す）。
 
 発生作業（リポジトリの順）:
 
-1. 評価版 SDK の入手、dylib / framework のパス、関数シグネチャ、辞書・phont の差分確認
-2. `maquestalk1` / `maquestalk1-ios` を評価版 AquesTalk1（arm64）でビルドし直す（各リポジトリ）
+1. 評価版 SDK の入手、dylib のパス、関数シグネチャ、辞書・phont の差分確認（棚卸し済み。WAV 実測は未実施）
+2. `maquestalk1` を Mac AT1 評価版で arm64 ビルドし直す。API は `AquesTalk_Synthe_Utf8` + `FreeWave`。声種は dylib 差し替え（`f1` / `m1`）。`SyntheMV` は無い。`maquestalk1-ios` は今は対象外
 3. `secret` を arm64 向けに `go build` する（https://github.com/myukkurivoice/myukkurivoice-secret）
 4. 上記を `myukkurivoice-vendor` に入れ、submodule を更新する
-5. アプリ側のパス追従。形式が `.framework` から dylib に変わっている可能性。`gulpfile.package.js` の unpacked コピー、asar ignore、`DynamicLibrary` パス
-6. AquesTalk1 の i386 / iOS 切替を、新 Mac 評価版に合わせるか。機能追加ではなく、現行の音声生成を新バイナリで成立させるため
+5. アプリ側のパス追従。現行は `.framework`、評価版は dylib。`gulpfile.package.js` の unpacked コピー、asar ignore、`DynamicLibrary` パス
+6. AquesTalk1 は Mac 評価版が正本。本体の Catalina / iOS 切替は、Apple Silicon では Mac CLI 固定にする。iOS は最後の手段
 7. サンプリングレート等の仕様差分。現行は 8000Hz 扱い。新 AquesTalk10 マニュアルは 16kHz。実装前に実測する
-8. 評価版で開発が成立したあと、製品配布に有償ライセンスが必要かは、その時点で決める
+8. talk2 の `aq_defo1` / `aq_momo1` / `aq_teto1` は公式評価版に無い（アプリが後から足した）。新評価版へコピーすると Synthe できる。配布に残すかは後で決める
+9. 評価版で開発が成立したあと、製品配布に有償ライセンスが必要かは、その時点で決める
 
 評価版 SDK の API 非互換が大きい場合は、ここで止めて報告する。実装を勝手に変えない。
 
@@ -323,8 +370,8 @@ vendor / ネイティブ（版上げではなく arm64 再ビルド）:
 | もの | リポジトリ | 扱い |
 | --- | --- | --- |
 | `vendor/` | `myukkurivoice/myukkurivoice-vendor` | 自作 submodule。評価版 SDK と自作 CLI を入れる |
-| `maquestalk1` | `taku-o/maquestalk1` | arm64 でビルドし直す |
-| `maquestalk1-ios` | `taku-o/maquestalk1-ios` | arm64 でビルドし直す |
+| `maquestalk1` | `myukkurivoice/maquestalk1`（Desktop の clone 表記は taku-o） | Mac AT1 評価版向けに直す。新 API: `Synthe_Utf8` + 声種 dylib |
+| `maquestalk1-ios` | `myukkurivoice/maquestalk1-ios` | 今は使わない。Mac AT1 が足りないと分かるまで対象外 |
 | `secret` | `myukkurivoice/myukkurivoice-secret` | arm64 で `go build` |
 
 #### アプリの依存ではない関連リポジトリ
@@ -360,20 +407,22 @@ cc-sdd（kiro）の承認ゲートを守る。この `planning.md` の次の文�
 
 - 対象範囲、やらないこと、スペック分割の単位を確認する
 - CPU 対応は **arm64 のみ** で確定済み。Intel / Universal は対象外
-- AquesTalk は現行 vendor に arm64 がないため更新する。vendor は自作（`myukkurivoice-vendor`）。開発は評価版 SDK を使う
+- AquesTalk は現行 vendor に arm64 がないため更新する。vendor は自作（`myukkurivoice-vendor`）。開発は評価版 SDK を使う。置き場 `~/Desktop/myukkurivoice-lib`。形式は dylib。AquesTalk1 は Mac 評価版。iOS は最後の手段
 - 独立ライブラリは、同じメジャー / パッチは上げる。メジャーが飛ぶもの（`intro.js` を含む）は可能なら上げる。干渉して動かない場合は報告して対応を決める
 - UI は、バージョンアップに伴う多少の変化を許容する。大幅な変更はしない。`intro.js` のチュートリアル UI 変更は試みる
 - 自前プロジェクトは `develop`（なければ `master`）から `feature/applecpu/master` を切って作業する
 
 ### 手順 1. 調査（実装に入る前）
 
-実装より先に、次を実物で確認する。結果は後続スペックの requirements / design に書く。
+実装より先に、実物で確認する。結果は後続スペックの requirements / design に書く。
 
-1. AquesTalk 評価版 SDK（Apple Silicon）のパス、関数シグネチャ、辞書・phont、サンプリングレート
-2. `maquestalk1` / `maquestalk1-ios` を評価版 AquesTalk1 で arm64 ビルドできるか。`secret` を Go で arm64 ビルドできるか
-3. 選ぶ FFI（koffi 想定）で、評価版の Synthe / FreeWave / 構造体渡しが再現できるか
-4. 到達 Electron の版。公証、選んだ FFI、macOS 27 での起動
-5. `@electron/remote` で現行の `remote.app` / `getGlobal('appCfg')` / `getCurrentWindow` が足りるか
+**切り分け:** スニペット / CLI 1本で確かめられるものは NOW。アプリ全体・パッケージング・公証・本物の renderer が要るものは LATER。
+
+1. AquesTalk 評価版 SDK（Apple Silicon）のパス、関数シグネチャ、辞書・phont、サンプリングレート → **棚卸し済み**（パス `~/Desktop/myukkurivoice-lib`、形式は dylib）。WAV 実測は未実施。talk2 の古い 3 phont は新評価版で Synthe できる
+2. `maquestalk1` の Mac AT1 リンク試験は実施済み（要作業。SDK は足りる。現行 CLI はそのままでは不可）。**製品ビルドは THEN**（CLI の書き換えが要る）。`secret` の arm64 `go build` は NOW（SDK 非依存）。**iOS SDK と `maquestalk1-ios` は、Mac AT1 が足りないと分かるまで対象外**
+3. 選ぶ FFI（koffi 想定）で、評価版 dylib の Synthe / FreeWave が呼べるか → NOW（`/tmp` の最小呼び出し）。本番 renderer の中での置き換えは THEN / LATER
+4. 到達 Electron の版。公証できるかをアプリごとパッケージして決めること → **LATER**
+5. 現行 `electron.remote` の棚卸し → NOW（読み取りだけ）。`@electron/remote` への上げと、それが足りるかの実行確認は THEN
 
 調査で設計が成立しない場合は、実装を変えずに報告する。
 
@@ -385,16 +434,17 @@ cc-sdd（kiro）の承認ゲートを守る。この `planning.md` の次の文�
 
 | 順 | 内容 | 依存 |
 | --- | --- | --- |
-| 1 | `myukkurivoice-vendor` を更新（評価版 SDK、`maquestalk1` 系、`secret` の arm64） | 調査 1 と 2 |
-| 2 | FFI 置き換え | 調査 3、スペック 1 のパス |
-| 3 | `electron.remote` 置き換え | 調査 5 |
-| 4 | Electron / Node 更新 | スペック 2 と 3、調査 4 |
-| 5 | arm64 パッケージング・署名・公証・MAS | スペック 4 |
-| 6 | Spectron から Playwright へのテスト移行 | スペック 5 の成果物パス。テスト変更の許可が必要 |
-| 7 | CI / 開発手順の更新 | スペック 4 と 6 |
-| 8 | 独立ライブラリの個別更新 | スペック 4 の後が安全。ライブラリごとに小さく切る |
+| 1 | `maquestalk1` を Mac AT1 新 API 向けに直す | NOW 調査、リンク試験 |
+| 2 | `myukkurivoice-vendor`（評価版 SDK、自作 CLI、talk2 追加 3 phont、`secret` arm64） | スペック 1 |
+| 3 | FFI 置き換え（koffi） | NOW の koffi 最小呼び出し、スペック 2 のパス |
+| 4 | `electron.remote` → `@electron/remote` | NOW の remote 棚卸し |
+| 5 | Electron / Node 更新 | スペック 3 と 4。公証できる版決めは LATER |
+| 6 | arm64 パッケージング・署名・公証・MAS | スペック 5 |
+| 7 | Spectron から Playwright へのテスト移行 | スペック 6 の成果物パス。テスト変更の許可が必要。移行そのものは LATER |
+| 8 | CI / 開発手順の更新 | スペック 5 と 7 |
+| 9 | 独立ライブラリの個別更新 | スペック 5 の後が安全。ライブラリごとに小さく切る |
 
-スペック 8 は「まとめて最新化」しない。1ライブラリ（または密結合の1組）を1スペックまたは1タスクにする。同じメジャー / パッチは上げる。メジャーが飛ぶものは可能なら上げ、干渉したら報告する。
+スペック 9 は「まとめて最新化」しない。1ライブラリ（または密結合の1組）を1スペックまたは1タスクにする。同じメジャー / パッチは上げる。メジャーが飛ぶものは可能なら上げ、干渉したら報告する。
 
 ### 手順 3. 実装時の約束
 
@@ -431,10 +481,10 @@ cc-sdd（kiro）の承認ゲートを守る。この `planning.md` の次の文�
 ## 8. リスク
 
 - `vendor/` は自作リポジトリ `myukkurivoice-vendor`。アクエスト製バイナリと自作 CLI の組み立て場所。本体アプリとは別リポジトリで更新する
-- `maquestalk1` / `maquestalk1-ios` は自作 CLI。新 AquesTalk1 評価版に合わせて arm64 でビルドし直す必要がある
+- `maquestalk1` は自作 CLI。Mac AT1 評価版に合わせて、`Synthe_Utf8` + 声種 dylib で arm64 ビルドし直す必要がある。現行の `SyntheMV` + framework のままではリンクできない
+- `maquestalk1-ios` は今は使わない。戻す条件は、Mac AT1 で現行 talk1 が成立しないと証明されたとき
 - `secret` は自作の Go CLI（https://github.com/myukkurivoice/myukkurivoice-secret）。arm64 向けに `go build` し直す
-- 新 Mac 版 AquesTalk1 が動けば、iOS 版 bridge が不要になる可能性がある。切るかどうかは調査後に決める。今は既存の切替を維持する想定
-- 評価版 SDK の形式（dylib）やサンプリングレートが現行と違うと、パス変更と音声の見え方が変わる
+- 評価版 SDK の形式は **dylib**（確認済み）。サンプリングレートが現行と違うと、パス変更と音声の見え方が変わる
 - 評価版はナ行・マ行がヌになる。開発確認ではそれで足りる。配布物には評価版を入れない
 - AqKanji2Koe が AqKanji2Koe-A に変わっている。辞書まわりの差分がある可能性
 - koffi（または選定した FFI）が、到達 Electron で WAV バッファを正しく返せない
@@ -448,5 +498,10 @@ cc-sdd（kiro）の承認ゲートを守る。この `planning.md` の次の文�
 
 ## 9. 次のアクション
 
-1. AquesTalk 評価版 SDK と FFI / Electron の調査を始めてよいか、指示を出す（指示があるまで requirements.md 等は作らない）
-2. 調査結果を見て、手順 2 のスペック分割を確定する
+順序の正本は「いまここ」と Project store `docs/upcoming-work.md`。
+
+1. NOW: `secret` の arm64 `go build`。koffi 最小 Synthe / FreeWave。`electron.remote` の棚卸し（上げない）
+2. THEN: `maquestalk1` 新 API → vendor（追加 phont 含む）→ FFI koffi → `@electron/remote` → Electron / Node → arm64 パッケージ・署名・公証・MAS → テスト（Playwright は許可が必要）→ CI → 独立ライブラリ 1 件ずつ
+3. LATER: 公証できる Electron をアプリごとパッケージして決める。本番 renderer の FFI。本番 MAS / 署名。Playwright 移行そのもの
+4. 指示があるまで `requirements.md` / `design.md` / `tasks.md` / `spec.json` は作らない
+5. 調査結果を見て、手順 2 のスペック分割を確定する

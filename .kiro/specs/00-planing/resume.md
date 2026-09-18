@@ -2,19 +2,22 @@
 
 新しい会話でこの作業を続けるときの入口。詳細な方針は `planning.md`。ユーザー発言の履歴は `prompt.md`。
 
-**今の段階:** 計画の整理まで。実装には入っていない。`requirements.md` / `design.md` / `tasks.md` / `spec.json` はまだ無い。
+**今の段階:** 計画の整理まで。実装には入っていない。調査 1（SDK 棚卸し）、talk1 の Mac AT1 リンク試験、talk2 古い 3 phont の Synthe 確認までは実施した。次は小さい調査（NOW）。アプリ全体が要る調査は後回し。`requirements.md` / `design.md` / `tasks.md` / `spec.json` はまだ無い。
+
+評価版 SDK: `~/Desktop/myukkurivoice-lib`。形式は dylib。AquesTalk1 は Mac 評価版。iOS は最後の手段。`maquestalk1` は `Synthe_Utf8` + 声種 dylib が要る。
 
 ## 新しい会話の始め方
 
-1. このファイルと `planning.md` を読む
+1. このファイルと `planning.md` を読む。短い作業順は Project store `docs/upcoming-work.md`
 2. ブランチが `feature/applecpu/master` か確認する
-3. ユーザーの次の指示を待つ。指示なしに調査実装や要件定義を始めない
+3. **開発の前に調査する。** アプリ全体を作らないと確かめられない調査は後回し
+4. ユーザーの次の指示を待つ。指示なしに実装や要件定義を始めない
 
 再開の指示例:
 
-- 「調査を始めて」→ 評価版 SDK の有無を確認してから、`planning.md` 手順 1 を進める
+- 「小さい調査を続けて」→ NOW（`secret` arm64、koffi 最小呼び出し、`electron.remote` 棚卸し）
+- 「maquestalk1 を直して」→ THEN の実装（新 API）。小さい調査のあと
 - 「要件定義を作って」→ そのとき初めて `requirements.md` を作る
-- 評価版 SDK の場所を教えてくれた → そのパスで調査する
 
 ## 何の作業か
 
@@ -25,9 +28,10 @@ MYukkuriVoice を **Apple Silicon（arm64）専用** にし、必要な範囲で
 - 最新版アプリは arm64 のみ
 - AngularJS 1.x、`nodeIntegration: true` は維持。preload 全面移行はしない
 - ドキュメントにない機能は作らない。最適化・フォールバックは入れない
-- AquesTalk 現行 vendor に arm64 は無い。開発はアクエストの **評価版 SDK** を使う。評価版の再配布はしない。有償ライセンスは評価版で足りないと分かってから決める
+- AquesTalk 現行 vendor に arm64 は無い。開発はアクエストの **評価版 SDK** を使う。置き場 `~/Desktop/myukkurivoice-lib`。形式は **dylib**。評価版の再配布はしない。有償ライセンスは評価版で足りないと分かってから決める
+- **AquesTalk1 は Mac 評価版。** iOS は最後の手段。iOS SDK は今は取らない
 - `vendor/` は自作 submodule `myukkurivoice-vendor`。アクエスト製ライブラリと自作 CLI をまとめる場所
-- `maquestalk1` / `maquestalk1-ios` / `secret` は自作。FFI ではなく外部コマンド
+- `maquestalk1` は自作 CLI。新版は `AquesTalk_Synthe_Utf8` + 声種ごとの dylib。`maquestalk1-ios` は今は使わない。`secret` も自作。FFI ではない外部コマンド
 - 独立ライブラリ: 同じメジャーは上げる。メジャーが飛ぶものは可能なら上げる。干渉したら黙って戻さず報告する
 - `intro.js` は 8.x へ上げ、既存チュートリアル UI の変更も試みる。新しいステップは足さない。他 UI は多少の変化は許容、大幅な作り直しはしない
 - 自前 npm で今すぐ上げられるのは `fcpx-audio-role-encoder` 0.1.2 → 0.1.4 だけ。他の GitHub 直指定パッケージは既に最新タグ
@@ -63,38 +67,46 @@ Desktop に clone 済み（作業が必要になったら使う。今はいず�
 | パス | リポジトリ | 役割 |
 | --- | --- | --- |
 | `/Users/taku-o/Desktop/myukkurivoice-vendor` | myukkurivoice/myukkurivoice-vendor | vendor submodule の実体 |
-| `/Users/taku-o/Desktop/maquestalk1` | taku-o/maquestalk1 | AquesTalk1 Mac 用 CLI（Xcode） |
-| `/Users/taku-o/Desktop/maquestalk1-ios` | taku-o/maquestalk1-ios | AquesTalk1 iOS 用 CLI（Xcode） |
+| `/Users/taku-o/Desktop/maquestalk1` | taku-o/maquestalk1 | AquesTalk1 Mac 用 CLI（Xcode）。新版の正本 |
+| `/Users/taku-o/Desktop/maquestalk1-ios` | taku-o/maquestalk1-ios | 今は使わない（最後の手段） |
 | `/Users/taku-o/Desktop/myukkurivoice-secret` | myukkurivoice/myukkurivoice-secret | ライセンスキー取得 CLI（Go） |
+| `/Users/taku-o/Desktop/myukkurivoice-lib` | （git に入れない） | 評価版 SDK。dylib |
 
 GitHub 操作は `taku-o`（mail@nanasi.jp）アカウント。`git-switch-account show` で確認してから commit / push。
 
 コミットはユーザーが明示したときだけ。push も明示したときだけ。
 
-## 実装の順番（調査のあと）
+## 実装の順番（調査のあと。THEN）
 
-1. `myukkurivoice-vendor`（評価版 SDK、`maquestalk1` 系、`secret` の arm64）
-2. FFI 置き換え（`ffi-napi` → koffi 想定）
-3. `electron.remote` 置き換え（`@electron/remote` が最小）
-4. Electron / Node 更新
-5. arm64 パッケージング・署名・公証・MAS
-6. Spectron → Playwright（テスト変更の許可が必要）
-7. CI
-8. 独立ライブラリ（1件ずつ）
+1. `maquestalk1` を Mac AT1 新 API 向けに直す
+2. `myukkurivoice-vendor`（評価版 SDK、自作 CLI、talk2 追加 3 phont）
+3. FFI 置き換え（koffi）
+4. `electron.remote` を `@electron/remote` に置き換え
+5. Electron / Node 更新
+6. arm64 パッケージング・署名・公証・MAS
+7. テスト（Playwright 化は許可が必要）
+8. CI
+9. 独立ライブラリ（1件ずつ）
 
 ## 次にやること（止まっている地点）
 
-計画は `planning.md` に書いた。**次は実装ではなく調査。** ただし調査も、ユーザーの開始指示がまだない。
+計画は `planning.md`。短い順は Project store `docs/upcoming-work.md`。**実装の入口ではない。** 開発の前に調査する。アプリ全体が要る調査は後回し。
 
-調査項目:
+**NOW（小さい調査）**
 
-1. AquesTalk 評価版 SDK（Mac, Apple Silicon）のパス・API・辞書・phont・サンプリングレート
-2. `maquestalk1` / `maquestalk1-ios` を評価版で arm64 ビルドできるか。`secret` を `go build` で arm64 にできるか（secret は SDK 非依存なので、指示があれば先にできる）
-3. koffi 等で評価版の Synthe / FreeWave が呼べるか
-4. その FFI が動き、公証できる Electron の版
-5. `@electron/remote` で現行の `remote.app` / `getGlobal` / `getCurrentWindow` が足りるか
+1. `myukkurivoice-secret` の arm64 `go build`（SDK 非依存）
+2. 評価版 dylib を koffi（または同等）で Synthe / FreeWave（`/tmp` のみ。AT2 と/または AT10、AT1 f1）
+3. 現行 `electron.remote` の棚卸し（上げない）
 
-ブロッカー: 評価版 SDK はアクエスト公式からユーザーが入手する。エージェントは利用規約同意やダウンロードを代行しない。入手場所を教えてもらう。
+**THEN（調査のあと。実装）**
+
+`maquestalk1` Mac AT1 新 API → vendor（talk2 追加 3 phont 含む）→ FFI koffi → `@electron/remote` → Electron / Node → arm64 パッケージ・署名・公証・MAS → テスト（Playwright は許可が必要）→ CI → 独立ライブラリ 1 件ずつ
+
+**LATER（今はやらない）**
+
+公証できる Electron をアプリごとパッケージして決める。本番 renderer の中だけで分かる FFI。本番 MAS / 署名。Playwright 移行そのもの。
+
+評価版の場所は分かっている: `~/Desktop/myukkurivoice-lib`
 
 調査結果が出るまで、スペック分割は確定しない。
 
@@ -120,6 +132,8 @@ GitHub 操作は `taku-o`（mail@nanasi.jp）アカウント。`git-switch-accou
 | `.kiro/steering/product.md` / `tech.md` / `structure.md` | プロジェクト記憶 |
 | `.cursor/rules/cursor-local.mdc` | 作業ルール（完了表現禁止など） |
 | `docs/development.md` | vendor 構成、関連リポジトリ |
+| Project store `docs/upcoming-work.md` | これからやること（NOW / THEN / LATER） |
+| Project store `docs/survey-talk2-phonts.md` | 古い talk2 3 phont の Synthe 結果 |
 
 ## このフォルダのファイル
 
