@@ -105,3 +105,20 @@ talk2 の一部 phont（aq_defo1 / aq_momo1 / aq_teto1。現行アプリには�
 このタイミングでいったんcommit、pushしよう。
 
 
+では、作業を再開しましょう。予定通り、次の調査のタスクを進めてください。
+1. secret の arm64 go build
+2. 評価版 dylib を koffi で最小呼び出し（AT1 / AT2 / AT10）
+3. 現行 electron.remote の使用箇所の棚卸し（アップグレードはしない）
+> この3つは、すでに実施済みです。
+
+upcoming-work.mdの内容はNOWの箇所は古い？更新して。
+
+AqKanji2Koe の Convert スニペットの調査を開始してください。
+
+
+maquestalk1 は、AquesTalk1を呼び出すライブラリ。
+これがあるのは、過去、直接ライブラリを実行できなかったから
+作成されていた可能性がある。
+新しい版では、AquesTalk2、AquesTalk10と同じように、直接ライブラリを実行できるようにできないかな？
+調査して。
+
