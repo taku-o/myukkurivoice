@@ -390,6 +390,7 @@ vendor / ネイティブ（版上げではなく arm64 再ビルド）:
 - `develop` および `master` の上では直接コミットしない
 - 作業ブランチが既にあるリポジトリ（本体は既に `feature/applecpu/master`）は、それを継続して使う
 - `staging` は本体の公開用ブランチであり、他リポジトリの起点には使わない
+- コミットするとき、`.kiro/specs/00-planing/prompt.md` が staging にあるなら、同じコミットに入れる。外さない
 
 調査時点で公開リポジトリのデフォルトはいずれも `master` のみ（`electron-path`、`about-window`、`caller-position`、`electron-performance-monitor`、`fcpx-audio-role-encoder` など）。`maquestalk1` / `secret` / `vendor` はプライベートのため、作業開始時に `develop` の有無を確認する。
 
