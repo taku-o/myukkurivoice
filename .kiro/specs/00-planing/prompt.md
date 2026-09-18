@@ -82,7 +82,26 @@ https://github.com/myukkurivoice/myukkurivoice-secret
     最初に必要なのは、評価版 SDK の入手です。こちらでは公式サイトの利用規約同意やダウンロードは代行できません。入手できたら Desktop か vendor の場所を教えてください。
 
 
+~/Desktop/myukkurivoice-lib
+にAquesTalkの評価版のライブラリをダウンロードして置きました。
 
+AquesTalk1 iOS は
+AquesTalk1 Mac がない時に回避的に利用していたライブラリなので、
+新しい版では可能ならAquesTalk1 Macを利用したい。
 
+.kiro/specs/00-planing/planning.md
+のファイルに現在の計画を記録している。必要ならこのファイルを更新して。
+
+talk2 の一部 phont（aq_defo1 / aq_momo1 / aq_teto1。現行アプリにはある）
+は後から入れたものかも？
+古い版に入っているものを、新しい版にコピーしたら、動くか確認して。
+
+方針：
+開発作業の前に、先に調査系の作業を行いたい。
+とはいえ、全部作らなければ確認できないような大きすぎる調査は後回しにする。
+
+その方針だと、今後、どのような作業を行うことになる？
+それを出して貰って。
+このタイミングでいったんcommit、pushしよう。
 
 
