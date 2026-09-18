@@ -122,3 +122,67 @@ maquestalk1 は、AquesTalk1を呼び出すライブラリ。
 新しい版では、AquesTalk2、AquesTalk10と同じように、直接ライブラリを実行できるようにできないかな？
 調査して。
 
+Cursorのスキルを追加した。
+cc-sddという仕様駆動開発を管理するスキル。
+このプロジェクトでは、このcc-sddベースで開発したい。
+
+> /kiro-discovery "maquestalk1 と maquestalk1-ios を捨てて、AT1 を AT2 / AT10 と同じ koffi 直呼びにする"
+コマンドを実行してください
+
+nodeのバージョンは上げる想定で良い。
+おそらく使用するElectronのバージョンが対応するnodeのバージョンにすることになる。
+
+いくつか前提となる知識を登録する。
+まず、cc-sddでの開発の進め方だが、
+
+/kiro-spec-initを使うのでなく、
+
+- /kiro-spec-requirements
+- /kiro-validate-gap
+- /kiro-spec-design
+- /kiro-validate-design
+- /kiro-spec-tasks
+- 要件定義書・設計書・タスクリストの内容の確認
+- /kiro-impl {feature} {task_number}
+- /kiro-validate-impl {feature} {task_number}
+- 実装内容のチェック、コードレビュー、コードの最適化
+と細かく作業を切って、進めていく。
+
+違った。
+
+要件・設計・タスクのレビューは、
+人間でなく、
+/kiro-review-spec {feature}
+を使う。これはClaude Code用に用意したコマンド。
+Cursorでこれは利用可能？
+
+> 今の Cursor では /kiro-review-spec は呼べません。 Claude Code 用の .claude/commands/kiro-review-spec.md にだけあります。.cursor/skills にも .cursor/commands にもありません。
+
+実装確認・コードレビュー・最適化は、
+/kiro-review-feature {feature} {task_number}
+/code-review
+を使用する。
+これもClaude Code用に用意したコマンド。
+Cursorでこれは利用可能？
+
+> 両方とも、いまの Cursor プロジェクト設定では呼べません。 実行もコピーもしていません。
+> 
+> /kiro-review-feature — Claude Code の .claude/commands/kiro-review-feature.md にだけあります。.cursor 側にはありません。.cursor/skills/kiro-review は別物です。symlink 1本では、中で呼ぶ /simplify と /kiro-complete-tasks がまだ Claude Code 側だけなので、パイプラインは回りません。
+> 
+> /code-review — リポジトリに .claude/commands/code-review.md がありません。symlink 先がありません。Cursor 製品側には /agent-review や /review-bugbot があります。名前も用途も違います。このチャットに載ることがある /code-review は、汎用のコードレビュー指示で、Claude Code 用コマンドの複製ではありません。
+
+では、実装の進め方だが、Cursor上で開発を進めると、
+AIの使用量がまったく足りないのと、
+コードレビュー用のスキルがClaude Code側ほど揃っていないので、
+実際の実装はClaude Codeで行う想定でいきましょう。
+Cursor側では、全体の開発の進捗の管理と、仕様の決定、
+Claude Codeに渡す情報の作成などを行うことになる。
+
+調査関連の作業はだいたい終わっているよね。
+Claude Codeと情報を共有したいから、Cursor側で持っている情報、
+特にCursor Projectのdocsに入っている資料を、
+.kiro/specs/00-planing/
+に書き出して欲しい。
+
+git stagingにあがっているファイルをcommit、pushしてください。
+
