@@ -1,6 +1,6 @@
 # 調査: AqKanji2Koe Convert スニペット
 
-taku-o 向け。観測日: 2026-09-18。ホスト: arm64。実装も製品コミットもしていない。SDK バイナリは git / Project store にコピーしていない。
+taku-o 向け。観測日: 2026-09-18。ホスト: arm64。実装も製品コミットもしていない。SDK バイナリは git / 作業用 store にコピーしていない。
 
 判定の正本は下の「判定」。作業順の正本は [upcoming-work.md](./upcoming-work.md)。
 

@@ -1,6 +1,6 @@
 # 調査: AquesTalk1 を AT2 / AT10 と同じ直呼びにできるか
 
-taku-o 向け。実装も製品コミットもしていない。SDK バイナリは git / Project store にコピーしていない。
+taku-o 向け。実装も製品コミットもしていない。SDK バイナリは git / 作業用 store にコピーしていない。
 
 観測日: 2026-09-19。ホスト: arm64。ホスト Node v24.7.0 + koffi 3.3.0。Electron renderer の中ではない。
 

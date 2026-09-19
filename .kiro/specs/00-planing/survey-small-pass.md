@@ -16,7 +16,7 @@ taku-o 向け。観測日: 2026-09-18。ホスト: arm64。
 | 評価版 dylib を koffi で Synthe / FreeWave | **NOW** | `/tmp` のスニペット | 実施。AT1 f1 / AT2 / AT10 とも WAV が出る |
 | 現行 `electron.remote` の棚卸し | **NOW** | 読み取りだけ | 実施。上げていない |
 | AqKanji2Koe の Convert スニペット | NOW にできる | CLI 1本で足りる | 実施。**works**。[survey-aqkanji2koe.md](./survey-aqkanji2koe.md) |
-| `maquestalk1` を新 API で製品ビルド | THEN（実装） | CLI の書き換えが要る | していない |
+| `maquestalk1` を新 API で製品ビルド | しない | CLI は書き直さない。THEN 2 で捨てる | していない |
 | 本番 renderer の中の FFI | **LATER** | 本物の Electron アプリが要る | していない |
 | 公証できる Electron の版をアプリごと決める | **LATER** | ほぼ全体のパッケージが要る | していない |
 | `@electron/remote` への上げ | THEN（実装） | 棚卸しのあと。実行確認は Electron 更新が要る | していない |

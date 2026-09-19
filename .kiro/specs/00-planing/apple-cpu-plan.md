@@ -9,7 +9,7 @@ taku-o 向け。正本は [taku-o/myukkurivoice](https://github.com/taku-o/myukk
 | **THEN 1–9** | 製品の作業順。1 vendor ファイル、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
 | **cc-sdd** | コマンド名で呼ぶ。番号を THEN と共有しない |
 
-裸の「工程 7」は使わない。THEN 7 はテスト。実装コマンドは `/kiro-impl`。
+THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
 **進め方:** 開発の前に調査する。アプリ全体を作らないと確かめられない調査は後回し。短い順は [upcoming-work.md](./upcoming-work.md)。cc-sdd は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
 
@@ -19,7 +19,7 @@ taku-o 向け。正本は [taku-o/myukkurivoice](https://github.com/taku-o/myukk
 
 ## 今の状態
 
-**実装には入っていない。** 小さい調査は済んだ。アクティブな spec は無い。
+**製品実装には入っていない。** 小さい調査は済んだ。アクティブな spec は無い。THEN 1 の作業記録は `.kiro/specs/01-vendor-updates/`。ファイル投入はまだ。
 
 - 評価版の実体パス: `/Users/taku-o/Desktop/myukkurivoice-lib`（`~/Desktop/myukkurivoice-lib`）
 - 棚卸し: [sdk-inventory.md](./sdk-inventory.md)
@@ -29,7 +29,7 @@ taku-o 向け。正本は [taku-o/myukkurivoice](https://github.com/taku-o/myukk
 - 小さい調査: [survey-small-pass.md](./survey-small-pass.md)
 - AqKanji2Koe Convert: [survey-aqkanji2koe.md](./survey-aqkanji2koe.md)（**works**）
 - `requirements.md` / `design.md` / `tasks.md` / `spec.json` はまだ無い
-- 本体ブランチ `feature/applecpu/master` は origin にあり、計画ドキュメントの先端は `ba8280d`。再開時は `git log -1`
+- 計画の起点ブランチ `feature/applecpu/master` は origin にあり、計画ドキュメントの先端は `ba8280d`。THEN 1 作業ブランチは `feature/applecpu/vender-updates`
 - `maquestalk1` は書き直さない。捨てる（THEN 2）。まだ捨てていない
 
 ## 次にやること
@@ -44,17 +44,11 @@ taku-o 向け。正本は [taku-o/myukkurivoice](https://github.com/taku-o/myukk
 
 **THEN（調査のあと。実装）**
 
+正本: [upcoming-work.md](./upcoming-work.md)。
+
 **見分け:** THEN 1=ファイル投入。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。アプリは `vendor/` を読むので、vendor が先。
 
-- **THEN 1. ファイル。** `myukkurivoice-vendor`（評価版 SDK、AT1 の声種 dylib、`secret` の arm64、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない）
-- **THEN 2. talk1 の呼び方（アプリコード）。** `maquestalk1` / `maquestalk1-ios` の外部コマンドを捨てる。vendor の AT1 dylib をプロセス内で直呼びする。CLI は書き直さない
-- **THEN 3. FFI の道具（アプリコード）。** AT2 / AT10 / AqKanji2Koe の `ffi-napi` を `koffi` に替える。vendor の差し替えではない。ライブラリ更新でもない。talk1 は THEN 2 で既に koffi なら、ここでは触らない
-- **THEN 4.** `electron.remote` を `@electron/remote` に置き換え
-- **THEN 5.** Electron / Node を上げる（Node は Electron 同梱。Electron 6 のままにしない）
-- **THEN 6.** arm64 パッケージ・署名・公証・MAS
-- **THEN 7.** テスト（Playwright は許可が必要。移行そのものは LATER）
-- **THEN 8.** CI
-- **THEN 9.** 独立ライブラリ 1 件ずつ（ここがライブラリ更新）
+THEN 1 の作業記録は `.kiro/specs/01-vendor-updates/`。ファイル投入はまだ。このタスクでは `/kiro-*` を走らせない。
 
 **LATER（今はやらない）**
 
@@ -64,7 +58,7 @@ taku-o 向け。正本は [taku-o/myukkurivoice](https://github.com/taku-o/myukk
 | --- | --- |
 | 「小さい調査を続けて」 | NOW は済んでいる |
 | 「maquestalk1 を直して」 | しない。CLI は捨てる。捨てるのは THEN 2（vendor のあと） |
-| 「要件定義を作って」 | そのとき初めて `requirements.md` を作る。入口は `/kiro-spec-requirements` |
+| 「要件定義を作って」 | そのとき初めて `requirements.md` を作る。入口は `/kiro-spec-requirements`。実行は Claude Code |
 
 ## ブロッカー
 
@@ -129,19 +123,7 @@ Apple Silicon 作業で必要な Mac 評価版（公式表の版。2025-04 に a
 
 ## 調査後の作業順（THEN）
 
-正本: [upcoming-work.md](./upcoming-work.md)
-
-**見分け:** THEN 1=ファイル投入。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。アプリは `vendor/` を読むので、vendor 更新が先。
-
-- **THEN 1. ファイル。** `myukkurivoice-vendor`（評価版 SDK、AT1 の声種 dylib、`secret` の arm64、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない）
-- **THEN 2. talk1 の呼び方（アプリコード）。** `maquestalk1` / `maquestalk1-ios` の外部コマンドを捨てる。vendor の AT1 dylib をプロセス内で直呼びする。CLI は書き直さない
-- **THEN 3. FFI の道具（アプリコード）。** AT2 / AT10 / AqKanji2Koe の `ffi-napi` を `koffi` に替える。vendor の差し替えではない。ライブラリ更新でもない。talk1 は THEN 2 で既に koffi なら、ここでは触らない
-- **THEN 4.** `electron.remote` を `@electron/remote` に置き換え
-- **THEN 5.** Electron / Node 更新（Node は Electron 同梱。Electron 6 のままにしない）
-- **THEN 6.** arm64 パッケージング・署名・公証・MAS
-- **THEN 7.** テスト（Playwright 化は許可が必要。移行そのものは LATER）
-- **THEN 8.** CI
-- **THEN 9.** 独立ライブラリ（1件ずつ。一括しない。ライブラリ更新はここ。THEN 3 ではない）
+正本: [upcoming-work.md](./upcoming-work.md)。THEN 1=ファイル。THEN 2/3=アプリコード。THEN 7=テスト。THEN 9=独立ライブラリ。
 
 ## 未決・確認事項
 

@@ -9,19 +9,20 @@
 | **THEN 1–9** | 製品の作業順。1 vendor ファイル、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
 | **cc-sdd** | コマンド名で呼ぶ。番号を THEN と共有しない |
 
-- Cursor: `/kiro-spec-requirements` → `/kiro-validate-gap` → `/kiro-spec-design` → `/kiro-validate-design` → `/kiro-spec-tasks`
-- Claude Code: `/kiro-review-spec` → `/kiro-impl` → `/kiro-validate-impl` → `/kiro-review-feature` / `/code-review`
-- 裸の「工程 7」は使わない（THEN 7=テスト、`/kiro-impl` と衝突する）
+- Cursor: 進捗管理・仕様の決定（次に何をするか、仕様が正しいか、いつ進めるか）
+- Claude Code: `/kiro-spec-requirements` → `/kiro-validate-gap` → `/kiro-spec-design` → `/kiro-validate-design` → `/kiro-spec-tasks` → `/kiro-review-spec` → `/kiro-impl` → `/kiro-validate-impl` → `/kiro-review-feature` / `/code-review`
+
+THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
 ## いまここ（2026-09-19）
 
-実装には入っていない。これからは **cc-sdd**（`.cursor/skills/kiro-*`）で進める。コマンドは1つずつ。taku-o が次を言うまで止まる。正本は Project store `docs/cc-sdd-adoption.md`。
+製品実装には入っていない。これからは **cc-sdd** で進める。コマンドの実行は Claude Code。コマンドは1つずつ。taku-o が次を言うまで止まる。正本は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
 
-**誰がやるか（2026-09-19）:** Cursor は進捗・仕様・引き渡し（`/kiro-spec-requirements` … `/kiro-spec-tasks`）。製品実装は Claude Code（`/kiro-impl` 以降）。`/kiro-review-spec` と `/kiro-review-feature` は Claude Code 専用（`.claude/commands`）。Cursor では動かない。実装を頼まれたら Cursor は引き渡しパック（パス、feature 名、task number、spec ファイル、制約）を作る。
+**誰がやるか（2026-09-19）:** Cursor は進捗管理と仕様の決定。`/kiro-spec-requirements` … `/kiro-spec-tasks` の実行は Claude Code。製品実装は Claude Code（`/kiro-impl` 以降）。`/kiro-review-spec` と `/kiro-review-feature` は Claude Code（`.claude/commands`）。
 
-`/kiro-spec-init` は使わない。`requirements.md` / `design.md` / `tasks.md` / `spec.json` は、taku-o が `/kiro-spec-requirements` を出すまで作らない。承認も自分では付けない。`-y` は使わない。
+`/kiro-spec-init` は使わない。`requirements.md` / `design.md` / `tasks.md` / `spec.json` は、taku-o が Claude Code に `/kiro-spec-requirements` を出すまで作らない。承認も自分では付けない。`-y` は使わない。
 
-**進め方（taku-o）:** 調査は済んだ。アクティブな spec は無い。THEN 1（ファイル投入。`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）は将来の作業。短い一覧は Project store の `docs/upcoming-work.md`。
+**進め方（taku-o）:** 調査は済んだ。アクティブな spec は無い。THEN 1 は vendor ファイル（`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-vendor-updates/`。ファイル投入はまだ。短い一覧は [upcoming-work.md](./upcoming-work.md)。
 
 **決まったこと**
 
@@ -29,7 +30,7 @@
 - Mac 評価版は **dylib**。`.framework` は無い
 - AquesTalk1 は **Mac 評価版を使う**。iOS は、Mac AT1 が足りないと証明されたときだけの最後の手段。iOS SDK は今は取らない
 - `maquestalk1` は現行のままでは呼べない。新 SDK は `AquesTalk_Synthe_Utf8` + 声種ごとの dylib。`SyntheMV` は無い
-- AT1 は AT2 / AT10 と同じ直呼び（koffi）ができる。新版では `maquestalk1` を書き直さず捨てる。詳細: Project store `docs/survey-at1-direct.md`
+- AT1 は AT2 / AT10 と同じ直呼び（koffi）ができる。新版では `maquestalk1` を書き直さず捨てる。詳細: [survey-at1-direct.md](./survey-at1-direct.md)
 - `maquestalk1-ios` は今は使わない
 
 **調査の状態**
@@ -38,32 +39,22 @@
 | --- | --- |
 | 調査 1 SDK 棚卸し | 実施済み。Mac 4 本は dylib / arm64。iOS は drop に無い |
 | 調査 2 talk1 リンク試験 | 実施済み。判定は要作業（SDK は足りる。現行 CLI はそのままでは不可） |
-| AT1 直呼び（koffi、f1 / m1） | 実施済み。**できる。** 新版では `maquestalk1` を捨てる。Project store `docs/survey-at1-direct.md` |
+| AT1 直呼び（koffi、f1 / m1） | 実施済み。**できる。** 新版では `maquestalk1` を捨てる。[survey-at1-direct.md](./survey-at1-direct.md) |
 | talk2 古い 3 phont（`aq_defo1` / `aq_momo1` / `aq_teto1`） | 実施済み。公式評価版には無い（アプリが後から足した）。新評価版へコピーして Synthe すると **3つとも works** |
-| NOW: `secret` arm64 `go build` / koffi 最小 Synthe・FreeWave / `electron.remote` 棚卸し | 実施済み。Project store `docs/survey-small-pass.md` |
+| NOW: `secret` arm64 `go build` / koffi 最小 Synthe・FreeWave / `electron.remote` 棚卸し | 実施済み。[survey-small-pass.md](./survey-small-pass.md) |
 | LATER: 公証できる Electron の版決め、本番 renderer の FFI、本番 MAS、Playwright 移行そのもの | 後回し（アプリ全体が要る） |
 
 **これからやること（順序）**
 
 NOW（スニペット / CLI 1本）: 残り無し。上の調査は実施済み。
 
-THEN（調査のあと。cc-sdd の仕様 → 実装。THEN 1 から）:
+THEN（調査のあと。製品の作業順。THEN 1 から）。短い一覧の正本は [upcoming-work.md](./upcoming-work.md)。
 
 **見分け:** THEN 1=ファイル投入。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。アプリは `vendor/` を読むので、vendor 更新が先。
 
-- **THEN 1. ファイル。** `myukkurivoice-vendor`（評価版 SDK、AT1 の声種 dylib、`secret` の arm64、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない）
-- **THEN 2. talk1 の呼び方（アプリコード）。** `maquestalk1` / `maquestalk1-ios` の外部コマンドを捨てる。vendor の AT1 dylib をプロセス内で直呼びする。CLI は書き直さない
-- **THEN 3. FFI の道具（アプリコード）。** AT2 / AT10 / AqKanji2Koe の `ffi-napi` を `koffi` に替える。vendor の差し替えではない。ライブラリ更新でもない。talk1 は THEN 2 で既に koffi なら、ここでは触らない
-- **THEN 4.** `electron.remote` を `@electron/remote` に置き換え
-- **THEN 5.** Electron / Node を上げる（Node は Electron 同梱。Electron 6 のままにしない）
-- **THEN 6.** arm64 パッケージ・署名・公証・MAS
-- **THEN 7.** テスト（Playwright 化は許可が必要）
-- **THEN 8.** CI
-- **THEN 9.** 独立ライブラリを 1 件ずつ（ライブラリ更新はここ。THEN 3 ではない）
-
 LATER（今はやらない）: アプリをパッケージして公証できる Electron を決めること。本番 renderer の中だけで分かる FFI。本番の MAS / 署名。Playwright へのテスト移行そのもの。
 
-THEN 1 は将来の作業（`myukkurivoice-vendor`。ファイル投入。アプリは `vendor/` を読むのでアプリコードより先）。アクティブな spec ディレクトリは無い。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。`at1-koffi-direct` は再作成しない（削除済み。アクティブな spec ではない）。`-y` は使わない。`/kiro-spec-init` は使わない。taku-o が `/kiro-spec-requirements` を出すまで requirements / design / tasks / spec.json は作らない。
+THEN 1 は vendor ファイル（`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-vendor-updates/`。このタスクでは `/kiro-*` を走らせない。アクティブな spec ディレクトリは無い。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。実行は Claude Code。`at1-koffi-direct` は再作成しない（削除済み。アクティブな spec ではない）。`-y` は使わない。`/kiro-spec-init` は使わない。taku-o が `/kiro-spec-requirements` を出すまで requirements / design / tasks / spec.json は作らない。
 
 ## 1. 目的
 
@@ -426,7 +417,7 @@ git switch -c feature/applecpu/master
 
 ## 6. 開発の進め方
 
-cc-sdd（kiro）の承認ゲートを守る。コマンド名の正本は Project store `docs/cc-sdd-adoption.md`。この `planning.md` の次の文書（requirements / design / tasks）は、taku-o が `/kiro-spec-requirements` を出すまで作らない。`/kiro-spec-init` は使わない。承認もユーザーが行う。エージェントは `approved` を立てない。Cursor は `/kiro-spec-requirements` … `/kiro-spec-tasks`。Claude Code は `/kiro-review-spec` と `/kiro-impl` 以降。Cursor は製品実装を始めない。
+cc-sdd（kiro）の承認ゲートを守る。コマンド名の正本は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。この `planning.md` の次の文書（requirements / design / tasks）は、taku-o が Claude Code に `/kiro-spec-requirements` を出すまで作らない。`/kiro-spec-init` は使わない。承認もユーザーが行う。エージェントは `approved` を立てない。Cursor は進捗管理と仕様の決定。Claude Code は `/kiro-spec-requirements` … `/kiro-spec-tasks` と `/kiro-review-spec` と `/kiro-impl` 以降。
 
 ### 手順 0. この計画の確認
 
@@ -455,17 +446,17 @@ cc-sdd（kiro）の承認ゲートを守る。コマンド名の正本は Projec
 
 1つの巨大スペックにしない。依存の波で分ける。各スペックの cc-sdd 順（飛ばさない。各コマンドのあと taku-o 待ち。**番号は付けない**）:
 
-- `/kiro-spec-requirements` — Cursor
-- `/kiro-validate-gap` — Cursor
-- `/kiro-spec-design` — Cursor
-- `/kiro-validate-design` — Cursor
-- `/kiro-spec-tasks` — Cursor
-- `/kiro-review-spec` — Claude Code（人間レビューではない。Cursor では動かない）
+- `/kiro-spec-requirements` — Claude Code
+- `/kiro-validate-gap` — Claude Code
+- `/kiro-spec-design` — Claude Code
+- `/kiro-validate-design` — Claude Code
+- `/kiro-spec-tasks` — Claude Code
+- `/kiro-review-spec` — Claude Code（人間レビューではない）
 - `/kiro-impl {feature} {task_number}`（1タスクだけ） — Claude Code
 - `/kiro-validate-impl {feature} {task_number}` — Claude Code
-- `/kiro-review-feature` / `/code-review` — Claude Code（Cursor では動かない）
+- `/kiro-review-feature` / `/code-review` — Claude Code
 
-`/kiro-spec-init` は使わない。`-y` は使わない。`approved` は自分で立てない。実装はタスク1件ずつ。実装は Claude Code。Cursor は製品実装を始めない。分割の名前は作業用。確定は taku-o が `/kiro-spec-requirements` を出すとき。
+`/kiro-spec-init` は使わない。`-y` は使わない。`approved` は自分で立てない。実装はタスク1件ずつ。実装は Claude Code。分割の名前は作業用。確定は taku-o が `/kiro-spec-requirements` を出すとき。
 
 推奨する分割（名前は作業用。確定は `/kiro-spec-requirements`。下の番号は **THEN**）:
 
@@ -485,7 +476,7 @@ THEN 9 は「まとめて最新化」しない。1ライブラリ（または密
 
 ### 手順 3. 実装時の約束
 
-- 製品実装は Claude Code。Cursor は `/kiro-impl` を走らせない。頼まれたら引き渡しパックを作る
+- 製品実装は Claude Code。cc-sdd コマンドの実行も Claude Code
 - ドキュメントにない機能を足さない
 - 一時実装・ダミー・未使用パスのコメントアウトで「対応した」ことにしない
 - 一括変換スクリプトは使わない。許可があるとき以外、sed による一括置換もしない
@@ -536,12 +527,12 @@ THEN 9 は「まとめて最新化」しない。1ライブラリ（または密
 
 ## 9. 次のアクション
 
-順序の正本は「いまここ」と Project store `docs/upcoming-work.md`。cc-sdd は Project store `docs/cc-sdd-adoption.md`。
+順序の正本は「いまここ」と [upcoming-work.md](./upcoming-work.md)。cc-sdd は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
 
 1. NOW の小さい調査は実施済み
-2. THEN 1 は将来の作業（`myukkurivoice-vendor`。ファイル投入。アプリは `vendor/` を読むのでアプリコードより先）。アクティブな spec は無い。始めるときは taku-o が `/kiro-spec-requirements {feature}` を出す。名前は未確定。`at1-koffi-direct` は再作成しない
+2. THEN 1 は vendor ファイル（`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-vendor-updates/`。このタスクでは `/kiro-*` を走らせない。アクティブな spec は無い。cc-sdd を始めるときは taku-o が `/kiro-spec-requirements {feature}` を出す（Claude Code）。名前は未確定。`at1-koffi-direct` は再作成しない
 3. そのあと THEN 2（アプリ。talk1 の呼び方）→ THEN 3（アプリ。FFI の道具。ライブラリ更新ではない）→ THEN 4 `@electron/remote` → THEN 5 Electron / Node → THEN 6 arm64 パッケージ・署名・公証・MAS → THEN 7 テスト（Playwright は許可が必要）→ THEN 8 CI → THEN 9 独立ライブラリ 1 件ずつ（ここがライブラリ更新）
 4. LATER: 公証できる Electron をアプリごとパッケージして決める。本番 renderer の FFI。本番 MAS / 署名。Playwright 移行そのもの
-5. `/kiro-spec-init` は使わない。`/kiro-spec-requirements` が出るまで `requirements.md` / `design.md` / `tasks.md` / `spec.json` は作らない。承認も自分では付けない。`-y` は使わない
-6. スペック分割の確定は taku-o が `/kiro-spec-requirements` を出すとき。`00-planing` は計画メモのまま置く
-7. Cursor は `/kiro-spec-requirements` … `/kiro-spec-tasks`。Claude Code は `/kiro-review-spec` と `/kiro-impl` 以降。Cursor は製品実装を始めない。実装を頼まれたら引き渡しパックを作る。`/kiro-review-spec` と `/kiro-review-feature` は Claude Code 専用
+5. `/kiro-spec-init` は使わない。Claude Code に `/kiro-spec-requirements` が出るまで `requirements.md` / `design.md` / `tasks.md` / `spec.json` は作らない。承認も自分では付けない。`-y` は使わない
+6. スペック分割の確定は taku-o が Claude Code に `/kiro-spec-requirements` を出すとき。`00-planing` は計画メモのまま置く
+7. Cursor は進捗管理と仕様の決定。Claude Code は `/kiro-spec-requirements` … `/kiro-spec-tasks` と `/kiro-review-spec` と `/kiro-impl` 以降

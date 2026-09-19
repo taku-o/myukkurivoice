@@ -1,13 +1,15 @@
 # Claude Code 引き渡し（THEN 1）
 
-先に [../00-planing/resume.md](../00-planing/resume.md) と [../00-planing/upcoming-work.md](../00-planing/upcoming-work.md) を読む。計画の再掲はしない。パスの正本は [sources.md](./sources.md)。索引は [README.md](./README.md)。
+索引は [README.md](./README.md)。パスの正本は [sources.md](./sources.md)。00-planing は読んだ前提。計画の再掲はしない。
 
-この作業は **vendor ファイル投入**。cc-sdd の実装コマンドではない。
+この作業は **vendor ファイル投入**。
+
+**このタスクの範囲:** vendor ファイル。`/kiro-*` は走らせない（`/kiro-spec-init` も `/kiro-impl` も使わない）。仕様書を作るな、ではない。`requirements.md` などは、taku-o が `/kiro-spec-requirements` を出したとき cc-sdd の spec ディレクトリへ置く。**このフォルダには置かない。**
 
 ## やること
 
 リポジトリ: `/Users/taku-o/Desktop/myukkurivoice-vendor`  
-ブランチ: `feature/applecpu/master`（ローカル作成済み。`master` `4e211a0` から。origin 未 push）
+ブランチ: `feature/applecpu/master`（ローカル作成済み。`master` `4e211a0` から。origin には無い）
 
 THEN 1 で vendor に置くもの（upcoming-work の定義）:
 
@@ -22,15 +24,15 @@ THEN 1 で vendor に置くもの（upcoming-work の定義）:
 
 ## 制約
 
-- 評価版 SDK を **Project store** にコピーしない
+- 評価版 SDK を **store** にコピーしない
 - 評価版 SDK を **`myukkurivoice` の git ツリー** にコピーしない（submodule ポインタ以外。本体へバイナリを直置きしない）
-- 評価版の再配布禁止。公開リポジトリ・store・本体ソースツリーへ出さない。行き先は `myukkurivoice-vendor` だけ
+- 評価版の再配布禁止。公開リポジトリ・作業用 store・本体ソースツリーへ出さない。行き先は `myukkurivoice-vendor` だけ
 - 本体アプリのコード（`js/`、gulp、テスト）を書き換えない
 - `maquestalk1` を新 API 向けに書き直さない
 - CLI バイナリ（`maquestalk1` / `maquestalk1-ios`）を vendor に入れない
 - iOS SDK を取らない・足さない（評価版 drop にも無い）
-- `/kiro-*` を走らせない。`/kiro-spec-init` も `/kiro-impl` も使わない
-- `requirements.md` / `design.md` / `tasks.md` / `prompt.md` / `spec.json` を作らない
+- このタスクでは `/kiro-*` を走らせない。`/kiro-spec-init` も `/kiro-impl` も使わない（タスク範囲。仕様書の永久禁止ではない）
+- `requirements.md` / `design.md` / `tasks.md` / `prompt.md` / `spec.json` を **このフォルダ** に置かない（置くなら cc-sdd の spec ディレクトリ。taku-o が `/kiro-spec-requirements` を出したとき）
 - `at1-koffi-direct` を再作成しない
 - 作業メモは `.kiro/specs/01-vendor-updates/` だけ。vendor / secret / maquestalk1 リポジトリに散らさない
 - 一括 sed でパスを書き換えない
@@ -73,4 +75,4 @@ THEN 1 で vendor に置くもの（upcoming-work の定義）:
 - `secret` が arm64
 - `phont/` に公式 14 + 追加 3 がある
 - 本体 `myukkurivoice` の working tree に `.dylib` が増えていない
-- Project store に SDK が無い
+- 作業用 store に SDK が無い

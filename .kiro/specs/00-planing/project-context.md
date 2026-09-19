@@ -9,18 +9,19 @@ taku-o 向け。実装の入口ではない。方針の正本は下のソース�
 | **THEN 1–9** | 製品の作業順。1 vendor ファイル、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
 | **cc-sdd** | コマンド名で呼ぶ。番号を THEN と共有しない |
 
-- Cursor: `/kiro-spec-requirements` → `/kiro-validate-gap` → `/kiro-spec-design` → `/kiro-validate-design` → `/kiro-spec-tasks`
-- Claude Code: `/kiro-review-spec` → `/kiro-impl` → `/kiro-validate-impl` → `/kiro-review-feature` / `/code-review`
-- 裸の「工程 7」は使わない
+- Cursor: 進捗管理・仕様の決定（次に何をするか、仕様が正しいか、いつ進めるか）
+- Claude Code: `/kiro-spec-requirements` → `/kiro-validate-gap` → `/kiro-spec-design` → `/kiro-validate-design` → `/kiro-spec-tasks` → `/kiro-review-spec` → `/kiro-impl` → `/kiro-validate-impl` → `/kiro-review-feature` / `/code-review`
 
-**進め方:** これからは **cc-sdd**（`.cursor/skills/kiro-*`）で進める。コマンドは1つずつ。taku-o が次を言うまで止まる。`/kiro-spec-init` は使わない。`-y` は使わない。`approved` は自分で立てない。調査は済んだ。アクティブな spec は無い。アプリ全体を作らないと確かめられない調査は後回し。cc-sdd の正本は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
+THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
-**誰がやるか（2026-09-19）:** Cursor は進捗・仕様・引き渡し（`/kiro-spec-requirements` … `/kiro-spec-tasks`）。製品実装は Claude Code（`/kiro-impl` 以降）。`/kiro-review-spec` と `/kiro-review-feature` は Claude Code 専用。Cursor では動かない。Cursor は製品実装を始めない。
+**進め方:** これからは **cc-sdd** で進める。コマンドの実行は Claude Code。コマンドは1つずつ。taku-o が次を言うまで止まる。`/kiro-spec-init` は使わない。`-y` は使わない。`approved` は自分で立てない。調査は済んだ。アクティブな spec は無い。アプリ全体を作らないと確かめられない調査は後回し。cc-sdd の正本は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
+
+**誰がやるか（2026-09-19）:** Cursor は進捗管理と仕様の決定。`/kiro-spec-requirements` … `/kiro-spec-tasks` の実行は Claude Code。製品実装は Claude Code（`/kiro-impl` 以降）。`/kiro-review-spec` と `/kiro-review-feature` は Claude Code。
 
 ## ソース・オブ・トゥルース
 
 - リポジトリ: [taku-o/myukkurivoice](https://github.com/taku-o/myukkurivoice)
-- ブランチ: `feature/applecpu/master`
+- ブランチ: 計画の起点 `feature/applecpu/master`。THEN 1 作業 `feature/applecpu/vender-updates`
 - 再開入口: `.kiro/specs/00-planing/resume.md`
 - 計画本体: `.kiro/specs/00-planing/planning.md`
 - ユーザー発言メモ: `.kiro/specs/00-planing/prompt.md`
@@ -65,8 +66,6 @@ MYukkuriVoice の**最新版を Apple Silicon（arm64）専用**にし、その�
 - 干渉したライブラリを黙って戻す・コメントアウトして「対応」とする
 - 一時実装やダミーで「実装した」ことにする
 - 指示なしに実装や要件定義を始める
-- Cursor で製品実装を始める。Cursor で `/kiro-impl` を走らせる
-- Cursor で `/kiro-review-spec` / `/kiro-review-feature` が動くと装う（Claude Code 専用。`.claude/commands`）
 - `.claude/commands` を `.cursor` へ symlink / コピーする（taku-o が言うまで）
 - アプリ全体を作らないと確かめられない調査を、小さい調査より先にやる
 
@@ -156,25 +155,15 @@ Renderer は `electron.remote` と `ffi-napi` を直接使う。AngularJS を維
 
 **NOW（調査）:** 残り無し。`secret` / koffi / remote 棚卸しは実施済み。[survey-small-pass.md](./survey-small-pass.md)。AqKanji2Koe Convert も実施済み（**works**）。[survey-aqkanji2koe.md](./survey-aqkanji2koe.md)。AT1 直呼びも実施済み（できる。CLI 不要）。[survey-at1-direct.md](./survey-at1-direct.md)
 
-**THEN（調査のあと。cc-sdd の仕様 → 実装）**
+**THEN（調査のあと）**
 
 正本は [upcoming-work.md](./upcoming-work.md)。THEN 1 から。
 
 **見分け:** THEN 1=ファイル投入。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。アプリは `vendor/` を読むので、vendor 更新が先。
 
-- **THEN 1. ファイル。** `myukkurivoice-vendor`（評価版 SDK、AT1 の声種 dylib、`secret` の arm64、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない）
-- **THEN 2. talk1 の呼び方（アプリコード）。** `maquestalk1` / `maquestalk1-ios` の外部コマンドを捨てる。vendor の AT1 dylib をプロセス内で直呼びする。CLI は書き直さない
-- **THEN 3. FFI の道具（アプリコード）。** AT2 / AT10 / AqKanji2Koe の `ffi-napi` を `koffi` に替える。vendor の差し替えではない。ライブラリ更新でもない。talk1 は THEN 2 で既に koffi なら、ここでは触らない
-- **THEN 4.** `electron.remote` を `@electron/remote` に置き換え
-- **THEN 5.** Electron / Node 更新（Node は Electron 同梱。Electron 6 のままにしない）
-- **THEN 6.** arm64 パッケージング・署名・公証・MAS
-- **THEN 7.** テスト（Playwright 化は許可が必要）
-- **THEN 8.** CI
-- **THEN 9.** 独立ライブラリ（1件ずつ。ライブラリ更新はここ。THEN 3 ではない）
-
 **LATER:** 公証できる Electron をアプリごとパッケージして決める。本番 renderer の FFI。本番 MAS / 署名。Playwright 移行そのもの。
 
-次の cc-sdd コマンドは決まっていない。THEN 1（ファイル投入。`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）は将来の作業。アクティブな spec は無い。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。cc-sdd の順は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。コマンド名で呼ぶ。各コマンドのあと taku-o 待ち。`/kiro-spec-init` は使わない。Cursor は製品実装を始めない。実装を頼まれたら引き渡しパック（パス、feature 名、task number、spec ファイル、制約）を作る。
+次の cc-sdd コマンドは決まっていない。THEN 1 は vendor ファイル（`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-vendor-updates/`。このタスクでは `/kiro-*` を走らせない。アクティブな spec は無い。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。実行は Claude Code。cc-sdd の順は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。コマンド名で呼ぶ。各コマンドのあと taku-o 待ち。`/kiro-spec-init` は使わない。
 
 ## 読むファイル
 
@@ -183,14 +172,14 @@ Renderer は `electron.remote` と `ffi-napi` を直接使う。AngularJS を維
 | `.kiro/specs/00-planing/resume.md` | 再開入口（正本） |
 | `.kiro/specs/00-planing/planning.md` | 計画の本体 |
 | `.kiro/specs/00-planing/prompt.md` | ユーザー発言の抜き出し |
+| `.kiro/specs/00-planing/upcoming-work.md` | これからやること（NOW / THEN / LATER） |
+| `.kiro/specs/00-planing/cc-sdd-adoption.md` | これからは cc-sdd。コマンド名が正本（init なし、1つずつ止まる。Cursor=進捗・仕様の決定、Claude Code=`/kiro-spec-requirements` … `/kiro-spec-tasks` と実装） |
+| `.kiro/specs/00-planing/survey-small-pass.md` | 小さい調査（secret / koffi / remote 棚卸し） |
+| `.kiro/specs/00-planing/sdk-inventory.md` | 評価版 SDK のディスク上の中身（調査 1） |
+| `.kiro/specs/00-planing/survey-maquestalk1.md` | Mac AT1 で iOS bridge を置き換えられるか（調査 2 の talk1 部分） |
+| `.kiro/specs/00-planing/survey-talk2-phonts.md` | 現行の古い 3 phont を新評価版で Synthe できるか |
+| `.kiro/specs/00-planing/survey-aqkanji2koe.md` | 評価版 AqKanji2Koe Convert スニペット |
+| `.kiro/specs/00-planing/survey-at1-direct.md` | AT1 を koffi 直呼びできるか。できる。CLI 不要 |
 | `.kiro/steering/product.md` / `tech.md` / `structure.md` | 製品・技術・構成の記憶 |
 | `.cursor/rules/cursor-local.mdc` | 作業ルール（完了表現禁止など）。ブランチにある |
 | `docs/development.md` | vendor 構成、関連リポジトリ |
-| Project store `docs/cc-sdd-adoption.md` | これからは cc-sdd。コマンド名が正本（init なし、1つずつ止まる。Cursor=仕様、Claude Code=`/kiro-review-spec` と実装） |
-| Project store `docs/upcoming-work.md` | これからやること（NOW / THEN / LATER） |
-| Project store `docs/survey-small-pass.md` | 小さい調査（secret / koffi / remote 棚卸し） |
-| Project store `docs/sdk-inventory.md` | 評価版 SDK のディスク上の中身（調査 1） |
-| Project store `docs/survey-maquestalk1.md` | Mac AT1 で iOS bridge を置き換えられるか（調査 2 の talk1 部分） |
-| Project store `docs/survey-talk2-phonts.md` | 現行の古い 3 phont を新評価版で Synthe できるか |
-| Project store `docs/survey-aqkanji2koe.md` | 評価版 AqKanji2Koe Convert スニペット |
-| Project store `docs/survey-at1-direct.md` | AT1 を koffi 直呼びできるか。できる。CLI 不要 |

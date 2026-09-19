@@ -4,7 +4,7 @@
 
 計画の SDK 説明は [../00-planing/sdk-inventory.md](../00-planing/sdk-inventory.md)。talk2 3 phont は [../00-planing/survey-talk2-phonts.md](../00-planing/survey-talk2-phonts.md)。ここは投入用の対応表。
 
-評価版は **vendor リポジトリだけ** に置く。Project store と `myukkurivoice` git ツリーへは置かない。ライセンス: 評価版の再配布禁止（各 readme「当社の許可なく再配布や公開することを禁じます」）。現行 vendor は既にアクエスト製 SDK を同じ private リポジトリで持っている。その扱いに合わせる。
+評価版は **vendor リポジトリだけ** に置く。作業用 store と `myukkurivoice` git ツリーへは置かない。ライセンス: 評価版の再配布禁止（各 readme「当社の許可なく再配布や公開することを禁じます」）。現行 vendor は既にアクエスト製 SDK を同じ private リポジトリで持っている。その扱いに合わせる。
 
 ## 作業先
 
@@ -134,7 +134,7 @@ iOS SDK はこの drop に **無い**（`find … *ios*` 0 件）。
 | `aqtk1-ios/`（現行 vendor の iOS SDK。`lib/libAquesTalk.a` は i386/armv7/armv7s/x86_64/arm64） | iOS SDK は今は取らない。評価版 drop にも無い |
 | `AquesTalk評価版dmg/*.dmg` | 現行 vendor に DMG は無い。展開済みを使う |
 | 評価版 `samples/` 配下の dylib 複製 | `lib/` と同じ中身。ルートには出さない |
-| 評価版を Project store へ | 禁止 |
+| 評価版を作業用 store へ | 禁止 |
 | 評価版を `myukkurivoice` git ツリーへ直置き | 禁止。行き先は vendor リポジトリ |
 | checkout の x86_64 `secret` | arm64 をソースから建てる |
 | `.DS_Store` | vendor `.gitignore` 済み |
