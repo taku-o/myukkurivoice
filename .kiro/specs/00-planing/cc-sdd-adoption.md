@@ -8,7 +8,7 @@ taku-o 向け。実装はしていない。アクティブな spec は無い。
 
 | 呼び方 | 中身 |
 | --- | --- |
-| **THEN 1–9** | 製品の作業順。1 vendor ファイル、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
+| **THEN 1–9** | 製品の作業順。1 ファイル（1-1 secret → 1-2 vendor）、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
 | **cc-sdd** | 下のコマンド名で呼ぶ。番号を THEN と共有しない |
 
 THEN 7 はテスト。実装コマンドは `/kiro-impl`。
@@ -64,7 +64,7 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 - `-y`（自動承認しない）
 - `/kiro-spec-quick --auto`
 - `spec.json` の `approved` をエージェントが `true` にする
-- `at1-koffi-direct` の再作成（削除済み。戻さない。アクティブな spec ではない）
+- `at1-koffi-direct` の再作成（削除済み。戻さない）
 - 指示なしに `requirements.md` / `design.md` / `tasks.md` / `spec.json` を新規作成する
 - cc-sdd コマンドをまとめて進める（`/kiro-spec-requirements` のあと `/kiro-validate-gap` を自分で続けない）
 
@@ -120,9 +120,12 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 - AqKanji2Koe Convert
 - AT1 直呼び（できる。CLI 不要）
 
-**THEN 1（vendor ファイル。cc-sdd の spec ではない）**
+**THEN 1（ファイル。1-1 secret → 1-2 vendor）**
 
-`myukkurivoice-vendor` を更新する。評価版 SDK、AT1 の声種 dylib、`secret` の arm64、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない。アプリは `vendor/` を読むので、アプリコードより先。作業記録は `.kiro/specs/01-vendor-updates/`。このタスクでは `/kiro-*` を走らせない。ファイル投入はまだ。
+- **THEN 1-1.** `myukkurivoice-secret` を arm64 に更新（ブランチ `feature/applecpu/master`）。vendor より先。
+- **THEN 1-2.** `myukkurivoice-vendor`（評価版 SDK、AT1 の声種 dylib、**更新済み secret の成果物**、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない）。secret をここで建て直さない。secret は secret リポジトリの更新後の成果物をコピーする。先に secret ブランチでビルドする。
+
+アプリは `vendor/` を読むので、1-2 がアプリコードより先。作業記録は `.kiro/specs/01-secret-updates/`。1-1 の更新も 1-2 の投入もまだ。Claude Code が `/kiro-spec-requirements` … `/kiro-impl` を実行する。
 
 **THEN 2（THEN 1 のあと）アプリコード。talk1 の呼び方**
 
@@ -132,7 +135,7 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
 AT2 / AT10 / AqKanji2Koe の `ffi-napi` を `koffi` に替える。vendor の差し替えではない。talk1 は THEN 2 で既に koffi なら、ここでは触らない。ライブラリ更新は THEN 9。THEN 4 以降は [upcoming-work.md](./upcoming-work.md)。
 
-アクティブな spec ディレクトリは無い。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。実行は Claude Code。`01-vendor-updates` を spec にしない。
+アクティブな spec ディレクトリは無い。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。実行は Claude Code。
 
 ## 次のコマンド
 
@@ -144,11 +147,11 @@ AT2 / AT10 / AqKanji2Koe の `ffi-napi` を `koffi` に替える。vendor の差
 - `/kiro-spec-init at1-koffi-direct`
 - `.kiro/specs/at1-koffi-direct/` の再作成（削除済み）
 
-THEN 1 の vendor ファイルは、taku-o が Claude Code に THEN 1 を出したとき。入口は `.kiro/specs/01-vendor-updates/`。`/kiro-spec-requirements` ではない。
+THEN 1 のファイル（1-1 secret → 1-2 vendor）は、taku-o が Claude Code に THEN 1 を出したとき。入口は `.kiro/specs/01-secret-updates/`。Claude Code が `/kiro-spec-requirements` … `/kiro-impl` を実行する。
 
 cc-sdd の `/kiro-spec-requirements {feature}` は、taku-o がそのコマンドを出したとき。名前はそのとき。出す先は Claude Code。
 
-`00-planing` を spec にしない。計画メモのまま置く。`.kiro/steering/roadmap.md` は作っていない。
+`00-planing` は計画メモ。`.kiro/steering/roadmap.md` は作っていない。
 
 ## この作業で作っていないもの
 

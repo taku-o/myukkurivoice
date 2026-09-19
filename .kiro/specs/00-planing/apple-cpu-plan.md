@@ -6,7 +6,7 @@ taku-o 向け。正本は [taku-o/myukkurivoice](https://github.com/taku-o/myukk
 
 | 呼び方 | 中身 |
 | --- | --- |
-| **THEN 1–9** | 製品の作業順。1 vendor ファイル、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
+| **THEN 1–9** | 製品の作業順。1 ファイル（1-1 secret → 1-2 vendor）、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
 | **cc-sdd** | コマンド名で呼ぶ。番号を THEN と共有しない |
 
 THEN 7 はテスト。実装コマンドは `/kiro-impl`。
@@ -19,7 +19,7 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
 ## 今の状態
 
-**製品実装には入っていない。** 小さい調査は済んだ。アクティブな spec は無い。THEN 1 の作業記録は `.kiro/specs/01-vendor-updates/`。ファイル投入はまだ。
+**製品実装には入っていない。** 小さい調査は済んだ。アクティブな spec は無い。THEN 1 の作業記録は `.kiro/specs/01-secret-updates/`。1-1 の secret 更新も 1-2 の vendor 投入もまだ。
 
 - 評価版の実体パス: `/Users/taku-o/Desktop/myukkurivoice-lib`（`~/Desktop/myukkurivoice-lib`）
 - 棚卸し: [sdk-inventory.md](./sdk-inventory.md)
@@ -29,7 +29,7 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 - 小さい調査: [survey-small-pass.md](./survey-small-pass.md)
 - AqKanji2Koe Convert: [survey-aqkanji2koe.md](./survey-aqkanji2koe.md)（**works**）
 - `requirements.md` / `design.md` / `tasks.md` / `spec.json` はまだ無い
-- 計画の起点ブランチ `feature/applecpu/master` は origin にあり、計画ドキュメントの先端は `ba8280d`。THEN 1 作業ブランチは `feature/applecpu/vender-updates`
+- 計画の起点ブランチ `feature/applecpu/master` は origin にあり、計画ドキュメントの先端は `ba8280d`。THEN 1 作業ブランチは `feature/applecpu/secret-updates`
 - `maquestalk1` は書き直さない。捨てる（THEN 2）。まだ捨てていない
 
 ## 次にやること
@@ -46,9 +46,9 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
 正本: [upcoming-work.md](./upcoming-work.md)。
 
-**見分け:** THEN 1=ファイル投入。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。アプリは `vendor/` を読むので、vendor が先。
+**見分け:** THEN 1=ファイル投入（1-1 secret → 1-2 vendor）。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。secret 更新が vendor より先。アプリは `vendor/` を読むので、vendor がアプリコードより先。
 
-THEN 1 の作業記録は `.kiro/specs/01-vendor-updates/`。ファイル投入はまだ。このタスクでは `/kiro-*` を走らせない。
+THEN 1 の作業記録は `.kiro/specs/01-secret-updates/`。1-1 の更新も 1-2 の投入もまだ。Claude Code が `/kiro-spec-requirements` … `/kiro-impl` を実行する。
 
 **LATER（今はやらない）**
 
@@ -57,7 +57,7 @@ THEN 1 の作業記録は `.kiro/specs/01-vendor-updates/`。ファイル投入�
 | ユーザーが言うこと | エージェントがすること |
 | --- | --- |
 | 「小さい調査を続けて」 | NOW は済んでいる |
-| 「maquestalk1 を直して」 | しない。CLI は捨てる。捨てるのは THEN 2（vendor のあと） |
+| 「maquestalk1 を直して」 | しない。CLI は捨てる。捨てるのは THEN 2（THEN 1 のファイルのあと） |
 | 「要件定義を作って」 | そのとき初めて `requirements.md` を作る。入口は `/kiro-spec-requirements`。実行は Claude Code |
 
 ## ブロッカー
@@ -71,7 +71,7 @@ THEN 1 の作業記録は `.kiro/specs/01-vendor-updates/`。ファイル投入�
 - talk2 の `aq_defo1` / `aq_momo1` / `aq_teto1` は公式評価版に無い（アプリが後から足した）。コピーして Synthe すると 3つとも works。[survey-talk2-phonts.md](./survey-talk2-phonts.md)。配布に残すかは未決
 - AquesTalk10 の 16kHz は koffi スニペットで実測した（`fsc=100` で 16000Hz）。アプリ再生経路はまだ
 
-`secret` の arm64 `go build` は実施済み（`/tmp` のみ。checkout の既存バイナリは x86_64 のまま）。
+`secret` の arm64 `go build` 調査は実施済み（`/tmp` のみ。checkout の既存バイナリは x86_64 のまま）。製品の更新は THEN 1-1。
 
 ## SDK入手
 
@@ -114,7 +114,7 @@ Apple Silicon 作業で必要な Mac 評価版（公式表の版。2025-04 に a
 ## 調査項目（NOW / LATER）
 
 1. AquesTalk 評価版 SDK（Mac, Apple Silicon）のパス・API・辞書・phont・サンプリングレート → 棚卸しは [sdk-inventory.md](./sdk-inventory.md)。WAV ヘッダ実測は koffi スニペットで実施。[survey-small-pass.md](./survey-small-pass.md)
-2. `maquestalk1` の Mac AT1 リンク試験は実施済み。**製品ビルドはしない。書き直さない。** CLI は THEN 2 で捨てる（THEN 1 の vendor のあと）。`secret` の arm64 `go build` は実施済み。**iOS は対象外**
+2. `maquestalk1` の Mac AT1 リンク試験は実施済み。**製品ビルドはしない。書き直さない。** CLI は THEN 2 で捨てる（THEN 1 のファイルのあと）。`secret` の arm64 `go build` 調査は実施済み（`/tmp`。製品更新は THEN 1-1）。**iOS は対象外**
 3. koffi 等で評価版 dylib の Synthe / FreeWave が呼べるか → 実施済み（`/tmp` 最小）。本番 renderer は LATER
 4. その FFI が動き、公証できる Electron の版 → **LATER**（アプリをパッケージする調査）
 5. 現行 `electron.remote` の棚卸し → 実施済み。`@electron/remote` への上げは THEN 4
@@ -123,7 +123,7 @@ Apple Silicon 作業で必要な Mac 評価版（公式表の版。2025-04 に a
 
 ## 調査後の作業順（THEN）
 
-正本: [upcoming-work.md](./upcoming-work.md)。THEN 1=ファイル。THEN 2/3=アプリコード。THEN 7=テスト。THEN 9=独立ライブラリ。
+正本: [upcoming-work.md](./upcoming-work.md)。THEN 1=ファイル（1-1 secret → 1-2 vendor）。THEN 2/3=アプリコード。THEN 7=テスト。THEN 9=独立ライブラリ。
 
 ## 未決・確認事項
 
@@ -131,7 +131,7 @@ Apple Silicon 作業で必要な Mac 評価版（公式表の版。2025-04 に a
 - 評価版の形式 → **dylib**（`.framework` ではない）。アプリ側パス追従は後段。実装はしていない
 - 新 AquesTalk10 のサンプリングレート → koffi スニペットで 16000Hz（`fsc=100`）。アプリ再生はまだ 8000Hz 前提。THEN でパス追従
 - **AquesTalk1 は Mac 評価版が正本。** iOS は最後の手段のみ。リンク試験: [survey-maquestalk1.md](./survey-maquestalk1.md)。判定は要作業（SDK は足りる。現行 `maquestalk1` は `SyntheMV` + framework + i386 のまま）。直さず捨てる
-- AqKanji2Koe-A の辞書は `aq_dic/aqdic.bin`（9.4M）。現行 `aq_dic_large`（12M）と不一致
+- AqKanji2Koe-A の辞書は `aq_dic/aqdic.bin`（9.4M）。現行 `aq_dic_large`（12M）と不一致。アプリが読むのは **`aq_dic_large` のまま**（THEN 1 で上書きしない。`aq_user.csv` も現行どおり残す）
 - talk2 の `aq_defo1` / `aq_momo1` / `aq_teto1` は新評価版でも Synthe できる。公式パッケージには無い。配布に残すかは未決。調査: [survey-talk2-phonts.md](./survey-talk2-phonts.md)
 - AquesTalk1 新 SDK は `SyntheMV` が無く、声種は dylib 差し替え。現行 CLI はそのままリンクできない。書き直さない
 - 到達 Electron の版（計画では固定しない。公証でき、選んだ FFI が動くこと。Electron 6 のままにしない。Node は Electron 同梱）
@@ -144,7 +144,7 @@ Apple Silicon 作業で必要な Mac 評価版（公式表の版。2025-04 に a
 - `/kiro-spec-init` を使う。`at1-koffi-direct` を再作成する
 - 指示なしに `requirements.md` / `design.md` / `tasks.md` / `spec.json` を作る
 - Angular 置き換え、preload 全面移行、Universal / Rosetta 回避
-- 評価版 SDK を配布物に入れる
+- 評価版 SDK を配布物に入れる（vendor に置くこととは別。開発中は載せない経路をコメントアウト＋コメントを残す。今はコードを触らない）
 - 一括 sed / 一括ライブラリ更新
 - テストコードの無許可変更
 - 干渉したライブラリを黙って戻す

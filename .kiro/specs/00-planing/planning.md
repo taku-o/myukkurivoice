@@ -6,7 +6,7 @@
 
 | 呼び方 | 中身 |
 | --- | --- |
-| **THEN 1–9** | 製品の作業順。1 vendor ファイル、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
+| **THEN 1–9** | 製品の作業順。1 ファイル（1-1 secret → 1-2 vendor）、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
 | **cc-sdd** | コマンド名で呼ぶ。番号を THEN と共有しない |
 
 - Cursor: 進捗管理・仕様の決定（次に何をするか、仕様が正しいか、いつ進めるか）
@@ -22,7 +22,7 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
 `/kiro-spec-init` は使わない。`requirements.md` / `design.md` / `tasks.md` / `spec.json` は、taku-o が Claude Code に `/kiro-spec-requirements` を出すまで作らない。承認も自分では付けない。`-y` は使わない。
 
-**進め方（taku-o）:** 調査は済んだ。アクティブな spec は無い。THEN 1 は vendor ファイル（`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-vendor-updates/`。ファイル投入はまだ。短い一覧は [upcoming-work.md](./upcoming-work.md)。
+**進め方（taku-o）:** 調査は済んだ。アクティブな spec は無い。THEN 1 はファイル（1-1 `myukkurivoice-secret` → 1-2 `myukkurivoice-vendor`。secret が先。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-secret-updates/`。1-1 の更新も 1-2 の投入もまだ。短い一覧は [upcoming-work.md](./upcoming-work.md)。
 
 **決まったこと**
 
@@ -32,6 +32,8 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 - `maquestalk1` は現行のままでは呼べない。新 SDK は `AquesTalk_Synthe_Utf8` + 声種ごとの dylib。`SyntheMV` は無い
 - AT1 は AT2 / AT10 と同じ直呼び（koffi）ができる。新版では `maquestalk1` を書き直さず捨てる。詳細: [survey-at1-direct.md](./survey-at1-direct.md)
 - `maquestalk1-ios` は今は使わない
+- 評価版を vendor に置くことと、配布物に載せないことは別。開発中は、配布物に評価版を載せる経路を **コメントアウト＋コメントを残す**（今はコードを触らない）。AT2 評価版は `*Eva*` で SetDevKey が無い。製品版 dylib 差し替えは別判断
+- アプリが読む辞書は **`aq_dic_large`**。評価版 drop のフォルダ名 `aq_dic` には戻さない。THEN 1 で評価版 `aq_dic/` の中身を `aq_dic_large` に上書きしない。現行 `aq_dic_large` と `aq_user.csv` を残す。評価版 AqKanji2Koe dylib + 現行 large 辞書はマニュアル非推奨の可能性あり（調査上の注意。手順は増やさない）
 
 **調査の状態**
 
@@ -50,11 +52,11 @@ NOW（スニペット / CLI 1本）: 残り無し。上の調査は実施済み�
 
 THEN（調査のあと。製品の作業順。THEN 1 から）。短い一覧の正本は [upcoming-work.md](./upcoming-work.md)。
 
-**見分け:** THEN 1=ファイル投入。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。アプリは `vendor/` を読むので、vendor 更新が先。
+**見分け:** THEN 1=ファイル投入（1-1 secret → 1-2 vendor）。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。secret 更新が vendor より先。アプリは `vendor/` を読むので、vendor 更新がアプリコードより先。
 
 LATER（今はやらない）: アプリをパッケージして公証できる Electron を決めること。本番 renderer の中だけで分かる FFI。本番の MAS / 署名。Playwright へのテスト移行そのもの。
 
-THEN 1 は vendor ファイル（`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-vendor-updates/`。このタスクでは `/kiro-*` を走らせない。アクティブな spec ディレクトリは無い。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。実行は Claude Code。`at1-koffi-direct` は再作成しない（削除済み。アクティブな spec ではない）。`-y` は使わない。`/kiro-spec-init` は使わない。taku-o が `/kiro-spec-requirements` を出すまで requirements / design / tasks / spec.json は作らない。
+THEN 1 はファイル（1-1 `myukkurivoice-secret` → 1-2 `myukkurivoice-vendor`。secret が先。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-secret-updates/`。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。実行は Claude Code。`at1-koffi-direct` は再作成しない（削除済み）。`-y` は使わない。`/kiro-spec-init` は使わない。taku-o が `/kiro-spec-requirements` を出すまで requirements / design / tasks / spec.json は作らない。
 
 ## 1. 目的
 
@@ -119,7 +121,10 @@ electron.remote 方針                 ──┘              │
                          開発環境・CI の Node 更新
                                        │
                                        ▼
-              myukkurivoice-vendor を更新（THEN 1。ファイル投入。アプリは vendor/ を読むので先）
+              myukkurivoice-secret を arm64 更新（THEN 1-1。vendor より先）
+                                       │
+                                       ▼
+              myukkurivoice-vendor を更新（THEN 1-2。更新済み secret の成果物をコピー。secret は建て直さない。アプリは vendor/ を読むのでアプリコードより先）
                                        │
                                        ▼
               AT1 を koffi 直呼び（THEN 2。アプリ。maquestalk1 / maquestalk1-ios は捨てる）
@@ -131,7 +136,7 @@ electron.remote 方針                 ──┘              │
               arm64 パッケージング → テスト基盤の置き換え → 署名・公証・MAS → 独立ライブラリ更新（THEN 9）
 ```
 
-評価版は開発・確認用。配布物に評価版を入れない。
+評価版は開発・確認用。vendor に置くことと、配布物に載せないことは別。開発中は、配布物に評価版を載せる経路をコメントアウトし、コメントを残す（今はコードを触らない。THEN は増やさない）。AT2 評価版は `*Eva*` で SetDevKey が無い。製品版 dylib 差し替えは別判断。
 
 ### 5.1 AquesTalk vendor（Apple Silicon 対応版へ更新）
 
@@ -141,7 +146,7 @@ electron.remote 方針                 ──┘              │
 - 参照: `.gitmodules` の `git@github.com:myukkurivoice/myukkurivoice-vendor.git`
 - 役割: アクエスト製ライブラリと、自作 CLI（`maquestalk1` / `maquestalk1-ios` / `secret`）をまとめてアプリへ渡す
 
-Apple Silicon 対応は、まずこの vendor リポジトリを更新する作業である。アプリ本体は submodule を追従し、パスが変わったときだけコードを直す。
+Apple Silicon 対応のファイル投入は、まず `myukkurivoice-secret` を arm64 に更新し（THEN 1-1）、その成果物と評価版 SDK を `myukkurivoice-vendor` へ入れる（THEN 1-2。secret は建て直さない）。アプリ本体は submodule を追従し、パスが変わったときだけコードを直す。
 
 現行 vendor を `lipo -info` で確認した。
 
@@ -176,17 +181,19 @@ AquesTalk2 / 10 / 辞書は FFI で framework を直接呼ぶ。AquesTalk1 は `
 | AquesTalk1 Mac | 2.0.1（2025-04-23）Apple Silicon 対応 | 声種ごとの dylib、arm64 のみ |
 | AqKanji2Koe-A Mac | 4.1.1（2025-04-26）Apple Silicon 対応 | dylib、arm64 のみ |
 
-評価版の制限は「ナ行・マ行がヌになる」。開発ライセンスキーを入れない状態。評価版パッケージの再配布は禁止。配布アプリには入れない。形式は全部 **dylib**。`.framework` は評価版側に無い。**AquesTalk1 iOS は取らない**（Mac AT1 が足りないと証明されたときだけ戻す）。
+評価版の制限は「ナ行・マ行がヌになる」。開発ライセンスキーを入れない状態。評価版パッケージの再配布は禁止。配布アプリには入れない（載せない経路はコメントアウト＋コメントを残す。今はコードを触らない）。形式は全部 **dylib**。`.framework` は評価版側に無い。**AquesTalk1 iOS は取らない**（Mac AT1 が足りないと証明されたときだけ戻す）。AT2 評価版は `*Eva*` で SetDevKey が無い。製品版 dylib 差し替えは別判断。
 
-発生作業（リポジトリの順。アプリは `vendor/` を読むので vendor が先。**下の番号は発生作業の箇条書き。THEN 1–9 ではない。**）:
+アプリが読む辞書は **`aq_dic_large`**。かつて `aq_dic` を `aq_dic_large` に差し替えた。評価版 drop のフォルダ名 `aq_dic` には戻さない。THEN 1 で評価版 `aq_dic/` の中身を `aq_dic_large` に上書きしない。現行 `aq_dic_large` と `aq_user.csv` を残す。評価版 AqKanji2Koe dylib と現行 large 辞書の組み合わせは、マニュアル非推奨の可能性あり（調査上の注意。手順は増やさない）。
+
+発生作業（リポジトリの順。secret が vendor より先。アプリは `vendor/` を読むので vendor がアプリコードより先。**下の番号は発生作業の箇条書き。THEN 1–9 ではない。**）:
 
 1. 評価版 SDK の入手、dylib のパス、関数シグネチャ、辞書・phont の差分確認（棚卸し済み。WAV 実測は koffi スニペットで実施済み。アプリ再生はまだ）
-2. `secret` を arm64 向けに `go build` する（https://github.com/myukkurivoice/myukkurivoice-secret）。`/tmp` では実施済み
-3. 上記と評価版 SDK、AT1 の声種 dylib、talk2 追加 3 phont を `myukkurivoice-vendor` に入れる。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない（THEN 1。ファイル投入）
+2. `myukkurivoice-secret` を arm64 に更新する（ブランチ `feature/applecpu/master`）。`/tmp` の調査ビルドは実施済み。checkout 内バイナリは x86_64 のまま（THEN 1-1。vendor より先）
+3. 評価版 SDK、AT1 の声種 dylib、**更新済み secret の成果物**、talk2 追加 3 phont を `myukkurivoice-vendor` に入れる。secret は secret リポジトリの更新後の成果物をコピーする。ここで建て直さない。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない。評価版 `aq_dic/` の中身で `aq_dic_large` を上書きしない（THEN 1-2。ファイル投入）
 4. アプリ側のパス追従。現行は `.framework`、評価版は dylib。`gulpfile.package.js` の unpacked コピー、asar ignore、`DynamicLibrary` パス
 5. `maquestalk1` は書き直さない。捨てる。AT1 は koffi で dylib 直呼び（`Synthe_Utf8` + `FreeWave`。声種は `f1` / `m1` dylib）。`maquestalk1-ios` も捨てる（THEN 2。アプリコード。talk1 の呼び方）
 6. AquesTalk1 は Mac 評価版が正本。本体の Catalina / iOS 切替は捨てて、talk1 も koffi 直呼びにする。iOS は最後の手段
-7. サンプリングレート等の仕様差分。現行は 8000Hz 扱い。新 AquesTalk10 は koffi スニペットで 16kHz 実測済み。アプリ再生経路はまだ
+7. サンプリングレート等の仕様差分。現行は 8000Hz 扱い。新 AquesTalk10 は koffi スニペットで 16kHz 実測済み。再生レートは THEN 3 のパス追従。THEN 1 ではアプリから新 AT10 を読まない。https://github.com/taku-o/myukkurivoice/issues/299
 8. talk2 の `aq_defo1` / `aq_momo1` / `aq_teto1` は公式評価版に無い（アプリが後から足した）。新評価版へコピーすると Synthe できる。配布に残すかは後で決める
 9. 評価版で開発が成立したあと、製品配布に有償ライセンスが必要かは、その時点で決める
 
@@ -194,7 +201,7 @@ AquesTalk2 / 10 / 辞書は FFI で framework を直接呼ぶ。AquesTalk1 は `
 
 ### 5.2 FFI（`ffi-napi` の打ち切り）
 
-これは THEN 3（アプリの FFI 道具）。THEN 9 の独立ライブラリ更新ではない。THEN 1 の vendor 投入でもない。talk1 の koffi 直呼びは THEN 2。
+これは THEN 3（アプリの FFI 道具）。THEN 9 の独立ライブラリ更新ではない。THEN 1-2 の vendor 投入でもない。talk1 の koffi 直呼びは THEN 2。
 
 `ffi-napi` は Electron 21 以降の V8 Memory Cage と両立しない。実運用上の上限は Electron 20.3.8 付近。現行 Electron 6 のまま arm64 ネイティブ配布はできない（Electron の arm64 公式ビルドは 11 以降）。
 
@@ -384,10 +391,10 @@ vendor / ネイティブ（版上げではなく arm64 再ビルド）:
 
 | もの | リポジトリ | 扱い |
 | --- | --- | --- |
-| `vendor/` | `myukkurivoice/myukkurivoice-vendor` | 自作 submodule。評価版 SDK と自作 CLI を入れる |
+| `vendor/` | `myukkurivoice/myukkurivoice-vendor` | 自作 submodule。THEN 1-2。評価版 SDK と、更新済み secret の成果物を入れる。secret は建て直さない |
 | `maquestalk1` | `myukkurivoice/maquestalk1`（Desktop の clone 表記は taku-o） | 新版では捨てる。AT1 は koffi 直呼び |
 | `maquestalk1-ios` | `myukkurivoice/maquestalk1-ios` | 今は使わない。Mac AT1 が足りないと分かるまで対象外 |
-| `secret` | `myukkurivoice/myukkurivoice-secret` | arm64 で `go build` |
+| `secret` | `myukkurivoice/myukkurivoice-secret` | THEN 1-1。ブランチ `feature/applecpu/master`。arm64 で `go build`。vendor より先 |
 
 #### アプリの依存ではない関連リポジトリ
 
@@ -462,9 +469,9 @@ cc-sdd（kiro）の承認ゲートを守る。コマンド名の正本は [cc-sd
 
 | THEN | 内容 | 依存 |
 | --- | --- | --- |
-| THEN 1 | ファイル。`myukkurivoice-vendor`（評価版 SDK、AT1 声種 dylib、talk2 追加 3 phont、`secret` arm64。`maquestalk1` / `maquestalk1-ios` は入れない） | NOW 調査。アプリは `vendor/` を読むので、ここが先 |
-| THEN 2 | アプリコード。talk1 の呼び方。`maquestalk1` / `maquestalk1-ios` の外部コマンドを捨て、AT1 dylib をプロセス内直呼び（CLI は書き直さない） | THEN 1 の vendor パス、直呼び試験 |
-| THEN 3 | アプリコード。FFI の道具。AT2 / AT10 / AqKanji2Koe の `ffi-napi` → `koffi`。ライブラリ更新ではない | NOW の koffi 最小呼び出し、THEN 1 のパス、THEN 2。talk1 は THEN 2 で済んでいれば触らない |
+| THEN 1 | ファイル。1-1 `myukkurivoice-secret` を arm64 に更新（`feature/applecpu/master`）。1-2 `myukkurivoice-vendor`（評価版 SDK、AT1 声種 dylib、**更新済み secret の成果物**、talk2 追加 3 phont。`maquestalk1` / `maquestalk1-ios` は入れない。secret は建て直さない） | NOW 調査。1-1 が 1-2 より先。アプリは `vendor/` を読むので、1-2 がアプリコードより先 |
+| THEN 2 | アプリコード。talk1 の呼び方。`maquestalk1` / `maquestalk1-ios` の外部コマンドを捨て、AT1 dylib をプロセス内直呼び（CLI は書き直さない） | THEN 1-2 の vendor パス、直呼び試験 |
+| THEN 3 | アプリコード。FFI の道具。AT2 / AT10 / AqKanji2Koe の `ffi-napi` → `koffi`。ライブラリ更新ではない | NOW の koffi 最小呼び出し、THEN 1-2 のパス、THEN 2。talk1 は THEN 2 で済んでいれば触らない |
 | THEN 4 | `electron.remote` → `@electron/remote` | NOW の remote 棚卸し |
 | THEN 5 | Electron / Node 更新（Node は Electron 同梱。Electron 6 のままにしない） | THEN 3 と THEN 4。公証できる版決めは LATER |
 | THEN 6 | arm64 パッケージング・署名・公証・MAS | THEN 5 |
@@ -512,9 +519,10 @@ THEN 9 は「まとめて最新化」しない。1ライブラリ（または密
 - `vendor/` は自作リポジトリ `myukkurivoice-vendor`。アクエスト製バイナリと自作 CLI の組み立て場所。本体アプリとは別リポジトリで更新する
 - `maquestalk1` は自作 CLI。新版では不要。昔は i386 の AT1 を 64bit Electron から `dlopen` できなかったための別プロセス。新 Mac AT1 は arm64 dylib なので、AT2 / AT10 と同じ直呼びで足りる。現行の `SyntheMV` + framework のままではリンクできないが、直す対象は CLI ではない
 - `maquestalk1-ios` は今は使わない。戻す条件は、Mac AT1 で現行 talk1 が成立しないと証明されたとき
-- `secret` は自作の Go CLI（https://github.com/myukkurivoice/myukkurivoice-secret）。arm64 向けに `go build` し直す
+- `secret` は自作の Go CLI（https://github.com/myukkurivoice/myukkurivoice-secret）。THEN 1-1 で arm64 向けに更新する。THEN 1-2 ではその成果物をコピーし、vendor 側で建て直さない
 - 評価版 SDK の形式は **dylib**（確認済み）。サンプリングレートが現行と違うと、パス変更と音声の見え方が変わる
-- 評価版はナ行・マ行がヌになる。開発確認ではそれで足りる。配布物には評価版を入れない
+- 評価版はナ行・マ行がヌになる。開発確認ではそれで足りる。vendor に置くことと配布物に載せないことは別。開発中は載せない経路をコメントアウト＋コメントを残す
+- アプリが読む辞書は `aq_dic_large` のまま。評価版 AqKanji2Koe dylib との組み合わせはマニュアル非推奨の可能性あり（調査上の注意）
 - AqKanji2Koe が AqKanji2Koe-A に変わっている。辞書まわりの差分がある可能性
 - koffi（または選定した FFI）が、到達 Electron で WAV バッファを正しく返せない
 - `nodeIntegration: true` を残すため、新しい Electron のデフォルト（contextIsolation）とは逆の設定になる。警告は出るが、本計画では許容する
@@ -530,7 +538,7 @@ THEN 9 は「まとめて最新化」しない。1ライブラリ（または密
 順序の正本は「いまここ」と [upcoming-work.md](./upcoming-work.md)。cc-sdd は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
 
 1. NOW の小さい調査は実施済み
-2. THEN 1 は vendor ファイル（`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-vendor-updates/`。このタスクでは `/kiro-*` を走らせない。アクティブな spec は無い。cc-sdd を始めるときは taku-o が `/kiro-spec-requirements {feature}` を出す（Claude Code）。名前は未確定。`at1-koffi-direct` は再作成しない
+2. THEN 1 はファイル（1-1 `myukkurivoice-secret` → 1-2 `myukkurivoice-vendor`。secret が先。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-secret-updates/`。Claude Code が `/kiro-spec-requirements` … `/kiro-impl` を実行する。cc-sdd を始めるときは taku-o が `/kiro-spec-requirements {feature}` を出す（Claude Code）。名前は未確定。`at1-koffi-direct` は再作成しない
 3. そのあと THEN 2（アプリ。talk1 の呼び方）→ THEN 3（アプリ。FFI の道具。ライブラリ更新ではない）→ THEN 4 `@electron/remote` → THEN 5 Electron / Node → THEN 6 arm64 パッケージ・署名・公証・MAS → THEN 7 テスト（Playwright は許可が必要）→ THEN 8 CI → THEN 9 独立ライブラリ 1 件ずつ（ここがライブラリ更新）
 4. LATER: 公証できる Electron をアプリごとパッケージして決める。本番 renderer の FFI。本番 MAS / 署名。Playwright 移行そのもの
 5. `/kiro-spec-init` は使わない。Claude Code に `/kiro-spec-requirements` が出るまで `requirements.md` / `design.md` / `tasks.md` / `spec.json` は作らない。承認も自分では付けない。`-y` は使わない

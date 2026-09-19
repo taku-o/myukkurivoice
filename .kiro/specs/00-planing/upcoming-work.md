@@ -6,7 +6,7 @@ taku-o 向け。再開入口は `.kiro/specs/00-planing/resume.md`。詳細は�
 
 | 呼び方 | 中身 |
 | --- | --- |
-| **THEN 1–9** | 製品の作業順。1 vendor ファイル、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
+| **THEN 1–9** | 製品の作業順。1 ファイル（1-1 secret → 1-2 vendor）、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
 | **cc-sdd** | コマンド名で呼ぶ。番号を THEN と共有しない |
 
 - Cursor: 進捗管理・仕様の決定（次に何をするか、仕様が正しいか、いつ進めるか）
@@ -14,7 +14,7 @@ taku-o 向け。再開入口は `.kiro/specs/00-planing/resume.md`。詳細は�
 
 THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
-**方針:** これからは **cc-sdd** で進める。コマンドは1つずつ。taku-o が次を言うまで止まる。調査は済んだ。アクティブな spec は無い。THEN 1 は vendor ファイル（`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）。アプリ全体を作らないと確かめられない調査は後回し。
+**方針:** これからは **cc-sdd** で進める。コマンドは1つずつ。taku-o が次を言うまで止まる。調査は済んだ。アクティブな spec は無い。THEN 1 はファイル（1-1 `myukkurivoice-secret` → 1-2 `myukkurivoice-vendor`。secret が先。アプリは `vendor/` を読むのでアプリコードより先）。アプリ全体を作らないと確かめられない調査は後回し。
 
 **誰がやるか（2026-09-19）:** Cursor は進捗管理と仕様の決定。`/kiro-spec-requirements` … `/kiro-spec-tasks` の実行は Claude Code。製品実装は Claude Code（`/kiro-impl` 以降）。`/kiro-review-spec` と `/kiro-review-feature` も Claude Code。正本は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
 
@@ -28,7 +28,7 @@ THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
 AqKanji2Koe の Convert スニペットも **済んだ**（**works**）。記録は [survey-aqkanji2koe.md](./survey-aqkanji2koe.md)。
 
-AT1 直呼びも **済んだ**（できる）。記録は [survey-at1-direct.md](./survey-at1-direct.md)。NOW の小さい調査はここまで。アクティブな spec は無い。THEN 1 の作業記録は `.kiro/specs/01-vendor-updates/`。vendor へのファイル投入はまだ。`maquestalk1` は直さない。捨てるのは THEN 2。
+AT1 直呼びも **済んだ**（できる）。記録は [survey-at1-direct.md](./survey-at1-direct.md)。NOW の小さい調査はここまで。アクティブな spec は無い。THEN 1 の作業記録は `.kiro/specs/01-secret-updates/`。1-1 の secret 更新も 1-2 の vendor 投入もまだ。`maquestalk1` は直さない。捨てるのは THEN 2。
 
 ## 済んだ調査
 
@@ -49,11 +49,13 @@ AT1 直呼びも **済んだ**（できる）。記録は [survey-at1-direct.md]
 
 ## THEN（調査のあと。製品の作業順）
 
-**見分け:** THEN 1=ファイル投入。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。
+**見分け:** THEN 1=ファイル投入（1-1 secret → 1-2 vendor）。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。
 
-**なぜ THEN 1 が vendor か:** アプリは `vendor/` を読む。dylib 直呼びの前に、読む先を先に置く。
+**なぜ THEN 1 がファイルか:** アプリは `vendor/` を読む。dylib 直呼びの前に、読む先を先に置く。vendor に入れる `secret` は、secret リポジトリで先に arm64 へ更新した成果物をコピーする。
 
-- **THEN 1. ファイル。** `myukkurivoice-vendor`（評価版 SDK、AT1 の声種 dylib、`secret` の arm64、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない）
+- **THEN 1. ファイル。** vendor より先に secret。番号 2–9 は動かさない。
+  - **THEN 1-1.** `myukkurivoice-secret` を arm64 に更新（ブランチ `feature/applecpu/master`）。vendor より先。
+  - **THEN 1-2.** `myukkurivoice-vendor`（評価版 SDK、AT1 声種 dylib、**更新済み secret の成果物**、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` は入れない）。secret をここで建て直さない。
 - **THEN 2. talk1 の呼び方（アプリコード）。** `maquestalk1` / `maquestalk1-ios` の外部コマンドを捨てる。vendor の AT1 dylib をプロセス内で直呼びする。CLI は書き直さない
 - **THEN 3. FFI の道具（アプリコード）。** AT2 / AT10 / AqKanji2Koe の `ffi-napi` を `koffi` に替える。vendor の差し替えではない。ライブラリ更新でもない。talk1 は THEN 2 で既に koffi なら、ここでは触らない
 - **THEN 4.** `electron.remote` を `@electron/remote` に置き換え
@@ -63,7 +65,13 @@ AT1 直呼びも **済んだ**（できる）。記録は [survey-at1-direct.md]
 - **THEN 8.** CI
 - **THEN 9.** 独立ライブラリを 1 件ずつ（ライブラリ更新はここ。THEN 3 ではない）
 
-THEN 1 は vendor ファイル。作業記録は `.kiro/specs/01-vendor-updates/`（cc-sdd の spec ではない）。このタスクでは `/kiro-*` を走らせない。アクティブな spec ディレクトリは無い。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。実行は Claude Code。`at1-koffi-direct` は再作成しない（削除済み。アクティブな spec ではない）。詳細は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
+**制約（THEN は増やさない。taku-o 2026-09-19）**
+
+- 評価版を vendor に置くことと、配布物に載せないことは別。開発中は、配布物に評価版を載せる経路を **コメントアウト＋コメントを残す**。今はコードを触らない。AT2 評価版は `*Eva*` で SetDevKey が無い。製品版 dylib 差し替えは別判断。
+- アプリが読む辞書は **`aq_dic_large`**。かつて `aq_dic` を `aq_dic_large` に差し替えた。評価版 drop のフォルダ名 `aq_dic` には戻さない。THEN 1 で評価版 `aq_dic/` の中身を `aq_dic_large` に上書きしない。現行 `aq_dic_large` を残す。`aq_user.csv` も現行どおり残す。評価版 AqKanji2Koe dylib と現行 large 辞書の組み合わせは、マニュアル非推奨の可能性あり（調査上の注意。手順は増やさない）。
+- AT10 は 16kHz、アプリ再生は 8kHz 前提のまま。THEN 1 ではアプリから新 AT10 を読まない。再生レートは THEN 3。https://github.com/taku-o/myukkurivoice/issues/299
+
+THEN 1 はファイル（1-1 secret → 1-2 vendor）。作業記録は `.kiro/specs/01-secret-updates/`。feature 名は taku-o が `/kiro-spec-requirements` を出すときに決める。実行は Claude Code。`at1-koffi-direct` は再作成しない（削除済み）。詳細は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
 
 各スペックの cc-sdd 順（飛ばさない。各コマンドのあと taku-o 待ち。**番号は付けない**）:
 

@@ -111,7 +111,7 @@ phont 一覧（評価版）:
 - ヘッダ: `AqKanji2Koe.h`（2025/04/23 Ver.4.1.1）、`AqUsrDic.h`（2025/04/25 Ver.4.1.1）
 - 辞書: `aq_dic/aqdic.bin`（9.4M、2022-01-27）+ `aq_user.dic` + `CREDITS`
 - マニュアルの辞書サイズ表記は「約 7MB（約 36 万語）」。実ファイルは 9.4M
-- 現行 `vendor/aq_dic_large/aqdic.bin` は 12M で **ハッシュ不一致**。`aqk2k_mac/aq_dic/aqdic.bin`（7.2M）とも不一致。差し替え時は辞書を評価版セットで揃える必要あり
+- 現行 `vendor/aq_dic_large/aqdic.bin` は 12M で **ハッシュ不一致**。`aqk2k_mac/aq_dic/aqdic.bin`（7.2M）とも不一致。**taku-o 決定:** アプリが読むのは `aq_dic_large` のまま。THEN 1 で評価版 `aq_dic/` の中身を上書きしない。評価版 dylib と現行 large 辞書はマニュアル非推奨の可能性あり（調査上の注意。手順は増やさない）
 - API 残: `AqKanji2Koe_Create` / `Create_Ptr` / `Release` / `Convert`（UTF-8）/ `SetDevKey`
 - API 増: `AqKanji2Koe_ConvRoman`
 - API 減: 現行の `AqKanji2Koe_ConvertW`（UTF-32）は新ヘッダに無い

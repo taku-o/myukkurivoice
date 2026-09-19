@@ -113,8 +113,9 @@ CSV の列（表記, 読み, 品詞コード）は同じ。
 - アプリが今使う `Convert` はそのままの呼び方で足りる
 - `ConvertW` 削除は、現行アプリからは影響しない
 - `ConvRoman` は今は使っていない。足さなくてよい
-- パス追従は THEN: `.framework` → `libAqKanji2Koe.dylib`、`aq_dic_large` → `aq_dic`
-- 辞書は評価版セットで揃える想定。ハッシュ不一致は棚卸しどおり。Convert が現行辞書でも動くことと、読みが同じことは別
+- パス追従は THEN: `.framework` → `libAqKanji2Koe.dylib`。辞書フォルダ名は **`aq_dic_large` のまま**（評価版 `aq_dic` には戻さない）
+- **taku-o 決定:** THEN 1 で評価版 `aq_dic/` の中身を `aq_dic_large` に上書きしない。現行 `aq_dic_large` と `aq_user.csv` を残す。ハッシュ不一致はそのまま。Convert が現行辞書でも動くことと、読みが同じことは別
+- 評価版 AqKanji2Koe dylib と現行 large 辞書の組み合わせは、マニュアル非推奨の可能性あり（調査上の注意。手順は増やさない）
 - koffi はホスト Node で通った。選んだ Electron の中はまだ（LATER / THEN）
 
 ## やっていないこと

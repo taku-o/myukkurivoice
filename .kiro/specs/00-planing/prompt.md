@@ -204,7 +204,7 @@ git stagingにあがっているファイルをcommit、pushしてください�
 文章の前後で矛盾が生じている箇所があると思う。
 
 例えば、upcoming-work.mdの"やらないこと（この段階）"
-> maquestalk1 / アプリの書き換え（実装は工程 7。Claude Code。taku-o が {task_number} を出すまで入らない。Cursor は始めない）
+> maquestalk1 / アプリの書き換え（実装は工程 7。Claude Code。taku-o が {task_number} を出すまで入らない）
 
 実装は工程 7とあるけど、
 7は、"テスト（Playwright 化は許可が必要）"になってるじゃない？

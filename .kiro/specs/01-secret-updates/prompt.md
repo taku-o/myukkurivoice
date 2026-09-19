@@ -13,7 +13,6 @@ myukkurivoice-vendorは feature/applecpu/masterブランチを作成。
 myukkurivoiceの .kiro/specs/01-vendor-updates/ ディレクトリに、Claude Codeに渡す情報の資料を作成してください。
 タスクの作業の内容や、タスクを実現する上で知っておくべき情報。
 この資料の内容は .kiro/specs/00-planing/以下の資料は読んでいる前提で良い。
-requirments.md、design.md、tasks.md、prompt.mdというファイル名のファイルは作ってはいけない。それらのファイル名は実装側が使う。
 
 git stagingに上がっている修正をcommitして。
 git push origin HEAD
@@ -43,7 +42,6 @@ talk2 追加 3 phont（aq_defo1 / aq_momo1 / aq_teto1）。公式 14 種を評�
 本体アプリ（js/、gulp、テスト）の書き換え
 maquestalk1 の書き直し。CLI バイナリを vendor に入れること
 iOS SDK、評価版 DMG、作業用 store、myukkurivoice git ツリーへの SDK 直置き
-/kiro-*。requirements.md / design.md / tasks.md / prompt.md / spec.json を新規作成
 commit / push（私が言うまで）
 本体の submodule SHA 追従
 「完了」と書かない
@@ -70,10 +68,6 @@ commit / push（私が言うまで）
 
 作業の進め方まわり、
 /kiro-spec-requirementsコマンドをCursorが実行する前提でドキュメントが書かれているのではないか？直して。
->  さらに、THEN 1（vendorファイル投入）自体は 01-vendor-updates/README.md
->  に「このフォルダはcc-sddのspecではない」「feature名はtaku-oが/kiro-spec-requirementsを出すまで決めな
->  い」と明記されており、前回私が行ったvendorファイル投入作業は、THEN 1向けの正しい対応だったことも分か
->  りました（specを作らずhandoffドキュメント通りに実装、という扱いが元々想定されていた）。
 
 
 これは誤り。ドキュメントを修正させている。
@@ -85,20 +79,45 @@ commit / push（私が言うまで）
 要件定義書の段階で、実装変更が残っているとCritical bugとして報告される。
 
 これは何？決められた作業手順を変えようとしている？
-> THEN 1 は spec ではなく handoff どおり、という扱いは変えません。
-
-.kiro/specs/01-vendor-updates/README.md に
-Cursor向けの記述が書いてある。
-しかし、これをClaude Codeが読むと、requirements.mdなどを作るな、
-という指示になってしまい、Claude Codeを混乱させている。
-
-資料の見直しをしてください。
-.kiro/specs以下に置くファイルは、Cursorだけの資料ではない。
-Cursorだけに対する内容があったら、それは載せてはいけない。
-そういう指示の資料は、Cursor Project内に置いておこう。
 
 ファイルとして書き出した資料に余計な記載がないか確認。
 資料全体を通して確認して矛盾がないか確認。
 その後、専門家の視点で、調査資料、設計の計画を確認。
 
+git commit, git pushしてください。
 
+これは開発中はコメントアウト＋コメントを残して置くことで対応しよう。
+> 評価版を vendor に置くことと、配布物に載せないゲートは別。AT2 評価版は *Eva* で SetDevKey が無い
+
+これは今もそうだね？
+GitHub issueにこの問題を登録してくれる？
+> AT10 は 16kHz、アプリ再生は 8kHz 前提
+
+これは何？
+> 辞書 3 種が不一致。aq_user.csv は未決
+
+aq_dic_largeを使います。確かaq_dicをaq_dic_largeに差し替えた記憶があります。
+> 現行アプリが読む aq_dic_large
+
+少し作業を進めて分かったが、
+myukkurivoice-vendorの作業を進めるには、secretを更新する必要があるんだ。
+作業手順として、myukkurivoice-vendorの前にmyukkurivoice-secretを更新する作業を差し込もう。
+> THEN 1. ファイル。 myukkurivoice-vendor（評価版 SDK、AT1 の声種 dylib、secret の arm64、talk2 の追加 3 phont。maquestalk1 / maquestalk1-ios のバイナリは入れない）
+
+myukkurivoice-secret ももう feature/applecpu/masterブランチを作成してください。
+
+.kiro/specs/01-secret-updatesディレクトリに、
+Claude Codeへの作業指示用の資料を作成してください。
+
+もう一度言いますね。非常に重要な内容です。
+おそらくまったく出来ていません。仕事を任せたAgentが出来ていないのに
+出来たと言い張っている可能性があります。
+
+**Claude Codeは/kiro-コマンドを使うんだよ。**
+
+Cursor Projectがエージェントに仕事を任せたあと、
+その仕事の結果がうまく出来ているかをチェックする仕組みが入っていないようです。
+品質を担保する上で非常に重要です。
+ルールを追加してください。
+一つの作業を指示する際、作業を行うエージェントと、それとは別に作業の結果をレビューするエージェントを用意するのです。
+出来ていない場合はやり直させたり、修正したり、品質を改善したりする必要があります。
