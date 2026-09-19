@@ -6,31 +6,33 @@
 
 | 呼び方 | 中身 |
 | --- | --- |
-| **THEN 1–9** | 製品の作業順。1 vendor ファイル、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
+| **THEN 1–9** | 製品の作業順。1 ファイル（1-1 secret → 1-2 vendor）、2 talk1 CLI→dylib、3 ffi-napi→koffi、4 `@electron/remote`、5 Electron/Node（Node は Electron 同梱）、6 パッケージ、**7 テスト**、8 CI、9 独立ライブラリ |
 | **cc-sdd** | コマンド名で呼ぶ。番号を THEN と共有しない |
 
-- Cursor: `/kiro-spec-requirements` → `/kiro-validate-gap` → `/kiro-spec-design` → `/kiro-validate-design` → `/kiro-spec-tasks`
-- Claude Code: `/kiro-review-spec` → `/kiro-impl` → `/kiro-validate-impl` → `/kiro-review-feature` / `/code-review`
-- 裸の「工程 7」は使わない（THEN 7=テスト、`/kiro-impl` と衝突する）
+- Cursor: 進捗管理・仕様の決定（次に何をするか、仕様が正しいか、いつ進めるか）
+- Claude Code: `/kiro-spec-requirements` → `/kiro-validate-gap` → `/kiro-spec-design` → `/kiro-validate-design` → `/kiro-spec-tasks` → `/kiro-review-spec` → `/kiro-impl` → `/kiro-validate-impl` → `/kiro-review-feature` / `/code-review`
 
-**今の段階:** 実装には入っていない。小さい調査は済んだ。アクティブな spec は無い。THEN 1（ファイル投入。`myukkurivoice-vendor`。アプリは `vendor/` を読むのでアプリコードより先）は将来の作業。`requirements.md` / `design.md` / `tasks.md` / `spec.json` はまだ無い。`/kiro-spec-init` は使わない。コマンドは1つずつ。taku-o が次を言うまで止まる。正本は Project store `docs/cc-sdd-adoption.md`。
+THEN 7 はテスト。実装コマンドは `/kiro-impl`。
 
-**誰がやるか（2026-09-19）:** Cursor は進捗・仕様・引き渡し（`/kiro-spec-requirements` … `/kiro-spec-tasks`）。製品実装は Claude Code（`/kiro-impl` 以降）。`/kiro-review-spec` と `/kiro-review-feature` は Claude Code 専用。Cursor では動かない。実装を頼まれたら Cursor は引き渡しパック（パス、feature 名、task number、spec ファイル、制約）を作る。
+**今の段階:** 製品実装には入っていない。小さい調査は済んだ。アクティブな spec は無い。THEN 1 はファイル（1-1 `myukkurivoice-secret` → 1-2 `myukkurivoice-vendor`。secret が先。アプリは `vendor/` を読むのでアプリコードより先）。作業記録は `.kiro/specs/01-secret-updates/`。1-1 の更新も 1-2 の投入もまだ。`requirements.md` / `design.md` / `tasks.md` / `spec.json` はまだ無い。`/kiro-spec-init` は使わない。コマンドは1つずつ。taku-o が次を言うまで止まる。cc-sdd は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
+
+**誰がやるか（2026-09-19）:** Cursor は進捗管理と仕様の決定。`/kiro-spec-requirements` … `/kiro-spec-tasks` の実行は Claude Code。製品実装は Claude Code（`/kiro-impl` 以降）。`/kiro-review-spec` と `/kiro-review-feature` は Claude Code。
 
 評価版 SDK: `~/Desktop/myukkurivoice-lib`。形式は dylib。AquesTalk1 は Mac 評価版。iOS は最後の手段。`maquestalk1` は書き直さない。捨てる。
 
 ## 新しい会話の始め方
 
-1. このファイルと `planning.md` を読む。短い作業順は Project store `docs/upcoming-work.md`。cc-sdd は `docs/cc-sdd-adoption.md`
-2. ブランチが `feature/applecpu/master` か確認する
+1. このファイルと `planning.md` を読む。短い作業順は [upcoming-work.md](./upcoming-work.md)。cc-sdd は [cc-sdd-adoption.md](./cc-sdd-adoption.md)
+2. 本体の作業ブランチが `feature/applecpu/secret-updates` か確認する（起点は `feature/applecpu/master`）
 3. **開発の前に調査する。** アプリ全体を作らないと確かめられない調査は後回し
-4. ユーザーの次の指示を待つ。指示なしに実装や要件定義を始めない。Cursor は製品実装を始めない。実装は Claude Code
+4. ユーザーの次の指示を待つ。指示なしに実装や要件定義を始めない。実装は Claude Code
 
 再開の指示例:
 
-- 「小さい調査を続けて」→ NOW は済んでいる。記録は Project store `docs/upcoming-work.md`
-- 「maquestalk1 を直して」→ しない。CLI は捨てる。捨てるのは THEN 2（THEN 1 の vendor のあと）
-- 「要件定義を作って」→ そのとき初めて `requirements.md` を作る。入口は `/kiro-spec-requirements {feature}`（feature 名はそのとき）。`/kiro-spec-init` は使わない。`at1-koffi-direct` は再作成しない
+- 「小さい調査を続けて」→ NOW は済んでいる。記録は [upcoming-work.md](./upcoming-work.md)
+- 「maquestalk1 を直して」→ しない。CLI は捨てる。捨てるのは THEN 2（THEN 1 のファイルのあと）
+- 「要件定義を作って」→ そのとき初めて `requirements.md` を作る。入口は `/kiro-spec-requirements {feature}`（feature 名はそのとき。実行は Claude Code）。`/kiro-spec-init` は使わない。`at1-koffi-direct` は再作成しない
+- 「THEN 1」→ ファイル（1-1 secret → 1-2 vendor）。`.kiro/specs/01-secret-updates/`。Claude Code が `/kiro-spec-requirements` … `/kiro-impl` を実行する
 
 ## 何の作業か
 
@@ -56,9 +58,11 @@ MYukkuriVoice を **Apple Silicon（arm64）専用** にし、必要な範囲で
 自前リポジトリを触るとき:
 
 - 起点: `develop` があればそこ。なければ `master`
-- 作業ブランチ名: **`feature/applecpu/master`**（本体に合わせる）
+- 作業ブランチ名の揃え方: 本体 `myukkurivoice` に合わせる。計画の起点は **`feature/applecpu/master`**
+- THEN 1 の本体作業ブランチは **`feature/applecpu/secret-updates`**（起点 `feature/applecpu/master`）
+- vendor clone の THEN 1-2 ブランチは **`feature/applecpu/master`**
+- secret clone の THEN 1-1 ブランチは **`feature/applecpu/master`**
 - `develop` / `master` 上では直接作業しない
-- 本体 `myukkurivoice` は既に `feature/applecpu/master`。それを継続する
 - `staging` は他リポジトリの起点にしない
 
 ```
@@ -73,16 +77,17 @@ git switch -c feature/applecpu/master
 
 - https://github.com/taku-o/myukkurivoice
 - 作業ディレクトリ: `/Users/taku-o/Desktop/myukkurivoice`
-- ブランチ: `feature/applecpu/master`（origin に push 済み。確認した先端は `ba8280d`。再開時に `git log -1` で確認）
+- 計画の起点ブランチ: `feature/applecpu/master`（origin にあり。計画ドキュメントの先端は `ba8280d`。再開時に `git log -1`）
+- THEN 1 作業ブランチ: `feature/applecpu/secret-updates`（起点は上。ローカル）
 
-Desktop に clone 済み（作業が必要になったら使う。今はいずれも `master`。作業時に `feature/applecpu/master` を切る）:
+Desktop に clone 済み:
 
 | パス | リポジトリ | 役割 |
 | --- | --- | --- |
-| `/Users/taku-o/Desktop/myukkurivoice-vendor` | myukkurivoice/myukkurivoice-vendor | vendor submodule の実体 |
+| `/Users/taku-o/Desktop/myukkurivoice-vendor` | myukkurivoice/myukkurivoice-vendor | vendor submodule の実体。THEN 1-2 ブランチ `feature/applecpu/master` |
 | `/Users/taku-o/Desktop/maquestalk1` | myukkurivoice/maquestalk1 | AquesTalk1 Mac 用 CLI（Xcode）。新版では捨てる（書き直さない） |
 | `/Users/taku-o/Desktop/maquestalk1-ios` | myukkurivoice/maquestalk1-ios | 今は使わない（最後の手段） |
-| `/Users/taku-o/Desktop/myukkurivoice-secret` | myukkurivoice/myukkurivoice-secret | ライセンスキー取得 CLI（Go） |
+| `/Users/taku-o/Desktop/myukkurivoice-secret` | myukkurivoice/myukkurivoice-secret | ライセンスキー取得 CLI（Go）。THEN 1-1 ブランチ `feature/applecpu/master` |
 | `/Users/taku-o/Desktop/myukkurivoice-lib` | （git に入れない） | 評価版 SDK。dylib |
 
 GitHub 操作は `taku-o`（mail@nanasi.jp）アカウント。`git-switch-account show` で確認してから commit / push。
@@ -91,31 +96,23 @@ GitHub 操作は `taku-o`（mail@nanasi.jp）アカウント。`git-switch-accou
 
 ## 実装の順番（調査のあと。THEN）
 
-**見分け:** THEN 1=ファイル投入。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。アプリは `vendor/` を読むので、vendor 更新が先。
+正本は [upcoming-work.md](./upcoming-work.md)。
 
-- **THEN 1. ファイル。** `myukkurivoice-vendor`（評価版 SDK、AT1 の声種 dylib、`secret` の arm64、talk2 の追加 3 phont。`maquestalk1` / `maquestalk1-ios` のバイナリは入れない）
-- **THEN 2. talk1 の呼び方（アプリコード）。** `maquestalk1` / `maquestalk1-ios` の外部コマンドを捨てる。vendor の AT1 dylib をプロセス内で直呼びする。CLI は書き直さない
-- **THEN 3. FFI の道具（アプリコード）。** AT2 / AT10 / AqKanji2Koe の `ffi-napi` を `koffi` に替える。vendor の差し替えではない。ライブラリ更新でもない。talk1 は THEN 2 で既に koffi なら、ここでは触らない
-- **THEN 4.** `electron.remote` を `@electron/remote` に置き換え
-- **THEN 5.** Electron / Node 更新（Node は Electron 同梱。Electron 6 のままにしない）
-- **THEN 6.** arm64 パッケージング・署名・公証・MAS
-- **THEN 7.** テスト（Playwright 化は許可が必要）
-- **THEN 8.** CI
-- **THEN 9.** 独立ライブラリ（1件ずつ。ライブラリ更新はここ。THEN 3 ではない）
+**見分け:** THEN 1=ファイル投入（1-1 secret → 1-2 vendor）。THEN 2 と THEN 3=アプリコード。THEN 3≠ライブラリ更新（それは THEN 9）。secret 更新が vendor より先。アプリは `vendor/` を読むので、vendor 更新がアプリコードより先。
 
-各スペックの cc-sdd 順（飛ばさない。各コマンドのあと taku-o 待ち。**番号は付けない**）: `/kiro-spec-requirements` → `/kiro-validate-gap` → `/kiro-spec-design` → `/kiro-validate-design` → `/kiro-spec-tasks`（ここまで Cursor）→ `/kiro-review-spec` → `/kiro-impl`（1タスク）→ `/kiro-validate-impl` → `/kiro-review-feature` / `/code-review`（ここから Claude Code。人間レビューではない）。正本は Project store `docs/cc-sdd-adoption.md`。Cursor は製品実装を始めない。
+各スペックの cc-sdd 順（飛ばさない。各コマンドのあと taku-o 待ち。**番号は付けない**）: `/kiro-spec-requirements` → `/kiro-validate-gap` → `/kiro-spec-design` → `/kiro-validate-design` → `/kiro-spec-tasks` → `/kiro-review-spec` → `/kiro-impl`（1タスク）→ `/kiro-validate-impl` → `/kiro-review-feature` / `/code-review`（Claude Code。人間レビューではない）。正本は [cc-sdd-adoption.md](./cc-sdd-adoption.md)。
 
 ## 次にやること（止まっている地点）
 
-計画は `planning.md`。短い順は Project store `docs/upcoming-work.md`。**実装の入口ではない。** 開発の前に調査する。アプリ全体が要る調査は後回し。
+計画は `planning.md`。短い順は [upcoming-work.md](./upcoming-work.md)。**実装の入口ではない。** 開発の前に調査する。アプリ全体が要る調査は後回し。
 
-**NOW（小さい調査）** — **残り無し。** 実施済み。記録は Project store `docs/survey-small-pass.md` / `docs/survey-aqkanji2koe.md` / `docs/survey-at1-direct.md`
+**NOW（小さい調査）** — **残り無し。** 実施済み。記録は [survey-small-pass.md](./survey-small-pass.md) / [survey-aqkanji2koe.md](./survey-aqkanji2koe.md) / [survey-at1-direct.md](./survey-at1-direct.md)
 
-**THEN（調査のあと。cc-sdd の仕様 → 実装）**
+**THEN（調査のあと）**
 
-THEN 1 ファイル投入 → THEN 2 アプリ talk1 呼び方 → THEN 3 アプリ FFI 道具（ライブラリ更新ではない）→ THEN 4 `@electron/remote` → THEN 5 Electron / Node → THEN 6 arm64 パッケージ・署名・公証・MAS → THEN 7 テスト（Playwright は許可が必要）→ THEN 8 CI → THEN 9 独立ライブラリ 1 件ずつ（ここがライブラリ更新）
+THEN 1 ファイル投入（1-1 secret → 1-2 vendor）→ THEN 2 アプリ talk1 呼び方 → THEN 3 アプリ FFI 道具（ライブラリ更新ではない）→ THEN 4 `@electron/remote` → THEN 5 Electron / Node → THEN 6 arm64 パッケージ・署名・公証・MAS → THEN 7 テスト（Playwright は許可が必要）→ THEN 8 CI → THEN 9 独立ライブラリ 1 件ずつ（ここがライブラリ更新）
 
-THEN 1 は将来の作業（ファイル投入。vendor 更新。アプリは `vendor/` を読むのでアプリコードより先）。アクティブな spec は無い。始めるときは taku-o が `/kiro-spec-requirements {feature}` を出す（Cursor）。実装は Claude Code。`/kiro-spec-init` は使わない。
+THEN 1 はファイル（1-1 secret → 1-2 vendor）。作業記録は `.kiro/specs/01-secret-updates/`。Claude Code が `/kiro-spec-requirements` … `/kiro-impl` を実行する。cc-sdd を始めるときは taku-o が `/kiro-spec-requirements {feature}` を出す（Claude Code）。`/kiro-spec-init` は使わない。
 
 **LATER（今はやらない）**
 
@@ -128,13 +125,11 @@ THEN 1 は将来の作業（ファイル投入。vendor 更新。アプリは `v
 ## やってはいけないこと
 
 - `/kiro-spec-init` を使う。`at1-koffi-direct` を再作成する
-- Cursor で製品実装を始める。Cursor で `/kiro-impl` を走らせる
-- Cursor で `/kiro-review-spec` / `/kiro-review-feature` が動くと装う（Claude Code 専用）
 - ユーザーの明示なしに `requirements.md` / `design.md` / `tasks.md` / `spec.json` を新規作成する
 - `spec.json` の `approved` を自己判断で `true` にする
 - `-y` を付ける。cc-sdd コマンドをまとめて進める
 - Angular 置き換え、preload 全面移行、Universal Binary、Rosetta 前提の回避
-- 評価版 SDK を配布物に入れる
+- 評価版 SDK を配布物に入れる（vendor に置くこととは別。開発中は載せない経路をコメントアウト＋コメントを残す。今はコードを触らない）
 - 一括 sed / 一括ライブラリ更新
 - テストコードの無許可変更
 - 干渉したライブラリを黙って戻す・コメントアウトして「対応」とする
@@ -149,12 +144,20 @@ THEN 1 は将来の作業（ファイル投入。vendor 更新。アプリは `v
 | `.kiro/specs/00-planing/planning.md` | 計画の本体 |
 | `.kiro/specs/00-planing/prompt.md` | ユーザー発言の抜き出し |
 | `.kiro/specs/00-planing/initial-setup.md` | ブランチ作成と kiro 導入コマンド |
+| `.kiro/specs/00-planing/upcoming-work.md` | これからやること（NOW / THEN / LATER） |
+| `.kiro/specs/00-planing/cc-sdd-adoption.md` | cc-sdd の順（コマンド名。Cursor=進捗・仕様の決定、Claude Code=`/kiro-spec-requirements` … `/kiro-spec-tasks` と実装） |
+| `.kiro/specs/00-planing/project-context.md` | プロジェクト文脈 |
+| `.kiro/specs/00-planing/apple-cpu-plan.md` | 残作業プラン |
+| `.kiro/specs/00-planing/sdk-inventory.md` | 評価版 SDK の棚卸し |
+| `.kiro/specs/00-planing/survey-small-pass.md` | 小さい調査パス（NOW） |
+| `.kiro/specs/00-planing/survey-at1-direct.md` | AT1 を koffi 直呼びできるか |
+| `.kiro/specs/00-planing/survey-maquestalk1.md` | Mac AT1 で iOS bridge を置き換えられるか |
+| `.kiro/specs/00-planing/survey-aqkanji2koe.md` | AqKanji2Koe Convert の調査 |
+| `.kiro/specs/00-planing/survey-talk2-phonts.md` | 古い talk2 3 phont の Synthe 結果 |
+| `.kiro/specs/01-secret-updates/` | THEN 1 の作業記録と引き渡し（1-1 secret が先、1-2 vendor） |
 | `.kiro/steering/product.md` / `tech.md` / `structure.md` | プロジェクト記憶 |
 | `.cursor/rules/cursor-local.mdc` | 作業ルール（完了表現禁止など）。ブランチにある |
 | `docs/development.md` | vendor 構成、関連リポジトリ |
-| Project store `docs/cc-sdd-adoption.md` | cc-sdd の正本（init なし、1つずつ止まる。Cursor=仕様、Claude Code=`/kiro-review-spec` と実装） |
-| Project store `docs/upcoming-work.md` | これからやること（NOW / THEN / LATER） |
-| Project store `docs/survey-talk2-phonts.md` | 古い talk2 3 phont の Synthe 結果 |
 
 ## このフォルダのファイル
 
@@ -162,20 +165,5 @@ THEN 1 は将来の作業（ファイル投入。vendor 更新。アプリは `v
 - `prompt.md` — 会話で出た指示のメモ
 - `initial-setup.md` — 初期コマンド
 - `resume.md` — 再開用（本ファイル）
-
-## Claude Code 用のコピー（このフォルダ）
-
-Project store `docs/` をここに置いた。Claude Code は **このフォルダのファイル** を読む。`internal/` と `notes.md` は入れてない。
-
-| ファイル | 一言 |
-| --- | --- |
-| `upcoming-work.md` | これからやること（NOW / THEN / LATER） |
-| `project-context.md` | プロジェクト文脈 |
-| `cc-sdd-adoption.md` | cc-sdd の順（コマンド名） |
-| `apple-cpu-plan.md` | 残作業プラン |
-| `sdk-inventory.md` | 評価版 SDK の棚卸し |
-| `survey-small-pass.md` | 小さい調査パス（NOW） |
-| `survey-at1-direct.md` | AT1 を koffi 直呼びできるか |
-| `survey-maquestalk1.md` | Mac AT1 で iOS bridge を置き換えられるか |
-| `survey-aqkanji2koe.md` | AqKanji2Koe Convert の調査 |
-| `survey-talk2-phonts.md` | 古い talk2 3 phont の Synthe 結果 |
+- `upcoming-work.md` / `cc-sdd-adoption.md` / `project-context.md` / `apple-cpu-plan.md` — 作業順と進め方
+- `sdk-inventory.md` と `survey-*.md` — 調査

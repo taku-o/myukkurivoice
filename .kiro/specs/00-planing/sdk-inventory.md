@@ -1,8 +1,8 @@
 # 評価版 SDK 棚卸し（調査 1）
 
-taku-o 向け。バイナリは git / Project store にコピーしていない。実装もビルドもしていない。
+taku-o 向け。バイナリは git / 作業用 store にコピーしていない。実装もビルドもしていない。
 
-観測日: 2026-09-18。実測パスのみ。WAV の実測はしていない（ヘッダと付属マニュアルの記載）。
+観測日: 2026-09-18。実測パスのみ。WAV ヘッダの実測は後の [survey-small-pass.md](./survey-small-pass.md)（koffi スニペット）。この棚卸し時点ではヘッダと付属マニュアルの記載。
 
 ## 一目で
 
@@ -99,7 +99,7 @@ phont 一覧（評価版）:
 - arch: **x86_64 + arm64**（fat）。マニュアルは macOS 11 以降
 - ヘッダ: `AquesTalk10.h`（現行 vendor は `AquesTalk.h`）
 - サンプリング: **16kHz / 16bit / mono / WAV**。`fsc` で周波数が変わる（ヘッダ・マニュアルとも）
-- 現行アプリの再生は 8000Hz 扱い。talk10 は前から 16kHz 記載。**実装前に実測が必要**（今回は未実測）
+- 現行アプリの再生は 8000Hz 扱い。talk10 は前から 16kHz 記載。koffi スニペットで実測済み（[survey-small-pass.md](./survey-small-pass.md)）。アプリ再生経路はまだ
 - API: `AquesTalk_Synthe` / `_Utf8` / `_Utf16` / `FreeWave` / `SetDevKey` / `SetUsrKey`
 - 構造体: `AQTK_VOICE`（`bas spd vol pit acc lmd fsc`）。プリセット `gVoice_F1`〜`R2` は現行アプリと同じ値
 - 現行ヘッダとの差: typedef 名が `_AQTK_PARAM_` → `_AQTK_VOICE_`。フィールドは同じ。関数名は同じ
@@ -111,7 +111,7 @@ phont 一覧（評価版）:
 - ヘッダ: `AqKanji2Koe.h`（2025/04/23 Ver.4.1.1）、`AqUsrDic.h`（2025/04/25 Ver.4.1.1）
 - 辞書: `aq_dic/aqdic.bin`（9.4M、2022-01-27）+ `aq_user.dic` + `CREDITS`
 - マニュアルの辞書サイズ表記は「約 7MB（約 36 万語）」。実ファイルは 9.4M
-- 現行 `vendor/aq_dic_large/aqdic.bin` は 12M で **ハッシュ不一致**。`aqk2k_mac/aq_dic/aqdic.bin`（7.2M）とも不一致。差し替え時は辞書を評価版セットで揃える必要あり
+- 現行 `vendor/aq_dic_large/aqdic.bin` は 12M で **ハッシュ不一致**。`aqk2k_mac/aq_dic/aqdic.bin`（7.2M）とも不一致。**taku-o 決定:** アプリが読むのは `aq_dic_large` のまま。THEN 1 で評価版 `aq_dic/` の中身を上書きしない。評価版 dylib と現行 large 辞書はマニュアル非推奨の可能性あり（調査上の注意。手順は増やさない）
 - API 残: `AqKanji2Koe_Create` / `Create_Ptr` / `Release` / `Convert`（UTF-8）/ `SetDevKey`
 - API 増: `AqKanji2Koe_ConvRoman`
 - API 減: 現行の `AqKanji2Koe_ConvertW`（UTF-32）は新ヘッダに無い
@@ -148,15 +148,15 @@ install_name はすべて `@rpath/...dylib`。アプリ側は Runpath か配置�
 
 この差は調査 1 の事実。パス変更の実装はしていない。
 
-## サンプリングレート（記載のみ。WAV 未実測）
+## サンプリングレート
 
-| エンジン | ヘッダ | 付属マニュアル | 現行アプリの扱い |
-| --- | --- | --- | --- |
-| AquesTalk1 | 8kHz | 8kHz | 8000Hz |
-| AquesTalk2 | 8kHz | 8kHz | 8000Hz |
-| AquesTalk10 | 16kHz。`fsc` で変化 | 16kHz。`fsc` で変化 | 再生経路は 8000Hz 前提が残る |
+棚卸し時点はヘッダ / マニュアルの記載。WAV ヘッダ実測は [survey-small-pass.md](./survey-small-pass.md)。
 
-実測は調査 1 の範囲外。計画どおり実装前に測る。
+| エンジン | ヘッダ | 付属マニュアル | 現行アプリの扱い | koffi スニペット |
+| --- | --- | --- | --- | --- |
+| AquesTalk1 | 8kHz | 8kHz | 8000Hz | 8000Hz |
+| AquesTalk2 | 8kHz | 8kHz | 8000Hz | 8000Hz |
+| AquesTalk10 | 16kHz。`fsc` で変化 | 16kHz。`fsc` で変化 | 再生経路は 8000Hz 前提が残る | `fsc=100` で 16000Hz |
 
 ## この drop に無いもの
 
@@ -172,6 +172,6 @@ install_name はすべて `@rpath/...dylib`。アプリ側は Runpath か配置�
 ## やっていないこと
 
 - SDK バイナリのコピー（git / store へ入れない）
-- `maquestalk1` / `maquestalk1-ios` / `secret` のビルド（調査 2）
-- FFI 呼び出し（調査 3）
+- `maquestalk1` / `maquestalk1-ios` / `secret` の製品ビルド（この棚卸しではしていない。`secret` arm64 は後の [survey-small-pass.md](./survey-small-pass.md)）
+- 本番アプリの FFI
 - `requirements.md` / `design.md` / `tasks.md` / `spec.json` の作成

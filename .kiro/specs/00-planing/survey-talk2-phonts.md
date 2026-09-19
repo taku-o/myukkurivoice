@@ -1,6 +1,6 @@
 # 調査: 現行アプリの古い talk2 phont は新評価版で使えるか
 
-taku-o 向け。実装も製品コミットもしていない。SDK バイナリと phont は git / Project store にコピーしていない。
+taku-o 向け。実装も製品コミットもしていない。SDK バイナリと phont は git / 作業用 store にコピーしていない。
 
 観測日: 2026-09-18。ホスト: arm64。
 

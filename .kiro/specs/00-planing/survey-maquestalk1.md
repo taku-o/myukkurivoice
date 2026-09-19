@@ -1,6 +1,6 @@
 # 調査: Mac AT1 は iOS bridge を置き換えられるか
 
-taku-o 向け。実装も製品コミットもしていない。SDK バイナリは git / Project store にコピーしていない。
+taku-o 向け。実装も製品コミットもしていない。SDK バイナリは git / 作業用 store にコピーしていない。
 
 観測日: 2026-09-18。ホスト: arm64（Darwin 27.0.0）。
 
